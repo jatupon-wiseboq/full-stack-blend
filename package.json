@@ -1,13 +1,12 @@
 {
-    "name": "express-typescript-starter",
+    "name": "full-stack-blend",
     "version": "0.1.0",
-    "description": "A starting point for Node.js express apps with TypeScript",
+    "description": "Full-Stack Development Platform For Web Application",
     "repository": {
         "type": "git",
-        "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
+        "url": "https://github.com/jasukkas/full-stack-blend.git"
     },
-    "author": "Bowden Kelly",
-    "license": "MIT",
+    "author": "SoftenStorm.com",
     "scripts": {
         "start": "npm run serve",
         "build": "npm run build-sass && npm run build-ts && npm run lint && npm run copy-static-assets",
@@ -43,7 +42,6 @@
         "fbgraph": "^1.4.4",
         "lodash": "^4.17.15",
         "lusca": "^1.6.1",
-        "mocha": "^7.0.1",
         "mongoose": "^5.7.1",
         "nodemailer": "^6.3.0",
         "passport": "^0.4.0",

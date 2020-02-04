@@ -105,7 +105,7 @@ A user account is required to connect to the database, so remember these values 
 9. Copy the connection string from the top of the page, it should look like this: `mongodb://<dbuser>:<dbpassword>@ds036069.mlab.com:36069/test-asdf`
 and replace `<dbUser>` and `<dbpassword>` with the credentials you just created.
 Back in your project, open your `.env` file and update `MONGODB_URI` with your new connection string.
-    > NOTE! - If you don't have an `.env` file yet, rename `.env.example` to `.env` and follow the comments to update the values in that file.
+    > NOTE! - If you don't have an `.env` file yet, rename `.env.develop` to `.env` and follow the comments to update the values in that file.
 10. **Success!**
 You can test that it works locally by updating `MONGODB_URI_LOCAL` to the same connection string you just updated in `MONGO_URI`.
 After rebuilding/serving, the app should work, but users that were previously created in local testing will not exist in the new database!

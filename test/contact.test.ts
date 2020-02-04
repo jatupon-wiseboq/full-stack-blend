@@ -1,7 +1,5 @@
 import request from "supertest";
 import app from "../src/app";
-import {expect} from "chai";
-import {describe, it} from "mocha";
 
 describe("GET /contact", () => {
 
@@ -24,7 +22,7 @@ describe("POST /contact", () => {
             field("email", "john@me.com").
             end((err, res) => {
 
-                expect(err).to.be.false;
+                expect(res.error).toBe(false);
                 done();
 
             }).

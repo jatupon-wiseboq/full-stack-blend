@@ -1,7 +1,5 @@
 import request from "supertest";
 import app from "../src/app";
-import {expect} from "chai";
-import {describe, it} from "mocha";
 
 describe("GET /login", () => {
 
@@ -40,7 +38,7 @@ describe("POST /login", () => {
         expect(302).
         end((err, res) => {
 
-            expect(err).not.to.be.undefined;
+            expect(res.error).not.toBe(undefined);
             done();
 
         }));
