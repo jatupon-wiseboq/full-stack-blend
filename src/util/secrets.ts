@@ -1,19 +1,26 @@
 import logger from "./logger";
 import dotenv from "dotenv";
 import fs from "fs";
+import * as path from "path";
 
-if (fs.existsSync(".env")) {
+export const ENVIRONMENT = process.env.NODE_ENV;
+const prod = ENVIRONMENT === "production";
+const staging = ENVIRONMENT === "staging";
+const test = ENVIRONMENT === "test";
+const develop = !prod && !staging && !test;
+
+const envPath = path.resolve(__dirname, "../../dev.env");
+
+if ((develop || test) && fs.existsSync(envPath)) {
 
     logger.debug("Using .env file to supply config environment variables");
-    dotenv.config({path: ".env"});
+    dotenv.config({path: envPath});
 
 } else {
 
-    logger.debug("Using .env file to supply config environment variables");
+    logger.debug("Using system to supply config environment variables");
 
 }
-export const ENVIRONMENT = process.env.NODE_ENV;
-const prod = ENVIRONMENT === "production"; // Anything else is treated as 'dev'
 
 export const {SESSION_SECRET} = process.env;
 export const MONGODB_URI = prod ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;

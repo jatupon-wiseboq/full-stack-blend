@@ -2,8 +2,8 @@
   "environments": {
     "test": {
       "scripts": {
-        "test-setup": "npm install && npm run build && concurrently \"npm run serve\"",
-        "test": "npm test"
+        "test-setup": "npm i -D concurrently",
+        "test": "concurrently --success first --kill-others \"npm run test\" \"npm run serve\""
       }
     }
   }
