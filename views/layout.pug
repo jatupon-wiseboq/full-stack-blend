@@ -13,6 +13,8 @@ html(lang='')
 
   body
     include partials/header
+    if user
+      include partials/toolbar
 
     .container.pl-sm-0.pr-sm-0.pl-lg-3.pr-lg-3
       include partials/flash

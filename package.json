@@ -15,8 +15,8 @@
         "watch": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-ts\" \"npm run watch-node\"",
         "test": "jest --forceExit --coverage --verbose",
         "watch-test": "npm run test -- --watchAll",
-        "build-ts": "tsc",
-        "watch-ts": "tsc -w",
+        "build-ts": "babel src --out-dir dist --extensions '.ts,.tsx'",
+        "watch-ts": "babel src --out-dir dist --extensions '.ts,.tsx' --watch",
         "build-sass": "node-sass src/public/css/main.scss dist/public/css/main.css",
         "watch-sass": "node-sass -w src/public/css/main.scss dist/public/css/main.css",
         "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
@@ -53,6 +53,11 @@
         "winston": "^3.2.1"
     },
     "devDependencies": {
+        "@babel/cli": "^7.8.4",
+        "@babel/core": "^7.8.4",
+        "@babel/plugin-transform-regenerator": "^7.8.3",
+        "@babel/preset-env": "^7.8.4",
+        "@babel/preset-typescript": "^7.8.3",
         "@types/async": "^3.0.2",
         "@types/bcrypt-nodejs": "^0.0.30",
         "@types/bluebird": "^3.5.27",
@@ -86,6 +91,7 @@
         "@typescript-eslint/eslint-plugin": "^2.3.1",
         "@typescript-eslint/parser": "^2.3.1",
         "babel-eslint": "^10.0.3",
+        "babel-polyfill": "^6.26.0",
         "chai": "^4.2.0",
         "concurrently": "^5.1.0",
         "dotenv": "^8.2.0",
@@ -98,6 +104,6 @@
         "supertest": "^4.0.2",
         "ts-jest": "^24.3.0",
         "ts-node": "^8.4.1",
-        "typescript": "^3.6.3"
+        "typescript": "^3.7.5"
     }
 }
