@@ -134,6 +134,35 @@ textarea {
   }
 }
 
+// Tooltip
+// -------------------------
+.tooltip {
+  .tooltip-inner {
+    min-width: 240px;
+    color: #666;
+    background-color: #fff;
+    -webkit-box-shadow: 1.5px 1.5px 3px 3px #ddd;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1.5px 1.5px 3px 3px #ddd;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1.5px 1.5px 3px 3px #ddd;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    text-align: left;
+    
+    p {
+      margin: 0 3px;
+      font-size: 0.9em;
+      
+      b {
+        color: #000;
+        font-weight: 500;
+        font-size: 1.2em;
+      }
+    }
+  }
+}
+.tooltip.bs-tooltip-top > .arrow::before { border-top-color: white; }
+.tooltip.bs-tooltip-bottom > .arrow::before { border-bottom-color: white; }
+.tooltip.bs-tooltip-left > .arrow::before { border-left-color: white; }
+.tooltip.bs-tooltip-right > .arrow::before { border-right-color: white; }
+
 // Explorer
 // -------------------------
 .explorer {
