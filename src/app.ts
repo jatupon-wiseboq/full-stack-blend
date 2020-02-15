@@ -15,6 +15,7 @@ const MongoStore = mongo(session);
 
 // Controllers (route handlers)
 import * as homeController from "./controllers/home";
+import * as constructionController from "./controllers/construction";
 import * as userController from "./controllers/user";
 import * as apiController from "./controllers/api";
 import * as contactController from "./controllers/contact";
@@ -95,6 +96,7 @@ app.use(express.static(path.join(__dirname, "public"), {maxAge: 31557600000}));
  * Primary app routes.
  */
 app.get("/", homeController.index);
+app.get("/construction", constructionController.index);
 app.get("/login", userController.getLogin);
 app.post("/login", userController.postLogin);
 app.get("/logout", userController.logout);

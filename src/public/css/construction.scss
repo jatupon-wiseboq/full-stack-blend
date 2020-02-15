@@ -1,0 +1,76 @@
+@import "construction/bootstrap-grid.scss";
+@import "construction/mixins/animation";
+
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  position: relative;
+}
+
+.guide {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 16777271;
+  
+  .container {
+    height: 100%;
+    
+    .row {
+      height: 100%; 
+    
+      .col-1 {
+        position: relative;
+        height: 100%;
+      }
+      
+      .col-1::before,
+      .col-1:last-child::after {
+        content: '';
+        display: block;
+        position: absolute;
+        width: 1px;
+        top: 0;
+        bottom: 0;
+        left: -0.5px;
+        background-color: blue;
+      }
+      
+      .col-1:last-child::after {
+        left: inherit;
+        right: -0.5px;
+      }
+    }
+  }
+}
+
+.cursor::before {
+  content: '';
+  display: block;
+  position: absolute;
+  width: 1px;
+  height: 15px;
+  
+  @include animation(0, 1s, animation-blink);
+}
+
+@include keyframe(animation-blink) {
+  0% {
+    background-color: transparent;
+  }
+  50% {
+    background-color: transparent;
+  }
+  50.00001% {
+    background-color: black;
+  }
+  100% {
+    background-color: black;
+  }
+}
+
+

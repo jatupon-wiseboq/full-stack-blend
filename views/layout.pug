@@ -1,5 +1,5 @@
 doctype html
-html(lang='')
+html.h-100(lang='')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
@@ -11,21 +11,38 @@ html(lang='')
     link(rel='shortcut icon', href='/images/favicon.png')
     link(rel='stylesheet', href='/css/main.css')
 
-  body
+  body.h-100
     include partials/header
     if user
-      include partials/toolbar
-
-    .container.pl-sm-0.pr-sm-0.pl-lg-3.pr-lg-3
+      .workspace-container
+        .workspace-horizontal-container
+          .workspace-horizontal-panel
+            include partials/toolbar
+        .workspace-horizontal-container.full-size
+          .workspace-horizontal-panel
+            .workspace-container
+              .workspace-vertical-container
+                .workspace-vertical-panel
+                  include partials/explorer
+                .workspace-vertical-panel.full-size
+                  .workspace-container
+                    .workspace-horizontal-container.full-size
+                      .workspace-horizontal-panel.full-size
+                        include partials/construction
+                    .workspace-horizontal-container
+                      .workspace-horizontal-panel
+                        include partials/animation
+                .workspace-vertical-panel
+                  include partials/sidebar
+    else
       include partials/flash
       block content
-
-    include partials/footer
 
     script(src='/js/lib/jquery-3.1.1.min.js')
     script(src='/js/lib/bootstrap.min.js')
     script(async defer src="https://buttons.github.io/buttons.js")
     script(src='/js/main.js')
+    script(src='/js/construction/editor.js')
 
     //- Google Analytics: change UA-38177297-2 to be your site's ID
     script.
