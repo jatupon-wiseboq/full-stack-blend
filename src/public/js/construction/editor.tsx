@@ -1,6 +1,8 @@
+var perform: Function;
+
 $(document).ready(function() {
-  window.perform = (name, content) => {
-    let element = document.getElementById('construction');
+  perform = (name: string, content: any) => {
+    let element = document.getElementById('construction') as HTMLFrameElement;
     let contentWindow = element.contentWindow;
     contentWindow.postMessage(JSON.stringify({
       name: name,
@@ -8,7 +10,7 @@ $(document).ready(function() {
     }), '*');
   };
   
-  window.addEventListener("keydown", (event) => {
+  window.addEventListener("keydown", (event: any) => {
     perform('keydown', event.keyCode);
   });
 });

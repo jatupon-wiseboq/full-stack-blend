@@ -1,5 +1,5 @@
 var HTMLHelper = {
-  sanitizing_pug: (code) => {
+  sanitizingPug: (code: string) => {
     return code.replace(/classname=/gi, 'class=');
   }
 };

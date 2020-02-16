@@ -20,7 +20,8 @@ html, body {
     pointer-events: none;
     z-index: 16777271;
     
-    .container {
+    .container,
+    .container-fluid {
       height: 100%;
       
       .row {

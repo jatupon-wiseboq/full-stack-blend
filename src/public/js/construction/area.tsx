@@ -1,13 +1,17 @@
 import {HTMLHelper} from './helpers/HTMLHelper.js';
+import {FullStackBlend, DeclarationHelper} from './helpers/DeclarationHelper.js';
+import './components/Dragger.js';
+
+// console.log(<FullStackBlend.Components.Dragger />);
 
 (() => {
-  let performed = [];
-  let performedIndex = -1;
+  let performed: any = [];
+  let performedIndex: number = -1;
   
   let cursor = document.getElementById('internal-fsb-cursor');
   let dragger = document.getElementById('internal-fsb-dragger');
   
-  function perform(name, content, remember=true) {
+  function perform(name: string, content: any, remember: boolean=true) {
     let accessory = {};
     
     switch (name) {
@@ -51,7 +55,7 @@ import {HTMLHelper} from './helpers/HTMLHelper.js';
         }
         
         if (element !== null) {
-          element.innerHTML = HTMLHelper.sanitizing_pug(element.innerHTML);
+          element.innerHTML = HTMLHelper.sanitizingPug(element.innerHTML);
           cursor.parentNode.insertBefore(element, cursor);
           
           if (element.className.indexOf('internal-fsb-element') != -1) {
@@ -75,7 +79,7 @@ import {HTMLHelper} from './helpers/HTMLHelper.js';
             }
             break;
           case 8:
-            if (cursor.previousSibling && cursor.previousSibling.getAttribute('internal-fsb-element') === '1') {
+            if (cursor.previousSibling && (cursor.previousSibling as HTMLElement).getAttribute('internal-fsb-element') === '1') {
               accessory = cursor.previousSibling;
               cursor.parentNode.removeChild(cursor.previousSibling);
             }
