@@ -4,7 +4,8 @@ module.exports = {
     '@babel/preset-env'
   ],
   plugins: [
-    '@babel/plugin-transform-regenerator'
+    '@babel/plugin-transform-regenerator',
+    'babel-plugin-transform-pug-html'
   ]
 }
 

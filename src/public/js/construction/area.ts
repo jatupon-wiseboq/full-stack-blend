@@ -1,9 +1,13 @@
+import {HTMLHelper} from './helpers/HTMLHelper.js';
+
 (() => {
   let performed = [];
   let performedIndex = -1;
   
+  let cursor = document.getElementById('internal-fsb-cursor');
+  let dragger = document.getElementById('internal-fsb-dragger');
+  
   function perform(name, content, remember=true) {
-    let cursor = document.getElementById('internal-fsb-cursor');
     let accessory = {};
     
     switch (name) {
@@ -16,11 +20,25 @@
         switch (content) {
           case 'vertical-layout':
             element = document.createElement('div');
-            element.innerHTML = '...';
+            element.className = 'col-12 internal-fsb-element';
+            element.innerHTML = pug `
+              .container-fluid
+                .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  | 0
+            `;
             break;
           case 'horizontal-layout':
             element = document.createElement('div');
-            element.innerHTML = 'aaa';
+            element.className = 'col-12 internal-fsb-element';
+            element.innerHTML = pug `
+              .container-fluid
+                .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  | 1
+            `;
+            break;
+          case 'table-layout':
+            element = document.createElement('div');
+            element.innerHTML = '---';
             break;
           case 'flow-layout':
             element = document.createElement('div');
@@ -33,8 +51,12 @@
         }
         
         if (element !== null) {
-          element.setAttribute('internal-fsb-element', '1');
+          element.innerHTML = HTMLHelper.sanitizing_pug(element.innerHTML);
           cursor.parentNode.insertBefore(element, cursor);
+          
+          if (element.className.indexOf('internal-fsb-element') != -1) {
+            element.appendChild(dragger);
+          }
         }
         
         break;
@@ -132,4 +154,9 @@
   window.addEventListener("keydown", (event) => {
     perform('keydown', event.keyCode);
   });
+  
+  let elements = document.getElementsByClassName('internal-fsb-allow-cursor');
+  if (elements.length > 0) {
+    elements[elements.length - 1].appendChild(cursor);
+  }
 })();

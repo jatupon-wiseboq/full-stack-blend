@@ -1,5 +1,6 @@
 @import "construction/bootstrap-grid.scss";
 @import "construction/mixins/animation";
+@import "variables";
 
 html, body {
   padding: 0;
@@ -8,54 +9,61 @@ html, body {
   position: relative;
 }
 
-.guide {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 16777271;
-  
-  .container {
-    height: 100%;
+.internal-fsb-cursor {
+  .internal-fsb-guide {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 16777271;
     
-    .row {
-      height: 100%; 
-    
-      .col-1 {
-        position: relative;
-        height: 100%;
-      }
+    .container {
+      height: 100%;
       
-      .col-1::before,
-      .col-1:last-child::after {
-        content: '';
-        display: block;
-        position: absolute;
-        width: 1px;
-        top: 0;
-        bottom: 0;
-        left: -0.5px;
-        background-color: blue;
-      }
+      .row {
+        height: 100%; 
       
-      .col-1:last-child::after {
-        left: inherit;
-        right: -0.5px;
+        .col-1 {
+          position: relative;
+          height: 100%;
+          
+          &::before,
+          &:last-child::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 1px;
+            top: 0;
+            bottom: 0;
+            left: -0.5px;
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+          
+          &:last-child::after {
+            left: inherit;
+            right: -0.5px;
+          }
+        }
       }
     }
   }
+  
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    width: 1px;
+    height: 15px;
+    
+    @include animation(0, 1s, animation-blink);
+  }
 }
 
-.cursor::before {
-  content: '';
+.internal-fsb-strict-layout > .internal-fsb-cursor > .internal-fsb-guide {
   display: block;
-  position: absolute;
-  width: 1px;
-  height: 15px;
-  
-  @include animation(0, 1s, animation-blink);
 }
 
 @include keyframe(animation-blink) {
@@ -73,4 +81,42 @@ html, body {
   }
 }
 
+.internal-fsb-element {  
+  > .internal-fsb-dragger {
+    display: none;
+      
+    span {
+      position: absolute;
+      
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: -#{$selected-element-resizer-size/2}px;
+        left: -#{$selected-element-resizer-size/2}px;
+        background-color: white;
+        width: #{$selected-element-resizer-size}px;
+        height: #{$selected-element-resizer-size}px;
+        border: solid 1px blue;
+      }
+      
+      &.t { top: 0 !important; left: 50%; cursor: n-resize; }
+      &.r { left: 100% !important; top: 50%; cursor: e-resize; }
+      &.b { top: 100% !important; left: 50%; cursor: s-resize; }
+      &.l { left: 0 !important; top: 50%; cursor: w-resize; }
+      &.t.l { cursor: nw-resize; }
+      &.t.r { cursor: ne-resize; }
+      &.b.r { cursor: se-resize; }
+      &.b.l { cursor: sw-resize; }
+    }
+  }
+}
 
+.internal-fsb-strict-layout > .internal-fsb-element {
+  position: relative;
+  border: solid 1px rgba(0, 0, 255, 127);
+  
+  > .internal-fsb-dragger {
+    display: block;
+  }
+}
