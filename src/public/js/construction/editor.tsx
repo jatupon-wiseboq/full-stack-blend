@@ -10,7 +10,20 @@ $(document).ready(function() {
     }), '*');
   };
   
+  var synchronize = (name: string, content: any) => {
+    switch (name) {
+      case 'select':
+        
+        break;
+    }
+  };
+  
   window.addEventListener("keydown", (event: any) => {
     perform('keydown', event.keyCode);
+  });
+  
+  window.addEventListener("message", (event) => {
+    let data = JSON.parse(event.data);
+    synchronize(data.name, data.content);
   });
 });

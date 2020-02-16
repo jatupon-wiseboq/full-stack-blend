@@ -1,18 +1,20 @@
 import {HTMLHelper} from './helpers/HTMLHelper.js';
-import {FullStackBlend, DeclarationHelper} from './helpers/DeclarationHelper.js';
+import {EditorHelper} from './helpers/EditorHelper.js';
+import {RandomHelper} from './helpers/RandomHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import './components/Dragger.js';
-
-// console.log(<FullStackBlend.Components.Dragger />);
 
 (() => {
   let performed: any = [];
   let performedIndex: number = -1;
   
-  let cursor = document.getElementById('internal-fsb-cursor');
-  let dragger = document.getElementById('internal-fsb-dragger');
+  let cursor = HTMLHelper.getElementById('internal-fsb-cursor');
+  let dragger = HTMLHelper.getElementById('internal-fsb-dragger');
   
-  function perform(name: string, content: any, remember: boolean=true) {
-    let accessory = {};
+  function perform(name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) {
+    let accessory = null;
+    let resolve = null;
+    let promise = new Promise((_resolve) => { resolve = _resolve; });
     
     switch (name) {
       case 'append':
@@ -20,47 +22,56 @@ import './components/Dragger.js';
         break;
       case 'insert':
         let element = null;
+        let splited = content.split(':');
+        let klass = splited[0];
+        if (splited[1] === undefined) {
+          splited[1] = RandomHelper.generateGUID();
+        }
+        let guid = splited[1];
+        content = splited.join(':');
         
-        switch (content) {
-          case 'vertical-layout':
+        switch (klass) {
+          case 'VerticalStackLayout':
             element = document.createElement('div');
-            element.className = 'col-12 internal-fsb-element';
-            element.innerHTML = pug `
-              .container-fluid
-                .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                  | 0
-            `;
+            element = ReactDOM.render(pug `
+              .col-12.internal-fsb-element
+                .container-fluid
+                  .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    | 0
+            `, element);
             break;
-          case 'horizontal-layout':
+          case 'HorizontalStackLayout':
             element = document.createElement('div');
-            element.className = 'col-12 internal-fsb-element';
-            element.innerHTML = pug `
-              .container-fluid
-                .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                  | 1
-            `;
+            element = ReactDOM.render(pug `
+              .col-12.internal-fsb-element
+                .container-fluid
+                  .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    | 1
+            `, element);
             break;
-          case 'table-layout':
+          case 'TableLayout':
             element = document.createElement('div');
             element.innerHTML = '---';
             break;
-          case 'flow-layout':
+          case 'FlowLayout':
             element = document.createElement('div');
             element.innerHTML = '+++';
             break;
-          case 'absolute-layout':
+          case 'AbsoluteLayout':
             element = document.createElement('div');
             element.innerHTML = 'bbb';
             break;
         }
         
         if (element !== null) {
-          element.innerHTML = HTMLHelper.sanitizingPug(element.innerHTML);
-          cursor.parentNode.insertBefore(element, cursor);
+          element.setAttribute('internal-fsb-guid', guid);
           
-          if (element.className.indexOf('internal-fsb-element') != -1) {
-            element.appendChild(dragger);
-          }
+          promise.then(() => {
+            perform('select', guid);
+          });
+          
+          element.setAttribute('internal-fsb-class', content);
+          cursor.parentNode.insertBefore(element, cursor);
         }
         
         break;
@@ -79,11 +90,20 @@ import './components/Dragger.js';
             }
             break;
           case 8:
-            if (cursor.previousSibling && (cursor.previousSibling as HTMLElement).getAttribute('internal-fsb-element') === '1') {
+            if (cursor.previousSibling && (cursor.previousSibling as HTMLElement).className.indexOf('internal-fsb-element') != -1) {
               accessory = cursor.previousSibling;
               cursor.parentNode.removeChild(cursor.previousSibling);
             }
             break;
+        }
+        
+        break;
+      case 'select':
+        let willSelectedElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
+        if (willSelectedElement) {
+          accessory = dragger.parentNode.getAttribute('internal-fsb-guid');
+          
+          willSelectedElement.appendChild(dragger);
         }
         
         break;
@@ -118,10 +138,13 @@ import './components/Dragger.js';
                   break;
               }
               break;
+            case 'select':
+              content = accessory;
+              break;
           }
           
           performedIndex -= 1;
-          perform(name, content, false);
+          perform(name, content, false, true);
         }
         
         remember = false;
@@ -129,7 +152,7 @@ import './components/Dragger.js';
       case 'redo':
         if (performedIndex < performed.length - 1) {
           performedIndex += 1;
-          perform(performed[performedIndex].name, performed[performedIndex].content, false);
+          perform(performed[performedIndex].name, performed[performedIndex].content, false, true);
         }
         
         remember = false;
@@ -148,6 +171,10 @@ import './components/Dragger.js';
         accessory: accessory
       });
     }
+    
+    if (!skipAfterPromise) {
+      resolve();
+    }
   }
   
   window.addEventListener("message", (event) => {
@@ -159,8 +186,8 @@ import './components/Dragger.js';
     perform('keydown', event.keyCode);
   });
   
-  let elements = document.getElementsByClassName('internal-fsb-allow-cursor');
-  if (elements.length > 0) {
-    elements[elements.length - 1].appendChild(cursor);
+  let element = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor');
+  if (element) {
+    element.appendChild(cursor);
   }
 })();

@@ -43,19 +43,19 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-reorder.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "vertical-layout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Vertical Stack</b></p><p>This will let you placing different things ordering from top to bottom in a single column.</p>")
+          a.dropdown-item(onclick='perform("insert", "VerticalStackLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Vertical Stack</b></p><p>This will let you placing different things ordering from top to bottom in a single column.</p>")
             i.fa.fa-reorder
             | Vertical
-          a.dropdown-item(onclick='perform("insert", "horizontal-layout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Horizontal Stack</b></p><p>This will let you placing different things ordering from left to right in a single row.</p>")
+          a.dropdown-item(onclick='perform("insert", "HorizontalStackLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Horizontal Stack</b></p><p>This will let you placing different things ordering from left to right in a single row.</p>")
             i.fa.fa-reorder.fa-rotate-90(style='position: relative; left: -5px;')
             | Horizontal
-          a.dropdown-item(onclick='perform("insert", "table-layout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Table Stack</b></p><p>This will let you placing items in a fixed-size table.</p>")
+          a.dropdown-item(onclick='perform("insert", "TableLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Table Stack</b></p><p>This will let you placing items in a fixed-size table.</p>")
             i.fa.fa-table
             | Table
-          a.dropdown-item(onclick='perform("insert", "flow-layout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Flow</b></p><p>This will let you placing items from left to right and auto-creating new lines where are overflow.</p>")
+          a.dropdown-item(onclick='perform("insert", "FlowLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Flow</b></p><p>This will let you placing items from left to right and auto-creating new lines where are overflow.</p>")
             i.fa.fa-th
             | Flow
-          a.dropdown-item(onclick='perform("insert", "absolute-layout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Freestyle Area</b></p><p>This will create an auto-height area for placing any elements in absolute, or independent, position.</p>")
+          a.dropdown-item(onclick='perform("insert", "AbsoluteLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Freestyle Area</b></p><p>This will create an auto-height area for placing any elements in absolute, or independent, position.</p>")
             i.fa.fa-object-ungroup
             | Absolute
       a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Insert A Rich Textarea</b></p><p>Create a rich textarea in which you can type any text, insert inline multimedia, hyperlinks, and others.</p>")
