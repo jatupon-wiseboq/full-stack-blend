@@ -2,6 +2,7 @@ import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
 import {RandomHelper} from './helpers/RandomHelper.js';
 import {LayoutHelper} from './helpers/LayoutHelper.js';
+import {EventHelper} from './helpers/EventHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import './components/Cursor.js';
 import './components/Dragger.js';
@@ -92,6 +93,12 @@ declare let ReactDOM: any;
         
         if (element !== null) {
           element.setAttribute('internal-fsb-guid', guid);
+          element.addEventListener('click', (event) => {
+            if (EditorHelper.getSelectingElement() != EventHelper.getCurrentElement(event)) {
+              perform('select', guid);
+            }
+            return EventHelper.cancel(event);
+          }, false);
           
           promise.then(() => {
             perform('select', guid);
