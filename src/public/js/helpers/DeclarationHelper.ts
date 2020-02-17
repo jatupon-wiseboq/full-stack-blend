@@ -1,7 +1,7 @@
 var FullStackBlend = {};
 
 var DeclarationHelper = {
-  private declareNamespace: (path: string) => {
+  declareNamespace: (path: string) => {
     let splited = path.split('.');
     let current: any = FullStackBlend;
     
