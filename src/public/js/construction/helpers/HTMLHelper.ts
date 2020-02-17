@@ -26,7 +26,7 @@ var HTMLHelper = {
     return _window.document.getElementsByTagName(tagName);
   },
   
-  findPosition: (object: HTMLElement) => {
+  getPosition: (object: HTMLElement) => {
     var curleft = 0;
     var curtop = 0;
     
@@ -39,10 +39,10 @@ var HTMLHelper = {
     
     return [curleft, curtop];
   },
-  findSize: (object: HTMLElement) => {
+  getSize: (object: HTMLElement) => {
     return [object.offsetWidth, object.offsetHeight];
   },
-  findContainingIframe: (currentWindow: Window) => {
+  getContainingIframe: (currentWindow: Window) => {
     let iframeElements = HTMLHelper.getElementsByTagName('iframe', currentWindow.parent);
     
     for (var i=0; i<iframeElements.length; i++) {
@@ -53,14 +53,14 @@ var HTMLHelper = {
     
     return null;
   },
-  findOriginalPosition: (_position: [number, number], currentWindow: Window) => {
+  getOriginalPosition: (_position: [number, number], currentWindow: Window) => {
     let result = [_position[0], _position[1]];
     
     while (currentWindow !== null && currentWindow != currentWindow.parent) {
-      let iframe = HTMLHelper.findContainingIframe(currentWindow);
+      let iframe = HTMLHelper.getContainingIframe(currentWindow);
       if (iframe === null) break;
       
-      let position = HTMLHelper.findPosition(iframe);
+      let position = HTMLHelper.getPosition(iframe);
       
       result[0] += position[0];
       result[1] += position[1];

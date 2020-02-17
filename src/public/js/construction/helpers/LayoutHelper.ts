@@ -5,7 +5,7 @@ var LayoutHelper = {
   calculateColumnSize: function(diffW) {
     let selectingElement = EditorHelper.getSelectingElement();
     if (selectingElement) {  
-      let width = HTMLHelper.findSize(selectingElement)[0] + diffW;
+      let width = HTMLHelper.getSize(selectingElement)[0] + diffW;
       let measure = document.createElement('div');
       let i: number;
       
@@ -13,7 +13,7 @@ var LayoutHelper = {
       
       for (i=1; i<=12; i++) {
         measure.className = 'col-' + i;
-        if (HTMLHelper.findSize(measure)[0] >= width) break;
+        if (HTMLHelper.getSize(measure)[0] >= width) break;
       }
 
       selectingElement.parentNode.removeChild(measure);

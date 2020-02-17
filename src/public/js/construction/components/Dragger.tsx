@@ -8,6 +8,7 @@ declare let ReactDOM: any;
 
 interface Props {
     onUpdate(diffX: number, diffY: number, diffW: number, diffH: number);
+    onPreview(diffX: number, diffY: number, diffW: number, diffH: number);
 }
 
 interface State {
@@ -65,9 +66,9 @@ class Dragger extends React.Component<Props, State> {
     private mouseDown(event) {
         let currentResizerElement = EventHelper.getCurrentElement(event);
         let selectingElement = EditorHelper.getSelectingElement();
-        let elementPosition = HTMLHelper.findOriginalPosition(HTMLHelper.findPosition(selectingElement), EventHelper.getCurrentWindow(event));
-        let elementSize = HTMLHelper.findSize(selectingElement);
-        let mousePosition = HTMLHelper.findOriginalPosition(EventHelper.getMousePosition(event), EventHelper.getCurrentWindow(event));
+        let elementPosition = HTMLHelper.getOriginalPosition(HTMLHelper.getPosition(selectingElement), EventHelper.getCurrentWindow(event));
+        let elementSize = HTMLHelper.getSize(selectingElement);
+        let mousePosition = HTMLHelper.getOriginalPosition(EventHelper.getMousePosition(event), EventHelper.getCurrentWindow(event));
         
         this.originalRect.left = elementPosition[0];
         this.originalRect.top = elementPosition[1];
@@ -92,7 +93,7 @@ class Dragger extends React.Component<Props, State> {
         return EventHelper.cancel(event);
     }
     private mouseMove(event) {
-        let mousePosition = HTMLHelper.findOriginalPosition(EventHelper.getMousePosition(event), EventHelper.getCurrentWindow(event));
+        let mousePosition = HTMLHelper.getOriginalPosition(EventHelper.getMousePosition(event), EventHelper.getCurrentWindow(event));
         
         if (this.originalResizerDirection.left || this.originalResizerDirection.right) {
             this.originalMousePos.diffX = mousePosition[0] - this.originalMousePos.left;
@@ -117,6 +118,10 @@ class Dragger extends React.Component<Props, State> {
     
     private updateDraggingAreaPositionAndSize(originalRect: { top: number, left: number, width: number, height: number }, originalMousePos: { left: number, top: number, diffX: number, diffY: number }) {
         let diff = this.calculateDiff(originalRect, originalMousePos);
+        
+        if (this.props.onPreview) {
+            this.props.onPreview(diff.diffX, diff.diffY, diff.diffW, diff.diffH);
+        }
         
         this.draggingArea.style.top = (originalRect.top + diff.diffY) + 'px';
         this.draggingArea.style.left = (originalRect.left + diff.diffX) + 'px';
