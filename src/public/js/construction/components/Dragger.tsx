@@ -116,17 +116,17 @@ class Dragger extends React.Component<Props, State> {
         
         if (this.originalResizerDirection.top) {
             this.draggingArea.style.top = (originalRect.top + diff.y) + 'px';
-            this.draggingArea.style.height = (originalRect.height - diff.y) + 'px';
+            this.draggingArea.style.height = Math.max(originalRect.height - diff.y, 0) + 'px';
         }
         if (this.originalResizerDirection.right) {
-            this.draggingArea.style.width = (originalRect.width + diff.x) + 'px';
+            this.draggingArea.style.width = Math.max(originalRect.width + diff.x, 0) + 'px';
         }
         if (this.originalResizerDirection.bottom) {
-            this.draggingArea.style.height = (originalRect.height + diff.y) + 'px';
+            this.draggingArea.style.height = Math.max(originalRect.height + diff.y, 0) + 'px';
         }
         if (this.originalResizerDirection.left) {
             this.draggingArea.style.left = (originalRect.left + diff.x) + 'px';
-            this.draggingArea.style.width = (originalRect.width - diff.x) + 'px';
+            this.draggingArea.style.width = Math.max(originalRect.width - diff.x, 0) + 'px';
         }
     }
     
