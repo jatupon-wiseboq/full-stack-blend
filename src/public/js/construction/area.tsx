@@ -2,14 +2,23 @@ import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
 import {RandomHelper} from './helpers/RandomHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../helpers/DeclarationHelper.js';
+import './components/Cursor.js';
 import './components/Dragger.js';
+
+declare let React: any;
+declare let ReactDOM: any;
 
 (() => {
   let performed: any = [];
   let performedIndex: number = -1;
   
-  let cursor = HTMLHelper.getElementById('internal-fsb-cursor');
-  let dragger = HTMLHelper.getElementById('internal-fsb-dragger');
+  let cursor = document.createElement('div');
+  ReactDOM.render(<FullStackBlend.Components.Cursor />, cursor);
+  cursor = cursor.firstChild;
+  
+  let dragger = document.createElement('div');
+  ReactDOM.render(<FullStackBlend.Components.Dragger />, dragger);
+  dragger = dragger.firstChild;
   
   function perform(name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) {
     let accessory = null;
