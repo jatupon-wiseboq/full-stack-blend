@@ -20,6 +20,3 @@ var EventHelper = {
 };
 
 export {EventHelper};
-
-          
-          

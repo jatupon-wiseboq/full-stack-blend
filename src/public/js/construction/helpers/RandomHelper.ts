@@ -9,6 +9,3 @@ var RandomHelper = {
 };
 
 export {RandomHelper};
-
-          
-          

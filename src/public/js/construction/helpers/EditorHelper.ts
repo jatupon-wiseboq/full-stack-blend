@@ -27,6 +27,3 @@ var EditorHelper = {
 };
 
 export {EditorHelper};
-
-          
-          

@@ -1,6 +1,7 @@
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
 import {RandomHelper} from './helpers/RandomHelper.js';
+import {LayoutHelper} from './helpers/LayoutHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import './components/Cursor.js';
 import './components/Dragger.js';
@@ -17,7 +18,10 @@ declare let ReactDOM: any;
   cursor = cursor.firstChild;
   
   function draggerOnUpdate(diffX: number, diffY: number, diffW: number, diffH: number) {
-    console.log(diffX, diffY, diffW, diffH);
+    let size = LayoutHelper.calculateColumnSize(diffW);
+    if (size !== null) {
+      perform('update[columnSize]', size);
+    }
   }
   
   let dragger = document.createElement('div');
@@ -32,6 +36,16 @@ declare let ReactDOM: any;
     switch (name) {
       case 'append':
         cursor.parentNode.insertBefore(content, cursor);
+        break;
+      case 'update[columnSize]':
+        let selectingElement = EditorHelper.getSelectingElement();
+        if (selectingElement) {
+          accessory = parseInt(selectingElement.className.match(/col\-([1-9]+)/)[1] || 12);
+          selectingElement.className = selectingElement.className
+            .replace(/col\-[1-9]+/gi, '')
+            .replace(/  /gi, '')
+            .trim() + ' col-' + content;
+        }
         break;
       case 'insert':
         let element = null;
@@ -127,6 +141,9 @@ declare let ReactDOM: any;
           let accessory = performed[performedIndex].accessory;
           
           switch (name) {
+            case 'update[columnSize]':
+              content = accessory;
+              break;
             case 'insert':
               name = 'keydown';
               content = 8;
