@@ -192,6 +192,20 @@ textarea {
   height: 100%;
 }
 
+// Dragging Area
+// -------------------------
+.internal-fsb-dragging-area {
+  position: fixed;
+  display: none;
+  pointer-events: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(127, 127, 127, 0.1);
+  border: 1px dashed rgba(127, 127, 127, 1.0);
+}
+
 // Animation
 // -------------------------
 .animation {

@@ -195,6 +195,10 @@ declare let ReactDOM: any;
     perform('keydown', event.keyCode);
   });
   
+  window.addEventListener("click", (event) => {
+    EditorHelper.synchronize("click", null);
+  });
+  
   let element = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor');
   if (element) {
     element.appendChild(cursor);

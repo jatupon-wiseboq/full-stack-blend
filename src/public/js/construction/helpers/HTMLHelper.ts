@@ -20,6 +20,23 @@ var HTMLHelper = {
   getElementsByAttribute: (attributeName: string) => {
     return document.querySelectorAll('[' + attributeName + ']');
   },
+  
+  findPosition(object: HTMLElement) {
+    var curleft = 0;
+    var curtop = 0;
+    
+    if (object.offsetParent) {
+      do {
+        curleft += object.offsetLeft;
+        curtop += object.offsetTop;
+      } while (object = object.offsetParent);
+    }
+    
+    return [curleft, curtop];
+  },
+  findSize(object: HTMLElement) {
+    return [object.offsetWidth, object.offsetHeight];
+  }
 };
 
 export {HTMLHelper};
