@@ -16,8 +16,12 @@ declare let ReactDOM: any;
   ReactDOM.render(<FullStackBlend.Components.Cursor />, cursor);
   cursor = cursor.firstChild;
   
+  function draggerOnUpdate(diffX: number, diffY: number, diffW: number, diffH: number) {
+    console.log(diffX, diffY, diffW, diffH);
+  }
+  
   let dragger = document.createElement('div');
-  ReactDOM.render(<FullStackBlend.Components.Dragger />, dragger);
+  ReactDOM.render(<FullStackBlend.Components.Dragger onUpdate={draggerOnUpdate} />, dragger);
   dragger = dragger.firstChild;
   
   function perform(name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) {

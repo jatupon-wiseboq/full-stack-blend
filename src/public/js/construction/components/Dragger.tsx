@@ -7,6 +7,7 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface Props {
+    onUpdate(diffX: number, diffY: number, diffW: number, diffH: number);
 }
 
 interface State {
@@ -36,8 +37,8 @@ class Dragger extends React.Component<Props, State> {
         left: false
     };
     
-    constructor () {
-        super();
+    constructor(props) {
+        super(props);
     }
     componentDidMount() {
         this.installDraggingArea();
@@ -100,33 +101,54 @@ class Dragger extends React.Component<Props, State> {
             this.originalMousePos.diffY = mousePosition[1] - this.originalMousePos.top;
         }
         
-        this.updateDraggingAreaPositionAndSize(this.originalRect, { x: this.originalMousePos.diffX, y: this.originalMousePos.diffY });
+        this.updateDraggingAreaPositionAndSize(this.originalRect, this.originalMousePos);
     }
     private mouseUp(event) {
         this.draggingArea.style.display = 'none';
         
+        let diff = this.calculateDiff(this.originalRect, this.originalMousePos);
+        
+        if (this.props.onUpdate) {
+            this.props.onUpdate(diff.diffX, diff.diffY, diff.diffW, diff.diffH);
+        }
+        
         this.uninstallEventHandlers();
     }
     
-    private updateDraggingAreaPositionAndSize(originalRect: { top: number, left: number, width: number, height: number }, diff: { x: number, y: number }) {
-        this.draggingArea.style.top = originalRect.top + 'px';
-        this.draggingArea.style.left = originalRect.left + 'px';
-        this.draggingArea.style.width = originalRect.width + 'px';
-        this.draggingArea.style.height = originalRect.height + 'px';
+    private updateDraggingAreaPositionAndSize(originalRect: { top: number, left: number, width: number, height: number }, originalMousePos: { left: number, top: number, diffX: number, diffY: number }) {
+        let diff = this.calculateDiff(originalRect, originalMousePos);
+        
+        this.draggingArea.style.top = (originalRect.top + diff.diffY) + 'px';
+        this.draggingArea.style.left = (originalRect.left + diff.diffX) + 'px';
+        this.draggingArea.style.width = (originalRect.width + diff.diffW) + 'px';
+        this.draggingArea.style.height = (originalRect.height + diff.diffH) + 'px';
+    }
+    private calculateDiff(originalRect: { top: number, left: number, width: number, height: number }, originalMousePos: { left: number, top: number, diffX: number, diffY: number }) {
+        let diffX = 0;
+        let diffY = 0;
+        let diffW = 0;
+        let diffH = 0;
         
         if (this.originalResizerDirection.top) {
-            this.draggingArea.style.top = Math.min(originalRect.top + diff.y, originalRect.top + originalRect.height - 2) + 'px';
-            this.draggingArea.style.height = Math.max(originalRect.height - diff.y, 0) + 'px';
+            diffY = Math.min(originalRect.height, originalMousePos.diffY);
+            diffH = -diffY;
         }
         if (this.originalResizerDirection.right) {
-            this.draggingArea.style.width = Math.max(originalRect.width + diff.x, 0) + 'px';
+            diffW = Math.max(-originalRect.width, originalMousePos.diffX);
         }
         if (this.originalResizerDirection.bottom) {
-            this.draggingArea.style.height = Math.max(originalRect.height + diff.y, 0) + 'px';
+            diffH = Math.max(-originalRect.height, originalMousePos.diffY);
         }
         if (this.originalResizerDirection.left) {
-            this.draggingArea.style.left = Math.min(originalRect.left + diff.x, originalRect.left + originalRect.width - 2) + 'px';
-            this.draggingArea.style.width = Math.max(originalRect.width - diff.x, 0) + 'px';
+            diffX = Math.min(originalRect.width, originalMousePos.diffX);;
+            diffW = -diffX;
+        }
+        
+        return {
+            diffX: diffX,
+            diffY: diffY,
+            diffW: diffW,
+            diffH: diffH
         }
     }
     
