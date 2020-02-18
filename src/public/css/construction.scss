@@ -2,6 +2,8 @@
 @import "construction/mixins/animation";
 @import "variables";
 
+// Scaffolding
+//
 html, body {
   padding: 0;
   margin: 0;
@@ -17,52 +19,25 @@ html, body {
   background-color: rgba(255, 255, 255, 0.0);
 }
 
-.internal-fsb-cursor {
-  position: relative;
+.table {
+  width: 100%;
+  border-collapse: collapse;
   
-  .internal-fsb-guide {
-    display: none;
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    pointer-events: none;
-    z-index: #{$maximum-z-index - 1};
-    
-    .container,
-    .container-fluid {
-      height: 100%;
-      
-      .row {
-        height: 100%; 
-      
-        .col-1 {
-          position: relative;
-          height: 100%;
-          
-          &::before,
-          &:last-child::after {
-            content: '';
-            display: block;
-            position: absolute;
-            width: 1px;
-            top: 0;
-            bottom: 0;
-            left: -0.5px;
-            background-color: rgba(0, 0, 0, 0.05);
-          }
-          
-          &:last-child::after {
-            left: inherit;
-            right: -0.5px;
-          }
-        }
-      }
-    }
+  th, td {
+    border: 1px solid rgba(0, 0, 255, 0.5);
+    vertical-align: top;
+    height: 20px;
   }
-  
-  &::before {
+}
+
+.internal-fsb-element {
+  padding: 1px;
+}
+
+// Cursor
+//
+.internal-fsb-cursor {
+  .col-1::before {
     content: '';
     display: block;
     position: absolute;
@@ -74,10 +49,6 @@ html, body {
     
     @include animation(0, 1s, animation-blink);
   }
-}
-
-.internal-fsb-strict-layout > .internal-fsb-cursor > .internal-fsb-guide {
-  display: block;
 }
 
 @include keyframe(animation-blink) {
@@ -95,9 +66,10 @@ html, body {
   }
 }
 
+
+// Dragger
+//
 .internal-fsb-element {
-  padding: 1px;
-  
   > .internal-fsb-dragger {
     display: none;
       
@@ -127,17 +99,6 @@ html, body {
       &.b.l { cursor: sw-resize; }
     }
   }
-  
-  > .table {
-    width: 100%;
-    border-collapse: collapse;
-    
-    th, td {
-      border: 1px solid rgba(0, 0, 255, 0.5);
-      vertical-align: top;
-      height: 20px;
-    }
-  }
 }
 
 .internal-fsb-strict-layout {
@@ -147,6 +108,49 @@ html, body {
     
     > .internal-fsb-dragger {
       display: block;
+    }
+  }
+}
+
+// Guide
+//
+.internal-fsb-guide {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: #{$maximum-z-index - 1};
+  
+  .container,
+  .container-fluid {
+    height: 100%;
+    
+    .row {
+      height: 100%; 
+    
+      .col-1 {
+        position: relative;
+        height: 100%;
+        
+        &::before,
+        &:last-child::after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 1px;
+          top: 0;
+          bottom: 0;
+          left: -0.5px;
+          background-color: rgba(0, 0, 0, 0.05);
+        }
+        
+        &:last-child::after {
+          left: inherit;
+          right: -0.5px;
+        }
+      }
     }
   }
 }

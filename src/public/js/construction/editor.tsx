@@ -13,7 +13,9 @@ $(document).ready(function() {
   var synchronize = (name: string, content: any) => {
     switch (name) {
       case 'select':
-        
+        break;
+      case 'click':
+        window.document.body.click();
         break;
     }
   };

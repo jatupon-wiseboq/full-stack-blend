@@ -143,12 +143,8 @@ var ManipulationHelper = {
         
         break;
       case 'select':
-        let willSelectedElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
-        if (willSelectedElement) {
-          accessory = Accessories.dragger.parentNode.getAttribute('internal-fsb-guid');
-          
-          willSelectedElement.appendChild(Accessories.dragger);
-        }
+        let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
+        EditorHelper.select(selecting);
         
         break;
       case 'undo':

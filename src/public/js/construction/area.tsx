@@ -1,5 +1,6 @@
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
+import {EventHelper} from './helpers/EventHelper.js';
 import {ManipulationHelper} from './helpers/ManipulationHelper.js';
 
 (() => {
@@ -19,9 +20,12 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
   window.addEventListener("click", (event) => {
     EditorHelper.synchronize("click", null);
   }, false);
-  window.document.addEventListener("click", (event) => {
+  window.document.body.addEventListener("click", (event) => {
+    if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
+    
     EditorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
+    
   }, true);
   
   // Install capabilities.

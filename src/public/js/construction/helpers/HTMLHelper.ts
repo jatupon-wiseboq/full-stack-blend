@@ -25,6 +25,17 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
+  findTheParentInClassName: (className: string, element: HTMLElement) => {
+    let current = element;
+    while (current != null) {
+      current = current.parentNode;
+      if (HTMLHelper.hasClass(current, className)) {
+        return current;
+      }
+    }
+    
+    return null;
+  },
   
   hasClass: (element: HTMLElement, name: string) => {
     let splited = (element.className || '').split(' ');

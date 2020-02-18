@@ -16,22 +16,8 @@ class Cursor extends React.Component<Props, State> {
     render() {
         return (
             pug `
-              .internal-fsb-cursor.col-1(id='internal-fsb-cursor')
-                .internal-fsb-guide
-                  .container-fluid
-                    .row
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
-                      .col-1
+              .internal-fsb-cursor(id='internal-fsb-cursor')
+                .col-1
             `
         )
     }
