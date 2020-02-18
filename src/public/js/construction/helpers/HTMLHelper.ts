@@ -12,7 +12,7 @@ var HTMLHelper = {
     else { return null; }
   },
   getElementsByClassName: (className: string, container: HTMLElement=document) => {
-    return document.getElementsByClassName(className, container);
+    return container.getElementsByClassName(className, container);
   },
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
@@ -24,6 +24,35 @@ var HTMLHelper = {
     if (_window === null) return [];
     
     return _window.document.getElementsByTagName(tagName);
+  },
+  
+  hasClass: (element: HTMLElement, name: string) => {
+    let splited = (element.className || '').split(' ');
+    return splited.indexOf(name) != -1;
+  },
+  removeClass: (element: HTMLElement, name: string) => {
+    let splited = (element.className || '').split(' ');
+    let index = splited.indexOf(name);
+    if (index != -1) {
+      splited.splice(index, 1);
+    }
+    element.className = HTMLHelper.cleanArray(splited).join(' ');
+  },
+  addClass: (element: HTMLElement, name: string) => {
+    let splited = (element.className || '').split(' ');
+    if (splited.indexOf(name) == -1) {
+      splited.push(name);
+    }
+    element.className = HTMLHelper.cleanArray(splited).join(' ');
+  },
+  cleanArray: (splited: [string]) => {
+    let results = [];
+    splited.forEach((token) => {
+      if (token) {
+        results.push(token);
+      }
+    });
+    return results;
   },
   
   getPosition: (object: HTMLElement) => {

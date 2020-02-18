@@ -27,8 +27,8 @@ var ManipulationHelper = {
           if (remember && selectingElement.getAttribute('internal-fsb-preview-accessory') !== null) {
             accessory = selectingElement.getAttribute('internal-fsb-preview-accessory');
           }
-          selectingElement.className = selectingElement.className
-            .replace(/col\-[1-9]+/gi, '').replace(/  /gi, '').trim() + ' col-' + content;
+          selectingElement.className = selectingElement.className.replace(/col\-[1-9]+/gi, '');
+          HTMLHelper.addClass(selectingElement, ' col-' + content);
         }
         break;
       case 'insert':
@@ -134,7 +134,7 @@ var ManipulationHelper = {
             }
             break;
           case 8:
-            if (Accessories.cursor.previousSibling && (Accessories.cursor.previousSibling as HTMLElement).className.indexOf('internal-fsb-element') != -1) {
+            if (Accessories.cursor.previousSibling && HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
               accessory = Accessories.cursor.previousSibling;
               Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
             }

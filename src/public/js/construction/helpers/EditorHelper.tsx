@@ -37,12 +37,7 @@ var EditorHelper = {
     ReactDOM.render(<FullStackBlend.Components.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, Accessories.dragger);
     Accessories.dragger = Accessories.dragger.firstChild;
     
-    // Move Accessories.cursor to the end of document.
-    // 
-    let element = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor');
-    if (element) {
-      element.appendChild(Accessories.cursor);
-    }
+    EditorHelper.moveCursorToTheEndOfDocument();
   },
   
   synchronize: (name: string, content: any) => {
@@ -52,15 +47,22 @@ var EditorHelper = {
     }), '*');
   },
   
+  moveCursorToTheEndOfDocument: () => {
+    let element = HTMLHelper.getElementByClassName('internal-fsb-begin');
+    if (element) {
+      element.appendChild(Accessories.cursor);
+    }
+  },
+  
   select: (element: HTMLElement, dragger: HTMLElement) => {
-    if (element.className.indexOf('internal-fsb-element') != -1) {
+    if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
       element.appendChild(Accessories.dragger);
       
       EditorHelper.synchronize('select', element.getAttribute('internal-fsb-class'));
     }
   },
   getSelectingElement: () => {
-    if (Accessories.dragger && Accessories.dragger.parentNode && Accessories.dragger.parentNode.className.indexOf('internal-fsb-element') != -1) {
+    if (Accessories.dragger && Accessories.dragger.parentNode && HTMLHelper.hasClass(Accessories.dragger.parentNode, 'internal-fsb-element')) {
       return Accessories.dragger.parentNode;
     } else {
       return null;
@@ -73,16 +75,24 @@ var EditorHelper = {
       if (EditorHelper.getSelectingElement() != EventHelper.getCurrentElement(event)) {
         ManipulationHelper.perform('select', guid);
       }
+      EditorHelper.synchronize("click", null);
       return EventHelper.cancel(event);
     }, false);
   },
   installCapabilityOfBeingMoveInCursor: (container: HTMLElement) => {
-    /*let allowAccessories.cursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', container)];
-    allowAccessories.cursorElements.forEach((element: HTMLElement) => {
-      element.addEventListener('click', (event) => {
-        if (Accessories.cursor) element.appendChild(Accessories.cursor);
-      }, true);
-    });*/
+    let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', container)];
+    if (HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor')) {
+      allowCursorElements.push(container);
+    }
+    allowCursorElements.forEach((element: HTMLElement) => {
+      if (element.getAttribute('internal-fsb-binded-click') != '1') {
+        element.addEventListener('click', (event) => {
+          if (Accessories.cursor) element.appendChild(Accessories.cursor);
+          EditorHelper.synchronize("click", null);
+        }, true);
+        element.setAttribute('internal-fsb-binded-click', '1');
+      }
+    });
   },
   installCapabilitiesForInternalElements: (container: HTMLElement) => {
     let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];

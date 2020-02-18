@@ -80,10 +80,10 @@ class Dragger extends React.Component<Props, State> {
         this.originalMousePos.dx = 0;
         this.originalMousePos.dy = 0;
         
-        this.originalResizerDirection.top = currentResizerElement.className.indexOf('t') != -1;
-        this.originalResizerDirection.right = currentResizerElement.className.indexOf('r') != -1;
-        this.originalResizerDirection.bottom = currentResizerElement.className.indexOf('b') != -1;
-        this.originalResizerDirection.left = currentResizerElement.className.indexOf('l') != -1;
+        this.originalResizerDirection.top = HTMLHelper.hasClass(currentResizerElement, 't');
+        this.originalResizerDirection.right = HTMLHelper.hasClass(currentResizerElement, 'r');
+        this.originalResizerDirection.bottom = HTMLHelper.hasClass(currentResizerElement, 'b');
+        this.originalResizerDirection.left = HTMLHelper.hasClass(currentResizerElement, 'l');
         
         this.installEventHandlers();
         

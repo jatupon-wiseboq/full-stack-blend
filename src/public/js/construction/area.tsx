@@ -12,13 +12,17 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
   window.addEventListener("message", (event) => {
     let data = JSON.parse(event.data);
     ManipulationHelper.perform(data.name, data.content);
-  });
+  }, true);
   window.addEventListener("keydown", (event) => {
     ManipulationHelper.perform('keydown', event.keyCode);
-  });
+  }, false);
   window.addEventListener("click", (event) => {
     EditorHelper.synchronize("click", null);
-  });
+  }, false);
+  window.document.addEventListener("click", (event) => {
+    EditorHelper.moveCursorToTheEndOfDocument();
+    EditorHelper.synchronize("click", null);
+  }, true);
   
   // Install capabilities.
   //
