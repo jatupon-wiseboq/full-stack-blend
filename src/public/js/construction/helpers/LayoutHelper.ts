@@ -2,10 +2,9 @@ import {EditorHelper} from './EditorHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
 
 var LayoutHelper = {
-  calculateColumnSize: function(diffW) {
+  calculateColumnSize: function(width: number) {
     let selectingElement = EditorHelper.getSelectingElement();
-    if (selectingElement) {  
-      let width = HTMLHelper.getSize(selectingElement)[0] + diffW;
+    if (selectingElement) {
       let measure = document.createElement('div');
       let i: number;
       

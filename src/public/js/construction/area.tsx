@@ -18,15 +18,21 @@ declare let ReactDOM: any;
   ReactDOM.render(<FullStackBlend.Components.Cursor />, cursor);
   cursor = cursor.firstChild;
   
-  function draggerOnUpdate(diffX: number, diffY: number, diffW: number, diffH: number) {
-    let size = LayoutHelper.calculateColumnSize(diffW);
+  function draggerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
+    let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
     if (size !== null) {
-      perform('update[columnSize]', size);
+      perform('update[columnSize]', size, false);
+    }
+  }
+  function draggerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
+    let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
+    if (size !== null) {
+      perform('update[columnSize]', size, true);
     }
   }
   
   let dragger = document.createElement('div');
-  ReactDOM.render(<FullStackBlend.Components.Dragger onUpdate={draggerOnUpdate} />, dragger);
+  ReactDOM.render(<FullStackBlend.Components.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, dragger);
   dragger = dragger.firstChild;
   
   function perform(name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) {
@@ -42,10 +48,14 @@ declare let ReactDOM: any;
         let selectingElement = EditorHelper.getSelectingElement();
         if (selectingElement) {
           accessory = parseInt(selectingElement.className.match(/col\-([1-9]+)/)[1] || 12);
+          if (!remember && selectingElement.getAttribute('internal-fsb-preview-accessory') === null) {
+            selectingElement.setAttribute('internal-fsb-preview-accessory', accessory);
+          }
+          if (remember && selectingElement.getAttribute('internal-fsb-preview-accessory') !== null) {
+            accessory = selectingElement.getAttribute('internal-fsb-preview-accessory');
+          }
           selectingElement.className = selectingElement.className
-            .replace(/col\-[1-9]+/gi, '')
-            .replace(/  /gi, '')
-            .trim() + ' col-' + content;
+            .replace(/col\-[1-9]+/gi, '').replace(/  /gi, '').trim() + ' col-' + content;
         }
         break;
       case 'insert':
