@@ -10,6 +10,13 @@ html, body {
   overflow: hidden;
 }
 
+.container,
+.container-fluid,
+.internal-fsb-allow-cursor {
+  min-height: 20px;
+  background-color: rgba(255, 255, 255, 0.0);
+}
+
 .internal-fsb-cursor {
   position: relative;
   
@@ -88,7 +95,9 @@ html, body {
   }
 }
 
-.internal-fsb-element {  
+.internal-fsb-element {
+  padding: 0;
+  
   > .internal-fsb-dragger {
     display: none;
       
@@ -116,6 +125,16 @@ html, body {
       &.t.r { cursor: ne-resize; }
       &.b.r { cursor: se-resize; }
       &.b.l { cursor: sw-resize; }
+    }
+  }
+  
+  > .table {
+    width: 100%;
+    border: 1px solid rgba(0, 255, 0, 0.5);
+    
+    th, td {
+      border: 1px solid rgba(0, 255, 0, 0.5);
+      height: 20px;
     }
   }
 }

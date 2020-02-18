@@ -3,22 +3,22 @@ var HTMLHelper = {
     return code.replace(/classname=/gi, 'class=');
   },
   
-  getElementById: (id: string) => {
-    return document.getElementById(id);
+  getElementById: (id: string, container: HTMLElement=document) => {
+    return container.getElementById(id);
   },
-  getElementByClassName: (className: string) => { // return the last one
-    let elements = HTMLHelper.getElementsByClassName(className);
+  getElementByClassName: (className: string, container: HTMLElement=document) => { // return the last one
+    let elements = HTMLHelper.getElementsByClassName(className, container);
     if (elements.length != 0) { return elements[elements.length - 1]; }
     else { return null; }
   },
-  getElementsByClassName: (className: string) => {
-    return document.getElementsByClassName(className);
+  getElementsByClassName: (className: string, container: HTMLElement=document) => {
+    return document.getElementsByClassName(className, container);
   },
-  getElementByAttributeNameAndValue: (attributeName: string, value: string) => {
-    return document.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
+  getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
+    return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
   },
-  getElementsByAttribute: (attributeName: string) => {
-    return document.querySelectorAll('[' + attributeName + ']');
+  getElementsByAttribute: (attributeName: string, container: HTMLElement=document) => {
+    return container.querySelectorAll('[' + attributeName + ']');
   },
   getElementsByTagName: (tagName: string, _window: Window=window) => {
     if (_window === null) return [];

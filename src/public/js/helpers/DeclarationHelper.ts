@@ -5,14 +5,12 @@ var DeclarationHelper = {
     let splited = path.split('.');
     let current: any = FullStackBlend;
     
-    for (let i=0; i<splited.length; i++) {
-      let name = splited[i];
-      
+    splited.forEach((name) => {
       if (current[name] === undefined) {
         current[name] = {};
       }
       current = current[name];
-    }
+    });
     
     return current;
   },
