@@ -91,8 +91,20 @@ var EditorHelper = {
     element.addEventListener('click', (event) => {
       if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
       
-      if (EditorHelper.getSelectingElement() != EventHelper.getCurrentElement(event)) {
-        ManipulationHelper.perform('select', guid);
+      let selecting = EditorHelper.getSelectingElement();
+      let willSelected = EventHelper.getCurrentElement(event);
+      let parents = HTMLHelper.findAllParentsInClassName('internal-fsb-element', willSelected);
+      parents.splice(0, 0, willSelected);
+      let index = parents.indexOf(selecting);
+      
+      if (index != -1) {
+        willSelected = parents[Math.max(0, index - 1)];
+      } else {
+        willSelected = parents[parents.length - 1];
+      }
+      
+      if (selecting != willSelected) {
+        ManipulationHelper.perform('select', willSelected.getAttribute('internal-fsb-guid'));
       }
       
       EditorHelper.synchronize("click", null);

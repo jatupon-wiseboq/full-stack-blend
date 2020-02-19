@@ -25,16 +25,29 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
-  findTheParentInClassName: (className: string, element: HTMLElement) => {
-    let current = element;
+  findTheParentInClassName: (className: string, element: HTMLElement) => { // the closet one
+    let current = element.parentNode;
     while (current != null) {
-      current = current.parentNode;
       if (HTMLHelper.hasClass(current, className)) {
         return current;
       }
+      current = current.parentNode;
     }
     
     return null;
+  },
+  findAllParentsInClassName: (className: string, element: HTMLElement) => {
+    let results = [];
+    let current = element.parentNode;
+    
+    while (current != null) {
+      if (HTMLHelper.hasClass(current, className)) {
+        results.push(current);
+      }
+      current = current.parentNode;
+    }
+    
+    return results;
   },
   
   hasClass: (element: HTMLElement, name: string) => {
