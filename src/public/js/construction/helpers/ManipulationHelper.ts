@@ -14,8 +14,17 @@ var ManipulationHelper = {
     let promise = new Promise((_resolve) => { resolve = _resolve; });
     
     switch (name) {
-      case 'append':
+      case 'append[cursor]':
         Accessories.cursor.parentNode.insertBefore(content, Accessories.cursor);
+        break;
+      case 'move[cursor]':
+        if (Accessories.cursor.parentNode != null && EditorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
+          remember = false;
+        }
+        if (remember) {
+          accessory = EditorHelper.findWalkPathForCursor();
+        }
+        EditorHelper.placingCursorUsingWalkPath(content);
         break;
       case 'update[columnSize]':
         let selectingElement = EditorHelper.getSelectingElement();
@@ -117,35 +126,43 @@ var ManipulationHelper = {
           element.setAttribute('internal-fsb-class', content);
           Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
         }
-        
         break;
       case 'keydown':
         switch (content) {
           case 37:
+            EditorHelper.moveCursorUp();
+            remember = false;
+            break;
           case 38:
-            if (Accessories.cursor.previousSibling) {
-              Accessories.cursor.parentNode.insertBefore(Accessories.cursor, Accessories.cursor.previousSibling);
-            }
+            EditorHelper.moveCursorToTheRight();
+            remember = false;
             break;
           case 39:
+            EditorHelper.moveCursorDown();
+            remember = false;
+            break;
           case 40:
-            if (Accessories.cursor.nextSibling) {
-              Accessories.cursor.parentNode.insertBefore(Accessories.cursor, Accessories.cursor.nextSibling && Accessories.cursor.nextSibling.nextSibling || null);
-            }
+            EditorHelper.moveCursorToTheLeft();
+            remember = false;
             break;
           case 8:
             if (Accessories.cursor.previousSibling && HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
               accessory = Accessories.cursor.previousSibling;
               Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
+            } else {
+              remember = false;
             }
             break;
         }
-        
         break;
       case 'select':
-        let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
-        EditorHelper.select(selecting);
-        
+        if (content) {
+          let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
+          EditorHelper.select(selecting);
+        } else {
+          EditorHelper.deselect();
+        }
+        remember = false;
         break;
       case 'undo':
         if (performedIndex >= 0) {
@@ -153,7 +170,12 @@ var ManipulationHelper = {
           let content = performed[performedIndex].content;
           let accessory = performed[performedIndex].accessory;
           
+          console.log('undo', name, content, accessory);
+          
           switch (name) {
+            case 'move[cursor]':
+              content = accessory;
+              break;
             case 'update[columnSize]':
               content = accessory;
               break;
@@ -163,20 +185,8 @@ var ManipulationHelper = {
               break;
             case 'keydown':
               switch (content) {
-                case 37:
-                  content = 39;
-                  break;
-                case 38:
-                  content = 40;
-                  break;
-                case 39:
-                  content = 37;
-                  break;
-                case 40:
-                  content = 38;
-                  break;
                 case 8:
-                  name = 'append';
+                  name = 'append[cursor]';
                   content = accessory;
                   break;
               }
@@ -195,16 +205,23 @@ var ManipulationHelper = {
       case 'redo':
         if (performedIndex < performed.length - 1) {
           performedIndex += 1;
-          ManipulationHelper.perform(performed[performedIndex].name, performed[performedIndex].content, false, true);
+          
+          let name = performed[performedIndex].name;
+          let content = performed[performedIndex].content;
+          let accessory = performed[performedIndex].accessory;
+          
+          console.log('redo', name, content, accessory);
+          
+          ManipulationHelper.perform(name, content, false, true);
         }
         
         remember = false;
         break;
     }
     
-    console.log(name, content, accessory, performedIndex);
-    
     if (remember) {
+      console.log('remember', name, content, accessory);
+      
       performedIndex += 1;
       performed = performed.splice(0, performedIndex);
       

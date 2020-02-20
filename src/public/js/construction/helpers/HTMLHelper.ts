@@ -11,8 +11,21 @@ var HTMLHelper = {
     if (elements.length != 0) { return elements[elements.length - 1]; }
     else { return null; }
   },
-  getElementsByClassName: (className: string, container: HTMLElement=document) => {
-    return container.getElementsByClassName(className, container);
+  getElementsByClassName: (className: string, container: HTMLElement=document, notToBeUnder: string=null) => {
+    let elements = container.getElementsByClassName(className, container);
+    
+    if (notToBeUnder === null) {
+      return elements;
+    } else {
+      return [...elements].filter((element) => {
+        let current = element.parentNode;
+        while (current != null && current != container) {
+          if (HTMLHelper.hasClass(current, notToBeUnder)) return false;
+          current = current.parentNode;
+        }
+        return true;
+      });
+    }
   },
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
