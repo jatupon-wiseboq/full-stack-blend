@@ -51,19 +51,12 @@ var ManipulationHelper = {
         content = splited.join(':');
         
         switch (klass) {
-          case 'VerticalStackLayout':
+          case 'FlowLayout':
             element = document.createElement('div');
             element = ReactDOM.render(pug `
               .col-12.internal-fsb-element
                 .container-fluid
                   .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-            `, element);
-            break;
-          case 'HorizontalStackLayout':
-            element = document.createElement('div');
-            element = ReactDOM.render(pug `
-              .col-12.internal-fsb-element
-                .internal-fsb-strict-layout.internal-fsb-allow-cursor
             `, element);
             break;
           case 'TableLayout':
@@ -101,14 +94,6 @@ var ManipulationHelper = {
                     .col.col-4.p-0
                       .container-fluid
                         .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-            `, element);
-            break;
-          case 'FlowLayout':
-            element = document.createElement('div');
-            element = ReactDOM.render(pug `
-              .col-12.internal-fsb-element
-                .container-fluid
-                  .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
             `, element);
             break;
           case 'AbsoluteLayout':

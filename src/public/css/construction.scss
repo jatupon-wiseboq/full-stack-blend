@@ -35,6 +35,15 @@ html, body {
       &:last-child {
         border: none;
       }
+      
+      > .container,
+      > .container-fluid {
+        height: 100%;
+        
+        > .row {
+          height: 100%;
+        }
+      }
     }
     
     &:last-child {
@@ -46,6 +55,8 @@ html, body {
 // Cursor
 //
 .internal-fsb-cursor {
+  min-height: 20px;
+  
   .col-1::before {
     content: '';
     display: block;
