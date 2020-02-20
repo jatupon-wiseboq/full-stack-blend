@@ -87,7 +87,7 @@ var ManipulationHelper = {
             case 'FlowLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                .col-12.internal-fsb-element
+                .internal-fsb-element
                   .container-fluid
                     .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
               `, element);
@@ -95,7 +95,7 @@ var ManipulationHelper = {
             case 'TableLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                .col-12.internal-fsb-element
+                .internal-fsb-element
                   .container-fluid.internal-fsb-table-layout
                     .row
                       .col.col-4.p-0
@@ -132,7 +132,7 @@ var ManipulationHelper = {
             case 'AbsoluteLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                .col-12.internal-fsb-element
+                .internal-fsb-element
                   .container-fluid
                     .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor
               `, element);
@@ -155,6 +155,7 @@ var ManipulationHelper = {
             //
             element.setAttribute('internal-fsb-class', content);
             if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
+              HTMLHelper.addClass(element, 'col-12');
               Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
             } else {
               element.style.left = Accessories.cursor.style.left;
