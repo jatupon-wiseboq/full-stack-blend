@@ -24,15 +24,28 @@ var EditorHelper = {
     Accessories.cursor.parentNode.removeChild(Accessories.cursor);
     
     function draggerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
-      let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-      if (size !== null) {
-        ManipulationHelper.perform('update[columnSize]', size, false);
+      let selectingElement = EditorHelper.getSelectingElement();
+      if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
+        let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
+        if (size !== null) {
+          ManipulationHelper.perform('update[columnSize]', size, false);
+        }
       }
     }
     function draggerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
-      let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-      if (size !== null) {
-        ManipulationHelper.perform('update[columnSize]', size, true);
+      let selectingElement = EditorHelper.getSelectingElement();
+      if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
+        let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
+        if (size !== null) {
+          ManipulationHelper.perform('update[columnSize]', size, true);
+        }
+      } else {
+        let position = HTMLHelper.getPosition(selectingElement);
+        let size = HTMLHelper.getSize(selectingElement);
+        ManipulationHelper.perform('update[size]', {x: position[0] + diff.dx,
+                                                    y: position[1] + diff.dy,
+                                                    w: size[0] + diff.dw,
+                                                    h: size[1] + diff.dh}, true);
       }
     }
     
@@ -134,7 +147,7 @@ var EditorHelper = {
   installCapabilityOfBeingSelected: (element: HTMLElement, guid: string) => {
     element.setAttribute('internal-fsb-guid', guid);
     element.addEventListener('click', (event) => {
-      if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
+      if (EventHelper.checkIfDenyForHandle(event)) return;
       
       let selecting = EditorHelper.getSelectingElement();
       let willSelected = EventHelper.getCurrentElement(event);
@@ -168,7 +181,7 @@ var EditorHelper = {
         
         if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
           allowCursorElement.addEventListener('click', (event) => {
-            if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
+            if (EventHelper.checkIfDenyForHandle(event)) return;
             
             let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
             if (referenceElement != null) {
@@ -192,7 +205,7 @@ var EditorHelper = {
           }, false);
         } else if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-absolute-layout')) {
           allowCursorElement.addEventListener('click', (event) => {
-            if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
+            if (EventHelper.checkIfDenyForHandle(event)) return;
             
             let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
             if (referenceElement != null) {

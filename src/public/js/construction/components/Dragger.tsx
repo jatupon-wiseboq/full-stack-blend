@@ -90,6 +90,7 @@ class Dragger extends React.Component<Props, State> {
         this.draggingArea.style.display = 'block';
         this.updateDraggingAreaPositionAndSize(this.originalRect, {x: 0, y: 0, dx: 0, dy: 0});
         
+        EventHelper.setDenyForHandle('click', true);
         return EventHelper.cancel(event);
     }
     private mouseMove(event) {
@@ -114,6 +115,8 @@ class Dragger extends React.Component<Props, State> {
         }
         
         this.uninstallEventHandlers();
+        
+        EventHelper.setDenyForHandle('click', false, 100);
     }
     
     private updateDraggingAreaPositionAndSize(originalRect: { x: number, y: number, w: number, h: number }, originalMousePos: { x: number, y: number, dx: number, dy: number }) {

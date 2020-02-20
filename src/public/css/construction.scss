@@ -124,7 +124,7 @@ html, body {
         background-color: white;
         width: #{$selected-element-resizer-size}px;
         height: #{$selected-element-resizer-size}px;
-        border: solid 1px blue;
+        border: solid 1px rgb(0, 0, 255);
       }
       
       &.t { top: 0 !important; left: 50%; cursor: n-resize; }
@@ -143,6 +143,20 @@ html, body {
   > .internal-fsb-element {
     > .internal-fsb-dragger {
       display: block;
+    }
+  }
+}
+
+.internal-fsb-absolute-layout {
+  > .internal-fsb-element {
+    > .internal-fsb-dragger {
+      display: block;
+      
+      span {
+        &::before {
+          border: solid 1px rgb(0, 255, 0);
+        }
+      }
     }
   }
 }

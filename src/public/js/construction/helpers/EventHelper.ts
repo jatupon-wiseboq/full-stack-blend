@@ -1,5 +1,6 @@
 import {HTMLHelper} from './HTMLHelper.js';
 
+let denyForHandle: any = {};
 var EventHelper = {
   cancel: (event: HTMLEvent) => {
     event.preventDefault();
@@ -21,11 +22,25 @@ var EventHelper = {
     return [event.clientX, event.clientY];
   },
   
-  checkIfDenyForEarlyHandle: (event: HTMLEvent) => {
+  checkIfDenyForHandle: (event: HTMLEvent) => {
     let originalElement = EventHelper.getOriginalElement(event);
+    
+    if (denyForHandle[event.type]) return true;
+    console.log('checkIfDenyForHandle', event.type, denyForHandle);
     
     if (EventHelper.getCurrentElement(event) == originalElement) return false;
     else return originalElement.getAttribute('internal-fsb-event-no-propagate') == '1';
+  },
+  setDenyForHandle: (name: string, value: boolean, delay: null) => {
+    console.log('setDenyForHandle', name, value);
+    
+    if (delay == null) {
+      denyForHandle[name] = value;
+    } else {
+      window.setTimeout(() => {
+        denyForHandle[name] = value;
+      }, delay);
+    }
   },
   setDenyForEarlyHandle: (element: HTMLElement) => {
     element.setAttribute('internal-fsb-event-no-propagate', '1');

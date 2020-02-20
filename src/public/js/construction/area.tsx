@@ -21,7 +21,7 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     EditorHelper.synchronize("click", null);
   }, false);
   window.document.body.addEventListener("click", (event) => {
-    if (EventHelper.checkIfDenyForEarlyHandle(event)) return;
+    if (EventHelper.checkIfDenyForHandle(event)) return;
     
     EditorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);

@@ -5,8 +5,11 @@
       let children = [...element.children];
       let maximum = 20;
       children.forEach((child) => {
-        if (child.getAttribute('id') == 'internal-fsb-cursor') return;
-        maximum = Math.max(maximum, child.offsetHeight + child.offsetTop);
+        if (child.getAttribute('id') == 'internal-fsb-cursor') {
+          maximum = Math.max(maximum, 20 + child.offsetTop);
+        } else {
+          maximum = Math.max(maximum, child.offsetHeight + child.offsetTop);
+        }
       });
       element.style.height = maximum + 'px';
     });
