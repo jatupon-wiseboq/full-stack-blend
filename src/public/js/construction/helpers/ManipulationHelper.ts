@@ -101,7 +101,7 @@ var ManipulationHelper = {
             element = ReactDOM.render(pug `
               .col-12.internal-fsb-element
                 .container-fluid
-                  .row.internal-fsb-absolute-layout
+                  .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor
             `, element);
             break;
         }
@@ -121,7 +121,14 @@ var ManipulationHelper = {
           // Insert the element before the cursor.
           //
           element.setAttribute('internal-fsb-class', content);
-          Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
+          if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
+            Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
+          } else {
+            element.style.left = Accessories.cursor.style.left;
+            element.style.top = Accessories.cursor.style.top;
+            element.style.width = '200px';
+            Accessories.cursor.parentNode.appendChild(element);
+          }
         }
         break;
       case 'keydown':
@@ -143,7 +150,9 @@ var ManipulationHelper = {
             remember = false;
             break;
           case 8:
-            if (Accessories.cursor.previousSibling && HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
+            if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative' &&
+                Accessories.cursor.previousSibling &&
+                HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
               accessory = Accessories.cursor.previousSibling;
               Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
             } else {
@@ -232,6 +241,8 @@ var ManipulationHelper = {
     if (!skipAfterPromise) {
       resolve();
     }
+    
+    EditorHelper.update();
   }
 };
 
