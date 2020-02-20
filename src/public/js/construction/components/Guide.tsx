@@ -19,18 +19,18 @@ class Guide extends React.Component<Props, State> {
               .internal-fsb-guide
                 .container-fluid
                   .row
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
-                    .col-1
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
+                    .col-1.p-0
             `
         )
     }

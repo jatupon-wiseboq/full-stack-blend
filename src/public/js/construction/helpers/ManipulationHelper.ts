@@ -70,25 +70,37 @@ var ManipulationHelper = {
             element = document.createElement('div');
             element = ReactDOM.render(pug `
               .col-12.internal-fsb-element
-                table.table
-                  thead
-                    tr
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                  tbody
-                    tr
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                    tr
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                    tr
-                      th.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                .container-fluid.internal-fsb-table-layout
+                  .row
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  .row
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  .row
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    .col.col-4.p-0
+                      .container-fluid
+                        .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
             `, element);
             break;
           case 'FlowLayout':
