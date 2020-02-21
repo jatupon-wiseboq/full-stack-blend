@@ -1,14 +1,9 @@
-@import "construction/bootstrap-grid.scss";
 @import "construction/mixins/animation";
 @import "variables";
 
 // Scaffolding
 //
 html, body {
-  padding: 0;
-  margin: 0;
-  height: 100%;
-  position: relative;
   overflow: hidden;
 }
 
@@ -16,56 +11,148 @@ html, body {
 .container-fluid,
 .internal-fsb-allow-cursor {
   min-height: 20px;
-  background-color: rgba(255, 255, 255, 0.0);
 }
 
 .internal-fsb-element {
   padding: 1px;
 }
 
-// Layout
-//
-.internal-fsb-table-layout {
-  > .row {
-    border-bottom: dashed 1px rgba(0, 0, 255, 127);
-    
-    > .col {
-      border-right: dashed 1px rgba(0, 0, 255, 127);
+.internal-fsb-guide-on {
+  // Layout
+  //
+  .internal-fsb-table-layout {
+    > .row {
+      border-bottom: dashed 1px rgba(0, 0, 255, 127);
+      
+      > .col {
+        border-right: dashed 1px rgba(0, 0, 255, 127);
+        
+        &:last-child {
+          border: none;
+        }
+        
+        > .container,
+        > .container-fluid {
+          height: 100%;
+          
+          > .row {
+            height: 100%;
+          }
+        }
+      }
       
       &:last-child {
         border: none;
       }
+    }
+  }
+  
+  .internal-fsb-strict-layout {
+    > .internal-fsb-element {
+      border: solid 1px rgba(0, 0, 255, 127);
+    }
+  }
+  
+  .internal-fsb-absolute-layout {
+    > .internal-fsb-element {
+      border: solid 1px rgba(0, 255, 0, 127);
+    }
+  }
+  
+  // Guide
+  //
+  .internal-fsb-guide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: #{$maximum-z-index - 1};
+    
+    .container,
+    .container-fluid {
+      height: 100%;
       
-      > .container,
-      > .container-fluid {
-        height: 100%;
+      .row {
+        height: 100%; 
         
-        > .row {
+        .col-1 {
+          position: relative;
           height: 100%;
+          
+          &::before,
+          &:last-child::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 1px;
+            top: 0;
+            bottom: 0;
+            left: -0.5px;
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+          
+          &:last-child::after {
+            left: inherit;
+            right: -0.5px;
+          }
         }
       }
     }
-    
-    &:last-child {
-      border: none;
+  }
+}
+
+.internal-fsb-guide-off {
+  // Layout
+  //
+  .internal-fsb-table-layout {
+    > .row {
+      border-bottom: dashed 1px rgba(0, 0, 0, 0.05);
+      
+      > .col {
+        border-right: dashed 1px rgba(0, 0, 0, 0.05);
+        
+        &:last-child {
+          border: none;
+        }
+        
+        > .container,
+        > .container-fluid {
+          height: 100%;
+          
+          > .row {
+            height: 100%;
+          }
+        }
+      }
+      
+      &:last-child {
+        border: none;
+      }
     }
   }
-}
-
-.internal-fsb-strict-layout {
-  > .internal-fsb-element {
-    position: relative;
-    border: solid 1px rgba(0, 0, 255, 127);
+  
+  .internal-fsb-strict-layout {
+    > .internal-fsb-element {
+      border: solid 1px rgba(0, 0, 0, 0);
+      border-right: dashed 1px rgba(0, 0, 0, 0.05);
+      border-bottom: dashed 1px rgba(0, 0, 0, 0.05);
+    }
+  }
+  
+  .internal-fsb-absolute-layout {
+    > .internal-fsb-element {
+      border: solid 1px rgba(0, 0, 0, 0);
+    }
+  }
+  
+  // Guide
+  //
+  .internal-fsb-guide {
+    display: none;
   }
 }
-
-.internal-fsb-absolute-layout {
-  > .internal-fsb-element {
-    position: absolute;
-    border: solid 1px rgba(0, 255, 0, 127);
-  }
-}
-
 
 // Cursor
 //
@@ -103,7 +190,6 @@ html, body {
     background-color: black;
   }
 }
-
 
 // Dragger
 //
@@ -155,49 +241,6 @@ html, body {
       span {
         &::before {
           border: solid 1px rgb(0, 255, 0);
-        }
-      }
-    }
-  }
-}
-
-// Guide
-//
-.internal-fsb-guide {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: #{$maximum-z-index - 1};
-  
-  .container,
-  .container-fluid {
-    height: 100%;
-    
-    .row {
-      height: 100%; 
-      
-      .col-1 {
-        position: relative;
-        height: 100%;
-        
-        &::before,
-        &:last-child::after {
-          content: '';
-          display: block;
-          position: absolute;
-          width: 1px;
-          top: 0;
-          bottom: 0;
-          left: -0.5px;
-          background-color: rgba(0, 0, 0, 0.05);
-        }
-        
-        &:last-child::after {
-          left: inherit;
-          right: -0.5px;
         }
       }
     }

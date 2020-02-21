@@ -112,9 +112,9 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-glide-g.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Adding Guide</b></p><p>A designer tool [todo]</p>")
-            i.fa.fa-plus
-            | Add
+          a.dropdown-item(onclick='toggle("guide", "#toggleGuide")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Toggle Lines</b></p><p>Turn on and off design lines which use to distinguish layouts, components, and bindings.</p>")
+            i.fa.fa-toggle-on(id='toggleGuide')
+            | Toggle
     .ml-auto.py-1
       .btn-group.btn-group-toggle.mr-1(data-toggle='buttons')
         label.btn.btn-secondary.btn-sm.btn-light.active(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>")

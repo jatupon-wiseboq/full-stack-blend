@@ -164,6 +164,7 @@ var ManipulationHelper = {
             element.setAttribute('internal-fsb-class', content);
             if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
               HTMLHelper.addClass(element, 'col-12');
+              HTMLHelper.addClass(element, 'col');
               Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
             } else {
               element.style.left = Accessories.cursor.style.left;
@@ -274,6 +275,22 @@ var ManipulationHelper = {
             console.log('redo', name, content, accessory);
             
             ManipulationHelper.perform(name, content, false, true);
+          }
+          
+          remember = false;
+        }
+        break;
+      case 'toggle':
+        {
+          switch (content) {
+            case 'guide':
+              if (HTMLHelper.hasClass(window.document.body, 'internal-fsb-guide-on')) {
+                HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-on');
+                HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-off');
+              } else {
+                HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-off');
+                HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-on');
+              }
           }
           
           remember = false;

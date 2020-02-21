@@ -1,0 +1,28 @@
+@import "construction/bootstrap-grid.scss";
+
+// Scaffolding
+//
+html, body {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  position: relative;
+}
+
+.internal-fsb-element {
+  padding: 0;
+}
+
+// Layout
+//
+.internal-fsb-strict-layout {
+  > .internal-fsb-element {
+    position: relative;
+  }
+}
+      
+.internal-fsb-absolute-layout {
+  > .internal-fsb-element {
+    position: absolute;
+  }
+}

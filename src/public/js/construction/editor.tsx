@@ -1,4 +1,5 @@
 var perform: Function;
+var toggle: Function;
 
 $(document).ready(function() {
   perform = (name: string, content: any) => {
@@ -8,6 +9,16 @@ $(document).ready(function() {
       name: name,
       content: content
     }), '*');
+  };
+  
+  toggle = (name: string, iconSelector: string) => {
+    let icon = $(iconSelector);
+    if (icon.hasClass('fa-toggle-on')) {
+      icon.removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    } else {
+      icon.removeClass('fa-toggle-off').addClass('fa-toggle-on');
+    }
+    perform('toggle', name);
   };
   
   var synchronize = (name: string, content: any) => {
