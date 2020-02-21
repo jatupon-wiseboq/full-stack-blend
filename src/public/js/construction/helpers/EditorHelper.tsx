@@ -40,12 +40,10 @@ var EditorHelper = {
           ManipulationHelper.perform('update[columnSize]', size, true);
         }
       } else {
-        let position = HTMLHelper.getPosition(selectingElement);
-        let size = HTMLHelper.getSize(selectingElement);
-        ManipulationHelper.perform('update[size]', {x: position[0] + diff.dx,
-                                                    y: position[1] + diff.dy,
-                                                    w: size[0] + diff.dw,
-                                                    h: size[1] + diff.dh}, true);
+        ManipulationHelper.perform('update[size]', {dx: diff.dx,
+                                                    dy: diff.dy,
+                                                    dw: diff.dw,
+                                                    dh: diff.dh}, true);
       }
     }
     

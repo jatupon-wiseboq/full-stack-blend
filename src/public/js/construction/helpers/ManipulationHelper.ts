@@ -14,9 +14,12 @@ var ManipulationHelper = {
     let promise = new Promise((_resolve) => { resolve = _resolve; });
     
     switch (name) {
-      case 'append[cursor]':
+      case 'delete':
         {
-          Accessories.cursor.parentNode.insertBefore(content, Accessories.cursor);
+          accessory = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
+          if (accessory) {
+            accessory.parentNode.removeChild(accessory);
+          }
         }
         break;
       case 'move[cursor]':
@@ -28,6 +31,31 @@ var ManipulationHelper = {
             accessory = EditorHelper.findWalkPathForCursor();
           }
           EditorHelper.placingCursorUsingWalkPath(content);
+        }
+        break;
+      case 'update[size]':
+        {
+          let selectingElement = EditorHelper.getSelectingElement();
+          if (selectingElement) {
+            let origin = HTMLHelper.getPosition(selectingElement.parentNode);
+            let position = HTMLHelper.getPosition(selectingElement);
+            let size = HTMLHelper.getSize(selectingElement);
+            
+            console.log(origin, position, position);
+            
+            accessory = {
+              dx: -content.dx,
+              dy: -content.dy,
+              dw: -content.dw,
+              dh: -content.dh
+            }
+            
+            selectingElement.style.left = (position[0] - origin[0] + content.dx) + 'px';
+            selectingElement.style.top = (position[1] - origin[1] + content.dy) + 'px';
+            selectingElement.style.width = (size[0] + content.dw) + 'px';
+          } else {
+            remember = false;
+          }
         }
         break;
       case 'update[columnSize]':
@@ -50,29 +78,6 @@ var ManipulationHelper = {
           }
         }
         break;
-      case 'update[size]':
-        {
-          let selectingElement = EditorHelper.getSelectingElement();
-          if (selectingElement) {
-            let origin = HTMLHelper.getPosition(selectingElement.parentNode);
-            let position = HTMLHelper.getPosition(selectingElement);
-            let size = HTMLHelper.getSize(selectingElement);
-            
-            accessory = {
-              x: position[0] - origin[0],
-              y: position[1] - origin[1],
-              w: size[0],
-              h: size[1]
-            }
-            
-            selectingElement.style.left = content.x + 'px';
-            selectingElement.style.top = content.y + 'px';
-            selectingElement.style.width = content.w + 'px';
-          } else {
-            remember = false;
-          }
-        }
-        break;
       case 'insert':
         {
           let element = null;
@@ -83,6 +88,8 @@ var ManipulationHelper = {
           }
           let guid = splited[1];
           content = splited.join(':');
+          
+          accessory = guid;
           
           switch (klass) {
             case 'FlowLayout':
@@ -187,11 +194,12 @@ var ManipulationHelper = {
               remember = false;
               break;
             case 8:
-              if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative' &&
-                  Accessories.cursor.previousSibling &&
-                  HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
-                accessory = Accessories.cursor.previousSibling;
-                Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
+              if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
+                if (Accessories.cursor.previousSibling &&
+                    HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
+                  accessory = Accessories.cursor.previousSibling;
+                  Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
+                }
               } else {
                 remember = false;
               }
@@ -201,13 +209,17 @@ var ManipulationHelper = {
         break;
       case 'select':
         {
+          let selectingElement = EditorHelper.getSelectingElement();
+          if (selectingElement) {
+            accessory = selectingElement.getAttribute('internal-fsb-guid');
+          }
+          
           if (content) {
             let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
             EditorHelper.select(selecting);
           } else {
             EditorHelper.deselect();
           }
-          remember = false;
         }
         break;
       case 'undo':
@@ -216,38 +228,35 @@ var ManipulationHelper = {
             let name = performed[performedIndex].name;
             let content = performed[performedIndex].content;
             let accessory = performed[performedIndex].accessory;
+            let done = false;
             
             console.log('undo', name, content, accessory);
             
             switch (name) {
               case 'move[cursor]':
-                content = accessory;
-                break;
-              case 'update[columnSize]':
-                content = accessory;
-                break;
               case 'update[size]':
+              case 'update[columnSize]':
+              case 'select':
                 content = accessory;
                 break;
               case 'insert':
-                name = 'keydown';
-                content = 8;
+                name = 'delete';
+                content = accessory;
                 break;
               case 'keydown':
                 switch (content) {
                   case 8:
-                    name = 'append[cursor]';
-                    content = accessory;
+                    Accessories.cursor.parentNode.insertBefore(accessory, Accessories.cursor);
+                    done = true;
                     break;
                 }
-                break;
-              case 'select':
-                content = accessory;
                 break;
             }
             
             performedIndex -= 1;
-            ManipulationHelper.perform(name, content, false, true);
+            if (!done) {
+              ManipulationHelper.perform(name, content, false, true);
+            }
           }
           
           remember = false;

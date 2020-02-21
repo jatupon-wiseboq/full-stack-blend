@@ -26,14 +26,11 @@ var EventHelper = {
     let originalElement = EventHelper.getOriginalElement(event);
     
     if (denyForHandle[event.type]) return true;
-    console.log('checkIfDenyForHandle', event.type, denyForHandle);
     
     if (EventHelper.getCurrentElement(event) == originalElement) return false;
     else return originalElement.getAttribute('internal-fsb-event-no-propagate') == '1';
   },
   setDenyForHandle: (name: string, value: boolean, delay: null) => {
-    console.log('setDenyForHandle', name, value);
-    
     if (delay == null) {
       denyForHandle[name] = value;
     } else {
