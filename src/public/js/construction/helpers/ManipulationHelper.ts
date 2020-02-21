@@ -54,12 +54,13 @@ var ManipulationHelper = {
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
+            let origin = HTMLHelper.getPosition(selectingElement.parentNode);
             let position = HTMLHelper.getPosition(selectingElement);
             let size = HTMLHelper.getSize(selectingElement);
             
             accessory = {
-              x: position[0],
-              y: position[1],
+              x: position[0] - origin[0],
+              y: position[1] - origin[1],
               w: size[0],
               h: size[1]
             }
