@@ -1,5 +1,7 @@
 var perform: Function;
 var toggle: Function;
+var explore: Function;
+var design: Function;
 
 $(document).ready(function() {
   perform = (name: string, content: any) => {
@@ -19,6 +21,25 @@ $(document).ready(function() {
       icon.removeClass('fa-toggle-off').addClass('fa-toggle-on');
     }
     perform('toggle', name);
+  };
+  
+  explore = (name: string, icon: string) => {
+    $('.explorer > div').removeClass('active');
+    $('#' + name).addClass('active');
+    
+    let exploreIcon = $('#exploreIcon')[0];
+    exploreIcon.className = exploreIcon.className.replace(/fa\-[a-z\-]+/g, icon);
+  };
+  
+  design = (name: string) => {
+    $('.sidebar > div').removeClass('active');
+    $('#' + name).addClass('active');
+    
+    if (name == 'animation') {
+      $('#timeline').addClass('active');
+    } else {
+      $('#timeline').removeClass('active');
+    }
   };
   
   var synchronize = (name: string, content: any) => {

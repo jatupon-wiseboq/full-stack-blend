@@ -42,32 +42,48 @@ footer {
   width: 100%;
   padding: 0px;
   
-  > .workspace-horizontal-container {
-    display: table-row;
-    width: 100%;
-    
-    > .workspace-horizontal-panel {
-      display: table-cell;
-      position: relative;
-    }
-  }
-  
-  .workspace-horizontal-container.full-size {
-    height: 100%;
-  }
-  
   > .workspace-vertical-container {
     display: table-row;
-    height: 100%;
     width: 100%;
     
     > .workspace-vertical-panel {
       display: table-cell;
+      position: relative;
+    }
+  }
+  
+  .workspace-vertical-container.full-size {
+    height: 100%;
+  }
+  
+  > .workspace-horizontal-container {
+    display: table-row;
+    height: 100%;
+    width: 100%;
+    
+    > .workspace-horizontal-panel {
+      display: table-cell;
+      vertical-align: top;
     }
     
-    > .workspace-vertical-panel.full-size {
+    > .workspace-horizontal-panel.full-size {
       width: 100%;
       position: relative;
+    }
+  }
+}
+
+.workspace-tab-container {
+  > .btn-group {
+    border-bottom: solid 1px rgb(215,215,215);
+    
+    > .btn {
+      border-right: solid 1px rgb(215,215,215) !important;
+      margin-left: 0;
+      
+      &:last-child {
+        border-right: none;
+      }
     }
   }
 }
@@ -177,18 +193,50 @@ textarea {
 // -------------------------
 .explorer {
   background: rgb(246,246,246);
-  width: 225px;
+  width: 250px;
   height: 100%;
   border-right: solid 1px rgb(200,200,200);
+  
+  > div {
+    display: none;
+    
+    &.active {
+      display: block;
+    }
+  }
 }
 
 // Sidebar
 // -------------------------
 .sidebar {
   background: rgb(246,246,246);
-  width: 225px;
+  width: 250px;
   height: 100%;
   border-left: solid 1px rgb(200,200,200);
+  
+  > div {
+    display: none;
+    
+    &.active {
+      display: block;
+    }
+  }
+}
+
+// Timeline
+// -------------------------
+.timeline {
+  background: rgb(246,246,246);
+  height: 200px;
+  border-top: solid 1px rgb(200,200,200);
+}
+
+#timeline {
+  display: none;
+  
+  &.active {
+    display: table-row;
+  }
 }
 
 // Workspace
@@ -215,14 +263,6 @@ textarea {
   height: 0;
   background-color: rgba(30, 144, 255, 0.25);
   border: 1px dashed rgba(30, 144, 255, 1.0);
-}
-
-// Animation
-// -------------------------
-.animation {
-  background: rgb(246,246,246);
-  height: 200px;
-  border-top: solid 1px rgb(200,200,200);
 }
 
 // Alerts

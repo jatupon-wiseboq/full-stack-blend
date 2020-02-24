@@ -1,0 +1,15 @@
+.workspace-vertical-container
+  .workspace-vertical-panel
+    .workspace-tab-container
+      .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+          input(type='radio', name='options', checked=true)
+          | Arrange
+        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100(data-toggle="tooltip", data-placement="bottom", data-html="true")
+          input(type='radio', name='options', checked=false)
+          | Drawing
+        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100(data-toggle="tooltip", data-placement="bottom", data-html="true")
+          input(type='radio', name='options', checked=false)
+          | Effects
+  .workspace-vertical-container.full-size
+    | A 

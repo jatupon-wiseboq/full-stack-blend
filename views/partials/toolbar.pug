@@ -3,68 +3,66 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
     .mr-auto.py-1
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-          i.fa.fa-sitemap.m-0
+          i.fa.fa-sitemap.m-0(id='exploreIcon')
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Explore Sitemap</b></p><p>This will show all pages on front-end which web cilents can see.</p>")
+          a.dropdown-item(onclick="explore('site', 'fa-sitemap')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Explore Sitemap</b></p><p>This will show all pages on front-end which web cilents can see.</p>")
             i.fa.fa-sitemap
             | Site
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>")
+          a.dropdown-item(onclick="explore('data', 'fa-database')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>")
             i.fa.fa-database
             | Data
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>")
+          a.dropdown-item(onclick="explore('services', 'fa-cogs')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>")
             i.fa.fa-cogs
             | Services
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
+          a.dropdown-item(onclick="explore('components', 'fa-puzzle-piece')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
             i.fa.fa-puzzle-piece
             | Components
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
-            .span(style='width: 18px; height: 18px; margin-right: 6px; display: inline-block; position: relative;')
-              i.fa.fa-desktop
-              i.fa.fa-square(style='position: absolute; font-size: 8px; left: 5px; top: 5.5px;')
-              | Popups
+          a.dropdown-item(onclick="explore('popups', 'fa-list-alt')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
+            i.fa.fa-list-alt
+            | Popups
       .btn-group.btn-group-toggle(data-toggle='buttons')
-        label.btn.btn-secondary.btn-sm.btn-light.active(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Desktop Layout</b></p><p>Design the placement and sizing of the desktop layout which is independent from the mobile layout.</p>")
+        label.btn.btn-secondary.btn-sm.btn-light.active(data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Desktop Layout</b></p><p>Design the placement and sizing of the desktop layout which is independent from the mobile layout.</p>")
           input(type='radio', name='options', checked=true)
           i.fa.fa-desktop.m-0
-        label.btn.btn-secondary.btn-sm.btn-light(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Mobile Layout</b></p><p>Design the placement and sizing the mobile layout but won't be able to delete any elements from the page.</p>")
+        label.btn.btn-secondary.btn-sm.btn-light(data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Mobile Layout</b></p><p>Design the placement and sizing the mobile layout but won't be able to delete any elements from the page.</p>")
           input(type='radio', name='options', checked=false)
           i.fa.fa-mobile.m-0(style='font-size: 18px;')
     .mx-auto.py-1
-      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', onclick='perform("undo", null)', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Reverse Editing</b></p><p>This will reverse your changes of cursor position, element inserting, deleting, and modification.</p>")
+      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', onclick='perform("undo", null)', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Reverse Editing</b></p><p>This will reverse your changes of cursor position, element inserting, deleting, and modification.</p>")
         i.fa.fa-undo.m-0
-      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', onclick='perform("redo", null)', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Do It Again</b></p><p>This will reverse your changes of undoing.</p>")
+      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', onclick='perform("redo", null)', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Do It Again</b></p><p>This will reverse your changes of undoing.</p>")
         i.fa.fa-repeat.m-0
-      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
+      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
         i.fa.fa-save.m-0
-      a.btn.btn-sm.btn-light(href='#', role='button', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
+      a.btn.btn-sm.btn-light(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
         i.fa.fa-cloud-upload.m-0
     .mx-auto.py-1
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-reorder.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "FlowLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Flow Layout</b></p><p>This will let you placing items from left to right and auto-creating new lines where are overflow.</p>")
+          a.dropdown-item(onclick='perform("insert", "FlowLayout")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Flow Layout</b></p><p>This will let you placing items from left to right and auto-creating new lines where are overflow.</p>")
             i.fa.fa-th
             | Flow
-          a.dropdown-item(onclick='perform("insert", "TableLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Table Layout</b></p><p>This will let you placing items in a fixed-size table.</p>")
+          a.dropdown-item(onclick='perform("insert", "TableLayout")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Table Layout</b></p><p>This will let you placing items in a fixed-size table.</p>")
             i.fa.fa-table
             | Table
-          a.dropdown-item(onclick='perform("insert", "AbsoluteLayout")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Freestyle Area</b></p><p>This will create an auto-height area for placing any elements in absolute, or independent, position.</p>")
+          a.dropdown-item(onclick='perform("insert", "AbsoluteLayout")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Freestyle Area</b></p><p>This will create an auto-height area for placing any elements in absolute, or independent, position.</p>")
             i.fa.fa-object-ungroup
             | Absolute
-      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Insert A Rich Textarea</b></p><p>Create a rich textarea in which you can type any text, insert inline multimedia, hyperlinks, and others.</p>")
+      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Insert A Rich Textarea</b></p><p>Create a rich textarea in which you can type any text, insert inline multimedia, hyperlinks, and others.</p>")
         i.fa.fa-paragraph.m-0
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-square.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Rectangle Shape</b></p><p>Create a rectangle whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it, too.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Rectangle Shape</b></p><p>Create a rectangle whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it, too.</p>")
             i.fa.fa-square-o
             | Rectangle
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert An HTML Element</b></p><p>You can use this HTML element to insert any website interface, their JavaScript codes and custom CSS styles.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An HTML Element</b></p><p>You can use this HTML element to insert any website interface, their JavaScript codes and custom CSS styles.</p>")
             i.fa.fa-html5
             | HTML
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A 2D-3D Canvas</b></p><p>You can use this WebGL canvas to draw anything from 2D to 3D, with ease of importing models, textures, and shader parameters.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A 2D-3D Canvas</b></p><p>You can use this WebGL canvas to draw anything from 2D to 3D, with ease of importing models, textures, and shader parameters.</p>")
             span(style="position: relative;")
             i.fa.fa-terminal
             | WebGL
@@ -72,39 +70,39 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-edit.font-weight-bold.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Textbox</b></p><p>You can configure this to be a single-line textbox or a multi-line one, called \"textarea\". This also has data validation option on client-side and server-side.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Textbox</b></p><p>You can configure this to be a single-line textbox or a multi-line one, called \"textarea\". This also has data validation option on client-side and server-side.</p>")
             i.fa.fa-i-cursor
             | Textbox
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Select</b></p><p>You can configure this to be a drop-down list or a multi-line list, whose items can be selected more than one at a time. This also has data validation option on client-side and server-side.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Select</b></p><p>You can configure this to be a drop-down list or a multi-line list, whose items can be selected more than one at a time. This also has data validation option on client-side and server-side.</p>")
             i.fa.fa-caret-square-o-down
             | Select
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Radio</b></p><p>Insert an input that allows the user to choose only one of a predefined set of mutually exclusive options.")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Radio</b></p><p>Insert an input that allows the user to choose only one of a predefined set of mutually exclusive options.")
             i.fa.fa-circle-o
             | Radio
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Checkbox</b></p><p>Insert an input that permits the user to make a binary choice, i.e. a choice between one of two possible mutually exclusive options.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Checkbox</b></p><p>Insert an input that permits the user to make a binary choice, i.e. a choice between one of two possible mutually exclusive options.</p>")
             i.fa.fa-check-square-o
             | Checkbox
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A File Input</b></p><p>Insert a control which is a component of a web form with which a user can select a local file.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A File Input</b></p><p>Insert a control which is a component of a web form with which a user can select a local file.</p>")
             i.fa.fa-folder-o
             | File
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Button</b></p><p>This button can be either a general one that execute a script, or a submit button which will perform data validation, uploading, saving, or even signing up and signing in.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Button</b></p><p>This button can be either a general one that execute a script, or a submit button which will perform data validation, uploading, saving, or even signing up and signing in.</p>")
             i.fa.fa-magic
             | Button
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-image.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert An Image</b></p><p>Upload or choose an existing image, with full control of image size optimization for fastest site loading.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An Image</b></p><p>Upload or choose an existing image, with full control of image size optimization for fastest site loading.</p>")
             i.fa.fa-image
             | Image
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
             i.fa.fa-file-movie-o
             | Movie
       .dropdown(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-puzzle-piece.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Create A Component</b></p><p>Create a reusable component for placing throughout the site.</p>")
+          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Component</b></p><p>Create a reusable component for placing throughout the site.</p>")
             i.fa.fa-plus
             | Create
     .mx-auto.py-1
@@ -112,19 +110,19 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-glide-g.m-0
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='toggle("guide", "#toggleGuide")', data-toggle="tooltip" data-placement="right" data-html="true" title="<p><b>Toggle Lines</b></p><p>Turn on and off design lines which use to distinguish layouts, components, and bindings.</p>")
+          a.dropdown-item(onclick='toggle("guide", "#toggleGuide")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Toggle Lines</b></p><p>Turn on and off design lines which use to distinguish layouts, components, and bindings.</p>")
             i.fa.fa-toggle-on(id='toggleGuide')
             | Toggle
     .ml-auto.py-1
       .btn-group.btn-group-toggle.mr-1(data-toggle='buttons')
-        label.btn.btn-secondary.btn-sm.btn-light.active(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>")
+        label.btn.btn-secondary.btn-sm.btn-light.active(onclick="design('design')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>")
           input(type='radio', name='options', checked=true)
           i.fa.fa-paint-brush.m-0
-        label.btn.btn-secondary.btn-sm.btn-light(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Element Animation</b></p><p>This will allow you to design the animation of the selected element.</p>")
+        label.btn.btn-secondary.btn-sm.btn-light(onclick="design('animation')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Animation</b></p><p>This will allow you to design the animation of the selected element.</p>")
           input(type='radio', name='options', checked=false)
           i.fa.fa-bolt.m-0
-        label.btn.btn-secondary.btn-sm.btn-light(data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Switch to Element Coding</b></p><p>This will allow you to add a specific coding of the selected element at front-end and back-end using JavaScript language.</p>")
+        label.btn.btn-secondary.btn-sm.btn-light(onclick="design('coding')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Coding</b></p><p>This will allow you to add a specific coding of the selected element at front-end and back-end using JavaScript language.</p>")
           input(type='radio', name='options', checked=false)
           i.fa.fa-code.font-weight-bold.m-0
-      a.btn.btn-sm.btn-light(href='#', role='button', data-toggle="tooltip" data-placement="bottom" data-html="true" title="<p><b>Play</b></p><p>Preview your pages and their animations right from the workspace area without leaving the editor.</p>")
+      a.btn.btn-sm.btn-light(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Play</b></p><p>Preview your pages and their animations right from the workspace area without leaving the editor.</p>")
         i.fa.fa-play.m-0

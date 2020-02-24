@@ -15,24 +15,24 @@ html(lang='')
     include partials/header
     if user
       .workspace-container
-        .workspace-horizontal-container
-          .workspace-horizontal-panel
+        .workspace-vertical-container
+          .workspace-vertical-panel
             include partials/toolbar
-        .workspace-horizontal-container.full-size
-          .workspace-horizontal-panel
+        .workspace-vertical-container.full-size
+          .workspace-vertical-panel
             .workspace-container
-              .workspace-vertical-container
-                .workspace-vertical-panel
+              .workspace-horizontal-container
+                .workspace-horizontal-panel
                   include partials/explorer
-                .workspace-vertical-panel.full-size
+                .workspace-horizontal-panel.full-size
                   .workspace-container
-                    .workspace-horizontal-container.full-size
-                      .workspace-horizontal-panel.full-size
+                    .workspace-vertical-container.full-size
+                      .workspace-vertical-panel.full-size
                         include partials/construction
-                    .workspace-horizontal-container
-                      .workspace-horizontal-panel
-                        include partials/animation
-                .workspace-vertical-panel
+                    .workspace-vertical-container(id='timeline')
+                      .workspace-vertical-panel
+                        include partials/timeline
+                .workspace-horizontal-panel
                   include partials/sidebar
     else
       include partials/flash
