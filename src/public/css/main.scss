@@ -49,11 +49,22 @@ footer {
     > .workspace-vertical-panel {
       display: table-cell;
       position: relative;
+      background: rgb(246,246,246);
     }
   }
   
   .workspace-vertical-container.full-size {
     height: 100%;
+    border-top: solid 1px rgb(200,200,200);
+    border-bottom: solid 1px rgb(200,200,200);
+    
+    > .workspace-vertical-panel {
+      background-color: white;
+    }
+    
+    &:first-child {
+      border-top: none;
+    }
   }
   
   > .workspace-horizontal-container {
@@ -64,11 +75,15 @@ footer {
     > .workspace-horizontal-panel {
       display: table-cell;
       vertical-align: top;
+      background: rgb(246,246,246);
     }
     
     > .workspace-horizontal-panel.full-size {
       width: 100%;
       position: relative;
+      border-left: solid 1px rgb(200,200,200);
+      border-right: solid 1px rgb(200,200,200);
+      background-color: white;
     }
   }
 }
@@ -144,6 +159,16 @@ textarea {
   
   .btn {
     border-radius: 5px;
+    margin-bottom: 17px;
+    position: relative;
+    
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -22px;
+      font-size: 0.85em;
+    }
   }
   
   i.fa {
@@ -152,7 +177,7 @@ textarea {
   }
   
   .dropdown-menu {
-    top: 28px;
+    top: 20px;
     
     .dropdown-item {
       cursor: pointer;
@@ -192,10 +217,8 @@ textarea {
 // Explorer
 // -------------------------
 .explorer {
-  background: rgb(246,246,246);
   width: 250px;
   height: 100%;
-  border-right: solid 1px rgb(200,200,200);
   
   > div {
     display: none;
@@ -209,10 +232,8 @@ textarea {
 // Sidebar
 // -------------------------
 .sidebar {
-  background: rgb(246,246,246);
   width: 250px;
   height: 100%;
-  border-left: solid 1px rgb(200,200,200);
   
   > div {
     display: none;
@@ -226,9 +247,7 @@ textarea {
 // Timeline
 // -------------------------
 .timeline {
-  background: rgb(246,246,246);
   height: 200px;
-  border-top: solid 1px rgb(200,200,200);
 }
 
 #timeline {
