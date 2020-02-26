@@ -1,11 +1,11 @@
-import {HTMLHelper} from './HTMLHelper.js';
-import {EventHelper} from './EventHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {EventHelper} from '../../helpers/EventHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import '../components/Cursor.js';
-import '../components/Dragger.js';
-import '../components/Guide.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import '../controls/Cursor.js';
+import '../controls/Dragger.js';
+import '../controls/Guide.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -19,7 +19,7 @@ let Accessories = {
 var EditorHelper = {
   setup: () => {
     Accessories.cursor = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Components.Cursor />, Accessories.cursor);
+    ReactDOM.render(<FullStackBlend.Controls.Cursor />, Accessories.cursor);
     Accessories.cursor = Accessories.cursor.firstChild;
     Accessories.cursor.parentNode.removeChild(Accessories.cursor);
     
@@ -48,12 +48,12 @@ var EditorHelper = {
     }
     
     Accessories.dragger = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Components.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, Accessories.dragger);
+    ReactDOM.render(<FullStackBlend.Controls.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, Accessories.dragger);
     Accessories.dragger = Accessories.dragger.firstChild;
     Accessories.dragger.parentNode.removeChild(Accessories.dragger);
     
     Accessories.guide = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Components.Guide />, Accessories.guide);
+    ReactDOM.render(<FullStackBlend.Controls.Guide />, Accessories.guide);
     Accessories.guide = Accessories.guide.firstChild;
     Accessories.guide.parentNode.removeChild(Accessories.guide);
     

@@ -1,7 +1,7 @@
-import {EventHelper} from '../helpers/EventHelper.js';
+import {EventHelper} from '../../helpers/EventHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {EditorHelper} from '../helpers/EditorHelper.js';
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -177,4 +177,4 @@ class Dragger extends React.Component<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.Dragger', Dragger);
+DeclarationHelper.declare('Controls.Dragger', Dragger);

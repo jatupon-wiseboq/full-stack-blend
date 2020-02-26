@@ -1,4 +1,4 @@
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -23,4 +23,4 @@ class Cursor extends React.Component<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.Cursor', Cursor);
+DeclarationHelper.declare('Controls.Cursor', Cursor);

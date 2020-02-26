@@ -1,5 +1,5 @@
 import {EditorHelper} from './EditorHelper.js';
-import {HTMLHelper} from './HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 
 var LayoutHelper = {
   calculateColumnSize: function(width: number) {

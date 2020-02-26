@@ -1,4 +1,4 @@
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -36,4 +36,4 @@ class Guide extends React.Component<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.Guide', Guide);
+DeclarationHelper.declare('Controls.Guide', Guide);

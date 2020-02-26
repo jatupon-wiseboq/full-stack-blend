@@ -1,8 +1,8 @@
-import {HTMLHelper} from './HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {RandomHelper} from '../../helpers/RandomHelper.js';
+import {EventHelper} from '../../helpers/EventHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
-import {RandomHelper} from './RandomHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
-import {EventHelper} from './EventHelper.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -169,7 +169,7 @@ var ManipulationHelper = {
             } else {
               HTMLHelper.updateInlineStyle(selectingElement, 'left', Accessories.cursor.style.left);
               HTMLHelper.updateInlineStyle(selectingElement, 'top', Accessories.cursor.style.top);
-              HTMLHelper.updateInlineStyle(selectingElement, 'width', '150px';
+              HTMLHelper.updateInlineStyle(selectingElement, 'width', '150px');
               Accessories.cursor.parentNode.appendChild(element);
             }
           }

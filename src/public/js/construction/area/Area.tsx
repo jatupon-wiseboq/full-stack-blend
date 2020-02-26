@@ -1,6 +1,6 @@
-import {HTMLHelper} from './helpers/HTMLHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper.js';
+import {EventHelper} from '../helpers/EventHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
-import {EventHelper} from './helpers/EventHelper.js';
 import {ManipulationHelper} from './helpers/ManipulationHelper.js';
 
 (() => {
