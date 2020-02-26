@@ -55,15 +55,15 @@ footer {
   
   .workspace-vertical-container.full-size {
     height: 100%;
-    border-top: solid 1px rgb(200,200,200);
-    border-bottom: solid 1px rgb(200,200,200);
     
     > .workspace-vertical-panel {
       background-color: white;
-    }
+      border-top: solid 1px rgb(200,200,200);
+      border-bottom: solid 1px rgb(200,200,200);
     
-    &:first-child {
-      border-top: none;
+      &:first-child {
+        border-top: none;
+      }
     }
   }
   
@@ -89,16 +89,30 @@ footer {
 }
 
 .workspace-tab-container {
+  border-bottom: solid 1px rgb(215,215,215) !important;
+  
   > .btn-group {
-    border-bottom: solid 1px rgb(215,215,215);
-    
     > .btn {
       border-right: solid 1px rgb(215,215,215) !important;
       margin-left: 0;
+      font-size: 0.8em;
       
       &:last-child {
         border-right: none;
       }
+    }
+  }
+}
+
+.workspace-panel-container {
+  width: 100%;
+  height: 100%;
+  
+  > .panel {
+    display: none;
+    
+    &.active {
+      display: block;
     }
   }
 }
@@ -218,30 +232,12 @@ textarea {
 // -------------------------
 .explorer {
   width: 250px;
-  height: 100%;
-  
-  > div {
-    display: none;
-    
-    &.active {
-      display: block;
-    }
-  }
 }
 
 // Sidebar
 // -------------------------
 .sidebar {
   width: 250px;
-  height: 100%;
-  
-  > div {
-    display: none;
-    
-    &.active {
-      display: block;
-    }
-  }
 }
 
 // Timeline

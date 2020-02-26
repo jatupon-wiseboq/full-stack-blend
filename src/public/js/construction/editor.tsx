@@ -1,7 +1,8 @@
 var perform: Function;
 var toggle: Function;
-var explore: Function;
-var design: Function;
+var swap: Function;
+
+let recentExtraPanelSelector: string = null;
 
 $(document).ready(function() {
   perform = (name: string, content: any) => {
@@ -23,23 +24,28 @@ $(document).ready(function() {
     perform('toggle', name);
   };
   
-  explore = (name: string, icon: string) => {
-    $('.explorer > div').removeClass('active');
-    $('#' + name).addClass('active');
+  swap = (panelSelector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
+    let panel = $(panelSelector);
     
-    let exploreIcon = $('#exploreIcon')[0];
-    exploreIcon.className = exploreIcon.className.replace(/fa\-[a-z\-]+/g, icon);
-  };
-  
-  design = (name: string) => {
-    $('.sidebar > div').removeClass('active');
-    $('#' + name).addClass('active');
+    panel.parent().find('> .panel').removeClass('active');
+    panel.addClass('active');
     
-    if (name == 'animation') {
-      $('#timeline').addClass('active');
-    } else {
-      $('#timeline').removeClass('active');
+    if (replacingIconSelector != null) {
+      let replacingIconElement = $(replacingIconSelector)[0];
+      replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
     }
+    
+    if (recentExtraPanelSelector != null) {
+      let recentExtraPanel = $(recentExtraPanelSelector);
+      recentExtraPanel.removeClass('active');
+    }
+    
+    if (extraPanelSelector != null) {
+      let extraPanel = $(extraPanelSelector);
+      extraPanel.addClass('active');
+    }
+    
+    recentExtraPanelSelector = extraPanelSelector;
   };
   
   var synchronize = (name: string, content: any) => {
