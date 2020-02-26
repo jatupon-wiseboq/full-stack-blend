@@ -63,12 +63,20 @@ var HTMLHelper = {
     return results;
   },
   
-  hasClass: (element: HTMLElement, name: string) => {
-    let splited = (element.className || '').split(' ');
+  hasClass: (element: any, name: string) => {
+    let classAttributeValue: string = element;
+    if (typeof element === 'object') {
+      classAttributeValue = (element.className || '');
+    }
+    let splited = classAttributeValue.split(' ');
     return splited.indexOf(name) != -1;
   },
   removeClass: (element: HTMLElement, name: string) => {
-    let splited = (element.className || '').split(' ');
+    let classAttributeValue: string = element;
+    if (typeof element === 'object') {
+      classAttributeValue = (element.className || '');
+    }
+    let splited = classAttributeValue.split(' ');
     let index = splited.indexOf(name);
     if (index != -1) {
       splited.splice(index, 1);
@@ -76,7 +84,11 @@ var HTMLHelper = {
     element.className = HTMLHelper.cleanArray(splited).join(' ');
   },
   addClass: (element: HTMLElement, name: string) => {
-    let splited = (element.className || '').split(' ');
+    let classAttributeValue: string = element;
+    if (typeof element === 'object') {
+      classAttributeValue = (element.className || '');
+    }
+    let splited = classAttributeValue.split(' ');
     if (splited.indexOf(name) == -1) {
       splited.push(name);
     }
@@ -109,6 +121,23 @@ var HTMLHelper = {
     }
     
     object.setAttribute('style', splited.join(';'));
+  },
+  getInlineStyle: (object: HTMLElement, styleName: string) => {
+    let styleAttributeValue = (object.getAttribute('style') || '');
+    return HTMLHelper.getInlineStyle(styleAttributeValue, styleName);
+  },
+  getInlineStyle: (styleAttributeValue: string, styleName: string) => {
+    if (styleAttributeValue.indexOf(stylename + ':') == -1) return null;
+    
+    let splited = styleAttributeValue.split(';');
+    
+    for (var i=0; i<splited.length; i++) {
+      if (splited[i].indexOf(styleName + ':') != -1) {
+        return splited[i].split(':').splice(-1);
+      }
+    }
+    
+    return null;
   },
   
   getPosition: (object: HTMLElement) => {

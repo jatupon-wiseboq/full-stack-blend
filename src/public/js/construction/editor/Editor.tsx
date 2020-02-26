@@ -1,11 +1,10 @@
-var perform: Function;
-var toggle: Function;
-var swap: Function;
+import {FullStackBlend} from '../../helpers/DeclarationHelper.js';
+import './controls/GridPicker.js';
 
 let recentExtraPanelSelector: string = null;
 
-$(document).ready(function() {
-  perform = (name: string, content: any) => {
+(function() {
+  window.perform = (name: string, content: any) => {
     let element = document.getElementById('construction') as HTMLFrameElement;
     let contentWindow = element.contentWindow;
     contentWindow.postMessage(JSON.stringify({
@@ -14,7 +13,7 @@ $(document).ready(function() {
     }), '*');
   };
   
-  toggle = (name: string, iconSelector: string) => {
+  window.toggle = (name: string, iconSelector: string) => {
     let icon = $(iconSelector);
     if (icon.hasClass('fa-toggle-on')) {
       icon.removeClass('fa-toggle-on').addClass('fa-toggle-off');
@@ -24,7 +23,7 @@ $(document).ready(function() {
     perform('toggle', name);
   };
   
-  swap = (panelSelector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
+  window.swap = (panelSelector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
     let panel = $(panelSelector);
     
     panel.parent().find('> .panel').removeClass('active');
@@ -48,6 +47,8 @@ $(document).ready(function() {
     recentExtraPanelSelector = extraPanelSelector;
   };
   
+  window.FullStackBlend = FullStackBlend;
+  
   var synchronize = (name: string, content: any) => {
     switch (name) {
       case 'select':
@@ -66,4 +67,4 @@ $(document).ready(function() {
     let data = JSON.parse(event.data);
     synchronize(data.name, data.content);
   });
-});
+})();
