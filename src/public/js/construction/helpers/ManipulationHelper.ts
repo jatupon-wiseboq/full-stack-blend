@@ -50,9 +50,9 @@ var ManipulationHelper = {
               dh: -content.dh
             }
             
-            selectingElement.style.left = (position[0] - origin[0] + content.dx) + 'px';
-            selectingElement.style.top = (position[1] - origin[1] + content.dy) + 'px';
-            selectingElement.style.width = (size[0] + content.dw) + 'px';
+            HTMLHelper.updateInlineStyle(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
+            HTMLHelper.updateInlineStyle(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
+            HTMLHelper.updateInlineStyle(selectingElement, 'width', (size[0] + content.dw) + 'px');
           } else {
             remember = false;
           }
@@ -167,9 +167,9 @@ var ManipulationHelper = {
               HTMLHelper.addClass(element, 'col');
               Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
             } else {
-              element.style.left = Accessories.cursor.style.left;
-              element.style.top = Accessories.cursor.style.top;
-              element.style.width = '200px';
+              HTMLHelper.updateInlineStyle(selectingElement, 'left', Accessories.cursor.style.left);
+              HTMLHelper.updateInlineStyle(selectingElement, 'top', Accessories.cursor.style.top);
+              HTMLHelper.updateInlineStyle(selectingElement, 'width', '150px';
               Accessories.cursor.parentNode.appendChild(element);
             }
           }

@@ -92,6 +92,25 @@ var HTMLHelper = {
     return results;
   },
   
+  updateInlineStyle: (object: HTMLElement, styleName: string, styleValue: string) => {
+    let splited = (object.getAttribute('style') || '').split(';');
+    let found = false;
+    
+    for (var i=0; i<splited.length; i++) {
+      if (splited[i].indexOf(styleName + ':') != -1) {
+        found = true;
+        splited[i] = styleName + ': ' + styleValue;
+        break;
+      }
+    }
+    
+    if (!found) {
+      splited.push(styleName + ': ' + styleValue);
+    }
+    
+    object.setAttribute('style', splited.join(';'));
+  },
+  
   getPosition: (object: HTMLElement) => {
     var curleft = 0;
     var curtop = 0;
