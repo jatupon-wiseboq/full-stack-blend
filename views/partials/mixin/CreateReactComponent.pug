@@ -1,8 +1,5 @@
-mixin CreateReactComponent(path)
+mixin CreateReactComponent(path, props)
   script.
-    var randomID = Math.floor(Math.random() * 0xFFFFFFFF).toString(0xF)
+    var randomID = Math.floor(Math.random() * 0xFFFFFFFF).toString(0xF);
     document.write('<div id="' + randomID + '"></div>');
-    ReactDOM.render(
-      React.createElement(#{path}, {}, null),
-      document.getElementById(randomID)
-    );
+    window.controls.push(ReactDOM.render(React.createElement(#{path}, #{props || '{}'}, null), document.getElementById(randomID)));

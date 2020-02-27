@@ -13,6 +13,19 @@ class Cursor extends React.Component<Props, State> {
     static defaultProps: Props = {
     }
     
+    private domElement: HTMLElement = null;
+    
+    constructor() {
+        super();
+    }
+    
+    public getDOMNode() {
+        return this.domElement;
+    }
+    public setDOMNode(element: HTMLElement) {
+        this.domElement = element;
+    }
+    
     render() {
         return (
             pug `
@@ -24,3 +37,5 @@ class Cursor extends React.Component<Props, State> {
 }
 
 DeclarationHelper.declare('Controls.Cursor', Cursor);
+
+export {Props, State, Cursor};

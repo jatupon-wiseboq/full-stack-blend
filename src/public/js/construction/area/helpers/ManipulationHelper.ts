@@ -1,11 +1,14 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {RandomHelper} from '../../helpers/RandomHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {RESPONSIVE_SIZE_REGEX} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
+let previousClassName: string = null;
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) => {
@@ -24,13 +27,32 @@ var ManipulationHelper = {
         break;
       case 'move[cursor]':
         {
-          if (Accessories.cursor.parentNode != null && EditorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
+          if (Accessories.cursor.getDOMNode().parentNode != null && EditorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
             remember = false;
           }
           if (remember) {
             accessory = EditorHelper.findWalkPathForCursor();
           }
           EditorHelper.placingCursorUsingWalkPath(content);
+        }
+        break;
+      case 'update':
+        {
+          let selectingElement = EditorHelper.getSelectingElement();
+          if (selectingElement) {
+            accessory = {
+              elementClassName: selectingElement.getAttribute('class'),
+              elementStyle: selectingElement.getAttribute('style')
+            }
+            if (content.elementClassName !== undefined) {
+              selectingElement.setAttribute('class', content.elementClassName);
+            }
+            if (content.elementStyle !== undefined) {
+              selectingElement.setAttribute('style', content.elementStyle);
+            }
+          } else {
+            remember = false;
+          }
         }
         break;
       case 'update[size]':
@@ -40,8 +62,6 @@ var ManipulationHelper = {
             let origin = HTMLHelper.getPosition(selectingElement.parentNode);
             let position = HTMLHelper.getPosition(selectingElement);
             let size = HTMLHelper.getSize(selectingElement);
-            
-            console.log(origin, position, position);
             
             accessory = {
               dx: -content.dx,
@@ -62,20 +82,42 @@ var ManipulationHelper = {
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
-            accessory = parseInt(selectingElement.className.match(/col\-([1-9]+)/)[1] || 12);
-            
-            if (!remember && selectingElement.getAttribute('internal-fsb-preview-accessory') === null) {
-              selectingElement.setAttribute('internal-fsb-preview-accessory', accessory);
-            }
-            if (remember && selectingElement.getAttribute('internal-fsb-preview-accessory') !== null) {
-              accessory = selectingElement.getAttribute('internal-fsb-preview-accessory');
+            if (!remember) {
+              if (previousClassName == null) {
+                previousClassName = selectingElement.getAttribute('class');
+              }
             }
             
-            selectingElement.className = selectingElement.className.replace(/col\-[1-9]+/gi, '');
-            HTMLHelper.addClass(selectingElement, ' col-' + content);
-          } else {
-            remember = false;
+            let elementClassName = selectingElement.getAttribute('class');
+            
+            let currentActiveLayout = Accessories.layoutInfo.currentActiveLayout();
+            for (currentActiveLayout; currentActiveLayout >= 0; currentActiveLayout--) {
+              if (elementClassName.match(RESPONSIVE_SIZE_REGEX[currentActiveLayout])) break;
+            }
+            
+            let currentPrefix = [' col-', ' col-sm-', ' col-md-', ' col-lg-'][currentActiveLayout];
+            
+            elementClassName = elementClassName.replace(RESPONSIVE_SIZE_REGEX[currentActiveLayout], '');
+            elementClassName += currentPrefix + content;
+            elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
+            
+            if (!remember) {
+              selectingElement.setAttribute('class', elementClassName);
+            }
+            
+            if (remember) {
+              promise.then(() => {
+                if (previousClassName != null) {
+                  selectingElement.setAttribute('class', previousClassName);
+                  previousClassName = null;
+                }
+                ManipulationHelper.perform('update', {
+                  elementClassName: elementClassName
+                });
+              });
+            }
           }
+          remember = false;
         }
         break;
       case 'insert':
@@ -162,15 +204,15 @@ var ManipulationHelper = {
             // Insert the element before the cursor.
             //
             element.setAttribute('internal-fsb-class', content);
-            if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
+            if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
               HTMLHelper.addClass(element, 'col-12');
               HTMLHelper.addClass(element, 'col');
-              Accessories.cursor.parentNode.insertBefore(element, Accessories.cursor);
+              Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
             } else {
-              HTMLHelper.updateInlineStyle(selectingElement, 'left', Accessories.cursor.style.left);
-              HTMLHelper.updateInlineStyle(selectingElement, 'top', Accessories.cursor.style.top);
+              HTMLHelper.updateInlineStyle(selectingElement, 'left', Accessories.cursor.getDOMNode().style.left);
+              HTMLHelper.updateInlineStyle(selectingElement, 'top', Accessories.cursor.getDOMNode().style.top);
               HTMLHelper.updateInlineStyle(selectingElement, 'width', '150px');
-              Accessories.cursor.parentNode.appendChild(element);
+              Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
           }
         }
@@ -195,11 +237,11 @@ var ManipulationHelper = {
               remember = false;
               break;
             case 8:
-              if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
-                if (Accessories.cursor.previousSibling &&
-                    HTMLHelper.hasClass(Accessories.cursor.previousSibling, 'internal-fsb-element')) {
-                  accessory = Accessories.cursor.previousSibling;
-                  Accessories.cursor.parentNode.removeChild(Accessories.cursor.previousSibling);
+              if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+                if (Accessories.cursor.getDOMNode().previousSibling &&
+                    HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
+                  accessory = Accessories.cursor.getDOMNode().previousSibling;
+                  Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
                 }
               } else {
                 remember = false;
@@ -235,6 +277,7 @@ var ManipulationHelper = {
             
             switch (name) {
               case 'move[cursor]':
+              case 'update':
               case 'update[size]':
               case 'update[columnSize]':
               case 'select':
@@ -247,7 +290,7 @@ var ManipulationHelper = {
               case 'keydown':
                 switch (content) {
                   case 8:
-                    Accessories.cursor.parentNode.insertBefore(accessory, Accessories.cursor);
+                    Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory, Accessories.cursor.getDOMNode());
                     done = true;
                     break;
                 }

@@ -1,2 +1,15 @@
 include ../../mixin/CreateReactComponent
-+CreateReactComponent('FullStackBlend.Controls.GridPicker')
+.section-container
+  .section-title
+    | Responsive Placement
+  .section-subtitle
+    | Size
+  .section-body
+    +CreateReactComponent('FullStackBlend.Controls.GridPicker')
+  .section-subtitle
+    | Left Offset
+  .section-body
+    +CreateReactComponent('FullStackBlend.Controls.OffsetPicker')
+  .section-note
+    | Inherit Direction: Left to Right
+.section-hr

@@ -5,41 +5,56 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface IProps {
-    watchingClassNames: [string];
+    watchingClassNames: [any];
     watchingStyleNames: [string];
-    elementClassName: string;
-    elementStyle: string;
-    updateElement(className: string, elementStyle: string);
 }
 
 interface IState {
-    styleValues: [string];
     classNameStatuses: [boolean];
+    styleValues: [string];
+    properties: any;
 }
 
 class Base extends React.Component {
-    static defaultProps: Props = {
+    state: IState = {classNameStatuses: [], styleValues: [], properties: {}}
+    
+    constructor() {
+        super();
     }
     
-    private recentElementClassName: string = null;
-    private recentElementStyle: string = null;
+    protected static defaultProps: Props = {
+        watchingClassNames: [],
+        watchingStyleNames: []
+    }
     
-    componentWillReceiveProps(nextProps) {
+    protected recentElementClassName: string = null;
+    protected recentElementStyle: string = null;
+    private recentProperties: string = null;
+    
+    public update(properties: any) {
         let changed = false;
-    
-        if (this.recentElementClassName != nextProps.recentElementClassName) {
-            this.recentElementClassName = nextProps.recentElementClassName;
+        
+        if (this.recentElementClassName != properties.elementClassName) {
+            this.recentElementClassName = properties.elementClassName;
             
-            this.props.watchingClassNames.forEach((name: string) => {
-                let value = HTMLHelper.hasClass(this.recentElementClassName, name);
-                if (this.state.classNameStatuses[name] != value) {
-                    this.state.classNameStatuses[name] = value;
-                    changed = true;
+            this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
+                if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                    let value = this.recentElementClassName.match(nameOrRegularExpression);
+                    if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
+                        this.state.classNameStatuses[nameOrRegularExpression] = value;
+                        changed = true;
+                    }
+                } else { // String
+                    let value = HTMLHelper.hasClass(this.recentElementClassName, nameOrRegularExpression);
+                    if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
+                        this.state.classNameStatuses[nameOrRegularExpression] = value;
+                        changed = true;
+                    }
                 }
             });
         }
-        if (this.recentElementStyle != nextProps.recentElementStyle) {
-            this.recentElementStyle = nextProps.recentElementStyle;
+        if (this.recentElementStyle != properties.elementStyle) {
+            this.recentElementStyle = properties.elementStyle;
             
             this.props.watchingStyleNames.forEach((name: string) => {
                 let value = HTMLHelper.getInlineStyle(this.recentElementStyle, name);
@@ -50,9 +65,18 @@ class Base extends React.Component {
             });
         }
         
+        let jsonString = JSON.stringify(properties);
+        if (this.recentProperties != jsonString) {
+            this.recentProperties = jsonString;
+            changed = true;
+        }
+        
         if (changed) {
+            this.state.properties = properties;
             this.forceUpdate();
         }
+        
+        return changed;
     }
     
     protected render() { }

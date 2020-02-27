@@ -14,8 +14,9 @@ html(lang='')
   body
     include partials/header
     if user
-      script(src='/js/lib/react.min.js')
-      script(src='/js/lib/react-dom.min.js')
+      link(rel='stylesheet', href='/css/editor.css')
+      script(src='/js/lib/react.development.js')
+      script(src='/js/lib/react-dom.development.js')
       script(src='/js/construction/editor/Editor.bundle.js')
       
       .workspace-container

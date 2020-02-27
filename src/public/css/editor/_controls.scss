@@ -1,0 +1,39 @@
+// Grid Picker
+// -------------------------
+.grid-picker {
+  width: 60px;
+  
+  .btn-group {
+    
+    .btn {
+      line-height: 1.15;
+      width: 60px;
+    }
+    
+    &:first-child {
+      .btn {
+        border-radius: 5px 0 0 5px;
+      }
+    }
+    &:last-child {
+      .btn {
+        border-radius: 0 5px 5px 0;
+      }
+    }
+    
+    fa {
+      font-size: 1.5em;
+    }
+  }
+  
+  .dropdown-menu {
+    min-width: 60px;
+    width: 60px;
+    
+    .dropdown-item {
+      padding: 0.25rem 0.5rem;
+      text-align: center;
+      cursor: pointer;
+    }
+  }
+}

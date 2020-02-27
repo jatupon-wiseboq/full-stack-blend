@@ -6,56 +6,66 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import '../controls/Cursor.js';
 import '../controls/Dragger.js';
 import '../controls/Guide.js';
+import '../controls/LayoutInfo.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 
 let Accessories = {
-  cursor: HTMLElement = null,
-  dragger: HTMLElement = null,
-  guide: HTMLElement = null
+  cursor: null,
+  dragger: null,
+  guide: null,
+  layoutInfo: null
 }
 
 var EditorHelper = {
   setup: () => {
-    Accessories.cursor = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Controls.Cursor />, Accessories.cursor);
-    Accessories.cursor = Accessories.cursor.firstChild;
-    Accessories.cursor.parentNode.removeChild(Accessories.cursor);
+    let cursorContainer = document.createElement('div');
+    Accessories.cursor = ReactDOM.render(<FullStackBlend.Controls.Cursor />, cursorContainer);
+    Accessories.cursor.setDOMNode(cursorContainer.firstChild);
+    cursorContainer.removeChild(Accessories.cursor.getDOMNode());
     
     function draggerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
-      if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
-        let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-        if (size !== null) {
-          ManipulationHelper.perform('update[columnSize]', size, false);
+      if (selectingElement) {
+        if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
+          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
+          if (size !== null) {
+            ManipulationHelper.perform('update[columnSize]', size, false);
+          }
         }
       }
     }
     function draggerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
-      if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
-        let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-        if (size !== null) {
-          ManipulationHelper.perform('update[columnSize]', size, true);
+      if (selectingElement) {
+        if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
+          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
+          if (size !== null) {
+            ManipulationHelper.perform('update[columnSize]', size, true);
+          }
+        } else {
+          ManipulationHelper.perform('update[size]', {dx: diff.dx,
+                                                      dy: diff.dy,
+                                                      dw: diff.dw,
+                                                      dh: diff.dh}, true);
         }
-      } else {
-        ManipulationHelper.perform('update[size]', {dx: diff.dx,
-                                                    dy: diff.dy,
-                                                    dw: diff.dw,
-                                                    dh: diff.dh}, true);
       }
     }
     
-    Accessories.dragger = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Controls.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, Accessories.dragger);
-    Accessories.dragger = Accessories.dragger.firstChild;
-    Accessories.dragger.parentNode.removeChild(Accessories.dragger);
+    let draggerContainer = document.createElement('div');
+    Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, draggerContainer);
+    Accessories.dragger.setDOMNode(draggerContainer.firstChild);
+    draggerContainer.removeChild(Accessories.dragger.getDOMNode());
     
-    Accessories.guide = document.createElement('div');
-    ReactDOM.render(<FullStackBlend.Controls.Guide />, Accessories.guide);
-    Accessories.guide = Accessories.guide.firstChild;
-    Accessories.guide.parentNode.removeChild(Accessories.guide);
+    let guideContainer = document.createElement('div');
+    Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
+    Accessories.guide.setDOMNode(guideContainer.firstChild);
+    guideContainer.removeChild(Accessories.guide.getDOMNode());
+    
+    let layoutContainer = document.createElement('div');
+    Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
+    window.document.body.appendChild(layoutContainer);
     
     EditorHelper.moveCursorToTheEndOfDocument(false);
   },
@@ -70,13 +80,14 @@ var EditorHelper = {
     var event = document.createEvent("Event");
     event.initEvent("update", false, true); 
     window.dispatchEvent(event);
+    EditorHelper.updateEditorProperties();
   },
   
   moveCursorToTheEndOfDocument: (remember: boolean=true) => {
     let element = HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (element) {
       ManipulationHelper.perform('move[cursor]', EditorHelper.createWalkPathForCursor(), remember);
-      element.parentNode.appendChild(Accessories.guide);
+      element.parentNode.appendChild(Accessories.guide.getDOMNode());
     }
   },
   moveCursorToTheLeft: () => {
@@ -99,7 +110,7 @@ var EditorHelper = {
       
       if (theAllowCursorElement) {
         let children = [...theAllowCursorElement.children];
-        let count = (children.indexOf(Accessories.cursor) !== -1) ? children.length - 1 : children.length;
+        let count = (children.indexOf(Accessories.cursor.getDOMNode()) !== -1) ? children.length - 1 : children.length;
         maximum = count;
       }
     }
@@ -115,30 +126,41 @@ var EditorHelper = {
   select: (element: HTMLElement, dragger: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-      element.appendChild(Accessories.dragger);
+      element.appendChild(Accessories.dragger.getDOMNode());
       
       let current = element;
       while (current != null) {
         if (HTMLHelper.hasClass(current, 'container') || HTMLHelper.hasClass(current, 'container-fluid')) {
-          current.insertBefore(Accessories.guide, current.firstChild);
+          current.insertBefore(Accessories.guide.getDOMNode(), current.firstChild);
           break;
         }
         current = current.parentNode;
       }
       
       EditorHelper.synchronize('select', element.getAttribute('internal-fsb-class'));
+      EditorHelper.update();
     }
   },
+  updateEditorProperties: () => {
+    let element = EditorHelper.getSelectingElement();
+    if (element == null) return;
+    
+    EditorHelper.synchronize('updateEditorProperties', {
+      elementClassName: element.getAttribute('class'),
+      elementStyle: element.getAttribute('style'),
+      currentActiveLayout: Accessories.layoutInfo.currentActiveLayout()
+    });
+  },
   getSelectingElement: () => {
-    if (Accessories.dragger && Accessories.dragger.parentNode && HTMLHelper.hasClass(Accessories.dragger.parentNode, 'internal-fsb-element')) {
-      return Accessories.dragger.parentNode;
+    if (Accessories.dragger && Accessories.dragger.getDOMNode().parentNode && HTMLHelper.hasClass(Accessories.dragger.getDOMNode().parentNode, 'internal-fsb-element')) {
+      return Accessories.dragger.getDOMNode().parentNode;
     } else {
       return null;
     }
   },
   deselect: () => {
-    if (Accessories.dragger.parentNode != null) {
-      Accessories.dragger.parentNode.removeChild(Accessories.dragger);
+    if (Accessories.dragger.getDOMNode().parentNode != null) {
+      Accessories.dragger.getDOMNode().parentNode.removeChild(Accessories.dragger.getDOMNode());
     }
   },
   
@@ -189,7 +211,7 @@ var EditorHelper = {
               
               if (indexOfAllowCursorElement != -1) {
                 let children = [...theAllowCursorElement.children];
-                let count = (children.indexOf(Accessories.cursor) !== -1) ? children.length - 1 : children.length;
+                let count = (children.indexOf(Accessories.cursor.getDOMNode()) !== -1) ? children.length - 1 : children.length;
                 let maximum = count;
                 let walkPath = EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'), indexOfAllowCursorElement, maximum);
                 ManipulationHelper.perform('move[cursor]', walkPath);
@@ -241,15 +263,15 @@ var EditorHelper = {
   },
   
   findWalkPathForCursor: function() {
-    let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor) || HTMLHelper.getElementByClassName('internal-fsb-begin');
+    let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (referenceElement) {
       let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
-      let theAllowCursorElement = Accessories.cursor.parentNode;
+      let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
       
       if (indexOfAllowCursorElement != -1) {
-        if (Accessories.cursor.getAttribute('internal-cursor-mode') == 'relative') {
-          let positionInTheAllowCursorElement = [...theAllowCursorElement.children].indexOf(Accessories.cursor);
+        if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+          let positionInTheAllowCursorElement = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
           
           if (positionInTheAllowCursorElement != -1) {
             return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
@@ -259,8 +281,8 @@ var EditorHelper = {
         } else {
           return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
                                                       indexOfAllowCursorElement,
-                                                      parseInt(Accessories.cursor.style.left),
-                                                      parseInt(Accessories.cursor.style.top));
+                                                      parseInt(Accessories.cursor.getDOMNode().style.left),
+                                                      parseInt(Accessories.cursor.getDOMNode().style.top));
         }
       }
     }
@@ -271,7 +293,7 @@ var EditorHelper = {
                                     positionXInTheAllowCursorElement: number=null, positionYInTheAllowCursorElement: number=null) {
     if (positionXInTheAllowCursorElement == -1) {
       let children = [...HTMLHelper.getElementByClassName('internal-fsb-begin-layout').children];
-      let count = (children.indexOf(Accessories.cursor) !== -1) ? children.length - 1 : children.length;
+      let count = (children.indexOf(Accessories.cursor.getDOMNode()) !== -1) ? children.length - 1 : children.length;
       let maximum = count;
       positionXInTheAllowCursorElement = maximum;
     }
@@ -286,18 +308,18 @@ var EditorHelper = {
       
       if (theAllowCursorElement) {
         if (walkPath[3] == null) {
-          if (Accessories.cursor.parentNode != null) {
-            Accessories.cursor.parentNode.removeChild(Accessories.cursor);
+          if (Accessories.cursor.getDOMNode().parentNode != null) {
+            Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
           }
-          Accessories.cursor.style.left = 'inherit';
-          Accessories.cursor.style.top = 'inherit';
-          Accessories.cursor.setAttribute('internal-cursor-mode', 'relative');
-          theAllowCursorElement.insertBefore(Accessories.cursor, theAllowCursorElement.children[walkPath[2]] || null);
+          Accessories.cursor.getDOMNode().style.left = 'inherit';
+          Accessories.cursor.getDOMNode().style.top = 'inherit';
+          Accessories.cursor.getDOMNode().setAttribute('internal-cursor-mode', 'relative');
+          theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);
         } else {
-          Accessories.cursor.style.left = walkPath[2] + 'px';
-          Accessories.cursor.style.top = walkPath[3] + 'px';
-          Accessories.cursor.setAttribute('internal-cursor-mode', 'absolute');
-          theAllowCursorElement.insertBefore(Accessories.cursor, theAllowCursorElement.firstChild);
+          Accessories.cursor.getDOMNode().style.left = walkPath[2] + 'px';
+          Accessories.cursor.getDOMNode().style.top = walkPath[3] + 'px';
+          Accessories.cursor.getDOMNode().setAttribute('internal-cursor-mode', 'absolute');
+          theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstChild);
         }
       }
     }

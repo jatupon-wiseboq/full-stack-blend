@@ -246,3 +246,12 @@ html, body {
     }
   }
 }
+
+// Layout Info
+//
+.internal-layout-info {
+  position: fixed;
+  top: -1000px;
+  height: 0px;
+  width: 100px;
+}

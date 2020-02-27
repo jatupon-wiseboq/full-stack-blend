@@ -1,0 +1,13 @@
+// Timeline
+// -------------------------
+.timeline {
+  height: 200px;
+}
+
+#timeline {
+  display: none;
+  
+  &.active {
+    display: table-row;
+  }
+}

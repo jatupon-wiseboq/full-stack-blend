@@ -37,12 +37,21 @@ class Dragger extends React.Component<Props, State> {
         bottom: false,
         left: false
     };
+    private domElement: HTMLElement = null;
     
-    constructor(props) {
-        super(props);
+    constructor() {
+        super();
     }
+    
     componentDidMount() {
         this.installDraggingArea();
+    }
+    
+    public getDOMNode() {
+        return this.domElement;
+    }
+    public setDOMNode(element: HTMLElement) {
+        this.domElement = element;
     }
     
     private installDraggingArea() {
@@ -178,3 +187,5 @@ class Dragger extends React.Component<Props, State> {
 }
 
 DeclarationHelper.declare('Controls.Dragger', Dragger);
+
+export {Props, State, Dragger};

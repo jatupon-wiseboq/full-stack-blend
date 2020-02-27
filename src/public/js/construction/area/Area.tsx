@@ -27,6 +27,14 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     EditorHelper.synchronize("click", null);
     
   }, true);
+  let previousWindowSize = {width: null, height: null};
+  window.addEventListener('resize', (event) => {
+    if (previousWindowSize.width != window.innerWidth || previousWindowSize.height != window.innerHeight) {
+      previousWindowSize.width = window.innerWidth;
+      previousWindowSize.height = window.innerHeight;
+      EditorHelper.updateEditorProperties();
+    }
+  });
   
   // Install capabilities.
   //

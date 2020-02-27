@@ -1,5 +1,6 @@
 import {FullStackBlend} from '../../helpers/DeclarationHelper.js';
 import './controls/GridPicker.js';
+import './controls/OffsetPicker.js';
 
 let recentExtraPanelSelector: string = null;
 
@@ -21,6 +22,8 @@ let recentExtraPanelSelector: string = null;
       icon.removeClass('fa-toggle-off').addClass('fa-toggle-on');
     }
     perform('toggle', name);
+    
+    synchronize('click');
   };
   
   window.swap = (panelSelector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
@@ -45,13 +48,22 @@ let recentExtraPanelSelector: string = null;
     }
     
     recentExtraPanelSelector = extraPanelSelector;
+    
+    synchronize('click');
   };
   
   window.FullStackBlend = FullStackBlend;
   
+  window.controls = [];
+  
   var synchronize = (name: string, content: any) => {
     switch (name) {
       case 'select':
+        break;
+      case 'updateEditorProperties':
+        window.controls.forEach((control) => {
+          control.update(content);
+        });
         break;
       case 'click':
         window.document.body.click();
