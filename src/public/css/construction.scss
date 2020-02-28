@@ -1,4 +1,7 @@
 @import "construction/mixins/animation";
+@import "construction/functions";
+@import "construction/variables";
+@import "construction/mixins/breakpoints";
 @import "variables";
 
 // Scaffolding
@@ -254,4 +257,109 @@ html, body {
   top: -1000px;
   height: 0px;
   width: 100px;
+}
+
+// Hidden Element
+//
+.internal-fsb-guide-on {
+  @include media-breakpoint-only(xs) {
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-none {
+        display: block !important;
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-dragger {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-preserve-space {
+          visibility: visible !important;
+          border-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(sm) {
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-sm-none {
+        display: block !important;
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-dragger {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-sm-preserve-space {
+          visibility: visible !important;
+          border-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(md) {
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-md-none {
+        display: block !important;
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-dragger {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-md-preserve-space {
+          visibility: visible !important;
+          border-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(lg) {
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-lg-none {
+        display: block !important;
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-dragger {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-lg-preserve-space {
+          visibility: visible !important;
+          border-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(xl) {
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-lg-none {
+        display: block !important;
+        border: solid 1px red;
+        > .internal-fsb-dragger {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-lg-preserve-space {
+          visibility: visible !important;
+          border-style: dashed;
+        }
+      }
+    }
+  }
 }
