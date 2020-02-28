@@ -203,6 +203,13 @@ var ManipulationHelper = {
                     .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor
               `, element);
               break;
+            case 'TextElement':
+              element = document.createElement('div');
+              element = ReactDOM.render(pug `
+                .internal-fsb-element
+                  | ABC
+              `, element);
+              break;
           }
           
           if (element !== null) {
