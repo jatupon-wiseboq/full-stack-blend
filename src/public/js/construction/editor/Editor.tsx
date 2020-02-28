@@ -1,6 +1,8 @@
 import {FullStackBlend} from '../../helpers/DeclarationHelper.js';
 import './controls/GridPicker.js';
 import './controls/OffsetPicker.js';
+import './controls/DisplayPicker.js';
+import './controls/PreservePicker.js';
 
 let recentExtraPanelSelector: string = null;
 

@@ -68,3 +68,36 @@ $utilities: map-get-multiple(
 );
 
 @import "utilities/api";
+
+// Preserve Space For Display Classes
+//
+@include media-breakpoint-only(xs) {
+  .d-none.d-preserve-space {
+    display: block !important;
+    visibility: hidden !important;
+  }
+}
+@include media-breakpoint-only(sm) {
+  .d-sm-none.d-sm-preserve-space {
+    display: block !important;
+    visibility: hidden !important;
+  }
+}
+@include media-breakpoint-only(md) {
+  .d-md-none.d-md-preserve-space {
+    display: block !important;
+    visibility: hidden !important;
+  }
+}
+@include media-breakpoint-only(lg) {
+  .d-lg-none.d-lg-preserve-space {
+    display: block !important;
+    visibility: hidden !important;
+  }
+}
+@include media-breakpoint-only(xl) {
+  .d-lg-none.d-lg-preserve-space {
+    display: block !important;
+    visibility: hidden !important;
+  }
+}

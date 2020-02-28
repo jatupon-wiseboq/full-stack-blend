@@ -1,6 +1,7 @@
-// Grid Picker
+// Grid Picker & Display Picker
 // -------------------------
-.grid-picker {
+.grid-picker,
+.display-picker {
   width: 60px;
   
   .btn-group {
@@ -8,6 +9,7 @@
     .btn {
       line-height: 1.15;
       width: 60px;
+      margin-bottom: 0;
     }
     
     &:first-child {
@@ -21,8 +23,20 @@
       }
     }
     
-    fa {
-      font-size: 1.5em;
+    .fa {
+      font-size: 1.2em;
+      margin: 0;
+    }
+    
+    .form-check {
+      text-align: center;
+      padding: 0;
+      
+      input {
+        position: relative;
+        margin: 0;
+        pointer-events: none;
+      }
     }
   }
   

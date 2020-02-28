@@ -31,7 +31,6 @@ class GridPicker extends Base<Props, State> {
     
     protected dropdownItemOnClick(index: number, value: string) {
         let elementClassName = this.recentElementClassName;
-        let elementStyle = this.recentElementStyle;
         
         elementClassName = elementClassName.replace(this.props.watchingClassNames[index], '');
         if (value != 'Inherit') {
@@ -52,8 +51,7 @@ class GridPicker extends Base<Props, State> {
         }
         
         perform('update', {
-            elementClassName: TextHelper.removeExtraWhitespaces(elementClassName),
-            elementStyle: elementStyle
+            elementClassName: TextHelper.removeExtraWhitespaces(elementClassName)
         });
         
         ReactDOM.findDOMNode(this.refs["selectedValue" + index]).innerText = value;

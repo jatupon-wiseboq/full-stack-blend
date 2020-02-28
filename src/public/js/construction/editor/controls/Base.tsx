@@ -10,13 +10,13 @@ interface IProps {
 }
 
 interface IState {
-    classNameStatuses: [boolean];
-    styleValues: [string];
+    classNameStatuses: any;
+    styleValues: any;
     properties: any;
 }
 
 class Base extends React.Component {
-    state: IState = {classNameStatuses: [], styleValues: [], properties: {}}
+    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}}
     
     constructor() {
         super();
@@ -38,17 +38,19 @@ class Base extends React.Component {
             this.recentElementClassName = properties.elementClassName;
             
             this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
-                if (typeof nameOrRegularExpression === 'object') { // Regular Expression
-                    let value = this.recentElementClassName.match(nameOrRegularExpression);
-                    if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
-                        this.state.classNameStatuses[nameOrRegularExpression] = value;
-                        changed = true;
-                    }
-                } else { // String
-                    let value = HTMLHelper.hasClass(this.recentElementClassName, nameOrRegularExpression);
-                    if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
-                        this.state.classNameStatuses[nameOrRegularExpression] = value;
-                        changed = true;
+                if (!!nameOrRegularExpression) {
+                    if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                        let value = this.recentElementClassName.match(nameOrRegularExpression);
+                        if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
+                            this.state.classNameStatuses[nameOrRegularExpression] = value;
+                            changed = true;
+                        }
+                    } else { // String
+                        let value = HTMLHelper.hasClass(this.recentElementClassName, nameOrRegularExpression);
+                        if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
+                            this.state.classNameStatuses[nameOrRegularExpression] = value;
+                            changed = true;
+                        }
                     }
                 }
             });
@@ -57,10 +59,12 @@ class Base extends React.Component {
             this.recentElementStyle = properties.elementStyle;
             
             this.props.watchingStyleNames.forEach((name: string) => {
-                let value = HTMLHelper.getInlineStyle(this.recentElementStyle, name);
-                if (this.state.styleValues[name] != value) {
-                    this.state.styleValues[name] = value;
-                    changed = true;
+                if (!!name) {
+                    let value = HTMLHelper.getInlineStyle(this.recentElementStyle, name);
+                    if (this.state.styleValues[name] != value) {
+                        this.state.styleValues[name] = value;
+                        changed = true;
+                    }
                 }
             });
         }
