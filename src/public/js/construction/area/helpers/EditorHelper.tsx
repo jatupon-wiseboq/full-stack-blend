@@ -29,9 +29,13 @@ var EditorHelper = {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
-          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-          if (size !== null) {
-            ManipulationHelper.perform('update[columnSize]', size, false);
+          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw) || 0;
+          let dOffset = (diff.dx == 0) ? 0 : LayoutHelper.calculateColumnSize(original.w) - size;
+          if (size !== 0) {
+            ManipulationHelper.perform('update[responsive]', {
+              size: size,
+              dOffset: dOffset
+            }, false);
           }
         }
       }
@@ -40,9 +44,13 @@ var EditorHelper = {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
-          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw);
-          if (size !== null) {
-            ManipulationHelper.perform('update[columnSize]', size, true);
+          let size = LayoutHelper.calculateColumnSize(original.w + diff.dw) || 0;
+          let dOffset = (diff.dx == 0) ? 0 : LayoutHelper.calculateColumnSize(original.w) - size;
+          if (size !== 0) {
+            ManipulationHelper.perform('update[responsive]', {
+              size: size,
+              dOffset: dOffset
+            }, true);
           }
         } else {
           ManipulationHelper.perform('update[size]', {dx: diff.dx,

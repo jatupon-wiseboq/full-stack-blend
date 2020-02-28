@@ -4,11 +4,11 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
-import {RESPONSIVE_SIZE_REGEX} from '../../Constants.js';
+import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
-let previousClassName: string = null;
+let previousInfo: any = {};
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) => {
@@ -78,27 +78,44 @@ var ManipulationHelper = {
           }
         }
         break;
-      case 'update[columnSize]':
+      case 'update[responsive]':
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
-            if (!remember) {
-              if (previousClassName == null) {
-                previousClassName = selectingElement.getAttribute('class');
+            if (previousInfo.previousClassName == null) {
+              previousInfo.previousClassName = selectingElement.getAttribute('class');
+            }
+            
+            let elementClassName = previousInfo.previousClassName;
+            
+            let currentActiveLayoutForSize = Accessories.layoutInfo.currentActiveLayout();
+            let currentActiveLayoutForOffset = currentActiveLayoutForSize;
+            let offsetMatch = null;
+            
+            for (currentActiveLayoutForSize; currentActiveLayoutForSize >= 0; currentActiveLayoutForSize--) {
+              if (elementClassName.match(RESPONSIVE_SIZE_REGEX[currentActiveLayoutForSize])) break;
+            }
+            
+            for (currentActiveLayoutForOffset; currentActiveLayoutForOffset >= 0; currentActiveLayoutForOffset--) {
+              let _offsetMatch = elementClassName.match(RESPONSIVE_OFFSET_REGEX[currentActiveLayoutForOffset]);
+              if (_offsetMatch) {
+                offsetMatch = _offsetMatch;
+                break;
               }
             }
             
-            let elementClassName = selectingElement.getAttribute('class');
+            if (currentActiveLayoutForOffset == -1) currentActiveLayoutForOffset = 0;
+            let currentOffset = (offsetMatch == null) ? 0 : parseInt(offsetMatch[1]);
             
-            let currentActiveLayout = Accessories.layoutInfo.currentActiveLayout();
-            for (currentActiveLayout; currentActiveLayout >= 0; currentActiveLayout--) {
-              if (elementClassName.match(RESPONSIVE_SIZE_REGEX[currentActiveLayout])) break;
-            }
+            let currentSizePrefix = [' col-', ' col-sm-', ' col-md-', ' col-lg-'][currentActiveLayoutForSize];
+            let currentOffsetPrefix = [' offset-', ' offset-sm-', ' offset-md-', ' offset-lg-'][currentActiveLayoutForOffset];
             
-            let currentPrefix = [' col-', ' col-sm-', ' col-md-', ' col-lg-'][currentActiveLayout];
+            elementClassName = elementClassName.replace(RESPONSIVE_SIZE_REGEX[currentActiveLayoutForSize], '');
+            elementClassName += currentSizePrefix + content.size;
+            elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
             
-            elementClassName = elementClassName.replace(RESPONSIVE_SIZE_REGEX[currentActiveLayout], '');
-            elementClassName += currentPrefix + content;
+            elementClassName = elementClassName.replace(RESPONSIVE_OFFSET_REGEX[currentActiveLayoutForOffset], '');
+            elementClassName += currentOffsetPrefix + (currentOffset + content.dOffset);
             elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
             
             if (!remember) {
@@ -107,10 +124,9 @@ var ManipulationHelper = {
             
             if (remember) {
               promise.then(() => {
-                if (previousClassName != null) {
-                  selectingElement.setAttribute('class', previousClassName);
-                  previousClassName = null;
-                }
+                selectingElement.setAttribute('class', previousInfo.previousClassName);
+                previousInfo.previousClassName = null;
+                
                 ManipulationHelper.perform('update', {
                   elementClassName: elementClassName
                 });
