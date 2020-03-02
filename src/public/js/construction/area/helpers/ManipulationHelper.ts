@@ -235,9 +235,9 @@ var ManipulationHelper = {
               HTMLHelper.addClass(element, 'col');
               Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
             } else {
-              HTMLHelper.updateInlineStyle(selectingElement, 'left', Accessories.cursor.getDOMNode().style.left);
-              HTMLHelper.updateInlineStyle(selectingElement, 'top', Accessories.cursor.getDOMNode().style.top);
-              HTMLHelper.updateInlineStyle(selectingElement, 'width', '150px');
+              HTMLHelper.updateInlineStyle(element, 'left', Accessories.cursor.getDOMNode().style.left);
+              HTMLHelper.updateInlineStyle(element, 'top', Accessories.cursor.getDOMNode().style.top);
+              HTMLHelper.updateInlineStyle(element, 'width', '150px');
               Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
           }

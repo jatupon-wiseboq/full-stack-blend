@@ -86,6 +86,6 @@ class Base extends React.Component {
     protected render() { }
 }
 
-DeclarationHelper.declare('Controls.Base', Base);
+DeclarationHelper.declare('Components.Base', Base);
 
 export {IProps, IState, Base};

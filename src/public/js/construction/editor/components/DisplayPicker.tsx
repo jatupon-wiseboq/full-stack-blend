@@ -68,6 +68,6 @@ class DisplayPicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Controls.DisplayPicker', DisplayPicker);
+DeclarationHelper.declare('Components.DisplayPicker', DisplayPicker);
 
 export {Props, State, DisplayPicker};

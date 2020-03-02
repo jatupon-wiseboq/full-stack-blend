@@ -11,7 +11,7 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
-class PreservePicker extends FullStackBlend.Controls.DisplayPicker<Props, State> {
+class PreservePicker extends FullStackBlend.Components.DisplayPicker<Props, State> {
     static defaultProps: Props = {
         watchingClassNames: ['d-preserve-space', null, 'd-sm-preserve-space', null, 'd-md-preserve-space', null, 'd-lg-preserve-space', null],
         watchingStyleNames: [],
@@ -22,6 +22,6 @@ class PreservePicker extends FullStackBlend.Controls.DisplayPicker<Props, State>
     }
 }
 
-DeclarationHelper.declare('Controls.PreservePicker', PreservePicker);
+DeclarationHelper.declare('Components.PreservePicker', PreservePicker);
 
 export {Props, State, PreservePicker};

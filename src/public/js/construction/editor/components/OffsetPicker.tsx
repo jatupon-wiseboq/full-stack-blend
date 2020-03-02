@@ -12,7 +12,7 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
-class OffsetPicker extends FullStackBlend.Controls.GridPicker<Props, State> {
+class OffsetPicker extends FullStackBlend.Components.GridPicker<Props, State> {
     static defaultProps: Props = {
         watchingClassNames: RESPONSIVE_OFFSET_REGEX,
         watchingStyleNames: [],
@@ -26,6 +26,6 @@ class OffsetPicker extends FullStackBlend.Controls.GridPicker<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Controls.OffsetPicker', OffsetPicker);
+DeclarationHelper.declare('Components.OffsetPicker', OffsetPicker);
 
 export {Props, State, OffsetPicker};

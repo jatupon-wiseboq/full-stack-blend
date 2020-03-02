@@ -39,15 +39,15 @@
       }
     }
   }
+}
+.fsb-dropdown-menu {
+  font-size: 0.8rem;
+  overflow-y: scroll;
+  min-width: inherit;
   
-  .dropdown-menu {
-    min-width: 60px;
-    width: 60px;
-    
-    .dropdown-item {
-      padding: 0.25rem 0.5rem;
-      text-align: center;
-      cursor: pointer;
-    }
+  .dropdown-item {
+    padding: 0.25rem 0.5rem;
+    text-align: center;
+    cursor: pointer;
   }
 }
