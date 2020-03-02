@@ -9,6 +9,9 @@ import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js
 let performed: any = [];
 let performedIndex: number = -1;
 let previousInfo: any = {};
+let isShiftKeyActive: boolean = false;
+let isCtrlKeyActive: boolean = false;
+let isCommandKeyActive: boolean = false;
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) => {
@@ -292,9 +295,51 @@ var ManipulationHelper = {
                 EditorHelper.selectNextElement();
               }
               break;
+            case 16:
+              isShiftKeyActive = true;
+              remember = false;
+              break;
+            case 17:
+              isCtrlKeyActive = true;
+              remember = false;
+              break;
+            case 91:
+              isCommandKeyActive = true;
+              remember = false;
+              break;
+            case 90:
+              {
+                console.log(isShiftKeyActive, isCommandKeyActive, isCtrlKeyActive);
+                
+                if ((!isShiftKeyActive && isCommandKeyActive && !isCtrlKeyActive) ||
+                    (!isShiftKeyActive && !isCommandKeyActive && isCtrlKeyActive)) { // Undo
+                  ManipulationHelper.perform('undo', null);
+                  remember = false;
+                } else if ((isShiftKeyActive && isCommandKeyActive && !isCtrlKeyActive) ||
+                           (isShiftKeyActive && !isCommandKeyActive && isCtrlKeyActive)) { // Redo
+                  ManipulationHelper.perform('redo', null);
+                  remember = false;
+                }
+              }
+              break;
           }
         }
         break;
+      case 'keyup':
+        {
+          switch (content) {
+            case 16:
+              isShiftKeyActive = false;
+              break;
+            case 17:
+              isCtrlKeyActive = false;
+              break;
+            case 91:
+              isCommandKeyActive = false;
+              break;
+          }
+          remember = false;
+        }
       case 'select':
         {
           let selectingElement = EditorHelper.getSelectingElement();

@@ -79,6 +79,11 @@ let recentExtraPanelSelector: string = null;
     
     return EventHelper.cancel(event);
   });
+  window.addEventListener("keyup", (event: any) => {
+    perform('keyup', event.keyCode);
+    
+    return EventHelper.cancel(event);
+  });
   
   window.addEventListener("message", (event) => {
     let data = JSON.parse(event.data);

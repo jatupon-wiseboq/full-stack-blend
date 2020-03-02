@@ -19,6 +19,11 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     
     return EventHelper.cancel(event);
   }, false);
+  window.addEventListener("keyup", (event: any) => {
+    ManipulationHelper.perform('keyup', event.keyCode);
+    
+    return EventHelper.cancel(event);
+  });
   window.addEventListener("click", (event) => {
     EditorHelper.synchronize("click", null);
   }, false);
