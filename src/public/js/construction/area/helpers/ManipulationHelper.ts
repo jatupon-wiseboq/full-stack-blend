@@ -244,19 +244,19 @@ var ManipulationHelper = {
         {
           switch (content) {
             case 37:
-              EditorHelper.moveCursorUp();
+              EditorHelper.moveCursorToTheLeft();
               remember = false;
               break;
             case 38:
-              EditorHelper.moveCursorToTheRight();
+              EditorHelper.moveCursorUp();
               remember = false;
               break;
             case 39:
-              EditorHelper.moveCursorDown();
+              EditorHelper.moveCursorToTheRight();
               remember = false;
               break;
             case 40:
-              EditorHelper.moveCursorToTheLeft();
+              EditorHelper.moveCursorDown();
               remember = false;
               break;
             case 8:

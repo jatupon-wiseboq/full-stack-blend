@@ -99,15 +99,53 @@ var EditorHelper = {
     }
   },
   moveCursorToTheLeft: () => {
+    let {allAllowCursorElements, allAllowCursorPositions} = EditorHelper.getDepthFirstReferencesForCursorWalks();
+    
+    let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
+    let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
+    let index = -1;
+    
+    for (let i=0; i<=indexOfTheCursor; i++) {
+      index = allAllowCursorElements.indexOf(theAllowCursorElement, index + 1);
+    }
+    
+    if (index > 0) {
+      let walkPath = EditorHelper.findWalkPathForElement(allAllowCursorElements[index - 1]);
+      walkPath[2] = allAllowCursorPositions[index - 1];
+      
+      ManipulationHelper.perform('move[cursor]', walkPath);
+    } else {
+      let walkPath = EditorHelper.createWalkPathForCursor();
+      walkPath[2] = 0;
+    }
+  },
+  moveCursorUp: () => {
     let walkPath = [...EditorHelper.findWalkPathForCursor()];
     walkPath[2] = Math.max(0, walkPath[2] - 1);
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
-  moveCursorUp: () => {
-    EditorHelper.moveCursorToTheLeft();
-  },
   moveCursorToTheRight: () => {
+    let {allAllowCursorElements, allAllowCursorPositions} = EditorHelper.getDepthFirstReferencesForCursorWalks();
+    
+    let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
+    let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
+    let index = -1;
+    
+    for (let i=0; i<=indexOfTheCursor; i++) {
+      index = allAllowCursorElements.indexOf(theAllowCursorElement, index + 1);
+    }
+    
+    if (index < allAllowCursorElements.length - 1) {
+      let walkPath = EditorHelper.findWalkPathForElement(allAllowCursorElements[index + 1]);
+      walkPath[2] = allAllowCursorPositions[index + 1];
+      
+      ManipulationHelper.perform('move[cursor]', walkPath);
+    } else {
+      EditorHelper.moveCursorToTheEndOfDocument();
+    }
+  },
+  moveCursorDown: () => {
     let walkPath = [...EditorHelper.findWalkPathForCursor()];
     let maximum = walkPath[2];
     
@@ -127,8 +165,28 @@ var EditorHelper = {
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
-  moveCursorDown: () => {
-    EditorHelper.moveCursorToTheRight();
+  getDepthFirstReferencesForCursorWalks: (container: HTMLElement=document.body, allAllowCursorElements: [HTMLElement]=[], allAllowCursorPositions: [number]=[]) => {
+    let isContainerAllowedCursor = HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor');
+    
+    let children = [...container.children];
+    let count = 0;
+    for (let i=0; i<children.length; i++) {
+      if (isContainerAllowedCursor && children[i] != Accessories.cursor.getDOMNode()) {
+        allAllowCursorElements.push(container);
+        allAllowCursorPositions.push(i);
+        
+        count += 1;
+      }
+    
+      EditorHelper.getDepthFirstReferencesForCursorWalks(children[i], allAllowCursorElements, allAllowCursorPositions);
+    }
+    
+    if (isContainerAllowedCursor) {
+      allAllowCursorElements.push(container);
+      allAllowCursorPositions.push(children.length);
+    }
+    
+    return {allAllowCursorElements, allAllowCursorPositions};
   },
   
   select: (element: HTMLElement, dragger: HTMLElement) => {
@@ -270,6 +328,23 @@ var EditorHelper = {
     EditorHelper.installCapabilityOfBeingMoveInCursor(container);
   },
   
+  findWalkPathForElement: function(allowCursorElement: HTMLElement) {
+    let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByClassName('internal-fsb-begin');
+    if (referenceElement) {
+      let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+      let theAllowCursorElement = allowCursorElement;
+      let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
+      
+      if (indexOfAllowCursorElement != -1) {
+        let positionInTheAllowCursorElement = theAllowCursorElement.children.length;
+        return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
+                                                    indexOfAllowCursorElement,
+                                                    positionInTheAllowCursorElement);
+      }
+    }
+    
+    return EditorHelper.createWalkPathForCursor();
+  },
   findWalkPathForCursor: function() {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (referenceElement) {
