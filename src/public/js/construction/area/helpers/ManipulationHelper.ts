@@ -260,14 +260,36 @@ var ManipulationHelper = {
               remember = false;
               break;
             case 8:
-              if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
-                if (Accessories.cursor.getDOMNode().previousSibling &&
-                    HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
-                  accessory = Accessories.cursor.getDOMNode().previousSibling;
-                  Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
+              {
+                if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+                  if (Accessories.cursor.getDOMNode().previousSibling &&
+                      HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
+                    accessory = Accessories.cursor.getDOMNode().previousSibling;
+                    Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
+                  }
+                } else {
+                  remember = false;
                 }
-              } else {
-                remember = false;
+              }
+              break;
+            case 27:
+              {
+                let selectingElement = EditorHelper.getSelectingElement();
+                if (selectingElement) {
+                  accessory = selectingElement.getAttribute('internal-fsb-guid');
+                }
+            
+                EditorHelper.deselect();
+              }
+              break;
+            case 9:
+              {
+                let selectingElement = EditorHelper.getSelectingElement();
+                if (selectingElement) {
+                  accessory = selectingElement.getAttribute('internal-fsb-guid');
+                }
+                
+                EditorHelper.selectNextElement();
               }
               break;
           }
@@ -315,6 +337,11 @@ var ManipulationHelper = {
                   case 8:
                     Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory, Accessories.cursor.getDOMNode());
                     done = true;
+                    break;
+                  case 27:
+                  case 9:
+                    name = 'select';
+                    content = accessory;
                     break;
                 }
                 break;

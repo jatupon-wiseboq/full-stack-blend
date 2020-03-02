@@ -1,4 +1,5 @@
 import {FullStackBlend} from '../../helpers/DeclarationHelper.js';
+import {EventHelper} from '../helpers/EventHelper.js';
 import './controls/GridPicker.js';
 import './controls/OffsetPicker.js';
 import './controls/DisplayPicker.js';
@@ -75,6 +76,8 @@ let recentExtraPanelSelector: string = null;
   
   window.addEventListener("keydown", (event: any) => {
     perform('keydown', event.keyCode);
+    
+    return EventHelper.cancel(event);
   });
   
   window.addEventListener("message", (event) => {

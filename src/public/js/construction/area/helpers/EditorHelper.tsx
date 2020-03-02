@@ -189,7 +189,7 @@ var EditorHelper = {
     return {allAllowCursorElements, allAllowCursorPositions};
   },
   
-  select: (element: HTMLElement, dragger: HTMLElement) => {
+  select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
       element.appendChild(Accessories.dragger.getDOMNode());
@@ -205,6 +205,19 @@ var EditorHelper = {
       
       EditorHelper.synchronize('select', element.getAttribute('internal-fsb-class'));
       EditorHelper.update();
+    }
+  },
+  selectNextElement: () => {
+    let allElements = [...HTMLHelper.getElementsByClassName('internal-fsb-element')];
+    if (allElements.length == 0) return;
+    
+    let selectingElement = EditorHelper.getSelectingElement();
+    let index = allElements.indexOf(selectingElement);
+    
+    if (index + 1 < allElements.length) {
+      EditorHelper.select(allElements[index + 1]);
+    } else {
+      EditorHelper.select(allElements[0]);
     }
   },
   updateEditorProperties: () => {
