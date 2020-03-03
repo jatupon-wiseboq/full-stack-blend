@@ -148,6 +148,7 @@ var HTMLHelper = {
       do {
         curleft += object.offsetLeft;
         curtop += object.offsetTop;
+        curtop -= object.scrollTop;
       } while (object = object.offsetParent);
     }
     

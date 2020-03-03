@@ -89,4 +89,10 @@ let recentExtraPanelSelector: string = null;
     let data = JSON.parse(event.data);
     synchronize(data.name, data.content);
   });
+  
+  window.setup = (() => {
+    $('.workspace-panel-container.scrollable').on('scroll', (event) => {
+      window.document.body.click();
+    });
+  });
 })();
