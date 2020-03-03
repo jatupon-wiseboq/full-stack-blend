@@ -1,7 +1,13 @@
-.workspace-panel-container.sidebar
-  .panel.active(id='design')
-    include design/styling
-  .panel(id='animation')
-    include design/animation
-  .panel(id='coding')
-    include design/coding
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      .workspace-panel-container.sidebar
+        .panel.active(id='design')
+          include design/styling
+        .panel(id='animation')
+          include design/animation
+        .panel(id='coding')
+          include design/coding
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      include common/artboard

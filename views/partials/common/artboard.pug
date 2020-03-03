@@ -1,0 +1,13 @@
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      .workspace-tab-container
+        .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+          label.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(data-toggle="tooltip", data-placement="bottom", data-html="true", style="width: 33%;")
+            input(type='radio', name='options', checked=true)
+            | Layers
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel
+      .workspace-panel-container.scrollable
+        .panel.active
+          include artboard/layers
