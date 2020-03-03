@@ -23,16 +23,16 @@ html(lang='')
         .workspace-vertical-container
           .workspace-vertical-panel
             include partials/toolbar
-        .workspace-vertical-container.full-size
+        .workspace-vertical-container.full-relative-size
           .workspace-vertical-panel
             .workspace-container
               .workspace-horizontal-container
                 .workspace-horizontal-panel
                   include partials/explorer
-                .workspace-horizontal-panel.full-size
+                .workspace-horizontal-panel.full-relative-size
                   .workspace-container
-                    .workspace-vertical-container.full-size
-                      .workspace-vertical-panel.full-size
+                    .workspace-vertical-container.full-relative-size
+                      .workspace-vertical-panel.full-relative-size
                         include partials/construction
                     .workspace-vertical-container(id='timeline')
                       .workspace-vertical-panel
