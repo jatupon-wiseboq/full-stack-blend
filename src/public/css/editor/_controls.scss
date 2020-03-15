@@ -1,45 +1,5 @@
-// Grid Picker & Display Picker
+// Dropdown
 // -------------------------
-.grid-picker,
-.display-picker {
-  width: 60px;
-  
-  .btn-group {
-    
-    .btn {
-      line-height: 1.15;
-      width: 60px;
-      margin-bottom: 0;
-    }
-    
-    &:first-child {
-      .btn {
-        border-radius: 5px 0 0 5px;
-      }
-    }
-    &:last-child {
-      .btn {
-        border-radius: 0 5px 5px 0;
-      }
-    }
-    
-    .fa {
-      font-size: 1.2em;
-      margin: 0;
-    }
-    
-    .form-check {
-      text-align: center;
-      padding: 0;
-      
-      input {
-        position: relative;
-        margin: 0;
-        pointer-events: none;
-      }
-    }
-  }
-}
 .fsb-dropdown-menu {
   font-size: 0.8rem;
   overflow-y: scroll;
@@ -50,4 +10,16 @@
     text-align: center;
     cursor: pointer;
   }
+}
+
+// Tree
+// -------------------------
+.tree-container {
+  border: 1px solid #ced4da;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.775rem;
+  line-height: 1.0rem;
+  border-radius: 0.2rem;
+  height: 125px;
+  overflow-y: scroll;
 }

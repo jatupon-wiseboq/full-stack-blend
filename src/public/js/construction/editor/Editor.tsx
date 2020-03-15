@@ -4,6 +4,9 @@ import './components/GridPicker.js';
 import './components/OffsetPicker.js';
 import './components/DisplayPicker.js';
 import './components/PreservePicker.js';
+import './components/CSSPresets.js';
+import './components/CSSStyles.js';
+import './components/CSSPresetName.js';
 
 let recentExtraPanelSelector: string = null;
 

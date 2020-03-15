@@ -21,3 +21,16 @@ include ../../mixin/CreateReactComponent
   .section-note
     | Inherit Direction: Left to Right
 .section-hr
+.section-container
+  .section-title
+    | Reuseable Stylesheet
+  .section-subtitle
+    | Preset Name (Optional)
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
+  .section-subtitle
+    | Inherited Presets
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.CSSPresets')
+  .section-note
+    | This will combine both inherited presets and styles into a preset.
