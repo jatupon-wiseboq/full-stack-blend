@@ -1,0 +1,23 @@
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      .workspace-tab-container
+        .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+          label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(onclick="swap('.sidebar-main-panel')", data-toggle="tooltip", data-placement="bottom", data-html="true")
+            input(type='radio', name='options', checked=true)
+            | Timeline
+          label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-shape-panel(onclick="swap('.sidebar-shape-panel')", data-toggle="tooltip", data-placement="bottom", data-html="true")
+            input(type='radio', name='options', checked=false)
+            | Shape
+          label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-style-panel(onclick="swap('.sidebar-style-panel')", data-toggle="tooltip", data-placement="bottom", data-html="true")
+            input(type='radio', name='options', checked=false)
+            | Style
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel
+      .workspace-panel-container.scrollable
+        .panel.sidebar-main-panel.active
+          include animation/timeline
+        .panel.sidebar-shape-panel
+          include common/shape
+        .panel.sidebar-style-panel
+          include common/style

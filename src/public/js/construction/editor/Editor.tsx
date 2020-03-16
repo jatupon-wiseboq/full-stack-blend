@@ -32,11 +32,20 @@ let recentExtraPanelSelector: string = null;
     synchronize('click');
   };
   
-  window.swap = (panelSelector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
-    let panel = $(panelSelector);
+  window.swap = (selector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
+    let button = $('.btn' + selector);
     
-    panel.parent().find('> .panel').removeClass('active');
-    panel.addClass('active');
+    button.each((index, value) => {
+      $(value).parent().find('> .btn').removeClass('active');
+      $(value).addClass('active');
+    });
+    
+    let panel = $('.panel' + selector);
+    
+    panel.each((index, value) => {
+      $(value).parent().find('> .panel').removeClass('active');
+      $(value).addClass('active');
+    });
     
     if (replacingIconSelector != null) {
       let replacingIconElement = $(replacingIconSelector)[0];
