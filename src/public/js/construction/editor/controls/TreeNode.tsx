@@ -8,12 +8,12 @@ interface ITreeNode {
   nodes: [ITreeNode]
 }
 
-interface Props extends IProps {
+interface IProps {
   deep: number,
   tree: ITreeNode
 }
 
-interface State extends IState {
+interface IState {
 }
 
 class TreeNode extends React.Component<Props, State> {
@@ -29,7 +29,7 @@ class TreeNode extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          each node, index of this.props.tree
+          each node, index in this.props.tree
             .row(key="node-" + index)
               div(className="col offset-" + this.props.deep)
                 input.form-check-input.form-control.form-control-sm(type="checkbox")

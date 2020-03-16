@@ -24,7 +24,7 @@ class CSSPresets extends Base<Props, State> {
     
     render() {
       return (
-        | CSSPresets
+        <div>CSSPresets</div>
       )
     }
 }

@@ -5,7 +5,7 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
-  tree: ITreeNode
+  tree: [ITreeNode]
 }
 
 interface State extends IState {
@@ -14,8 +14,8 @@ interface State extends IState {
 class Tree extends React.Component<Props, State> {
     static defaultProps: Props = {
         tree: [{name: "Title 1", nodes: []},
-               {name: "Title 2", nodes: [{name: "Title 1", nodes: []}, {name: "Title 2", nodes: []}, {name: "Title 3", nodes: []}],
-               {name: "Title 3", [{name: "Title 1", nodes: []}]}]
+               {name: "Title 2", nodes: [{name: "Title 1", nodes: []}, {name: "Title 2", nodes: []}, {name: "Title 3", nodes: []}]},
+               {name: "Title 3", nodes: [{name: "Title 1", nodes: []}]}]
     }
     
     constructor() {
