@@ -18,8 +18,8 @@ class DisplayPicker extends Base<Props, State> {
         watchingStyleNames: [],
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
     
     protected checkboxItemOnClick(index: number) {

@@ -225,8 +225,8 @@ var EditorHelper = {
     if (element == null) return;
     
     EditorHelper.synchronize('updateEditorProperties', {
-      elementClassName: element.getAttribute('class'),
-      elementStyle: element.getAttribute('style'),
+      elementClassName: element.getAttribute('class') || "",
+      elementStyle: element.getAttribute('style') || "",
       currentActiveLayout: Accessories.layoutInfo.currentActiveLayout()
     });
   },

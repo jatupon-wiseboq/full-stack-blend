@@ -53,6 +53,32 @@ var ManipulationHelper = {
             if (content.elementStyle !== undefined) {
               selectingElement.setAttribute('style', content.elementStyle);
             }
+            if (content.aStyle != undefined) {
+              let style = selectingElement.getAttribute('style') || '';
+              let splited = style.split(';');
+              let hash = {};
+              
+              for (const value of splited) {
+                if (!value || value.indexOf(':') == -1) continue;
+                let tokens = value.split(':');
+                hash[tokens[0].toString().trim()] = tokens[1].toString().trim();
+              }
+              
+              if (hash[content.aStyle.name.toString().trim()] != content.aStyle.value) {
+                hash[content.aStyle.name.toString().trim()] = content.aStyle.value;
+                
+                let results = [];
+                for (var key in hash) {
+                  if (hash.hasOwnProperty(key) && hash[key] != null) {
+                    results.push(key + ':' + hash[key]);
+                  }
+                }
+                
+                selectingElement.setAttribute('style', results.join('; '));
+              }else {
+                remember = false;
+              }
+            }
           } else {
             remember = false;
           }
@@ -240,6 +266,9 @@ var ManipulationHelper = {
               HTMLHelper.updateInlineStyle(element, 'width', '150px');
               Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
+            
+            // Update Editor UI
+            EditorHelper.updateEditorProperties();
           }
         }
         break;

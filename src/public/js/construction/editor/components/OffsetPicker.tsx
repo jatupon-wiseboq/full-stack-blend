@@ -21,8 +21,8 @@ class OffsetPicker extends FullStackBlend.Components.GridPicker<Props, State> {
         prefix: 'offset'
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 }
 

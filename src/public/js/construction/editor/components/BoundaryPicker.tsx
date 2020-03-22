@@ -17,24 +17,24 @@ class BoundaryPicker extends Base<Props, State> {
         watchingStyleNames: []
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
     
     render() {
         return (
             <div className="boundary-picker">
                 <div className="boundary-panel boundary-position">
-                    <FullStackBlend.Components.SizePicker additionalClassName="w" target="max-width" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["max-width"]} />
                     <span> &times; </span>
-                    <FullStackBlend.Components.SizePicker additionalClassName="h" target="max-height" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["max-height"]} />
                 </div>
                 <div className="boundary-panel boundary-border">
                 </div>
                 <div className="boundary-panel boundary-size">
-                    <FullStackBlend.Components.SizePicker additionalClassName="w" target="min-width" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["min-width"]} />
                     <span> &times; </span>
-                    <FullStackBlend.Components.SizePicker additionalClassName="h" target="min-height" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["min-height"]} />
                 </div>
             </div>
         )

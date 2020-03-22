@@ -127,12 +127,12 @@ var HTMLHelper = {
     return HTMLHelper.getInlineStyle(styleAttributeValue, styleName);
   },
   getInlineStyle: (styleAttributeValue: string, styleName: string) => {
-    if (styleAttributeValue.indexOf(stylename + ':') == -1) return null;
+    if ('; ' + styleAttributeValue.indexOf('; ' + styleName + ':') == -1) return null;
     
     let splited = styleAttributeValue.split(';');
     
     for (var i=0; i<splited.length; i++) {
-      if (splited[i].indexOf(styleName + ':') != -1) {
+      if (splited[i].trim().indexOf(styleName + ':') == 0) {
         return splited[i].split(':').splice(-1);
       }
     }

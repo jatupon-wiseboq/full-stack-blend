@@ -92,14 +92,18 @@ let recentExtraPanelSelector: string = null;
   };
   
   window.addEventListener("keydown", (event: any) => {
-    perform('keydown', event.keyCode);
+    if (EventHelper.getOriginalElement(event).tagName != "INPUT") {
+      perform('keydown', event.keyCode);
     
-    return EventHelper.cancel(event);
+      return EventHelper.cancel(event);
+    }
   });
   window.addEventListener("keyup", (event: any) => {
-    perform('keyup', event.keyCode);
-    
-    return EventHelper.cancel(event);
+    if (EventHelper.getOriginalElement(event).tagName != "INPUT") {
+      perform('keyup', event.keyCode);
+      
+      return EventHelper.cancel(event);
+    }
   });
   
   window.addEventListener("message", (event) => {

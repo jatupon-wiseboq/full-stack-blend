@@ -18,8 +18,8 @@ class CSSPresetName extends Base<Props, State> {
       watchingStyleNames: []
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
     
     render() {

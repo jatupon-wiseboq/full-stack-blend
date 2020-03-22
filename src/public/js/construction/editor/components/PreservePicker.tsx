@@ -17,8 +17,8 @@ class PreservePicker extends FullStackBlend.Components.DisplayPicker<Props, Stat
         watchingStyleNames: [],
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
 }
 

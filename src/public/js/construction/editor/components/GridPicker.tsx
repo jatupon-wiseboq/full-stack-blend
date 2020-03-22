@@ -30,11 +30,11 @@ class GridPicker extends Base<Props, State> {
     private recentDropdown: HTMLElement = null;
     private documentOnClickDelegate: Function = null;
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     }
     
-    protected dropdownOnUpdate(identity: any, value: any) {
+    protected dropdownOnUpdate(identity: any, value: any, index: any) {
         let elementClassName = this.recentElementClassName;
         
         elementClassName = elementClassName.replace(this.props.watchingClassNames[identity], '');

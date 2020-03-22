@@ -3,6 +3,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 
 declare let React: any;
 declare let ReactDOM: any;
+declare let controls: any;
 
 interface IProps {
     watchingClassNames: [any];
@@ -18,8 +19,9 @@ interface IState {
 class Base extends React.Component {
     state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}}
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+        controls.push(this);
     }
     
     protected static defaultProps: Props = {
