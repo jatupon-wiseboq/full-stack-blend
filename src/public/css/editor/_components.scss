@@ -193,10 +193,20 @@
       content: 'padding';
     }
   }
+  .appearance-padding {
+    text-align: center;
+    
+    .size-picker {
+      position: relative;
+      display: inline-block;
+      padding-top: 39px;
+      margin: 0;
+    }
+  }
   .appearance-size,
   .boundary-size,
   .dimension-size {
-    border: 1px solid rgb(135, 135, 135);
+    border: 1px dotted rgb(135, 135, 135);
     background-color: rgb(146, 180, 190);
     top: 80px;
     right: 80px;
@@ -221,11 +231,10 @@
   }
   .boundary-size,
   .boundary-size:hover {
-    border-style: dotted;
     background-color: rgba(255, 255, 255, 0.5) !important;
   }
   
-  .appearance-size::before {
+  .appearance-padding::before {
     content: 'background';
   }
   .boundary-position::before {

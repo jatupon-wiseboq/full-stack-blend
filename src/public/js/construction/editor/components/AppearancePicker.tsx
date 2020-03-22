@@ -30,7 +30,7 @@ class AppearancePicker extends Base<Props, State> {
                     <FullStackBlend.Components.SizePicker additionalClassName="b" />
                     <FullStackBlend.Components.SizePicker additionalClassName="l" />
                 </div>
-                <div className="appearance-panel appearance-size">
+                <div className="appearance-panel appearance-padding">
                     <FullStackBlend.Components.SizePicker additionalClassName="" />
                 </div>
             </div>
