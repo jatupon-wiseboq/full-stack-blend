@@ -25,13 +25,13 @@ class AppearancePicker extends Base<Props, State> {
         return (
             <div className="appearance-picker">
                 <div className="appearance-panel appearance-border">
-                    <FullStackBlend.Components.SizePicker additionalClassName="t" />
-                    <FullStackBlend.Components.SizePicker additionalClassName="r" />
-                    <FullStackBlend.Components.SizePicker additionalClassName="b" />
-                    <FullStackBlend.Components.SizePicker additionalClassName="l" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="t" target="border-top" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="r" target="border-right" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="b" target="border-bottom" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="l" target="border-left" />
                 </div>
                 <div className="appearance-panel appearance-padding">
-                    <FullStackBlend.Components.SizePicker additionalClassName="" />
+                    <FullStackBlend.Components.SizePicker additionalClassName="" target="background" />
                 </div>
             </div>
         )
