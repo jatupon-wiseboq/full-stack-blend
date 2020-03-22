@@ -1,27 +1,39 @@
 include ../../mixin/CreateReactComponent
 .section-container
   .section-title
-    | Space
+    | Dimension
   .section-subtitle
-    | margin, margin-bottom, margin-left, margin-right, margin-top, padding, padding-bottom, padding-left, padding-right, padding-top
-    | height, max-height, max-width, min-height, min-width, object-fit, object-position, overflow, overflow-x, overflow-y, position, scroll-behavior, width
-    | bottom, left, right, top
-    | clip
+    | Size & Position
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DimensionPicker')
+  .section-subtitle
+    | Minimum & Maximum Size
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.BoundaryPicker')
+  .section-subtitle
+    | Containing Behaviour
+  .section-body
+    | object-fit, object-position
+  .section-subtitle
+    | Container Behaviour
+  .section-body
+    | overflow-x, overflow-y, position
 .section-hr
 .section-container
   .section-title
-    | Border
+    | Appearance
   .section-subtitle
-    | border, border-bottom, border-bottom-color, border-bottom-left-radius, border-bottom-right-radius, border-bottom-style, border-bottom-width, border-color, border-image, border-image-outset, border-image-repeat, border-image-slice, border-image-source, border-image-width, border-left, border-left-color, border-left-style, border-left-width, border-radius, border-right, border-right-color, border-right-style, border-right-width, border-style, border-top, border-top-color, border-top-left-radius, border-top-right-radius, border-top-style, border-top-width, border-width
+    | Border & Background
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.AppearancePicker')
 .section-hr
 .section-container
   .section-title
-    | Background
-  .section-subtitle
+    | 3D Transform
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.Transformer')
+.section-hr
+.section-container
+  .section-note
+    | border-image, border-image-outset, border-image-repeat, border-image-slice, border-image-source, border-image-width
     | background, background-attachment, background-blend-mode, background-clip, background-color, background-image, background-origin, background-position, background-repeat, background-size, mix-blend-mode
-.section-hr
-.section-container
-  .section-title
-    | Transform
-  .section-subtitle
-    | backface-visibility, perspective, perspective-origin, transform, transform-origin, transform-style

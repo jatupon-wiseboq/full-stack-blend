@@ -14,8 +14,9 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
-class Dropdown extends React.Component<Props, State> {
+class DropDownList extends React.Component<Props, State> {
     static defaultProps: Props = {
+        options: []
     }
     
     private documentOnClickDelegate: Function = null;
@@ -82,8 +83,8 @@ class Dropdown extends React.Component<Props, State> {
       return (
         pug `
           .btn-group(ref="group")
-            button.btn.btn-secondary.btn-sm.dropdown-toggle(ref="button", type="button", aria-haspopup="true", aria-expanded="false")
-                = this.props.children
+            button.btn.btn-light.btn-sm.dropdown-toggle(ref="button", type="button", aria-haspopup="true", aria-expanded="false")
+              = this.props.children
             .fsb-dropdown-menu.dropdown-menu(ref="dropdown")
               each value in this.props.options
                 a.dropdown-item(key="item-" + value, onClick=this.dropdownItemOnClick.bind(this, value))
@@ -93,6 +94,6 @@ class Dropdown extends React.Component<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Controls.Dropdown', Dropdown);
+DeclarationHelper.declare('Controls.DropDownList', DropDownList);
 
-export {Props, State, Dropdown};
+export {Props, State, DropDownList};

@@ -40,3 +40,216 @@
     }
   }
 }
+
+// Dimension, Appearance & Boundary Picker
+// -------------------------
+.appearance-picker,
+.boundary-picker,
+.dimension-picker {
+  position: relative;
+  width: 238px;
+  height: 219px;
+  
+  .appearance-panel,
+  .boundary-panel,
+  .dimension-panel {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    
+    &::before {
+      position: absolute;
+      font-size: 0.75em;
+      left: 5px;
+      top: 2px;
+    }
+    
+    .style-picker,
+    .size-picker {
+      position: absolute;
+      width: 20px;
+      height: 15px;
+      margin: -10px 0 0 -7.5px;
+      
+      &.t {
+        top: 12px;
+        left: 50%;
+      }
+      &.r {
+        right: 0px;
+        top: 50%;
+      }
+      &.b {
+        bottom: 2px;
+        left: 50%;
+      }
+      &.l {
+        left: 7.5px;
+        top: 50%;
+      }
+      
+      .fsb-dropdown-container {
+        font-size: 0.75em;
+        
+        .fsb-dropdown-button {
+          width: 20px;
+          height: 15px;
+          border-radius: 4px;
+          border: solid 1px #ccc;
+          background-color: rgba(255, 255, 255, 0.75);
+          line-height: 15px;
+          vertical-align: middle;
+          text-align: center;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  
+  .appearance-position,
+  .boundary-position,
+  .dimension-position {
+    border: 1px dotted rgb(65, 65, 65);
+    background-color: rgb(255, 255, 255);
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    
+    &::before {
+      content: 'position';
+    }
+  }
+  .boundary-position {
+    text-align: center;
+    
+    .size-picker {
+      position: relative;
+      display: inline-block;
+      padding-top: 19px;
+      margin: 0;
+    }
+  }
+  .appearance-margin,
+  .boundary-margin,
+  .dimension-margin {
+    border: 1px dashed rgb(65, 65, 65);
+    background-color: rgb(243, 204, 164);
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    
+    &:hover {
+      background-color: rgb(243, 204, 164) !important;
+    }
+    
+    &::before {
+      content: 'margin';
+    }
+  }
+  .appearance-border,
+  .boundary-border,
+  .dimension-border {
+    border: 1px solid rgb(65, 65, 65);
+    background-color: rgb(249, 220, 163);
+    top: 40px;
+    right: 40px;
+    bottom: 40px;
+    left: 40px;
+    
+    &:hover {
+      background-color: rgb(249, 220, 163) !important;
+    }
+    
+    &::before {
+      content: 'border';
+    }
+  }
+  .boundary-border {
+    background-color: rgb(146, 180, 190);
+    
+    &:hover {
+      background-color: rgb(146, 180, 190) !important;
+    }
+  }
+  .appearance-padding,
+  .boundary-padding,
+  .dimension-padding {
+    border: 1px dashed rgb(135, 135, 135);
+    background-color: rgb(197, 204, 145);
+    top: 60px;
+    right: 60px;
+    bottom: 60px;
+    left: 60px;
+    
+    &:hover {
+      background-color: rgb(197, 204, 145) !important;
+    }
+    
+    &::before {
+      content: 'padding';
+    }
+  }
+  .appearance-size,
+  .boundary-size,
+  .dimension-size {
+    border: 1px solid rgb(135, 135, 135);
+    background-color: rgb(146, 180, 190);
+    top: 80px;
+    right: 80px;
+    bottom: 80px;
+    left: 80px;
+    text-align: center;
+    
+    &:hover {
+      background-color: rgb(146, 180, 190) !important;
+    }
+    
+    &::before {
+      content: 'size';
+    }
+    
+    .size-picker {
+      position: relative;
+      display: inline-block;
+      padding-top: 19px;
+      margin: 0;
+    }
+  }
+  .boundary-size,
+  .boundary-size:hover {
+    border-style: dotted;
+    background-color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  .appearance-size::before {
+    content: 'background';
+  }
+  .boundary-position::before {
+    content: 'maximum size';
+  }
+  .boundary-border::before {
+    content: '';
+  }
+  .boundary-size::before {
+    content: 'minimum size';
+  }
+  
+  &:hover .appearance-panel,
+  &:hover .boundary-panel,
+  &:hover .dimension-panel {
+    background-color: rgb(255, 255, 255);
+  }
+}
+
+.appearance-picker {
+  overflow: hidden;
+  height: 139px;
+  
+  > .appearance-panel {
+    margin: -40px 0 -40px 0;
+  }
+}

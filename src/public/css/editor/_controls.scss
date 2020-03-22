@@ -1,4 +1,4 @@
-// Dropdown
+// Dropdown List & Control
 // -------------------------
 .fsb-dropdown-menu {
   font-size: 0.8rem;
@@ -6,6 +6,7 @@
   min-width: inherit;
   
   .dropdown-item {
+    display: block;
     padding: 0.25rem 0.5rem;
     text-align: center;
     cursor: pointer;

@@ -143,11 +143,15 @@ var HTMLHelper = {
   getPosition: (object: HTMLElement) => {
     var curleft = 0;
     var curtop = 0;
+    var computedStyle = null;
     
     if (object.offsetParent) {
       do {
+        computedStyle = window.getComputedStyle(object, null);
         curleft += object.offsetLeft;
+        curleft += parseInt(computedStyle.getPropertyValue('border-left-width'));
         curtop += object.offsetTop;
+        curtop += parseInt(computedStyle.getPropertyValue('border-top-width'));
         curtop -= object.scrollTop;
       } while (object = object.offsetParent);
     }

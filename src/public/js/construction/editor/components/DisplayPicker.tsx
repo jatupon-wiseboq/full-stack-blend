@@ -58,7 +58,7 @@ class DisplayPicker extends Base<Props, State> {
           .display-picker.btn-group
             each index in [0, 1, 2, 3]
               .btn-group(key="group-" + index)
-                label.btn.btn-secondary.btn-sm
+                label.btn.btn-light.btn-sm
                   i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + ((this.state.properties.currentActiveLayout == index) ? ' active' : ' inactive'))
                   br
                   .form-check

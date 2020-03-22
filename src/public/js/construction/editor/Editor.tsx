@@ -7,6 +7,11 @@ import './components/PreservePicker.js';
 import './components/CSSPresets.js';
 import './components/CSSStyles.js';
 import './components/CSSPresetName.js';
+import './components/DimensionPicker.js';
+import './components/AppearancePicker.js';
+import './components/BoundaryPicker.js';
+import './components/Transformer.js';
+import './components/SizePicker.js';
 
 let recentExtraPanelSelector: string = null;
 

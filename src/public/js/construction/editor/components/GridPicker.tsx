@@ -1,7 +1,7 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../controls/Dropdown.js';
+import '../controls/DropDownList.js';
 import {RESPONSIVE_SIZE_REGEX} from '../../Constants.js';
 
 declare let React: any;
@@ -77,7 +77,7 @@ class GridPicker extends Base<Props, State> {
             <div className="grid-picker btn-group">
                 {[0, 1, 2, 3].map((index) => {
                     return (
-                        <FullStackBlend.Controls.Dropdown key={"element-" + index}
+                        <FullStackBlend.Controls.DropDownList key={"element-" + index}
                                                           identity={index}
                                                           options={(index != 0) ? ['Inherit', ...this.props.options] : this.props.options}
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
@@ -88,7 +88,7 @@ class GridPicker extends Base<Props, State> {
                               span(ref="selectedValue" + index)
                                 | #{$this.getSelectedValue(index)}
                             `}
-                        </FullStackBlend.Controls.Dropdown>
+                        </FullStackBlend.Controls.DropDownList>
                     )
                 })}
             </div>
