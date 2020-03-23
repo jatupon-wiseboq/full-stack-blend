@@ -76,7 +76,7 @@ class DropDownList extends React.Component<Props, State> {
         this.hide();
     }
     
-    private hide() {
+    public hide() {
         let group = ReactDOM.findDOMNode(this.refs.group);
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
@@ -113,7 +113,7 @@ class DropDownList extends React.Component<Props, State> {
             .fsb-dropdown-menu.dropdown-menu(ref="dropdown")
               each value, index in this.props.options
                 a.dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="1")
-                  | #{value}
+                  span(dangerouslySetInnerHTML={__html: value})
         `
       )
     }

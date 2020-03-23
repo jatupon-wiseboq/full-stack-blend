@@ -133,7 +133,8 @@ var HTMLHelper = {
     
     for (var i=0; i<splited.length; i++) {
       if (splited[i].trim().indexOf(styleName + ':') == 0) {
-        return splited[i].split(':').splice(-1);
+        let tokens = splited[i].split(':');
+        return tokens[tokens.length - 1];
       }
     }
     

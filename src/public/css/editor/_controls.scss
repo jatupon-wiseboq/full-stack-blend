@@ -1,3 +1,5 @@
+@import "../variables";
+
 // Dropdown List & Control
 // -------------------------
 .fsb-dropdown-menu {
@@ -5,12 +7,18 @@
   overflow-y: scroll;
   min-width: inherit;
   padding-left: 4.5px;
+  z-index: #{$maximum-z-index - 5};
   
   .dropdown-item {
     display: block;
     padding: 0.25rem 0.5rem;
     text-align: center;
     cursor: pointer;
+  }
+  
+  > .input-group {
+    border-radius: 0.2em;
+    overflow: hidden;
   }
 }
 

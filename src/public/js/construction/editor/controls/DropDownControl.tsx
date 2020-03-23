@@ -6,7 +6,8 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
-    representingValue: string
+    representing: string;
+    onVisibleChanged(visible: boolean);
 }
 
 interface State extends IState {
@@ -53,6 +54,10 @@ class DropDownControl extends React.Component<Props, State> {
             
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
+            if (this.props.onVisibleChanged) {
+                this.props.onVisibleChanged(true);
+            }
+            
             return EventHelper.cancel(event);
         });
         
@@ -63,11 +68,13 @@ class DropDownControl extends React.Component<Props, State> {
     
     componentWillUnmount() {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        
+        if (this.props.onVisibleChanged) {
+            this.props.onVisibleChanged(false);
+        }
     }
     
-    private documentOnClick(event) {
-        if (EventHelper.checkIfDenyForHandle(event)) return;
-        
+    public hide() {
         let group = ReactDOM.findDOMNode(this.refs.group);
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
@@ -81,6 +88,16 @@ class DropDownControl extends React.Component<Props, State> {
         group.appendChild(dropdown);
         
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        
+        if (this.props.onVisibleChanged) {
+            this.props.onVisibleChanged(false);
+        }
+    }
+    
+    private documentOnClick(event) {
+        if (EventHelper.checkIfDenyForHandle(event)) return;
+        
+        this.hide();
     }
     
     render() {
@@ -88,10 +105,10 @@ class DropDownControl extends React.Component<Props, State> {
         pug `
           .fsb-dropdown-container(ref="group")
             .fsb-dropdown-button(ref="button", aria-haspopup="true", aria-expanded="false")
-              if (this.props.representingValue == null)
+              if (this.props.representing == null)
                 span &nbsp;
               else
-                = this.props.representingValue
+                span(dangerouslySetInnerHTML={__html: this.props.representing})
             .fsb-dropdown-menu.dropdown-menu(ref="dropdown")
               = this.props.children
         `

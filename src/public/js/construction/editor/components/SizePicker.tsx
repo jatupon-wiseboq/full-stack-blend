@@ -60,7 +60,7 @@ class SizePicker extends Base<Props, State> {
     render() {
         return (
             <div className={"size-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl representingValue={this.getRepresentedValue()} dropDownWidth={120} >
+                <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()} dropDownWidth={120} >
                     <div className="input-group">
                         <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                         <div className="input-group-append">

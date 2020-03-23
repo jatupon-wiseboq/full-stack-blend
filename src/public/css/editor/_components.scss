@@ -1,3 +1,5 @@
+@import "../variables";
+
 // Grid & Display Picker
 // -------------------------
 .grid-picker,
@@ -71,10 +73,10 @@
       position: absolute;
       width: 20px;
       height: 15px;
-      margin: -10px 0 0 -7.5px;
+      margin: -7.5px 0 0 -10px;
       
       &.t {
-        top: 12px;
+        top: 9px;
         left: 50%;
       }
       &.r {
@@ -86,7 +88,7 @@
         left: 50%;
       }
       &.l {
-        left: 7.5px;
+        left: 10px;
         top: 50%;
       }
       
@@ -120,16 +122,6 @@
     
     &::before {
       content: 'position';
-    }
-  }
-  .boundary-position {
-    text-align: center;
-    
-    .size-picker {
-      position: relative;
-      display: inline-block;
-      padding-top: 19px;
-      margin: 0;
     }
   }
   .appearance-margin,
@@ -193,16 +185,6 @@
       content: 'padding';
     }
   }
-  .appearance-padding {
-    text-align: center;
-    
-    .size-picker {
-      position: relative;
-      display: inline-block;
-      padding-top: 39px;
-      margin: 0;
-    }
-  }
   .appearance-size,
   .boundary-size,
   .dimension-size {
@@ -212,7 +194,6 @@
     right: 80px;
     bottom: 80px;
     left: 80px;
-    text-align: center;
     
     &:hover {
       background-color: rgb(146, 180, 190) !important;
@@ -221,17 +202,46 @@
     &::before {
       content: 'size';
     }
+  }
+  .boundary-position,
+  .appearance-padding,
+  .appearance-size,
+  .boundary-size,
+  .dimension-size
+  {
+    text-align: center;
     
+    .style-picker,
     .size-picker {
       position: relative;
       display: inline-block;
-      padding-top: 19px;
+      padding-top: 21px;
       margin: 0;
     }
   }
+  .style-picker {
+    width: 40px !important;
+    margin: -7.5px 0 0 -20px !important;
+    z-index: #{$maximum-z-index - 10};
+    
+    &.r {
+      right: -10px !important;
+    }
+    
+    .fsb-dropdown-container {
+      .fsb-dropdown-button {
+        width: 40px !important;
+      }
+    }
+  }
+  
   .boundary-size,
   .boundary-size:hover {
     background-color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  .appearance-border {
+    border: none;
   }
   
   .appearance-padding::before {

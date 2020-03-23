@@ -15,8 +15,10 @@ html(lang='')
     include partials/header
     if user
       link(rel='stylesheet', href='/css/editor.css')
+      script(src='/js/lib/jquery-3.1.1.min.js')
       script(src='/js/lib/react.development.js')
       script(src='/js/lib/react-dom.development.js')
+      script(src='/js/lib/colpick.js')
       script(src='/js/construction/editor/Editor.bundle.js')
       
       .workspace-container
@@ -43,7 +45,6 @@ html(lang='')
       include partials/flash
       block content
 
-    script(src='/js/lib/jquery-3.1.1.min.js')
     script(src='/js/lib/popper.min.js')
     script(src='/js/lib/bootstrap.min.js')
     script(async defer src="https://buttons.github.io/buttons.js")
