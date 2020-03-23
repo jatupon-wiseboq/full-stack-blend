@@ -15,7 +15,7 @@ interface State extends IState {
 class AppearancePicker extends Base<Props, State> {
     static defaultProps: Props = {
         watchingClassNames: [],
-        watchingStyleNames: ["border-top-style", "border-right-style", "border-bottom-style", "border-left-style", "border-top-color", "border-right-color", "border-bottom-color", "border-left-color"]
+        watchingStyleNames: ["border-top-style", "border-right-style", "border-bottom-style", "border-left-style", "border-top-color", "border-right-color", "border-bottom-color", "border-left-color", "background-color"]
     }
     
     constructor(props) {
@@ -40,7 +40,9 @@ class AppearancePicker extends Base<Props, State> {
                     <FullStackBlend.Components.BorderStylePicker additionalClassName="b" watchingStyleNames={["border-bottom-style", "border-bottom-color"]} />
                     <FullStackBlend.Components.BorderStylePicker additionalClassName="l" watchingStyleNames={["border-left-style", "border-left-color"]} />
                 </div>
-                <div className="appearance-panel appearance-padding">
+                <div className="appearance-panel appearance-padding" style={{
+                    backgroundColor: (!this.state.styleValues[this.props.watchingStyleNames[8]]) ? '' : this.state.styleValues[this.props.watchingStyleNames[8]]
+                }}>
                     <FullStackBlend.Components.BackgroundStylePicker watchingStyleNames={["background-color"]} />
                 </div>
             </div>

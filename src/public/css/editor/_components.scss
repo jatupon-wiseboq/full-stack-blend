@@ -234,6 +234,19 @@
       }
     }
   }
+  .appearance-padding {
+    .style-picker {
+      padding-top: 48.5px;
+      width: 60px !important;
+      margin: -7.5px 0 0 0 !important;
+      
+      .fsb-dropdown-container {
+        .fsb-dropdown-button {
+          width: 60px !important;
+        }
+      }
+    }
+  }
   
   .boundary-size,
   .boundary-size:hover {
