@@ -41,7 +41,8 @@ class SizePicker extends Base<Props, State> {
             aStyle: {
                 name: this.props.watchingStyleNames[0],
                 value: (this.state.value != null) ? this.state.value + SIZES_IN_UNIT[index] : null
-            }
+            },
+            replace: this.props.watchingStyleNames[0]
         });
     }
     
@@ -53,7 +54,8 @@ class SizePicker extends Base<Props, State> {
             aStyle: {
                 name: this.props.watchingStyleNames[0],
                 value: (value != null) ? (value.toString() + SIZES_IN_UNIT[this.state.index]).trim() : null
-            }
+            },
+            replace: this.props.watchingStyleNames[0]
         });
     }
     

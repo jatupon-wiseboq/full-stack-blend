@@ -37,7 +37,7 @@ class BackgroundStylePicker extends Base<Props, State> {
                 name: this.props.watchingStyleNames[0],
                 value: (hex != null) ? '#' + hex : null
             },
-            replace: 'border-color'
+            replace: this.props.watchingStyleNames[0]
         });
     }
     
