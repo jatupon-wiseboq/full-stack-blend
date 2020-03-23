@@ -55,7 +55,9 @@ class ColorPicker extends React.Component<Props, State> {
             let pickerContainer = ReactDOM.findDOMNode(this.refs.pickerContainer);
             pickerContainer.appendChild(picker);
             
-            jQuery(picker).colpickSetColor(this.props.value, true);
+            if (this.props.value != null) {
+                jQuery(picker).colpickSetColor(this.props.value, true);
+            }
         }
     }
     

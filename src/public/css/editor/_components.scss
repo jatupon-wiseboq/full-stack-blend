@@ -92,6 +92,23 @@
         top: 50%;
       }
       
+      &.tl {
+        top: -2px;
+        left: -13px;
+      }
+      &.tr {
+        top: -2px;
+        right: -24px;
+      }
+      &.br {
+        bottom: -10px;
+        right: -24px;
+      }
+      &.bl {
+        left: -13px;
+        bottom: -10px;
+      }
+      
       .fsb-dropdown-container {
         font-size: 0.75em;
         
@@ -279,9 +296,9 @@
 
 .appearance-picker {
   overflow: hidden;
-  height: 139px;
+  height: 159px;
   
   > .appearance-panel {
-    margin: -40px 0 -40px 0;
+    margin: -30px 0 -30px 0;
   }
 }

@@ -39,8 +39,8 @@ class SizePicker extends Base<Props, State> {
         });
         perform('update', {
             aStyle: {
-                name: this.props.watchingStyleNames[0],
-                value: (this.state.value != null) ? this.state.value + SIZES_IN_UNIT[index] : null
+                name: this.props.watchingStyleNames[0].split('[')[0],
+                value: this.composeValue(this.state.value, index)
             },
             replace: this.props.watchingStyleNames[0]
         });
@@ -52,11 +52,37 @@ class SizePicker extends Base<Props, State> {
         });
         perform('update', {
             aStyle: {
-                name: this.props.watchingStyleNames[0],
-                value: (value != null) ? (value.toString() + SIZES_IN_UNIT[this.state.index]).trim() : null
+                name: this.props.watchingStyleNames[0].split('[')[0],
+                value: this.composeValue(value, this.state.index)
             },
             replace: this.props.watchingStyleNames[0]
         });
+    }
+    
+    private composeValue(value: any, index: number) {
+        let composedValue = (value != null) ? (value.toString() + SIZES_IN_UNIT[index]).trim() : null;
+        
+        let splited = this.props.watchingStyleNames[0].split('[');
+        if (splited[1]) {
+            let tokens = splited[1].split(',');
+            let index = parseInt(tokens[0]);
+            let count = parseInt(tokens[1].split(']')[0]);
+            
+            let values = (this.state.styleValues[this.props.watchingStyleNames[1]] || this.defaultValue(count)).split(' ');
+            values[index] = composedValue;
+            
+            return values.join(' ');
+        } else {
+            return composedValue;
+        }
+    }
+    
+    private defaultValue(count: number) {
+        let tokens = new Array(count);
+        for (let i=0; i<tokens.length; i++) {
+            tokens[i] = "0";
+        }
+        return tokens.join(' ');
     }
     
     render() {

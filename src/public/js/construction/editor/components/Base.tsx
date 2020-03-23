@@ -62,7 +62,16 @@ class Base extends React.Component {
             
             this.props.watchingStyleNames.forEach((name: string) => {
                 if (!!name) {
-                    let value = HTMLHelper.getInlineStyle(this.recentElementStyle, name);
+                    let splited = name.split('[');
+                    let value = HTMLHelper.getInlineStyle(this.recentElementStyle, splited[0]);
+                    
+                    if (value != null && splited[1]) {
+                        let tokens = splited[1].split(',');
+                        let index = parseInt(tokens[0]);
+                        
+                        value = value.split(' ')[index];
+                    }
+                    
                     if (this.state.styleValues[name] != value) {
                         this.state.styleValues[name] = value;
                         changed = true;
