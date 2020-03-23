@@ -1,6 +1,5 @@
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../controls/Textbox.js';
 import '../controls/ColorPicker.js';
 import '../controls/DropDownList.js';
 import '../controls/DropDownControl.js';
@@ -67,7 +66,8 @@ class BorderStylePicker extends Base<Props, State> {
             aStyle: {
                 name: this.props.watchingStyleNames[1],
                 value: (hex != null) ? '#' + hex : null
-            }
+            },
+            replace: 'border-color'
         });
     }
     

@@ -18,6 +18,7 @@ var ManipulationHelper = {
     let accessory = null;
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
+    let replace = (content && content.replace) || false;
     
     switch (name) {
       case 'delete':
@@ -466,7 +467,14 @@ var ManipulationHelper = {
     }
     
     if (remember) {
-      console.log('remember', name, content, accessory);
+      if (replace && performedIndex >= 0) {
+        if (performed[performed.length - 1].replace === replace) {
+          performedIndex -= 1;
+          accessory = performed.splice(-1)[0].accessory;
+        }
+      }
+      
+      console.log('remember', name, content, accessory, replace);
       
       performedIndex += 1;
       performed = performed.splice(0, performedIndex);
@@ -474,7 +482,8 @@ var ManipulationHelper = {
       performed.push({
         name: name,
         content: content,
-        accessory: accessory
+        accessory: accessory,
+        replace: replace
       });
     }
     

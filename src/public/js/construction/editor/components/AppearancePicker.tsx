@@ -1,6 +1,7 @@
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import './BorderStylePicker.js';
+import './BackgroundStylePicker.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -40,7 +41,7 @@ class AppearancePicker extends Base<Props, State> {
                     <FullStackBlend.Components.BorderStylePicker additionalClassName="l" watchingStyleNames={["border-left-style", "border-left-color"]} />
                 </div>
                 <div className="appearance-panel appearance-padding">
-                    <FullStackBlend.Components.BorderStylePicker additionalClassName="" watchingStyleNames={["background"]} />
+                    <FullStackBlend.Components.BackgroundStylePicker watchingStyleNames={["background-color"]} />
                 </div>
             </div>
         )
