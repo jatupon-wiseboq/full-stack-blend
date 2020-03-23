@@ -27,6 +27,16 @@ class BorderStylePicker extends Base<Props, State> {
         super(props);
     }
     
+    public update(properties: any) {
+        super.update(properties);
+        
+        let borderStyleIndex = BORDER_STYLES_IN_VALUE.indexOf(this.state.styleValues[this.props.watchingStyleNames[0]]);
+        
+        this.setState({
+            borderStyleIndex: (borderStyleIndex == -1) ? 0 : borderStyleIndex
+        });
+    }
+    
     private getRepresentedValue() {
         let status = this.state.styleValues[this.props.watchingStyleNames[0]];
         if (status) {
@@ -69,7 +79,7 @@ class BorderStylePicker extends Base<Props, State> {
     render() {
         return (
             <div className={"style-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" value={this.state.styleValues[this.props.watchingStyleNames[0]]} representing={BORDER_STYLES_IN_VALUE[this.state.borderStyleIndex]} dropDownWidth={369} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_VALUE[this.state.borderStyleIndex]} dropDownWidth={369} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                     <div className="section-container">
                         <div className="section-title">Border</div>
                         <div className="section-subtitle">Border Style</div>
