@@ -13,11 +13,15 @@ include ../../mixin/CreateReactComponent
   .section-subtitle
     | Containing Behaviour
   .section-body
-    | object-fit, object-position
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-fit'], dropDownMinWidth: 100}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position-x'], dropDownMinWidth: 150}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position-y'], dropDownMinWidth: 150}")
   .section-subtitle
     | Container Behaviour
   .section-body
-    | overflow-x, overflow-y, position
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-x']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-y']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], dropDownMinWidth: 80}")
 .section-hr
 .section-container
   .section-title
@@ -35,5 +39,4 @@ include ../../mixin/CreateReactComponent
 .section-hr
 .section-container
   .section-note
-    | border-image, border-image-outset, border-image-repeat, border-image-slice, border-image-source, border-image-width
     | background, background-attachment, background-blend-mode, background-clip, background-color, background-image, background-origin, background-position, background-repeat, background-size, mix-blend-mode

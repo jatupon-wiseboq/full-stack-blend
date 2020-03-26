@@ -12,6 +12,7 @@ import './components/AppearancePicker.js';
 import './components/BoundaryPicker.js';
 import './components/Transformer.js';
 import './components/SizePicker.js';
+import './components/DropDownPicker.js';
 
 let recentExtraPanelSelector: string = null;
 

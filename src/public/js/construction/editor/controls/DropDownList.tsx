@@ -1,6 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import '../components/SizePicker.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -45,6 +46,7 @@ class DropDownList extends React.Component<Props, State> {
             let position = HTMLHelper.getPosition(button);
             let size = HTMLHelper.getSize(button);
             let dropDownWidth = (this.props.dropDownWidth != null) ? this.props.dropDownWidth : size[0];
+            let dropDownMinWidth = (this.props.dropDownMinWidth != null) ? this.props.dropDownMinWidth : 0;
             let windowWidth = window.innerWidth;
             
             dropdown.style.position = 'fixed';
@@ -55,6 +57,7 @@ class DropDownList extends React.Component<Props, State> {
             }
             dropdown.style.top = (position[1] + size[1]) + 'px';
             dropdown.style.width = dropDownWidth + 'px';
+            dropdown.style.minWidth = dropDownMinWidth + 'px';
             dropdown.style.maxHeight = (window.innerHeight - position[1] - size[1] - 5) + 'px';
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
@@ -90,11 +93,13 @@ class DropDownList extends React.Component<Props, State> {
         group.appendChild(dropdown);
         
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        
+        if (this.refs.sizePicker) {
+            this.refs.sizePicker.hide();
+        }
     }
     
     private dropdownItemOnClick(event) {
-        EventHelper.setDenyForHandle('click', false, 100);
-    
         if (this.props.onUpdate) {
             this.props.onUpdate(this.props.identity, EventHelper.getCurrentElement(event).getAttribute('value'), EventHelper.getCurrentElement(event).getAttribute('index'));
         }
@@ -105,15 +110,25 @@ class DropDownList extends React.Component<Props, State> {
     }
     
     render() {
+      let sizeControl = null;
+      if (this.props.options.indexOf('{SIZE}') != -1) {
+        sizeControl = (
+          <FullStackBlend.Components.SizePicker ref="sizePicker" inline={true} />
+        )
+      }
+    
       return (
         pug `
-          .btn-group(ref="group")
+          .btn-group(ref="group", internal-fsb-event-no-propagate="click")
             button.btn.btn-sm.dropdown-toggle(ref="button", type="button", className=(this.props.customClassName || "btn-light"), aria-haspopup="true", aria-expanded="false")
               = this.props.children
-            .fsb-dropdown-menu.dropdown-menu(ref="dropdown")
+            .fsb-dropdown-menu.dropdown-menu(ref="dropdown", internal-fsb-event-no-propagate="click")
               each value, index in this.props.options
-                a.dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="1")
-                  span(dangerouslySetInnerHTML={__html: value})
+                .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click")
+                  if value == "{SIZE}"
+                    = sizeControl
+                  else
+                    span(dangerouslySetInnerHTML={__html: value || "none"})
         `
       )
     }

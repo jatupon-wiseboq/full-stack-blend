@@ -4,3 +4,7 @@ export const SIZES_IN_DESCRIPTION = ["pixels", "points", "relative to font-size"
 export const SIZES_IN_UNIT = ["px", "pt", "em", "rem", "vw", "vh", "%"];
 export const BORDER_STYLES_IN_DESCRIPTION = ['default', 'none', '<div style="margin: 5px 0; padding: 3px; border: 4px dotted #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px dashed #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px solid #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px double #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px groove #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px ridge #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px inset #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px outset #999;" />'];
 export const BORDER_STYLES_IN_VALUE = [null, "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
+export const OBJECT_FIT_OPTIONS = [null, "fill", "contain", "cover", "none", "scale-down"];
+export const OBJECT_POSITION_OPTIONS = [null, "{SIZE}", "top", "right", "bottom", "left"];
+export const OVERFLOW_OPTIONS = [null, "visible", "hidden", "scroll", "auto"];
+export const POSITION_OPTIONS = [null, "static", "absolute", "fixed", "relative", "sticky"];

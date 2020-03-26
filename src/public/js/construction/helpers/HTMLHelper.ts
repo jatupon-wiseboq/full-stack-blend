@@ -62,6 +62,25 @@ var HTMLHelper = {
     
     return results;
   },
+  findAllParentValuesInAttributeName: (attributeName: string, fromElement: HTMLElement, toElement: HTMLElement=null, includeSelf: boolean=false) => {
+    let results = [];
+    let current = (includeSelf) ? fromElement : fromElement.parentNode;
+    
+    if (current == null) {
+      return results;
+    }
+    
+    do {
+      let value = current.getAttribute(attributeName);
+      if (value !== '' && value !== null) {
+        results.push(value);
+      }
+      current = current.parentNode;
+    }
+    while (current != toElement && current != null && current != document)
+    
+    return results;
+  },
   
   hasClass: (element: any, name: string) => {
     let classAttributeValue: string = element;

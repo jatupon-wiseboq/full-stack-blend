@@ -43,7 +43,7 @@
   }
 }
 
-// Dimension, Appearance & Boundary Picker
+// Dimension & Appearance & Boundary Picker
 // -------------------------
 .appearance-picker,
 .boundary-picker,
@@ -300,5 +300,20 @@
   
   > .appearance-panel {
     margin: -30px 0 -30px 0;
+  }
+}
+
+// Dropdown Picker
+// -------------------------
+.dropdown-picker {
+  font-size: 11px;
+  display: inline-block;
+  
+  .btn::after {
+    display: none;
+  }
+  
+  * {
+    font-size: 0.8em;
   }
 }

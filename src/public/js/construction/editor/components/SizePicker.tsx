@@ -1,3 +1,4 @@
+import {EventHelper} from '../../helpers/EventHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
@@ -10,6 +11,7 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
+    inline: boolean
 }
 
 interface State extends IState {
@@ -19,6 +21,11 @@ interface State extends IState {
 
 class SizePicker extends Base<Props, State> {
     state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, index: 0, value: null}
+    static defaultProps: Props = {
+        watchingClassNames: [],
+        watchingStyleNames: [],
+        inline: false
+    }
     
     constructor(props) {
         super(props);
@@ -37,26 +44,30 @@ class SizePicker extends Base<Props, State> {
         this.setState({
             index: index
         });
-        perform('update', {
-            aStyle: {
-                name: this.props.watchingStyleNames[0].split('[')[0],
-                value: this.composeValue(this.state.value, index)
-            },
-            replace: this.props.watchingStyleNames[0]
-        });
+        if (this.props.watchingStyleNames[0]) {
+            perform('update', {
+                aStyle: {
+                    name: this.props.watchingStyleNames[0].split('[')[0],
+                    value: this.composeValue(this.state.value, index)
+                },
+                replace: this.props.watchingStyleNames[0]
+            });
+        }
     }
     
     protected textboxOnUpdate(value: any) {
         this.setState({
             value: value
         });
-        perform('update', {
-            aStyle: {
-                name: this.props.watchingStyleNames[0].split('[')[0],
-                value: this.composeValue(value, this.state.index)
-            },
-            replace: this.props.watchingStyleNames[0]
-        });
+        if (this.props.watchingStyleNames[0]) {
+            perform('update', {
+                aStyle: {
+                    name: this.props.watchingStyleNames[0].split('[')[0],
+                    value: this.composeValue(value, this.state.index)
+                },
+                replace: this.props.watchingStyleNames[0]
+            });
+        }
     }
     
     private composeValue(value: any, index: number) {
@@ -85,21 +96,41 @@ class SizePicker extends Base<Props, State> {
         return tokens.join(' ');
     }
     
+    public hide() {
+        this.refs.dropdown.hide();
+    }
+    
     render() {
-        return (
-            <div className={"size-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()} dropDownWidth={120} >
-                    <div className="input-group">
-                        <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                        <div className="input-group-append">
-                            <FullStackBlend.Controls.DropDownList customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                                <span>{SIZES_IN_UNIT[this.state.index]}</span>
-                            </FullStackBlend.Controls.DropDownList>
+        if (this.props.inline) {
+            return (
+                <div className="input-group" internal-fsb-event-no-propagate="click">
+                    <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <div className="input-group-append">
+                        <FullStackBlend.Controls.DropDownList ref="dropdown" customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                            <span>{SIZES_IN_UNIT[this.state.index]}</span>
+                        </FullStackBlend.Controls.DropDownList>
+                        <div className="btn btn-sm btn-secondary">
+                            <i className="fa fa-check-circle m-0" />
                         </div>
                     </div>
-                </FullStackBlend.Controls.DropDownControl>
-            </div>
-        )
+                </div>
+            )
+        } else {
+            return (
+                <div className={"size-picker " + this.props.additionalClassName}>
+                    <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()} dropDownWidth={120} >
+                        <div className="input-group">
+                            <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <div className="input-group-append">
+                                <FullStackBlend.Controls.DropDownList ref="dropdown" customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                                    <span>{SIZES_IN_UNIT[this.state.index]}</span>
+                                </FullStackBlend.Controls.DropDownList>
+                            </div>
+                        </div>
+                    </FullStackBlend.Controls.DropDownControl>
+                </div>
+            )
+        }
     }
 }
 

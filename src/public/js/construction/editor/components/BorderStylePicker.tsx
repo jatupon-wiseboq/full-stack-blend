@@ -1,3 +1,4 @@
+import {EventHelper} from '../../helpers/EventHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';

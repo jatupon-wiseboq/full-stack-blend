@@ -27,6 +27,13 @@ var EventHelper = {
     
     if (denyForHandle[event.type]) return true;
     
+    let values = HTMLHelper.findAllParentValuesInAttributeName('internal-fsb-event-no-propagate', originalElement, EventHelper.getCurrentElement(event), true);
+    for (let value of values) {
+      if (value.split(',').indexOf(event.type) != -1) {
+        return true;
+      }
+    }
+    
     if (EventHelper.getCurrentElement(event) == originalElement) return false;
     else return originalElement.getAttribute('internal-fsb-event-no-propagate') == '1';
   },

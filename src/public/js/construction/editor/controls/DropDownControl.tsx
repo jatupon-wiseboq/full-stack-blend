@@ -60,10 +60,6 @@ class DropDownControl extends React.Component<Props, State> {
             
             return EventHelper.cancel(event);
         });
-        
-        dropdown.addEventListener('click', (event) => {
-            return EventHelper.cancel(event);
-        });
     }
     
     componentWillUnmount() {
@@ -103,13 +99,13 @@ class DropDownControl extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          .fsb-dropdown-container(ref="group")
+          .fsb-dropdown-container(ref="group", internal-fsb-event-no-propagate="click")
             .fsb-dropdown-button(ref="button", aria-haspopup="true", aria-expanded="false")
               if (this.props.representing == null)
                 span &nbsp;
               else
                 span(dangerouslySetInnerHTML={__html: this.props.representing})
-            .fsb-dropdown-menu.dropdown-menu(ref="dropdown")
+            .fsb-dropdown-menu.dropdown-menu(ref="dropdown", internal-fsb-event-no-propagate="click")
               = this.props.children
         `
       )

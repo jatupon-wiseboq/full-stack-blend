@@ -1,3 +1,4 @@
+import {EventHelper} from '../../helpers/EventHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 
 declare let React: any;
@@ -26,7 +27,14 @@ class Textbox extends React.Component<Props, State> {
         super();
     }
     
-    onKeyUp(event) {
+    componentDidMount() {
+        let input = ReactDOM.findDOMNode(this.refs.input);
+        input.addEventListener('click', (event) => {
+            return EventHelper.cancel(event);
+        });
+    }
+    
+    inputOnKeyUp(event) {
         if (this.props.preRegExp) {
             if (this.previousPreRegExp != this.props.preRegExp) {
                 this.preRegExp = new RegExp('^' + this.props.preRegExp + '$', 'i');
@@ -67,7 +75,7 @@ class Textbox extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          input.form-control.form-control-sm(ref="input", type="text", onKeyUp=this.onKeyUp)
+          input.form-control.form-control-sm(ref="input", type="text", onKeyUp=this.inputOnKeyUp)
         `
       )
     }
