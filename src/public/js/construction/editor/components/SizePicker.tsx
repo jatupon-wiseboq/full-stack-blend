@@ -1,4 +1,5 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
@@ -11,7 +12,8 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
-    inline: boolean
+    inline: boolean,
+    manual: boolean
 }
 
 interface State extends IState {
@@ -24,7 +26,8 @@ class SizePicker extends Base<Props, State> {
     static defaultProps: Props = {
         watchingClassNames: [],
         watchingStyleNames: [],
-        inline: false
+        inline: false,
+        manual: false
     }
     
     constructor(props) {
@@ -44,7 +47,7 @@ class SizePicker extends Base<Props, State> {
         this.setState({
             index: index
         });
-        if (this.props.watchingStyleNames[0]) {
+        if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
                     name: this.props.watchingStyleNames[0].split('[')[0],
@@ -59,7 +62,7 @@ class SizePicker extends Base<Props, State> {
         this.setState({
             value: value
         });
-        if (this.props.watchingStyleNames[0]) {
+        if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
                     name: this.props.watchingStyleNames[0].split('[')[0],
@@ -73,27 +76,11 @@ class SizePicker extends Base<Props, State> {
     private composeValue(value: any, index: number) {
         let composedValue = (value != null) ? (value.toString() + SIZES_IN_UNIT[index]).trim() : null;
         
-        let splited = this.props.watchingStyleNames[0].split('[');
-        if (splited[1]) {
-            let tokens = splited[1].split(',');
-            let index = parseInt(tokens[0]);
-            let count = parseInt(tokens[1].split(']')[0]);
-            
-            let values = (this.state.styleValues[this.props.watchingStyleNames[1]] || this.defaultValue(count)).split(' ');
-            values[index] = composedValue;
-            
-            return values.join(' ');
-        } else {
-            return composedValue;
-        }
+        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], composedValue, this.state.styleValues[this.props.watchingStyleNames[1]], '0px');
     }
     
-    private defaultValue(count: number) {
-        let tokens = new Array(count);
-        for (let i=0; i<tokens.length; i++) {
-            tokens[i] = "0";
-        }
-        return tokens.join(' ');
+    public getValue() {
+        return this.composeValue(this.state.value, this.state.index);
     }
     
     public hide() {

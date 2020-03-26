@@ -1,13 +1,13 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../components/SizePicker.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
     options: [any];
+    controls: [any];
     identity: any;
     onUpdate(identity: any, value: any, index: any);
     autohide: boolean;
@@ -21,6 +21,7 @@ interface State extends IState {
 class DropDownList extends React.Component<Props, State> {
     static defaultProps: Props = {
         options: [],
+        controls: [],
         autohide: true,
         dropDownWidth: null
     }
@@ -93,10 +94,6 @@ class DropDownList extends React.Component<Props, State> {
         group.appendChild(dropdown);
         
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
-        
-        if (this.refs.sizePicker) {
-            this.refs.sizePicker.hide();
-        }
     }
     
     private dropdownItemOnClick(event) {
@@ -110,13 +107,6 @@ class DropDownList extends React.Component<Props, State> {
     }
     
     render() {
-      let sizeControl = null;
-      if (this.props.options.indexOf('{SIZE}') != -1) {
-        sizeControl = (
-          <FullStackBlend.Components.SizePicker ref="sizePicker" inline={true} />
-        )
-      }
-    
       return (
         pug `
           .btn-group(ref="group", internal-fsb-event-no-propagate="click")
@@ -125,8 +115,8 @@ class DropDownList extends React.Component<Props, State> {
             .fsb-dropdown-menu.dropdown-menu(ref="dropdown", internal-fsb-event-no-propagate="click")
               each value, index in this.props.options
                 .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click")
-                  if value == "{SIZE}"
-                    = sizeControl
+                  if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
+                    = this.props.controls[value]
                   else
                     span(dangerouslySetInnerHTML={__html: value || "none"})
         `
