@@ -18,7 +18,7 @@ var ManipulationHelper = {
     let accessory = null;
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
-    let replace = (content && content.replace) || false;
+    let replace = (content && (typeof content === 'object') && content.replace) || false;
     
     switch (name) {
       case 'delete':
