@@ -43,6 +43,26 @@ class SizePicker extends Base<Props, State> {
         }
     }
     
+    public update(properties: any) {
+        super.update(properties);
+        
+        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
+        let isString = typeof original === 'string';
+        let value = (isString) ? parseInt(original) : null;
+        let matched = (isString) ? original.match(/[a-z]+/) || null : null;
+        let unit = (matched !== null) ? matched[0] : null;
+        
+        let index = SIZES_IN_UNIT.indexOf(unit);
+        if (index == -1) {
+            index = 0;
+        }
+        
+        this.setState({
+            value: value,
+            index: index
+        });
+    }
+    
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
         this.setState({
             index: index
@@ -91,9 +111,9 @@ class SizePicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
-                        <FullStackBlend.Controls.DropDownList ref="dropdown" customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                        <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
                             <span>{SIZES_IN_UNIT[this.state.index]}</span>
                         </FullStackBlend.Controls.DropDownList>
                         <div className="btn btn-sm btn-secondary">
@@ -105,11 +125,11 @@ class SizePicker extends Base<Props, State> {
         } else {
             return (
                 <div className={"size-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()} dropDownWidth={120} >
+                    <FullStackBlend.Controls.DropDownControl representing={this.state.value} dropDownWidth={120} >
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?(\.[0-9]*)?" postRegExp="(\-)?[0-9]+(\.[0-9]+)?" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                             <div className="input-group-append">
-                                <FullStackBlend.Controls.DropDownList ref="dropdown" customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                                <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
                                     <span>{SIZES_IN_UNIT[this.state.index]}</span>
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
