@@ -53,11 +53,11 @@ class Transformer extends Base<Props, State> {
     
         this.webGLRenderer = new WebGLRenderer({alpha: true});
         this.webGLRenderer.setPixelRatio(window.devicePixelRatio);
-        this.webGLRenderer.setSize(238, 210);
+        this.webGLRenderer.setSize(236, 210);
         this.webGLRenderer.setClearColor(0x000000, 0);
         container.appendChild(this.webGLRenderer.domElement);
         
-        this.webGLCamera = new PerspectiveCamera(50, 238.0 / 210.0, 1, 3000);
+        this.webGLCamera = new PerspectiveCamera(50, 236.0 / 210.0, 1, 3000);
         this.webGLCamera.position.set(100, 100, 100);
         this.webGLCamera.lookAt(0, 0, 0);
         
@@ -78,9 +78,9 @@ class Transformer extends Base<Props, State> {
         // CSS3D Renderer
         //
         this.css3DRenderer = new CSS3DRenderer();
-        this.css3DRenderer.setSize(238, 210);
+        this.css3DRenderer.setSize(236, 210);
         
-        this.css3DCamera = new PerspectiveCamera(50, 238.0 / 210.0, 1, 3000);
+        this.css3DCamera = new PerspectiveCamera(50, 236.0 / 210.0, 1, 3000);
         this.css3DCamera.position.set(0, 0, 100);
         this.css3DCamera.lookAt(0, 0, 0);
         
