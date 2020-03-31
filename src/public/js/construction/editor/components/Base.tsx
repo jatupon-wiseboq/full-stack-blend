@@ -5,6 +5,11 @@ declare let React: any;
 declare let ReactDOM: any;
 declare let controls: any;
 
+let recentElementClassName: string = null;
+let recentElementStyle: string = null;
+let classNameStatuses: any = {};
+let styleValues: any = {};
+
 interface IProps {
     watchingClassNames: [any];
     watchingStyleNames: [string];
@@ -22,6 +27,13 @@ class Base extends React.Component {
     constructor(props) {
         super(props);
         controls.push(this);
+        
+        this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
+            classNameStatuses[nameOrRegularExpression] = null;
+        });
+        this.props.watchingStyleNames.forEach((name: string) => {
+            styleValues[name] = null;
+        });
     }
     
     protected static defaultProps: Props = {
@@ -29,65 +41,61 @@ class Base extends React.Component {
         watchingStyleNames: []
     }
     
-    protected recentElementClassName: string = null;
-    protected recentElementStyle: string = null;
     private recentProperties: string = null;
     
     public update(properties: any) {
         let changed = false;
         
-        if (this.recentElementClassName != properties.elementClassName) {
-            this.recentElementClassName = properties.elementClassName;
+        if (recentElementClassName != properties.elementClassName) {
+            recentElementClassName = properties.elementClassName;
             
-            this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
-                if (!!nameOrRegularExpression) {
-                    if (typeof nameOrRegularExpression === 'object') { // Regular Expression
-                        let value = this.recentElementClassName.match(nameOrRegularExpression);
-                        if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
-                            this.state.classNameStatuses[nameOrRegularExpression] = value;
-                            changed = true;
-                        }
-                    } else { // String
-                        let value = HTMLHelper.hasClass(this.recentElementClassName, nameOrRegularExpression);
-                        if (this.state.classNameStatuses[nameOrRegularExpression] != value) {
-                            this.state.classNameStatuses[nameOrRegularExpression] = value;
-                            changed = true;
+            for (var nameOrRegularExpression in classNameStatuses) {
+                if (classNameStatuses.hasOwnProperty(nameOrRegularExpression)) {
+                    if (!!nameOrRegularExpression) {
+                        if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                            let value = recentElementClassName.match(nameOrRegularExpression);
+                            classNameStatuses[nameOrRegularExpression] = value;
+                        } else { // String
+                            let value = HTMLHelper.hasClass(recentElementClassName, nameOrRegularExpression);
+                            classNameStatuses[nameOrRegularExpression] = value;
                         }
                     }
                 }
-            });
+            }
         }
-        if (this.recentElementStyle != properties.elementStyle) {
-            this.recentElementStyle = properties.elementStyle;
+        if (recentElementStyle != properties.elementStyle) {
+            recentElementStyle = properties.elementStyle;
             
-            this.props.watchingStyleNames.forEach((name: string) => {
-                if (!!name) {
-                    let splited = name.split('[');
-                    let value = HTMLHelper.getInlineStyle(this.recentElementStyle, splited[0]);
-                    
-                    if (value != null && splited[1]) {
-                        let tokens = splited[1].split(',');
-                        let index = parseInt(tokens[0]);
+            for (var name in styleValues) {
+                if (styleValues.hasOwnProperty(name)) {
+                    if (!!name) {
+                        let splited = name.split('[');
+                        let value = HTMLHelper.getInlineStyle(recentElementStyle, splited[0]);
                         
-                        value = value.split(' ')[index];
-                    }
-                    
-                    if (this.state.styleValues[name] != value) {
-                        this.state.styleValues[name] = value;
-                        changed = true;
+                        if (value != null && splited[1]) {
+                            let tokens = splited[1].split(',');
+                            let index = parseInt(tokens[0]);
+                            
+                            value = value.split(' ')[index];
+                        }
+                        styleValues[name] = value;
                     }
                 }
-            });
+            }
         }
         
-        let jsonString = JSON.stringify(properties);
-        if (this.recentProperties != jsonString) {
-            this.recentProperties = jsonString;
-            changed = true;
-        }
+        this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
+            if (this.state.classNameStatuses[nameOrRegularExpression] != classNameStatuses[nameOrRegularExpression]) {
+                this.state.classNameStatuses[nameOrRegularExpression] = classNameStatuses[nameOrRegularExpression];
+            }
+        });
+        this.props.watchingStyleNames.forEach((name: string) => {
+            if (this.state.styleValues[name] != styleValues[name]) {
+                this.state.styleValues[name] = styleValues[name];
+            }
+        });
         
         if (changed) {
-            this.state.properties = properties;
             this.forceUpdate();
         }
         
