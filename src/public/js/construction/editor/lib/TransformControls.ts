@@ -640,7 +640,7 @@ var TransformControls = function ( camera, domElement ) {
 		if ( ! scope.enabled ) return;
 
 		document.addEventListener( "mousemove", onPointerMove, false );
-
+		
 		scope.pointerHover( getPointer( event ) );
 		scope.pointerDown( getPointer( event ) );
 
@@ -772,7 +772,7 @@ var TransformControlsGizmo = function () {
 	matWhiteTransparent.opacity = 0.25;
 
 	var matYellowTransparent = matWhiteTransparent.clone();
-	matYellowTransparent.color.set( 0xffff00 );
+	matYellowTransparent.color.set( 0xff9900 );
 
 	var matCyanTransparent = matWhiteTransparent.clone();
 	matCyanTransparent.color.set( 0x00ffff );
@@ -781,7 +781,7 @@ var TransformControlsGizmo = function () {
 	matMagentaTransparent.color.set( 0xff00ff );
 
 	var matYellow = gizmoMaterial.clone();
-	matYellow.color.set( 0xffff00 );
+	matYellow.color.set( 0xff9900 );
 
 	var matLineRed = gizmoLineMaterial.clone();
 	matLineRed.color.set( 0xff0000 );
@@ -799,7 +799,7 @@ var TransformControlsGizmo = function () {
 	matLineMagenta.color.set( 0xff00ff );
 
 	var matLineYellow = gizmoLineMaterial.clone();
-	matLineYellow.color.set( 0xffff00 );
+	matLineYellow.color.set( 0xff9900 );
 
 	var matLineGray = gizmoLineMaterial.clone();
 	matLineGray.color.set( 0x787878 );

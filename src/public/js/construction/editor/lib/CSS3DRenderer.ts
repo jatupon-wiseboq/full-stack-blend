@@ -156,14 +156,20 @@ var CSS3DRenderer = function () {
 
 		if ( isIE ) {
 
-			return 'translate(-50%,-50%)' +
-				'translate(' + _widthHalf + 'px,' + _heightHalf + 'px)' +
+			// return 'translate(-50%,-50%)' +
+			//	'translate(' + _widthHalf + 'px,' + _heightHalf + 'px)' +
+			//	cameraCSSMatrix +
+			//	matrix3d;
+
+			return 'translate(' + _widthHalf + 'px,' + _heightHalf + 'px)' +
 				cameraCSSMatrix +
 				matrix3d;
 
 		}
 
-		return 'translate(-50%,-50%)' + matrix3d;
+		// return 'translate(-50%,-50%)' + matrix3d;
+		
+		return matrix3d;
 
 	}
 

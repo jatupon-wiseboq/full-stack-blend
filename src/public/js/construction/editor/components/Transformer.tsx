@@ -1,6 +1,6 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../lib/TransformControls.js';
-import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, LineBasicMaterial, WireframeGeometry, LineSegments} from '../lib/three.module.js';
+import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, LineBasicMaterial, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
 import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../lib/CSS3DRenderer.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
@@ -14,11 +14,12 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    mode: string
+    mode: string,
+    isMouseDown: boolean
 }
 
 class Transformer extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate'}
+    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate', isMouseDown: false}
     static defaultProps: Props = {
       watchingClassNames: [],
       watchingStyleNames: ['transform']
@@ -44,6 +45,37 @@ class Transformer extends Base<Props, State> {
     componentDidMount() {
         this.init();
         this.render3D();
+    }
+    
+    public update(properties: any) {
+        super.update(properties);
+        
+        if (!this.state.isMouseDown) {
+            if (!this.state.styleValues['transform']) {
+                this.previousTransform = this.state.styleValues['transform'];
+            
+                this.reset();
+                this.render3D(false);
+            }
+            else if (this.state.styleValues['transform'] != this.previousTransform) {
+                this.previousTransform = this.state.styleValues['transform'];
+            
+                let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
+                let f = [];
+                for (let i=0; i<splited.length; i++) {
+                    f.push(parseFloat(splited[i]));
+                }
+                
+                var m = new Matrix4();
+                m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
+                
+                this.webGLMesh.position.set(f[12], -f[13], f[14]);
+                this.webGLMesh.rotation.setFromRotationMatrix(m);
+                this.webGLMesh.scale.setFromMatrixScale(m);
+                
+                this.render3D(false);
+            }
+        }
     }
     
     init() {        
@@ -104,10 +136,7 @@ class Transformer extends Base<Props, State> {
     
     optionOnClick(mode) {
         if (mode == 'reset') {
-            this.webGLMesh.position.set(0, 0, 0);
-            this.webGLMesh.rotation.set(0, 0, 0);
-            this.webGLMesh.scale.set(1, 1, 1);
-            
+            this.reset();
             this.render3D();
         } else {
             this.setState({
@@ -118,27 +147,44 @@ class Transformer extends Base<Props, State> {
         }
     }
     
-    render3D() {
-        this.css3DElement.position.set(this.webGLMesh.position.x, -this.webGLMesh.position.y, this.webGLMesh.position.z);
-        this.css3DElement.rotation.copy(this.webGLMesh.rotation);
-        this.css3DElement.scale.copy(this.webGLMesh.scale);
+    reset() {
+        this.webGLMesh.position.set(0, 0, 0);
+        this.webGLMesh.rotation.set(0, 0, 0);
+        this.webGLMesh.scale.set(1, 1, 1);
+    }
+    
+    render3D(calculateOutput: boolean=true) {
+        if (calculateOutput) {
+            this.css3DElement.position.set(this.webGLMesh.position.x, -this.webGLMesh.position.y, this.webGLMesh.position.z);
+            this.css3DElement.rotation.set(this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
+            this.css3DElement.scale.copy(this.webGLMesh.scale);
+            
+            this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
+            
+            let style = ReactDOM.findDOMNode(this.refs.output).getAttribute('style');
+            let transform = HTMLHelper.getInlineStyle(style, 'transform');
+            
+            if (this.previousTransform != transform) {
+                perform('update', {
+                    aStyle: {
+                        name: 'transform',
+                        value: transform
+                    },
+                    replace: 'transform'
+                });
+                this.previousTransform = transform;
+            }
+        }
     
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
-        this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
-        
-        let style = ReactDOM.findDOMNode(this.refs.output).getAttribute('style');
-        let transform = HTMLHelper.getInlineStyle(style, 'transform');
-        
-        if (this.previousTransform != transform) {
-            perform('update', {
-                aStyle: {
-                    name: 'transform',
-                    value: transform
-                },
-                replace: 'transform'
-            });
-            this.previousTransform = transform;
-        }
+    }
+    
+    onMouseDown() {
+        this.state.isMouseDown = true;
+    }
+    
+    onMouseUp() {
+        this.state.isMouseDown = false;
     }
     
     render() {
@@ -146,7 +192,7 @@ class Transformer extends Base<Props, State> {
         pug `
           div
             div(ref="output", style={display: 'none'})
-            div(ref="container", style={border: 'dashed 1px #999999'})
+            div(ref="container", style={border: 'dashed 1px #999999'}, onMouseDown=this.onMouseDown.bind(this), onMouseUp=this.onMouseUp.bind(this))
             div.text-center.mt-1
               .badge.badge-pill.mr-1(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate') ? 'badge-primary cursor-default' : 'badge-secondary cursor-pointer')
                 | Move
