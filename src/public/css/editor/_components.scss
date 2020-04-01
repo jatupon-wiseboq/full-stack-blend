@@ -52,6 +52,13 @@
   width: 238px;
   height: 219px;
   
+  .panel-container {
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+  
   .appearance-panel,
   .boundary-panel,
   .dimension-panel {
@@ -146,10 +153,10 @@
   .dimension-margin {
     border: 1px dashed rgb(65, 65, 65);
     background-color: rgb(243, 204, 164);
-    top: 20px;
-    right: 20px;
-    bottom: 20px;
-    left: 20px;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
     
     &:hover {
       background-color: rgb(243, 204, 164) !important;
@@ -164,10 +171,10 @@
   .dimension-border {
     border: 1px solid rgb(65, 65, 65);
     background-color: rgb(249, 220, 163);
-    top: 40px;
-    right: 40px;
-    bottom: 40px;
-    left: 40px;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
     
     &:hover {
       background-color: rgb(249, 220, 163) !important;
@@ -179,20 +186,30 @@
   }
   .boundary-border {
     background-color: rgb(146, 180, 190);
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
     
     &:hover {
       background-color: rgb(146, 180, 190) !important;
     }
+  }
+  .appearance-border {
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
   }
   .appearance-padding,
   .boundary-padding,
   .dimension-padding {
     border: 1px dashed rgb(135, 135, 135);
     background-color: rgb(197, 204, 145);
-    top: 60px;
-    right: 60px;
-    bottom: 60px;
-    left: 60px;
+    top: 40px;
+    right: 40px;
+    bottom: 40px;
+    left: 40px;
     
     &:hover {
       background-color: rgb(197, 204, 145) !important;
@@ -202,15 +219,21 @@
       content: 'padding';
     }
   }
+  .appearance-padding {
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+  }
   .appearance-size,
   .boundary-size,
   .dimension-size {
     border: 1px dotted rgb(135, 135, 135);
     background-color: rgb(146, 180, 190);
-    top: 80px;
-    right: 80px;
-    bottom: 80px;
-    left: 80px;
+    top: 60px;
+    right: 60px;
+    bottom: 60px;
+    left: 60px;
     
     &:hover {
       background-color: rgb(146, 180, 190) !important;
@@ -220,6 +243,18 @@
       content: 'size';
     }
   }
+  .boundary-size {
+    background-color: rgb(203, 217, 222);
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    
+    &:hover {
+      background-color: rgb(203, 217, 222) !important;
+    }
+  }
+  
   .boundary-position,
   .appearance-padding,
   .appearance-size,
@@ -265,11 +300,6 @@
     }
   }
   
-  .boundary-size,
-  .boundary-size:hover {
-    background-color: rgba(255, 255, 255, 0.5) !important;
-  }
-  
   .appearance-border {
     border: none;
   }
@@ -287,19 +317,41 @@
     content: 'minimum size';
   }
   
-  &:hover .appearance-panel,
-  &:hover .boundary-panel,
-  &:hover .dimension-panel {
-    background-color: rgb(255, 255, 255);
+  .hover-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
+    height: 179px;
+  }
+  
+  .hover-container:hover {
+    .appearance-panel,
+    .boundary-panel,
+    .dimension-panel {
+      background-color: rgb(255, 255, 255);
+    }
   }
 }
-
+.boundary-picker {
+  .hover-container {
+    top: 40px;
+    right: 40px;
+    bottom: 40px;
+    left: 40px;
+    height: 139px;
+  }
+}
 .appearance-picker {
-  overflow: hidden;
-  height: 159px;
+  height: 179px;
   
-  > .appearance-panel {
-    margin: -30px 0 -30px 0;
+  .hover-container {
+    top: 20px;
+    right: 40px;
+    bottom: 20px;
+    left: 40px;
+    height: 139px;
   }
 }
 

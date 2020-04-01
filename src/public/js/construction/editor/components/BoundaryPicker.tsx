@@ -29,12 +29,14 @@ class BoundaryPicker extends Base<Props, State> {
                     <span> &times; </span>
                     <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["max-height"]} />
                 </div>
-                <div className="boundary-panel boundary-border">
-                </div>
-                <div className="boundary-panel boundary-size">
-                    <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["min-width"]} />
-                    <span> &times; </span>
-                    <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["min-height"]} />
+                <div className="hover-container">
+                    <div className="boundary-panel boundary-border">
+                    </div>
+                    <div className="boundary-panel boundary-size">
+                        <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["min-width"]} />
+                        <span> &times; </span>
+                        <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["min-height"]} />
+                    </div>
                 </div>
             </div>
         )
