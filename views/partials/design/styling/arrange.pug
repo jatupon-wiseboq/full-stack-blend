@@ -1,6 +1,26 @@
 include ../../mixin/CreateReactComponent
 .section-container
   .section-title
+    | Element Options
+  .section-subtitle
+    | ABC
+.section-hr
+.section-container
+  .section-title
+    | Presets
+  .section-subtitle
+    | Reuseable Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
+  .section-subtitle
+    | Inheritance
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.CSSPresets')
+  .section-note
+    | This will combine both inherited presets and styles into a preset.
+.section-hr
+.section-container
+  .section-title
     | Responsive Placement
   .section-subtitle
     | Size
@@ -20,17 +40,3 @@ include ../../mixin/CreateReactComponent
     +CreateReactComponent('FullStackBlend.Components.PreservePicker')
   .section-note
     | Inherit Direction: Left to Right
-.section-hr
-.section-container
-  .section-title
-    | Presets
-  .section-subtitle
-    | Reuseable Name
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
-  .section-subtitle
-    | Inheritance
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.CSSPresets')
-  .section-note
-    | This will combine both inherited presets and styles into a preset.
