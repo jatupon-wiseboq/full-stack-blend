@@ -3,6 +3,7 @@ import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/DropDownList.js';
 import './SizePicker.js';
+import './NumberPicker.js';
 import * as CONSTANTS from '../../Constants.js';
 
 let options = {
@@ -11,7 +12,14 @@ let options = {
     "object-position[1,2]": CONSTANTS.OBJECT_POSITION_OPTIONS,
     "overflow-x": CONSTANTS.OVERFLOW_OPTIONS,
     "overflow-y": CONSTANTS.OVERFLOW_OPTIONS,
-    "position": CONSTANTS.POSITION_OPTIONS
+    "position": CONSTANTS.POSITION_OPTIONS,
+    "clear": CONSTANTS.CLEAR_OPTIONS,
+    "float": CONSTANTS.FLOAT_OPTIONS,
+    "cursor": CONSTANTS.CURSOR_OPTIONS,
+    "display": CONSTANTS.DISPLAY_OPTIONS,
+    "image-rendering": CONSTANTS.IMAGE_RENDERING_OPTIONS,
+    "pointer-events": CONSTANTS.POINTER_EVENTS_OPTIONS,
+    "z-index": CONSTANTS.Z_INDEX_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -30,7 +38,7 @@ interface State extends IState {
 }
 
 class DropDownPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, index: 0, controls: null}
+    state: IState = {classNameStatuses: {}, styleValues: {}, index: 0, controls: null}
 
     static defaultProps: Props = {
         watchingClassNames: [],
@@ -71,8 +79,10 @@ class DropDownPicker extends Base<Props, State> {
     
     private getComponentInstances(options) {
         let controls = {};
-        if (options.indexOf('{SIZE}')) {
+        if (options.indexOf('{SIZE}') != -1) {
             controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        } else if (options.indexOf('{NUMBER}') != -1) {
+            controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         }
         return controls;
     }
@@ -81,6 +91,8 @@ class DropDownPicker extends Base<Props, State> {
         switch (value) {
             case '{SIZE}':
                 return this.refs.size.getValue();
+            case '{NUMBER}':
+                return this.refs.number.getValue();
             default:
                 return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0px');
         }

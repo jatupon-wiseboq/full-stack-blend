@@ -51,10 +51,10 @@ class DropDownList extends React.Component<Props, State> {
             let windowWidth = window.innerWidth;
             
             dropdown.style.position = 'fixed';
-            if (position[0] + dropDownWidth < windowWidth) {
+            if (position[0] + Math.max(dropDownMinWidth, dropDownWidth) < windowWidth) {
                 dropdown.style.left = (position[0]) + 'px';
             } else {
-                dropdown.style.left = (windowWidth - dropDownWidth) + 'px';
+                dropdown.style.left = (windowWidth - Math.max(dropDownMinWidth, dropDownWidth)) + 'px';
             }
             dropdown.style.top = (position[1] + size[1]) + 'px';
             dropdown.style.width = dropDownWidth + 'px';
