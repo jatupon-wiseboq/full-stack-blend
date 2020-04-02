@@ -107,6 +107,8 @@ class Transformer extends Base<Props, State> {
         
         this.webGLScene.add(this.webGLMesh);
         
+        this.reset();
+        
         // CSS3D Renderer
         //
         this.css3DRenderer = new CSS3DRenderer();
@@ -149,7 +151,7 @@ class Transformer extends Base<Props, State> {
     
     reset() {
         this.webGLMesh.position.set(0, 0, 0);
-        this.webGLMesh.rotation.set(0, 0, 0);
+        this.webGLMesh.rotation.set(Math.PI, 0, 0);
         this.webGLMesh.scale.set(1, 1, 1);
     }
     
