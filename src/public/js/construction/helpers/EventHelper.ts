@@ -13,7 +13,7 @@ var EventHelper = {
     return event.currentTarget;
   },
   getOriginalElement: (event: HTMLEvent) => {
-    return event.srcElement || event.originalTarget;
+    return event.srcElement || event.originalTarget || event.target;
   },
   getCurrentWindow: (event: HTMLEvent) => {
     return HTMLHelper.getCurrentWindow(EventHelper.getCurrentElement(event));
@@ -24,13 +24,14 @@ var EventHelper = {
   
   checkIfDenyForHandle: (event: HTMLEvent) => {
     let originalElement = EventHelper.getOriginalElement(event);
+    if (originalElement.getAttribute('internal-fsb-event-always-propagate') == event.type) return false;
     
     if (denyForHandle[event.type]) return true;
     
     let values = HTMLHelper.findAllParentValuesInAttributeName('internal-fsb-event-no-propagate', originalElement, EventHelper.getCurrentElement(event), true);
     for (let value of values) {
       if (value.split(',').indexOf(event.type) != -1) {
-        return true;
+        return (EventHelper.getCurrentElement(event) != originalElement);
       }
     }
     

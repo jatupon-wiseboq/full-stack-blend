@@ -225,6 +225,7 @@ var EditorHelper = {
     if (element == null) return;
     
     EditorHelper.synchronize('updateEditorProperties', {
+      elementGuid: element.getAttribute('internal-fsb-guid'),
       elementClassName: element.getAttribute('class') || "",
       elementStyle: element.getAttribute('style') || "",
       currentActiveLayout: Accessories.layoutInfo.currentActiveLayout()

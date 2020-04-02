@@ -33,3 +33,16 @@
   height: 125px;
   overflow-y: scroll;
 }
+
+// File Browser
+// -------------------------
+.custom-file-label {
+  border-color: #4e555b;
+  
+  &::after {
+    left: 0;
+    border-left: none;
+    color: #fff;
+    background-color: #6c757d;
+  }
+}

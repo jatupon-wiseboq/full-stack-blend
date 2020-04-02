@@ -27,16 +27,28 @@ include ../../mixin/CreateReactComponent
   .section-title
     | Appearance
   .section-subtitle
-    | Border Style & Background
+    | Style & Color
   .section-body
     +CreateReactComponent('FullStackBlend.Components.AppearancePicker')
+  .section-subtitle
+    | Background Options
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-image'], dropDownMinWidth: 150}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-size'], dropDownMinWidth: 150}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-origin']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-clip']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-repeat']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-attachment']}")
+  .section-subtitle
+    | Blending Options
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-blend-mode']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['mix-blend-mode']}")
 .section-hr
 .section-container
   .section-title
-    | 3D Transform
+    | Transform
+  .section-subtitle
+    | 3D Control
   .section-body
     +CreateReactComponent('FullStackBlend.Components.Transformer')
-.section-hr
-.section-container
-  .section-note
-    | background, background-attachment, background-blend-mode, background-clip, background-color, background-image, background-origin, background-position, background-repeat, background-size, mix-blend-mode

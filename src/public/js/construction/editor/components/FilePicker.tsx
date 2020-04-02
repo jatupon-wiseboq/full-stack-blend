@@ -2,7 +2,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../controls/Textbox.js';
+import '../controls/FileBrowser.js';
 import '../controls/DropDownControl.js';
 
 declare let React: any;
@@ -18,7 +18,10 @@ interface State extends IState {
     value: any
 }
 
-class NumberPicker extends Base<Props, State> {
+let imageURLCache: any = {};
+let recentGuid: string = null;
+
+class FilePicker extends Base<Props, State> {
     state: IState = {classNameStatuses: {}, styleValues: {}, value: null}
     static defaultProps: Props = {
         watchingClassNames: [],
@@ -31,48 +34,40 @@ class NumberPicker extends Base<Props, State> {
         super(props);
     }
     
-    private getRepresentedValue() {
-        let status = this.state.styleValues[this.props.watchingStyleNames[0]];
-        if (status) {
-            return status;
-        } else {
-            return null;
-        }
-    }
-    
     public update(properties: any) {
         super.update(properties);
         
-        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        let isString = typeof original === 'string';
-        let value = (isString) ? parseInt(original) : null;
-        
-        this.setState({
-            value: value
-        });
+        if (recentGuid != properties.elementGuid) {
+            recentGuid = properties.elementGuid;
+            
+            let value = imageURLCache[recentGuid] || this.state.styleValues[this.props.watchingStyleNames[0]];
+            this.setState({
+                value: value
+            });
+        }
     }
     
-    protected textboxOnUpdate(value: any) {
+    protected fileOnUpdate(value: any) {
+        let composedValue = 'url(' + URL.createObjectURL(value) + ')';
+        
         this.setState({
-            value: value
+            value: composedValue
         });
+        imageURLCache[recentGuid] = composedValue;
+        
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: this.composeValue(value)
+                    value: composedValue
                 },
                 replace: this.props.watchingStyleNames[0]
             });
         }
     }
     
-    private composeValue(value: any) {
-        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0');
-    }
-    
     public getValue() {
-        return this.composeValue(this.state.value);
+        return this.state.value;
     }
     
     public hide() {
@@ -82,7 +77,7 @@ class NumberPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?" postRegExp="(\-)?[0-9]+" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.FileBrowser onUpdate={this.fileOnUpdate.bind(this)}></FullStackBlend.Controls.FileBrowser>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
@@ -92,10 +87,10 @@ class NumberPicker extends Base<Props, State> {
             )
         } else {
             return (
-                <div className={"number-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.state.value} dropDownWidth={120} >
+                <div className={"file-picker " + this.props.additionalClassName}>
+                    <FullStackBlend.Controls.DropDownControl representing={(this.state.value != null) ? 'selected' : ''} dropDownWidth={120} >
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?" postRegExp="(\-)?[0-9]+" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.FileBrowser onUpdate={this.fileOnUpdate.bind(this)}></FullStackBlend.Controls.FileBrowser>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>
@@ -104,6 +99,6 @@ class NumberPicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.NumberPicker', NumberPicker);
+DeclarationHelper.declare('Components.FilePicker', FilePicker);
 
-export {Props, State, NumberPicker};
+export {Props, State, FilePicker};

@@ -116,8 +116,8 @@ class SizePicker extends Base<Props, State> {
                         <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
                             <span>{SIZES_IN_UNIT[this.state.index]}</span>
                         </FullStackBlend.Controls.DropDownList>
-                        <div className="btn btn-sm btn-secondary">
-                            <i className="fa fa-check-circle m-0" />
+                        <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
+                            <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
                         </div>
                     </div>
                 </div>

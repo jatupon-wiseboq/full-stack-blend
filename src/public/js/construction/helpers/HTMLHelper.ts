@@ -124,11 +124,11 @@ var HTMLHelper = {
   },
   
   updateInlineStyle: (object: HTMLElement, styleName: string, styleValue: string) => {
-    let splited = (object.getAttribute('style') || '').split(';');
+    let splited = (object.getAttribute('style') || '').split('; ');
     let found = false;
     
     for (var i=0; i<splited.length; i++) {
-      if (splited[i].indexOf(styleName + ':') != -1) {
+      if (splited[i].indexOf(styleName + ': ') == 0) {
         found = true;
         splited[i] = styleName + ': ' + styleValue;
         break;
@@ -139,20 +139,20 @@ var HTMLHelper = {
       splited.push(styleName + ': ' + styleValue);
     }
     
-    object.setAttribute('style', splited.join(';'));
+    object.setAttribute('style', splited.join('; '));
   },
   getInlineStyle: (object: HTMLElement, styleName: string) => {
     let styleAttributeValue = (object.getAttribute('style') || '');
     return HTMLHelper.getInlineStyle(styleAttributeValue, styleName);
   },
   getInlineStyle: (styleAttributeValue: string, styleName: string) => {
-    if ('; ' + styleAttributeValue.indexOf('; ' + styleName + ':') == -1) return null;
+    if (('; ' + styleAttributeValue).indexOf('; ' + styleName + ': ') == -1) return null;
     
-    let splited = styleAttributeValue.split(';');
+    let splited = styleAttributeValue.split('; ');
     
     for (var i=0; i<splited.length; i++) {
-      if (splited[i].trim().indexOf(styleName + ':') == 0) {
-        let tokens = splited[i].split(':');
+      if (splited[i].trim().indexOf(styleName + ': ') == 0) {
+        let tokens = splited[i].split(': ');
         return tokens[tokens.length - 1];
       }
     }

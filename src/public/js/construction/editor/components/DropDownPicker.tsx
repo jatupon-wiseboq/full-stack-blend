@@ -4,6 +4,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import '../controls/DropDownList.js';
 import './SizePicker.js';
 import './NumberPicker.js';
+import './FilePicker.js';
 import * as CONSTANTS from '../../Constants.js';
 
 let options = {
@@ -19,7 +20,15 @@ let options = {
     "display": CONSTANTS.DISPLAY_OPTIONS,
     "image-rendering": CONSTANTS.IMAGE_RENDERING_OPTIONS,
     "pointer-events": CONSTANTS.POINTER_EVENTS_OPTIONS,
-    "z-index": CONSTANTS.Z_INDEX_OPTIONS
+    "z-index": CONSTANTS.Z_INDEX_OPTIONS,
+    "background-image": CONSTANTS.BACKGROUND_IMAGE_OPTIONS,
+    "background-attachment": CONSTANTS.BACKGROUND_ATTACHMENT_OPTIONS,
+    "background-blend-mode": CONSTANTS.BACKGROUND_BLEND_MODE_OPTIONS,
+    "background-clip": CONSTANTS.BACKGROUND_CLIP_OPTIONS,
+    "background-origin": CONSTANTS.BACKGROUND_ORIGIN_OPTIONS,
+    "background-repeat": CONSTANTS.BACKGROUND_REPEAT_OPTIONS,
+    "background-size": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
+    "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -83,6 +92,8 @@ class DropDownPicker extends Base<Props, State> {
             controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         } else if (options.indexOf('{NUMBER}') != -1) {
             controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        } else if (options.indexOf('{BROWSE}') != -1) {
+            controls['{BROWSE}'] = <FullStackBlend.Components.FilePicker ref="file" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         }
         return controls;
     }
@@ -93,6 +104,8 @@ class DropDownPicker extends Base<Props, State> {
                 return this.refs.size.getValue();
             case '{NUMBER}':
                 return this.refs.number.getValue();
+            case '{BROWSE}':
+                return this.refs.file.getValue();
             default:
                 return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0px');
         }
@@ -106,7 +119,7 @@ class DropDownPicker extends Base<Props, State> {
         return (
             <span className="dropdown-picker">
                 <FullStackBlend.Controls.DropDownList options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} dropDownMinWidth={this.props.dropDownMinWidth} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
-                    <span>{map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]}: </span><span>{this.state.styleValues[this.props.watchingStyleNames[0]]}</span>
+                    <span>{map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]}: </span><span>{(this.props.watchingStyleNames[0] != 'background-image') ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                 </FullStackBlend.Controls.DropDownList>
             </span>
         )

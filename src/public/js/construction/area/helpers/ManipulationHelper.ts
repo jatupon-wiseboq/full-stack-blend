@@ -56,12 +56,12 @@ var ManipulationHelper = {
             }
             if (content.aStyle != undefined) {
               let style = selectingElement.getAttribute('style') || '';
-              let splited = style.split(';');
+              let splited = style.split('; ');
               let hash = {};
               
               for (const value of splited) {
-                if (!value || value.indexOf(':') == -1) continue;
-                let tokens = value.split(':');
+                if (!value || value.indexOf(': ') == -1) continue;
+                let tokens = value.split(': ');
                 hash[tokens[0].toString().trim()] = tokens[1].toString().trim();
               }
               
@@ -71,7 +71,7 @@ var ManipulationHelper = {
                 let results = [];
                 for (var key in hash) {
                   if (hash.hasOwnProperty(key) && hash[key] != null) {
-                    results.push(key + ':' + hash[key]);
+                    results.push(key + ': ' + hash[key]);
                   }
                 }
                 
