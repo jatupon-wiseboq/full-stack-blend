@@ -27,12 +27,15 @@ let options = {
     "background-clip": CONSTANTS.BACKGROUND_CLIP_OPTIONS,
     "background-origin": CONSTANTS.BACKGROUND_ORIGIN_OPTIONS,
     "background-repeat": CONSTANTS.BACKGROUND_REPEAT_OPTIONS,
-    "background-size": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
+    "background-size[0,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
+    "background-size[1,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
     "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
-    "object-position[1,2]": "object-position-y"
+    "object-position[1,2]": "object-position-y",
+    "background-size[0,2]": "background-size-w",
+    "background-size[1,2]": "background-size-h"
 }
 
 declare let React: any;
