@@ -76,7 +76,7 @@ class FilePicker extends Base<Props, State> {
     render() {
         if (this.props.inline) {
             return (
-                <div className="input-group" internal-fsb-event-no-propagate="click">
+                <div className="input-group inline" internal-fsb-event-no-propagate="click">
                     <FullStackBlend.Controls.FileBrowser onUpdate={this.fileOnUpdate.bind(this)}></FullStackBlend.Controls.FileBrowser>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
@@ -88,7 +88,7 @@ class FilePicker extends Base<Props, State> {
         } else {
             return (
                 <div className={"file-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={(this.state.value != null) ? 'selected' : ''} dropDownWidth={120} >
+                    <FullStackBlend.Controls.DropDownControl representing={(this.state.value != null) ? 'selected' : ''}>
                         <div className="input-group">
                             <FullStackBlend.Controls.FileBrowser onUpdate={this.fileOnUpdate.bind(this)}></FullStackBlend.Controls.FileBrowser>
                         </div>

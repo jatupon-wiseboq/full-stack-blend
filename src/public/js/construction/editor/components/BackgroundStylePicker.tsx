@@ -48,7 +48,7 @@ class BackgroundStylePicker extends Base<Props, State> {
     render() {
         return (
             <div className={"style-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.styleValues[this.props.watchingStyleNames[0]]} dropDownWidth={369} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.styleValues[this.props.watchingStyleNames[0]]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                     <div className="section-container">
                         <div className="section-title">Background</div>
                         <div className="section-subtitle">Color</div>

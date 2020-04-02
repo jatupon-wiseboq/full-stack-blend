@@ -81,7 +81,7 @@ class NumberPicker extends Base<Props, State> {
     render() {
         if (this.props.inline) {
             return (
-                <div className="input-group" internal-fsb-event-no-propagate="click">
+                <div className="input-group inline" internal-fsb-event-no-propagate="click">
                     <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?" postRegExp="(\-)?[0-9]+" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
@@ -93,7 +93,7 @@ class NumberPicker extends Base<Props, State> {
         } else {
             return (
                 <div className={"number-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.state.value} dropDownWidth={120} >
+                    <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
                             <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(\-)?([0-9]+)?" postRegExp="(\-)?[0-9]+" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                         </div>

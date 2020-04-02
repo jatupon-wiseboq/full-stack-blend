@@ -29,13 +29,18 @@ let options = {
     "background-repeat": CONSTANTS.BACKGROUND_REPEAT_OPTIONS,
     "background-size[0,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
     "background-size[1,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
-    "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS
+    "background-position[0,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
+    "background-position[1,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
+    "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS,
+    "opacity": CONSTANTS.OPACITY_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
     "object-position[1,2]": "object-position-y",
-    "background-size[0,2]": "background-size-w",
-    "background-size[1,2]": "background-size-h"
+    "background-size[0,2]": "background-width",
+    "background-size[1,2]": "background-height",
+    "background-position[0,2]": "background-position-x",
+    "background-position[1,2]": "background-position-y"
 }
 
 declare let React: any;
@@ -121,8 +126,8 @@ class DropDownPicker extends Base<Props, State> {
         
         return (
             <span className="dropdown-picker">
-                <FullStackBlend.Controls.DropDownList options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} dropDownMinWidth={this.props.dropDownMinWidth} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
-                    <span>{map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]}: </span><span>{(this.props.watchingStyleNames[0] != 'background-image') ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                <FullStackBlend.Controls.DropDownList options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
+                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0] != 'background-image') ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                 </FullStackBlend.Controls.DropDownList>
             </span>
         )

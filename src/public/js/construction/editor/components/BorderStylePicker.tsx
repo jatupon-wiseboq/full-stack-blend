@@ -80,12 +80,12 @@ class BorderStylePicker extends Base<Props, State> {
     render() {
         return (
             <div className={"style-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_VALUE[this.state.borderStyleIndex]} dropDownWidth={369} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_VALUE[this.state.borderStyleIndex]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                     <div className="section-container">
                         <div className="section-title">Border</div>
                         <div className="section-subtitle">Border Style</div>
                         <div className="section-body">
-                            <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} dropDownWidth={185} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                            <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
                                 <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
                             </FullStackBlend.Controls.DropDownList>
                         </div>

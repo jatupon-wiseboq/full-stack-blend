@@ -75,7 +75,7 @@ class ColorPicker extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          div(ref="pickerContainer")
+          .color-picker(ref="pickerContainer")
         `
       )
     }

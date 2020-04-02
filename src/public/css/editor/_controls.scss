@@ -6,6 +6,7 @@
   font-size: 0.8rem;
   overflow-y: scroll;
   min-width: inherit;
+  width: auto;
   padding-left: 4.5px;
   z-index: #{$maximum-z-index - 5};
   
@@ -19,6 +20,19 @@
   > .input-group {
     border-radius: 0.2em;
     overflow: hidden;
+  }
+  
+  &.measure {
+    .input-group {
+      width: 100px;
+      
+      &.inline {
+        width: 135px;
+      }
+    }
+    .color-picker {
+      width: 351px;
+    }
   }
 }
 
