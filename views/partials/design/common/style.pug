@@ -9,28 +9,29 @@ include ../../mixin/CreateReactComponent
   .section-title
     | List
   .section-subtitle
-    | list-style, list-style-image, list-style-position, list-style-type
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-image']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-position']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-type']}")
 .section-hr
 .section-container
   .section-title
     | Table
   .section-subtitle
-    | border-collapse, border-spacing, caption-side, empty-cells, table-layout
-.section-hr
-.section-container
-  .section-title
-    | Effects
-  .section-subtitle
-    | visibility
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['border-collapse']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['border-spacing']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['caption-side']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['empty-cell']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['table-layout']}")
 .section-hr
 .section-container
   .section-title
     | Others
   .section-subtitle
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['clear'], dropDownMinWidth: 60}")
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['float'], dropDownMinWidth: 60}")
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['cursor'], dropDownMinWidth: 120}")
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], dropDownMinWidth: 160}")
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['image-rendering']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['clear']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['float']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['visibility']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['pointer-events']}")
-    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['z-index'], dropDownMinWidth: 120}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['cursor']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['z-index']}")

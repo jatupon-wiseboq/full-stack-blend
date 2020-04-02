@@ -32,7 +32,17 @@ let options = {
     "background-position[0,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "background-position[1,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS,
-    "opacity": CONSTANTS.OPACITY_OPTIONS
+    "opacity": CONSTANTS.OPACITY_OPTIONS,
+    "visibility": CONSTANTS.VISIBILITY_OPTIONS,
+    "border-collapse": CONSTANTS.BORDER_COLLAPSE_OPTIONS,
+    "border-spacing": CONSTANTS.BORDER_SPACING_OPTIONS,
+    "caption-side": CONSTANTS.CAPTION_SIDE_OPTIONS,
+    "empty-cell": CONSTANTS.EMPTY_CELL_OPTIONS,
+    "table-layout": CONSTANTS.TABLE_LAYOUT_OPTIONS,
+    "list-style": CONSTANTS.LIST_STYLE_OPTIONS,
+    "list-style-image": CONSTANTS.LIST_STYLE_IMAGE_OPTIONS,
+    "list-style-position": CONSTANTS.LIST_STYLE_POSITION_OPTIONS,
+    "list-style-type": CONSTANTS.LIST_STYLE_TYPE_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
