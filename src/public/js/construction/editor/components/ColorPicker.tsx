@@ -2,7 +2,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../controls/Textbox.js';
+import '../controls/ColorPicker.js';
 import '../controls/DropDownControl.js';
 
 declare let React: any;
@@ -15,11 +15,12 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    value: any
+    value: any,
+    visible: boolean
 }
 
-class NumberPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, value: null}
+class ColorPicker extends Base<Props, State> {
+    state: IState = {classNameStatuses: {}, styleValues: {}, value: null, visible: false}
     static defaultProps: Props = {
         watchingClassNames: [],
         watchingStyleNames: [],
@@ -31,28 +32,17 @@ class NumberPicker extends Base<Props, State> {
         super(props);
     }
     
-    private getRepresentedValue() {
-        let status = this.state.styleValues[this.props.watchingStyleNames[0]];
-        if (status) {
-            return status;
-        } else {
-            return null;
-        }
-    }
-    
     public update(properties: any) {
         super.update(properties);
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        let isString = typeof original === 'string';
-        let value = (isString) ? parseInt(original) : null;
         
         this.setState({
-            value: value
+            value: original || null
         });
     }
     
-    protected textboxOnUpdate(value: any) {
+    protected colorOnUpdate(value: any) {
         this.setState({
             value: value
         });
@@ -60,19 +50,21 @@ class NumberPicker extends Base<Props, State> {
             perform('update', {
                 aStyle: {
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: this.composeValue(value)
+                    value: value
                 },
                 replace: this.props.watchingStyleNames[0]
             });
         }
     }
     
-    private composeValue(value: any) {
-        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0');
+    protected dropdownOnVisibleChanged(visible: boolean) {
+        this.setState({
+            visible: visible
+        });
     }
     
     public getValue() {
-        return this.composeValue(this.state.value);
+        return this.state.value;
     }
     
     public hide() {
@@ -82,7 +74,7 @@ class NumberPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(([1-9][0-9]*))?" postRegExp="(([1-9][0-9]*))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.ColorPicker visible={this.props.visible} value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
@@ -93,9 +85,9 @@ class NumberPicker extends Base<Props, State> {
         } else {
             return (
                 <div className={"number-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
+                    <FullStackBlend.Controls.DropDownControl visible={this.state.visible} representing={this.state.value} onVisibleChanged={this.dropdownOnVisibleChanged.bind(this)}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(([1-9][0-9]*))?" postRegExp="(([1-9][0-9]*))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>
@@ -104,6 +96,6 @@ class NumberPicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.NumberPicker', NumberPicker);
+DeclarationHelper.declare('Components.ColorPicker', ColorPicker);
 
-export {Props, State, NumberPicker};
+export {Props, State, ColorPicker}; 

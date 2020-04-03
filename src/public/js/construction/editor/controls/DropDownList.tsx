@@ -10,6 +10,7 @@ interface Props extends IProps {
     controls: [any];
     identity: any;
     onUpdate(identity: any, value: any, index: any);
+    onVisibleChanged(visible: boolean);
     autohide: boolean;
     customClassName: string;
 }
@@ -66,12 +67,20 @@ class DropDownList extends React.Component<Props, State> {
             
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
+            if (this.props.onVisibleChanged) {
+                this.props.onVisibleChanged(true);
+            }
+            
             return EventHelper.cancel(event);
         });
     }
     
     componentWillUnmount() {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        
+        if (this.props.onVisibleChanged) {
+            this.props.onVisibleChanged(false);
+        }
     }
     
     private documentOnClick(event) {
@@ -94,6 +103,10 @@ class DropDownList extends React.Component<Props, State> {
         group.appendChild(dropdown);
         
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        
+        if (this.props.onVisibleChanged) {
+            this.props.onVisibleChanged(false);
+        }
     }
     
     private dropdownItemOnClick(event) {

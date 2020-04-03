@@ -2,8 +2,38 @@ include ../../mixin/CreateReactComponent
 .section-container
   .section-title
     | Text
+  .section-body
+    | color, @font-face, font-family, font-size, font-stretch, font-style, font-weight, justify-content, text-align, text-justify, text-transform, vertical-align
   .section-subtitle
-    | color, direction, font, @font-face, font-family, font-feature-settings, @font-feature-values, font-kerning, font-language-override, font-size, font-size-adjust, font-stretch, font-style, font-synthesis, font-variant, font-variant-alternates, font-variant-caps, font-variant-east-asian, font-variant-ligatures, font-variant-numeric, font-variant-position, font-weight, hanging-punctuation, hyphens, justify-content, letter-spacing, line-break, line-height, orphans, outline, outline-color, outline-offset, outline-style, outline-width, overflow-wrap, quotes, tab-size, text-align, text-align-last, text-combine-upright, text-decoration, text-decoration-color, text-decoration-line, text-decoration-style, text-indent, text-justify, text-orientation, text-overflow, text-transform, text-underline-position, unicode-bidi, vertical-align, white-space, widows, word-break, word-spacing, word-wrap, writing-mode
+    | Spacing
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-indent']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['letter-spacing']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-spacing']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['tab-size']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['line-height']}")
+  .section-subtitle
+    | Multiline
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['white-space']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-break']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-wrap']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['hyphens']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-overflow']}")
+  .section-subtitle
+    | Decoration
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-line']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-style']}")
+  .section-subtitle
+    | Others
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['writing-mode']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[0,2]', 'quotes']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[1,2]', 'quotes']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['direction']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['unicode-bidi']}")
 .section-hr
 .section-container
   .section-title

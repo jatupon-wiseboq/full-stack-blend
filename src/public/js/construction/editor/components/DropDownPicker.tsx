@@ -4,6 +4,8 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import '../controls/DropDownList.js';
 import './SizePicker.js';
 import './NumberPicker.js';
+import './TextPicker.js';
+import './ColorPicker.js';
 import './FilePicker.js';
 import * as CONSTANTS from '../../Constants.js';
 
@@ -42,7 +44,25 @@ let options = {
     "list-style": CONSTANTS.LIST_STYLE_OPTIONS,
     "list-style-image": CONSTANTS.LIST_STYLE_IMAGE_OPTIONS,
     "list-style-position": CONSTANTS.LIST_STYLE_POSITION_OPTIONS,
-    "list-style-type": CONSTANTS.LIST_STYLE_TYPE_OPTIONS
+    "list-style-type": CONSTANTS.LIST_STYLE_TYPE_OPTIONS,
+    "text-indent": CONSTANTS.TEXT_INDENT_OPTIONS,
+    "letter-spacing": CONSTANTS.LETTER_SPACING_OPTIONS,
+    "word-spacing": CONSTANTS.WORD_SPACING_OPTIONS,
+    "tab-size": CONSTANTS.TAB_SIZE_OPTIONS,
+    "line-height": CONSTANTS.LINE_HEIGHT_OPTIONS,
+    "white-space": CONSTANTS.WHITE_SPACE_OPTIONS,
+    "word-break": CONSTANTS.WORD_BREAK_OPTIONS,
+    "word-wrap": CONSTANTS.WORD_WRAP_OPTIONS,
+    "hyphens": CONSTANTS.HYPHENS_OPTIONS,
+    "text-overflow": CONSTANTS.TEXT_OVERFLOW_OPTIONS,
+    "text-decoration-color": CONSTANTS.TEXT_DECORATION_COLOR_OPTIONS,
+    "text-decoration-line": CONSTANTS.TEXT_DECORATION_LINE_OPTIONS,
+    "text-decoration-style": CONSTANTS.TEXT_DECORATION_STYLE_OPTIONS,
+    "writing-mode": CONSTANTS.WRITING_MODE_OPTIONS,
+    "quotes[0,2]": CONSTANTS.QUOTES_OPTIONS,
+    "quotes[1,2]": CONSTANTS.QUOTES_OPTIONS,
+    "direction": CONSTANTS.DIRECTION_OPTIONS,
+    "unicode-bidi": CONSTANTS.UNICODE_BIDI_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -50,7 +70,9 @@ let map = {
     "background-size[0,2]": "background-width",
     "background-size[1,2]": "background-height",
     "background-position[0,2]": "background-position-x",
-    "background-position[1,2]": "background-position-y"
+    "background-position[1,2]": "background-position-y",
+    "quotes[0,2]": "quotes-begin",
+    "quotes[1,2]": "quotes-end"
 }
 
 declare let React: any;
@@ -110,6 +132,10 @@ class DropDownPicker extends Base<Props, State> {
             controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         } else if (options.indexOf('{NUMBER}') != -1) {
             controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        } else if (options.indexOf('{TEXT}') != -1) {
+            controls['{TEXT}'] = <FullStackBlend.Components.TextPicker ref="text" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        } else if (options.indexOf('{COLOR}') != -1) {
+            controls['{COLOR}'] = <FullStackBlend.Components.ColorPicker ref="color" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         } else if (options.indexOf('{BROWSE}') != -1) {
             controls['{BROWSE}'] = <FullStackBlend.Components.FilePicker ref="file" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         }
@@ -122,6 +148,10 @@ class DropDownPicker extends Base<Props, State> {
                 return this.refs.size.getValue();
             case '{NUMBER}':
                 return this.refs.number.getValue();
+            case '{TEXT}':
+                return this.refs.text.getValue();
+            case '{COLOR}':
+                return this.refs.color.getValue();
             case '{BROWSE}':
                 return this.refs.file.getValue();
             default:

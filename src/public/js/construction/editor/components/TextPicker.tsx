@@ -18,7 +18,7 @@ interface State extends IState {
     value: any
 }
 
-class NumberPicker extends Base<Props, State> {
+class TextPicker extends Base<Props, State> {
     state: IState = {classNameStatuses: {}, styleValues: {}, value: null}
     static defaultProps: Props = {
         watchingClassNames: [],
@@ -31,24 +31,16 @@ class NumberPicker extends Base<Props, State> {
         super(props);
     }
     
-    private getRepresentedValue() {
-        let status = this.state.styleValues[this.props.watchingStyleNames[0]];
-        if (status) {
-            return status;
-        } else {
-            return null;
-        }
-    }
-    
     public update(properties: any) {
         super.update(properties);
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        let isString = typeof original === 'string';
-        let value = (isString) ? parseInt(original) : null;
+        if (original) {
+            original = original.replace(/^'|'$/gm, '');
+        }
         
         this.setState({
-            value: value
+            value: original
         });
     }
     
@@ -68,7 +60,7 @@ class NumberPicker extends Base<Props, State> {
     }
     
     private composeValue(value: any) {
-        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0');
+        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
     }
     
     public getValue() {
@@ -82,7 +74,7 @@ class NumberPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(([1-9][0-9]*))?" postRegExp="(([1-9][0-9]*))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
@@ -95,7 +87,7 @@ class NumberPicker extends Base<Props, State> {
                 <div className={"number-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(([1-9][0-9]*))?" postRegExp="(([1-9][0-9]*))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>
@@ -104,6 +96,6 @@ class NumberPicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.NumberPicker', NumberPicker);
+DeclarationHelper.declare('Components.TextPicker', TextPicker);
 
-export {Props, State, NumberPicker};
+export {Props, State, TextPicker};

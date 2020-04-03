@@ -42,6 +42,7 @@ class Textbox extends React.Component<Props, State> {
     }
     
     inputOnKeyUp(event) {
+        let preRegMatch = false;
         if (this.props.preRegExp) {
             if (this.previousPreRegExp != this.props.preRegExp) {
                 this.preRegExp = new RegExp('^' + this.props.preRegExp + '$', 'i');
@@ -51,8 +52,9 @@ class Textbox extends React.Component<Props, State> {
             let input = ReactDOM.findDOMNode(this.refs.input);
             let completingValue = input.value;
             
-            if (completingValue.match(this.preRegExp)) {
+            if (completingValue.match(this.preRegExp) != null) {
                 this.previousValue = completingValue;
+                preRegMatch = true;
             } else {
                 input.value = this.previousValue;
             }
@@ -67,14 +69,20 @@ class Textbox extends React.Component<Props, State> {
             let input = ReactDOM.findDOMNode(this.refs.input);
             let completingValue = input.value;
             
-            if (completingValue.match(this.postRegExp)) {
+            if (completingValue.match(this.postRegExp) != null) {
                 if (this.props.onUpdate) {
                     this.props.onUpdate(completingValue);
                 }
-            } else {
+            } else if (!completingValue) {
                 if (this.props.onUpdate) {
                     this.props.onUpdate(null);
                 }
+            }
+        } else {
+            if (this.props.onUpdate) {
+                let input = ReactDOM.findDOMNode(this.refs.input);
+            
+                this.props.onUpdate(input.value);
             }
         }
     }
