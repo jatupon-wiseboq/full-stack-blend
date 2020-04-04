@@ -41,7 +41,6 @@ let options = {
     "caption-side": CONSTANTS.CAPTION_SIDE_OPTIONS,
     "empty-cell": CONSTANTS.EMPTY_CELL_OPTIONS,
     "table-layout": CONSTANTS.TABLE_LAYOUT_OPTIONS,
-    "list-style": CONSTANTS.LIST_STYLE_OPTIONS,
     "list-style-image": CONSTANTS.LIST_STYLE_IMAGE_OPTIONS,
     "list-style-position": CONSTANTS.LIST_STYLE_POSITION_OPTIONS,
     "list-style-type": CONSTANTS.LIST_STYLE_TYPE_OPTIONS,

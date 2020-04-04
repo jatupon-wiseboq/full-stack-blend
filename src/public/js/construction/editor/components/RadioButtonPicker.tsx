@@ -57,7 +57,7 @@ class RadioButtonPicker extends Base<Props, State> {
     render() {
         return (
           pug `
-            .btn-group.btn-group-sm(role="group")
+            .btn-group.btn-group-sm.mr-1.mb-1(role="group")
               each value, index in options[this.props.watchingStyleNames[0]]
                 button.btn.text-center(key="item-" + value, className=((this.state.styleValues[value[0].split(':')[0]] == value[0].split(':')[1]) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, index))
                   i.m-0(className="fa "+ value[1], style={fontSize: '12px'})

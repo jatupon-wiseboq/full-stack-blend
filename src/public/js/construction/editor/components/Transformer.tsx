@@ -196,14 +196,15 @@ class Transformer extends Base<Props, State> {
             div(ref="output", style={display: 'none'})
             div(ref="container", style={border: 'dashed 1px #999999'}, onMouseDown=this.onMouseDown.bind(this), onMouseUp=this.onMouseUp.bind(this))
             div.text-center.mt-1
-              .badge.badge-pill.mr-1(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate') ? 'badge-primary cursor-default' : 'badge-secondary cursor-pointer')
-                | Move
-              .badge.badge-pill.mr-1(onClick=this.optionOnClick.bind(this, 'rotate'), className=(this.state.mode == 'rotate') ? 'badge-primary cursor-default' : 'badge-secondary cursor-pointer')
-                | Rotate
-              .badge.badge-pill.mr-1(onClick=this.optionOnClick.bind(this, 'scale'), className=(this.state.mode == 'scale') ? 'badge-primary cursor-default' : 'badge-secondary cursor-pointer')
-                | Scale
-              .badge.badge-pill.badge-secondary.cursor-pointer(onClick=this.optionOnClick.bind(this, 'reset'))
-                | Reset
+              .btn-group.btn-group-sm(role="group")
+                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate' ? 'btn-primary' : 'btn-light'))
+                  | Move
+                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'rotate'), className=(this.state.mode == 'rotate' ? 'btn-primary' : 'btn-light'))
+                  | Rotate
+                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'scale'), className=(this.state.mode == 'scale' ? 'btn-primary' : 'btn-light'))
+                  | Scale
+                button.btn.btn-sm.text-center.btn-light(onClick=this.optionOnClick.bind(this, 'reset'))
+                  | Reset
         `
       )
     }
