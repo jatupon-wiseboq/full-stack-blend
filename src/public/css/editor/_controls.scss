@@ -5,6 +5,7 @@
 .fsb-dropdown-menu {
   font-size: 0.8rem;
   overflow-y: scroll;
+  overflow-x: hidden;
   min-width: inherit;
   width: auto;
   padding-left: 4.5px;
@@ -33,7 +34,7 @@
       }
     }
     .color-picker {
-      width: 351px;
+      width: 355px;
     }
   }
 }

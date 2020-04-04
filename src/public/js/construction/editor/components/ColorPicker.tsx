@@ -97,12 +97,12 @@ class ColorPicker extends Base<Props, State> {
             )
         } else {
             return (
-                <div className={"color-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl visible={this.state.visible} representing={this.state.value} onVisibleChanged={this.onVisibleChanged.bind(this)}>
-                        <div className="input-group">
-                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorPickerOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
-                        </div>
-                    </FullStackBlend.Controls.DropDownControl>
+                <div className="btn-group btn-group-sm mr-1 mb-1" role="group">
+                    <button className={"btn btn-light color-picker " + this.props.additionalClassName}>
+                        <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={"<div style=\"width: 20px; height: 20px; background-color: " + this.state.value + "; \"></div>"} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]}  visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                        </FullStackBlend.Controls.DropDownControl>
+                    </button>
                 </div>
             )
         }
