@@ -42,25 +42,30 @@ class ColorPicker extends Base<Props, State> {
         });
     }
     
-    protected colorOnUpdate(value: any) {
+    protected colorPickerOnUpdate(value: any) {
+        let composedValue = '#' + value;
         this.setState({
-            value: value
+            value: composedValue
         });
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: value
+                    value: composedValue
                 },
                 replace: this.props.watchingStyleNames[0]
             });
         }
     }
     
-    protected dropdownOnVisibleChanged(visible: boolean) {
+    protected onVisibleChanged(visible: boolean) {
         this.setState({
             visible: visible
         });
+    }
+    
+    protected colorPickerOnRequestHiding() {
+        this.refs.dropdownControl.hide();
     }
     
     public getValue() {
@@ -74,7 +79,15 @@ class ColorPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.ColorPicker visible={this.props.visible} value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                    <div className="btn btn-secondary btn-sm" internal-fsb-event-no-propagate="click" style={{flex: 'auto'}}>
+                        <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.value} autohide={false} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                            <div className="section-container">
+                                <div className="section-body">
+                                    <FullStackBlend.Controls.ColorPicker value={this.state.value} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                </div>
+                            </div>
+                        </FullStackBlend.Controls.DropDownControl>
+                    </div>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
@@ -84,10 +97,10 @@ class ColorPicker extends Base<Props, State> {
             )
         } else {
             return (
-                <div className={"number-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl visible={this.state.visible} representing={this.state.value} onVisibleChanged={this.dropdownOnVisibleChanged.bind(this)}>
+                <div className={"color-picker " + this.props.additionalClassName}>
+                    <FullStackBlend.Controls.DropDownControl visible={this.state.visible} representing={this.state.value} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]} onUpdate={this.colorPickerOnUpdate.bind(this)}></FullStackBlend.Controls.ColorPicker>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>

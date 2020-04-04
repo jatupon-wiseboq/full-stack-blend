@@ -23,6 +23,8 @@
   }
   
   &.measure {
+    width: auto !important;
+    
     .input-group {
       width: 100px;
       

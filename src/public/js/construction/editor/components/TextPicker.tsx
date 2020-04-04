@@ -84,7 +84,7 @@ class TextPicker extends Base<Props, State> {
             )
         } else {
             return (
-                <div className={"number-picker " + this.props.additionalClassName}>
+                <div className={"text-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
                             <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>

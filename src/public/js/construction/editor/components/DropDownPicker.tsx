@@ -167,7 +167,7 @@ class DropDownPicker extends Base<Props, State> {
         return (
             <span className="dropdown-picker">
                 <FullStackBlend.Controls.DropDownList options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
-                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                 </FullStackBlend.Controls.DropDownList>
             </span>
         )

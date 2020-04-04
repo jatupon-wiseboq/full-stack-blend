@@ -8,6 +8,7 @@ declare let ReactDOM: any;
 interface Props extends IProps {
     representing: string;
     onVisibleChanged(visible: boolean);
+    autohide: boolean;
 }
 
 interface State extends IState {
@@ -15,7 +16,8 @@ interface State extends IState {
 
 class DropDownControl extends React.Component<Props, State> {
     static defaultProps: Props = {
-        options: []
+        options: [],
+        autohide: true
     }
     
     private documentOnClickDelegate: Function = null;
@@ -32,7 +34,9 @@ class DropDownControl extends React.Component<Props, State> {
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
         button.addEventListener('click', (event) => {
-            window.document.body.click();
+            if (this.props.autohide) {
+                window.document.body.click();
+            }
             
             let position = HTMLHelper.getPosition(button);
             let size = HTMLHelper.getSize(button);
