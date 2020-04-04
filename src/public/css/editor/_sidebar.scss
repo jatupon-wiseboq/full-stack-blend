@@ -13,11 +13,7 @@
   
   .fa {
     &.active {
-      opacity: 1.0;
-    }
-    
-    &.inactive {
-      opacity: 0.4;
+      color: #007bff;
     }
   }
 }

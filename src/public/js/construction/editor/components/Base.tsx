@@ -87,11 +87,13 @@ class Base extends React.Component {
         this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
             if (this.state.classNameStatuses[nameOrRegularExpression] != classNameStatuses[nameOrRegularExpression]) {
                 this.state.classNameStatuses[nameOrRegularExpression] = classNameStatuses[nameOrRegularExpression];
+                changed = true;
             }
         });
         this.props.watchingStyleNames.forEach((name: string) => {
             if (this.state.styleValues[name] != styleValues[name]) {
                 this.state.styleValues[name] = styleValues[name];
+                changed = true;
             }
         });
         

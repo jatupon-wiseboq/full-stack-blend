@@ -34,8 +34,6 @@ class RadioButtonPicker extends Base<Props, State> {
     
     public update(properties: any) {
         super.update(properties);
-        
-        this.forceUpdate();
     }
     
     protected buttonOnClick(index: number) {

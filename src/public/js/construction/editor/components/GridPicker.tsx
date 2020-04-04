@@ -15,9 +15,11 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
+    currentActiveLayout: number
 }
 
 class GridPicker extends Base<Props, State> {
+    state: IState = {classNameStatuses: {}, styleValues: {}, currentActiveLayout: -1}
     static defaultProps: Props = {
         watchingClassNames: RESPONSIVE_SIZE_REGEX,
         watchingStyleNames: [],
@@ -29,9 +31,20 @@ class GridPicker extends Base<Props, State> {
     private recentElement: HTMLElement = null;
     private recentDropdown: HTMLElement = null;
     private documentOnClickDelegate: Function = null;
+    private recentElementClassName: string = '';
     
     constructor(props) {
         super(props);
+    }
+    
+    public update(properties: any) {
+        super.update(properties);
+        
+        this.setState({
+            currentActiveLayout: properties.currentActiveLayout
+        });
+        
+        this.recentElementClassName = properties.elementClassName;
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -83,7 +96,7 @@ class GridPicker extends Base<Props, State> {
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
-                              i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.properties.currentActiveLayout == index) ? ' active' : ' inactive'))
+                              i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.currentActiveLayout == index) ? ' active' : ' inactive'))
                               br
                               span(ref="selectedValue" + index)
                                 | #{$this.getSelectedValue(index)}
