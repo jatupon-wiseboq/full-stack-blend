@@ -4,6 +4,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {FontHelper} from './FontHelper.js';
 import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
 
 let performed: any = [];
@@ -76,6 +77,10 @@ var ManipulationHelper = {
                 }
                 
                 selectingElement.setAttribute('style', results.join('; '));
+                
+                if (content.aStyle.name == 'font-family') {
+                  FontHelper.load(content.aStyle.value);
+                }
               }else {
                 remember = false;
               }
