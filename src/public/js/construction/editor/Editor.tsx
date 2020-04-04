@@ -13,6 +13,7 @@ import './components/BoundaryPicker.js';
 import './components/Transformer.js';
 import './components/SizePicker.js';
 import './components/DropDownPicker.js';
+import './components/RadioButtonPicker.js';
 
 let recentExtraPanelSelector: string = null;
 

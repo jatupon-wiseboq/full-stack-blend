@@ -22,7 +22,8 @@ class DropDownList extends React.Component<Props, State> {
     static defaultProps: Props = {
         options: [],
         controls: [],
-        autohide: true
+        autohide: true,
+        customClassName: null
     }
     
     private documentOnClickDelegate: Function = null;
@@ -133,7 +134,7 @@ class DropDownList extends React.Component<Props, State> {
                   if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
                     = this.props.controls[value]
                   else
-                    span(dangerouslySetInnerHTML={__html: value || "none"})
+                    span(dangerouslySetInnerHTML={__html: value || "unset"})
         `
       )
     }

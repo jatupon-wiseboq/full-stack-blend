@@ -62,7 +62,13 @@ let options = {
     "quotes[0,2]": CONSTANTS.QUOTES_OPTIONS,
     "quotes[1,2]": CONSTANTS.QUOTES_OPTIONS,
     "direction": CONSTANTS.DIRECTION_OPTIONS,
-    "unicode-bidi": CONSTANTS.UNICODE_BIDI_OPTIONS
+    "unicode-bidi": CONSTANTS.UNICODE_BIDI_OPTIONS,
+    "text-transform": CONSTANTS.TEXT_TRANSFORM_OPTIONS,
+    "vertical-align": CONSTANTS.VERTICAL_ALIGN_OPTIONS,
+    "font-size": CONSTANTS.FONT_SIZE_OPTIONS,
+    "font-weight": CONSTANTS.FONT_WEIGHT_OPTIONS,
+    "font-stretch": CONSTANTS.FONT_STRETCH_OPTIONS,
+    "text-justify": CONSTANTS.TEXT_JUSTIFY_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -80,6 +86,7 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
+    customClassName: string
 }
 
 interface State extends IState {
@@ -91,7 +98,8 @@ class DropDownPicker extends Base<Props, State> {
 
     static defaultProps: Props = {
         watchingClassNames: [],
-        watchingStyleNames: []
+        watchingStyleNames: [],
+        customClassName: null
     }
     
     constructor(props) {
@@ -166,7 +174,7 @@ class DropDownPicker extends Base<Props, State> {
         
         return (
             <span className="dropdown-picker">
-                <FullStackBlend.Controls.DropDownList options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
+                <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
                     <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                 </FullStackBlend.Controls.DropDownList>
             </span>

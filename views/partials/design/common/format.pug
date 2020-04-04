@@ -3,11 +3,22 @@ include ../../mixin/CreateReactComponent
   .section-title
     | Text
   .section-body
-    | color, @font-face, font-family, font-size, font-stretch, font-style, font-weight, justify-content, text-align, text-justify, text-transform, vertical-align
+    //-
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['color'], customClassName: 'btn-secondary'}")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family'], customClassName: 'btn-secondary'}")
+    //
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['font-style', 'font-weight', 'text-decoration-line'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['text-align'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-size'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-weight'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-stretch'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-transform'], customClassName: 'btn-secondary'}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['vertical-align'], customClassName: 'btn-secondary'}")
   .section-subtitle
     | Spacing
   .section-body
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-indent']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-justify']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['letter-spacing']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-spacing']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['tab-size']}")
