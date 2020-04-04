@@ -3,17 +3,19 @@
 .sidebar {
   width: 259px;
   
-  .btn.btn-sm {
-    font-size: 0.8rem;
-  }
-  
-  .dropdown-item {
-    font-size: 0.8rem;
-  }
-  
-  .fa {
-    &.active {
-      color: #007bff;
+  .workspace-panel-container {
+    .btn.btn-sm {
+      font-size: 11px;
+    }
+    
+    .dropdown-item {
+      font-size: 11px;
+    }
+    
+    .fa {
+      &.active {
+        color: #007bff;
+      }
     }
   }
 }
