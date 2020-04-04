@@ -67,7 +67,8 @@ let options = {
     "font-size": CONSTANTS.FONT_SIZE_OPTIONS,
     "font-weight": CONSTANTS.FONT_WEIGHT_OPTIONS,
     "font-stretch": CONSTANTS.FONT_STRETCH_OPTIONS,
-    "text-justify": CONSTANTS.TEXT_JUSTIFY_OPTIONS
+    "text-justify": CONSTANTS.TEXT_JUSTIFY_OPTIONS,
+    "font-family": CONSTANTS.FONT_FAMILY_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -80,12 +81,18 @@ let map = {
     "quotes[1,2]": "quotes-end"
 }
 
+let defaults = {
+    "font-family": "Roboto"
+}
+
 declare let React: any;
 declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
-    customClassName: string
+    customClassName: string,
+    searchBox: boolean,
+    useMaximumHeight: boolean
 }
 
 interface State extends IState {
@@ -98,7 +105,9 @@ class DropDownPicker extends Base<Props, State> {
     static defaultProps: Props = {
         watchingClassNames: [],
         watchingStyleNames: [],
-        customClassName: null
+        customClassName: null,
+        searchBox: false,
+        useMaximumHeight: false
     }
     
     constructor(props) {
@@ -108,7 +117,7 @@ class DropDownPicker extends Base<Props, State> {
     public update(properties: any) {
         super.update(properties);
         
-        let index = options[this.props.watchingStyleNames[0]].indexOf(this.state.styleValues[this.props.watchingStyleNames[0]]);
+        let index = options[this.props.watchingStyleNames[0]].indexOf(this.state.styleValues[this.props.watchingStyleNames[0]] || defaults[this.props.watchingStyleNames[0]]);
         if (index == -1) {
             index = 0;
         }
@@ -173,7 +182,7 @@ class DropDownPicker extends Base<Props, State> {
         
         return (
             <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group">
-                <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls}>
+                <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={options[this.props.watchingStyleNames[0]]} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight}>
                     <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                 </FullStackBlend.Controls.DropDownList>
             </div>

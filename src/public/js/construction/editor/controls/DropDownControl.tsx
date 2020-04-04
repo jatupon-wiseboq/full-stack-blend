@@ -21,6 +21,7 @@ class DropDownControl extends React.Component<Props, State> {
     }
     
     private documentOnClickDelegate: Function = null;
+    private maximumWidth: number = 0;
     
     constructor() {
         super();
@@ -34,9 +35,14 @@ class DropDownControl extends React.Component<Props, State> {
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
         button.addEventListener('click', (event) => {
+            if (dropdown.className != 'fsb-dropdown-menu dropdown-menu hide') return EventHelper.cancel(event);
+        
             if (this.props.autohide) {
                 window.document.body.click();
             }
+            
+            // Measure Size & Position
+            //
             
             let position = HTMLHelper.getPosition(button);
             let size = HTMLHelper.getSize(button);
@@ -45,20 +51,42 @@ class DropDownControl extends React.Component<Props, State> {
             dropdown.className = 'fsb-dropdown-menu dropdown-menu show measure';
             window.document.body.appendChild(dropdown);
             
-            let dropDownMinWidth = dropdown.clientWidth + 1;
+            let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
+            this.maximumWidth = dropDownClientWidth;
+            let dropDownClientHeight = dropdown.clientHeight + 2;
             let windowWidth = window.innerWidth;
+            let windowHeight = window.innerHeight;
+            let dropDownMaxHeight = windowHeight - position[1] - size[1] - 2;
+            let overflowY = false;
+            if (dropDownClientHeight > dropDownMaxHeight) {
+                dropDownClientWidth += 7;
+                overflowY = true;
+            }
             
-            dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
+            if (windowHeight - position[1] - size[1] - 5)
+            
+            // Assign Size & Position
+            //
+            
+            if (position[0] + Math.max(dropDownClientWidth, size[0]) < windowWidth) {
+                dropdown.style.left = (position[0] - 1) + 'px';
+            } else {
+                dropdown.style.left = (windowWidth - Math.max(dropDownClientWidth, size[0])) + 'px';
+            }
             
             dropdown.style.position = 'fixed';
-            if (position[0] + Math.max(dropDownMinWidth, buttonWidth) < windowWidth) {
-                dropdown.style.left = (position[0]) + 'px';
-            } else {
-                dropdown.style.left = (windowWidth - Math.max(dropDownMinWidth, buttonWidth)) + 'px';
-            }
             dropdown.style.top = (position[1] + size[1]) + 'px';
-            dropdown.style.width = Math.max(dropDownMinWidth, buttonWidth) + 'px';
-            dropdown.style.maxHeight = (window.innerHeight - position[1] - size[1] - 5) + 'px';
+            dropdown.style.width = Math.max(dropDownClientWidth, size[0]) + 'px';
+            dropdown.style.height = Math.min(dropDownClientHeight, dropDownMaxHeight) + 'px';
+            dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
+            
+            dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
+            setTimeout(() => {
+                dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
+            }, 0);
+            
+            // Handling Events
+            //
             
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
@@ -86,9 +114,10 @@ class DropDownControl extends React.Component<Props, State> {
         dropdown.style.left = '';
         dropdown.style.top = '';
         dropdown.style.width = 'auto';
-        dropdown.style.maxHeight = '';
+        dropdown.style.height = 'auto';
+        dropdown.style.overflowY = '';
         
-        dropdown.className = 'fsb-dropdown-menu dropdown-menu';
+        dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
         group.appendChild(dropdown);
         
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
@@ -113,7 +142,7 @@ class DropDownControl extends React.Component<Props, State> {
                 span &nbsp;
               else
                 span(dangerouslySetInnerHTML={__html: this.props.representing})
-            .fsb-dropdown-menu.dropdown-menu(ref="dropdown", internal-fsb-event-no-propagate="click")
+            .fsb-dropdown-menu.dropdown-menu.hide(ref="dropdown", internal-fsb-event-no-propagate="click")
               = this.props.children
         `
       )

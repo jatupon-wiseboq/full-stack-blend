@@ -3,10 +3,7 @@ include ../../mixin/CreateReactComponent
   .section-title
     | Text
   .section-body
-    //-
-      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['color']}")
-      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family']}")
-    //
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family'], searchBox: true, useMaximumHeight: true}")
     +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['color']}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['font-style', 'font-weight', 'text-decoration-line']}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['text-align']}")
