@@ -8,9 +8,6 @@ let options = {
     "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS
 }
-let reject = {
-    "font-style"
-}
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -37,7 +34,7 @@ class RadioButtonPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
     }
     
     protected buttonOnClick(index: number) {

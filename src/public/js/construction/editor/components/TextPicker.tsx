@@ -32,7 +32,7 @@ class TextPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
         if (original) {

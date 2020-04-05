@@ -48,7 +48,7 @@ class Transformer extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         if (!this.state.isMouseDown) {
             if (!this.state.styleValues['transform']) {

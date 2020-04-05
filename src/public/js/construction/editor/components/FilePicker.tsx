@@ -36,7 +36,7 @@ class FilePicker extends Base<Props, State> {
     protected recentGuid: string = null;
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         if (this.recentGuid != properties.elementGuid) {
             this.recentGuid = properties.elementGuid;

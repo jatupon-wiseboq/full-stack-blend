@@ -38,7 +38,7 @@ class GridPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         this.setState({
             currentActiveLayout: properties.currentActiveLayout

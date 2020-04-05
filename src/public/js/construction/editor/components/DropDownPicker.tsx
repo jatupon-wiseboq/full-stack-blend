@@ -133,7 +133,7 @@ class DropDownPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         let index = this.getOptions().indexOf(this.state.styleValues[this.props.watchingStyleNames[0]] || defaults[this.props.watchingStyleNames[0]]);
         if (index == -1) {

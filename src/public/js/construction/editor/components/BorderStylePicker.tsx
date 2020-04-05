@@ -28,7 +28,7 @@ class BorderStylePicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        super.update(properties);
+        if (!super.update(properties)) return;
         
         let borderStyleIndex = BORDER_STYLES_IN_VALUE.indexOf(this.state.styleValues[this.props.watchingStyleNames[0]]);
         
