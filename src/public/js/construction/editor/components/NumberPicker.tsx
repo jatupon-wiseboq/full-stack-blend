@@ -47,6 +47,8 @@ class NumberPicker extends Base<Props, State> {
         let isString = typeof original === 'string';
         let value = (isString) ? parseInt(original) : null;
         this.state.value = value;
+        
+        this.forceUpdate();
     }
     
     protected textboxOnUpdate(value: any) {

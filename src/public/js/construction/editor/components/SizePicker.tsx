@@ -56,8 +56,11 @@ class SizePicker extends Base<Props, State> {
         if (index == -1) {
             index = 0;
         }
+        
         this.state.value = value;
         this.state.index = index;
+        
+        this.forceUpdate();
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {

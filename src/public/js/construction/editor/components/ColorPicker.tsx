@@ -37,6 +37,8 @@ class ColorPicker extends Base<Props, State> {
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
         this.state.value = original || null;
+        
+        this.forceUpdate();
     }
     
     protected colorPickerOnUpdate(value: any) {

@@ -39,6 +39,8 @@ class TextPicker extends Base<Props, State> {
             original = original.replace(/^'|'$/gm, '');
         }
         this.state.value = original;
+        
+        this.forceUpdate();
     }
     
     protected textboxOnUpdate(value: any) {
