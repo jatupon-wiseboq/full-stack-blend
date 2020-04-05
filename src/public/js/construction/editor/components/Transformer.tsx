@@ -45,6 +45,8 @@ class Transformer extends Base<Props, State> {
     componentDidMount() {
         this.init();
         this.render3D();
+        
+        document.body.addEventListener('mouseup', this.onMouseUp.bind(this), false);
     }
     
     public update(properties: any) {
