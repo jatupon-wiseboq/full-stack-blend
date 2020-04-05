@@ -60,7 +60,7 @@ var TransformControls = function ( camera, domElement ) {
 	defineProperty( "rotationSnap", null );
 	defineProperty( "scaleSnap", null );
 	defineProperty( "space", "world" );
-	defineProperty( "size", 2 );
+	defineProperty( "size", 4 );
 	defineProperty( "dragging", false );
 	defineProperty( "showX", true );
 	defineProperty( "showY", true );

@@ -1,6 +1,6 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../lib/TransformControls.js';
-import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, LineBasicMaterial, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
+import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
 import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../lib/CSS3DRenderer.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
@@ -71,8 +71,9 @@ class Transformer extends Base<Props, State> {
                 var m = new Matrix4();
                 m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
                 
-                this.webGLMesh.position.set(f[12], -f[13], f[14]);
+                this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
                 this.webGLMesh.rotation.setFromRotationMatrix(m);
+                this.webGLMesh.rotation.set(Math.PI - this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, Math.PI * 2.0 - this.webGLMesh.rotation.z);
                 this.webGLMesh.scale.setFromMatrixScale(m);
                 
                 this.render3D(false);
@@ -91,14 +92,17 @@ class Transformer extends Base<Props, State> {
         this.webGLRenderer.setClearColor(0x000000, 0);
         container.appendChild(this.webGLRenderer.domElement);
         
-        this.webGLCamera = new PerspectiveCamera(50, 236.0 / 210.0, 1, 3000);
-        this.webGLCamera.position.set(0, 0, 100);
+        let width = 236.0;
+        let height = 210.0;
+        
+        this.webGLCamera = new PerspectiveCamera(90, width / height, 1, 3000);
+        this.webGLCamera.position.set(0, 0, -100);
         this.webGLCamera.lookAt(0, 0, 0);
         
         this.webGLScene = new Scene();
         this.webGLScene.add(this.webGLCamera);
         
-        var geometry = new BoxBufferGeometry(25, 25, 25);
+        var geometry = new BoxBufferGeometry(50, 50, 50);
         var wireframe = new WireframeGeometry(geometry);
         
         this.webGLMesh = new LineSegments(wireframe);
@@ -109,6 +113,12 @@ class Transformer extends Base<Props, State> {
         
         this.webGLScene.add(this.webGLMesh);
         
+        let plane = new PlaneGeometry(50, 50, 8);
+        let material = new MeshBasicMaterial({color: 0xf5f5f5, side: DoubleSide});
+        let mesh = new Mesh(plane, material);
+        mesh.position.z = -50/2;
+        this.webGLMesh.add(mesh);
+        
         this.reset();
         
         // CSS3D Renderer
@@ -116,8 +126,8 @@ class Transformer extends Base<Props, State> {
         this.css3DRenderer = new CSS3DRenderer();
         this.css3DRenderer.setSize(236, 210);
         
-        this.css3DCamera = new PerspectiveCamera(50, 236.0 / 210.0, 1, 3000);
-        this.css3DCamera.position.set(0, 0, 100);
+        this.css3DCamera = new PerspectiveCamera(90, width / height, 1, 3000);
+        this.css3DCamera.position.set(0, 0, -100);
         this.css3DCamera.lookAt(0, 0, 0);
         
         this.css3DElement = new CSS3DObject(ReactDOM.findDOMNode(this.refs.output));
@@ -153,14 +163,14 @@ class Transformer extends Base<Props, State> {
     
     reset() {
         this.webGLMesh.position.set(0, 0, 0);
-        this.webGLMesh.rotation.set(Math.PI, 0, 0);
+        this.webGLMesh.rotation.set(0, 0, 0);
         this.webGLMesh.scale.set(1, 1, 1);
     }
     
     render3D(calculateOutput: boolean=true) {
         if (calculateOutput) {
-            this.css3DElement.position.set(this.webGLMesh.position.x, -this.webGLMesh.position.y, this.webGLMesh.position.z);
-            this.css3DElement.rotation.set(this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
+            this.css3DElement.position.set(-this.webGLMesh.position.x, -this.webGLMesh.position.y, -this.webGLMesh.position.z);
+            this.css3DElement.rotation.set(Math.PI - this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, Math.PI * 2.0 - this.webGLMesh.rotation.z);
             this.css3DElement.scale.copy(this.webGLMesh.scale);
             
             this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
