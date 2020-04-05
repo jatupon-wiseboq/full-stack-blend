@@ -53,7 +53,7 @@ class DropDownControl extends React.Component<Props, State> {
             
             let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
             this.maximumWidth = dropDownClientWidth;
-            let dropDownClientHeight = dropdown.clientHeight + 2;
+            let dropDownClientHeight = dropdown.clientHeight + 5;
             let windowWidth = window.innerWidth;
             let windowHeight = window.innerHeight;
             let dropDownMaxHeight = windowHeight - position[1] - size[1] - 2;
@@ -62,8 +62,6 @@ class DropDownControl extends React.Component<Props, State> {
                 dropDownClientWidth += 7;
                 overflowY = true;
             }
-            
-            if (windowHeight - position[1] - size[1] - 5)
             
             // Assign Size & Position
             //

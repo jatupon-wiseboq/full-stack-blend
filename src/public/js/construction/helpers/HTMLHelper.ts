@@ -19,7 +19,7 @@ var HTMLHelper = {
     else { return null; }
   },
   getElementsByClassName: (className: string, container: HTMLElement=document, notToBeUnder: string=null) => {
-    let elements = container.getElementsByClassName(className, container);
+    let elements = container.getElementsByClassName(className);
     
     if (notToBeUnder === null) {
       return elements;

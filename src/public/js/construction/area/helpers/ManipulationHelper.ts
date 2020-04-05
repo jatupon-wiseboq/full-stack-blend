@@ -66,27 +66,41 @@ var ManipulationHelper = {
                 hash[tokens[0].toString().trim()] = tokens[1].toString().trim();
               }
               
-              let name = content.aStyle.name.toString().trim();
-              if (hash[name] != content.aStyle.value) {
-                hash[name] = content.aStyle.value;
-                if (HTMLHelper.hasVendorPrefix('-webkit-', name)) hash['-webkit-' + name] = content.aStyle.value;
-                if (HTMLHelper.hasVendorPrefix('-moz-', name)) hash['-moz-' + name] = content.aStyle.value;
-                if (HTMLHelper.hasVendorPrefix('-ms-', name)) hash['-ms-' + name] = content.aStyle.value;
-                
-                let results = [];
-                for (var key in hash) {
-                  if (hash.hasOwnProperty(key) && hash[key] != null) {
-                    results.push(key + ': ' + hash[key]);
+              remember = false;
+              
+              for (let aStyle of content.aStyle) {
+                let name = aStyle.name.toString().trim();
+                if (hash[name] != aStyle.value) {
+                  remember = true;
+                  
+                  hash[name] = aStyle.value;
+                  if (HTMLHelper.hasVendorPrefix('-webkit-', name)) hash['-webkit-' + name] = aStyle.value;
+                  if (HTMLHelper.hasVendorPrefix('-moz-', name)) hash['-moz-' + name] = aStyle.value;
+                  if (HTMLHelper.hasVendorPrefix('-ms-', name)) hash['-ms-' + name] = aStyle.value;
+                  
+                  if (aStyle.name == 'font-family') {
+                    FontHelper.load(aStyle.value);
                   }
                 }
-                
-                selectingElement.setAttribute('style', results.join('; '));
-                
-                if (content.aStyle.name == 'font-family') {
-                  FontHelper.load(content.aStyle.value);
+              }
+              
+              let results = [];
+              for (var key in hash) {
+                if (hash.hasOwnProperty(key) && hash[key] != null) {
+                  results.push(key + ': ' + hash[key]);
                 }
-              }else {
-                remember = false;
+              }
+              selectingElement.setAttribute('style', results.join('; '));
+              
+              let strictContainers = HTMLHelper.getElementsByClassName('internal-fsb-strict-layout', selectingElement, 'internal-fsb-element');
+              let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
+              let containers = [...strictContainers, ...absoluteContainers];
+              let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
+              results = isPerspectiveCamera ? ['transform-style: ' + hash['-child-transform-style'], 'transform: ' + hash['-child-transform']] : [];
+              let styleString = results.join('; ');
+              
+              for (let container of containers) {
+                container.setAttribute('style', styleString);
               }
             }
           } else {

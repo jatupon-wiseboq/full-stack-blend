@@ -51,10 +51,10 @@ class BorderStylePicker extends Base<Props, State> {
             borderStyleIndex: index
         });
         perform('update', {
-            aStyle: {
+            aStyle: [{
                 name: this.props.watchingStyleNames[0],
                 value: BORDER_STYLES_IN_VALUE[index]
-            }
+            }]
         });
     }
     
@@ -64,10 +64,10 @@ class BorderStylePicker extends Base<Props, State> {
     
     protected colorPickerOnUpdate(hex: string) {
         perform('update', {
-            aStyle: {
+            aStyle: [{
                 name: this.props.watchingStyleNames[1],
                 value: (hex != null) ? '#' + hex : null
-            },
+            }],
             replace: this.props.watchingStyleNames[1]
         });
     }

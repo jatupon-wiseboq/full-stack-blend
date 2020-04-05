@@ -22,7 +22,7 @@ class Transformer extends Base<Props, State> {
     state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate', isMouseDown: false}
     static defaultProps: Props = {
       watchingClassNames: [],
-      watchingStyleNames: ['transform']
+      watchingStyleNames: ['transform', '-fsb-mode']
     }
     
     private webGLCamera: any;
@@ -36,8 +36,6 @@ class Transformer extends Base<Props, State> {
     private css3DRenderer: any;
     private css3DElement: any;
     
-    private previousTransform: string = null;
-    
     constructor(props) {
         super(props);
     }
@@ -50,33 +48,35 @@ class Transformer extends Base<Props, State> {
     }
     
     public update(properties: any) {
+        let previousMode = this.state.styleValues['-fsb-mode'];
         if (!super.update(properties)) return;
+        let isModeChanged = (this.state.styleValues['-fsb-mode'] != previousMode);
         
-        if (!this.state.isMouseDown) {
-            if (!this.state.styleValues['transform']) {
+        if (!this.state.isMouseDown || isModeChanged) {
+            if (this.state.styleValues['transform'] != this.previousTransform || isModeChanged) {
                 this.previousTransform = this.state.styleValues['transform'];
-            
-                this.reset();
-                this.render3D(false);
-            }
-            else if (this.state.styleValues['transform'] != this.previousTransform) {
-                this.previousTransform = this.state.styleValues['transform'];
-            
-                let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
-                let f = [];
-                for (let i=0; i<splited.length; i++) {
-                    f.push(parseFloat(splited[i]));
+                
+                if (!this.state.styleValues['transform']) {
+                    this.reset();
+                    
+                    this.render3D(isModeChanged);
+                } else {
+                    let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
+                    let f = [];
+                    for (let i=0; i<splited.length; i++) {
+                        f.push(parseFloat(splited[i]));
+                    }
+                    
+                    var m = new Matrix4();
+                    m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
+                    
+                    this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
+                    this.webGLMesh.rotation.setFromRotationMatrix(m);
+                    this.webGLMesh.rotation.set(Math.PI - this.webGLMesh.rotation.x, -this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
+                    this.webGLMesh.scale.setFromMatrixScale(m);
+                    
+                    this.render3D(isModeChanged);
                 }
-                
-                var m = new Matrix4();
-                m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
-                
-                this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
-                this.webGLMesh.rotation.setFromRotationMatrix(m);
-                this.webGLMesh.rotation.set(Math.PI - this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, Math.PI * 2.0 - this.webGLMesh.rotation.z);
-                this.webGLMesh.scale.setFromMatrixScale(m);
-                
-                this.render3D(false);
             }
         }
     }
@@ -161,6 +161,16 @@ class Transformer extends Base<Props, State> {
         }
     }
     
+    modeOnClick(mode) {
+        perform('update', {
+            aStyle: [{
+                name: '-fsb-mode',
+                value: mode || null
+            }],
+            replace: '-fsb-mode'
+        });
+    }
+    
     reset() {
         this.webGLMesh.position.set(0, 0, 0);
         this.webGLMesh.rotation.set(0, 0, 0);
@@ -170,27 +180,42 @@ class Transformer extends Base<Props, State> {
     render3D(calculateOutput: boolean=true) {
         if (calculateOutput) {
             this.css3DElement.position.set(-this.webGLMesh.position.x, -this.webGLMesh.position.y, -this.webGLMesh.position.z);
-            this.css3DElement.rotation.set(Math.PI - this.webGLMesh.rotation.x, this.webGLMesh.rotation.y, Math.PI * 2.0 - this.webGLMesh.rotation.z);
+            this.css3DElement.rotation.set(-(Math.PI - this.webGLMesh.rotation.x), -this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
             this.css3DElement.scale.copy(this.webGLMesh.scale);
             
             this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
             
-            let style = ReactDOM.findDOMNode(this.refs.output).getAttribute('style');
-            let transform = HTMLHelper.getInlineStyle(style, 'transform');
+            let cameraTransform = HTMLHelper.getInlineStyle(this.css3DRenderer.domElement.firstChild.getAttribute('style'), 'transform');
+            let objectTransform = HTMLHelper.getInlineStyle(ReactDOM.findDOMNode(this.refs.output).getAttribute('style'), 'transform');
+            let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
+            let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');
             
-            if (this.previousTransform != transform) {
-                this.previousTransform = transform;
-                perform('update', {
-                    aStyle: {
-                        name: 'transform',
-                        value: transform
+            perform('update', {
+                aStyle: [
+                    {
+                        name: '-fsb-mode',
+                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
                     },
-                    replace: 'transform'
-                });
-                this.previousTransform = transform;
-            }
+                    {
+                        name: 'perspective',
+                        value: (isPerspectiveCamera) ? '236px' : null
+                    },
+                    {
+                        name: '-child-transform-style',
+                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
+                    },
+                    {
+                        name: '-child-transform',
+                        value: (isPerspectiveCamera) ? null : objectTransform
+                    },
+                    {
+                        name: 'transform',
+                        value: (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform
+                    }
+                ]
+            });
         }
-    
+        
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
     
@@ -206,18 +231,31 @@ class Transformer extends Base<Props, State> {
       return (
         pug `
           div
-            div(ref="output", style={display: 'none'})
-            div(ref="container", style={border: 'dashed 1px #999999'}, onMouseDown=this.onMouseDown.bind(this), onMouseUp=this.onMouseUp.bind(this))
-            div.text-center.mt-1
-              .btn-group.btn-group-sm(role="group")
-                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate' ? 'btn-primary' : 'btn-light'))
-                  | Move
-                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'rotate'), className=(this.state.mode == 'rotate' ? 'btn-primary' : 'btn-light'))
-                  | Rotate
-                button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'scale'), className=(this.state.mode == 'scale' ? 'btn-primary' : 'btn-light'))
-                  | Scale
-                button.btn.btn-sm.text-center.btn-light(onClick=this.optionOnClick.bind(this, 'reset'))
-                  | Reset
+            div
+              div.text-center.mt-1.mb-1
+                .btn-group.btn-group-sm(role="group")
+                  button.btn.btn-sm.text-center(onClick=this.modeOnClick.bind(this, 'perspective'), className=(this.state.styleValues['-fsb-mode'] == 'perspective' ? 'btn-primary' : 'btn-light'))
+                    | Perspective
+                  button.btn.btn-sm.text-center(onClick=this.modeOnClick.bind(this, 'orthographic'), className=(this.state.styleValues['-fsb-mode'] == 'orthographic' ? 'btn-primary' : 'btn-light'))
+                    | Orthographic
+                  button.btn.btn-sm.text-center(onClick=this.modeOnClick.bind(this, ''), className=(!this.state.styleValues['-fsb-mode'] ? 'btn-primary' : 'btn-light'))
+                    | Object
+            div
+              div(ref="output", style={display: 'none'})
+              div(style={position: 'relative'})
+                div(ref="container", style={border: 'dashed 1px #999999', visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseDown=this.onMouseDown.bind(this), onMouseUp=this.onMouseUp.bind(this))
+                div(style={position: 'absolute', top: '20px', right: '20px', bottom: '20px', left: '20px', fontSize: '10px', visibility: this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
+                  | 3D control is not available for this camera. Please manipulate from an another object inside this one.
+              div.text-center.mt-1
+                .btn-group.btn-group-sm(role="group")
+                  button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate' ? 'btn-primary' : 'btn-light'))
+                    | Move
+                  button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'rotate'), className=(this.state.mode == 'rotate' ? 'btn-primary' : 'btn-light'))
+                    | Rotate
+                  button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'scale'), className=(this.state.mode == 'scale' ? 'btn-primary' : 'btn-light'))
+                    | Scale
+                  button.btn.btn-sm.text-center.btn-light(onClick=this.optionOnClick.bind(this, 'reset'))
+                    | Reset
         `
       )
     }

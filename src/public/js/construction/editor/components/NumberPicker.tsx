@@ -55,10 +55,10 @@ class NumberPicker extends Base<Props, State> {
         this.state.value = value;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
-                aStyle: {
+                aStyle: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
                     value: this.composeValue(value)
-                },
+                }],
                 replace: this.props.watchingStyleNames[0]
             });
         }

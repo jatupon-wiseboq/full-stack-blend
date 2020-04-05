@@ -154,10 +154,10 @@ class DropDownPicker extends Base<Props, State> {
         value = this.getFinalizedValue(value);
         
         perform('update', {
-            aStyle: {
+            aStyle: [{
                 name: identity.split('[')[0],
                 value: value
-            }
+            }]
         });
     }
     

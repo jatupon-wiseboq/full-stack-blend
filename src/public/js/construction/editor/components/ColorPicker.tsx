@@ -46,10 +46,10 @@ class ColorPicker extends Base<Props, State> {
         this.state.value = composedValue;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
-                aStyle: {
+                aStyle: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
                     value: composedValue
-                },
+                }],
                 replace: this.props.watchingStyleNames[0]
             });
         }

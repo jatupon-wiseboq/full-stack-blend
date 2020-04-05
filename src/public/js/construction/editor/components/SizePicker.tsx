@@ -69,10 +69,10 @@ class SizePicker extends Base<Props, State> {
         });
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
-                aStyle: {
+                aStyle: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
                     value: this.composeValue(this.state.value, index)
-                },
+                }],
                 replace: this.props.watchingStyleNames[0]
             });
         }
@@ -82,10 +82,10 @@ class SizePicker extends Base<Props, State> {
         this.state.value = value;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
-                aStyle: {
+                aStyle: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
                     value: this.composeValue(value, this.state.index)
-                },
+                }],
                 replace: this.props.watchingStyleNames[0]
             });
         }
