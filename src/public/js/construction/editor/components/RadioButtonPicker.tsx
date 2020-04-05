@@ -1,4 +1,5 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
+import {FontHelper} from '../../helpers/FontHelper.js';
 import {IProps, IState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import * as CONSTANTS from '../../Constants.js';
@@ -6,6 +7,9 @@ import * as CONSTANTS from '../../Constants.js';
 let options = {
     "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS
+}
+let reject = {
+    "font-style"
 }
 
 declare let React: any;

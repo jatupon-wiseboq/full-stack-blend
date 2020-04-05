@@ -2,9 +2,9 @@ import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {RandomHelper} from '../../helpers/RandomHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
+import {FontHelper} from '../../helpers/FontHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
-import {FontHelper} from './FontHelper.js';
 import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
 
 let performed: any = [];
@@ -66,8 +66,12 @@ var ManipulationHelper = {
                 hash[tokens[0].toString().trim()] = tokens[1].toString().trim();
               }
               
-              if (hash[content.aStyle.name.toString().trim()] != content.aStyle.value) {
-                hash[content.aStyle.name.toString().trim()] = content.aStyle.value;
+              let name = content.aStyle.name.toString().trim();
+              if (hash[name] != content.aStyle.value) {
+                hash[name] = content.aStyle.value;
+                if (HTMLHelper.hasVendorPrefix('-webkit-', name)) hash['-webkit-' + name] = content.aStyle.value;
+                if (HTMLHelper.hasVendorPrefix('-moz-', name)) hash['-moz-' + name] = content.aStyle.value;
+                if (HTMLHelper.hasVendorPrefix('-ms-', name)) hash['-ms-' + name] = content.aStyle.value;
                 
                 let results = [];
                 for (var key in hash) {

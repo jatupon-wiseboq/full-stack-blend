@@ -19,7 +19,6 @@ interface State extends IState {
 }
 
 let imageURLCache: any = {};
-let recentGuid: string = null;
 
 class FilePicker extends Base<Props, State> {
     state: IState = {classNameStatuses: {}, styleValues: {}, value: null}
@@ -34,13 +33,15 @@ class FilePicker extends Base<Props, State> {
         super(props);
     }
     
+    protected recentGuid: string = null;
+    
     public update(properties: any) {
         super.update(properties);
         
-        if (recentGuid != properties.elementGuid) {
-            recentGuid = properties.elementGuid;
+        if (this.recentGuid != properties.elementGuid) {
+            this.recentGuid = properties.elementGuid;
             
-            let value = imageURLCache[recentGuid] || this.state.styleValues[this.props.watchingStyleNames[0]];
+            let value = imageURLCache[this.recentGuid] || this.state.styleValues[this.props.watchingStyleNames[0]];
             this.setState({
                 value: value
             });
@@ -53,7 +54,7 @@ class FilePicker extends Base<Props, State> {
         this.setState({
             value: composedValue
         });
-        imageURLCache[recentGuid] = composedValue;
+        imageURLCache[this.recentGuid] = composedValue;
         
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {

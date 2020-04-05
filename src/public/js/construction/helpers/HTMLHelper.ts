@@ -1,3 +1,10 @@
+import {VENDOR_PREFIXES} from '../VendorPrefixes.js';
+
+let vendor_prefixes_hash = {};
+for (let prefix of VENDOR_PREFIXES) {
+  vendor_prefixes_hash[prefix] = true;
+}
+
 var HTMLHelper = {
   sanitizingPug: (code: string) => {
     return code.replace(/classname=/gi, 'class=');
@@ -216,6 +223,9 @@ var HTMLHelper = {
   },
   getIframeContentWindow: (element: HTMLIframeElement) => {
     return element.contentWindow;
+  },
+  hasVendorPrefix: (prefix: string, name: string) => {
+    return vendor_prefixes_hash[prefix + name] === true;
   }
 };
 
