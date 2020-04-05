@@ -166,6 +166,17 @@ var HTMLHelper = {
     
     return null;
   },
+  getInlineStyleHashMap: (styleAttributeValue: string) => {
+    let splited = styleAttributeValue.split('; ');
+    let hashMap = {};
+    
+    for (var i=0; i<splited.length; i++) {
+      let tokens = splited[i].split(': ');
+      hashMap[tokens[0]] = tokens[1];
+    }
+    
+    return hashMap;
+  },
   
   getPosition: (object: HTMLElement) => {
     var curleft = 0;

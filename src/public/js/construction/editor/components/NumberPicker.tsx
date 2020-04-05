@@ -46,16 +46,11 @@ class NumberPicker extends Base<Props, State> {
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
         let isString = typeof original === 'string';
         let value = (isString) ? parseInt(original) : null;
-        
-        this.setState({
-            value: value
-        });
+        this.state.value = value;
     }
     
     protected textboxOnUpdate(value: any) {
-        this.setState({
-            value: value
-        });
+        this.state.value = value;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {

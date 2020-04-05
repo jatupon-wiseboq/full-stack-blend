@@ -65,12 +65,13 @@ class Base extends React.Component {
         }
         if (recentElementStyle != properties.elementStyle) {
             recentElementStyle = properties.elementStyle;
+            let hashMap = HTMLHelper.getInlineStyleHashMap(recentElementStyle);
             
             for (var name in styleValues) {
                 if (styleValues.hasOwnProperty(name)) {
                     if (!!name) {
                         let splited = name.split('[');
-                        let value = HTMLHelper.getInlineStyle(recentElementStyle, splited[0]);
+                        let value = hashMap[splited[0]] || null;
                         
                         if (value != null && splited[1]) {
                             let tokens = splited[1].split(',');

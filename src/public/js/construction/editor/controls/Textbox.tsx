@@ -36,6 +36,8 @@ class Textbox extends React.Component<Props, State> {
     
     componentDidUpdate(prevProps) {
         let input = ReactDOM.findDOMNode(this.refs.input);
+        if (input.focus) return;
+        
         if (this.props.value != input.value) {
             input.value = this.props.value || '';
         }

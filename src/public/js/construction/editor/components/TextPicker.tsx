@@ -38,16 +38,11 @@ class TextPicker extends Base<Props, State> {
         if (original) {
             original = original.replace(/^'|'$/gm, '');
         }
-        
-        this.setState({
-            value: original
-        });
+        this.state.value = original;
     }
     
     protected textboxOnUpdate(value: any) {
-        this.setState({
-            value: value
-        });
+        this.state.value = value;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {

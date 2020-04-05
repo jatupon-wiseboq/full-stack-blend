@@ -56,11 +56,8 @@ class SizePicker extends Base<Props, State> {
         if (index == -1) {
             index = 0;
         }
-        
-        this.setState({
-            value: value,
-            index: index
-        });
+        this.state.value = value;
+        this.state.index = index;
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -79,9 +76,7 @@ class SizePicker extends Base<Props, State> {
     }
     
     protected textboxOnUpdate(value: any) {
-        this.setState({
-            value: value
-        });
+        this.state.value = value;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
@@ -125,7 +120,7 @@ class SizePicker extends Base<Props, State> {
         } else {
             return (
                 <div className={"size-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
+                    <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()}>
                         <div className="input-group">
                             <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                             <div className="input-group-append">

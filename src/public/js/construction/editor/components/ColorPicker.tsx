@@ -36,17 +36,12 @@ class ColorPicker extends Base<Props, State> {
         super.update(properties);
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        
-        this.setState({
-            value: original || null
-        });
+        this.state.value = original || null;
     }
     
     protected colorPickerOnUpdate(value: any) {
         let composedValue = '#' + value;
-        this.setState({
-            value: composedValue
-        });
+        this.state.value = composedValue;
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
                 aStyle: {
