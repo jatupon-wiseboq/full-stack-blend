@@ -15,11 +15,11 @@ interface Props extends IProps {
 
 interface State extends IState {
     mode: string,
-    isMouseDown: boolean
+    focus: boolean
 }
 
 class Transformer extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate', isMouseDown: false}
+    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate', focus: false}
     static defaultProps: Props = {
       watchingClassNames: [],
       watchingStyleNames: ['transform', '-fsb-mode']
@@ -43,45 +43,52 @@ class Transformer extends Base<Props, State> {
     componentDidMount() {
         this.init();
         this.render3D();
-        
-        document.body.addEventListener('mouseup', this.onMouseUp.bind(this), false);
     }
     
     public update(properties: any) {
         let previousMode = this.state.styleValues['-fsb-mode'];
         if (!super.update(properties)) return;
-        let isModeChanged = (this.state.styleValues['-fsb-mode'] != previousMode);
+        let isModeChanged = (this.state.styleValues['-fsb-mode'] !== previousMode);
         
-        if (!this.state.isMouseDown || isModeChanged) {
-            if (this.state.styleValues['transform'] != this.previousTransform || isModeChanged) {
-                this.previousTransform = this.state.styleValues['transform'];
+        if (!this.state.focus && (
+            this.state.styleValues['transform'] != this.previousTransform ||
+            isModeChanged)) {
+            
+            this.previousTransform = this.state.styleValues['transform'];
+            
+            if (!this.state.styleValues['transform']) {
+                this.reset();
                 
-                if (!this.state.styleValues['transform']) {
-                    this.reset();
-                    
-                    this.render3D(isModeChanged);
-                } else {
-                    let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
-                    let f = [];
-                    for (let i=0; i<splited.length; i++) {
-                        f.push(parseFloat(splited[i]));
-                    }
-                    
-                    var m = new Matrix4();
-                    m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
-                    
-                    this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
-                    this.webGLMesh.rotation.setFromRotationMatrix(m);
-                    this.webGLMesh.rotation.set(Math.PI - this.webGLMesh.rotation.x, -this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
-                    this.webGLMesh.scale.setFromMatrixScale(m);
-                    
-                    this.render3D(isModeChanged);
+                this.render3D(isModeChanged, isModeChanged);
+            } else {
+                let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
+                let f = [];
+                for (let i=0; i<splited.length; i++) {
+                    f.push(parseFloat(splited[i]));
                 }
+                
+                var m = new Matrix4();
+                m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
+                
+                this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
+                this.webGLMesh.quaternion.setFromRotationMatrix(m);
+                this.webGLMesh.quaternion.inverse();
+                this.webGLMesh.scale.setFromMatrixScale(m);
+                
+                this.render3D(isModeChanged, isModeChanged);
             }
         }
     }
     
-    init() {        
+    init() {
+        let width = 236.0;
+        let height = 210.0;
+        
+        this.initWebGLRenderer(width, height);
+        this.initCSS3DRenderer(width, height);
+        this.initControl();
+	}
+    initWebGLRenderer(width: number, height: number) {
         // WebGL Renderer
         //
         let container = ReactDOM.findDOMNode(this.refs.container);
@@ -91,9 +98,6 @@ class Transformer extends Base<Props, State> {
         this.webGLRenderer.setSize(236, 210);
         this.webGLRenderer.setClearColor(0x000000, 0);
         container.appendChild(this.webGLRenderer.domElement);
-        
-        let width = 236.0;
-        let height = 210.0;
         
         this.webGLCamera = new PerspectiveCamera(90, width / height, 1, 3000);
         this.webGLCamera.position.set(0, 0, -100);
@@ -120,7 +124,8 @@ class Transformer extends Base<Props, State> {
         this.webGLMesh.add(mesh);
         
         this.reset();
-        
+    }
+    initCSS3DRenderer(width: number, height: number) {
         // CSS3D Renderer
         //
         this.css3DRenderer = new CSS3DRenderer();
@@ -136,7 +141,8 @@ class Transformer extends Base<Props, State> {
         this.css3DScene = new Scene();
         this.css3DScene.add(this.css3DElement);
         this.css3DScene.add(this.css3DCamera);
-        
+    }
+    initControl() {
         // Transformer Control
         //
         this.webGLControl = new TransformControls(this.webGLCamera, this.webGLRenderer.domElement);
@@ -146,7 +152,7 @@ class Transformer extends Base<Props, State> {
         this.webGLControl.addEventListener('change', this.render3D.bind(this));
         
         this.webGLScene.add(this.webGLControl);
-	}
+    }
     
     optionOnClick(mode) {
         if (mode == 'reset') {
@@ -177,10 +183,10 @@ class Transformer extends Base<Props, State> {
         this.webGLMesh.scale.set(1, 1, 1);
     }
     
-    render3D(calculateOutput: boolean=true) {
+    render3D(calculateOutput: boolean=true, forceUpdateStyles: boolean=false) {
         if (calculateOutput) {
             this.css3DElement.position.set(-this.webGLMesh.position.x, -this.webGLMesh.position.y, -this.webGLMesh.position.z);
-            this.css3DElement.rotation.set(-(Math.PI - this.webGLMesh.rotation.x), -this.webGLMesh.rotation.y, -this.webGLMesh.rotation.z);
+            this.css3DElement.quaternion.copy(this.webGLMesh.quaternion);
             this.css3DElement.scale.copy(this.webGLMesh.scale);
             
             this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
@@ -190,41 +196,46 @@ class Transformer extends Base<Props, State> {
             let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
             let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');
             
-            perform('update', {
-                aStyle: [
-                    {
-                        name: '-fsb-mode',
-                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
-                    },
-                    {
-                        name: 'perspective',
-                        value: (isPerspectiveCamera) ? '236px' : null
-                    },
-                    {
-                        name: '-child-transform-style',
-                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
-                    },
-                    {
-                        name: '-child-transform',
-                        value: (isPerspectiveCamera) ? null : objectTransform
-                    },
-                    {
-                        name: 'transform',
-                        value: (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform
-                    }
-                ]
-            });
+            let transform = (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform;
+            if (forceUpdateStyles || this.previousTransform != transform) {
+                this.previousTransform = transform;
+                
+                perform('update', {
+                    aStyle: [
+                        {
+                            name: '-fsb-mode',
+                            value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
+                        },
+                        {
+                            name: 'perspective',
+                            value: (isPerspectiveCamera) ? '236px' : null
+                        },
+                        {
+                            name: '-child-transform-style',
+                            value: (isPerspectiveCamera) ? 'preserve-3d' : null
+                        },
+                        {
+                            name: '-child-transform',
+                            value: (isPerspectiveCamera) ? null : objectTransform
+                        },
+                        {
+                            name: 'transform',
+                            value: transform
+                        }
+                    ]
+                });
+            }
         }
         
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
     
-    onMouseDown() {
-        this.state.isMouseDown = true;
+    onMouseOver() {
+        this.state.focus = true;
     }
     
-    onMouseUp() {
-        this.state.isMouseDown = false;
+    onMouseOut() {
+        this.state.focus = false;
     }
     
     render() {
@@ -243,7 +254,7 @@ class Transformer extends Base<Props, State> {
             div
               div(ref="output", style={display: 'none'})
               div(style={position: 'relative'})
-                div(ref="container", style={border: 'dashed 1px #999999', visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseDown=this.onMouseDown.bind(this), onMouseUp=this.onMouseUp.bind(this))
+                div(ref="container", style={border: 'dashed 1px #999999', visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseOver=this.onMouseOver.bind(this), onMouseOut=this.onMouseOut.bind(this))
                 div(style={position: 'absolute', top: '20px', right: '20px', bottom: '20px', left: '20px', fontSize: '10px', visibility: this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
                   | 3D control is not available for this camera. Please manipulate from an another object inside this one.
               div.text-center.mt-1
