@@ -41,6 +41,8 @@ class Transformer extends Base<Props, State> {
     }
     
     protected recentGuid: string = null;
+    protected currentTransform: string = null;
+    protected currentMode: string = null;
     
     componentDidMount() {
         this.init();
@@ -59,7 +61,7 @@ class Transformer extends Base<Props, State> {
             } else {
                 let splited = this.state.styleValues['transform'].split('matrix3d(')[1].split(')')[0].split(',');
                 let f = [];
-                for (let i=0; i<splited.length; i++) {
+                for (let i=0; i<16; i++) {
                     f.push(parseFloat(splited[i]));
                 }
                 
@@ -73,6 +75,8 @@ class Transformer extends Base<Props, State> {
                 this.webGLMesh.scale.setFromMatrixScale(m);
             }
             
+            this.currentTransform = null;
+            this.currentMode = null;
             this.render3D();
         }
     }
@@ -190,35 +194,44 @@ class Transformer extends Base<Props, State> {
         
         let cameraTransform = HTMLHelper.getInlineStyle(this.css3DRenderer.domElement.firstChild.getAttribute('style'), 'transform');
         let objectTransform = HTMLHelper.getInlineStyle(ReactDOM.findDOMNode(this.refs.output).getAttribute('style'), 'transform');
+        
         let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
         let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');
         
         let transform = (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform;
+        if (!!transform) {
+            transform = transform.split(';')[0] + 'scaleY(-1)';
+        }
         
-        perform('update', {
-            aStyle: [
-                {
-                    name: '-fsb-mode',
-                    value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
-                },
-                {
-                    name: 'perspective',
-                    value: (isPerspectiveCamera) ? '236px' : null
-                },
-                {
-                    name: '-child-transform-style',
-                    value: (isPerspectiveCamera) ? 'preserve-3d' : null
-                },
-                {
-                    name: '-child-transform',
-                    value: (isPerspectiveCamera) ? null : objectTransform
-                },
-                {
-                    name: 'transform',
-                    value: transform
-                }
-            ]
-        });
+        if (this.currentTransform != transform || this.currentMode != this.state.styleValues['-fsb-mode']) {
+            this.currentTransform = transform;
+            this.currentMode = this.state.styleValues['-fsb-mode'];
+            
+            perform('update', {
+                aStyle: [
+                    {
+                        name: '-fsb-mode',
+                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
+                    },
+                    {
+                        name: 'perspective',
+                        value: (isPerspectiveCamera) ? '236px' : null
+                    },
+                    {
+                        name: '-child-transform-style',
+                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
+                    },
+                    {
+                        name: '-child-transform',
+                        value: null
+                    },
+                    {
+                        name: 'transform',
+                        value: transform
+                    }
+                ]
+            });
+        }
         
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
