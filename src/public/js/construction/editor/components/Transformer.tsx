@@ -229,7 +229,8 @@ class Transformer extends Base<Props, State> {
                         name: 'transform',
                         value: transform
                     }
-                ]
+                ],
+                replace: 'transform'
             });
         }
         
