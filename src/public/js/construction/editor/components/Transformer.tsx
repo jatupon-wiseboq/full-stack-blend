@@ -40,28 +40,24 @@ class Transformer extends Base<Props, State> {
         super(props);
     }
     
+    protected recentGuid: string = null;
+    
     componentDidMount() {
         this.init();
         this.render3D();
     }
     
     public update(properties: any) {
-        let previousMode = this.state.styleValues['-fsb-mode'];
         if (!super.update(properties)) return;
-        let isModeChanged = (this.state.styleValues['-fsb-mode'] !== previousMode);
         
-        if (!this.state.focus && (
-            this.state.styleValues['transform'] != this.previousTransform ||
-            isModeChanged)) {
-            
-            this.previousTransform = this.state.styleValues['transform'];
+        
+        if (this.recentGuid != properties.elementGuid) {
+            this.recentGuid = properties.elementGuid;
             
             if (!this.state.styleValues['transform']) {
                 this.reset();
-                
-                this.render3D(isModeChanged, isModeChanged);
             } else {
-                let splited = this.previousTransform.split('matrix3d(')[1].split(')')[0].split(',');
+                let splited = this.state.styleValues['transform'].split('matrix3d(')[1].split(')')[0].split(',');
                 let f = [];
                 for (let i=0; i<splited.length; i++) {
                     f.push(parseFloat(splited[i]));
@@ -70,14 +66,14 @@ class Transformer extends Base<Props, State> {
                 var m = new Matrix4();
                 m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
                 
-                this.webGLMesh.position.set(-f[12], -f[13], -f[14]);
+                this.webGLMesh.position.set(f[12], f[13], f[14]);
+                this.webGLMesh.position.negate();
                 this.webGLMesh.quaternion.setFromRotationMatrix(m);
                 this.webGLMesh.quaternion.inverse();
                 this.webGLMesh.scale.setFromMatrixScale(m);
-                this.webGLMesh.scale.set(this.webGLMesh.scale.x, -this.webGLMesh.scale.y, this.webGLMesh.scale.z);
-                
-                this.render3D(isModeChanged, isModeChanged);
             }
+            
+            this.render3D();
         }
     }
     
@@ -180,53 +176,49 @@ class Transformer extends Base<Props, State> {
     
     reset() {
         this.webGLMesh.position.set(0, 0, 0);
-        this.webGLMesh.rotation.set(0, 0, 0);
+        this.webGLMesh.quaternion.set(0, 0, 0, 0);
         this.webGLMesh.scale.set(1, 1, 1);
     }
     
-    render3D(calculateOutput: boolean=true, forceUpdateStyles: boolean=false) {
-        if (calculateOutput) {
-            this.css3DElement.position.set(-this.webGLMesh.position.x, -this.webGLMesh.position.y, -this.webGLMesh.position.z);
-            this.css3DElement.quaternion.copy(this.webGLMesh.quaternion);
-            this.css3DElement.scale.set(this.webGLMesh.scale.x, -this.webGLMesh.scale.y, this.webGLMesh.scale.z);
-            
-            this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
-            
-            let cameraTransform = HTMLHelper.getInlineStyle(this.css3DRenderer.domElement.firstChild.getAttribute('style'), 'transform');
-            let objectTransform = HTMLHelper.getInlineStyle(ReactDOM.findDOMNode(this.refs.output).getAttribute('style'), 'transform');
-            let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
-            let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');
-            
-            let transform = (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform;
-            if (forceUpdateStyles || this.previousTransform != transform) {
-                this.previousTransform = transform;
-                
-                perform('update', {
-                    aStyle: [
-                        {
-                            name: '-fsb-mode',
-                            value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
-                        },
-                        {
-                            name: 'perspective',
-                            value: (isPerspectiveCamera) ? '236px' : null
-                        },
-                        {
-                            name: '-child-transform-style',
-                            value: (isPerspectiveCamera) ? 'preserve-3d' : null
-                        },
-                        {
-                            name: '-child-transform',
-                            value: (isPerspectiveCamera) ? null : objectTransform
-                        },
-                        {
-                            name: 'transform',
-                            value: transform
-                        }
-                    ]
-                });
-            }
-        }
+    render3D() {
+        this.css3DElement.position.copy(this.webGLMesh.position);
+        this.css3DElement.position.negate();
+        this.css3DElement.quaternion.copy(this.webGLMesh.quaternion);
+        this.css3DElement.scale.copy(this.webGLMesh.scale);
+        
+        this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
+        
+        let cameraTransform = HTMLHelper.getInlineStyle(this.css3DRenderer.domElement.firstChild.getAttribute('style'), 'transform');
+        let objectTransform = HTMLHelper.getInlineStyle(ReactDOM.findDOMNode(this.refs.output).getAttribute('style'), 'transform');
+        let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
+        let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');
+        
+        let transform = (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform;
+        
+        perform('update', {
+            aStyle: [
+                {
+                    name: '-fsb-mode',
+                    value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
+                },
+                {
+                    name: 'perspective',
+                    value: (isPerspectiveCamera) ? '236px' : null
+                },
+                {
+                    name: '-child-transform-style',
+                    value: (isPerspectiveCamera) ? 'preserve-3d' : null
+                },
+                {
+                    name: '-child-transform',
+                    value: (isPerspectiveCamera) ? null : objectTransform
+                },
+                {
+                    name: 'transform',
+                    value: transform
+                }
+            ]
+        });
         
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
