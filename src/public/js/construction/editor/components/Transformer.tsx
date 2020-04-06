@@ -74,6 +74,7 @@ class Transformer extends Base<Props, State> {
                 this.webGLMesh.quaternion.setFromRotationMatrix(m);
                 this.webGLMesh.quaternion.inverse();
                 this.webGLMesh.scale.setFromMatrixScale(m);
+                this.webGLMesh.scale.set(this.webGLMesh.scale.x, -this.webGLMesh.scale.y, this.webGLMesh.scale.z);
                 
                 this.render3D(isModeChanged, isModeChanged);
             }
@@ -187,7 +188,7 @@ class Transformer extends Base<Props, State> {
         if (calculateOutput) {
             this.css3DElement.position.set(-this.webGLMesh.position.x, -this.webGLMesh.position.y, -this.webGLMesh.position.z);
             this.css3DElement.quaternion.copy(this.webGLMesh.quaternion);
-            this.css3DElement.scale.copy(this.webGLMesh.scale);
+            this.css3DElement.scale.set(this.webGLMesh.scale.x, -this.webGLMesh.scale.y, this.webGLMesh.scale.z);
             
             this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
             
