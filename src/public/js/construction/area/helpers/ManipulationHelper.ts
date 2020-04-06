@@ -56,15 +56,7 @@ var ManipulationHelper = {
               selectingElement.setAttribute('style', content.elementStyle);
             }
             if (content.aStyle != undefined) {
-              let style = selectingElement.getAttribute('style') || '';
-              let splited = style.split('; ');
-              let hash = {};
-              
-              for (const value of splited) {
-                if (!value || value.indexOf(': ') == -1) continue;
-                let tokens = value.split(': ');
-                hash[tokens[0].toString().trim()] = tokens[1].toString().trim();
-              }
+              let hash = HTMLHelper.getHashMapFromInlineStyle(selectingElement.getAttribute('style') || '');
               
               remember = false;
               
@@ -82,21 +74,15 @@ var ManipulationHelper = {
                     FontHelper.load(aStyle.value);
                   }
                 }
-              }
+              }              
               
-              let results = [];
-              for (var key in hash) {
-                if (hash.hasOwnProperty(key) && hash[key] != null) {
-                  results.push(key + ': ' + hash[key]);
-                }
-              }
-              selectingElement.setAttribute('style', results.join('; '));
+              selectingElement.setAttribute('style', HTMLHelper.getInlineStyleFromHashMap(hash));
               
               let strictContainers = HTMLHelper.getElementsByClassName('internal-fsb-strict-layout', selectingElement, 'internal-fsb-element');
               let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
               let containers = [...strictContainers, ...absoluteContainers];
               let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
-              results = isPerspectiveCamera ? ['transform-style: ' + hash['-child-transform-style'], 'transform: ' + hash['-child-transform']] : [];
+              let results = isPerspectiveCamera ? ['transform-style: ' + hash['-child-transform-style'], 'transform: ' + hash['-child-transform']] : [];
               let styleString = results.join('; ');
               
               for (let container of containers) {
@@ -181,20 +167,21 @@ var ManipulationHelper = {
                 selectingElement.setAttribute('class', previousInfo.previousClassName);
                 previousInfo.previousClassName = null;
                 
+                let hash = HTMLHelper.getHashMapFromInlineStyle(selectingElement.getAttribute('style') || '');
+                
+                if (content.dh != 0) {
+                  hash['min-height'] = (content.h + content.dh) + 'px';
+                }
+                if (content.dy != 0) {
+                  let position = HTMLHelper.getPosition(selectingElement, false);
+                  hash['margin-top'] = (position[1] + content.dy) + 'px';
+                }
+                
                 ManipulationHelper.perform('update', {
-                  elementClassName: elementClassName
+                  elementClassName: elementClassName,
+                  elementStyle: HTMLHelper.getInlineStyleFromHashMap(hash)
                 });
               });
-            }
-            
-            if (remember) {
-              if (content.dh != 0) {
-                HTMLHelper.updateInlineStyle(selectingElement, 'min-height', (content.h + content.dh) + 'px');
-              }
-              if (content.dy != 0) {
-                let position = HTMLHelper.getPosition(selectingElement, false);
-                HTMLHelper.updateInlineStyle(selectingElement, 'margin-top', (position[1] + content.dy) + 'px');
-              }
             }
           }
           remember = false;

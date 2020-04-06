@@ -166,7 +166,7 @@ var HTMLHelper = {
     
     return null;
   },
-  getInlineStyleHashMap: (styleAttributeValue: string) => {
+  getHashMapFromInlineStyle: (styleAttributeValue: string) => {
     let splited = styleAttributeValue.split('; ');
     let hashMap = {};
     
@@ -176,6 +176,15 @@ var HTMLHelper = {
     }
     
     return hashMap;
+  },
+  getInlineStyleFromHashMap: (hash: any) => {
+    let results = [];
+    for (var key in hash) {
+      if (hash.hasOwnProperty(key) && hash[key] != null) {
+        results.push(key + ': ' + hash[key]);
+      }
+    }
+    return results.join('; ');
   },
   
   getPosition: (object: HTMLElement, ofDocument: boolean=true) => {

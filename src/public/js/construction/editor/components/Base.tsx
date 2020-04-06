@@ -65,7 +65,7 @@ class Base extends React.Component {
         }
         if (recentElementStyle != properties.elementStyle) {
             recentElementStyle = properties.elementStyle;
-            let hashMap = HTMLHelper.getInlineStyleHashMap(recentElementStyle);
+            let hashMap = HTMLHelper.getHashMapFromInlineStyle(recentElementStyle);
             
             for (var name in styleValues) {
                 if (styleValues.hasOwnProperty(name)) {
