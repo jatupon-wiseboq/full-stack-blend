@@ -15,9 +15,13 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     ManipulationHelper.perform(data.name, data.content);
   }, true);
   window.addEventListener("keydown", (event) => {
-    ManipulationHelper.perform('keydown', event.keyCode);
+    if (document.activeElement && (document.activeElement.getAttribute('internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+      return true;
+    } else {
+      ManipulationHelper.perform('keydown', event.keyCode);
     
-    return EventHelper.cancel(event);
+      return EventHelper.cancel(event);
+    }
   }, false);
   window.addEventListener("keyup", (event: any) => {
     ManipulationHelper.perform('keyup', event.keyCode);
@@ -32,7 +36,14 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     
     EditorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
-    
+  }, true);
+  window.document.body.addEventListener("focus", (event) => {
+    if (document.activeElement && (document.activeElement.getAttribute('internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+      HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
+    }
+  }, true);
+  window.document.body.addEventListener("blur", (event) => {
+    HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
   let previousWindowSize = {width: null, height: null};
   window.addEventListener('resize', (event) => {
