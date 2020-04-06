@@ -126,6 +126,7 @@ var ManipulationHelper = {
             HTMLHelper.updateInlineStyle(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
             HTMLHelper.updateInlineStyle(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
             HTMLHelper.updateInlineStyle(selectingElement, 'width', (size[0] + content.dw) + 'px');
+            HTMLHelper.updateInlineStyle(selectingElement, 'min-height', (size[1] + content.dh) + 'px');
           } else {
             remember = false;
           }
@@ -184,6 +185,16 @@ var ManipulationHelper = {
                   elementClassName: elementClassName
                 });
               });
+            }
+            
+            if (remember) {
+              if (content.dh != 0) {
+                HTMLHelper.updateInlineStyle(selectingElement, 'min-height', (content.h + content.dh) + 'px');
+              }
+              if (content.dy != 0) {
+                let position = HTMLHelper.getPosition(selectingElement, false);
+                HTMLHelper.updateInlineStyle(selectingElement, 'margin-top', (position[1] + content.dy) + 'px');
+              }
             }
           }
           remember = false;

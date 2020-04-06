@@ -178,7 +178,7 @@ var HTMLHelper = {
     return hashMap;
   },
   
-  getPosition: (object: HTMLElement) => {
+  getPosition: (object: HTMLElement, ofDocument: boolean=true) => {
     var curleft = 0;
     var curtop = 0;
     var computedStyle = null;
@@ -191,7 +191,7 @@ var HTMLHelper = {
         curtop += object.offsetTop;
         curtop += parseInt(computedStyle.getPropertyValue('border-top-width'));
         curtop -= object.scrollTop;
-      } while (object = object.offsetParent);
+      } while (ofDocument && (object = object.offsetParent));
     }
     
     return [curleft, curtop];

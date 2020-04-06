@@ -34,7 +34,11 @@ var EditorHelper = {
           if (size !== 0) {
             ManipulationHelper.perform('update[responsive]', {
               size: size,
-              dOffset: dOffset
+              dOffset: dOffset,
+              h: original.h,
+              y: original.y,
+              dh: diff.dh,
+              dy: diff.dy
             }, false);
           }
         }
@@ -49,7 +53,11 @@ var EditorHelper = {
           if (size !== 0) {
             ManipulationHelper.perform('update[responsive]', {
               size: size,
-              dOffset: dOffset
+              dOffset: dOffset,
+              h: original.h,
+              y: original.y,
+              dh: diff.dh,
+              dy: diff.dy
             }, true);
           }
         } else {

@@ -256,7 +256,7 @@ class Transformer extends Base<Props, State> {
               div(style={position: 'relative'})
                 div(ref="container", style={border: 'dashed 1px #999999', visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseOver=this.onMouseOver.bind(this), onMouseOut=this.onMouseOut.bind(this))
                 div(style={position: 'absolute', top: '20px', right: '20px', bottom: '20px', left: '20px', fontSize: '10px', visibility: this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
-                  | 3D control is not available for this camera. Please manipulate from an another object inside this one.
+                  | 3D control is not available for this camera. Please manipulate from other objects inside this one.
               div.text-center.mt-1
                 .btn-group.btn-group-sm(role="group")
                   button.btn.btn-sm.text-center(onClick=this.optionOnClick.bind(this, 'translate'), className=(this.state.mode == 'translate' ? 'btn-primary' : 'btn-light'))
