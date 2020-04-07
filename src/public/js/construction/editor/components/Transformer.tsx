@@ -50,10 +50,10 @@ class Transformer extends Base<Props, State> {
     }
     
     public update(properties: any) {
+        let previousMode = this.state.styleValues['-fsb-mode'];
         if (!super.update(properties)) return;
         
-        
-        if (this.recentGuid != properties.elementGuid) {
+        if (this.recentGuid != properties.elementGuid || previousMode != this.state.styleValues['-fsb-mode']) {
             this.recentGuid = properties.elementGuid;
             
             if (!this.state.styleValues['transform']) {
@@ -163,7 +163,6 @@ class Transformer extends Base<Props, State> {
             this.setState({
                 mode: mode
             });
-            
             this.webGLControl.setMode(mode);
         }
     }
@@ -260,8 +259,8 @@ class Transformer extends Base<Props, State> {
                     | Object
             div
               div(ref="output", style={display: 'none'})
-              div(style={position: 'relative'})
-                div(ref="container", style={border: 'dashed 1px #999999', visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseOver=this.onMouseOver.bind(this), onMouseOut=this.onMouseOut.bind(this))
+              div(style={position: 'relative', border: 'dashed 1px #999999'})
+                div(ref="container", style={visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseOver=this.onMouseOver.bind(this), onMouseOut=this.onMouseOut.bind(this))
                 div(style={position: 'absolute', top: '20px', right: '20px', bottom: '20px', left: '20px', fontSize: '10px', visibility: this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
                   | 3D control is not available for this camera. Please manipulate from other objects inside this one.
               div.text-center.mt-1
