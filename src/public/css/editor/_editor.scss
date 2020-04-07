@@ -96,6 +96,9 @@
   &.scrollable {
     overflow-y: scroll;
   }
+  &.white {
+    background-color: #fff;
+  }
 }
 
 // Toolbar

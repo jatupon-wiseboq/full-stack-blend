@@ -20,6 +20,16 @@
   }
 }
 
+// Event
+// -------------------------
+#event {
+  display: none;
+  
+  &.active {
+    display: table-row;
+  }
+}
+
 // Section
 // -------------------------
 .section-container {

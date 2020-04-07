@@ -39,7 +39,7 @@ let recentExtraPanelSelector: string = null;
     synchronize('click');
   };
   
-  window.swap = (selector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null) => {
+  window.swap = (selector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
     let button = $('.btn' + selector);
     
     button.each((index, value) => {
@@ -59,17 +59,19 @@ let recentExtraPanelSelector: string = null;
       replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
     }
     
-    if (recentExtraPanelSelector != null) {
-      let recentExtraPanel = $(recentExtraPanelSelector);
-      recentExtraPanel.removeClass('active');
+    if (!skipExtraPanel) {
+      if (recentExtraPanelSelector != null) {
+        let recentExtraPanel = $(recentExtraPanelSelector);
+        recentExtraPanel.removeClass('active');
+      }
+      
+      if (extraPanelSelector != null) {
+        let extraPanel = $(extraPanelSelector);
+        extraPanel.addClass('active');
+      }
+      
+      recentExtraPanelSelector = extraPanelSelector;
     }
-    
-    if (extraPanelSelector != null) {
-      let extraPanel = $(extraPanelSelector);
-      extraPanel.addClass('active');
-    }
-    
-    recentExtraPanelSelector = extraPanelSelector;
     
     synchronize('click');
   };
