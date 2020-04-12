@@ -14,7 +14,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-style-name']
+    watchingAttributeNames: ['internal-fsb-reusable-preset-name']
 });
 
 class CSSPresetName extends Base<Props, State> {

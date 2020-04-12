@@ -426,6 +426,60 @@ var EditorHelper = {
         }
       }
     }
+  },
+  
+  setStyle: function(element: HTMLElement, style: string) {
+    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
+    
+    if (reusablePresetName) {
+      EditorHelper.setStylesheetDefinition(reusablePresetName, style);
+    } else {
+      element.setAttribute('style', style);
+    }
+  },
+  getStyle: function(element: HTMLElement) {
+    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
+    let style = (reusablePresetName) ? EditorHelper.getStylesheetDefinition(reusablePresetName) : element.getAttribute('style');
+    
+    return style;
+  },
+  setStyleAttribute: function(element: HTMLElement, styleName: string, styleValue: string) {
+    let style = EditorHelper.getStyle(element);
+    style = HTMLHelper.updateInlineStyle(style, styleName, styleValue);
+    
+    EditorHelper.setStyle(element, style);
+  },
+  getStyleAttribute: function(element: HTMLElement, styleName: string) {
+    let style = EditorHelper.getStyle(element);
+    
+    return HTMLHelper.getInlineStyle(style, styleName);
+  },
+  getStylesheetDefinition: function(name: string, remove: boolean=false) {
+    let element = document.getElementById('internal-fsb-custom-' + name);
+    let content = (element) ? element.innerText : null;
+    
+    if (remove) document.head.removeChild(element);
+    
+    return content.split('{ ')[1].split(' }')[0];
+  },
+  setStylesheetDefinition: function(name: string, content: string) {
+    let element = document.getElementById('internal-fsb-custom-' + name);
+    
+    if (!element) {
+      element = document.createElement('style');
+      element.setAttribute('type', 'text/css');
+      element.setAttribute('id', 'internal-fsb-custom-' + name);
+      
+      document.head.appendChild(element);
+    }
+    
+    if (element) {
+      element.innerText = '[internal-fsb-presets*="+' + name + '"] { ' + content + ' }';
+    }
+  },
+  swapStylesheetName: function(previousName: string, nextName: string) {
+    let element = document.getElementById('internal-fsb-custom-' + previousName);
+    element.setAttribute('id', 'internal-fsb-custom-' + nextName);
   }
 };
 

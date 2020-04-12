@@ -45,15 +45,22 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
-  getAttributes: (element: HTMLElement) => {
+  getAttributes: (element: HTMLElement, mergeAttributes: any={}) => {
     let attrs = element.attributes;
     let elementAttributes = [];
     if (element.hasAttributes()) {
       for (let attr of attrs) {
-        elementAttributes.push({
-          name: attr.name,
-          value: attr.value
-        });
+        if (mergeAttributes[attr.name] !== undefined) {
+          elementAttributes.push({
+            name: attr.name,
+            value: mergeAttributes[attr.name]
+          });
+        } else {
+          elementAttributes.push({
+            name: attr.name,
+            value: attr.value
+          });
+        }
       }
     }
     return elementAttributes;
@@ -143,8 +150,8 @@ var HTMLHelper = {
     return results;
   },
   
-  updateInlineStyle: (object: HTMLElement, styleName: string, styleValue: string) => {
-    let splited = (object.getAttribute('style') || '').split('; ');
+  updateInlineStyle: (styleAttributeValue: string, styleName: string, styleValue: string) => {
+    let splited = (styleAttributeValue || '').split('; ');
     let found = false;
     
     for (var i=0; i<splited.length; i++) {
@@ -159,11 +166,7 @@ var HTMLHelper = {
       splited.push(styleName + ': ' + styleValue);
     }
     
-    object.setAttribute('style', splited.join('; '));
-  },
-  getInlineStyle: (object: HTMLElement, styleName: string) => {
-    let styleAttributeValue = (object.getAttribute('style') || '');
-    return HTMLHelper.getInlineStyle(styleAttributeValue, styleName);
+    return splited.join('; ');
   },
   getInlineStyle: (styleAttributeValue: string, styleName: string) => {
     if (('; ' + styleAttributeValue).indexOf('; ' + styleName + ': ') == -1) return null;

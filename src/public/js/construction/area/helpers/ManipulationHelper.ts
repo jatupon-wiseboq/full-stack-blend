@@ -45,23 +45,80 @@ var ManipulationHelper = {
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
-            accessory = {
-              attributes: HTMLHelper.getAttributes(selectingElement)
+            let previousReusablePresetName = selectingElement.getAttribute('internal-fsb-reusable-preset-name') || null;
+            
+            if (previousReusablePresetName) {
+              accessory = {
+                attributes: HTMLHelper.getAttributes(selectingElement, {
+                  style: EditorHelper.getStylesheetDefinition(previousReusablePresetName)
+                })
+              }
+            } else {
+              accessory = {
+                attributes: HTMLHelper.getAttributes(selectingElement)
+              }
             }
             
             let found = false;
             
             if (content.attributes !== undefined) {
               for (let attribute of content.attributes) {
-                if (selectingElement.getAttribute(attribute.name) != attribute.value) {
-                  found = true;
-                  
-                  selectingElement.setAttribute(attribute.name, attribute.value);
+                switch (attribute.name) {
+                  case 'internal-fsb-reusable-preset-name':
+                    let nextReusablePresetName = attribute.value || null;
+                    
+                    if (previousReusablePresetName == null) {
+                      if (nextReusablePresetName != null) {
+                        found = true;
+                        EditorHelper.setStylesheetDefinition(nextReusablePresetName,
+                                                             selectingElement.getAttribute('style') || '');
+                        selectingElement.removeAttribute('style');
+                      }
+                    } else {
+                      if (nextReusablePresetName == null) {
+                        found = true;
+                        let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName, true);
+                        selectingElement.setAttribute('style', style);
+                      } else if (previousReusablePresetName != nextReusablePresetName) {
+                        found = true;
+                        EditorHelper.swapStylesheetName(previousReusablePresetName, nextReusablePresetName);
+                      }
+                    }
+                    
+                    if (nextReusablePresetName) {
+                      selectingElement.setAttribute('internal-fsb-reusable-preset-name', nextReusablePresetName);
+                      selectingElement.setAttribute('internal-fsb-presets', '+' + nextReusablePresetName);
+                    } else {
+                      selectingElement.removeAttribute('internal-fsb-reusable-preset-name');
+                      selectingElement.removeAttribute('internal-fsb-presets');
+                    }
+                    previousReusablePresetName = nextReusablePresetName;
+                    break;
+                  case 'style':
+                    if (previousReusablePresetName) {
+                      let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
+                      if (style != attribute.value) {
+                        found = true;
+                        EditorHelper.setStylesheetDefinition(previousReusablePresetName, attribute.value);
+                      }
+                    } else {
+                      if (selectingElement.getAttribute('style') != attribute.value) {
+                        found = true;
+                        selectingElement.setAttribute('style', attribute.value);
+                      }
+                    }
+                    break;
+                  default:
+                    if (selectingElement.getAttribute(attribute.name) != attribute.value) {
+                      found = true;
+                      selectingElement.setAttribute(attribute.name, attribute.value);
+                    }
+                    break;
                 }
               }
             }
             if (content.styles != undefined) {
-              let hash = HTMLHelper.getHashMapFromInlineStyle(selectingElement.getAttribute('style') || '');
+              let hash = HTMLHelper.getHashMapFromInlineStyle(EditorHelper.getStyle(selectingElement) || '');
               
               for (let aStyle of content.styles) {
                 let name = aStyle.name.toString().trim();
@@ -79,7 +136,7 @@ var ManipulationHelper = {
                 }
               }              
               
-              selectingElement.setAttribute('style', HTMLHelper.getInlineStyleFromHashMap(hash));
+              EditorHelper.setStyle(selectingElement, HTMLHelper.getInlineStyleFromHashMap(hash));
               
               let strictContainers = HTMLHelper.getElementsByClassName('internal-fsb-strict-layout', selectingElement, 'internal-fsb-element');
               let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
@@ -116,10 +173,10 @@ var ManipulationHelper = {
               dh: -content.dh
             }
             
-            HTMLHelper.updateInlineStyle(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
-            HTMLHelper.updateInlineStyle(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
-            HTMLHelper.updateInlineStyle(selectingElement, 'width', (size[0] + content.dw) + 'px');
-            HTMLHelper.updateInlineStyle(selectingElement, 'min-height', (size[1] + content.dh) + 'px');
+            EditorHelper.setStyleAttribute(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
+            EditorHelper.setStyleAttribute(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
+            EditorHelper.setStyleAttribute(selectingElement, 'width', (size[0] + content.dw) + 'px');
+            EditorHelper.setStyleAttribute(selectingElement, 'min-height', (size[1] + content.dh) + 'px');
           } else {
             remember = false;
           }
@@ -295,9 +352,9 @@ var ManipulationHelper = {
               HTMLHelper.addClass(element, 'col');
               Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
             } else {
-              HTMLHelper.updateInlineStyle(element, 'left', Accessories.cursor.getDOMNode().style.left);
-              HTMLHelper.updateInlineStyle(element, 'top', Accessories.cursor.getDOMNode().style.top);
-              HTMLHelper.updateInlineStyle(element, 'width', '150px');
+              EditorHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
+              EditorHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
+              EditorHelper.setStyleAttribute(element, 'width', '150px');
               Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
             

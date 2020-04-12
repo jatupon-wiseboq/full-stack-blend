@@ -98,8 +98,8 @@ class Base extends React.Component {
                 }
             }
         }
-        if (recentElementAttributes != properties.elementAttributes) {
-            recentElementAttributes = properties.elementAttributes;
+        if (recentElementAttributes != properties.attributes) {
+            recentElementAttributes = properties.attributes;
             
             let hashMap = {};
             for (let attribute of recentElementAttributes) {
