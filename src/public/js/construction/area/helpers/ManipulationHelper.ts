@@ -46,21 +46,19 @@ var ManipulationHelper = {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
             accessory = {
-              elementClassName: selectingElement.getAttribute('class'),
-              elementStyle: selectingElement.getAttribute('style')
+              attributes: HTMLHelper.getAttributes(selectingElement)
             }
-            if (content.elementClassName !== undefined) {
-              selectingElement.setAttribute('class', content.elementClassName);
+            if (content.attributes !== undefined) {
+              for (let attribute of content.attributes) {
+                selectingElement.setAttribute(attribute.name, attribute.value);
+              }
             }
-            if (content.elementStyle !== undefined) {
-              selectingElement.setAttribute('style', content.elementStyle);
-            }
-            if (content.aStyle != undefined) {
+            if (content.styles != undefined) {
               let hash = HTMLHelper.getHashMapFromInlineStyle(selectingElement.getAttribute('style') || '');
               
               remember = false;
               
-              for (let aStyle of content.aStyle) {
+              for (let aStyle of content.styles) {
                 let name = aStyle.name.toString().trim();
                 if (hash[name] != aStyle.value) {
                   remember = true;
@@ -178,8 +176,13 @@ var ManipulationHelper = {
                 }
                 
                 ManipulationHelper.perform('update', {
-                  elementClassName: elementClassName,
-                  elementStyle: HTMLHelper.getInlineStyleFromHashMap(hash)
+                  attributes: [{
+                    name: 'class',
+                    value: elementClassName
+                  }, {
+                    name: 'style',
+                    value: HTMLHelper.getInlineStyleFromHashMap(hash)
+                  }]
                 });
               });
             }

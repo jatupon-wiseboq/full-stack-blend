@@ -60,10 +60,10 @@ class Base extends React.Component {
     public update(properties: any) {
         let changed = false;
         
-        if (recentElementClassName != properties.elementClassName) {
-            recentElementClassName = properties.elementClassName;
+        if (recentElementClassName != properties.attributes['class']) {
+            recentElementClassName = properties.attributes['class'] || '';
             
-            for (var nameOrRegularExpression in classNameStatuses) {
+            for (let nameOrRegularExpression in classNameStatuses) {
                 if (classNameStatuses.hasOwnProperty(nameOrRegularExpression)) {
                     if (!!nameOrRegularExpression) {
                         if (typeof nameOrRegularExpression === 'object') { // Regular Expression
@@ -77,11 +77,11 @@ class Base extends React.Component {
                 }
             }
         }
-        if (recentElementStyle != properties.elementStyle) {
-            recentElementStyle = properties.elementStyle;
+        if (recentElementStyle != properties.attributes['style']) {
+            recentElementStyle = properties.attributes['style'] || '';
             let hashMap = HTMLHelper.getHashMapFromInlineStyle(recentElementStyle);
             
-            for (var name in styleValues) {
+            for (let name in styleValues) {
                 if (styleValues.hasOwnProperty(name)) {
                     if (!!name) {
                         let splited = name.split('[');
@@ -101,10 +101,15 @@ class Base extends React.Component {
         if (recentElementAttributes != properties.elementAttributes) {
             recentElementAttributes = properties.elementAttributes;
             
+            let hashMap = {};
+            for (let attribute of recentElementAttributes) {
+                hashMap[attribute.name] = attribute.value;
+            }
+            
             for (var name in attributeValues) {
                 if (attributeValues.hasOwnProperty(name)) {
                     if (!!name) {
-                        let value = recentElementAttributes[name];
+                        let value = hashMap[name];
                         if (value !== undefined) {
                             attributeValues[name] = value;
                         } else {

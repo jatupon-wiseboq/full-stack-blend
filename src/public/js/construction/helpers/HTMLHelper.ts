@@ -45,6 +45,19 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
+  getAttributes: (element: HTMLElement) => {
+    let attrs = element.attributes;
+    let elementAttributes = [];
+    if (element.hasAttributes()) {
+      for (let attr of attrs) {
+        elementAttributes.push({
+          name: attr.name,
+          value: attr.value
+        });
+      }
+    }
+    return elementAttributes;
+  },
   findTheParentInClassName: (className: string, element: HTMLElement) => { // the closet one
     let current = element.parentNode;
     while (current != null) {

@@ -45,7 +45,7 @@ class RadioButtonPicker extends Base<Props, State> {
         let target = splited[1];
         
         perform('update', {
-            aStyle: [{
+            styles: [{
                 name: name,
                 value: (current == target) ? null : target
             }]

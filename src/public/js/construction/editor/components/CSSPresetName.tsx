@@ -1,5 +1,5 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultProps, DefaultState, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
 
@@ -12,7 +12,14 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    watchingAttributeNames: ['internal-fsb-style-name']
+});
+
 class CSSPresetName extends Base<Props, State> {
+    protected static defaultProps: Props = ExtendedDefaultProps;
+
     constructor(props) {
         super(props);
     }
@@ -20,26 +27,19 @@ class CSSPresetName extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        if (original) {
-            original = original.replace(/^'|'$/gm, '');
-        }
-        this.state.value = original;
+        this.state.value = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         
         this.forceUpdate();
     }
     
     protected textboxOnUpdate(value: any) {
         this.state.value = value;
-        if (this.props.watchingStyleNames[0] && !this.props.manual) {
-            perform('update', {
-                aStyle: [{
-                    name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: this.composeValue(value)
-                }],
-                replace: this.props.watchingStyleNames[0]
-            });
-        }
+        perform('update', {
+            attributes: [{
+                name: this.props.watchingAttributeNames[0],
+                value: value
+            }]
+        });
     }
     
     render() {

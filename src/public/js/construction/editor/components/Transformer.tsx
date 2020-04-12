@@ -179,7 +179,7 @@ class Transformer extends Base<Props, State> {
     
     modeOnClick(mode) {
         perform('update', {
-            aStyle: [{
+            styles: [{
                 name: '-fsb-mode',
                 value: mode || null
             }],
@@ -217,7 +217,7 @@ class Transformer extends Base<Props, State> {
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
             perform('update', {
-                aStyle: [
+                styles: [
                     {
                         name: '-fsb-mode',
                         value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null

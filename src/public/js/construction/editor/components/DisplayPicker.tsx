@@ -40,7 +40,7 @@ class DisplayPicker extends Base<Props, State> {
             currentActiveLayout: properties.currentActiveLayout
         });
         
-        this.recentElementClassName = properties.elementClassName;
+        this.recentElementClassName = properties.attributes['class'] || '';
     }
     
     protected checkboxItemOnClick(index: number) {
@@ -69,7 +69,10 @@ class DisplayPicker extends Base<Props, State> {
         }
         
         perform('update', {
-            elementClassName: TextHelper.removeExtraWhitespaces(elementClassName)
+            attributes: [{
+                name: 'class',
+                value: TextHelper.removeExtraWhitespaces(elementClassName)
+            }]
         });
     }
     

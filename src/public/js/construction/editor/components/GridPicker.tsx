@@ -53,7 +53,7 @@ class GridPicker extends Base<Props, State> {
             currentActiveLayout: properties.currentActiveLayout
         });
         
-        this.recentElementClassName = properties.elementClassName;
+        this.recentElementClassName = properties.attributes['class'] || '';
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -78,7 +78,10 @@ class GridPicker extends Base<Props, State> {
         }
         
         perform('update', {
-            elementClassName: TextHelper.removeExtraWhitespaces(elementClassName)
+            attributes: [{
+                name: 'class',
+                value: TextHelper.removeExtraWhitespaces(elementClassName)
+            }]
         });
         
         ReactDOM.findDOMNode(this.refs["selectedValue" + identity]).innerText = value;

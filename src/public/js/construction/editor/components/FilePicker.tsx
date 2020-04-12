@@ -66,7 +66,7 @@ class FilePicker extends Base<Props, State> {
         
         if (this.props.watchingStyleNames[0] && !this.props.manual) {
             perform('update', {
-                aStyle: [{
+                styles: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
                     value: composedValue
                 }],

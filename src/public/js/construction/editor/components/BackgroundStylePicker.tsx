@@ -40,7 +40,7 @@ class BackgroundStylePicker extends Base<Props, State> {
     
     protected colorPickerOnUpdate(hex: string) {
         perform('update', {
-            aStyle: [{
+            styles: [{
                 name: this.props.watchingStyleNames[0],
                 value: (hex != null) ? '#' + hex : null
             }],
