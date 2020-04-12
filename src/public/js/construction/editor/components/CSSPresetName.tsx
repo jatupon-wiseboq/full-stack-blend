@@ -44,7 +44,7 @@ class CSSPresetName extends Base<Props, State> {
     
     render() {
       return (
-        <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} />
+        <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([a-zA-Z_]|[a-zA-Z_][a-zA-Z0-9_]+)?" postRegExp="[a-zA-Z0-9_]*" onUpdate={this.textboxOnUpdate.bind(this)} />
       )
     }
 }
