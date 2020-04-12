@@ -1,6 +1,6 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import * as CONSTANTS from '../../Constants.js';
 
@@ -20,14 +20,13 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
-class RadioButtonPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}}
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    customClassName: null
+});
 
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: [],
-        customClassName: null
-    }
+class RadioButtonPicker extends Base<Props, State> {
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);

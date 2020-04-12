@@ -1,5 +1,5 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 
 declare let React: any;
@@ -13,19 +13,26 @@ interface State extends IState {
     currentActiveLayout: number
 }
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    currentActiveLayout: -1
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block']
+});
+
 class DisplayPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, currentActiveLayout: -1}
-    static defaultProps: Props = {
-        watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block'],
-        watchingStyleNames: [],
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);
     }
     
     public update(properties: any) {
-        if (!super.update(properties)) return;
+        super.update(properties);
         
         this.setState({
             currentActiveLayout: properties.currentActiveLayout
@@ -82,4 +89,4 @@ class DisplayPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.DisplayPicker', DisplayPicker);
 
-export {Props, State, DisplayPicker};
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker};

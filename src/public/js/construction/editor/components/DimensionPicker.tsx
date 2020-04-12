@@ -12,11 +12,6 @@ interface State extends IState {
 }
 
 class DimensionPicker extends Base<Props, State> {
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: []
-    }
-    
     constructor(props) {
         super(props);
     }

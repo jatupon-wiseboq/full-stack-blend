@@ -1,6 +1,6 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
 import '../controls/DropDownList.js';
@@ -21,14 +21,21 @@ interface State extends IState {
     value: null
 }
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    index: 0,
+    value: null
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    inline: false,
+    manual: false
+});
+
 class SizePicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, index: 0, value: null}
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: [],
-        inline: false,
-        manual: false
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);

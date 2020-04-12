@@ -12,11 +12,6 @@ interface State extends IState {
 }
 
 class BoundaryPicker extends Base<Props, State> {
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: []
-    }
-    
     constructor(props) {
         super(props);
     }

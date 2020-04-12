@@ -1,6 +1,6 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/FileBrowser.js';
 import '../controls/DropDownControl.js';
@@ -20,14 +20,20 @@ interface State extends IState {
 
 let imageURLCache: any = {};
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    value: null
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    inline: false,
+    manual: false
+});
+
 class FilePicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, value: null}
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: [],
-        inline: false,
-        manual: false
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);
@@ -36,7 +42,7 @@ class FilePicker extends Base<Props, State> {
     protected recentGuid: string = null;
     
     public update(properties: any) {
-        if (!super.update(properties)) return;
+        super.update(properties);
         
         if (this.recentGuid != properties.elementGuid) {
             this.recentGuid = properties.elementGuid;

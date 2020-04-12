@@ -232,10 +232,19 @@ var EditorHelper = {
     let element = EditorHelper.getSelectingElement();
     if (element == null) return;
     
+    let attrs = element.attributes;
+    let elementAttributes = {};
+    if (element.hasAttributes()) {
+      for (let attr of attrs) {
+        elementAttributes[attr.name] = attr.value;
+      }
+    }
+    
     EditorHelper.synchronize('updateEditorProperties', {
       elementGuid: element.getAttribute('internal-fsb-guid'),
       elementClassName: element.getAttribute('class') || "",
       elementStyle: element.getAttribute('style') || "",
+      elementAttributes: elementAttributes,
       currentActiveLayout: Accessories.layoutInfo.currentActiveLayout()
     });
   },

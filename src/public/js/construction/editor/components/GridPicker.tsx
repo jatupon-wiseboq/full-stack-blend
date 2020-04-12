@@ -1,5 +1,5 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/DropDownList.js';
 import {RESPONSIVE_SIZE_REGEX} from '../../Constants.js';
@@ -18,15 +18,22 @@ interface State extends IState {
     currentActiveLayout: number
 }
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    currentActiveLayout: -1
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    watchingClassNames: RESPONSIVE_SIZE_REGEX,
+    options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+    defaultOption: 12,
+    prefix: 'col',
+});
+
 class GridPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, currentActiveLayout: -1}
-    static defaultProps: Props = {
-        watchingClassNames: RESPONSIVE_SIZE_REGEX,
-        watchingStyleNames: [],
-        options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        defaultOption: 12,
-        prefix: 'col',
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     private recentElement: HTMLElement = null;
     private recentDropdown: HTMLElement = null;
@@ -38,7 +45,7 @@ class GridPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        if (!super.update(properties)) return;
+        super.update(properties);
         
         this.setState({
             currentActiveLayout: properties.currentActiveLayout
@@ -111,4 +118,4 @@ class GridPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.GridPicker', GridPicker);
 
-export {Props, State, GridPicker};
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker};

@@ -7,7 +7,7 @@ declare let ReactDOM: any;
 
 interface Props extends IProps {
     options: [any];
-    controls: [any];
+    controls: any;
     identity: any;
     onUpdate(identity: any, value: any, index: any);
     onVisibleChanged(visible: boolean);

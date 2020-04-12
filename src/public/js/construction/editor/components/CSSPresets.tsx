@@ -13,11 +13,6 @@ interface State extends IState {
 }
 
 class CSSPresets extends Base<Props, State> {
-    static defaultProps: Props = {
-      watchingClassNames: [],
-      watchingStyleNames: []
-    }
-    
     constructor(props) {
         super(props);
     }

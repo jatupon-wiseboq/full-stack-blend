@@ -1,5 +1,5 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';
 import '../controls/DropDownList.js';
@@ -20,8 +20,14 @@ interface State extends IState {
 
 let colorPicker: any = null;
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    borderStyleIndex: 0,
+    visible: false
+});
+
 class BorderStylePicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, borderStyleIndex: 0, visible: false}
+    protected state: State = Object.assign({}, ExtendedDefaultState);
     
     constructor(props) {
         super(props);

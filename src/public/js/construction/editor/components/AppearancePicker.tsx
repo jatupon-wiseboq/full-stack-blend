@@ -1,4 +1,4 @@
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import './BorderStylePicker.js';
 import './SizePicker.js';
@@ -13,11 +13,13 @@ interface Props extends IProps {
 interface State extends IState {
 }
 
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    watchingStyleNames: ["border-top-style", "border-right-style", "border-bottom-style", "border-left-style", "border-top-color", "border-right-color", "border-bottom-color", "border-left-color", "background-color", "border-radius"]
+});
+
 class AppearancePicker extends Base<Props, State> {
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: ["border-top-style", "border-right-style", "border-bottom-style", "border-left-style", "border-top-color", "border-right-color", "border-bottom-color", "border-left-color", "background-color", "border-radius"]
-    }
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);

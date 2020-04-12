@@ -1,4 +1,4 @@
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';
 import '../controls/DropDownControl.js';
@@ -16,8 +16,13 @@ interface State extends IState {
 
 let colorPicker: any = null;
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    visible: false
+});
+
 class BackgroundStylePicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, visible: false}
+    protected state: State = Object.assign({}, ExtendedDefaultState);
     
     constructor(props) {
         super(props);

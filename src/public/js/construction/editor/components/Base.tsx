@@ -7,22 +7,37 @@ declare let controls: any;
 
 let recentElementClassName: string = null;
 let recentElementStyle: string = null;
+let recentElementAttributes: any = null;
 let classNameStatuses: any = {};
 let styleValues: any = {};
+let attributeValues: any = {};
 
 interface IProps {
     watchingClassNames: [any];
     watchingStyleNames: [string];
+    watchingAttributeNames: [string];
 }
 
 interface IState {
     classNameStatuses: any;
     styleValues: any;
-    properties: any;
+    attributeValues: any;
 }
 
+let DefaultState: any = {
+    classNameStatuses: {},
+    styleValues: {},
+    attributeValues: {}
+};
+let DefaultProps: any = {
+    watchingClassNames: [],
+    watchingStyleNames: [],
+    watchingAttributeNames: []
+};
+
 class Base extends React.Component {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}}
+    protected state: IState = Object.assign({}, DefaultState);
+    protected static defaultProps: IProps = DefaultProps;
     
     constructor(props) {
         super(props);
@@ -34,14 +49,10 @@ class Base extends React.Component {
         this.props.watchingStyleNames.forEach((name: string) => {
             styleValues[name] = null;
         });
+        this.props.watchingAttributeNames.forEach((name: string) => {
+            attributeValues[name] = null;
+        });
     }
-    
-    protected static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: []
-    }
-    
-    private recentProperties: string = null;
     
     public update(properties: any) {
         let changed = false;
@@ -84,6 +95,22 @@ class Base extends React.Component {
                 }
             }
         }
+        if (recentElementAttributes != properties.elementAttributes) {
+            recentElementAttributes = properties.elementAttributes;
+            
+            for (var name in attributeValues) {
+                if (attributeValues.hasOwnProperty(name)) {
+                    if (!!name) {
+                        let value = recentElementAttributes[name];
+                        if (value !== undefined) {
+                            attributeValues[name] = value;
+                        } else {
+                            attributeValues[name] = null;
+                        }
+                    }
+                }
+            }
+        }
         
         this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
             if (this.state.classNameStatuses[nameOrRegularExpression] != classNameStatuses[nameOrRegularExpression]) {
@@ -94,6 +121,12 @@ class Base extends React.Component {
         this.props.watchingStyleNames.forEach((name: string) => {
             if (this.state.styleValues[name] != styleValues[name]) {
                 this.state.styleValues[name] = styleValues[name];
+                changed = true;
+            }
+        });
+        this.props.watchingAttributeNames.forEach((name: string) => {
+            if (this.state.attributeValues[name] != attributeValues[name]) {
+                this.state.attributeValues[name] = attributeValues[name];
                 changed = true;
             }
         });
@@ -110,4 +143,4 @@ class Base extends React.Component {
 
 DeclarationHelper.declare('Components.Base', Base);
 
-export {IProps, IState, Base};
+export {IProps, IState, DefaultState, DefaultProps, Base};

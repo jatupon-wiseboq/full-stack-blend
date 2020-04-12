@@ -13,18 +13,38 @@ interface State extends IState {
 }
 
 class CSSPresetName extends Base<Props, State> {
-    static defaultProps: Props = {
-      watchingClassNames: [],
-      watchingStyleNames: []
-    }
-    
     constructor(props) {
         super(props);
     }
     
+    public update(properties: any) {
+        if (!super.update(properties)) return;
+        
+        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
+        if (original) {
+            original = original.replace(/^'|'$/gm, '');
+        }
+        this.state.value = original;
+        
+        this.forceUpdate();
+    }
+    
+    protected textboxOnUpdate(value: any) {
+        this.state.value = value;
+        if (this.props.watchingStyleNames[0] && !this.props.manual) {
+            perform('update', {
+                aStyle: [{
+                    name: this.props.watchingStyleNames[0].split('[')[0],
+                    value: this.composeValue(value)
+                }],
+                replace: this.props.watchingStyleNames[0]
+            });
+        }
+    }
+    
     render() {
       return (
-        <FullStackBlend.Controls.Textbox />
+        <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} />
       )
     }
 }

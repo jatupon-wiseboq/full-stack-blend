@@ -2,7 +2,7 @@ import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../lib/TransformControls.js';
 import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
 import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../lib/CSS3DRenderer.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 
 declare let React: any;
@@ -18,12 +18,20 @@ interface State extends IState {
     focus: boolean
 }
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    mode: 'rotate',
+    focus: false
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    watchingStyleNames: ['transform', '-fsb-mode']
+});
+
 class Transformer extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, properties: {}, mode: 'rotate', focus: false}
-    static defaultProps: Props = {
-      watchingClassNames: [],
-      watchingStyleNames: ['transform', '-fsb-mode']
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     private webGLCamera: any;
     private webGLScene: any;
@@ -51,7 +59,7 @@ class Transformer extends Base<Props, State> {
     
     public update(properties: any) {
         let previousMode = this.state.styleValues['-fsb-mode'];
-        if (!super.update(properties)) return;
+        super.update(properties);
         
         if (this.recentGuid != properties.elementGuid || previousMode != this.state.styleValues['-fsb-mode']) {
             this.recentGuid = properties.elementGuid;

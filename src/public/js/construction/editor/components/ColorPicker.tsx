@@ -1,6 +1,6 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
-import {IProps, IState, Base} from './Base.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';
 import '../controls/DropDownControl.js';
@@ -19,14 +19,21 @@ interface State extends IState {
     visible: boolean
 }
 
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    value: null,
+    visible: false
+});
+
+let ExtendedDefaultProps = Object.assign({}, DefaultProps);
+Object.assign(ExtendedDefaultProps, {
+    inline: false,
+    manual: false
+});
+
 class ColorPicker extends Base<Props, State> {
-    state: IState = {classNameStatuses: {}, styleValues: {}, value: null, visible: false}
-    static defaultProps: Props = {
-        watchingClassNames: [],
-        watchingStyleNames: [],
-        inline: false,
-        manual: false
-    }
+    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);
