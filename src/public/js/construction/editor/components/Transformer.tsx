@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../lib/TransformControls.js';
 import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
 import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../lib/CSS3DRenderer.js';
@@ -30,7 +31,7 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class Transformer extends Base<Props, State> {
-    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     private webGLCamera: any;
@@ -46,6 +47,7 @@ class Transformer extends Base<Props, State> {
     
     constructor(props) {
         super(props);
+        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     protected recentGuid: string = null;

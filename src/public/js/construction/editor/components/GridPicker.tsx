@@ -1,4 +1,5 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/DropDownList.js';
@@ -32,7 +33,7 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class GridPicker extends Base<Props, State> {
-    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     private recentElement: HTMLElement = null;
@@ -42,6 +43,7 @@ class GridPicker extends Base<Props, State> {
     
     constructor(props) {
         super(props);
+        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {

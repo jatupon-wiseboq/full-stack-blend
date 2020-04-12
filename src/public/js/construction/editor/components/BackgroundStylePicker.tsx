@@ -1,3 +1,4 @@
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';
@@ -22,10 +23,11 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class BackgroundStylePicker extends Base<Props, State> {
-    protected state: State = Object.assign({}, ExtendedDefaultState);
+    protected state: State = {};
     
     constructor(props) {
         super(props);
+        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {
