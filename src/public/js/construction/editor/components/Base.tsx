@@ -101,15 +101,10 @@ class Base extends React.Component {
         if (recentElementAttributes != properties.attributes) {
             recentElementAttributes = properties.attributes;
             
-            let hashMap = {};
-            for (let attribute of recentElementAttributes) {
-                hashMap[attribute.name] = attribute.value;
-            }
-            
             for (var name in attributeValues) {
                 if (attributeValues.hasOwnProperty(name)) {
                     if (!!name) {
-                        let value = hashMap[name];
+                        let value = recentElementAttributes[name];
                         if (value !== undefined) {
                             attributeValues[name] = value;
                         } else {

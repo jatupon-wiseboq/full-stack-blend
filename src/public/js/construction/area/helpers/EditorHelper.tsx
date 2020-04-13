@@ -253,8 +253,19 @@ var EditorHelper = {
     let element = EditorHelper.getSelectingElement();
     if (element == null) return;
     
+    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
+    let attributes = null;
+    
+    if (reusablePresetName) {
+      attributes = HTMLHelper.getAttributes(element, false, {
+        style: EditorHelper.getStylesheetDefinition(reusablePresetName)
+      });
+    } else {
+      attributes = HTMLHelper.getAttributes(element, false);
+    }
+    
     EditorHelper.synchronize('updateEditorProperties', {
-      attributes: HTMLHelper.getAttributes(element),
+      attributes: attributes,
       currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
       stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
       stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision()

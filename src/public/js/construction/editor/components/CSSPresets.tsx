@@ -36,8 +36,6 @@ class CSSPresets extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        console.log('update', properties);
-        
         if (!super.update(properties) && properties.stylesheetDefinitionRevision == this.state.revision) return;
         
         this.state.revision = properties.stylesheetDefinitionRevision;

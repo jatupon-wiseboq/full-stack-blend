@@ -45,25 +45,48 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
-  getAttributes: (element: HTMLElement, mergeAttributes: any={}) => {
-    let attrs = element.attributes;
-    let elementAttributes = [];
-    if (element.hasAttributes()) {
-      for (let attr of attrs) {
-        if (mergeAttributes[attr.name] !== undefined) {
-          elementAttributes.push({
-            name: attr.name,
-            value: mergeAttributes[attr.name]
-          });
-        } else {
-          elementAttributes.push({
-            name: attr.name,
-            value: attr.value
-          });
+  getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}) => {
+    if (array) {
+      let elementAttributes = [];
+      if (element.hasAttributes()) {
+        let attrs = element.attributes;
+        for (let attr of attrs) {
+          if (mergeAttributes[attr.name] !== undefined) {
+            elementAttributes.push({
+              name: attr.name,
+              value: mergeAttributes[attr.name]
+            });
+            delete mergeAttributes[attr.name];
+          } else {
+            elementAttributes.push({
+              name: attr.name,
+              value: attr.value
+            });
+          }
         }
       }
+      
+      let keys = Object.keys(mergeAttributes);
+      for (let key of keys) {
+        elementAttributes.push({
+          name: key,
+          value: mergeAttributes[key]
+        });
+      }
+      
+      return elementAttributes;
+    } else {
+      if (element.hasAttributes()) {
+        let attrs = element.attributes;
+        for (let attr of attrs) {
+          if (mergeAttributes[attr.name] === undefined) {
+            mergeAttributes[attr.name] = attr.value;
+          }
+        }
+      }
+      
+      return mergeAttributes;
     }
-    return elementAttributes;
   },
   findTheParentInClassName: (className: string, element: HTMLElement) => { // the closet one
     let current = element.parentNode;

@@ -49,14 +49,14 @@ var ManipulationHelper = {
             
             if (previousReusablePresetName) {
               accessory = {
-                attributes: HTMLHelper.getAttributes(selectingElement, {
+                attributes: HTMLHelper.getAttributes(selectingElement, true, {
                   style: EditorHelper.getStylesheetDefinition(previousReusablePresetName)
                 })
-              }
+              };
             } else {
               accessory = {
-                attributes: HTMLHelper.getAttributes(selectingElement)
-              }
+                attributes: HTMLHelper.getAttributes(selectingElement, true)
+              };
             }
             
             let found = false;
