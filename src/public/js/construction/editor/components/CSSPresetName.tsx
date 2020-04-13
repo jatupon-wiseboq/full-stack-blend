@@ -17,6 +17,8 @@ Object.assign(ExtendedDefaultProps, {
     watchingAttributeNames: ['internal-fsb-reusable-preset-name']
 });
 
+let stylesheetDefinitionKeys: any = [];
+
 class CSSPresetName extends Base<Props, State> {
     protected static defaultProps: Props = ExtendedDefaultProps;
 
@@ -25,6 +27,7 @@ class CSSPresetName extends Base<Props, State> {
     }
     
     public update(properties: any) {
+        stylesheetDefinitionKeys = properties.stylesheetDefinitionKeys || [];
         if (!super.update(properties)) return;
         
         this.state.value = this.state.attributeValues[this.props.watchingAttributeNames[0]];
@@ -33,18 +36,22 @@ class CSSPresetName extends Base<Props, State> {
     }
     
     protected textboxOnUpdate(value: any) {
-        this.state.value = value;
-        perform('update', {
-            attributes: [{
-                name: this.props.watchingAttributeNames[0],
-                value: value
-            }]
-        });
+        if (stylesheetDefinitionKeys.indexOf(value) != -1) {
+            return this.state.value;
+        } else {
+            this.state.value = value;
+            perform('update', {
+                attributes: [{
+                    name: this.props.watchingAttributeNames[0],
+                    value: value
+                }]
+            });
+        }
     }
     
     render() {
       return (
-        <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([a-zA-Z_]|[a-zA-Z_][a-zA-Z0-9_]+)?" postRegExp="[a-zA-Z0-9_]*" onUpdate={this.textboxOnUpdate.bind(this)} />
+        <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="([a-zA-Z_]|[a-zA-Z_][a-zA-Z0-9_]+)?" postRegExp="[a-zA-Z0-9_]*" onUpdate={this.textboxOnUpdate.bind(this)} />
       )
     }
 }

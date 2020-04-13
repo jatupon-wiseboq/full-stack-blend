@@ -44,6 +44,8 @@ class Textbox extends React.Component<Props, State> {
     }
     
     inputOnKeyUp(event) {
+        if (event.which >= 37 && event.which <= 40) return;
+    
         let preRegMatch = false;
         if (this.props.preRegExp) {
             if (this.previousPreRegExp != this.props.preRegExp) {
@@ -73,18 +75,29 @@ class Textbox extends React.Component<Props, State> {
             
             if (completingValue.match(this.postRegExp) != null) {
                 if (this.props.onUpdate) {
-                    this.props.onUpdate(completingValue);
+                    let result = this.props.onUpdate(completingValue);
+                    
+                    if (typeof result === 'string') {
+                        input.value = result;
+                    }
                 }
             } else if (!completingValue) {
                 if (this.props.onUpdate) {
-                    this.props.onUpdate(null);
+                    let result = this.props.onUpdate(null);
+                    
+                    if (typeof result === 'string') {
+                        input.value = result;
+                    }
                 }
             }
         } else {
             if (this.props.onUpdate) {
                 let input = ReactDOM.findDOMNode(this.refs.input);
-            
-                this.props.onUpdate(input.value);
+                let result = this.props.onUpdate(input.value);
+                
+                if (typeof result === 'string') {
+                    input.value = result;
+                }
             }
         }
     }
