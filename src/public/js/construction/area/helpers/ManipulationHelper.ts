@@ -87,7 +87,9 @@ var ManipulationHelper = {
                     
                     if (nextReusablePresetName) {
                       selectingElement.setAttribute('internal-fsb-reusable-preset-name', nextReusablePresetName);
-                      selectingElement.setAttribute('internal-fsb-presets', '+' + nextReusablePresetName);
+                      if (!selectingElement.getAttribute('internal-fsb-presets')) {
+                        selectingElement.setAttribute('internal-fsb-presets', '+' + nextReusablePresetName + '+');
+                      }
                     } else {
                       selectingElement.removeAttribute('internal-fsb-reusable-preset-name');
                       selectingElement.removeAttribute('internal-fsb-presets');

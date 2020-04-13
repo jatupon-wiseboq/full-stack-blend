@@ -16,6 +16,27 @@ let Accessories = {
   dragger: null,
   guide: null,
   layoutInfo: null
+};
+
+let stylesheetDefinitions = {};
+let stylesheetDefinitionRevision = 0;
+function renderStylesheet() {
+  let lines = [];
+  for (let [key, value] of Object.entries(stylesheetDefinitions)) {
+    lines.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"], ' +
+               '.internal-fsb-absolute-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"] { ' + value + ' }');
+  }
+  let source = lines.join('\n');
+  
+  let element = document.getElementById('internal-fsb-stylesheet');
+  if (!element) {
+    element = document.createElement('style');
+    element.setAttribute('type', 'text/css');
+    element.setAttribute('id', 'internal-fsb-stylesheet');
+    document.head.appendChild(element);
+  }
+  
+  element.innerText = source;
 }
 
 var EditorHelper = {
@@ -234,7 +255,9 @@ var EditorHelper = {
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: HTMLHelper.getAttributes(element),
-      currentActiveLayout: Accessories.layoutInfo.currentActiveLayout()
+      currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
+      stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
+      stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision()
     });
   },
   getSelectingElement: () => {
@@ -455,31 +478,39 @@ var EditorHelper = {
     return HTMLHelper.getInlineStyle(style, styleName);
   },
   getStylesheetDefinition: function(name: string, remove: boolean=false) {
-    let element = document.getElementById('internal-fsb-custom-' + name);
-    let content = (element) ? element.innerText : null;
-    
-    if (remove) document.head.removeChild(element);
-    
-    return content.split('{ ')[1].split(' }')[0];
+    let style = stylesheetDefinitions[name] || null;
+    if (remove) {
+      delete stylesheetDefinitions[name];
+      
+      stylesheetDefinitionRevision++;
+    }
+    return style;
   },
   setStylesheetDefinition: function(name: string, content: string) {
-    let element = document.getElementById('internal-fsb-custom-' + name);
+    stylesheetDefinitions[name] = content;
     
-    if (!element) {
-      element = document.createElement('style');
-      element.setAttribute('type', 'text/css');
-      element.setAttribute('id', 'internal-fsb-custom-' + name);
-      
-      document.head.appendChild(element);
-    }
+    stylesheetDefinitionRevision++;
     
-    if (element) {
-      element.innerText = '[internal-fsb-presets*="+' + name + '"] { ' + content + ' }';
-    }
+    renderStylesheet();
   },
   swapStylesheetName: function(previousName: string, nextName: string) {
-    let element = document.getElementById('internal-fsb-custom-' + previousName);
-    element.setAttribute('id', 'internal-fsb-custom-' + nextName);
+    stylesheetDefinitions[nextName] = stylesheetDefinitions[previousName];
+    delete stylesheetDefinitions[previousName];
+    
+    stylesheetDefinitionRevision++;
+    
+    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+    for (let element of elements) {
+      element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
+    }
+    
+    renderStylesheet();
+  },
+  getStylesheetDefinitionKeys: function() {
+    return Object.keys(stylesheetDefinitions);
+  },
+  getStylesheetDefinitionRevision: function() {
+    return stylesheetDefinitionRevision;
   }
 };
 

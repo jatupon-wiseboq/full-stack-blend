@@ -4,36 +4,40 @@ import {ITreeNode, TreeNode} from './TreeNode.js';
 declare let React: any;
 declare let ReactDOM: any;
 
-interface Props extends IProps {
-  tree: [ITreeNode]
+interface IProps {
+  nodes: [ITreeNode];
+  onUpdate(node: ITreeNode);
 }
 
-interface State extends IState {
+interface IState {
 }
 
-class Tree extends React.Component<Props, State> {
-    static defaultProps: Props = {
-        tree: [{name: "Title 1", nodes: []},
-               {name: "Title 2", nodes: [{name: "Title 1", nodes: []}, {name: "Title 2", nodes: []}, {name: "Title 3", nodes: []}]},
-               {name: "Title 3", nodes: [{name: "Title 1", nodes: []}]}]
+class Tree extends React.Component<IProps, IState> {
+    protected static defaultProps: IProps = {
+        nodes: []
     }
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
+    }
+    
+    protected onUpdate(node: ITreeNode) {
+        if (this.props.onUpdate != null) {
+            this.props.onUpdate(node);
+        }
     }
     
     render() {
       return (
-        pug `
-          .tree-container
-            .container-fluid
-              each values, index in this.props.tree
-                = FullStackBlend.Controls.TreeNode({deep: 0, tree: values})
-        `
+        <div className="tree-container">
+          <div className="container-fluid">
+            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} />
+          </div>
+        </div>
       )
     }
 }
 
 DeclarationHelper.declare('Controls.Tree', Tree);
 
-export {Props, State, Tree};
+export {IProps, IState, Tree};
