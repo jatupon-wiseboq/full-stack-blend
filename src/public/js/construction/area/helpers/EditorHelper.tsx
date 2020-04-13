@@ -20,11 +20,17 @@ let Accessories = {
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
+let cachedPrioritizedKeys = null;
+let cachedPrioritizedKeysRevision = -1;
+
 function renderStylesheet() {
   let lines = [];
-  for (let [key, value] of Object.entries(stylesheetDefinitions)) {
+  let prioritizedKeys = EditorHelper.getStylesheetDefinitionKeys();
+  
+  for (let i=prioritizedKeys.length-1; i>=0; i--) {
+    let key = prioritizedKeys[i];
     lines.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"], ' +
-               '.internal-fsb-absolute-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"] { ' + value + ' }');
+               '.internal-fsb-absolute-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"] { ' + stylesheetDefinitions[key] + ' }');
   }
   let source = lines.join('\n');
   
@@ -518,7 +524,16 @@ var EditorHelper = {
     renderStylesheet();
   },
   getStylesheetDefinitionKeys: function() {
-    return Object.keys(stylesheetDefinitions);
+    if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
+      cachedPrioritizedKeysRevision = stylesheetDefinitionRevision;
+      cachedPrioritizedKeys = Object.keys(stylesheetDefinitions).sort((a, b) => {
+        let pa = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], 'internal-fsb-priority') || 0;
+        let pb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], 'internal-fsb-priority') || 0;
+        
+        return (pa != pb) ? pa < pb : a > b;
+      });
+    }
+    return cachedPrioritizedKeys;
   },
   getStylesheetDefinitionRevision: function() {
     return stylesheetDefinitionRevision;

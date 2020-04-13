@@ -12,6 +12,7 @@ declare let perform: any;
 
 interface Props extends IProps {
     inline: boolean,
+    button: boolean,
     manual: boolean
 }
 
@@ -27,6 +28,7 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     inline: false,
+    button: true,
     manual: false
 });
 
@@ -88,11 +90,17 @@ class NumberPicker extends Base<Props, State> {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
                     <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="(([1-9][0-9]*))?" postRegExp="(([1-9][0-9]*))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                    <div className="input-group-append">
-                        <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
-                            <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
-                        </div>
-                    </div>
+                    {(() => {
+                        if (this.props.button) {
+                            return (
+                                <div className="input-group-append">
+                                    <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
+                                        <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
+                                    </div>
+                                </div>
+                            )
+                        }
+                    })()}
                 </div>
             )
         } else {
