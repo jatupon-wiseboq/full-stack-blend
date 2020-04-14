@@ -73,13 +73,15 @@ var ManipulationHelper = {
                       if (nextReusablePresetName != null) {
                         found = true;
                         EditorHelper.setStylesheetDefinition(nextReusablePresetName,
-                                                             selectingElement.getAttribute('style') || '');
+                                                             selectingElement.getAttribute('style') || '',
+                                                             selectingElement.getAttribute('internal-fsb-guid'));
                         selectingElement.removeAttribute('style');
                       }
                     } else {
                       if (nextReusablePresetName == null) {
                         found = true;
-                        let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName, true);
+                        let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
+                        EditorHelper.removeStylesheetDefinition(previousReusablePresetName, selectingElement.getAttribute('internal-fsb-guid'));
                         selectingElement.setAttribute('style', style);
                       } else if (previousReusablePresetName != nextReusablePresetName) {
                         found = true;
@@ -103,7 +105,9 @@ var ManipulationHelper = {
                       let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
                       if (style != attribute.value) {
                         found = true;
-                        EditorHelper.setStylesheetDefinition(previousReusablePresetName, attribute.value);
+                        EditorHelper.setStylesheetDefinition(previousReusablePresetName,
+                                                             attribute.value,
+                                                             selectingElement.getAttribute('internal-fsb-guid'));
                       }
                     } else {
                       if (selectingElement.getAttribute('style') != attribute.value) {

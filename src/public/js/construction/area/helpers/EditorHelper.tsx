@@ -472,7 +472,7 @@ var EditorHelper = {
     let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
     
     if (reusablePresetName) {
-      EditorHelper.setStylesheetDefinition(reusablePresetName, style);
+      EditorHelper.setStylesheetDefinition(reusablePresetName, style, element.getAttribute('internal-fsb-guid'));
     } else {
       element.setAttribute('style', style);
     }
@@ -494,18 +494,28 @@ var EditorHelper = {
     
     return HTMLHelper.getInlineStyle(style, styleName);
   },
-  getStylesheetDefinition: function(name: string, remove: boolean=false) {
-    let style = stylesheetDefinitions[name] || null;
-    if (remove) {
-      delete stylesheetDefinitions[name];
-      
-      stylesheetDefinitionRevision++;
-    }
-    return style;
+  getStylesheetDefinition: function(name: string) {
+    return stylesheetDefinitions[name] || null;
   },
-  setStylesheetDefinition: function(name: string, content: string) {
-    stylesheetDefinitions[name] = content;
+  removeStylesheetDefinition: function(name: string, guid: string) {
+    delete stylesheetDefinitions[name];
     
+    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+    for (let element of elements) {
+      element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
+    }
+    
+    stylesheetDefinitionRevision++;
+  },
+  setStylesheetDefinition: function(name: string, content: string, guid: string) {
+    if (stylesheetDefinitions[name] === undefined) {
+      let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+      for (let element of elements) {
+        element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
+      }
+    }
+    
+    stylesheetDefinitions[name] = content;
     stylesheetDefinitionRevision++;
     
     renderStylesheet();
