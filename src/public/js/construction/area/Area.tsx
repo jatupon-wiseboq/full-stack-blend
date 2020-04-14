@@ -4,7 +4,7 @@ import {EditorHelper} from './helpers/EditorHelper.js';
 import {ManipulationHelper} from './helpers/ManipulationHelper.js';
 
 (() => {
-  // Setup a cursor and a dragger.
+  // Setup a cursor and a resizer.
   //
   EditorHelper.setup();
   

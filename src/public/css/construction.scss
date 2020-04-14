@@ -202,7 +202,7 @@ body.internal-fsb-focusing-text-element {
 // Dragger
 //
 .internal-fsb-element {
-  > .internal-fsb-dragger {
+  > .internal-fsb-resizer {
     display: none;
       
     span {
@@ -235,7 +235,7 @@ body.internal-fsb-focusing-text-element {
 
 .internal-fsb-strict-layout {
   > .internal-fsb-element {
-    > .internal-fsb-dragger {
+    > .internal-fsb-resizer {
       display: block;
     }
   }
@@ -243,7 +243,7 @@ body.internal-fsb-focusing-text-element {
 
 .internal-fsb-absolute-layout {
   > .internal-fsb-element {
-    > .internal-fsb-dragger {
+    > .internal-fsb-resizer {
       display: block;
       
       span {
@@ -273,7 +273,7 @@ body.internal-fsb-focusing-text-element {
       &.d-none {
         display: block !important;
         border: solid 1px rgb(255, 0, 0);
-        > .internal-fsb-dragger {
+        > .internal-fsb-resizer {
           span {
             &::before {
               border: solid 1px rgb(255, 0, 0);
@@ -293,7 +293,7 @@ body.internal-fsb-focusing-text-element {
       &.d-sm-none {
         display: block !important;
         border: solid 1px rgb(255, 0, 0);
-        > .internal-fsb-dragger {
+        > .internal-fsb-resizer {
           span {
             &::before {
               border: solid 1px rgb(255, 0, 0);
@@ -313,7 +313,7 @@ body.internal-fsb-focusing-text-element {
       &.d-md-none {
         display: block !important;
         border: solid 1px rgb(255, 0, 0);
-        > .internal-fsb-dragger {
+        > .internal-fsb-resizer {
           span {
             &::before {
               border: solid 1px rgb(255, 0, 0);
@@ -333,7 +333,7 @@ body.internal-fsb-focusing-text-element {
       &.d-lg-none {
         display: block !important;
         border: solid 1px rgb(255, 0, 0);
-        > .internal-fsb-dragger {
+        > .internal-fsb-resizer {
           span {
             &::before {
               border: solid 1px rgb(255, 0, 0);
@@ -353,7 +353,7 @@ body.internal-fsb-focusing-text-element {
       &.d-lg-none {
         display: block !important;
         border: solid 1px red;
-        > .internal-fsb-dragger {
+        > .internal-fsb-resizer {
           span {
             &::before {
               border: solid 1px rgb(255, 0, 0);

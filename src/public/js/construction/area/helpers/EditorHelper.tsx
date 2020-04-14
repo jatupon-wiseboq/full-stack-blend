@@ -4,7 +4,7 @@ import {LayoutHelper} from './LayoutHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
-import '../controls/Dragger.js';
+import '../controls/Resizer.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
 
@@ -13,7 +13,7 @@ declare let ReactDOM: any;
 
 let Accessories = {
   cursor: null,
-  dragger: null,
+  resizer: null,
   guide: null,
   layoutInfo: null
 };
@@ -52,7 +52,7 @@ var EditorHelper = {
     Accessories.cursor.setDOMNode(cursorContainer.firstChild);
     cursorContainer.removeChild(Accessories.cursor.getDOMNode());
     
-    function draggerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
+    function resizerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
@@ -71,7 +71,7 @@ var EditorHelper = {
         }
       }
     }
-    function draggerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
+    function resizerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
@@ -96,10 +96,10 @@ var EditorHelper = {
       }
     }
     
-    let draggerContainer = document.createElement('div');
-    Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger onPreview={draggerOnPreview} onUpdate={draggerOnUpdate} />, draggerContainer);
-    Accessories.dragger.setDOMNode(draggerContainer.firstChild);
-    draggerContainer.removeChild(Accessories.dragger.getDOMNode());
+    let resizerContainer = document.createElement('div');
+    Accessories.resizer = ReactDOM.render(<FullStackBlend.Controls.Resizer onPreview={resizerOnPreview} onUpdate={resizerOnUpdate} />, resizerContainer);
+    Accessories.resizer.setDOMNode(resizerContainer.firstChild);
+    resizerContainer.removeChild(Accessories.resizer.getDOMNode());
     
     let guideContainer = document.createElement('div');
     Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
@@ -227,7 +227,7 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-      element.insertBefore(Accessories.dragger.getDOMNode(), element.childNodes[0]);
+      element.insertBefore(Accessories.resizer.getDOMNode(), element.childNodes[0]);
       
       let current = element;
       while (current != null) {
@@ -278,15 +278,15 @@ var EditorHelper = {
     });
   },
   getSelectingElement: () => {
-    if (Accessories.dragger && Accessories.dragger.getDOMNode().parentNode && HTMLHelper.hasClass(Accessories.dragger.getDOMNode().parentNode, 'internal-fsb-element')) {
-      return Accessories.dragger.getDOMNode().parentNode;
+    if (Accessories.resizer && Accessories.resizer.getDOMNode().parentNode && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
+      return Accessories.resizer.getDOMNode().parentNode;
     } else {
       return null;
     }
   },
   deselect: () => {
-    if (Accessories.dragger.getDOMNode().parentNode != null) {
-      Accessories.dragger.getDOMNode().parentNode.removeChild(Accessories.dragger.getDOMNode());
+    if (Accessories.resizer.getDOMNode().parentNode != null) {
+      Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     }
   },
   

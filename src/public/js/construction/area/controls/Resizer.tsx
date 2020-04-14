@@ -14,7 +14,7 @@ interface Props {
 interface State {
 }
 
-class Dragger extends React.Component<Props, State> {
+class Resizer extends React.Component<Props, State> {
     static defaultProps: Props = {
     }
     
@@ -172,7 +172,7 @@ class Dragger extends React.Component<Props, State> {
     render() {
         return (
             pug `
-                .internal-fsb-dragger(id='internal-fsb-dragger')
+                .internal-fsb-resizer(id='internal-fsb-resizer')
                     span.t.l(onMouseDown=this.mouseDown)
                     span.t(onMouseDown=this.mouseDown)
                     span.t.r(onMouseDown=this.mouseDown)
@@ -186,6 +186,6 @@ class Dragger extends React.Component<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Controls.Dragger', Dragger);
+DeclarationHelper.declare('Controls.Resizer', Resizer);
 
-export {Props, State, Dragger};
+export {Props, State, Resizer};
