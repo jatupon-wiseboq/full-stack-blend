@@ -227,7 +227,7 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-      element.appendChild(Accessories.dragger.getDOMNode());
+      element.insertBefore(Accessories.dragger.getDOMNode(), element.childNodes[0]);
       
       let current = element;
       while (current != null) {

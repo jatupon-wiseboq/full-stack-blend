@@ -85,6 +85,12 @@ let recentExtraPanelSelector: string = null;
       case 'select':
         break;
       case 'updateEditorProperties':
+        if (content && content['attributes'] && content['attributes']['internal-fsb-class']) {
+          let elementClass = content['attributes']['internal-fsb-class'].split(':')[0];
+          $('[internal-fsb-for]').hide();
+          $('[internal-fsb-for*="' + elementClass + '"]').show();
+        }
+        
         window.controls.forEach((control) => {
           control.update(content);
         });

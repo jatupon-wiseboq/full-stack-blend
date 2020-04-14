@@ -289,38 +289,19 @@ var ManipulationHelper = {
             case 'TableLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                .internal-fsb-element
-                  .container-fluid.internal-fsb-table-layout
-                    .row
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                    .row
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                    .row
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-                      .col.col-4.p-0
-                        .container-fluid
-                          .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed'})
+                  tr
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  tr
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                  tr
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                    td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               `, element);
               break;
             case 'AbsoluteLayout':

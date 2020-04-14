@@ -24,14 +24,15 @@ html, body {
   // Layout
   //
   .internal-fsb-table-layout {
-    > .row {
-      border-bottom: dashed 1px rgba(0, 0, 255, 127);
+    > tr {
+      height: 20px;
       
-      > .col {
+      > td {
         border-right: dashed 1px rgba(0, 0, 255, 127);
+        border-bottom: dashed 1px rgba(0, 0, 255, 127);
         
         &:last-child {
-          border: none;
+          border-right: none;
         }
         
         > .container,
@@ -44,8 +45,8 @@ html, body {
         }
       }
       
-      &:last-child {
-        border: none;
+      &:last-child > td {
+        border-bottom: none;
       }
     }
   }
@@ -110,14 +111,13 @@ html, body {
   // Layout
   //
   .internal-fsb-table-layout {
-    > .row {
-      border-bottom: dashed 1px rgba(0, 0, 0, 0.05);
-      
-      > .col {
+    > tr {
+      > td {
         border-right: dashed 1px rgba(0, 0, 0, 0.05);
+        border-bottom: dashed 1px rgba(0, 0, 0, 0.05);
         
         &:last-child {
-          border: none;
+          border-right: none;
         }
         
         > .container,
@@ -130,8 +130,8 @@ html, body {
         }
       }
       
-      &:last-child {
-        border: none;
+      &:last-child > td {
+        border-bottom: none;
       }
     }
   }
