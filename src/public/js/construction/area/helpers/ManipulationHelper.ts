@@ -55,7 +55,9 @@ var ManipulationHelper = {
               };
             } else {
               accessory = {
-                attributes: HTMLHelper.getAttributes(selectingElement, true)
+                attributes: HTMLHelper.getAttributes(selectingElement, true, {
+                  'internal-fsb-reusable-preset-name': null
+                })
               };
             }
             

@@ -44,7 +44,8 @@ class CSSPresetName extends Base<Props, State> {
                 attributes: [{
                     name: this.props.watchingAttributeNames[0],
                     value: value
-                }]
+                }],
+                replace: this.props.watchingAttributeNames[0]
             });
         }
     }
