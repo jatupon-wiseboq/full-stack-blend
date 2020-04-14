@@ -5,6 +5,7 @@ import {ManipulationHelper} from './ManipulationHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
 import '../controls/Resizer.js';
+import '../controls/CellDragger.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
 
@@ -14,6 +15,7 @@ declare let ReactDOM: any;
 let Accessories = {
   cursor: null,
   resizer: null,
+  cellDragger: null,
   guide: null,
   layoutInfo: null
 };
@@ -100,6 +102,10 @@ var EditorHelper = {
     Accessories.resizer = ReactDOM.render(<FullStackBlend.Controls.Resizer onPreview={resizerOnPreview} onUpdate={resizerOnUpdate} />, resizerContainer);
     Accessories.resizer.setDOMNode(resizerContainer.firstChild);
     resizerContainer.removeChild(Accessories.resizer.getDOMNode());
+    
+    let cellDraggerContainer = document.createElement('div');
+    Accessories.cellDragger = ReactDOM.render(<FullStackBlend.Controls.CellDragger />, cellDraggerContainer);
+    window.document.body.appendChild(cellDraggerContainer);
     
     let guideContainer = document.createElement('div');
     Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
@@ -199,6 +205,14 @@ var EditorHelper = {
     walkPath[2] = Math.min(maximum, walkPath[2] + 1);
     
     ManipulationHelper.perform('move[cursor]', walkPath);
+  },
+  endOfMoveCursor: () => {
+    let parent = Accessories.cursor.getDOMNode().parentNode;
+    if (parent && parent.tagName == 'TD') {
+      Accessories.cellDragger.setCellElement(parent);
+    } else {
+      Accessories.cellDragger.setCellElement(null);
+    }
   },
   getDepthFirstReferencesForCursorWalks: (container: HTMLElement=document.body, allAllowCursorElements: [HTMLElement]=[], allAllowCursorPositions: [number]=[]) => {
     let isContainerAllowedCursor = HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor');
@@ -466,6 +480,8 @@ var EditorHelper = {
         }
       }
     }
+    
+    EditorHelper.endOfMoveCursor();
   },
   
   setStyle: function(element: HTMLElement, style: string) {

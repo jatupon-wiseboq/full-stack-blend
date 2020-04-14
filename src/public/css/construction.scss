@@ -43,6 +43,10 @@ html, body {
             height: 100%;
           }
         }
+        
+        &.internal-fsb-selected {
+          background-color: rgba(0, 144, 255, 0.5) !important;
+        }
       }
       
       &:last-child > td {
