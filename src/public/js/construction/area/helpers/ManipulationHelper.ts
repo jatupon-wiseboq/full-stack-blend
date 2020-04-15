@@ -289,7 +289,7 @@ var ManipulationHelper = {
             case 'TableLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed'})
+                table.internal-fsb-element.internal-fsb-table-layout
                   tr
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -303,6 +303,7 @@ var ManipulationHelper = {
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               `, element);
+              element.setAttribute('style', 'table-layout: fixed');
               break;
             case 'AbsoluteLayout':
               element = document.createElement('div');

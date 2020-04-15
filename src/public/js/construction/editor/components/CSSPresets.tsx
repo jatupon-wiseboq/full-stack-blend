@@ -13,44 +13,39 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    revision: number
 }
-
-let ExtendedDefaultState = Object.assign({}, DefaultState);
-Object.assign(ExtendedDefaultState, {
-    revision: -1
-});
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-presets', 'internal-fsb-reusable-preset-name', 'internal-fsb-guid']
+    watchingAttributeNames: ['internal-fsb-presets', 'internal-fsb-reusable-preset-name', 'internal-fsb-guid'],
+    watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
 class CSSPresets extends Base<Props, State> {
-    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
 
     constructor(props) {
         super(props);
-        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {
-        if (!super.update(properties) && properties.stylesheetDefinitionRevision == this.state.revision) return;
-        
-        this.state.revision = properties.stylesheetDefinitionRevision;
+        if (!super.update(properties)) return;
         
         let nodes: [ITreeNode] = [];
-        for (let key of properties.stylesheetDefinitionKeys) {
-            nodes.push({
-                name: key,
-                disabled: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']),
-                selected: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']) ||
-                          (!!this.state.attributeValues['internal-fsb-presets'] &&
-                          (this.state.attributeValues['internal-fsb-presets'].indexOf('+' + key + '+') != -1)),
-                nodes: []
-            });
-        }
+        
+        if (properties.extensions && properties.extensions['stylesheetDefinitionKeys']) {
+	        for (let key of properties.extensions.stylesheetDefinitionKeys) {
+	            nodes.push({
+	                name: key,
+	                disabled: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']),
+	                selected: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']) ||
+	                          (!!this.state.attributeValues['internal-fsb-presets'] &&
+	                          (this.state.attributeValues['internal-fsb-presets'].indexOf('+' + key + '+') != -1)),
+	                nodes: []
+	            });
+	        }
+      	}
+        
         this.state.nodes = nodes;
         
         this.forceUpdate();

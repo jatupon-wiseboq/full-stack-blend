@@ -28,12 +28,7 @@ html, body {
       height: 20px;
       
       > td {
-        border-right: dashed 1px rgba(0, 0, 255, 127);
-        border-bottom: dashed 1px rgba(0, 0, 255, 127);
-        
-        &:last-child {
-          border-right: none;
-        }
+        border: dashed 1px rgba(0, 0, 255, 127);
         
         > .container,
         > .container-fluid {
@@ -48,10 +43,10 @@ html, body {
           background-color: rgba(0, 144, 255, 0.5) !important;
         }
       }
-      
-      &:last-child > td {
-        border-bottom: none;
-      }
+    }
+    
+    .internal-fsb-resizer {
+      display: table-caption !important;
     }
   }
   

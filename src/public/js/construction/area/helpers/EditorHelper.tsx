@@ -5,7 +5,7 @@ import {ManipulationHelper} from './ManipulationHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
 import '../controls/Resizer.js';
-import '../controls/CellDragger.js';
+import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
 
@@ -15,7 +15,7 @@ declare let ReactDOM: any;
 let Accessories = {
   cursor: null,
   resizer: null,
-  cellDragger: null,
+  cellFormater: null,
   guide: null,
   layoutInfo: null
 };
@@ -103,9 +103,9 @@ var EditorHelper = {
     Accessories.resizer.setDOMNode(resizerContainer.firstChild);
     resizerContainer.removeChild(Accessories.resizer.getDOMNode());
     
-    let cellDraggerContainer = document.createElement('div');
-    Accessories.cellDragger = ReactDOM.render(<FullStackBlend.Controls.CellDragger />, cellDraggerContainer);
-    window.document.body.appendChild(cellDraggerContainer);
+    let cellFormaterContainer = document.createElement('div');
+    Accessories.cellFormater = ReactDOM.render(<FullStackBlend.Controls.CellFormater />, cellFormaterContainer);
+    window.document.body.appendChild(cellFormaterContainer);
     
     let guideContainer = document.createElement('div');
     Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
@@ -206,14 +206,6 @@ var EditorHelper = {
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
-  endOfMoveCursor: () => {
-    let parent = Accessories.cursor.getDOMNode().parentNode;
-    if (parent && parent.tagName == 'TD') {
-      Accessories.cellDragger.setCellElement(parent);
-    } else {
-      Accessories.cellDragger.setCellElement(null);
-    }
-  },
   getDepthFirstReferencesForCursorWalks: (container: HTMLElement=document.body, allAllowCursorElements: [HTMLElement]=[], allAllowCursorPositions: [number]=[]) => {
     let isContainerAllowedCursor = HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor');
     
@@ -255,6 +247,11 @@ var EditorHelper = {
       EditorHelper.synchronize('select', element.getAttribute('internal-fsb-class'));
       EditorHelper.update();
     }
+    if (element.tagName == 'TABLE') {
+	    Accessories.cellFormater.setTableElement(element);
+	  } else {
+	  	Accessories.cellFormater.setTableElement(null);
+	  }
   },
   selectNextElement: () => {
     let allElements = [...HTMLHelper.getElementsByClassName('internal-fsb-element')];
@@ -286,9 +283,11 @@ var EditorHelper = {
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
-      currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
-      stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
-      stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision()
+      extensions: Object.assign({
+        currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
+        stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
+        stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision()
+      }, Accessories.cellFormater.getInfo())
     });
   },
   getSelectingElement: () => {
@@ -480,8 +479,6 @@ var EditorHelper = {
         }
       }
     }
-    
-    EditorHelper.endOfMoveCursor();
   },
   
   setStyle: function(element: HTMLElement, style: string) {

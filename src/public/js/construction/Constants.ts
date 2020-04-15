@@ -59,6 +59,23 @@ export const VERTICAL_ALIGN_OPTIONS = [null, "baseline", "{SIZE}", "sub", "super
 export const FONT_SIZE_OPTIONS = [null, "{SIZE}", "9px", "10px", "11px", "12px", "13px", "14px", "18px", "24px", "36px", "48px", "64px", "72px", "96px"];
 export const FONT_WEIGHT_OPTIONS = [null, "normal", "bold", "bolder", "lighter", 100, 200, 300, 400, 500, 600, 700, 800, 900];
 export const FONT_STRETCH_OPTIONS = [null, "ultra-condensed", "extra-condensed", "condensed", "semi-condensed", "normal", "semi-expanded", "expanded", "extra-expanded", "ultra-expanded"];
-export const TEXT_ALIGN_OPTIONS = [["text-align:left", "fa-align-left"], ["text-align:center", "fa-align-center"], ["text-align:right", "fa-align-right"], ["text-align:justify", "fa-align-justify"]];
-export const FONT_STYLE_OPTIONS = [["font-weight:bold", "fa-bold"], ["font-style:italic", "fa-italic"], ["text-decoration-line:underline", "fa-underline"], ["text-decoration-line:overline", "fa-strikethrough"]];
+export const TEXT_ALIGN_OPTIONS = [["text-align", "left", "fa-align-left"], ["text-align", "center", "fa-align-center"], ["text-align", "right", "fa-align-right"], ["text-align", "justify", "fa-align-justify"]];
+export const FONT_STYLE_OPTIONS = [["font-weight", "bold", "fa-bold"], ["font-style", "italic", "fa-italic"], ["text-decoration-line", "underline", "fa-underline"], ["text-decoration-line", "overline", "fa-strikethrough"]];
+let table_cell_applying_style_function = function() { return this.state.extensionValues['-fsb-cell-style']; };
+let table_cell_top = /-fsb-cell-([0-9]+)-([0-9]+)-top/;
+let table_cell_right = /-fsb-cell-([0-9]+)-([0-9]+)-right/;
+let table_cell_bottom = /-fsb-cell-([0-9]+)-([0-9]+)-bottom/;
+let table_cell_left = /-fsb-cell-([0-9]+)-([0-9]+)-left/;
+let table_cell_vertical = /-fsb-cell-([0-9]+)-([0-9]+)-vertical/;
+let table_cell_horizontal = /-fsb-cell-([0-9]+)-([0-9]+)-horizontal/;
+export const TABLE_CELL_OPTIONS = [
+	[[table_cell_top], table_cell_applying_style_function, "custom-icon-table-top"],
+	[[table_cell_right], table_cell_applying_style_function, "custom-icon-table-right"],
+	[[table_cell_bottom], table_cell_applying_style_function, "custom-icon-table-bottom"],
+	[[table_cell_left], table_cell_applying_style_function, "custom-icon-table-left"],
+	[[table_cell_vertical], table_cell_applying_style_function, "custom-icon-table-vertical"],
+	[[table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-horizontal"],
+	[[table_cell_vertical, table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-center"],
+	[[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
+];
 export const FONT_FAMILY_OPTIONS = FontHelper.listAllFonts();

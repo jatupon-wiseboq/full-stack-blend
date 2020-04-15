@@ -14,7 +14,8 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-reusable-preset-name']
+    watchingAttributeNames: ['internal-fsb-reusable-preset-name'],
+    watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
 let stylesheetDefinitionKeys: any = [];
@@ -27,9 +28,9 @@ class CSSPresetName extends Base<Props, State> {
     }
     
     public update(properties: any) {
-        stylesheetDefinitionKeys = properties.stylesheetDefinitionKeys || [];
         if (!super.update(properties)) return;
         
+        stylesheetDefinitionKeys = properties.stylesheetDefinitionKeys || [];
         this.state.value = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         
         this.forceUpdate();

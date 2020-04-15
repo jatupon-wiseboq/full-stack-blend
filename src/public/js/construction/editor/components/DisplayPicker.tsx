@@ -11,36 +11,27 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    currentActiveLayout: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
-Object.assign(ExtendedDefaultState, {
-    currentActiveLayout: -1
-});
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block']
+    watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block'],
+    watchingExtensionNames: ['currentActiveLayout']
 });
 
 class DisplayPicker extends Base<Props, State> {
-    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
         super(props);
-        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {
-        super.update(properties);
-        
-        this.setState({
-            currentActiveLayout: properties.currentActiveLayout
-        });
-        
         this.recentElementClassName = properties.attributes['class'] || '';
+    
+        if (!super.update(properties)) return;
     }
     
     protected checkboxItemOnClick(index: number) {
@@ -83,7 +74,7 @@ class DisplayPicker extends Base<Props, State> {
             each index in [0, 1, 2, 3]
               .btn-group(key="group-" + index)
                 label.btn.btn-light.btn-sm
-                  i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + ((this.state.currentActiveLayout == index) ? ' active' : ' inactive'))
+                  i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + ((this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                   br
                   .form-check
                     input.form-check-input(type="checkbox", checked=!!this.state.classNameStatuses[this.props.watchingClassNames[index * 2]], onChange=this.checkboxItemOnClick.bind(this, index))

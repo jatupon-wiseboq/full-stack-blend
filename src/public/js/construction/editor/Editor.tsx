@@ -100,6 +100,7 @@ let recentExtraPanelSelector: string = null;
         break;
     }
   };
+  $('[internal-fsb-for]').hide();
   
   window.addEventListener("keydown", (event: any) => {
     if (EventHelper.getOriginalElement(event).tagName != "INPUT") {

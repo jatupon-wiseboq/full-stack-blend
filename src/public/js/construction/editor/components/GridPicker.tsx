@@ -16,13 +16,9 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    currentActiveLayout: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
-Object.assign(ExtendedDefaultState, {
-    currentActiveLayout: -1
-});
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
@@ -33,7 +29,6 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class GridPicker extends Base<Props, State> {
-    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     private recentElement: HTMLElement = null;
@@ -43,17 +38,12 @@ class GridPicker extends Base<Props, State> {
     
     constructor(props) {
         super(props);
-        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {
-        super.update(properties);
-        
-        this.setState({
-            currentActiveLayout: properties.currentActiveLayout
-        });
-        
         this.recentElementClassName = properties.attributes['class'] || '';
+    
+        super.update(properties);
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -108,7 +98,7 @@ class GridPicker extends Base<Props, State> {
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
-                              i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.currentActiveLayout == index) ? ' active' : ' inactive'))
+                              i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                               br
                               span(ref="selectedValue" + index)
                                 | #{$this.getSelectedValue(index)}
