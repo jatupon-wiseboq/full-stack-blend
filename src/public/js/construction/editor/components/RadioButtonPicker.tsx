@@ -7,7 +7,8 @@ import * as CONSTANTS from '../../Constants.js';
 let options = {
     "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS,
-    "table-cell": CONSTANTS.TABLE_CELL_OPTIONS
+    "table-cell-0": CONSTANTS.TABLE_CELL_0_OPTIONS,
+    "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS
 }
 
 declare let React: any;
@@ -158,15 +159,15 @@ class RadioButtonPicker extends Base<Props, State> {
               if options[this.props.watchingStyleNames[0]]
                 each value, index in options[this.props.watchingStyleNames[0]]
                   button.btn.text-center(key="item-style-" + index, className=(this.getState(value, 'style') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'style'))
-                    i.m-0(className="fa "+ value[1], style={fontSize: '12px'})
+                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
               if options[this.props.watchingAttributeNames[0]]
                 each value, index in options[this.props.watchingAttributeNames[0]]
                   button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, 'attribute') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'attribute'))
-                    i.m-0(className="fa "+ value[1], style={fontSize: '12px'})
+                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
               if options[this.props.watchingExtensionNames[0]]
                 each value, index in options[this.props.watchingExtensionNames[0]]
                   button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, 'extension') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'extension'))
-                    i.m-0(className="fa "+ value[1], style={fontSize: '12px'})
+                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
           `
         )
     }

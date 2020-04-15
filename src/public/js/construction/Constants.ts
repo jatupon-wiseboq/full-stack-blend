@@ -68,11 +68,13 @@ let table_cell_bottom = /-fsb-cell-([0-9]+)-([0-9]+)-bottom/;
 let table_cell_left = /-fsb-cell-([0-9]+)-([0-9]+)-left/;
 let table_cell_vertical = /-fsb-cell-([0-9]+)-([0-9]+)-vertical/;
 let table_cell_horizontal = /-fsb-cell-([0-9]+)-([0-9]+)-horizontal/;
-export const TABLE_CELL_OPTIONS = [
+export const TABLE_CELL_0_OPTIONS = [
 	[[table_cell_top], table_cell_applying_style_function, "custom-icon-table-top"],
 	[[table_cell_right], table_cell_applying_style_function, "custom-icon-table-right"],
 	[[table_cell_bottom], table_cell_applying_style_function, "custom-icon-table-bottom"],
-	[[table_cell_left], table_cell_applying_style_function, "custom-icon-table-left"],
+	[[table_cell_left], table_cell_applying_style_function, "custom-icon-table-left"]
+];
+export const TABLE_CELL_1_OPTIONS = [
 	[[table_cell_vertical], table_cell_applying_style_function, "custom-icon-table-vertical"],
 	[[table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-horizontal"],
 	[[table_cell_vertical, table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-center"],
