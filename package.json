@@ -1,6 +1,9 @@
 {
     "name": "full-stack-blend",
     "version": "0.1.0",
+    "engines": {
+	    "node": "12.14.x"
+	  },
     "description": "Full-Stack Development Platform For Web Application",
     "repository": {
         "type": "git",
@@ -31,9 +34,9 @@
         "watch-sass-construction": "node-sass -w src/public/css/construction.scss dist/public/css/construction.css",
         "build-sass-editor": "node-sass src/public/css/editor.scss dist/public/css/editor.css",
         "watch-sass-editor": "node-sass -w src/public/css/editor.scss dist/public/css/editor.css",
-        "lint": "npm run build-ts && eslint \"**/*.{js,ts}\" --quiet --fix",
+        "lint": "eslint \"**/*.{js,ts}\" --quiet --fix",
         "copy-static-assets": "ts-node copyStaticAssets.ts",
-        "debug": "npm run build && npm run watch-debug",
+        "debug": "npm run watch-debug",
         "serve-debug": "nodemon --inspect dist/server.js",
         "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-sass-construction\" \"npm run watch-ts\" \"npm run serve-debug\""
     },
