@@ -70,7 +70,8 @@ let options = {
     "font-weight": CONSTANTS.FONT_WEIGHT_OPTIONS,
     "font-stretch": CONSTANTS.FONT_STRETCH_OPTIONS,
     "text-justify": CONSTANTS.TEXT_JUSTIFY_OPTIONS,
-    "font-family": CONSTANTS.FONT_FAMILY_OPTIONS
+    "font-family": CONSTANTS.FONT_FAMILY_OPTIONS,
+    "-fsb-cell-border-size": CONSTANTS.CELL_BORDER_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -80,7 +81,8 @@ let map = {
     "background-position[0,2]": "background-position-x",
     "background-position[1,2]": "background-position-y",
     "quotes[0,2]": "quotes-begin",
-    "quotes[1,2]": "quotes-end"
+    "quotes[1,2]": "quotes-end",
+    "-fsb-cell-border-size": "size"
 }
 let reject = {
     "font-weight": function(scope) {

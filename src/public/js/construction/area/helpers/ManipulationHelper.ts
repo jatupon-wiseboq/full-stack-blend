@@ -175,6 +175,8 @@ var ManipulationHelper = {
 	            // Table Cell Property (Without Stylesheet)
 	            //
 	            if (selectingElement.getAttribute('internal-fsb-class').split(':')[0] == 'TableLayout') {
+	            	selectingElement.setAttribute('internal-fsb-table-collapse', (hash['border-collapse'] == 'collapse') ? 'true' : 'false');
+	            	
 	            	for (let childY of [...selectingElement.childNodes]) {
 	            		for (let childX of [...childY.childNodes]) {
 	            			let _inlineStyle = childX.getAttribute('style') || '';
@@ -349,7 +351,7 @@ var ManipulationHelper = {
             case 'TableLayout':
               element = document.createElement('div');
               element = ReactDOM.render(pug `
-                table.internal-fsb-element.internal-fsb-table-layout
+                table.internal-fsb-element.internal-fsb-table-layout(internal-fsb-table-collapse="false")
                   tr
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -363,7 +365,7 @@ var ManipulationHelper = {
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               `, element);
-              element.setAttribute('style', 'table-layout: fixed');
+              element.setAttribute('style', 'table-layout: fixed; -fsb-cell-border-style: solid; -fsb-cell-border-color: #000000; -fsb-cell-border-size: 1px');
               break;
             case 'AbsoluteLayout':
               element = document.createElement('div');

@@ -87,7 +87,7 @@ class CellFormater extends React.Component<Props, State> {
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
 					x = [...cell.parentNode.childNodes].indexOf(cell);
-					y = [...cell.parentNode.parentNode.childNodes].indexOf(cell.parentNode) - offset;
+					y = [...this.tableElement.childNodes].indexOf(cell.parentNode) - offset;
 					
 					li = Math.min(li, x);
 					ri = Math.max(ri, x);
@@ -96,13 +96,17 @@ class CellFormater extends React.Component<Props, State> {
 				}
 			}
 			
+			let isCollapseMode = (this.tableElement.getAttribute('internal-fsb-table-collapse') == 'true');
+			
 			// List all cell borders that can be formatted.
 			// 
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
 					x = [...cell.parentNode.childNodes].indexOf(cell);
-					y = [...cell.parentNode.parentNode.childNodes].indexOf(cell.parentNode) - offset;
+					y = [...this.tableElement.childNodes].indexOf(cell.parentNode) - offset;
 					let prefix = '-fsb-cell-' + x + '-' + y + '-';
+					let prefixOffsetX = '-fsb-cell-' + (x + 1) + '-' + y + '-';
+					let prefixOffsetY = '-fsb-cell-' + x + '-' + (y + 1) + '-';
 					
 					let dt = this.getBorderDefinition(x, y, Edge.TOP);
 					let dr = this.getBorderDefinition(x, y, Edge.RIGHT);
@@ -113,10 +117,24 @@ class CellFormater extends React.Component<Props, State> {
 						results[prefix + 'top'] = dt;
 					}
 					if (x == ri) { // right
-						results[prefix + 'right'] = dr;
+						if (!isCollapseMode) {
+							results[prefix + 'right'] = dr;
+						} else {
+							if (x + 1 < cell.parentNode.childNodes.length) {
+								results[prefix + 'right'] = dr;
+								results[prefix + 'right:' + prefixOffsetX + 'left'] = dr;
+							}
+						}
 					}
 					if (y == bi) { // bottom
-						results[prefix + 'bottom'] = db;
+						if (!isCollapseMode) {
+							results[prefix + 'bottom'] = db;
+						} else {
+							if (y + offset + 1 < this.tableElement.childNodes.length && this.tableElement.childNodes[y + offset + 1].tagName == 'TR') {
+								results[prefix + 'bottom'] = db;
+								results[prefix + 'bottom:' + prefixOffsetY + 'top'] = db;
+							}
+						}
 					}
 					if (x == li) { // left
 						results[prefix + 'left'] = dl;
@@ -137,9 +155,18 @@ class CellFormater extends React.Component<Props, State> {
 			}
 		}
 		
-		results['-fsb-cell-style'] = 'solid 1px #888888';
+		results['-fsb-cell-style'] = this.getBorderStyle();
 		
 		return results;
+	}
+	private getBorderStyle() {
+		if (this.tableElement == null) return null;
+		
+		let style = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-style');
+		let color = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-color');
+		let size = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-size');
+		
+		return [size, style, color].join(' ');
 	}
 	private getBorderDefinition(x: number, y: number, edge: Edge) {
 		return EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-' + x + '-' + y + '-' + edge.description);
