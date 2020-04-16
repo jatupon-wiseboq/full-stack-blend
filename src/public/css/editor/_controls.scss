@@ -148,39 +148,39 @@
 	border-right: solid 2px #333333;
 }
 .btn-primary .custom-icon-table-right {
-	border-top-color: #ffffff;
+	border-right-color: #ffffff;
 }
 .custom-icon-table-bottom {
 	border-bottom: solid 2px #333333;
 }
 .btn-primary .custom-icon-table-bottom {
-	border-top-color: #ffffff;
+	border-bottom-color: #ffffff;
 }
 .custom-icon-table-left {
 	border-left: solid 2px #333333;
 }
 .btn-primary .custom-icon-table-left {
-	border-top-color: #ffffff;
+	border-left-color: #ffffff;
 }
-.custom-icon-table-vertical {
+.custom-icon-table-horizontal {
 	&::before {
 		border-bottom: solid 2px #333333;
 	}
 }
 .btn-primary {
-	.custom-icon-table-vertical {
+	.custom-icon-table-horizontal {
 		&::before {
 			border-bottom-color: #ffffff;
 		}
 	}
 }
-.custom-icon-table-horizontal {
+.custom-icon-table-vertical {
 	&::after {
 		border-left: solid 2px #333333;
 	}
 }
 .btn-primary {
-	.custom-icon-table-horizontal {
+	.custom-icon-table-vertical {
 		&::after {
 			border-left-color: #ffffff;
 		}

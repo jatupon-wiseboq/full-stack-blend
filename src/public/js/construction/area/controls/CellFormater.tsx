@@ -64,35 +64,30 @@ class CellFormater extends React.Component<Props, State> {
 		this.tableElement = element;
 	}
 	public getInfo() {
-		return {
-			'-fsb-cell-style': 'custom',
-			'-fsb-cell-0-0-top': 'custom'
-		}
-		
-		
-		/*let t = null;
-		let r = null;
-		let b = null;
-		let l = null;
-		let h = null;
-		let v = null;
 		let li = Number.MAX_SAFE_INTEGER;
 		let ri = Number.MIN_SAFE_INTEGER;
 		let ti = Number.MAX_SAFE_INTEGER;
 		let bi = Number.MIN_SAFE_INTEGER;
 		
+		let results = {};
+		let x, y;
+		
 		if (this.tableElement != null) {
 			let offset = 0;
 			
+			// Finding an offset for the first TR element.
+			// 
 			for (let child of this.tableElement.childNodes) {
 				if (child.tagName !== 'TR') offset++;
 				else break;
 			}
 			
+			// Find the edges of the selected element.
+			// 
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
-					let x = cell.parentNode.childNodes.indexOf(cell);
-					ley y = cell.parentNode.parentNode.childNodes.indexOf(cell.parentNode) - offset;
+					x = [...cell.parentNode.childNodes].indexOf(cell);
+					y = [...cell.parentNode.parentNode.childNodes].indexOf(cell.parentNode) - offset;
 					
 					li = Math.min(li, x);
 					ri = Math.max(ri, x);
@@ -101,10 +96,13 @@ class CellFormater extends React.Component<Props, State> {
 				}
 			}
 			
+			// List all cell borders that can be formatted.
+			// 
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
-					let x = cell.parentNode.childNodes.indexOf(cell);
-					ley y = cell.parentNode.parentNode.childNodes.indexOf(cell.parentNode) - offset;
+					x = [...cell.parentNode.childNodes].indexOf(cell);
+					y = [...cell.parentNode.parentNode.childNodes].indexOf(cell.parentNode) - offset;
+					let prefix = '-fsb-cell-' + x + '-' + y + '-';
 					
 					let dt = this.getBorderDefinition(x, y, Edge.TOP);
 					let dr = this.getBorderDefinition(x, y, Edge.RIGHT);
@@ -112,65 +110,39 @@ class CellFormater extends React.Component<Props, State> {
 					let dl = this.getBorderDefinition(x, y, Edge.LEFT);
 					
 					if (y == ti) { // top
-						if (t == null) {
-							t = dt;
-						} else if (t != dt) {
-							t = false;
-						}
+						results[prefix + 'top'] = dt;
 					}
 					if (x == ri) { // right
-						if (r == null) {
-							r = dr;
-						} else if (r != dr) {
-							r = false;
-						}
+						results[prefix + 'right'] = dr;
 					}
 					if (y == bi) { // bottom
-						if (b == null) {
-							b = db;
-						} else if (b != db) {
-							b = false;
-						}
+						results[prefix + 'bottom'] = db;
 					}
 					if (x == li) { // left
-						if (l == null) {
-							l = dl;
-						} else if (l != dl) {
-							l = false;
-						}
+						results[prefix + 'left'] = dl;
 					}
 					if (x != ri) { // vertical on the right
-						if (v == null) {
-							v = dr;
-						} else if (v != dr) {
-							v = false;
-						}
+						results[prefix + 'vertical:' + prefix + 'right'] = dr;
+					}
+					if (x != li) { // vertical on the left
+						results[prefix + 'vertical:' + prefix + 'left'] = dl;
 					}
 					if (y != bi) { // horizontal on the bottom
-						if (h == null) {
-							h = db;
-						} else if (h != db) {
-							h = false;
-						}
+						results[prefix + 'horizontal:' + prefix + 'bottom'] = db;
+					}
+					if (y != ti) { // horizontal on the top
+						results[prefix + 'horizontal:' + prefix + 'top'] = dt;
 					}
 				}
 			}
-		} else {
-			li = -1;
-			ri = -1;
-			ti = -1;
-			bi = -1;
 		}
-
-		return {
-			borderStyle: (t == r && r == b && b == l && l == h && h == v && !t) ? t : false,
-			t: (t == null) ? false: true,
-			r: (r == null) ? false: true,
-			b: (b == null) ? false: true,
-			l: (l == null) ? false: true,
-			h: (h == null) ? false: true,
-			v: (v == null) ? false: true
-		};*/
+		
+		console.log(results);
+		
+		return results;
+	}
+	private getBorderDefinition(x: number, y: number, edge: Edge) {
+		return EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-' + x + '-' + y + '-' + edge.description);
 	}
 
 	private installEventHandlers() {
@@ -203,7 +175,9 @@ class CellFormater extends React.Component<Props, State> {
 	}
 	private mouseUp(event) {
 		this.uninstallEventHandlers();
-
+		
+		EditorHelper.updateEditorProperties();
+		
 		EventHelper.setDenyForHandle('click', false, 100);
 		return EventHelper.cancel(event);
 	}

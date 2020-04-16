@@ -62,12 +62,12 @@ export const FONT_STRETCH_OPTIONS = [null, "ultra-condensed", "extra-condensed",
 export const TEXT_ALIGN_OPTIONS = [["text-align", "left", "fa-align-left"], ["text-align", "center", "fa-align-center"], ["text-align", "right", "fa-align-right"], ["text-align", "justify", "fa-align-justify"]];
 export const FONT_STYLE_OPTIONS = [["font-weight", "bold", "fa-bold"], ["font-style", "italic", "fa-italic"], ["text-decoration-line", "underline", "fa-underline"], ["text-decoration-line", "overline", "fa-strikethrough"]];
 let table_cell_applying_style_function = function() { return this.state.extensionValues['-fsb-cell-style']; };
-let table_cell_top = /-fsb-cell-([0-9]+)-([0-9]+)-top/;
-let table_cell_right = /-fsb-cell-([0-9]+)-([0-9]+)-right/;
-let table_cell_bottom = /-fsb-cell-([0-9]+)-([0-9]+)-bottom/;
-let table_cell_left = /-fsb-cell-([0-9]+)-([0-9]+)-left/;
-let table_cell_vertical = /-fsb-cell-([0-9]+)-([0-9]+)-vertical/;
-let table_cell_horizontal = /-fsb-cell-([0-9]+)-([0-9]+)-horizontal/;
+let table_cell_top = /^-fsb-cell-([0-9]+)-([0-9]+)-top/;
+let table_cell_right = /^-fsb-cell-([0-9]+)-([0-9]+)-right/;
+let table_cell_bottom = /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/;
+let table_cell_left = /^-fsb-cell-([0-9]+)-([0-9]+)-left/;
+let table_cell_vertical = /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/;
+let table_cell_horizontal = /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/;
 export const TABLE_CELL_0_OPTIONS = [
 	[[table_cell_top], table_cell_applying_style_function, "custom-icon-table-top"],
 	[[table_cell_right], table_cell_applying_style_function, "custom-icon-table-right"],

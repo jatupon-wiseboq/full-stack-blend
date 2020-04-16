@@ -336,7 +336,7 @@ var ManipulationHelper = {
             
             if (element.getAttribute('contentEditable') == 'true') {
             	EditorHelper.installCapabilityOfBeingPasted(element);
-            }    
+            }
             
             // Insert the element before the cursor.
             //

@@ -11,6 +11,12 @@ let options = {
     "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS
 }
 
+const Mode = Object.freeze({
+    STYLE:   Symbol("style"),
+    ATTRIBUTE:  Symbol("attribute"),
+    EXTENSION: Symbol("extension")
+});
+
 declare let React: any;
 declare let ReactDOM: any;
 declare let perform: any;
@@ -38,7 +44,7 @@ class RadioButtonPicker extends Base<Props, State> {
         if (!super.update(properties)) return;
     }
     
-    protected buttonOnClick(value: any, mode: string) {
+    protected buttonOnClick(value: any, mode: Mode) {
     		let currentState = this.getState(value, mode);
     		let nameOrArrayOfRegularExpression = value[0];
     		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
@@ -47,13 +53,13 @@ class RadioButtonPicker extends Base<Props, State> {
         		let results: any = null;
         		
           	switch(mode) {
-		            case 'style':
+		            case Mode.STYLE:
 			            	results = this.state.styleValues[nameOrArrayOfRegularExpression];
 						        break;
-		            case 'attribute':
+		            case Mode.ATTRIBUTE:
                 		results = this.state.attributeValues[nameOrArrayOfRegularExpression];
 						        break;
-		            case 'extension':
+		            case Mode.EXTENSION:
                 		results = this.state.extensionValues[nameOrArrayOfRegularExpression];
 						        break;
             }
@@ -61,22 +67,22 @@ class RadioButtonPicker extends Base<Props, State> {
             let keys = Object.keys(results || {});
             
             switch(mode) {
-		            case 'style':
-		            case 'extension':
+		            case Mode.STYLE:
+		            case Mode.EXTENSION:
 			            	for (let key of keys) {
 				        				perform('update', {
 								            styles: [{
-								                name: key,
+								                name: key.split(':').splice(-1)[0],
 								                value: (currentState) ? null : target
 								            }]
 								        });
 				          	}
 						        break;
-		            case 'attribute':
+		            case Mode.ATTRIBUTE:
                 		for (let key of keys) {
 				        				perform('update', {
 								            styles: [{
-								                name: key,
+								                name: key.split(':').splice(-1)[0],
 								                value: (currentState) ? null : target
 								            }]
 								        });
@@ -85,7 +91,7 @@ class RadioButtonPicker extends Base<Props, State> {
             }
         } else {
             switch(mode) {
-		            case 'style':
+		            case Mode.STYLE:
 		            		perform('update', {
 						            styles: [{
 						                name: nameOrArrayOfRegularExpression,
@@ -93,7 +99,7 @@ class RadioButtonPicker extends Base<Props, State> {
 						            }]
 						        });
 						        break;
-		            case 'attribute':
+		            case Mode.ATTRIBUTE:
 		            		perform('update', {
 						            attributes: [{
 						                name: nameOrArrayOfRegularExpression,
@@ -101,7 +107,7 @@ class RadioButtonPicker extends Base<Props, State> {
 						            }]
 						        });
 						        break;
-		            case 'extension':
+		            case Mode.EXTENSION:
 		            		perform('style', {
 						            styles: [{
 						                name: nameOrArrayOfRegularExpression,
@@ -113,20 +119,20 @@ class RadioButtonPicker extends Base<Props, State> {
         }
     }
     
-    private getState(value: any, mode: string): boolean {
+    private getState(value: any, mode: Mode): boolean {
     		let nameOrArrayOfRegularExpression = value[0];
     		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
     		
         if (typeof nameOrArrayOfRegularExpression === 'object') { // Array of Regular Expression
     				let results = {};
           	switch(mode) {
-	            case 'style':
+	            case Mode.STYLE:
 	            		results = this.state.styleValues;
 		            	break;
-	            case 'attribute':
+	            case Mode.ATTRIBUTE:
 	            		results = this.state.attributeValues;
 		            	break;
-	            case 'extension':
+	            case Mode.EXTENSION:
 	            		results = this.state.extensionValues;
 		            	break;
      				}
@@ -142,11 +148,11 @@ class RadioButtonPicker extends Base<Props, State> {
      				return found;
         } else {
             switch(mode) {
-		            case 'style':
+		            case Mode.STYLE:
 		            		return this.state.styleValues[nameOrArrayOfRegularExpression] == target;
-		            case 'attribute':
+		            case Mode.ATTRIBUTE:
 		            		return this.state.attributeValues[nameOrArrayOfRegularExpression] == target;
-		            case 'extension':
+		            case Mode.EXTENSION:
 		            		return this.state.extensionValues[nameOrArrayOfRegularExpression] == target;
             }
         }
@@ -158,15 +164,15 @@ class RadioButtonPicker extends Base<Props, State> {
             .btn-group.btn-group-sm.mr-1.mb-1(role="group")
               if options[this.props.watchingStyleNames[0]]
                 each value, index in options[this.props.watchingStyleNames[0]]
-                  button.btn.text-center(key="item-style-" + index, className=(this.getState(value, 'style') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'style'))
+                  button.btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE))
                     i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
               if options[this.props.watchingAttributeNames[0]]
                 each value, index in options[this.props.watchingAttributeNames[0]]
-                  button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, 'attribute') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'attribute'))
+                  button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE))
                     i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
               if options[this.props.watchingExtensionNames[0]]
                 each value, index in options[this.props.watchingExtensionNames[0]]
-                  button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, 'extension') ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, 'extension'))
+                  button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION))
                     i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
           `
         )
