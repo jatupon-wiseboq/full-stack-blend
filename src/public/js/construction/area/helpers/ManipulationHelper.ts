@@ -334,6 +334,10 @@ var ManipulationHelper = {
             //
             EditorHelper.installCapabilityOfBeingMoveInCursor(element);
             
+            if (element.getAttribute('contentEditable') == 'true') {
+            	EditorHelper.installCapabilityOfBeingPasted(element);
+            }    
+            
             // Insert the element before the cursor.
             //
             element.setAttribute('internal-fsb-class', content);
