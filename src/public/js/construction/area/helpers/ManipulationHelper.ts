@@ -126,7 +126,8 @@ var ManipulationHelper = {
               }
             }
             if (content.styles != undefined) {
-              let hash = HTMLHelper.getHashMapFromInlineStyle(EditorHelper.getStyle(selectingElement) || '');
+            	let inlineStyle = EditorHelper.getStyle(selectingElement) || '';
+              let hash = HTMLHelper.getHashMapFromInlineStyle(inlineStyle);
               
               for (let aStyle of content.styles) {
                 let name = aStyle.name.toString().trim();
@@ -144,18 +145,77 @@ var ManipulationHelper = {
                 }
               }              
               
-              EditorHelper.setStyle(selectingElement, HTMLHelper.getInlineStyleFromHashMap(hash));
-              
-              let strictContainers = HTMLHelper.getElementsByClassName('internal-fsb-strict-layout', selectingElement, 'internal-fsb-element');
-              let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
-              let containers = [...strictContainers, ...absoluteContainers];
-              let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
-              let results = isPerspectiveCamera ? ['transform-style: ' + hash['-child-transform-style'], 'transform: ' + hash['-child-transform']] : [];
-              let styleString = results.join('; ');
-              
-              for (let container of containers) {
-                container.setAttribute('style', styleString);
-              }
+              inlineStyle = HTMLHelper.getInlineStyleFromHashMap(hash);
+              EditorHelper.setStyle(selectingElement, inlineStyle);
+	            
+	            // Perspective Property
+              // 
+              if (hash['-fsb-mode']) {
+	              let strictContainers = HTMLHelper.getElementsByClassName('internal-fsb-strict-layout', selectingElement, 'internal-fsb-element');
+	              let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
+	              let containers = [...strictContainers, ...absoluteContainers];
+	              let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
+	              let styleString = results.join('; ');
+	              
+	              for (let container of containers) {
+	              	let _inlineStyle = container.getAttribute('style') || '';
+	              	
+	              	if (isPerspectiveCamera) {
+	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform-style', hash['-child-transform-style']);
+	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform', hash['-child-transform']);
+	              	} else {
+	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform-style', '');
+	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform', '');
+	              	}
+	              	
+	                container.setAttribute('style', _inlineStyle);
+	              }
+	            }
+	            
+	            // Table Cell Property (Without Stylesheet)
+	            //
+	            if (selectingElement.getAttribute('internal-fsb-class').split(':')[0] == 'TableLayout') {
+	            	for (let childY of [...selectingElement.childNodes]) {
+	            		for (let childX of [...childY.childNodes]) {
+	            			let _inlineStyle = childX.getAttribute('style') || '';
+	            			
+	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-top', '');
+	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-right', '');
+	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-bottom', '');
+	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-left', '');
+	            			
+	            			childX.setAttribute('style', _inlineStyle);
+	            		}
+	            	}
+	            	
+	            	if (!selectingElement.getAttribute('internal-fsb-reusable-preset-name')) {
+		            	let tableCellDefinitions = inlineStyle.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+		            	if (tableCellDefinitions !== null) {
+								   	for (let tableCellDefinition of tableCellDefinitions) {
+							   			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
+							   			
+							   			let x = parseInt(matchedInfo[1]);
+							   			let y = parseInt(matchedInfo[2]);
+							   			let side = matchedInfo[3];
+							   			let style = matchedInfo[4];
+							   			
+							   			let childY = selectingElement.childNodes[y];
+							   			if (childY) {
+							   				if (childY.childNodes[x]) {
+							   					let childX = childY.childNodes[x];
+							   					if (childX) {
+							   						let _inlineStyle = childX.getAttribute('style') || '';
+							   						
+							   						_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-' + side, style);
+							   						
+							   						childX.setAttribute('style', _inlineStyle);
+							   					}
+							   				}
+							   			}
+								   	}
+								  }
+								}
+	            }
             }
             
             if (remember && !found) {

@@ -31,12 +31,14 @@ class CSSPresetName extends Base<Props, State> {
         if (!super.update(properties)) return;
         
         stylesheetDefinitionKeys = properties.stylesheetDefinitionKeys || [];
-        this.state.value = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        this.state.value = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').replace(/_/g, ' ');
         
         this.forceUpdate();
     }
     
     protected textboxOnUpdate(value: any) {
+    		value = value.replace(/ /g, '_');
+    	
         if (stylesheetDefinitionKeys.indexOf(value) != -1) {
             return this.state.value;
         } else {
@@ -53,7 +55,7 @@ class CSSPresetName extends Base<Props, State> {
     
     render() {
       return (
-        <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="([a-zA-Z_]|[a-zA-Z_][a-zA-Z0-9_]+)?" postRegExp="[a-zA-Z0-9_]*" onUpdate={this.textboxOnUpdate.bind(this)} />
+        <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="([a-zA-Z]|[a-zA-Z][a-zA-Z0-9 ]+)?" postRegExp="[a-zA-Z0-9 ]*" onUpdate={this.textboxOnUpdate.bind(this)} />
       )
     }
 }

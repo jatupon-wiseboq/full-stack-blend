@@ -31,8 +31,21 @@ function renderStylesheet() {
   
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
     let key = prioritizedKeys[i];
-    lines.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"], ' +
-               '.internal-fsb-absolute-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"] { ' + stylesheetDefinitions[key] + ' }');
+    let prefix = '.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"]';
+    
+    lines.push(prefix + ' { ' + stylesheetDefinitions[key] + ' }');
+    
+    // Table Cell Property (With Reusable Stylesheet)
+    // 
+    let tableCellDefinitions = stylesheetDefinitions[key].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+    if (tableCellDefinitions !== null) {
+	   	for (let tableCellDefinition of tableCellDefinitions) {
+   			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
+   			
+   			lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
+   								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
+	   	}
+	  }
   }
   let source = lines.join('\n');
   
@@ -233,7 +246,7 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-      element.insertBefore(Accessories.resizer.getDOMNode(), element.childNodes[0]);
+      element.appendChild(Accessories.resizer.getDOMNode());
       
       let current = element;
       while (current != null) {

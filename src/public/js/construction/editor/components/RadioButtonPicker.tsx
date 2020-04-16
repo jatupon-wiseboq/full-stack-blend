@@ -50,43 +50,44 @@ class RadioButtonPicker extends Base<Props, State> {
     		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
     		
         if (typeof nameOrArrayOfRegularExpression === 'object') { // Array of Regular Expression
-        		let results: any = null;
+		        let list = [];
         		
-          	switch(mode) {
-		            case Mode.STYLE:
-			            	results = this.state.styleValues[nameOrArrayOfRegularExpression];
-						        break;
-		            case Mode.ATTRIBUTE:
-                		results = this.state.attributeValues[nameOrArrayOfRegularExpression];
-						        break;
-		            case Mode.EXTENSION:
-                		results = this.state.extensionValues[nameOrArrayOfRegularExpression];
-						        break;
-            }
-            
-            let keys = Object.keys(results || {});
-            
+        		for (let regularExpression of nameOrArrayOfRegularExpression) {
+        				let results: any = null;
+        			
+		          	switch(mode) {
+				            case Mode.STYLE:
+					            	results = this.state.styleValues[regularExpression];
+								        break;
+				            case Mode.ATTRIBUTE:
+		                		results = this.state.attributeValues[regularExpression];
+								        break;
+				            case Mode.EXTENSION:
+		                		results = this.state.extensionValues[regularExpression];
+								        break;
+		            }
+		            
+		            let keys = Object.keys(results || {});
+		            
+		            for (let key of keys) {
+				      			list.push({
+				                name: key.split(':').splice(-1)[0],
+				                value: (currentState) ? null : target
+				            });
+								}
+		        }
+		        
             switch(mode) {
 		            case Mode.STYLE:
 		            case Mode.EXTENSION:
-			            	for (let key of keys) {
-				        				perform('update', {
-								            styles: [{
-								                name: key.split(':').splice(-1)[0],
-								                value: (currentState) ? null : target
-								            }]
-								        });
-				          	}
+		        				perform('update', {
+						            styles: list
+						        });
 						        break;
 		            case Mode.ATTRIBUTE:
-                		for (let key of keys) {
-				        				perform('update', {
-								            styles: [{
-								                name: key.split(':').splice(-1)[0],
-								                value: (currentState) ? null : target
-								            }]
-								        });
-				          	}
+                		perform('update', {
+						            attributes: list
+						        });
 						        break;
             }
         } else {
@@ -139,9 +140,22 @@ class RadioButtonPicker extends Base<Props, State> {
      				
      				let found = true;
      				for (let regularExpression of nameOrArrayOfRegularExpression) {
-     							if (!results[regularExpression] || Object.keys(results[regularExpression]).length == 0) {
+     							if (!results[regularExpression]) {
      									found = false;
      									break;
+     							} else {
+     									let keys = Object.keys(results[regularExpression]);
+     									if (keys.length == 0) {
+     											found = false;
+     											break;
+     									} else {
+		     									for (let key of keys) {
+		     											if (!results[regularExpression][key]) {
+		     													found = false;
+		     													break;
+		     											}
+		     									}
+		     							}
      							}
      				}
      				

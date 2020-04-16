@@ -180,12 +180,16 @@ var HTMLHelper = {
     for (var i=0; i<splited.length; i++) {
       if (splited[i].indexOf(styleName + ': ') == 0) {
         found = true;
-        splited[i] = styleName + ': ' + styleValue;
+        if (styleValue) {
+        	splited[i] = styleName + ': ' + styleValue;
+        } else {
+        	splited.splice(i, 1);
+        }
         break;
       }
     }
     
-    if (!found) {
+    if (!found && styleValue) {
       splited.push(styleName + ': ' + styleValue);
     }
     

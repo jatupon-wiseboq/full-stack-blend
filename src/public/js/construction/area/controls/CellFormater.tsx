@@ -137,7 +137,7 @@ class CellFormater extends React.Component<Props, State> {
 			}
 		}
 		
-		console.log(results);
+		results['-fsb-cell-style'] = 'solid 1px #888888';
 		
 		return results;
 	}
