@@ -125,28 +125,30 @@ var ManipulationHelper = {
                 }
               }
             }
-            if (content.styles != undefined) {
+            {
             	let inlineStyle = EditorHelper.getStyle(selectingElement) || '';
               let hash = HTMLHelper.getHashMapFromInlineStyle(inlineStyle);
               
-              for (let aStyle of content.styles) {
-                let name = aStyle.name.toString().trim();
-                if (hash[name] != aStyle.value) {
-                  found = true;
-                  
-                  hash[name] = aStyle.value;
-                  if (HTMLHelper.hasVendorPrefix('-webkit-', name)) hash['-webkit-' + name] = aStyle.value;
-                  if (HTMLHelper.hasVendorPrefix('-moz-', name)) hash['-moz-' + name] = aStyle.value;
-                  if (HTMLHelper.hasVendorPrefix('-ms-', name)) hash['-ms-' + name] = aStyle.value;
-                  
-                  if (aStyle.name == 'font-family') {
-                    FontHelper.load(aStyle.value);
-                  }
-                }
-              }              
-              
-              inlineStyle = HTMLHelper.getInlineStyleFromHashMap(hash);
-              EditorHelper.setStyle(selectingElement, inlineStyle);
+              if (content.styles != undefined) {
+	              for (let aStyle of content.styles) {
+	                let name = aStyle.name.toString().trim();
+	                if (hash[name] != aStyle.value) {
+	                  found = true;
+	                  
+	                  hash[name] = aStyle.value;
+	                  if (HTMLHelper.hasVendorPrefix('-webkit-', name)) hash['-webkit-' + name] = aStyle.value;
+	                  if (HTMLHelper.hasVendorPrefix('-moz-', name)) hash['-moz-' + name] = aStyle.value;
+	                  if (HTMLHelper.hasVendorPrefix('-ms-', name)) hash['-ms-' + name] = aStyle.value;
+	                  
+	                  if (aStyle.name == 'font-family') {
+	                    FontHelper.load(aStyle.value);
+	                  }
+	                }
+	              }
+	              
+	              inlineStyle = HTMLHelper.getInlineStyleFromHashMap(hash);
+	              EditorHelper.setStyle(selectingElement, inlineStyle);
+	            }
 	            
 	            // Perspective Property
               // 
