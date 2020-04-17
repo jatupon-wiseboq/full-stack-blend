@@ -157,7 +157,6 @@ var ManipulationHelper = {
 	              let absoluteContainers = HTMLHelper.getElementsByClassName('internal-fsb-absolute-layout', selectingElement, 'internal-fsb-element');
 	              let containers = [...strictContainers, ...absoluteContainers];
 	              let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
-	              let styleString = results.join('; ');
 	              
 	              for (let container of containers) {
 	              	let _inlineStyle = container.getAttribute('style') || '';
