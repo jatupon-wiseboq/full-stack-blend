@@ -30,8 +30,8 @@ function renderStylesheet() {
   let prioritizedKeys = EditorHelper.getStylesheetDefinitionKeys();
   
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
-    let key = prioritizedKeys[i];
-    let prefix = '.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-presets*="+' + key + '+"]';
+    let key = prioritizedKeys[i].split(':')[0];
+    let prefix = '.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]';
     
     lines.push(prefix + ' { ' + stylesheetDefinitions[key] + ' }');
     
@@ -543,19 +543,29 @@ var EditorHelper = {
   removeStylesheetDefinition: function(name: string, guid: string) {
     delete stylesheetDefinitions[name];
     
-    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
     for (let element of elements) {
-      element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
+      element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
+    }
+    for (let key in stylesheetDefinitions) {
+    	if (stylesheetDefinitions.hasOwnProperty(key)) {
+    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + name + '+', '+' + guid + '+');
+    	}
     }
     
     stylesheetDefinitionRevision++;
   },
   setStylesheetDefinition: function(name: string, content: string, guid: string) {
     if (stylesheetDefinitions[name] === undefined) {
-      let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+      let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
       for (let element of elements) {
-        element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
+        element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
       }
+      for (let key in stylesheetDefinitions) {
+	    	if (stylesheetDefinitions.hasOwnProperty(key)) {
+	    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + guid + '+', '+' + name + '+');
+	    	}
+	    }
     }
     
     stylesheetDefinitions[name] = content;
@@ -569,9 +579,14 @@ var EditorHelper = {
     
     stylesheetDefinitionRevision++;
     
-    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-presets');
+    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
     for (let element of elements) {
-      element.setAttribute('internal-fsb-presets', (element.getAttribute('internal-fsb-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
+      element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
+    }
+    for (let key in stylesheetDefinitions) {
+    	if (stylesheetDefinitions.hasOwnProperty(key)) {
+    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + previousName + '+', '+' + nextName + '+');
+    	}
     }
     
     renderStylesheet();
@@ -585,6 +600,8 @@ var EditorHelper = {
         
         return (pa != pb) ? pa < pb : a > b;
       });
+      cachedPrioritizedKeys = cachedPrioritizedKeys.map(key => key + ':' +
+      	(HTMLHelper.getInlineStyle((stylesheetDefinitions[key] || '').replace('+' + key + '+', ''), '-fsb-inherited-presets') || ''));
     }
     return cachedPrioritizedKeys;
   },

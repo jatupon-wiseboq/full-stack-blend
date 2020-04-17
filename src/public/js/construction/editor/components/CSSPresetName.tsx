@@ -30,7 +30,7 @@ class CSSPresetName extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        stylesheetDefinitionKeys = properties.extensions.stylesheetDefinitionKeys || [];
+        stylesheetDefinitionKeys = (properties.extensions.stylesheetDefinitionKeys || []).map(key => key.split(':')[0]);
         this.state.value = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').replace(/_/g, ' ');
         
         this.forceUpdate();

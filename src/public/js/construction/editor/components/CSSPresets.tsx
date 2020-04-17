@@ -17,7 +17,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-presets', 'internal-fsb-reusable-preset-name', 'internal-fsb-guid'],
+    watchingAttributeNames: ['internal-fsb-inherited-presets', 'internal-fsb-reusable-preset-name', 'internal-fsb-guid'],
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
@@ -33,17 +33,39 @@ class CSSPresets extends Base<Props, State> {
         
         let nodes: [ITreeNode] = [];
         
-        if (properties.extensions && properties.extensions['stylesheetDefinitionKeys']) {
-	        for (let key of properties.extensions.stylesheetDefinitionKeys) {
-	            nodes.push({
-	                name: key,
-	                disabled: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']),
-	                selected: (key === this.state.attributeValues['internal-fsb-reusable-preset-name']) ||
-	                          (!!this.state.attributeValues['internal-fsb-presets'] &&
-	                          (this.state.attributeValues['internal-fsb-presets'].indexOf('+' + key + '+') != -1)),
-	                nodes: []
-	            });
-	        }
+        if (properties.extensions && properties.extensions.stylesheetDefinitionKeys) {
+        		let allInheritanceHash = {};
+        		for (let _key of properties.extensions.stylesheetDefinitionKeys) {
+        			let splited = _key.split(':');
+        			allInheritanceHash[splited[0]] = splited[1].split('+').filter(token => token != '');
+        		}
+        		
+		        for (let _key of properties.extensions.stylesheetDefinitionKeys) {
+		        		let key = _key.split(':')[0];
+		        		
+		            let isItself = (key == this.state.attributeValues['internal-fsb-reusable-preset-name']);
+		        		let chosen = (isItself) ? false : (this.state.attributeValues['internal-fsb-inherited-presets'] &&
+		                         this.state.attributeValues['internal-fsb-inherited-presets'].indexOf('+' + key + '+') != -1);
+		        		
+		        		let childNodes = [];
+		        		if (allInheritanceHash[key]) {
+		        			for (let childKey of allInheritanceHash[key]) {
+		        				childNodes.push({
+		        					name: childKey + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' (' + allInheritanceHash[childKey].length + ')' : ''),
+		                	disabled: true,
+		                	selected: chosen,
+		                	nodes: []
+		        				});
+		        			}
+		        		}
+		        		
+		            nodes.push({
+		                name: key,
+		                disabled: isItself,
+		                selected: chosen,
+		                nodes: childNodes
+		            });
+		        }
       	}
         
         this.state.nodes = nodes;
@@ -63,7 +85,11 @@ class CSSPresets extends Base<Props, State> {
     
         perform('update', {
             attributes: [{
-                name: 'internal-fsb-presets',
+                name: 'internal-fsb-inherited-presets',
+                value: '+' + presets.join('+') + '+'
+            }],
+            styles: [{
+                name: '-fsb-inherited-presets',
                 value: '+' + presets.join('+') + '+'
             }]
         });
