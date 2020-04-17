@@ -303,7 +303,7 @@ var ManipulationHelper = {
                 selectingElement.setAttribute('class', previousInfo.previousClassName);
                 previousInfo.previousClassName = null;
                 
-                let hash = HTMLHelper.getHashMapFromInlineStyle(selectingElement.getAttribute('style') || '');
+                let hash = HTMLHelper.getHashMapFromInlineStyle(EditorHelper.getStyle(selectingElement) || '');
                 
                 if (content.dh != 0) {
                   hash['min-height'] = (content.h + content.dh) + 'px';
