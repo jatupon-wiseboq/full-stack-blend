@@ -28,12 +28,36 @@ let cachedPrioritizedKeysRevision = -1;
 function renderStylesheet() {
   let lines = [];
   let prioritizedKeys = EditorHelper.getStylesheetDefinitionKeys();
+  let inversedReferenceHash = {};
+  
+	for (let key of prioritizedKeys) {
+		let splited = key.split(':');
+		let references = splited[1].split('+').filter(token => token != '');
+		
+		for (let reference of references) {
+			if (!inversedReferenceHash[reference]) {
+					inversedReferenceHash[reference] = [];
+			}
+			
+			if (inversedReferenceHash[reference].indexOf(splited[0]) == -1) {
+					inversedReferenceHash[reference].push(splited[0]);
+			}
+		}
+	}
   
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
     let key = prioritizedKeys[i].split(':')[0];
-    let prefix = '.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]';
+    let prefixes = [];
+    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]');
     
-    lines.push(prefix + ' { ' + stylesheetDefinitions[key] + ' }');
+    // Inheritance
+    //
+    let inversedReferences = inversedReferenceHash[key] || [];
+    for (let inheritingKey of inversedReferences) {
+    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey + '+"]');
+    }
+    
+    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[key] + ' }');
     
     // Table Cell Property (With Reusable Stylesheet)
     // 

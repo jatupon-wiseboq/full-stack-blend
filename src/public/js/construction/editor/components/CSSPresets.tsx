@@ -82,6 +82,10 @@ class CSSPresets extends Base<Props, State> {
                 presets.push(node.name);
             }
         }
+        
+        if (this.state.attributeValues['internal-fsb-reusable-preset-name']) {
+        		presets.push(this.state.attributeValues['internal-fsb-reusable-preset-name']);
+        }
     
         perform('update', {
             attributes: [{
