@@ -35,9 +35,22 @@ class CSSPresets extends Base<Props, State> {
         
         if (properties.extensions && properties.extensions.stylesheetDefinitionKeys) {
         		let allInheritanceHash = {};
+        		let prioritizedKeys = [];
         		for (let _key of properties.extensions.stylesheetDefinitionKeys) {
         			let splited = _key.split(':');
-        			allInheritanceHash[splited[0]] = splited[1].split('+').filter(token => token != '');
+        			prioritizedKeys.push(splited[0]);
+        		}
+        		for (let _key of properties.extensions.stylesheetDefinitionKeys) {
+        			let splited = _key.split(':');
+        			allInheritanceHash[splited[0]] = splited[1].split('+').filter(token => token != '').sort((a, b) => {
+        				let pa = prioritizedKeys.indexOf(a);
+					    	let pb = prioritizedKeys.indexOf(b);
+					    	
+					    	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
+					    	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
+					    	
+					    	return pa > pb;
+        			});
         		}
         		
 		        for (let _key of properties.extensions.stylesheetDefinitionKeys) {
@@ -51,7 +64,7 @@ class CSSPresets extends Base<Props, State> {
 		        		if (allInheritanceHash[key]) {
 		        			for (let childKey of allInheritanceHash[key]) {
 		        				childNodes.push({
-		        					name: childKey + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' (' + allInheritanceHash[childKey].length + ')' : ''),
+		        					name: childKey + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
 		                	disabled: true,
 		                	selected: chosen,
 		                	nodes: []

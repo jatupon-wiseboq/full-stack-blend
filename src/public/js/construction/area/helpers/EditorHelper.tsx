@@ -39,8 +39,8 @@ function renderStylesheet() {
 					inversedReferenceHash[reference] = [];
 			}
 			
-			if (inversedReferenceHash[reference].indexOf(splited[0]) == -1) {
-					inversedReferenceHash[reference].push(splited[0]);
+			if (inversedReferenceHash[reference].indexOf(key) == -1) {
+					inversedReferenceHash[reference].push(key);
 			}
 		}
 	}
@@ -53,8 +53,18 @@ function renderStylesheet() {
     // Inheritance
     //
     let inversedReferences = inversedReferenceHash[key] || [];
+    inversedReferences.sort((a, b) => {
+    	let pa = prioritizedKeys.indexOf(a);
+    	let pb = prioritizedKeys.indexOf(b);
+    	
+    	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
+    	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
+    	
+    	return pa > pb;
+    });
+    
     for (let inheritingKey of inversedReferences) {
-    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey + '+"]');
+    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]');
     }
     
     lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[key] + ' }');
