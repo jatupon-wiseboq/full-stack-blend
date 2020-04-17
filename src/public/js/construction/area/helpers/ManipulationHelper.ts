@@ -175,7 +175,8 @@ var ManipulationHelper = {
 	            // Table Cell Property (Without Stylesheet)
 	            //
 	            if (selectingElement.getAttribute('internal-fsb-class').split(':')[0] == 'TableLayout') {
-	            	selectingElement.setAttribute('internal-fsb-table-collapse', (hash['border-collapse'] == 'collapse') ? 'true' : 'false');
+	            	let isCollapse = (hash['border-collapse'] == 'collapse');
+	            	selectingElement.setAttribute('internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
 	            	
 	            	for (let childY of [...selectingElement.childNodes]) {
 	            		for (let childX of [...childY.childNodes]) {

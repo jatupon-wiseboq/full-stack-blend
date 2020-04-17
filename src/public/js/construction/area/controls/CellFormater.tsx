@@ -121,8 +121,11 @@ class CellFormater extends React.Component<Props, State> {
 							results[prefix + 'right'] = dr;
 						} else {
 							if (x + 1 < cell.parentNode.childNodes.length) {
-								results[prefix + 'right'] = dr;
+								results[prefix + 'right'] = (!this.getBorderDefinition(x + 1, y, Edge.LEFT)) ? null : dr;
 								results[prefix + 'right:' + prefixOffsetX + 'left'] = dr;
+							}
+							if (x == cell.parentNode.childNodes.length - 1) {
+								results[prefix + 'right'] = dr;
 							}
 						}
 					}
@@ -130,9 +133,15 @@ class CellFormater extends React.Component<Props, State> {
 						if (!isCollapseMode) {
 							results[prefix + 'bottom'] = db;
 						} else {
-							if (y + offset + 1 < this.tableElement.childNodes.length && this.tableElement.childNodes[y + offset + 1].tagName == 'TR') {
+							if (y + offset + 1 < this.tableElement.childNodes.length) {
+									if (this.tableElement.childNodes[y + offset + 1].tagName == 'TR') {
+									results[prefix + 'bottom'] = (!this.getBorderDefinition(x, y + offset + 1, Edge.TOP)) ? null : dr;
+									results[prefix + 'bottom:' + prefixOffsetY + 'top'] = db;
+								} else {
+									results[prefix + 'bottom'] = db;
+								}
+							} else if (y + offset + 1 == this.tableElement.childNodes.length) {
 								results[prefix + 'bottom'] = db;
-								results[prefix + 'bottom:' + prefixOffsetY + 'top'] = db;
 							}
 						}
 					}
