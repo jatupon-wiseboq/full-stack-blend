@@ -66,8 +66,10 @@ function renderStylesheet() {
 	   	for (let tableCellDefinition of tableCellDefinitions) {
    			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
    			
-   			lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
+   			for (let prefix of prefixes) {
+   				lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
    								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
+   			}
 	   	}
 	  }
   }
