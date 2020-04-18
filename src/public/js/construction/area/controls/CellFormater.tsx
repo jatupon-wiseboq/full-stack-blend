@@ -105,8 +105,10 @@ class CellFormater extends React.Component<Props, State> {
 					x = [...cell.parentNode.childNodes].indexOf(cell);
 					y = [...this.tableElement.childNodes].indexOf(cell.parentNode) - offset;
 					let prefix = '-fsb-cell-' + x + '-' + y + '-';
-					let prefixOffsetX = '-fsb-cell-' + (x + 1) + '-' + y + '-';
-					let prefixOffsetY = '-fsb-cell-' + x + '-' + (y + 1) + '-';
+					let prefixOffsetRight = '-fsb-cell-' + (x + 1) + '-' + y + '-';
+					let prefixOffsetBottom = '-fsb-cell-' + x + '-' + (y + 1) + '-';
+					let prefixOffsetLeft = '-fsb-cell-' + (x - 1) + '-' + y + '-';
+					let prefixOffsetTop = '-fsb-cell-' + x + '-' + (y - 1) + '-';
 					
 					let dt = this.getBorderDefinition(x, y, Edge.TOP);
 					let dr = this.getBorderDefinition(x, y, Edge.RIGHT);
@@ -114,7 +116,20 @@ class CellFormater extends React.Component<Props, State> {
 					let dl = this.getBorderDefinition(x, y, Edge.LEFT);
 					
 					if (y == ti) { // top
-						results[prefix + 'top'] = dt;
+						if (!isCollapseMode) {
+							results[prefix + 'top'] = dt;
+						} else {
+							if (y + offset - 1 >= 0) {
+								if (this.tableElement.childNodes[y + offset - 1].tagName == 'TR') {
+									results[prefix + 'top'] = (!this.getBorderDefinition(x, y + offset - 1, Edge.TOP)) ? null : dt;
+									results[prefix + 'top:' + prefixOffsetTop + 'bottom'] = results[prefix + 'top'];
+								} else {
+									results[prefix + 'top'] = dt;
+								}
+							} else if (y + offset - 1 == 0) {
+								results[prefix + 'top'] = dt;
+							}
+						}
 					}
 					if (x == ri) { // right
 						if (!isCollapseMode) {
@@ -122,7 +137,7 @@ class CellFormater extends React.Component<Props, State> {
 						} else {
 							if (x + 1 < cell.parentNode.childNodes.length) {
 								results[prefix + 'right'] = (!this.getBorderDefinition(x + 1, y, Edge.LEFT)) ? null : dr;
-								results[prefix + 'right:' + prefixOffsetX + 'left'] = dr;
+								results[prefix + 'right:' + prefixOffsetRight + 'left'] = dr;
 							}
 							if (x == cell.parentNode.childNodes.length - 1) {
 								results[prefix + 'right'] = dr;
@@ -134,9 +149,9 @@ class CellFormater extends React.Component<Props, State> {
 							results[prefix + 'bottom'] = db;
 						} else {
 							if (y + offset + 1 < this.tableElement.childNodes.length) {
-									if (this.tableElement.childNodes[y + offset + 1].tagName == 'TR') {
-									results[prefix + 'bottom'] = (!this.getBorderDefinition(x, y + offset + 1, Edge.TOP)) ? null : dr;
-									results[prefix + 'bottom:' + prefixOffsetY + 'top'] = db;
+								if (this.tableElement.childNodes[y + offset + 1].tagName == 'TR') {
+									results[prefix + 'bottom'] = (!this.getBorderDefinition(x, y + offset + 1, Edge.TOP)) ? null : db;
+									results[prefix + 'bottom:' + prefixOffsetBottom + 'top'] = results[prefix + 'bottom'];
 								} else {
 									results[prefix + 'bottom'] = db;
 								}
@@ -146,7 +161,17 @@ class CellFormater extends React.Component<Props, State> {
 						}
 					}
 					if (x == li) { // left
-						results[prefix + 'left'] = dl;
+						if (!isCollapseMode) {
+							results[prefix + 'left'] = dl;
+						} else {
+							if (x - 1 >= 0) {
+								results[prefix + 'left'] = (!this.getBorderDefinition(x - 1, y, Edge.RIGHT)) ? null : dl;
+								results[prefix + 'left:' + prefixOffsetLeft + 'right'] = dl;
+							}
+							if (x == 0) {
+								results[prefix + 'left'] = dl;
+							}
+						}
 					}
 					if (x != ri) { // vertical on the right
 						results[prefix + 'vertical:' + prefix + 'right'] = dr;
