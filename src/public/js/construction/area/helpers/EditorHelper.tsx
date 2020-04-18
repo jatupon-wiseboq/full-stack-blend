@@ -49,6 +49,9 @@ function renderStylesheet() {
     let key = prioritizedKeys[i].split(':')[0];
     let prefixes = [];
     prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]');
+    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]');
+    
+    console.log('Updated');
     
     // Inheritance
     //
