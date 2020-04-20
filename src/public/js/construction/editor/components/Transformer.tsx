@@ -15,14 +15,12 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    mode: string,
-    focus: boolean
+    mode: string
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
-    mode: 'rotate',
-    focus: false
+    mode: 'rotate'
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -98,6 +96,8 @@ class Transformer extends Base<Props, State> {
         this.initWebGLRenderer(width, height);
         this.initCSS3DRenderer(width, height);
         this.initControl();
+        
+        window.setTimeout(this.render3D.bind(this), 1000);
 	}
     initWebGLRenderer(width: number, height: number) {
         // WebGL Renderer
@@ -246,14 +246,6 @@ class Transformer extends Base<Props, State> {
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
     
-    onMouseOver() {
-        this.state.focus = true;
-    }
-    
-    onMouseOut() {
-        this.state.focus = false;
-    }
-    
     render() {
       return (
         pug `
@@ -270,7 +262,7 @@ class Transformer extends Base<Props, State> {
             div
               div(ref="output", style={display: 'none'})
               div(style={position: 'relative', border: 'dashed 1px #999999'})
-                div(ref="container", style={visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'}, onMouseOver=this.onMouseOver.bind(this), onMouseOut=this.onMouseOut.bind(this))
+                div(ref="container", style={visibility: !this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
                 div(style={position: 'absolute', top: '20px', right: '20px', bottom: '20px', left: '20px', fontSize: '10px', visibility: this.state.styleValues['-fsb-mode'] ? 'visible' : 'hidden'})
                   | 3D control is not available for this camera. Please manipulate from other objects inside this one.
               div.text-center.mt-1
