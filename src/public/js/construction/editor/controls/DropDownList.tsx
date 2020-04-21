@@ -188,7 +188,7 @@ class DropDownList extends React.Component<Props, State> {
                         if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
                           = this.props.controls[value]
                         else
-                          span(dangerouslySetInnerHTML={__html: value || "unset"})
+                          span(dangerouslySetInnerHTML={__html: (!value && value !== 0) ? "unset" : value.toString()})
         `
       )
     }

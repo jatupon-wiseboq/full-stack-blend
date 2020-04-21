@@ -42,7 +42,7 @@ class GridPicker extends Base<Props, State> {
     
     public update(properties: any) {
         this.recentElementClassName = properties.attributes['class'] || '';
-    
+    		
         super.update(properties);
     }
     
@@ -98,7 +98,7 @@ class GridPicker extends Base<Props, State> {
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
-                              i(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
+                              i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                               br
                               span(ref="selectedValue" + index)
                                 | #{$this.getSelectedValue(index)}
