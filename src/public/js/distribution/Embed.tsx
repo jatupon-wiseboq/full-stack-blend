@@ -11,7 +11,7 @@
           maximum = Math.max(maximum, child.offsetHeight + child.offsetTop);
         }
       });
-      element.style.height = maximum + 'px';
+      element.style.minHeight = maximum + 'px';
     });
   }
   

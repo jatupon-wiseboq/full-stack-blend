@@ -31,15 +31,6 @@ html, body {
       > td {
         border: dashed 1px rgba(0, 0, 255, 127);
         
-        > .container,
-        > .container-fluid {
-          height: 100%;
-          
-          > .row {
-            height: 100%;
-          }
-        }
-        
         &.internal-fsb-selected {
           background-color: rgba(0, 144, 255, 0.5) !important;
         }
@@ -118,15 +109,6 @@ html, body {
         
         &:last-child {
           border-right: none;
-        }
-        
-        > .container,
-        > .container-fluid {
-          height: 100%;
-          
-          > .row {
-            height: 100%;
-          }
         }
       }
       
@@ -253,6 +235,17 @@ body.internal-fsb-focusing-text-element {
       }
     }
   }
+}
+
+.internal-fsb-element {
+	> .container,
+  > .container-fluid {
+  	height: 100%;
+  	      
+	  > .row {
+	    height: 100%;
+	  }
+	}
 }
 
 // Layout Info
