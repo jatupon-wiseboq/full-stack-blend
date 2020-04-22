@@ -12,6 +12,7 @@ declare let perform: any;
 
 interface Props extends IProps {
     inline: boolean,
+    button: boolean,
     manual: boolean
 }
 
@@ -27,6 +28,7 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     inline: false,
+    button: true,
     manual: false
 });
 
@@ -42,7 +44,13 @@ class TextPicker extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
+        let original = '';
+        if (this.props.watchingStyleNames[0]) {
+        		original = this.state.styleValues[this.props.watchingStyleNames[0]];
+        } else if (this.props.watchingAttributeNames[0]) {
+        		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        }
+        
         if (original) {
             original = original.replace(/^'|'$/gm, '');
         }
@@ -62,10 +70,31 @@ class TextPicker extends Base<Props, State> {
                 replace: this.props.watchingStyleNames[0]
             });
         }
+        else if (this.props.watchingAttributeNames[0] && !this.props.manual) {
+            perform('update', {
+                attributes: [{
+                    name: this.props.watchingAttributeNames[0].split('[')[0],
+                    value: this.composeValue(value)
+                }],
+                replace: this.props.watchingAttributeNames[0]
+            });
+        }
     }
     
     private composeValue(value: any) {
-        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
+    		if (this.props.watchingStyleNames[0]) {
+    				if (this.props.watchingStyleNames[1]) {
+        				return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
+        		} else {
+        				return value;
+        		}
+        } else if (this.props.watchingAttributeNames[0]) {
+        		if (this.props.watchingAttributeNames[1]) {
+        				return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], "'" + value + "'", this.state.attributeValues[this.props.watchingAttributeNames[1]], "''");
+        		} else {
+        				return value;
+        		}
+        }
     }
     
     public getValue() {
@@ -80,11 +109,17 @@ class TextPicker extends Base<Props, State> {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
                     <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                    <div className="input-group-append">
-                        <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
-                            <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
-                        </div>
-                    </div>
+                    {(() => {
+                        if (this.props.button) {
+                            return (
+						                    <div className="input-group-append">
+						                        <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
+						                            <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
+						                        </div>
+						                    </div>
+						                )
+                        }
+                    })()}
                 </div>
             )
         } else {

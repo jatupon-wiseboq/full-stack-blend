@@ -7,6 +7,7 @@ declare let ReactDOM: any;
 interface IProps {
   nodes: [ITreeNode];
   onUpdate(node: ITreeNode);
+  enableDragging: boolean;
 }
 
 interface IState {
@@ -14,7 +15,10 @@ interface IState {
 
 class Tree extends React.Component<IProps, IState> {
     protected static defaultProps: IProps = {
-        nodes: []
+        nodes: [],
+        onUpdate: null,
+        enableDragging: false,
+        enableNameEditing: false
     }
     
     constructor(props) {
@@ -31,7 +35,7 @@ class Tree extends React.Component<IProps, IState> {
       return (
         <div className="tree-container">
           <div className="container-fluid">
-            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} />
+            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} />
           </div>
         </div>
       )

@@ -14,6 +14,9 @@ import './components/Transformer.js';
 import './components/SizePicker.js';
 import './components/DropDownPicker.js';
 import './components/RadioButtonPicker.js';
+import './components/LayerManager.js';
+import './components/NumberPicker.js';
+import './components/TextPicker.js';
 
 let recentExtraPanelSelector: string = null;
 

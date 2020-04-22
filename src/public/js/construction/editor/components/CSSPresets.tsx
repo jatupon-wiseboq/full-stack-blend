@@ -64,7 +64,9 @@ class CSSPresets extends Base<Props, State> {
 		        		if (allInheritanceHash[key]) {
 		        			for (let childKey of allInheritanceHash[key]) {
 		        				childNodes.push({
+		        					id: null,
 		        					name: childKey + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
+		        					selectable: true,
 		                	disabled: true,
 		                	selected: chosen,
 		                	nodes: []
@@ -87,8 +89,6 @@ class CSSPresets extends Base<Props, State> {
     }
     
     protected onUpdate(node: ITreeNode) {
-        console.log('onUpdate', node);
-    
         let presets = [];
         for (let node of this.state.nodes) {
             if (node.selected) {

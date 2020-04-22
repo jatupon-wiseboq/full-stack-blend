@@ -13,6 +13,7 @@ let previousInfo: any = {};
 let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
+let composedUntitledName: any = {};
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) => {
@@ -414,6 +415,16 @@ var ManipulationHelper = {
               EditorHelper.setStyleAttribute(element, 'width', '150px');
               Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
+            
+            // Name the layer.
+            // 
+            let klass = content.split(':')[0];
+            if (composedUntitledName[klass] === undefined) {
+            	composedUntitledName[klass] = 0;
+            }
+            composedUntitledName[klass]++;
+            
+            element.setAttribute('internal-fsb-name', klass + ' ' + composedUntitledName[klass]);
             
             // Update Editor UI
             EditorHelper.updateEditorProperties();

@@ -338,7 +338,8 @@ var EditorHelper = {
       extensions: Object.assign({
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
-        stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision()
+        stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision(),
+        elementTreeNodes: EditorHelper.getElementTreeNodes()
       }, Accessories.cellFormater.getInfo())
     });
   },
@@ -445,22 +446,7 @@ var EditorHelper = {
     });
   },
   installCapabilityOfBeingPasted: (container: HTMLElement) => {
-  	container.addEventListener('paste', (event) => {
-  		let text = '';
-	    
-	    if (event.clipboardData || event.originalEvent.clipboardData) {
-	      text = (event.originalEvent || event).clipboardData.getData('text/plain');
-	    } else if (window.clipboardData) {
-	      text = window.clipboardData.getData('Text');
-	    }
-	    if (document.queryCommandSupported('insertText')) {
-	      document.execCommand('insertText', false, text);
-	    } else {
-	      document.execCommand('paste', false, text);
-	    }
-  		
-  		return EventListener.cancel(event);
-  	}, false);
+  	container.addEventListener('paste', EventHelper.pasteEventInTextPlain, false);
   },
   installCapabilitiesForInternalElements: (container: HTMLElement) => {
     let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
@@ -646,6 +632,32 @@ var EditorHelper = {
   },
   getStylesheetDefinitionRevision: function() {
     return stylesheetDefinitionRevision;
+  },
+  getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
+  	if (!container.childNodes) return;
+  	
+  	for (let element of container.childNodes) {
+  		if (!element.getAttribute) continue;
+  		
+  		let id = element.getAttribute('internal-fsb-guid');
+  		let name = element.getAttribute('internal-fsb-name');
+  		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
+  		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
+  		
+  		if ((id || isTableLayoutCell) && !isTheBeginElement) {
+  			nodes.push({
+  				id: id,
+  				name: (isTableLayoutCell) ? 'cell' : name,
+  				selectable: !isTableLayoutCell,
+					disabled: false,
+					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
+  				nodes: this.getElementTreeNodes([], element)
+  			});
+  		} else {
+  			this.getElementTreeNodes(nodes, element);
+  		}
+  	}
+  	return nodes;
   }
 };
 

@@ -86,6 +86,29 @@
   border-radius: 0.2rem;
   height: 250px;
   overflow-y: scroll;
+  
+  .treenode-container {
+  	.treenode-body {
+  		padding: 0;
+  		
+  		label {
+  			display: block;
+  		}
+  		
+	  	.treenode-title {
+	  		padding-top: 3px;
+	  		word-break: break-all;
+	  	}
+	  }	  
+	  		
+		&.disabled {
+			.treenode-body {
+				.treenode-title {
+					color: #999999;
+				}
+			}
+		}
+  }
 }
 
 // File Browser

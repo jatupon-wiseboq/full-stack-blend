@@ -50,6 +50,23 @@ var EventHelper = {
   setDenyForEarlyHandle: (element: HTMLElement) => {
     element.setAttribute('internal-fsb-event-no-propagate', '1');
   },
+  
+  pasteEventInTextPlain: (event) => {
+		let text = '';
+    
+    if (event.clipboardData || event.originalEvent.clipboardData) {
+      text = (event.originalEvent || event).clipboardData.getData('text/plain');
+    } else if (window.clipboardData) {
+      text = window.clipboardData.getData('Text');
+    }
+    if (document.queryCommandSupported('insertText')) {
+      document.execCommand('insertText', false, text);
+    } else {
+      document.execCommand('paste', false, text);
+    }
+		
+		return EventHelper.cancel(event);
+  }
 };
 
 export {EventHelper};
