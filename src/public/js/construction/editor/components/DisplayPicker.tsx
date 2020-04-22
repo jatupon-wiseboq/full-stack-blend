@@ -38,14 +38,14 @@ class DisplayPicker extends Base<Props, State> {
         let name0 = this.props.watchingClassNames[index * 2];
         let name1 = this.props.watchingClassNames[index * 2 + 1];
         let current = !!this.state.classNameStatuses[name0];
-        let elementClassName = this.recentElementClassName;
+        let elementClassName = ' ' + this.recentElementClassName + ' ';
         
         this.state.classNameStatuses[name0] = !current;
         if (name1) this.state.classNameStatuses[name1] = current;
         
         this.props.watchingClassNames.forEach((name) => {
             if (!!name) {
-                elementClassName = elementClassName.replace(name, '');
+                elementClassName = elementClassName.replace(' ' + name + ' ', ' ');
             }
         });
         for (let i=0; i<4; i++) {
