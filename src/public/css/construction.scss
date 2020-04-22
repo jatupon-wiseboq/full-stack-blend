@@ -261,10 +261,16 @@ body.internal-fsb-focusing-text-element {
 //
 .internal-fsb-guide-on {
   @include media-breakpoint-only(xs) {
+  	.d-none {
+  		display: block !important;
+  	}
+  	table.d-none {
+  		display: table !important;
+  	}
+  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
-        display: block !important;
         border: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
@@ -281,10 +287,16 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(sm) {
+  	.d-sm-none {
+  		display: block !important;
+  	}
+  	table.d-sm-none {
+  		display: table !important;
+  	}
+  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
-        display: block !important;
         border: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
@@ -301,10 +313,16 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(md) {
+  	.d-md-none {
+  		display: block !important;
+  	}
+  	table.d-md-none {
+  		display: table !important;
+  	}
+  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
-        display: block !important;
         border: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
@@ -321,10 +339,16 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(lg) {
+  	.d-lg-none {
+  		display: block !important;
+  	}
+  	table.d-lg-none {
+  		display: table !important;
+  	}
+  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
-        display: block !important;
         border: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
@@ -341,10 +365,16 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(xl) {
+  	.d-lg-none {
+  		display: block !important;
+  	}
+  	table.d-lg-none {
+  		display: table !important;
+  	}
+  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
-        display: block !important;
         border: solid 1px red;
         > .internal-fsb-resizer {
           span {
