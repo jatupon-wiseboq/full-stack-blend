@@ -74,8 +74,8 @@ class Base extends React.Component {
     public update(properties: any) {
         let changed = false;
         
-        if (recentElementClassName != properties.attributes['class']) {
-            recentElementClassName = properties.attributes['class'] || '';
+        if (recentElementClassName != (properties.attributes && properties.attributes['class'] || '')) {
+            recentElementClassName = properties.attributes && properties.attributes['class'] || '';
             
             for (let nameOrRegularExpression in classNameStatuses) {
                 if (classNameStatuses.hasOwnProperty(nameOrRegularExpression)) {
@@ -93,7 +93,7 @@ class Base extends React.Component {
                 }
             }
         }
-        let style = (properties.attributes['style'] || '').replace(/;$/, '');
+        let style = (properties.attributes && properties.attributes['style'] || '').replace(/;$/, '');
         if (recentElementStyle != style) {
             recentElementStyle = style;
             let hashMap = HTMLHelper.getHashMapFromInlineStyle(recentElementStyle);
@@ -122,7 +122,7 @@ class Base extends React.Component {
                 }
             }
         }
-        if (recentElementAttributes != properties.attributes) {
+        if (properties.attributes && recentElementAttributes != properties.attributes) {
             recentElementAttributes = properties.attributes;
             
             let assigned = {};
@@ -154,7 +154,7 @@ class Base extends React.Component {
                 }
             }
         }
-        if (recentElementExtensions != properties.extensions) {
+        if (properties.extensions && recentElementExtensions != properties.extensions) {
             recentElementExtensions = properties.extensions;
             
             let assigned = {};

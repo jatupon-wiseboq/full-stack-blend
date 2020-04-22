@@ -320,7 +320,15 @@ var EditorHelper = {
   },
   updateEditorProperties: () => {
     let element = EditorHelper.getSelectingElement();
-    if (element == null) return;
+    if (element == null) {
+    	EditorHelper.synchronize('updateEditorProperties', {
+	      extensions: Object.assign({
+	        isSelectingElement: false,
+	        elementTreeNodes: EditorHelper.getElementTreeNodes()
+	      })
+	    });
+    	return;
+    }
     
     let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
     let attributes = null;
@@ -336,6 +344,7 @@ var EditorHelper = {
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
       extensions: Object.assign({
+      	isSelectingElement: true,
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: EditorHelper.getStylesheetDefinitionKeys(),
         stylesheetDefinitionRevision: EditorHelper.getStylesheetDefinitionRevision(),
