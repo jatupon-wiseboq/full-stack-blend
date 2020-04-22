@@ -26,8 +26,16 @@ html, body {
     position: absolute;
   }
 }
+.internal-fsb-table-layout {
+	> tr {
+		> td {
+			position: relative;
+		}
+	}
+}
 .internal-fsb-table-layout[internal-fsb-table-collapse="true"] {
 	border: none;
+	
 	> tr:not(:last-of-type) {
 		> td {
 			border-bottom: none !important;
