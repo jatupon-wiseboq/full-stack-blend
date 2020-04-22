@@ -457,6 +457,7 @@ var ManipulationHelper = {
                       HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
                     accessory = Accessories.cursor.getDOMNode().previousSibling;
                     Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
+                    EditorHelper.deselect();
                   }
                 } else {
                   remember = false;

@@ -97,6 +97,10 @@ let recentExtraPanelSelector: string = null;
         window.controls.forEach((control) => {
           control.update(content);
         });
+        
+        $(document.body).removeClass('internal-fsb-selecting-off internal-fsb-selecting-on')
+        	.addClass(content && content['extensions'] && content['extensions']['isSelectingElement'] ?
+        	'internal-fsb-selecting-on' : 'internal-fsb-selecting-off');
         break;
       case 'click':
         window.document.body.click();

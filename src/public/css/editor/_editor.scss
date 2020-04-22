@@ -108,6 +108,17 @@
 	display: none;
 }
 
+body.internal-fsb-selecting-off {
+	.internal-fsb-selecting-on {
+		display: none !important;
+	}
+}
+body.internal-fsb-selecting-on {
+	.internal-fsb-selecting-off {
+		display: none !important;
+	}
+}
+
 // Toolbar
 // -------------------------
 .toolbar {
