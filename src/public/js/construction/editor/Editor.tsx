@@ -122,6 +122,9 @@ let recentExtraPanelSelector: string = null;
       return EventHelper.cancel(event);
     }
   });
+  window.addEventListener("scroll", (event: any) => {
+    window.scrollTo(0, 0);
+  });
   
   window.addEventListener("message", (event) => {
     let data = JSON.parse(event.data);
