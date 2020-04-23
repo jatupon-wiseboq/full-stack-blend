@@ -667,6 +667,7 @@ var EditorHelper = {
   		if (!element.getAttribute) continue;
   		
   		let name = element.getAttribute('internal-fsb-name');
+  		let klass = element.getAttribute && element.getAttribute('internal-fsb-class') && element.getAttribute('internal-fsb-class').split(':')[0] || "None";
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let id = (isTableLayoutCell) ? element.parentNode.parentNode.getAttribute('internal-fsb-guid') : element.getAttribute('internal-fsb-guid');
@@ -677,6 +678,7 @@ var EditorHelper = {
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
+  				dropable: isTableLayoutCell || ['FlowLayout', 'TableLayout', 'AbsoluteLayout', 'Rectangle'].indexOf(klass) != -1,
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
   				nodes: this.getElementTreeNodes([], element)

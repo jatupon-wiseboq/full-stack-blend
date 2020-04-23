@@ -440,6 +440,81 @@ var ManipulationHelper = {
                   | ABC
               `, element);
               break;
+            case 'Rectangle':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+                .internal-fsb-element.internal-fsb-allow-cursor
+              `, element);
+              break;
+            case 'Iframe':
+            	element = document.createElement('iframe');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              `, element);
+              break;
+            case 'HTML':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		| <b>HTML Content</b>
+              `, element);
+              break;
+            case 'Textbox':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		input(type='text')
+              `, element);
+              break;
+            case 'Select':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		select
+              `, element);
+              break;
+            case 'Radio':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		input(type='radio')
+              `, element);
+              break;
+            case 'Checkbox':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		input(type='checkbox')
+              `, element);
+              break;
+            case 'File':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		input(type='file')
+              `, element);
+              break;
+            case 'Button':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		input(type='button')
+              `, element);
+              break;
+            case 'Image':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		img
+              `, element);
+              break;
+            case 'Video':
+            	element = document.createElement('div');
+              element = ReactDOM.render(pug `
+              	.internal-fsb-element
+              		video
+              `, element);
+              break;
           }
           
           if (element !== null) {

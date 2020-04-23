@@ -75,7 +75,7 @@ class Tree extends React.Component<IProps, IState> {
 					
 					changed = true;
 					break;
-				} else if (MathHelper.inRegion(middleRegion, point)) {
+				} else if (node.dropable && MathHelper.inRegion(middleRegion, point)) {
 					node.insert = InsertDirection.INSIDE;
 					
 					this.state.currentInsertingReferenceNode = node;

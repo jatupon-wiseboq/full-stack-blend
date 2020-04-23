@@ -17,6 +17,7 @@ interface ITreeNode {
 	id: string,
   name: string,
   selectable: boolean,
+  dropable: boolean,
   dragging: boolean,
   disabled: boolean,
   selected: boolean,

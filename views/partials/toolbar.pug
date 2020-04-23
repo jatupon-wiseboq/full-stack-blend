@@ -76,16 +76,16 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Element
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Rectangle Shape</b></p><p>Create a rectangle whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it, too.</p>")
+          a.dropdown-item(onclick='perform("insert", "Rectangle")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Rectangle Shape</b></p><p>Create a rectangle whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it, too.</p>")
             i.fa.fa-square-o
             | Rectangle
           a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Scalable Vector Graphics (SVG)</b></p><p>Create a SVG region and draw any shapes using a set of tools. You can upload a SVG file or edit its source right from the editor, too.</p>")
             i.fa.fa-pencil
             | Graphics
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An Iframe</b></p><p>Insert an iframe to embed content from third-party.</p><p><i>You can assign a different domain url and rely on the crossdomain mechanism on modern browser to secure user sensitive data, with additional APIs for loosen disclosure.</i></p>")
+          a.dropdown-item(onclick='perform("insert", "Iframe")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An Iframe</b></p><p>Insert an iframe to embed content from third-party.</p><p><i>You can assign a different domain url and rely on the crossdomain mechanism on modern browser to secure user sensitive data, with additional APIs for loosen disclosure.</i></p>")
             i.fa.fa-external-link
             | Safe Iframe
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An HTML Element</b></p><p>You can use this HTML element to insert any website interface, their JavaScript codes and custom CSS styles.</p>")
+          a.dropdown-item(onclick='perform("insert", "HTML")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An HTML Element</b></p><p>You can use this HTML element to insert any website interface, their JavaScript codes and custom CSS styles.</p>")
             i.fa.fa-html5
             | HTML
           a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A 2D-3D Canvas</b></p><p>You can use this WebGL canvas to draw anything from 2D to 3D, with ease of importing models, textures, and shader parameters.</p>")
@@ -98,22 +98,22 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Form
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Textbox</b></p><p>You can configure this to be a single-line textbox or a multi-line one, called \"textarea\". This also has data validation option on client-side and server-side.</p>")
+          a.dropdown-item(onclick='perform("insert", "Textbox")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Textbox</b></p><p>You can configure this to be a single-line textbox or a multi-line one, called \"textarea\". This also has data validation option on client-side and server-side.</p>")
             i.fa.fa-i-cursor
             | Textbox
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Select</b></p><p>You can configure this to be a drop-down list or a multi-line list, whose items can be selected more than one at a time. This also has data validation option on client-side and server-side.</p>")
+          a.dropdown-item(onclick='perform("insert", "Select")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Select</b></p><p>You can configure this to be a drop-down list or a multi-line list, whose items can be selected more than one at a time. This also has data validation option on client-side and server-side.</p>")
             i.fa.fa-caret-square-o-down
             | Select
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Radio</b></p><p>Insert an input that allows the user to choose only one of a predefined set of mutually exclusive options.")
+          a.dropdown-item(onclick='perform("insert", "Radio")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Radio</b></p><p>Insert an input that allows the user to choose only one of a predefined set of mutually exclusive options.")
             i.fa.fa-circle-o
             | Radio
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Checkbox</b></p><p>Insert an input that permits the user to make a binary choice, i.e. a choice between one of two possible mutually exclusive options.</p>")
+          a.dropdown-item(onclick='perform("insert", "Checkbox")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Checkbox</b></p><p>Insert an input that permits the user to make a binary choice, i.e. a choice between one of two possible mutually exclusive options.</p>")
             i.fa.fa-check-square-o
             | Checkbox
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A File Input</b></p><p>Insert a control which is a component of a web form with which a user can select a local file.</p>")
+          a.dropdown-item(onclick='perform("insert", "File")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A File Input</b></p><p>Insert a control which is a component of a web form with which a user can select a local file.</p>")
             i.fa.fa-folder-o
             | File
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Button</b></p><p>This button can be either a general one that execute a script, or a submit button which will perform data validation, uploading, saving, or even signing up and signing in.</p>")
+          a.dropdown-item(onclick='perform("insert", "Button")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Button</b></p><p>This button can be either a general one that execute a script, or a submit button which will perform data validation, uploading, saving, or even signing up and signing in.</p>")
             i.fa.fa-magic
             | Button
       .dropdown.mr-1(style='display: inline;')
@@ -122,10 +122,10 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Media
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An Image</b></p><p>Upload or choose an existing image, with full control of image size optimization for fastest site loading.</p>")
+          a.dropdown-item(onclick='perform("insert", "Image")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert An Image</b></p><p>Upload or choose an existing image, with full control of image size optimization for fastest site loading.</p>")
             i.fa.fa-image
             | Image
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
+          a.dropdown-item(onclick='perform("insert", "Video")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
             i.fa.fa-file-movie-o
             | Movie
       .dropdown(style='display: inline;')
