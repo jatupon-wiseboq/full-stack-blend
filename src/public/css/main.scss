@@ -21,6 +21,7 @@ body {
 
 html, body {
   height: 100%;
+  overflow: hidden;
 }
 
 footer {
@@ -110,6 +111,6 @@ footer {
 body {
 	cursor: default;
 }
-div, span {
+div, span, label {
 	cursor: inherit;
 }

@@ -307,6 +307,22 @@ var EditorHelper = {
 	  	Accessories.cellFormater.setTableElement(null);
 	  }
   },
+  move: (target: HTMLElement, destination: HTMLElement, direction: string) => {
+  	switch (direction) {
+    	case 'insertBefore':
+    		destination.parentNode.insertBefore(target, destination);
+  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
+    		break;
+    	case 'appendChild':
+    		destination.appendChild(target);
+  			destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstChild);
+    		break;
+    	case 'insertAfter':
+    		destination.parentNode.insertBefore(target, destination.nextSibling);
+  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
+    		break;
+  	}
+  },
   selectNextElement: () => {
     let allElements = [...HTMLHelper.getElementsByClassName('internal-fsb-element')];
     if (allElements.length == 0) return;
@@ -650,14 +666,15 @@ var EditorHelper = {
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
   		
-  		let id = element.getAttribute('internal-fsb-guid');
   		let name = element.getAttribute('internal-fsb-name');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
+  		let id = (isTableLayoutCell) ? element.parentNode.parentNode.getAttribute('internal-fsb-guid') : element.getAttribute('internal-fsb-guid');
   		
   		if ((id || isTableLayoutCell) && !isTheBeginElement) {
   			nodes.push({
-  				id: id,
+  				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
+  					',' + [...element.parentNode.childNodes].indexOf(element) : id,
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
 					disabled: false,

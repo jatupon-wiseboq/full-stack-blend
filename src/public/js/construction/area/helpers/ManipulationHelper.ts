@@ -42,6 +42,62 @@ var ManipulationHelper = {
           EditorHelper.placingCursorUsingWalkPath(content);
         }
         break;
+      case 'move[element]':
+        {
+        	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
+        	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
+        	
+        	if (target.nextSibling && target.nextSibling.hasAttribute('internal-fsb-guid')) {
+        		accessory = {
+        			target: content.target,
+        			destination: target.nextSibling.getAttribute('internal-fsb-guid'),
+        			direction: 'insertBefore'
+        		};
+        	} else if (target.previousSibling && target.previousSibling.hasAttribute('internal-fsb-guid')) {
+        		accessory = {
+        			target: content.target,
+        			destination: target.previousSibling.getAttribute('internal-fsb-guid'),
+        			direction: 'insertAfter'
+        		};
+        	} else {
+        		let suffix = "";
+        		if (target.parentNode.tagName == 'TD') {
+        			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
+        			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
+        			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
+        			
+        			suffix = ':' + row + ',' + column;
+        		}
+        		accessory = {
+        			target: content.target,
+        			destination: HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode).getAttribute('internal-fsb-guid') + suffix,
+        			direction: 'appendChild'
+        		};
+        	}
+        	
+          switch (content.direction) {
+          	case 'appendChild':
+          	  switch (destination.getAttribute('internal-fsb-class').split(':')[0]) {
+		        		case 'FlowLayout':
+		        			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+		        			break;
+		        		case 'TableLayout':
+		        			let info = content.destination.split(':')[1].split(',');
+		        			let row = parseInt(info[0]);
+		        			let column = parseInt(info[1]);
+		        			
+		        			destination = destination.childNodes[row].childNodes[column];
+		        			break;
+		        		case 'AbsoluteLayout':
+		        			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+		        			break;
+		        	}
+          	default:
+          		EditorHelper.move(target, destination, content.direction);
+          		break;
+          }
+        }
+        break;
       case 'update':
         {
           let selectingElement = EditorHelper.getSelectingElement();
@@ -556,6 +612,7 @@ var ManipulationHelper = {
             
             switch (name) {
               case 'move[cursor]':
+              case 'move[element]':
               case 'update':
               case 'update[size]':
               case 'update[columnSize]':

@@ -10,6 +10,12 @@ interface Region {
 }
 
 var MathHelper = {
+  createPoint: (dx: number, dy: number, origin: Point={x: 0, y: 0}): Point => {
+    return {
+      x: origin.x + dx,
+      y: origin.y + dy
+    }
+  },
   createRegion: (a: Point, b: Point): Region => {
     return {
       x: Math.min(a.x, b.x),
