@@ -48,7 +48,7 @@ class Tree extends React.Component<IProps, IState> {
   		let changed = this.resetInsertDirection(this.props.nodes);
   		
   		this.state.currentInsertingReferenceNode = null;
-			this.state.currentInsertingDirection = InsertDirection.NONE;
+    	this.state.currentInsertingDirection = InsertDirection.NONE;
   		
   		let container = ReactDOM.findDOMNode(this.refs.container);
   		let elements = [...HTMLHelper.getElementsByClassName('treenode-body', container)];
@@ -109,7 +109,8 @@ class Tree extends React.Component<IProps, IState> {
     		this.props.onDragged(this.state.currentDraggingNode, this.state.currentInsertingReferenceNode, this.state.currentInsertingDirection);
     	}
     	
-    	this.state.currentDraggingNode = null;
+    	this.state.currentInsertingReferenceNode = null;
+    	this.state.currentInsertingDirection = InsertDirection.NONE;
     	
     	this.setState({
 				revision: this.state.revision + 1
@@ -125,7 +126,7 @@ class Tree extends React.Component<IProps, IState> {
   				changed = true;
   			}
   			
-  			this.resetInsertDirection(node.nodes);
+  			changed = changed || this.resetInsertDirection(node.nodes);
   		}
   		
   		return changed;
