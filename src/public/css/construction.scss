@@ -11,12 +11,6 @@ html, body {
   overflow-y: auto;
 }
 
-.container,
-.container-fluid,
-.internal-fsb-allow-cursor {
-  min-height: 20px;
-}
-
 .internal-fsb-element {
   padding: 1px;
 }
@@ -44,12 +38,14 @@ html, body {
   
   .internal-fsb-strict-layout {
     > .internal-fsb-element {
+    	min-height: 20px;
       border: solid 1px rgba(0, 0, 255, 127);
     }
   }
   
   .internal-fsb-absolute-layout {
     > .internal-fsb-element {
+    	min-height: 20px;
       border: solid 1px rgba(0, 255, 0, 127);
     }
   }
@@ -207,10 +203,12 @@ body.internal-fsb-focusing-text-element {
 .internal-fsb-element {
 	> .container,
   > .container-fluid {
-  	height: 100%;
+  	height: inherit;
+  	min-height: inherit;
   	      
 	  > .row {
-	    height: 100%;
+	    height: inherit;
+  		min-height: inherit;
 	  }
 	}
 }
