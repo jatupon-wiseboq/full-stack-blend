@@ -5,6 +5,41 @@ for (let prefix of VENDOR_PREFIXES) {
   vendor_prefixes_hash[prefix] = true;
 }
 
+let _BASE_GET_ATTRIBUTE = HTMLElement.prototype.getAttribute;
+HTMLElement.prototype.getAttribute = function(name) {
+	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
+		return _BASE_GET_ATTRIBUTE.apply(this.firstChild, [name]);
+	} else {
+		return _BASE_GET_ATTRIBUTE.apply(this, [name]);
+	}
+};
+let _BASE_SET_ATTRIBUTE = HTMLElement.prototype.setAttribute;
+HTMLElement.prototype.setAttribute = function(name, value) {
+  if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
+  	_BASE_SET_ATTRIBUTE.apply(this, [name, '']);
+		return _BASE_SET_ATTRIBUTE.apply(this.firstChild, [name, value]);
+	} else {
+		return _BASE_SET_ATTRIBUTE.apply(this, [name, value]);
+	}
+};
+let _BASE_REMOVE_ATTRIBUTE = HTMLElement.prototype.removeAttribute;
+HTMLElement.prototype.removeAttribute = function(name) {
+	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
+		_BASE_REMOVE_ATTRIBUTE.apply(this, [name]);
+		return _BASE_REMOVE_ATTRIBUTE.apply(this.firstChild, [name]);
+	} else {
+		return _BASE_REMOVE_ATTRIBUTE.apply(this, [name]);
+	}
+}
+let _BASE_HAS_ATTRIBUTE = HTMLElement.prototype.hasAttribute;
+HTMLElement.prototype.hasAttribute = function(name) {
+	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
+		return _BASE_HAS_ATTRIBUTE.apply(this.firstChild, [name]);
+	} else {
+		return _BASE_HAS_ATTRIBUTE.apply(this, [name]);
+	}
+}
+
 var HTMLHelper = {
   sanitizingPug: (code: string) => {
     return code.replace(/classname=/gi, 'class=');
@@ -60,7 +95,7 @@ var HTMLHelper = {
           } else {
             elementAttributes.push({
               name: attr.name,
-              value: attr.value
+              value: element.getAttribute(attr.name)
             });
           }
         }
@@ -80,7 +115,7 @@ var HTMLHelper = {
         let attrs = element.attributes;
         for (let attr of attrs) {
           if (mergeAttributes[attr.name] === undefined) {
-            mergeAttributes[attr.name] = attr.value;
+            mergeAttributes[attr.name] = element.getAttribute(attr.name);
           }
         }
       }

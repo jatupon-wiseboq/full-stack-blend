@@ -449,7 +449,7 @@ var ManipulationHelper = {
             case 'Iframe':
             	element = document.createElement('iframe');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               `, element);
               break;
             case 'HTML':
@@ -462,56 +462,56 @@ var ManipulationHelper = {
             case 'Textbox':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		input(type='text')
               `, element);
               break;
             case 'Select':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		select
               `, element);
               break;
             case 'Radio':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		input(type='radio')
               `, element);
               break;
             case 'Checkbox':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		input(type='checkbox')
               `, element);
               break;
             case 'File':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		input(type='file')
               `, element);
               break;
             case 'Button':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		input(type='button')
               `, element);
               break;
             case 'Image':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		img
               `, element);
               break;
             case 'Video':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element
+              	.internal-fsb-element(internal-fsb-style-children="true")
               		video
               `, element);
               break;
