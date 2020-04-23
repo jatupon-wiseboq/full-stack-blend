@@ -178,6 +178,8 @@ class DropDownPicker extends Base<Props, State> {
             controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         } else if (options.indexOf('{NUMBER}') != -1) {
             controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        } else if (options.indexOf('{FLOAT}') != -1) {
+            controls['{FLOAT}'] = <FullStackBlend.Components.NumberPicker ref="float" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} float={true} />
         } else if (options.indexOf('{TEXT}') != -1) {
             controls['{TEXT}'] = <FullStackBlend.Components.TextPicker ref="text" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
         } else if (options.indexOf('{COLOR}') != -1) {
@@ -194,6 +196,8 @@ class DropDownPicker extends Base<Props, State> {
                 return this.refs.size.getValue();
             case '{NUMBER}':
                 return this.refs.number.getValue();
+            case '{FLOAT}':
+                return this.refs.float.getValue();
             case '{TEXT}':
                 return this.refs.text.getValue();
             case '{COLOR}':
