@@ -74,8 +74,8 @@ var FontHelper = {
     let normals = FontHelper.getAllItalics(info);
     if (normals.length != 0) {
       let link = document.createElement('link');
-      link.setAttribute('href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
-      link.setAttribute('rel', 'stylesheet');
+      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
+      HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
       
       document.head.appendChild(link);
     }
@@ -87,8 +87,8 @@ var FontHelper = {
       }
     
       let link = document.createElement('link');
-      link.setAttribute('href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
-      link.setAttribute('rel', 'stylesheet');
+      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
+      HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
       
       document.head.appendChild(link);
     }

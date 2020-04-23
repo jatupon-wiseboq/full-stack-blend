@@ -5,41 +5,6 @@ for (let prefix of VENDOR_PREFIXES) {
   vendor_prefixes_hash[prefix] = true;
 }
 
-let _BASE_GET_ATTRIBUTE = HTMLElement.prototype.getAttribute;
-HTMLElement.prototype.getAttribute = function(name) {
-	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
-		return _BASE_GET_ATTRIBUTE.apply(this.firstChild, [name]);
-	} else {
-		return _BASE_GET_ATTRIBUTE.apply(this, [name]);
-	}
-};
-let _BASE_SET_ATTRIBUTE = HTMLElement.prototype.setAttribute;
-HTMLElement.prototype.setAttribute = function(name, value) {
-  if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
-  	_BASE_SET_ATTRIBUTE.apply(this, [name, '']);
-		return _BASE_SET_ATTRIBUTE.apply(this.firstChild, [name, value]);
-	} else {
-		return _BASE_SET_ATTRIBUTE.apply(this, [name, value]);
-	}
-};
-let _BASE_REMOVE_ATTRIBUTE = HTMLElement.prototype.removeAttribute;
-HTMLElement.prototype.removeAttribute = function(name) {
-	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
-		_BASE_REMOVE_ATTRIBUTE.apply(this, [name]);
-		return _BASE_REMOVE_ATTRIBUTE.apply(this.firstChild, [name]);
-	} else {
-		return _BASE_REMOVE_ATTRIBUTE.apply(this, [name]);
-	}
-}
-let _BASE_HAS_ATTRIBUTE = HTMLElement.prototype.hasAttribute;
-HTMLElement.prototype.hasAttribute = function(name) {
-	if (_BASE_GET_ATTRIBUTE.apply(this, ['internal-fsb-style-children']) == 'true' && name == 'style') {
-		return _BASE_HAS_ATTRIBUTE.apply(this.firstChild, [name]);
-	} else {
-		return _BASE_HAS_ATTRIBUTE.apply(this, [name]);
-	}
-}
-
 var HTMLHelper = {
   sanitizingPug: (code: string) => {
     return code.replace(/classname=/gi, 'class=');
@@ -95,7 +60,7 @@ var HTMLHelper = {
           } else {
             elementAttributes.push({
               name: attr.name,
-              value: element.getAttribute(attr.name)
+              value: HTMLHelper.getAttribute(element, attr.name)
             });
           }
         }
@@ -115,7 +80,7 @@ var HTMLHelper = {
         let attrs = element.attributes;
         for (let attr of attrs) {
           if (mergeAttributes[attr.name] === undefined) {
-            mergeAttributes[attr.name] = element.getAttribute(attr.name);
+            mergeAttributes[attr.name] = HTMLHelper.getAttribute(element, attr.name);
           }
         }
       }
@@ -123,6 +88,41 @@ var HTMLHelper = {
       return mergeAttributes;
     }
   },
+  getAttribute: (element: HTMLElement, name: string) => {
+  	if (!element) return null;
+  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  		return element.firstChild.getAttribute(name);
+  	} else {
+  		return element.getAttribute(name);
+  	}
+  },
+  setAttribute: (element: HTMLElement, name: string, value: any) => {
+  	if (!element) return;
+  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  		element.setAttribute(name, '-fsb-empty');
+  		return element.firstChild.setAttribute(name, value);
+  	} else {
+  		return element.setAttribute(name, value);
+  	}
+  },
+  removeAttribute: (element: HTMLElement, name: string) => {
+  	if (!element) return;
+  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  		element.removeAttribute(name);
+  		element.firstChild.removeAttribute(name);
+  	} else {
+  		return element.removeAttribute(name);
+  	}
+  },
+  hasAttribute: (element: HTMLElement, name: string) => {
+  	if (!element) return null;
+  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  		return element.firstChild.hasAttribute(name);
+  	} else {
+  		return element.hasAttribute(name);
+  	}
+  },	
+	
   findTheParentInClassName: (className: string, element: HTMLElement) => { // the closet one
     let current = element.parentNode;
     while (current != null) {

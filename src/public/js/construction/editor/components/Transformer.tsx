@@ -201,8 +201,8 @@ class Transformer extends Base<Props, State> {
         
         this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
         
-        let cameraTransform = HTMLHelper.getInlineStyle(this.css3DRenderer.domElement.firstChild.getAttribute('style'), 'transform');
-        let objectTransform = HTMLHelper.getInlineStyle(ReactDOM.findDOMNode(this.refs.output).getAttribute('style'), 'transform');
+        let cameraTransform = HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(this.css3DRenderer.domElement.firstChild, 'style'), 'transform');
+        let objectTransform = HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(ReactDOM.findDOMNode(this.refs.output), 'style'), 'transform');
         
         let isPerspectiveCamera = (this.state.styleValues['-fsb-mode'] === 'perspective');
         let isOrthographicCamera = (this.state.styleValues['-fsb-mode'] === 'orthographic');

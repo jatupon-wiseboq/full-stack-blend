@@ -1,4 +1,6 @@
 (() => {
+	// Auto Height Layout
+	// 
   function update(event) {  
     let elements = [...window.document.body.getElementsByClassName('internal-fsb-absolute-layout')];
     elements.reverse().forEach((element) => {

@@ -102,7 +102,7 @@ class TreeNode extends React.Component<IProps, IState> {
     private mouseDown(event) {
 			let originalElement = EventHelper.getCurrentElement(event);
 			
-			let node = this.getNode(originalElement.getAttribute('node'));
+			let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
 			if (!node.selectable || !node.selected) return;
 			
 			this.originalElement = originalElement;
@@ -133,7 +133,7 @@ class TreeNode extends React.Component<IProps, IState> {
 				
 				document.getElementById('construction').style.pointerEvents = 'none';
 				
-				let node = this.getNode(this.originalElement.getAttribute('node'));
+				let node = this.getNode(HTMLHelper.getAttribute(this.originalElement, 'node'));
 				let elementSize = HTMLHelper.getSize(this.originalElement);
 				this.createDraggingElement(node.name, elementSize[0]);
 				

@@ -87,7 +87,7 @@ class CellFormater extends React.Component<Props, State> {
 				}
 			}
 			
-			let isCollapseMode = (this.tableElement.getAttribute('internal-fsb-table-collapse') == 'true');
+			let isCollapseMode = (HTMLHelper.getAttribute(this.tableElement, 'internal-fsb-table-collapse') == 'true');
 			
 			// List all cell borders that can be formatted.
 			// 

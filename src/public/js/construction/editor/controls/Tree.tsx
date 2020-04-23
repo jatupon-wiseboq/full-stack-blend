@@ -54,7 +54,7 @@ class Tree extends React.Component<IProps, IState> {
   		let elements = [...HTMLHelper.getElementsByClassName('treenode-body', container)];
   		
   		for (let element of elements) {
-				let node = this.getNode(element.getAttribute('node'));
+				let node = this.getNode(HTMLHelper.getAttribute(element, 'node'));
 				
 				if (this.state.currentDraggingNode == node) continue;
 				if (node.dragging) continue;

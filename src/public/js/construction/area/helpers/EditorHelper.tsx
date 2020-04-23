@@ -91,8 +91,8 @@ function renderStylesheet() {
   let element = document.getElementById('internal-fsb-stylesheet');
   if (!element) {
     element = document.createElement('style');
-    element.setAttribute('type', 'text/css');
-    element.setAttribute('id', 'internal-fsb-stylesheet');
+    HTMLHelper.setAttribute(element, 'type', 'text/css');
+    HTMLHelper.setAttribute(element, 'id', 'internal-fsb-stylesheet');
     document.head.appendChild(element);
   }
   
@@ -298,7 +298,7 @@ var EditorHelper = {
         current = current.parentNode;
       }
       
-      EditorHelper.synchronize('select', element.getAttribute('internal-fsb-class'));
+      EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
     }
     if (element.tagName == 'TABLE') {
@@ -348,7 +348,7 @@ var EditorHelper = {
     	return;
     }
     
-    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
+    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let attributes = null;
     
     if (reusablePresetName) {
@@ -384,7 +384,7 @@ var EditorHelper = {
   },
   
   installCapabilityOfBeingSelected: (element: HTMLElement, guid: string) => {
-    element.setAttribute('internal-fsb-guid', guid);
+    HTMLHelper.setAttribute(element, 'internal-fsb-guid', guid);
     element.addEventListener('click', (event) => {
       if (EventHelper.checkIfDenyForHandle(event)) return;
       
@@ -401,7 +401,7 @@ var EditorHelper = {
       }
       
       if (selecting != willSelected) {
-        ManipulationHelper.perform('select', willSelected.getAttribute('internal-fsb-guid'));
+        ManipulationHelper.perform('select', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
       }
       
       EditorHelper.synchronize("click", null);
@@ -415,8 +415,8 @@ var EditorHelper = {
       allowCursorElements.push(container);
     }
     allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
-      if (allowCursorElement.getAttribute('internal-fsb-binded-click') != '1') {
-        allowCursorElement.setAttribute('internal-fsb-binded-click', '1');
+      if (HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-binded-click') != '1') {
+        HTMLHelper.setAttribute(allowCursorElement, 'internal-fsb-binded-click', '1');
         
         if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
           allowCursorElement.addEventListener('click', (event) => {
@@ -432,7 +432,7 @@ var EditorHelper = {
                 let children = [...theAllowCursorElement.children];
                 let count = (children.indexOf(Accessories.cursor.getDOMNode()) !== -1) ? children.length - 1 : children.length;
                 let maximum = count;
-                let walkPath = EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'), indexOfAllowCursorElement, maximum);
+                let walkPath = EditorHelper.createWalkPathForCursor(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'), indexOfAllowCursorElement, maximum);
                 ManipulationHelper.perform('move[cursor]', walkPath);
               }
               
@@ -455,7 +455,7 @@ var EditorHelper = {
                 let mousePosition = EventHelper.getMousePosition(event);
                 
                 ManipulationHelper.perform('move[cursor]', EditorHelper.createWalkPathForCursor(
-                  referenceElement.getAttribute('internal-fsb-guid'),
+                  HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
                   0,
                   mousePosition[0] - layoutPosition[0],
                   mousePosition[1] - layoutPosition[1]
@@ -492,7 +492,7 @@ var EditorHelper = {
       
       if (indexOfAllowCursorElement != -1) {
         let positionInTheAllowCursorElement = theAllowCursorElement.children.length;
-        return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
+        return EditorHelper.createWalkPathForCursor(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
                                                     indexOfAllowCursorElement,
                                                     positionInTheAllowCursorElement);
       }
@@ -508,16 +508,16 @@ var EditorHelper = {
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
       
       if (indexOfAllowCursorElement != -1) {
-        if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+        if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
           let positionInTheAllowCursorElement = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
           
           if (positionInTheAllowCursorElement != -1) {
-            return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
+            return EditorHelper.createWalkPathForCursor(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
                                                         indexOfAllowCursorElement,
                                                         positionInTheAllowCursorElement);
           }
         } else {
-          return EditorHelper.createWalkPathForCursor(referenceElement.getAttribute('internal-fsb-guid'),
+          return EditorHelper.createWalkPathForCursor(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
                                                       indexOfAllowCursorElement,
                                                       parseInt(Accessories.cursor.getDOMNode().style.left),
                                                       parseInt(Accessories.cursor.getDOMNode().style.top));
@@ -551,12 +551,12 @@ var EditorHelper = {
           }
           Accessories.cursor.getDOMNode().style.left = 'inherit';
           Accessories.cursor.getDOMNode().style.top = 'inherit';
-          Accessories.cursor.getDOMNode().setAttribute('internal-cursor-mode', 'relative');
+          HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'relative');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);
         } else {
           Accessories.cursor.getDOMNode().style.left = walkPath[2] + 'px';
           Accessories.cursor.getDOMNode().style.top = walkPath[3] + 'px';
-          Accessories.cursor.getDOMNode().setAttribute('internal-cursor-mode', 'absolute');
+          HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'absolute');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstChild);
         }
       }
@@ -564,17 +564,17 @@ var EditorHelper = {
   },
   
   setStyle: function(element: HTMLElement, style: string) {
-    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
+    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     
     if (reusablePresetName) {
-      EditorHelper.setStylesheetDefinition(reusablePresetName, style, element.getAttribute('internal-fsb-guid'));
+      EditorHelper.setStylesheetDefinition(reusablePresetName, style, HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
     } else {
-      element.setAttribute('style', style);
+      HTMLHelper.setAttribute(element, 'style', style);
     }
   },
   getStyle: function(element: HTMLElement) {
-    let reusablePresetName = element.getAttribute('internal-fsb-reusable-preset-name') || null;
-    let style = (reusablePresetName) ? EditorHelper.getStylesheetDefinition(reusablePresetName) : element.getAttribute('style');
+    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+    let style = (reusablePresetName) ? EditorHelper.getStylesheetDefinition(reusablePresetName) : HTMLHelper.getAttribute(element, 'style');
     
     return style;
   },
@@ -597,7 +597,7 @@ var EditorHelper = {
     
     let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
     for (let element of elements) {
-      element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
+      HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
     }
     for (let key in stylesheetDefinitions) {
     	if (stylesheetDefinitions.hasOwnProperty(key)) {
@@ -611,7 +611,7 @@ var EditorHelper = {
     if (stylesheetDefinitions[name] === undefined) {
       let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
       for (let element of elements) {
-        element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
+        HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
       }
       for (let key in stylesheetDefinitions) {
 	    	if (stylesheetDefinitions.hasOwnProperty(key)) {
@@ -633,7 +633,7 @@ var EditorHelper = {
     
     let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
     for (let element of elements) {
-      element.setAttribute('internal-fsb-inherited-presets', (element.getAttribute('internal-fsb-inherited-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
+      HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
     }
     for (let key in stylesheetDefinitions) {
     	if (stylesheetDefinitions.hasOwnProperty(key)) {
@@ -666,11 +666,11 @@ var EditorHelper = {
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
   		
-  		let name = element.getAttribute('internal-fsb-name');
-  		let klass = element.getAttribute && element.getAttribute('internal-fsb-class') && element.getAttribute('internal-fsb-class').split(':')[0] || "None";
+  		let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
+  		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class') && HTMLHelper.getAttribute(element, 'internal-fsb-class').split(':')[0] || "None";
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
-  		let id = (isTableLayoutCell) ? element.parentNode.parentNode.getAttribute('internal-fsb-guid') : element.getAttribute('internal-fsb-guid');
+  		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   		
   		if ((id || isTableLayoutCell) && !isTheBeginElement) {
   			nodes.push({

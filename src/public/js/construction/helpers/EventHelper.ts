@@ -24,7 +24,7 @@ var EventHelper = {
   
   checkIfDenyForHandle: (event: HTMLEvent) => {
     let originalElement = EventHelper.getOriginalElement(event);
-    if (originalElement.getAttribute('internal-fsb-event-always-propagate') == event.type) return false;
+    if (HTMLHelper.getAttribute(originalElement, 'internal-fsb-event-always-propagate') == event.type) return false;
     
     if (denyForHandle[event.type]) return true;
     
@@ -36,7 +36,7 @@ var EventHelper = {
     }
     
     if (EventHelper.getCurrentElement(event) == originalElement) return false;
-    else return originalElement.getAttribute('internal-fsb-event-no-propagate') == '1';
+    else return HTMLHelper.getAttribute(originalElement, 'internal-fsb-event-no-propagate') == '1';
   },
   setDenyForHandle: (name: string, value: boolean, delay: null) => {
     if (delay == null) {
@@ -48,7 +48,7 @@ var EventHelper = {
     }
   },
   setDenyForEarlyHandle: (element: HTMLElement) => {
-    element.setAttribute('internal-fsb-event-no-propagate', '1');
+    HTMLHelper.setAttribute(element, 'internal-fsb-event-no-propagate', '1');
   },
   
   pasteEventInTextPlain: (event) => {

@@ -47,16 +47,16 @@ var ManipulationHelper = {
         	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
         	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
         	
-        	if (target.nextSibling && target.nextSibling.hasAttribute('internal-fsb-guid')) {
+        	if (target.nextSibling && HTMLHelper.hasAttribute(target.nextSibling, 'internal-fsb-guid')) {
         		accessory = {
         			target: content.target,
-        			destination: target.nextSibling.getAttribute('internal-fsb-guid'),
+        			destination: HTMLHelper.getAttribute(target.nextSibling, 'internal-fsb-guid'),
         			direction: 'insertBefore'
         		};
-        	} else if (target.previousSibling && target.previousSibling.hasAttribute('internal-fsb-guid')) {
+        	} else if (target.previousSibling && HTMLHelper.hasAttribute(target.previousSibling, 'internal-fsb-guid')) {
         		accessory = {
         			target: content.target,
-        			destination: target.previousSibling.getAttribute('internal-fsb-guid'),
+        			destination: HTMLHelper.getAttribute(target.previousSibling, 'internal-fsb-guid'),
         			direction: 'insertAfter'
         		};
         	} else {
@@ -70,14 +70,14 @@ var ManipulationHelper = {
         		}
         		accessory = {
         			target: content.target,
-        			destination: HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode).getAttribute('internal-fsb-guid') + suffix,
+        			destination: HTMLHelper.getAttribute(HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode), 'internal-fsb-guid') + suffix,
         			direction: 'appendChild'
         		};
         	}
         	
           switch (content.direction) {
           	case 'appendChild':
-          	  switch (destination.getAttribute('internal-fsb-class').split(':')[0]) {
+          	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class').split(':')[0]) {
 		        		case 'FlowLayout':
 		        			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
 		        			break;
@@ -102,7 +102,7 @@ var ManipulationHelper = {
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
-            let previousReusablePresetName = selectingElement.getAttribute('internal-fsb-reusable-preset-name') || null;
+            let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
             
             if (previousReusablePresetName) {
               accessory = {
@@ -130,16 +130,16 @@ var ManipulationHelper = {
                       if (nextReusablePresetName != null) {
                         found = true;
                         EditorHelper.setStylesheetDefinition(nextReusablePresetName,
-                                                             selectingElement.getAttribute('style') || '',
-                                                             selectingElement.getAttribute('internal-fsb-guid'));
-                        selectingElement.removeAttribute('style');
+                                                             HTMLHelper.getAttribute(selectingElement, 'style') || '',
+                                                             HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+                        HTMLHelper.removeAttribute(selectingElement, 'style');
                       }
                     } else {
                       if (nextReusablePresetName == null) {
                         found = true;
                         let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
-                        EditorHelper.removeStylesheetDefinition(previousReusablePresetName, selectingElement.getAttribute('internal-fsb-guid'));
-                        selectingElement.setAttribute('style', style);
+                        EditorHelper.removeStylesheetDefinition(previousReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+                        HTMLHelper.setAttribute(selectingElement, 'style', style);
                       } else if (previousReusablePresetName != nextReusablePresetName) {
                         found = true;
                         EditorHelper.swapStylesheetName(previousReusablePresetName, nextReusablePresetName);
@@ -147,12 +147,12 @@ var ManipulationHelper = {
                     }
                     
                     if (nextReusablePresetName) {
-                      selectingElement.setAttribute('internal-fsb-reusable-preset-name', nextReusablePresetName);
-                      if (!selectingElement.getAttribute('internal-fsb-inherited-presets')) {
-                        selectingElement.setAttribute('internal-fsb-inherited-presets', '+' + nextReusablePresetName + '+');
+                      HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);
+                      if (!HTMLHelper.getAttribute(selectingElement, 'internal-fsb-inherited-presets')) {
+                        HTMLHelper.setAttribute(selectingElement, 'internal-fsb-inherited-presets', '+' + nextReusablePresetName + '+');
                       }
                     } else {
-                      selectingElement.removeAttribute('internal-fsb-reusable-preset-name');
+                      HTMLHelper.removeAttribute(selectingElement, 'internal-fsb-reusable-preset-name');
                     }
                     previousReusablePresetName = nextReusablePresetName;
                     break;
@@ -163,19 +163,19 @@ var ManipulationHelper = {
                         found = true;
                         EditorHelper.setStylesheetDefinition(previousReusablePresetName,
                                                              attribute.value,
-                                                             selectingElement.getAttribute('internal-fsb-guid'));
+                                                             HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
                       }
                     } else {
-                      if (selectingElement.getAttribute('style') != attribute.value) {
+                      if (HTMLHelper.getAttribute(selectingElement, 'style') != attribute.value) {
                         found = true;
-                        selectingElement.setAttribute('style', attribute.value);
+                        HTMLHelper.setAttribute(selectingElement, 'style', attribute.value);
                       }
                     }
                     break;
                   default:
                     if (selectingElement.getAttribute(attribute.name) != attribute.value) {
                       found = true;
-                      selectingElement.setAttribute(attribute.name, attribute.value);
+                      HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
                     }
                     break;
                 }
@@ -215,7 +215,7 @@ var ManipulationHelper = {
 	              let isPerspectiveCamera = (hash['-fsb-mode'] === 'perspective');
 	              
 	              for (let container of containers) {
-	              	let _inlineStyle = container.getAttribute('style') || '';
+	              	let _inlineStyle = HTMLHelper.getAttribute(container, 'style') || '';
 	              	
 	              	if (isPerspectiveCamera) {
 	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform-style', hash['-child-transform-style']);
@@ -225,30 +225,30 @@ var ManipulationHelper = {
 	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform', '');
 	              	}
 	              	
-	                container.setAttribute('style', _inlineStyle);
+	                HTMLHelper.setAttribute(container, 'style', _inlineStyle);
 	              }
 	            }
 	            
 	            // Table Cell Property (Without Stylesheet)
 	            //
-	            if (selectingElement.getAttribute('internal-fsb-class').split(':')[0] == 'TableLayout') {
+	            if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class').split(':')[0] == 'TableLayout') {
 	            	let isCollapse = (hash['border-collapse'] == 'collapse');
-	            	selectingElement.setAttribute('internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
+	            	HTMLHelper.setAttribute(selectingElement, 'internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
 	            	
 	            	for (let childY of [...selectingElement.childNodes]) {
 	            		for (let childX of [...childY.childNodes]) {
-	            			let _inlineStyle = childX.getAttribute('style') || '';
+	            			let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
 	            			
 	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-top', '');
 	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-right', '');
 	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-bottom', '');
 	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-left', '');
 	            			
-	            			childX.setAttribute('style', _inlineStyle);
+	            			HTMLHelper.setAttribute(childX, 'style', _inlineStyle);
 	            		}
 	            	}
 	            	
-	            	if (!selectingElement.getAttribute('internal-fsb-reusable-preset-name')) {
+	            	if (!HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name')) {
 		            	let tableCellDefinitions = inlineStyle.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
 		            	if (tableCellDefinitions !== null) {
 								   	for (let tableCellDefinition of tableCellDefinitions) {
@@ -264,11 +264,11 @@ var ManipulationHelper = {
 							   				if (childY.childNodes[x]) {
 							   					let childX = childY.childNodes[x];
 							   					if (childX) {
-							   						let _inlineStyle = childX.getAttribute('style') || '';
+							   						let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
 							   						
 							   						_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-' + side, style);
 							   						
-							   						childX.setAttribute('style', _inlineStyle);
+							   						HTMLHelper.setAttribute(childX, 'style', _inlineStyle);
 							   					}
 							   				}
 							   			}
@@ -315,7 +315,7 @@ var ManipulationHelper = {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
             if (previousInfo.previousClassName == null) {
-              previousInfo.previousClassName = selectingElement.getAttribute('class');
+              previousInfo.previousClassName = HTMLHelper.getAttribute(selectingElement, 'class');
             }
             
             let elementClassName = previousInfo.previousClassName;
@@ -351,12 +351,12 @@ var ManipulationHelper = {
             elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
             
             if (!remember) {
-              selectingElement.setAttribute('class', elementClassName);
+              HTMLHelper.setAttribute(selectingElement, 'class', elementClassName);
             }
             
             if (remember) {
               promise.then(() => {
-                selectingElement.setAttribute('class', previousInfo.previousClassName);
+                HTMLHelper.setAttribute(selectingElement, 'class', previousInfo.previousClassName);
                 previousInfo.previousClassName = null;
                 
                 let hash = HTMLHelper.getHashMapFromInlineStyle(EditorHelper.getStyle(selectingElement) || '');
@@ -423,7 +423,7 @@ var ManipulationHelper = {
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
                     td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               `, element);
-              element.setAttribute('style', 'table-layout: fixed; -fsb-cell-border-style: solid; -fsb-cell-border-color: #000000; -fsb-cell-border-size: 1px');
+              HTMLHelper.setAttribute(element, 'style', 'table-layout: fixed; -fsb-cell-border-style: solid; -fsb-cell-border-color: #000000; -fsb-cell-border-size: 1px');
               break;
             case 'AbsoluteLayout':
               element = document.createElement('div');
@@ -529,14 +529,14 @@ var ManipulationHelper = {
             //
             EditorHelper.installCapabilityOfBeingMoveInCursor(element);
             
-            if (element.getAttribute('contentEditable') == 'true') {
+            if (HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
             	EditorHelper.installCapabilityOfBeingPasted(element);
             }
             
             // Insert the element before the cursor.
             //
-            element.setAttribute('internal-fsb-class', content);
-            if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+            HTMLHelper.setAttribute(element, 'internal-fsb-class', content);
+            if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
               HTMLHelper.addClass(element, 'col-12');
               HTMLHelper.addClass(element, 'col');
               Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
@@ -555,7 +555,7 @@ var ManipulationHelper = {
             }
             composedUntitledName[klass]++;
             
-            element.setAttribute('internal-fsb-name', klass + ' ' + composedUntitledName[klass]);
+            HTMLHelper.setAttribute(element, 'internal-fsb-name', klass + ' ' + composedUntitledName[klass]);
             
             // Update Editor UI
             EditorHelper.updateEditorProperties();
@@ -583,7 +583,7 @@ var ManipulationHelper = {
               break;
             case 8:
               {
-                if (Accessories.cursor.getDOMNode().getAttribute('internal-cursor-mode') == 'relative') {
+                if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
                   if (Accessories.cursor.getDOMNode().previousSibling &&
                       HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
                     accessory = Accessories.cursor.getDOMNode().previousSibling;
@@ -599,7 +599,7 @@ var ManipulationHelper = {
               {
                 let selectingElement = EditorHelper.getSelectingElement();
                 if (selectingElement) {
-                  accessory = selectingElement.getAttribute('internal-fsb-guid');
+                  accessory = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
                 }
             
                 EditorHelper.deselect();
@@ -609,7 +609,7 @@ var ManipulationHelper = {
               {
                 let selectingElement = EditorHelper.getSelectingElement();
                 if (selectingElement) {
-                  accessory = selectingElement.getAttribute('internal-fsb-guid');
+                  accessory = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
                 }
                 
                 EditorHelper.selectNextElement();
@@ -664,7 +664,7 @@ var ManipulationHelper = {
         {
           let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
-            accessory = selectingElement.getAttribute('internal-fsb-guid');
+            accessory = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
           }
           
           if (content) {

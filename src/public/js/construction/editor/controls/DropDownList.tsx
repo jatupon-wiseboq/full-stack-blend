@@ -150,7 +150,7 @@ class DropDownList extends React.Component<Props, State> {
         if (EventHelper.checkIfDenyForHandle(event)) return;
     
         if (this.props.onUpdate) {
-            this.props.onUpdate(this.props.identity, EventHelper.getCurrentElement(event).getAttribute('value'), EventHelper.getCurrentElement(event).getAttribute('index'));
+            this.props.onUpdate(this.props.identity, HTMLHelper.getAttribute(EventHelper.getCurrentElement(event), 'value'), HTMLHelper.getAttribute(EventHelper.getCurrentElement(event), 'index'));
         }
         
         this.hide();

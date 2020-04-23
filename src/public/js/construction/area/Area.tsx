@@ -15,7 +15,7 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     ManipulationHelper.perform(data.name, data.content);
   }, true);
   window.addEventListener("keydown", (event) => {
-    if (document.activeElement && (document.activeElement.getAttribute('internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+    if (document.activeElement && (HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') || '').split(':')[0] === 'TextElement') {
       return true;
     } else {
       ManipulationHelper.perform('keydown', event.keyCode);
@@ -38,7 +38,7 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
     EditorHelper.synchronize("click", null);
   }, true);
   window.document.body.addEventListener("focus", (event) => {
-    if (document.activeElement && (document.activeElement.getAttribute('internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+    if (document.activeElement && (HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') || '').split(':')[0] === 'TextElement') {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
     }
   }, true);
