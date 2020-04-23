@@ -678,7 +678,7 @@ var EditorHelper = {
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
-  				dropable: isTableLayoutCell || ['FlowLayout', 'TableLayout', 'AbsoluteLayout', 'Rectangle'].indexOf(klass) != -1,
+  				dropable: isTableLayoutCell || ['FlowLayout', 'AbsoluteLayout', 'Rectangle'].indexOf(klass) != -1,
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
   				nodes: this.getElementTreeNodes([], element)

@@ -58,7 +58,7 @@ class SizePicker extends Base<Props, State> {
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
         let isString = typeof original === 'string';
         let value = (isString) ? parseInt(original) : null;
-        let matched = (isString) ? original.match(/[a-z]+/) || null : null;
+        let matched = (isString) ? original.match(/[a-z%]+/) || null : null;
         let unit = (matched !== null) ? matched[0] : null;
         
         let index = SIZES_IN_UNIT.indexOf(unit);
