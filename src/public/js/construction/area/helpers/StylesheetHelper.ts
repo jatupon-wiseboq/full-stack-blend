@@ -31,8 +31,8 @@ function renderStylesheet() {
     let isForChildren = (stylesheetDefinitions[key].indexOf('-fsb-for-children: true') != -1);
     let suffix = (isForChildren) ? ' > :first-child' : '';
     
-    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]' + suffix);
-    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]' + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]' + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]' + suffix);
     
     // Inheritance
     //
@@ -48,7 +48,7 @@ function renderStylesheet() {
     });
     
     for (let inheritingKey of inversedReferences) {
-    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]' + suffix);
+    	prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]' + suffix);
     }
     
     lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[key] + ' }');
