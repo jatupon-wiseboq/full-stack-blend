@@ -19,7 +19,7 @@ let isCommandKeyActive: boolean = false;
 let composedUntitledName: any = {};
 
 var ManipulationHelper = {
-  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false) => {
+  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
     let accessory = null;
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
@@ -27,43 +27,43 @@ var ManipulationHelper = {
     
     switch (name) {
       case 'select':
-      	accessory, remember = ManipulationHelper.handleSelectElement(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
         break;
       case 'insert':
-      	accessory, remember = ManipulationHelper.handleInsert(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleInsert(name, content, remember, promise, link);
         break;
       case 'update':
-        accessory, remember = ManipulationHelper.handleUpdate(name, content, remember, promise);
+        [accessory, remember, link] = ManipulationHelper.handleUpdate(name, content, remember, promise, link);
         break;
       case 'update[size]':
-      	accessory, remember = ManipulationHelper.handleUpdateElementSize(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleUpdateElementSize(name, content, remember, promise, link);
         break;
       case 'update[responsive]':
-      	accessory, remember = ManipulationHelper.handleUpdateResponsiveSize(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleUpdateResponsiveSize(name, content, remember, promise, link);
         break;
       case 'move[cursor]':
-      	accessory, remember = ManipulationHelper.handleMoveCursor(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleMoveCursor(name, content, remember, promise, link);
         break;
       case 'move[element]':
-      	accessory, remember = ManipulationHelper.handleMoveElement(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleMoveElement(name, content, remember, promise, link);
         break;
       case 'delete':
-      	accessory, remember = ManipulationHelper.handleDeleteElement(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
         break;
       case 'keydown':
-      	accessory, remember = ManipulationHelper.handleKeyDown(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleKeyDown(name, content, remember, promise, link);
         break;
       case 'keyup':
-      	accessory, remember = ManipulationHelper.handleKeyUp(name, content, remember, promise);
+      	[accessory, remember, link] = ManipulationHelper.handleKeyUp(name, content, remember, promise, link);
       	break;
+      case 'toggle':
+      	[accessory, remember, link] = ManipulationHelper.handleToggleDesignMode(name, content, remember, promise, link);
+        break;
       case 'undo':
-      	accessory, remember = ManipulationHelper.handleUndo(name, content, remember, promise);
+      	[accessory, remember] = ManipulationHelper.handleUndo(name, content, remember, promise);
         break;
       case 'redo':
-      	accessory, remember = ManipulationHelper.handleRedo(name, content, remember, promise);
-        break;
-      case 'toggle':
-      	accessory, remember = ManipulationHelper.handleToggleDesignMode(name, content, remember, promise);
+      	[accessory, remember] = ManipulationHelper.handleRedo(name, content, remember, promise);
         break;
     }
     
@@ -84,7 +84,8 @@ var ManipulationHelper = {
         name: name,
         content: content,
         accessory: accessory,
-        replace: replace
+        replace: replace,
+        link: link
       });
     }
     
@@ -95,7 +96,7 @@ var ManipulationHelper = {
     EditorHelper.update();
   },
   
-  handleInsert: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
 		let element = null;
@@ -282,9 +283,9 @@ var ManipulationHelper = {
       EditorHelper.updateEditorProperties();
     }
     
-    return {accessory, remember};
+    return [accessory, remember, link];
   },
-  handleUpdate: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
 		let accessory = null;
 		let selectingElement = EditorHelper.getSelectingElement();
 		
@@ -472,9 +473,9 @@ var ManipulationHelper = {
       remember = false;
     }
     
-    return {accessory, remember};
+    return [accessory, remember, link];
   },
-  handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let selectingElement = EditorHelper.getSelectingElement();
@@ -498,9 +499,9 @@ var ManipulationHelper = {
       remember = false;
     }
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let selectingElement = EditorHelper.getSelectingElement();
@@ -574,9 +575,9 @@ var ManipulationHelper = {
     }
     remember = false;
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	switch (content) {
@@ -659,9 +660,9 @@ var ManipulationHelper = {
         break;
     }
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleKeyUp: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleKeyUp: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	switch (content) {
@@ -677,9 +678,9 @@ var ManipulationHelper = {
     }
     remember = false;
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleSelectElement: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleSelectElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let selectingElement = EditorHelper.getSelectingElement();
@@ -694,9 +695,9 @@ var ManipulationHelper = {
       EditorHelper.deselect();
     }
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	accessory = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
@@ -704,9 +705,9 @@ var ManipulationHelper = {
       accessory.parentNode.removeChild(accessory);
     }
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
@@ -762,9 +763,9 @@ var ManipulationHelper = {
     		break;
     }
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
   },
-  handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise) => {
+  handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	if (Accessories.cursor.getDOMNode().parentNode != null && CursorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
@@ -775,16 +776,37 @@ var ManipulationHelper = {
     }
     CursorHelper.placingCursorUsingWalkPath(content);
   	
-  	return {accessory, remember};
+  	return [accessory, remember, link];
+  },
+  handleToggleDesignMode: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+  	let accessory = null;
+  	
+  	switch (content) {
+      case 'guide':
+        if (HTMLHelper.hasClass(window.document.body, 'internal-fsb-guide-on')) {
+          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-on');
+          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-off');
+        } else {
+          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-off');
+          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-on');
+        }
+    }
+    
+    remember = false;
+  	
+  	return [accessory, remember, link];
   },
   handleUndo: (name: string, content: any, remember: boolean, promise: Promise) => {
   	let accessory = null;
+    let link = false;
   	
   	if (performedIndex >= 0) {
       let name = performed[performedIndex].name;
       let content = performed[performedIndex].content;
       let accessory = performed[performedIndex].accessory;
       let done = false;
+      
+      link = performed[performedIndex].link;
       
       console.log('undo', name, content, accessory);
       
@@ -823,11 +845,18 @@ var ManipulationHelper = {
     }
     
     remember = false;
+    
+    if (link && performedIndex >= 0 && performed[performedIndex].link === link) {
+    	promise.then(() => {
+        ManipulationHelper.perform('undo', null);
+      });
+    }
   	
-  	return {accessory, remember};
+  	return [accessory, remember];
   },
   handleRedo: (name: string, content: any, remember: boolean, promise: Promise) => {
   	let accessory = null;
+    let link = false;
   	
   	if (performedIndex < performed.length - 1) {
       performedIndex += 1;
@@ -836,32 +865,22 @@ var ManipulationHelper = {
       let content = performed[performedIndex].content;
       let accessory = performed[performedIndex].accessory;
       
+      link = performed[performedIndex].link;
+      
       console.log('redo', name, content, accessory);
       
-      ManipulationHelper.perform(name, content, false, true);
+      ManipulationHelper.perform(name, (name == 'insert') ? content + ':' + accessory : content, false, true);
     }
     
     remember = false;
-  	
-  	return {accessory, remember};
-  },
-  handleToggleDesignMode: (name: string, content: any, remember: boolean, promise: Promise) => {
-  	let accessory = null;
-  	
-  	switch (content) {
-      case 'guide':
-        if (HTMLHelper.hasClass(window.document.body, 'internal-fsb-guide-on')) {
-          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-on');
-          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-off');
-        } else {
-          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-off');
-          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-on');
-        }
-    }
     
-    remember = false;
+    if (link && performedIndex < performed.length - 1 && performed[performedIndex].link === link) {
+    	promise.then(() => {
+        ManipulationHelper.perform('redo', null);
+      });
+    }
   	
-  	return {accessory, remember};
+  	return [accessory, remember];
   }
 };
 
