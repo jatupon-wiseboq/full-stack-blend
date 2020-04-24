@@ -605,6 +605,8 @@ var ManipulationHelper = {
               accessory = Accessories.cursor.getDOMNode().previousSibling;
               Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
               EditorHelper.deselect();
+            } else {
+            	remember = false;
             }
           } else {
             remember = false;
