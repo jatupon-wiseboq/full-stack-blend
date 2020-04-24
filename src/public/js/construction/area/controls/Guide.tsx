@@ -29,7 +29,7 @@ class Guide extends React.Component<Props, State> {
     render() {
         return (
             pug `
-              .internal-fsb-guide
+              .internal-fsb-guide(id='internal-fsb-guide')
                 .container-fluid
                   .row
                     .col-1.p-0

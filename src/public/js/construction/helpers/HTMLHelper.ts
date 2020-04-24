@@ -45,6 +45,24 @@ var HTMLHelper = {
     
     return _window.document.getElementsByTagName(tagName);
   },
+  getNextSibling: (element: HTMLElement, skipIds: [string]=[]) => {
+  	if (!element) return null;
+  	while (element.nextSibling) {
+  		element = element.nextSibling;
+  		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+  		return element;
+  	}
+  	return null;
+  },
+  getPreviousSibling: (element: HTMLElement, skipIds: [string]=[]) => {
+  	if (!element) return null;
+  	while (element.previousSibling) {
+  		element = element.previousSibling;
+  		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+  		return element;
+  	}
+  	return null;
+  },
   getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}) => {
     if (array) {
       let elementAttributes = [];
@@ -123,8 +141,8 @@ var HTMLHelper = {
   	}
   },	
 	
-  findTheParentInClassName: (className: string, element: HTMLElement) => { // the closet one
-    let current = element.parentNode;
+  findTheParentInClassName: (className: string, element: HTMLElement, isIncludingSelf: boolean=false) => { // the closet one
+    let current = (!isIncludingSelf) ? element.parentNode : element;
     while (current != null) {
       if (HTMLHelper.hasClass(current, className)) {
         return current;

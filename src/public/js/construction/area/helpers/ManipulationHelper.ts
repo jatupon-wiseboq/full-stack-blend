@@ -8,7 +8,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -16,7 +16,8 @@ let previousInfo: any = {};
 let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
-let composedUntitledName: any = {};
+let composedUntitledNameCount: any = {};
+let composedUntitledNameDictionary: any = {};
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
@@ -294,13 +295,23 @@ var ManipulationHelper = {
       
       // Name the layer.
       // 
-      let klass = content.split(':')[0];
-      if (composedUntitledName[klass] === undefined) {
-      	composedUntitledName[klass] = 0;
-      }
-      composedUntitledName[klass]++;
-      
-      HTMLHelper.setAttribute(element, 'internal-fsb-name', klass + ' ' + composedUntitledName[klass]);
+      if (HTMLHelper.getAttribute(element, 'internal-fsb-name') == null) {
+      	let composed = composedUntitledNameDictionary[HTMLHelper.getAttribute(element, 'internal-fsb-guid')];
+      	if (!composed) {
+		      let klass = content.split(':')[0];
+		      if (composedUntitledNameCount[klass] === undefined) {
+		      	composedUntitledNameCount[klass] = 0;
+		      }
+		      composedUntitledNameCount[klass]++;
+		      
+		      let title = klass + ' ' + composedUntitledNameCount[klass];
+		      composedUntitledNameDictionary[HTMLHelper.getAttribute(element, 'internal-fsb-guid')] = title
+		      
+		      HTMLHelper.setAttribute(element, 'internal-fsb-name', title);
+		    } else {
+		    	HTMLHelper.setAttribute(element, 'internal-fsb-name', composed);
+		    }
+	    }
       
       // Update Editor UI
       EditorHelper.updateEditorProperties();
@@ -739,37 +750,65 @@ var ManipulationHelper = {
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
   	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
   	
-  	if (target.nextSibling && HTMLHelper.hasAttribute(target.nextSibling, 'internal-fsb-guid')) {
-  		accessory = {
-  			target: content.target,
-  			destination: HTMLHelper.getAttribute(target.nextSibling, 'internal-fsb-guid'),
-  			direction: 'insertBefore'
-  		};
-  	} else if (target.previousSibling && HTMLHelper.hasAttribute(target.previousSibling, 'internal-fsb-guid')) {
-  		accessory = {
-  			target: content.target,
-  			destination: HTMLHelper.getAttribute(target.previousSibling, 'internal-fsb-guid'),
-  			direction: 'insertAfter'
-  		};
-  	} else {
-  		let suffix = "";
-  		if (target.parentNode.tagName == 'TD') {
-  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
-  			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
-  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
-  			
-  			suffix = ':' + row + ',' + column;
-  		}
-  		accessory = {
-  			target: content.target,
-  			destination: HTMLHelper.getAttribute(HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode), 'internal-fsb-guid') + suffix,
-  			direction: 'appendChild'
-  		};
-  	}
+  	if (remember) {
+	  	let nextSibling = HTMLHelper.getNextSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
+	  	let previousSibling = HTMLHelper.getPreviousSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
+	  	
+	  	if (nextSibling && HTMLHelper.hasAttribute(nextSibling, 'internal-fsb-guid')) {
+	  		accessory = {
+	  			target: content.target,
+	  			destination: HTMLHelper.getAttribute(nextSibling, 'internal-fsb-guid'),
+	  			direction: 'insertBefore'
+	  		};
+	  	} else if (previousSibling && HTMLHelper.hasAttribute(previousSibling, 'internal-fsb-guid')) {
+	  		accessory = {
+	  			target: content.target,
+	  			destination: HTMLHelper.getAttribute(previousSibling, 'internal-fsb-guid'),
+	  			direction: 'insertAfter'
+	  		};
+	  	} else {
+	  		let suffix = "";
+	  		if (target.parentNode.tagName == 'TD') {
+	  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
+	  			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
+	  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
+	  			
+	  			suffix = ':' + row + ',' + column;
+	  		}
+	  		let destination = HTMLHelper.getAttribute(HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode, true), 'internal-fsb-guid');
+	  		accessory = {
+	  			target: content.target,
+	  			destination: (destination == null) ? '0' : destination + suffix,
+	  			direction: 'appendChild'
+	  		};
+	  	}
+	  	
+	  	link = RandomHelper.generateGUID();
   	
-    switch (content.direction) {
+	  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
+	  	if (elementClassName.match(ALL_RESPONSIVE_SIZE_REGEX) == null) {
+	  		elementClassName += ' col-12';
+	  	}
+	  	
+	  	if ((HTMLHelper.getAttribute(destination, 'internal-fsb-class') || '').split(':')[0] == 'Rectangle') {
+	  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
+				elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
+	  	}
+    	
+			promise.then(() => {
+	      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
+				ManipulationHelper.perform('update', {
+					attributes: [{
+						name: 'class',
+						value: elementClassName
+					}]
+				}, true, false, link);
+			});
+		}
+		
+		switch (content.direction) {
     	case 'appendChild':
-    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class').split(':')[0]) {
+    	  switch ((HTMLHelper.getAttribute(destination, 'internal-fsb-class') || '').split(':')[0]) {
       		case 'FlowLayout':
       			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
       			break;
@@ -900,7 +939,7 @@ var ManipulationHelper = {
     
     remember = false;
     
-    if (link && performedIndex < performed.length - 1 && performed[performedIndex].link === link) {
+    if (link && performedIndex + 1 < performed.length - 1 && performed[performedIndex + 1].link === link) {
     	promise.then(() => {
         ManipulationHelper.perform('redo', null);
       });
