@@ -76,6 +76,7 @@ class CSSPresets extends Base<Props, State> {
 		        		
 		            nodes.push({
 		                name: key,
+		                selectable: true,
 		                disabled: isItself,
 		                selected: chosen,
 		                nodes: childNodes

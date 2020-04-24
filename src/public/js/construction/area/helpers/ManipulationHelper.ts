@@ -221,11 +221,11 @@ var ManipulationHelper = {
 	              	let _inlineStyle = HTMLHelper.getAttribute(container, 'style') || '';
 	              	
 	              	if (isPerspectiveCamera) {
-	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform-style', hash['-child-transform-style']);
-	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform', hash['-child-transform']);
+	              		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'transform-style', hash['-child-transform-style']);
+	              		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'transform', hash['-child-transform']);
 	              	} else {
-	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform-style', '');
-	              		_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'transform', '');
+	              		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'transform-style', '');
+	              		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'transform', '');
 	              	}
 	              	
 	                HTMLHelper.setAttribute(container, 'style', _inlineStyle);
@@ -242,10 +242,10 @@ var ManipulationHelper = {
 	            		for (let childX of [...childY.childNodes]) {
 	            			let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
 	            			
-	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-top', '');
-	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-right', '');
-	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-bottom', '');
-	            			_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-left', '');
+	            			_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'border-top', '');
+	            			_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'border-right', '');
+	            			_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'border-bottom', '');
+	            			_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'border-left', '');
 	            			
 	            			HTMLHelper.setAttribute(childX, 'style', _inlineStyle);
 	            		}
@@ -269,7 +269,7 @@ var ManipulationHelper = {
 							   					if (childX) {
 							   						let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
 							   						
-							   						_inlineStyle = HTMLHelper.updateInlineStyle(_inlineStyle, 'border-' + side, style);
+							   						_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, 'border-' + side, style);
 							   						
 							   						HTMLHelper.setAttribute(childX, 'style', _inlineStyle);
 							   					}
@@ -452,8 +452,9 @@ var ManipulationHelper = {
             case 'Iframe':
             	element = document.createElement('iframe');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'HTML':
             	element = document.createElement('div');
@@ -465,58 +466,66 @@ var ManipulationHelper = {
             case 'Textbox':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		input(type='text')
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Select':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		select
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Radio':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		input(type='radio')
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Checkbox':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		input(type='checkbox')
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'File':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		input(type='file')
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Button':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		input(type='button')
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Image':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		img
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
             case 'Video':
             	element = document.createElement('div');
               element = ReactDOM.render(pug `
-              	.internal-fsb-element(internal-fsb-style-children="true")
+              	.internal-fsb-element
               		video
               `, element);
+              HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
               break;
           }
           

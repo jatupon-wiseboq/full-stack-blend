@@ -28,10 +28,11 @@ function renderStylesheet() {
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
     let key = prioritizedKeys[i].split(':')[0];
     let prefixes = [];
-    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]');
-    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]');
+    let isForChildren = (stylesheetDefinitions[key].indexOf('-fsb-for-children: true') != -1);
+    let suffix = (isForChildren) ? ' > :first-child' : '';
     
-    console.log('Updated');
+    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]' + suffix);
+    prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]' + suffix);
     
     // Inheritance
     //
@@ -47,7 +48,7 @@ function renderStylesheet() {
     });
     
     for (let inheritingKey of inversedReferences) {
-    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]');
+    	prefixes.push('.internal-fsb-strict-layout > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]' + suffix);
     }
     
     lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[key] + ' }');
@@ -97,7 +98,7 @@ var StylesheetHelper = {
   },
   setStyleAttribute: function(element: HTMLElement, styleName: string, styleValue: string) {
     let style = StylesheetHelper.getStyle(element);
-    style = HTMLHelper.updateInlineStyle(style, styleName, styleValue);
+    style = HTMLHelper.setInlineStyle(style, styleName, styleValue);
     
     StylesheetHelper.setStyle(element, style);
   },

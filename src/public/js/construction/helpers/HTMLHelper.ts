@@ -90,7 +90,7 @@ var HTMLHelper = {
   },
   getAttribute: (element: HTMLElement, name: string) => {
   	if (!element) return null;
-  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.getAttribute(name);
   	} else {
   		return element.getAttribute(name);
@@ -98,7 +98,7 @@ var HTMLHelper = {
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {
   	if (!element) return;
-  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  	if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
   	} else {
@@ -107,7 +107,7 @@ var HTMLHelper = {
   },
   removeAttribute: (element: HTMLElement, name: string) => {
   	if (!element) return;
-  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		element.removeAttribute(name);
   		element.firstChild.removeAttribute(name);
   	} else {
@@ -116,7 +116,7 @@ var HTMLHelper = {
   },
   hasAttribute: (element: HTMLElement, name: string) => {
   	if (!element) return null;
-  	if (element.getAttribute('internal-fsb-style-children') == 'true' && name == 'style') {
+  	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.hasAttribute(name);
   	} else {
   		return element.hasAttribute(name);
@@ -208,8 +208,8 @@ var HTMLHelper = {
     return results;
   },
   
-  updateInlineStyle: (styleAttributeValue: string, styleName: string, styleValue: string) => {
-    let splited = (styleAttributeValue || '').split('; ');
+  setInlineStyle: (inlineStyle: string, styleName: string, styleValue: string) => {
+    let splited = (inlineStyle || '').replace(/;$/, '').split('; ');
     let found = false;
     
     for (var i=0; i<splited.length; i++) {
@@ -230,10 +230,10 @@ var HTMLHelper = {
     
     return splited.join('; ');
   },
-  getInlineStyle: (styleAttributeValue: string, styleName: string) => {
-    if (('; ' + styleAttributeValue).indexOf('; ' + styleName + ': ') == -1) return null;
+  getInlineStyle: (inlineStyle: string, styleName: string) => {
+    if (('; ' + inlineStyle).indexOf('; ' + styleName + ': ') == -1) return null;
     
-    let splited = styleAttributeValue.split('; ');
+    let splited = inlineStyle.replace(/;$/, '').split('; ');
     
     for (var i=0; i<splited.length; i++) {
       if (splited[i].trim().indexOf(styleName + ': ') == 0) {
@@ -244,8 +244,8 @@ var HTMLHelper = {
     
     return null;
   },
-  getHashMapFromInlineStyle: (styleAttributeValue: string) => {
-    let splited = styleAttributeValue.split('; ');
+  getHashMapFromInlineStyle: (inlineStyle: string) => {
+    let splited = inlineStyle.replace(/;$/, '').split('; ');
     let hashMap = {};
     
     for (var i=0; i<splited.length; i++) {
