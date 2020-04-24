@@ -171,7 +171,7 @@ var ManipulationHelper = {
       case 'Iframe':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none'})
+        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '400px', height: '300px'})
         		iframe
         `, element);
         
@@ -241,7 +241,7 @@ var ManipulationHelper = {
       case 'Image':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
+        	.internal-fsb-element(style={display: 'block', width: '100px', height: '100px'})
         		img
         `, element);
         
@@ -250,7 +250,7 @@ var ManipulationHelper = {
       case 'Video':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
+        	.internal-fsb-element(style={display: 'block', width: '300px', height: '150px'})
         		video
         `, element);
         
@@ -784,11 +784,8 @@ var ManipulationHelper = {
 	  	}
 	  	
 	  	link = RandomHelper.generateGUID();
-  	
+  		
 	  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
-	  	if (elementClassName.match(ALL_RESPONSIVE_SIZE_REGEX) == null) {
-	  		elementClassName += ' col-12';
-	  	}
 	  	
 	  	if ((HTMLHelper.getAttribute(destination, 'internal-fsb-class') || '').split(':')[0] == 'Rectangle') {
 	  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
