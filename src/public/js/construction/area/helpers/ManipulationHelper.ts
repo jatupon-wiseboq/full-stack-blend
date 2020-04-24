@@ -551,6 +551,7 @@ var ManipulationHelper = {
         }
       }
       
+      if (currentActiveLayoutForSize == -1) currentActiveLayoutForSize = 0;
       if (currentActiveLayoutForOffset == -1) currentActiveLayoutForOffset = 0;
       let currentOffset = (offsetMatch == null) ? 0 : parseInt(offsetMatch[1]);
       
