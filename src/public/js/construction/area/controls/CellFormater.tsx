@@ -3,6 +3,7 @@ import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {Point, MathHelper} from '../../helpers/MathHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {EditorHelper} from '../helpers/EditorHelper.js';
+import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -178,14 +179,14 @@ class CellFormater extends React.Component<Props, State> {
 	private getBorderStyle() {
 		if (this.tableElement == null) return null;
 		
-		let style = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-style');
-		let color = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-color');
-		let size = EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-size');
+		let style = StylesheetHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-style');
+		let color = StylesheetHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-color');
+		let size = StylesheetHelper.getStyleAttribute(this.tableElement, '-fsb-cell-border-size');
 		
 		return [size, style, color].join(' ');
 	}
 	private getBorderDefinition(x: number, y: number, edge: Edge) {
-		return EditorHelper.getStyleAttribute(this.tableElement, '-fsb-cell-' + x + '-' + y + '-' + edge.description);
+		return StylesheetHelper.getStyleAttribute(this.tableElement, '-fsb-cell-' + x + '-' + y + '-' + edge.description);
 	}
 
 	private installEventHandlers() {

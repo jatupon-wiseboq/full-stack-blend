@@ -1,7 +1,8 @@
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
-import {ManipulationHelper} from './helpers/ManipulationHelper.js';
+import {CursorHelper} from './helpers/CursorHelper.js';
+import {CapabilityHelper} from './helpers/CapabilityHelper.js';
 
 (() => {
   // Setup a cursor and a resizer.
@@ -12,19 +13,19 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
   //
   window.addEventListener("message", (event) => {
     let data = JSON.parse(event.data);
-    ManipulationHelper.perform(data.name, data.content);
+    EditorHelper.perform(data.name, data.content);
   }, true);
   window.addEventListener("keydown", (event) => {
     if (document.activeElement && (HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') || '').split(':')[0] === 'TextElement') {
       return true;
     } else {
-      ManipulationHelper.perform('keydown', event.keyCode);
+      EditorHelper.perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
     }
   }, false);
   window.addEventListener("keyup", (event: any) => {
-    ManipulationHelper.perform('keyup', event.keyCode);
+    EditorHelper.perform('keyup', event.keyCode);
     
     return EventHelper.cancel(event);
   });
@@ -34,7 +35,7 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
   window.document.body.addEventListener("click", (event) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
     
-    EditorHelper.moveCursorToTheEndOfDocument();
+    CursorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
   }, true);
   window.document.body.addEventListener("focus", (event) => {
@@ -56,5 +57,5 @@ import {ManipulationHelper} from './helpers/ManipulationHelper.js';
   
   // Install capabilities.
   //
-  EditorHelper.installCapabilitiesForInternalElements(document);
+  CapabilityHelper.installCapabilitiesForInternalElements(document);
 })();

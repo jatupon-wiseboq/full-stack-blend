@@ -4,7 +4,10 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
+import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {StylesheetHelper} from './StylesheetHelper.js';
+import {CapabilityHelper} from './CapabilityHelper.js';
 import {RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
 
 let performed: any = [];
@@ -33,13 +36,13 @@ var ManipulationHelper = {
         break;
       case 'move[cursor]':
         {
-          if (Accessories.cursor.getDOMNode().parentNode != null && EditorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
+          if (Accessories.cursor.getDOMNode().parentNode != null && CursorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
             remember = false;
           }
           if (remember) {
-            accessory = EditorHelper.findWalkPathForCursor();
+            accessory = CursorHelper.findWalkPathForCursor();
           }
-          EditorHelper.placingCursorUsingWalkPath(content);
+          CursorHelper.placingCursorUsingWalkPath(content);
         }
         break;
       case 'move[element]':
@@ -107,7 +110,7 @@ var ManipulationHelper = {
             if (previousReusablePresetName) {
               accessory = {
                 attributes: HTMLHelper.getAttributes(selectingElement, true, {
-                  style: EditorHelper.getStylesheetDefinition(previousReusablePresetName)
+                  style: StylesheetHelper.getStylesheetDefinition(previousReusablePresetName)
                 })
               };
             } else {
@@ -129,7 +132,7 @@ var ManipulationHelper = {
                     if (previousReusablePresetName == null) {
                       if (nextReusablePresetName != null) {
                         found = true;
-                        EditorHelper.setStylesheetDefinition(nextReusablePresetName,
+                        StylesheetHelper.setStylesheetDefinition(nextReusablePresetName,
                                                              HTMLHelper.getAttribute(selectingElement, 'style') || '',
                                                              HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
                         HTMLHelper.removeAttribute(selectingElement, 'style');
@@ -137,12 +140,12 @@ var ManipulationHelper = {
                     } else {
                       if (nextReusablePresetName == null) {
                         found = true;
-                        let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
-                        EditorHelper.removeStylesheetDefinition(previousReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+                        let style = StylesheetHelper.getStylesheetDefinition(previousReusablePresetName);
+                        StylesheetHelper.removeStylesheetDefinition(previousReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
                         HTMLHelper.setAttribute(selectingElement, 'style', style);
                       } else if (previousReusablePresetName != nextReusablePresetName) {
                         found = true;
-                        EditorHelper.swapStylesheetName(previousReusablePresetName, nextReusablePresetName);
+                        StylesheetHelper.swapStylesheetName(previousReusablePresetName, nextReusablePresetName);
                       }
                     }
                     
@@ -158,10 +161,10 @@ var ManipulationHelper = {
                     break;
                   case 'style':
                     if (previousReusablePresetName) {
-                      let style = EditorHelper.getStylesheetDefinition(previousReusablePresetName);
+                      let style = StylesheetHelper.getStylesheetDefinition(previousReusablePresetName);
                       if (style != attribute.value) {
                         found = true;
-                        EditorHelper.setStylesheetDefinition(previousReusablePresetName,
+                        StylesheetHelper.setStylesheetDefinition(previousReusablePresetName,
                                                              attribute.value,
                                                              HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
                       }
@@ -182,7 +185,7 @@ var ManipulationHelper = {
               }
             }
             {
-            	let inlineStyle = EditorHelper.getStyle(selectingElement) || '';
+            	let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
               let hash = HTMLHelper.getHashMapFromInlineStyle(inlineStyle);
               
               if (content.styles != undefined) {
@@ -203,7 +206,7 @@ var ManipulationHelper = {
 	              }
 	              
 	              inlineStyle = HTMLHelper.getInlineStyleFromHashMap(hash);
-	              EditorHelper.setStyle(selectingElement, inlineStyle);
+	              StylesheetHelper.setStyle(selectingElement, inlineStyle);
 	            }
 	            
 	            // Perspective Property
@@ -301,10 +304,10 @@ var ManipulationHelper = {
               dh: -content.dh
             }
             
-            EditorHelper.setStyleAttribute(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
-            EditorHelper.setStyleAttribute(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
-            EditorHelper.setStyleAttribute(selectingElement, 'width', (size[0] + content.dw) + 'px');
-            EditorHelper.setStyleAttribute(selectingElement, 'min-height', (size[1] + content.dh) + 'px');
+            StylesheetHelper.setStyleAttribute(selectingElement, 'left', (position[0] - origin[0] + content.dx) + 'px');
+            StylesheetHelper.setStyleAttribute(selectingElement, 'top', (position[1] - origin[1] + content.dy) + 'px');
+            StylesheetHelper.setStyleAttribute(selectingElement, 'width', (size[0] + content.dw) + 'px');
+            StylesheetHelper.setStyleAttribute(selectingElement, 'min-height', (size[1] + content.dh) + 'px');
           } else {
             remember = false;
           }
@@ -359,7 +362,7 @@ var ManipulationHelper = {
                 HTMLHelper.setAttribute(selectingElement, 'class', previousInfo.previousClassName);
                 previousInfo.previousClassName = null;
                 
-                let hash = HTMLHelper.getHashMapFromInlineStyle(EditorHelper.getStyle(selectingElement) || '');
+                let hash = HTMLHelper.getHashMapFromInlineStyle(StylesheetHelper.getStyle(selectingElement) || '');
                 
                 if (content.dh != 0) {
                   hash['min-height'] = (content.h + content.dh) + 'px';
@@ -520,17 +523,17 @@ var ManipulationHelper = {
           if (element !== null) {
             // Being selected capability
             // 
-            EditorHelper.installCapabilityOfBeingSelected(element, guid);
+            CapabilityHelper.installCapabilityOfBeingSelected(element, guid);
             promise.then(() => {
               ManipulationHelper.perform('select', guid);
             });
             
             // Moving cursor inside capability
             //
-            EditorHelper.installCapabilityOfBeingMoveInCursor(element);
+            CapabilityHelper.installCapabilityOfBeingMoveInCursor(element);
             
             if (HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
-            	EditorHelper.installCapabilityOfBeingPasted(element);
+            	CapabilityHelper.installCapabilityOfBeingPasted(element);
             }
             
             // Insert the element before the cursor.
@@ -541,9 +544,9 @@ var ManipulationHelper = {
               HTMLHelper.addClass(element, 'col');
               Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
             } else {
-              EditorHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
-              EditorHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
-              EditorHelper.setStyleAttribute(element, 'width', '150px');
+              StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
+              StylesheetHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
+              StylesheetHelper.setStyleAttribute(element, 'width', '150px');
               Accessories.cursor.getDOMNode().parentNode.appendChild(element);
             }
             
@@ -566,19 +569,19 @@ var ManipulationHelper = {
         {
           switch (content) {
             case 37:
-              EditorHelper.moveCursorToTheLeft();
+              CursorHelper.moveCursorToTheLeft();
               remember = false;
               break;
             case 38:
-              EditorHelper.moveCursorUp();
+              CursorHelper.moveCursorUp();
               remember = false;
               break;
             case 39:
-              EditorHelper.moveCursorToTheRight();
+              CursorHelper.moveCursorToTheRight();
               remember = false;
               break;
             case 40:
-              EditorHelper.moveCursorDown();
+              CursorHelper.moveCursorDown();
               remember = false;
               break;
             case 8:
