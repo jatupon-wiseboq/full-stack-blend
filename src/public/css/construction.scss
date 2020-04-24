@@ -11,11 +11,11 @@ html, body {
   overflow-y: auto;
 }
 
-.internal-fsb-element {
-  padding: 1px;
-}
-
 .internal-fsb-guide-on {
+	.internal-fsb-element {
+	  padding: 1px;
+	}
+
   // Layout
   //
   .internal-fsb-table-layout {

@@ -110,6 +110,9 @@ var ManipulationHelper = {
     
     accessory = guid;
     
+    let style: string;
+    let isApplyingStyleToChildren: boolean = false;
+    
     switch (klass) {
       case 'FlowLayout':
         element = document.createElement('div');
@@ -122,7 +125,7 @@ var ManipulationHelper = {
       case 'TableLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          table.internal-fsb-element.internal-fsb-table-layout(internal-fsb-table-collapse="false")
+          table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed'}, internal-fsb-table-collapse="false")
             tr
               td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               td.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -136,7 +139,12 @@ var ManipulationHelper = {
               td.internal-fsb-strict-layout.internal-fsb-allow-cursor
               td.internal-fsb-strict-layout.internal-fsb-allow-cursor
         `, element);
-        HTMLHelper.setAttribute(element, 'style', 'table-layout: fixed; -fsb-cell-border-style: solid; -fsb-cell-border-color: #000000; -fsb-cell-border-size: 1px');
+        
+        style = HTMLHelper.getAttribute(element, 'style');
+        style = HTMLHelper.setInlineStyle(style, '-fsb-cell-border-style', 'solid');
+        style = HTMLHelper.setInlineStyle(style, '-fsb-cell-border-color', '#000000');
+        style = HTMLHelper.setInlineStyle(style, '-fsb-cell-border-size', '1px');
+        HTMLHelper.setAttribute(element, 'style', style);
         break;
       case 'AbsoluteLayout':
         element = document.createElement('div');
@@ -160,11 +168,13 @@ var ManipulationHelper = {
         `, element);
         break;
       case 'Iframe':
-      	element = document.createElement('iframe');
+      	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none'})
+        		iframe
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'HTML':
       	element = document.createElement('div');
@@ -176,67 +186,81 @@ var ManipulationHelper = {
       case 'Textbox':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		input(type='text')
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Select':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		select
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Radio':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		input(type='radio')
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Checkbox':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		input(type='checkbox')
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'File':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		input(type='file')
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Button':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		input(type='button')
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Image':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		img
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
       case 'Video':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
+        	.internal-fsb-element(style={display: 'block'})
         		video
         `, element);
-        HTMLHelper.setAttribute(element, 'style', '-fsb-for-children: true');
+        
+        isApplyingStyleToChildren = true;
         break;
+    }
+    
+    if (isApplyingStyleToChildren) {
+    	style = HTMLHelper.getAttribute(element, 'style');
+      style = HTMLHelper.setInlineStyle(style, '-fsb-for-children', 'true');
+      HTMLHelper.setAttribute(element, 'style', style);
     }
     
     if (element !== null) {
