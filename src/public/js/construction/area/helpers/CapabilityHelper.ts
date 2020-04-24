@@ -103,6 +103,11 @@ var CapabilityHelper = {
       CapabilityHelper.installCapabilityOfBeingSelected(element);
     });
     CapabilityHelper.installCapabilityOfBeingMoveInCursor(container);
+  },
+  installCapabilityOfForwardingStyle: (container: HTMLElement) => {
+  	let style = HTMLHelper.getAttribute(container, 'style');
+  	style = HTMLHelper.setInlineStyle(style, '-fsb-for-children', 'true');
+  	HTMLHelper.setAttribute(container, 'style', style);
   }
 };
 

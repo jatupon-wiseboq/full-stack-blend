@@ -83,7 +83,7 @@ class GridPicker extends Base<Props, State> {
         if (status) {
             return status[1].toString();
         } else {
-            return (index == 0) ? this.props.defaultOption.toString() : 'Inherit';
+            return 'Inherit';
         }
     }
     
@@ -95,7 +95,7 @@ class GridPicker extends Base<Props, State> {
                     return (
                         <FullStackBlend.Controls.DropDownList key={"element-" + index}
                                                           identity={index}
-                                                          options={(index != 0) ? ['Inherit', ...this.props.options] : this.props.options}
+                                                          options={['Inherit', ...this.props.options]}
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `

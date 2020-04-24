@@ -111,7 +111,7 @@ var ManipulationHelper = {
     accessory = guid;
     
     let style: string;
-    let isApplyingStyleToChildren: boolean = false;
+    let isForwardingStyleToChildren: boolean = false;
     
     switch (klass) {
       case 'FlowLayout':
@@ -174,7 +174,7 @@ var ManipulationHelper = {
         		iframe
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'HTML':
       	element = document.createElement('div');
@@ -190,7 +190,7 @@ var ManipulationHelper = {
         		input(type='text')
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Select':
       	element = document.createElement('div');
@@ -199,7 +199,7 @@ var ManipulationHelper = {
         		select
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Radio':
       	element = document.createElement('div');
@@ -208,7 +208,7 @@ var ManipulationHelper = {
         		input(type='radio')
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Checkbox':
       	element = document.createElement('div');
@@ -217,7 +217,7 @@ var ManipulationHelper = {
         		input(type='checkbox')
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'File':
       	element = document.createElement('div');
@@ -226,7 +226,7 @@ var ManipulationHelper = {
         		input(type='file')
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Button':
       	element = document.createElement('div');
@@ -235,7 +235,7 @@ var ManipulationHelper = {
         		input(type='button')
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Image':
       	element = document.createElement('div');
@@ -244,7 +244,7 @@ var ManipulationHelper = {
         		img
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
       case 'Video':
       	element = document.createElement('div');
@@ -253,14 +253,8 @@ var ManipulationHelper = {
         		video
         `, element);
         
-        isApplyingStyleToChildren = true;
+        isForwardingStyleToChildren = true;
         break;
-    }
-    
-    if (isApplyingStyleToChildren) {
-    	style = HTMLHelper.getAttribute(element, 'style');
-      style = HTMLHelper.setInlineStyle(style, '-fsb-for-children', 'true');
-      HTMLHelper.setAttribute(element, 'style', style);
     }
     
     if (element !== null) {
@@ -279,12 +273,17 @@ var ManipulationHelper = {
       	CapabilityHelper.installCapabilityOfBeingPasted(element);
       }
       
+      // Forwarding style to its children capability
+      //
+      if (isForwardingStyleToChildren) {
+      	CapabilityHelper.installCapabilityOfForwardingStyle(element);
+      }
+      
       // Insert the element before the cursor.
       //
       HTMLHelper.setAttribute(element, 'internal-fsb-class', content);
       if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-        HTMLHelper.addClass(element, 'col-12');
-        HTMLHelper.addClass(element, 'col');
+        if (!isForwardingStyleToChildren) HTMLHelper.addClass(element, 'col-12');
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
       } else {
         StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
