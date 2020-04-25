@@ -71,61 +71,57 @@ $utilities: map-get-multiple(
 
 // Display Utilities Extension
 // 
-@include media-breakpoint-only(xs) {
-	.d-block {
-    display: block !important;
-	}
-	table.d-block {
-    display: table !important;
-	}
+table.d-block {
+  display: table !important;
 }
-@include media-breakpoint-only(sm) {
-	.d-sm-block {
-    display: block !important;
-	}
+table.d-none {
+	display: none !important;
+}
+@include media-breakpoint-up(sm) {
 	table.d-sm-block {
     display: table !important;
 	}
-}
-@include media-breakpoint-only(md) {
-	.d-md-block {
-    display: block !important;
+	table.d-sm-none {
+		display: none !important;
 	}
+}
+@include media-breakpoint-up(md) {
 	table.d-md-block {
     display: table !important;
 	}
-}
-@include media-breakpoint-only(lg) {
-	.d-lg-block {
-    display: block !important;
+	table.d-md-none {
+		display: none !important;
 	}
+}
+@include media-breakpoint-up(lg) {
 	table.d-lg-block {
     display: table !important;
 	}
-}
-@include media-breakpoint-only(xl) {
-	.d-xl-block {
-    display: block !important;
+	table.d-lg-none {
+		display: none !important;
 	}
+}
+@include media-breakpoint-up(xl) {
 	table.d-xl-block {
     display: table !important;
+	}
+	table.d-xl-none {
+		display: none !important;
 	}
 }
 
 // Preserve Space For Display Classes
 //
-@include media-breakpoint-only(xs) {
-	.d-none.d-preserve-space {
-    display: block !important;
-	}
-	table.d-none.d-preserve-space {
-    display: table !important;
-	}
-  .d-none.d-preserve-space {
-    visibility: hidden !important;
-  }
+.d-none.d-preserve-space {
+  display: block !important;
 }
-@include media-breakpoint-only(sm) {
+table.d-none.d-preserve-space {
+  display: table !important;
+}
+.d-none.d-preserve-space {
+  visibility: hidden !important;
+}
+@include media-breakpoint-up(sm) {
 	.d-sm-none.d-sm-preserve-space {
     display: block !important;
 	}
@@ -136,7 +132,7 @@ $utilities: map-get-multiple(
     visibility: hidden !important;
   }
 }
-@include media-breakpoint-only(md) {
+@include media-breakpoint-up(md) {
 	.d-md-none.d-md-preserve-space {
     display: block !important;
 	}
@@ -147,7 +143,7 @@ $utilities: map-get-multiple(
     visibility: hidden !important;
   }
 }
-@include media-breakpoint-only(lg) {
+@include media-breakpoint-up(lg) {
 	.d-lg-none.d-lg-preserve-space {
     display: block !important;
 	}
@@ -158,7 +154,7 @@ $utilities: map-get-multiple(
     visibility: hidden !important;
   }
 }
-@include media-breakpoint-only(xl) {
+@include media-breakpoint-up(xl) {
 	.d-xl-none.d-xl-preserve-space {
     display: block !important;
 	}

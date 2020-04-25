@@ -48,7 +48,7 @@ class DisplayPicker extends Base<Props, State> {
                 elementClassName = elementClassName.replace(' ' + name + ' ', ' ');
             }
         });
-        for (let i=0; i<4; i++) {
+        for (let i=0; i<5; i++) {
             let name0 = this.props.watchingClassNames[i * 2];
             let name1 = this.props.watchingClassNames[i * 2 + 1];
             
