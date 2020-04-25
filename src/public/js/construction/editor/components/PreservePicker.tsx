@@ -6,7 +6,7 @@ declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
-    watchingClassNames: ['d-preserve-space', null, 'd-sm-preserve-space', null, 'd-md-preserve-space', null, 'd-lg-preserve-space', null]
+    watchingClassNames: ['d-preserve-space', null, 'd-sm-preserve-space', null, 'd-md-preserve-space', null, 'd-lg-preserve-space', null, 'd-xl-preserve-space', null]
 });
 
 class PreservePicker extends DisplayPicker {

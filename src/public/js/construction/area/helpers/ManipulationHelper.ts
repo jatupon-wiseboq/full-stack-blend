@@ -566,8 +566,8 @@ var ManipulationHelper = {
       if (currentActiveLayoutForOffset == -1) currentActiveLayoutForOffset = 0;
       let currentOffset = (offsetMatch == null) ? 0 : parseInt(offsetMatch[1]);
       
-      let currentSizePrefix = [' col-', ' col-sm-', ' col-md-', ' col-lg-'][currentActiveLayoutForSize];
-      let currentOffsetPrefix = [' offset-', ' offset-sm-', ' offset-md-', ' offset-lg-'][currentActiveLayoutForOffset];
+      let currentSizePrefix = [' col-', ' col-sm-', ' col-md-', ' col-lg-', ' col-xl-'][currentActiveLayoutForSize];
+      let currentOffsetPrefix = [' offset-', ' offset-sm-', ' offset-md-', ' offset-lg-', ' offset-xl-'][currentActiveLayoutForOffset];
       
       elementClassName = elementClassName.replace(RESPONSIVE_SIZE_REGEX[currentActiveLayoutForSize], '');
       elementClassName += currentSizePrefix + content.size;

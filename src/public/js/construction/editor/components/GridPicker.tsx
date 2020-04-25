@@ -51,7 +51,7 @@ class GridPicker extends Base<Props, State> {
         let elementClassName = this.recentElementClassName;
         
         elementClassName = elementClassName.replace(this.props.watchingClassNames[identity], '');
-        if (value != 'Inherit') {
+        if (value != '<i class="fa fa-angle-left"></i>') {
             switch (identity) {
                 case 0:
                     elementClassName += ` ${this.props.prefix}-${value}`;
@@ -64,6 +64,9 @@ class GridPicker extends Base<Props, State> {
                     break;
                 case 3:
                     elementClassName += ` ${this.props.prefix}-lg-${value}`;
+                    break;
+                case 3:
+                    elementClassName += ` ${this.props.prefix}-xl-${value}`;
                     break;
             }
         }
@@ -83,7 +86,7 @@ class GridPicker extends Base<Props, State> {
         if (status) {
             return status[1].toString();
         } else {
-            return 'Inherit';
+            return '<i class="fa fa-angle-left"></i>';
         }
     }
     
@@ -91,18 +94,17 @@ class GridPicker extends Base<Props, State> {
         let $this = this;
         return (
             <div className="grid-picker btn-group">
-                {[0, 1, 2, 3].map((index) => {
+                {[0, 1, 2, 3, 4].map((index) => {
                     return (
                         <FullStackBlend.Controls.DropDownList key={"element-" + index}
                                                           identity={index}
-                                                          options={['Inherit', ...this.props.options]}
+                                                          options={['<i class="fa fa-angle-left"></i>', ...this.props.options]}
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
-                              i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
+                              i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                               br
-                              span(ref="selectedValue" + index)
-                                | #{$this.getSelectedValue(index)}
+                              span(ref="selectedValue" + index, dangerouslySetInnerHTML={__html: $this.getSelectedValue(index)})
                             `}
                         </FullStackBlend.Controls.DropDownList>
                     )

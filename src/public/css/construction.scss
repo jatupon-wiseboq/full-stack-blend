@@ -330,16 +330,16 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(xl) {
-  	.d-lg-none {
+  	.d-xl-none {
   		display: block !important;
   	}
-  	table.d-lg-none {
+  	table.d-xl-none {
   		display: table !important;
   	}
   	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
-      &.d-lg-none {
+      &.d-xl-none {
         border: solid 1px red;
         > .internal-fsb-resizer {
           span {
@@ -348,7 +348,7 @@ body.internal-fsb-focusing-text-element {
             }
           }
         }
-        &.d-lg-preserve-space {
+        &.d-xl-preserve-space {
           visibility: visible !important;
           border-style: dashed;
         }

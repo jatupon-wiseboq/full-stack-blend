@@ -17,7 +17,7 @@ let ExtendedDefaultState = Object.assign({}, DefaultState);
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block'],
+    watchingClassNames: ['d-none', 'd-block', 'd-sm-none', 'd-sm-block', 'd-md-none', 'd-md-block', 'd-lg-none', 'd-lg-block', 'd-xl-none', 'd-xl-block'],
     watchingExtensionNames: ['currentActiveLayout']
 });
 
@@ -73,10 +73,10 @@ class DisplayPicker extends Base<Props, State> {
       return (
         pug `
           .display-picker.btn-group
-            each index in [0, 1, 2, 3]
+            each index in [0, 1, 2, 3, 4]
               .btn-group(key="group-" + index)
                 label.btn.btn-light.btn-sm
-                  i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop"][index] + ((this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
+                  i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop", "fa fa-desktop"][index] + ((this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                   br
                   .form-check
                     input.form-check-input(type="checkbox", checked=!!this.state.classNameStatuses[this.props.watchingClassNames[index * 2]], onChange=this.checkboxItemOnClick.bind(this, index))

@@ -18,7 +18,7 @@ class LayoutInfo extends React.Component<Props, State> {
     }
     
     public currentActiveLayout() {
-      let refNames = ['xs', 'sm', 'md', 'lg'];
+      let refNames = ['xs', 'sm', 'md', 'lg', 'xl'];
       for (let i=0; i<refNames.length; i++) {
         if (ReactDOM.findDOMNode(this.refs[refNames[i]]).offsetWidth > 0) {
           return i;
@@ -34,7 +34,8 @@ class LayoutInfo extends React.Component<Props, State> {
                 .d-block.d-sm-none(ref='xs')
                 .d-none.d-sm-block.d-md-none(ref='sm')
                 .d-none.d-md-block.d-lg-none(ref='md')
-                .d-none.d-lg-block(ref='lg')
+                .d-none.d-lg-block.d-xl-none(ref='lg')
+                .d-none.d-xl-block(ref='xl')
             `
         )
     }

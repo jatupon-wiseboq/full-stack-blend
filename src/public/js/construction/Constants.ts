@@ -1,9 +1,9 @@
 import {FontHelper} from './helpers/FontHelper.js';
 
-export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col\-md\-([0-9]+)/, /col\-lg\-([0-9]+)/];
-export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/];
-export const ALL_RESPONSIVE_SIZE_REGEX = /col\-((sm|md|lg)\-)?[0-9]+/g;
-export const ALL_RESPONSIVE_OFFSET_REGEX = /offset\-((sm|md|lg)\-)?[0-9]+/g;
+export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col\-md\-([0-9]+)/, /col\-lg\-([0-9]+)/, /col\-xl\-([0-9]+)/];
+export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/, /offset\-xl\-([0-9]+)/];
+export const ALL_RESPONSIVE_SIZE_REGEX = /col\-((sm|md|lg|xl)\-)?[0-9]+/g;
+export const ALL_RESPONSIVE_OFFSET_REGEX = /offset\-((sm|md|lg|xl)\-)?[0-9]+/g;
 export const SIZES_IN_DESCRIPTION = ["pixels", "points", "relative to font-size", "relative to font-size of root", "relative to viewport width", "relative to viewport height", "relative to parent"];
 export const SIZES_IN_UNIT = ["px", "pt", "em", "rem", "vw", "vh", "%"];
 export const BORDER_STYLES_IN_DESCRIPTION = ['default', 'none', '<div style="margin: 5px 0; padding: 3px; border: 4px dotted #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px dashed #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px solid #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px double #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px groove #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px ridge #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px inset #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px outset #999;" />'];

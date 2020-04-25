@@ -104,10 +104,10 @@ $utilities: map-get-multiple(
 	}
 }
 @include media-breakpoint-only(xl) {
-	.d-lg-block {
+	.d-xl-block {
     display: block !important;
 	}
-	table.d-lg-block {
+	table.d-xl-block {
     display: table !important;
 	}
 }
@@ -159,13 +159,13 @@ $utilities: map-get-multiple(
   }
 }
 @include media-breakpoint-only(xl) {
-	.d-lg-none.d-lg-preserve-space {
+	.d-xl-none.d-xl-preserve-space {
     display: block !important;
 	}
-	table.d-lg-none.d-lg-preserve-space {
+	table.d-xl-none.d-xl-preserve-space {
     display: table !important;
 	}
-  .d-lg-none.d-lg-preserve-space {
+  .d-xl-none.d-xl-preserve-space {
     visibility: hidden !important;
   }
 }
