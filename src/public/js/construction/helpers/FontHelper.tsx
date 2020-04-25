@@ -1,3 +1,4 @@
+import {HTMLHelper} from './HTMLHelper.js';
 import {FONTS} from '../Fonts.js';
 
 let setupFont = {};
