@@ -19,6 +19,44 @@ let isCommandKeyActive: boolean = false;
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};
 
+function removeAllPresetReferences(presetId: string, link: string) {
+	// TODO: should iterate in all documents.
+	// 
+	let selectingElement = EditorHelper.getSelectingElement();
+	
+	let elements = HTMLHelper.getElementsByClassName('internal-fsb-element');
+	for (let element of elements) {
+		let classNames = HTMLHelper.getAttribute(element, 'class');
+		let inheritedPresets = StylesheetHelper.getStyleAttribute(element, '-fsb-inherited-presets');
+		
+		classNames = classNames && classNames.split(' ') || [];
+		inheritedPresets = inheritedPresets && inheritedPresets.split(', ') || [];
+		
+		if (inheritedPresets.indexOf(presetId) != -1) {
+			classNames = classNames.filter(klass => klass != '-fsb-preset-' + presetId);
+			inheritedPresets = inheritedPresets.filter(_presetId => _presetId != presetId);
+			
+			ManipulationHelper.perform('select', HTMLHelper.getAttribute(element, 'internal-fsb-guid'), true, false, link);
+			ManipulationHelper.perform('update', {
+      		attributes: [{
+      				name: 'class',
+      				value: classNames.join(' ')
+      		}],
+          styles: [{
+              name: '-fsb-inherited-presets',
+              value: inheritedPresets.join(', ')
+          }]
+      }, true, false, link);
+		}
+	}
+	
+	if (selectingElement) {
+		ManipulationHelper.perform('select', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'), true, false, link);
+	} else {
+		EditorHelper.deselect();
+	}
+}
+
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
     let accessory = null;
@@ -360,6 +398,11 @@ var ManipulationHelper = {
                 HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);
               } else {
                 HTMLHelper.removeAttribute(selectingElement, 'internal-fsb-reusable-preset-name');
+                
+                link = Math.random();
+						  	promise.then(() => {
+						  		removeAllPresetReferences(presetId, link);
+						  	});
               }
               previousReusablePresetName = nextReusablePresetName;
               break;
@@ -723,6 +766,12 @@ var ManipulationHelper = {
   			shouldContinue = false;
   		}
   	}
+  	
+  	link = Math.random();
+  	promise.then(() => {
+  		let presetId = HTMLHelper.getAttribute(accessory, 'internal-fsb-guid');
+			removeAllPresetReferences(presetId, link);
+		});
   	
     if (shouldContinue && accessory) {
       accessory.parentNode.removeChild(accessory);

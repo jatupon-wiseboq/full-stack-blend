@@ -18,7 +18,7 @@ interface State extends IState {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     watchingAttributeNames: ['internal-fsb-guid', 'class'],
-    watchingStyleNames: ['-fsb-inherited-presets', '-fsb-reusable-name'],
+    watchingStyleNames: ['-fsb-inherited-presets', '-fsb-reusable-name', '-fsb-reusable-id'],
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
@@ -59,13 +59,12 @@ class CSSPresets extends Base<Props, State> {
 		            let isItself = (info.id == this.state.styleValues['-fsb-reusable-id']);
 		        		let chosen = (isItself) ? false : (this.state.styleValues['-fsb-inherited-presets'] &&
 		                         this.state.styleValues['-fsb-inherited-presets'].indexOf(info.id) != -1) || false;
-		                         
-		            console.log('isItself~:', isItself, chosen, this.state.styleValues['-fsb-inherited-presets'], info.id);
 		        		
 		        		let childNodes = [];
 		        		if (allInheritanceHash[info.id]) {
 		        			for (let childKey of allInheritanceHash[info.id]) {
 		        				let childInfo = stylesheetDefinitionHash[childKey];
+		        				if (!childInfo) continue;
 		        				
 		        				childNodes.push({
 		        					id: null,
