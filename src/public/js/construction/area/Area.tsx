@@ -16,7 +16,7 @@ import {CapabilityHelper} from './helpers/CapabilityHelper.js';
     EditorHelper.perform(data.name, data.content);
   }, true);
   window.addEventListener("keydown", (event) => {
-    if (document.activeElement && (HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
       return true;
     } else {
       EditorHelper.perform('keydown', event.keyCode);
@@ -39,7 +39,7 @@ import {CapabilityHelper} from './helpers/CapabilityHelper.js';
     EditorHelper.synchronize("click", null);
   }, true);
   window.document.body.addEventListener("focus", (event) => {
-    if (document.activeElement && (HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') || '').split(':')[0] === 'TextElement') {
+    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
     }
   }, true);

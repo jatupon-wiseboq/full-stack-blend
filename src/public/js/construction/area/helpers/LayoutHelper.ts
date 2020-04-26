@@ -29,7 +29,7 @@ var LayoutHelper = {
   		if (!element.getAttribute) continue;
   		
   		let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
-  		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class') && HTMLHelper.getAttribute(element, 'internal-fsb-class').split(':')[0] || "None";
+  		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');

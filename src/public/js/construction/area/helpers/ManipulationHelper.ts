@@ -99,22 +99,27 @@ var ManipulationHelper = {
   
   handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
+  	let element = null;
   	
-		let element = null;
-    let splited = content.split(':');
-    let klass = splited[0];
-    if (splited[1] === undefined) {
-      splited[1] = RandomHelper.generateGUID();
-    }
-    let guid = splited[1];
-    content = splited.join(':');
+  	if (typeof content === 'string') {
+  		if (composedUntitledNameCount[content] === undefined) {
+      	composedUntitledNameCount[content] = 0;
+      }
+      composedUntitledNameCount[content]++;
+		      
+  		content = {
+  			klass: content,
+  			guid: RandomHelper.generateGUID(),
+  			name: content + ' ' + composedUntitledNameCount[content]
+  		}
+  	}
     
-    accessory = guid;
+    accessory = content;
     
     let style: string;
     let isForwardingStyleToChildren: boolean = false;
     
-    switch (klass) {
+    switch (content.klass) {
       case 'FlowLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
@@ -261,9 +266,9 @@ var ManipulationHelper = {
     if (element !== null) {
       // Being selected capability
       // 
-      CapabilityHelper.installCapabilityOfBeingSelected(element, guid);
+      CapabilityHelper.installCapabilityOfBeingSelected(element, content.guid);
       promise.then(() => {
-        ManipulationHelper.perform('select', guid);
+        ManipulationHelper.perform('select', content.guid);
       });
       
       // Moving cursor inside capability
@@ -282,7 +287,7 @@ var ManipulationHelper = {
       
       // Insert the element before the cursor.
       //
-      HTMLHelper.setAttribute(element, 'internal-fsb-class', content);
+      HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
         if (!isForwardingStyleToChildren) HTMLHelper.addClass(element, 'col-12');
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
@@ -295,23 +300,7 @@ var ManipulationHelper = {
       
       // Name the layer.
       // 
-      if (HTMLHelper.getAttribute(element, 'internal-fsb-name') == null) {
-      	let composed = composedUntitledNameDictionary[HTMLHelper.getAttribute(element, 'internal-fsb-guid')];
-      	if (!composed) {
-		      let klass = content.split(':')[0];
-		      if (composedUntitledNameCount[klass] === undefined) {
-		      	composedUntitledNameCount[klass] = 0;
-		      }
-		      composedUntitledNameCount[klass]++;
-		      
-		      let title = klass + ' ' + composedUntitledNameCount[klass];
-		      composedUntitledNameDictionary[HTMLHelper.getAttribute(element, 'internal-fsb-guid')] = title
-		      
-		      HTMLHelper.setAttribute(element, 'internal-fsb-name', title);
-		    } else {
-		    	HTMLHelper.setAttribute(element, 'internal-fsb-name', composed);
-		    }
-	    }
+      HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
       
       // Update Editor UI
       EditorHelper.updateEditorProperties();
@@ -453,7 +442,7 @@ var ManipulationHelper = {
         
         // Table Cell Property (Without Stylesheet)
         //
-        if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class').split(':')[0] == 'TableLayout') {
+        if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'TableLayout') {
         	let isCollapse = (hash['border-collapse'] == 'collapse');
         	HTMLHelper.setAttribute(selectingElement, 'internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
         	
@@ -748,7 +737,7 @@ var ManipulationHelper = {
   	let accessory = null;
   	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
-  	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
+  	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination);
   	
   	if (remember) {
 	  	let nextSibling = HTMLHelper.getNextSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
@@ -787,7 +776,7 @@ var ManipulationHelper = {
   		
 	  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
 	  	
-	  	if ((HTMLHelper.getAttribute(destination, 'internal-fsb-class') || '').split(':')[0] == 'Rectangle') {
+	  	if (HTMLHelper.getAttribute(destination, 'internal-fsb-class') == 'Rectangle') {
 	  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
 				elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
 	  	}
@@ -805,7 +794,7 @@ var ManipulationHelper = {
 		
 		switch (content.direction) {
     	case 'appendChild':
-    	  switch ((HTMLHelper.getAttribute(destination, 'internal-fsb-class') || '').split(':')[0]) {
+    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class')) {
       		case 'FlowLayout':
       			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
       			break;
@@ -883,7 +872,7 @@ var ManipulationHelper = {
           break;
         case 'insert':
           name = 'delete';
-          content = accessory;
+          content = accessory.guid;
           break;
         case 'keydown':
           switch (content) {
@@ -931,7 +920,7 @@ var ManipulationHelper = {
       
       console.log('redo', name, content, accessory);
       
-      ManipulationHelper.perform(name, (name == 'insert') ? content + ':' + accessory : content, false, true);
+      ManipulationHelper.perform(name, (name == 'insert') ? accessory : content, false, true);
     }
     
     remember = false;
