@@ -390,7 +390,7 @@ var ManipulationHelper = {
                 	HTMLHelper.setAttribute(selectingElement, 'style', style);
                 } else if (previousReusablePresetName != nextReusablePresetName) {
                   found = true;
-                  StylesheetHelper.setStyleAttribute(selectingElement, '-fsb-preset-name', nextReusablePresetName);
+                  StylesheetHelper.setStyleAttribute(selectingElement, '-fsb-reusable-name', nextReusablePresetName);
                 }
               }
               

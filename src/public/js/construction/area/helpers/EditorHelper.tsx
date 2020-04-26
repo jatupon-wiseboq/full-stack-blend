@@ -133,6 +133,8 @@ var EditorHelper = {
       attributes = HTMLHelper.getAttributes(element, false);
     }
     
+    console.log('StylesheetHelper.getStylesheetDefinitionKeys()', StylesheetHelper.getStylesheetDefinitionKeys());
+    
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
       extensions: Object.assign({

@@ -131,13 +131,13 @@ var StylesheetHelper = {
       cachedPrioritizedKeys = Object.keys(stylesheetDefinitions).sort((a, b) => {
         let pa = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-priority') || 0;
         let pb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-priority') || 0;
-        let na = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-preset-name') || 0;
-        let nb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-preset-name') || 0;
+        let na = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-reusable-name') || 0;
+        let nb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-reusable-name') || 0;
         
         return (pa != pb) ? pa < pb : na > nb;
       });
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
-      	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-name');
+      	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
       	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
       	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
       	return {
