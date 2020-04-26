@@ -14,7 +14,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-reusable-preset-name', 'class'],
+    watchingAttributeNames: ['internal-fsb-reusable-preset-name', 'internal-fsb-guid', 'class'],
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
@@ -38,8 +38,10 @@ class CSSPresetName extends Base<Props, State> {
     
     protected textboxOnUpdate(value: any) {
     		value = value.replace(/ /g, '_');
-    	
-        if (stylesheetDefinitionKeys.indexOf(value) != -1) {
+    		
+    		if (!value && !confirm('Remove inheriting from the preset "' + this.state.value + '"?')) {
+    				return this.state.value;
+    		} else if (stylesheetDefinitionKeys.indexOf(value) != -1) {
             return this.state.value;
         } else {
             this.state.value = value;
@@ -47,14 +49,17 @@ class CSSPresetName extends Base<Props, State> {
             perform('update', {
             		attributes: [{
         						name: 'class',
-        						value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-self-', [value])
+        						value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-self-', [this.state.attributeValues['internal-fsb-guid']])
         				},{
-            				name: this.props.watchingAttributeNames[0],
+            				name: 'internal-fsb-reusable-preset-name',
             				value: value
             		}],
                 styles: [{
                     name: '-fsb-reusable-name',
                     value: value
+                },{
+                    name: '-fsb-reusable-id',
+                    value: this.state.attributeValues['internal-fsb-guid']
                 }],
                 replace: this.props.watchingAttributeNames[0]
             });

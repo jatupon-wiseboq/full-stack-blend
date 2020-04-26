@@ -124,11 +124,12 @@ var EditorHelper = {
     }
     
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     let attributes = null;
     
     if (reusablePresetName) {
       attributes = HTMLHelper.getAttributes(element, false, {
-        style: StylesheetHelper.getStylesheetDefinition(reusablePresetName)
+        style: StylesheetHelper.getStylesheetDefinition(presetId)
       });
     } else {
       attributes = HTMLHelper.getAttributes(element, false);

@@ -312,13 +312,16 @@ var ManipulationHelper = {
 		let accessory = null;
 		let selectingElement = EditorHelper.getSelectingElement();
 		
+		let isManipulatingPresets = false;
+		
     if (selectingElement) {
       let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
+      let presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       
       if (previousReusablePresetName) {
         accessory = {
           attributes: HTMLHelper.getAttributes(selectingElement, true, {
-            style: StylesheetHelper.getStylesheetDefinition(previousReusablePresetName)
+            style: StylesheetHelper.getStylesheetDefinition(presetId)
           })
         };
       } else {
@@ -340,20 +343,18 @@ var ManipulationHelper = {
               if (previousReusablePresetName == null) {
                 if (nextReusablePresetName != null) {
                   found = true;
-                  StylesheetHelper.setStylesheetDefinition(nextReusablePresetName,
-                                                       HTMLHelper.getAttribute(selectingElement, 'style') || '',
-                                                       HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+                  StylesheetHelper.setStylesheetDefinition(presetId, nextReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'style') || '');
                   HTMLHelper.removeAttribute(selectingElement, 'style');
                 }
               } else {
                 if (nextReusablePresetName == null) {
-                  found = true;
-                  let style = StylesheetHelper.getStylesheetDefinition(previousReusablePresetName);
-                  StylesheetHelper.removeStylesheetDefinition(previousReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
-                  HTMLHelper.setAttribute(selectingElement, 'style', style);
+                	found = true;
+                	let style = StylesheetHelper.getStylesheetDefinition(presetId);
+                	StylesheetHelper.removeStylesheetDefinition(presetId);
+                	HTMLHelper.setAttribute(selectingElement, 'style', style);
                 } else if (previousReusablePresetName != nextReusablePresetName) {
                   found = true;
-                  StylesheetHelper.swapStylesheetName(previousReusablePresetName, nextReusablePresetName);
+                  StylesheetHelper.setStyleAttribute(selectingElement, '-fsb-preset-name', nextReusablePresetName);
                 }
               }
               
@@ -364,16 +365,14 @@ var ManipulationHelper = {
               }
               previousReusablePresetName = nextReusablePresetName;
               
-              EditorHelper.updateClassNameBaseOnChangedPresets();
+              isManipulatingPresets = true;
               break;
             case 'style':
               if (previousReusablePresetName) {
-                let style = StylesheetHelper.getStylesheetDefinition(previousReusablePresetName);
+                let style = StylesheetHelper.getStylesheetDefinition(presetId);
                 if (style != attribute.value) {
                   found = true;
-                  StylesheetHelper.setStylesheetDefinition(previousReusablePresetName,
-                                                       attribute.value,
-                                                       HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+                  StylesheetHelper.setStylesheetDefinition(presetId, previousReusablePresetName, attribute.value);
                 }
               } else {
                 if (HTMLHelper.getAttribute(selectingElement, 'style') != attribute.value) {
@@ -493,6 +492,10 @@ var ManipulationHelper = {
       }
     } else {
       remember = false;
+    }
+    
+    if (isManipulatingPresets) {
+    	EditorHelper.updateClassNameBaseOnChangedPresets();
     }
     
     return [accessory, remember, link];
@@ -625,9 +628,8 @@ var ManipulationHelper = {
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (Accessories.cursor.getDOMNode().previousSibling &&
                 HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
-              accessory = Accessories.cursor.getDOMNode().previousSibling;
-              Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode().previousSibling);
-              EditorHelper.deselect();
+              link = Math.random();
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'), true, false, link);
             } else {
             	remember = false;
             }
@@ -724,10 +726,24 @@ var ManipulationHelper = {
   },
   handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
+  	let shouldContinue = true;
   	
   	accessory = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
-    if (accessory) {
+  	
+  	if (accessory && HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name')) {
+  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name') + '"?')) {
+  			shouldContinue = false;
+  		}
+  	}
+  	
+    if (shouldContinue && accessory) {
       accessory.parentNode.removeChild(accessory);
+      
+      EditorHelper.updateClassNameBaseOnChangedPresets();
+      
+      EditorHelper.deselect();
+    } else {
+    	remember = false;
     }
   	
   	return [accessory, remember, link];

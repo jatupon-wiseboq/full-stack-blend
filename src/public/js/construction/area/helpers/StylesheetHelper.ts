@@ -18,8 +18,8 @@ function renderStylesheet() {
 					inversedReferenceHash[reference] = [];
 			}
 			
-			if (inversedReferenceHash[reference].indexOf(info.name) == -1) {
-					inversedReferenceHash[reference].push(info.name);
+			if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
+					inversedReferenceHash[reference].push(info.id);
 			}
 		}
 	}
@@ -27,15 +27,15 @@ function renderStylesheet() {
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
     let info = prioritizedKeys[i];
     let prefixes = [];
-    let isForChildren = (stylesheetDefinitions[info.name].indexOf('-fsb-for-children: true') != -1);
+    let isForChildren = (stylesheetDefinitions[info.id].indexOf('-fsb-for-children: true') != -1);
     let suffix = (isForChildren) ? ' > :first-child' : '';
     
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-' + info.name + suffix);
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + info.name + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-' + info.id + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + info.id + suffix);
     
     // Inheritance
     //
-    let inversedReferences = inversedReferenceHash[info.name] || [];
+    let inversedReferences = inversedReferenceHash[info.id] || [];
     inversedReferences.sort((a, b) => {
     	let pa = prioritizedKeys.indexOf(a);
     	let pb = prioritizedKeys.indexOf(b);
@@ -50,11 +50,11 @@ function renderStylesheet() {
     	prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + inheritingKey + suffix);
     }
     
-    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.name] + ' }');
+    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
     
     // Table Cell Property (With Reusable Stylesheet)
     // 
-    let tableCellDefinitions = stylesheetDefinitions[info.name].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+    let tableCellDefinitions = stylesheetDefinitions[info.id].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
     if (tableCellDefinitions !== null) {
 	   	for (let tableCellDefinition of tableCellDefinitions) {
    			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
@@ -82,16 +82,18 @@ function renderStylesheet() {
 var StylesheetHelper = {
 	setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     
     if (reusablePresetName) {
-      StylesheetHelper.setStylesheetDefinition(reusablePresetName, style, HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
+      StylesheetHelper.setStylesheetDefinition(presetId, reusablePresetName, style);
     } else {
       HTMLHelper.setAttribute(element, 'style', style);
     }
   },
   getStyle: function(element: HTMLElement) {
-    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
-    let style = (reusablePresetName) ? StylesheetHelper.getStylesheetDefinition(reusablePresetName) : HTMLHelper.getAttribute(element, 'style');
+  	let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+    let style = (reusablePresetName) ? StylesheetHelper.getStylesheetDefinition(presetId) : HTMLHelper.getAttribute(element, 'style');
     
     return style;
   },
@@ -106,57 +108,20 @@ var StylesheetHelper = {
     
     return HTMLHelper.getInlineStyle(style, styleName);
   },
-  getStylesheetDefinition: function(name: string) {
-    return stylesheetDefinitions[name] || null;
+  getStylesheetDefinition: function(presetId: string) {
+    return stylesheetDefinitions[presetId] || null;
   },
-  removeStylesheetDefinition: function(name: string, guid: string) {
-    delete stylesheetDefinitions[name];
+  removeStylesheetDefinition: function(presetId: string) {
+    delete stylesheetDefinitions[presetId];
     
-    for (let key in stylesheetDefinitions) {
-    	if (stylesheetDefinitions.hasOwnProperty(key)) {
-    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
-    		let splited = presets && presets.split(', ') || [];
-    		splited = splited.map(presetName => (presetName == name) ? guid : presetName);
-    		
-    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
-    	}
-    }
-    
-    stylesheetDefinitionRevision++;
-  },
-  setStylesheetDefinition: function(name: string, content: string, guid: string) {
-    if (stylesheetDefinitions[name] === undefined) {
-      for (let key in stylesheetDefinitions) {
-	    	if (stylesheetDefinitions.hasOwnProperty(key)) {
-	    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
-	    		let splited = presets && presets.split(', ') || [];
-	    		splited = splited.map(presetName => (presetName == guid) ? name : presetName);
-	    		
-	    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
-	    	}
-	    }
-    }
-    
-    stylesheetDefinitions[name] = content;
     stylesheetDefinitionRevision++;
     
     renderStylesheet();
   },
-  swapStylesheetName: function(previousName: string, nextName: string) {
-    stylesheetDefinitions[nextName] = stylesheetDefinitions[previousName];
-    delete stylesheetDefinitions[previousName];
+  setStylesheetDefinition: function(presetId: string, presetName: string, content: string) {
+    stylesheetDefinitions[presetId] = content;
     
     stylesheetDefinitionRevision++;
-    
-    for (let key in stylesheetDefinitions) {
-    	if (stylesheetDefinitions.hasOwnProperty(key)) {
-    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
-    		let splited = presets && presets.split(', ') || [];
-    		splited = splited.map(presetName => (presetName == previousName) ? nextName : presetName);
-    		
-    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
-    	}
-    }
     
     renderStylesheet();
   },
@@ -164,16 +129,21 @@ var StylesheetHelper = {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
       cachedPrioritizedKeysRevision = stylesheetDefinitionRevision;
       cachedPrioritizedKeys = Object.keys(stylesheetDefinitions).sort((a, b) => {
-        let pa = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], 'internal-fsb-priority') || 0;
-        let pb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], 'internal-fsb-priority') || 0;
+        let pa = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-priority') || 0;
+        let pb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-priority') || 0;
+        let na = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-preset-name') || 0;
+        let nb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-preset-name') || 0;
         
-        return (pa != pb) ? pa < pb : a > b;
+        return (pa != pb) ? pa < pb : na > nb;
       });
-      cachedPrioritizedKeys = cachedPrioritizedKeys.map((name) => {
-      	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[name], '-fsb-inherited-presets');
+      cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
+      	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-name');
+      	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
+      	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
       	return {
-	      	name: name,
-	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetName => presetName != name) || []
+      		id: presetId,
+	      	name: presetName,
+	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
 	      }
       });
     }
