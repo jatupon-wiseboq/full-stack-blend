@@ -312,8 +312,6 @@ var ManipulationHelper = {
 		let accessory = null;
 		let selectingElement = EditorHelper.getSelectingElement();
 		
-		let isManipulatingPresets = false;
-		
     if (selectingElement) {
       let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
       let presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
@@ -364,8 +362,6 @@ var ManipulationHelper = {
                 HTMLHelper.removeAttribute(selectingElement, 'internal-fsb-reusable-preset-name');
               }
               previousReusablePresetName = nextReusablePresetName;
-              
-              isManipulatingPresets = true;
               break;
             case 'style':
               if (previousReusablePresetName) {
@@ -492,10 +488,6 @@ var ManipulationHelper = {
       }
     } else {
       remember = false;
-    }
-    
-    if (isManipulatingPresets) {
-    	EditorHelper.updateClassNameBaseOnChangedPresets();
     }
     
     return [accessory, remember, link];
@@ -734,8 +726,6 @@ var ManipulationHelper = {
   	
     if (shouldContinue && accessory) {
       accessory.parentNode.removeChild(accessory);
-      
-      EditorHelper.updateClassNameBaseOnChangedPresets();
     } else {
     	remember = false;
     }

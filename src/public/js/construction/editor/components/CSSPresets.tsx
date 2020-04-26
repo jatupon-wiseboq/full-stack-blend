@@ -58,7 +58,9 @@ class CSSPresets extends Base<Props, State> {
 		        for (let info of properties.extensions.stylesheetDefinitionKeys) {
 		            let isItself = (info.id == this.state.styleValues['-fsb-reusable-id']);
 		        		let chosen = (isItself) ? false : (this.state.styleValues['-fsb-inherited-presets'] &&
-		                         this.state.styleValues['-fsb-inherited-presets'].indexOf(info.id) != -1);
+		                         this.state.styleValues['-fsb-inherited-presets'].indexOf(info.id) != -1) || false;
+		                         
+		            console.log('isItself~:', isItself, chosen, this.state.styleValues['-fsb-inherited-presets'], info.id);
 		        		
 		        		let childNodes = [];
 		        		if (allInheritanceHash[info.id]) {
