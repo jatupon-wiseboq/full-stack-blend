@@ -628,14 +628,10 @@ var ManipulationHelper = {
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (Accessories.cursor.getDOMNode().previousSibling &&
                 HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
-              link = Math.random();
-              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'), true, false, link);
-            } else {
-            	remember = false;
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'));
             }
-          } else {
-            remember = false;
           }
+          remember = false;
         }
         break;
       case 27:
@@ -740,8 +736,6 @@ var ManipulationHelper = {
       accessory.parentNode.removeChild(accessory);
       
       EditorHelper.updateClassNameBaseOnChangedPresets();
-      
-      EditorHelper.deselect();
     } else {
     	remember = false;
     }
@@ -877,22 +871,17 @@ var ManipulationHelper = {
       console.log('undo', name, content, accessory);
       
       switch (name) {
-        case 'move[cursor]':
-        case 'move[element]':
-        case 'update':
-        case 'update[size]':
-        case 'update[columnSize]':
-        case 'select':
-          content = accessory;
-          break;
         case 'insert':
           name = 'delete';
           content = accessory.guid;
           break;
+        case 'delete':
+        	Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory, Accessories.cursor.getDOMNode());
+        	done = true;
+        	break;
         case 'keydown':
           switch (content) {
             case 8:
-              Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory, Accessories.cursor.getDOMNode());
               done = true;
               break;
             case 27:
@@ -902,6 +891,9 @@ var ManipulationHelper = {
               break;
           }
           break;
+        default:
+        	content = accessory;
+        	break;
       }
       
       performedIndex -= 1;
