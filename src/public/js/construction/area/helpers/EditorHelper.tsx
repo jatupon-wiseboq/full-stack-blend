@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -91,6 +92,8 @@ var EditorHelper = {
     window.document.body.appendChild(layoutContainer);
     
     CursorHelper.moveCursorToTheEndOfDocument(false);
+    
+    EditorHelper.updateClassNameBaseOnChangedPresets();
   },
   
   perform: (name: string, content: any) => {
@@ -207,6 +210,20 @@ var EditorHelper = {
     		destination.parentNode.insertBefore(target, destination.nextSibling);
   			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
     		break;
+  	}
+  },
+  
+  updateClassNameBaseOnChangedPresets: () => {
+  	let elements = HTMLHelper.getElementsByClassName('internal-fsb-element');
+  	for (let element of elements) {
+  		HTMLHelper.setAttribute(element,
+  			'class',
+  			TextHelper.mergeClassNameWithPrefixedClasses(
+  				HTMLHelper.getAttribute(element, 'class'),
+  				'-fsb-preset-',
+  				(StylesheetHelper.getStyleAttribute(element, '-fsb-inherited-presets') || '').split(', ')
+  			)
+  		);
   	}
   }
 };

@@ -14,7 +14,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-reusable-preset-name'],
+    watchingAttributeNames: ['internal-fsb-reusable-preset-name', 'class'],
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
@@ -30,7 +30,7 @@ class CSSPresetName extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        stylesheetDefinitionKeys = (properties.extensions.stylesheetDefinitionKeys || []).map(key => key.split(':')[0]);
+        stylesheetDefinitionKeys = (properties.extensions.stylesheetDefinitionKeys || []).map(info => info.name);
         this.state.value = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').replace(/_/g, ' ');
         
         this.forceUpdate();
@@ -43,9 +43,17 @@ class CSSPresetName extends Base<Props, State> {
             return this.state.value;
         } else {
             this.state.value = value;
+            
             perform('update', {
-                attributes: [{
-                    name: this.props.watchingAttributeNames[0],
+            		attributes: [{
+        						name: 'class',
+        						value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-self-', [value])
+        				},{
+            				name: this.props.watchingAttributeNames[0],
+            				value: value
+            		}],
+                styles: [{
+                    name: '-fsb-reusable-name',
                     value: value
                 }],
                 replace: this.props.watchingAttributeNames[0]

@@ -359,13 +359,12 @@ var ManipulationHelper = {
               
               if (nextReusablePresetName) {
                 HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);
-                if (!HTMLHelper.getAttribute(selectingElement, 'internal-fsb-inherited-presets')) {
-                  HTMLHelper.setAttribute(selectingElement, 'internal-fsb-inherited-presets', '+' + nextReusablePresetName + '+');
-                }
               } else {
                 HTMLHelper.removeAttribute(selectingElement, 'internal-fsb-reusable-preset-name');
               }
               previousReusablePresetName = nextReusablePresetName;
+              
+              EditorHelper.updateClassNameBaseOnChangedPresets();
               break;
             case 'style':
               if (previousReusablePresetName) {

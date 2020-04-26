@@ -17,7 +17,8 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-inherited-presets', 'internal-fsb-reusable-preset-name', 'internal-fsb-guid'],
+    watchingAttributeNames: ['internal-fsb-guid', 'class'],
+    watchingStyleNames: ['-fsb-inherited-presets', '-fsb-reusable-name'],
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
@@ -31,18 +32,18 @@ class CSSPresets extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
+        console.log('properties.extensions.stylesheetDefinitionKeys', properties.extensions.stylesheetDefinitionKeys);
+        
         let nodes: [ITreeNode] = [];
         
         if (properties.extensions && properties.extensions.stylesheetDefinitionKeys) {
         		let allInheritanceHash = {};
         		let prioritizedKeys = [];
-        		for (let _key of properties.extensions.stylesheetDefinitionKeys) {
-        			let splited = _key.split(':');
-        			prioritizedKeys.push(splited[0]);
+        		for (let info of properties.extensions.stylesheetDefinitionKeys) {
+        			prioritizedKeys.push(info.name);
         		}
-        		for (let _key of properties.extensions.stylesheetDefinitionKeys) {
-        			let splited = _key.split(':');
-        			allInheritanceHash[splited[0]] = splited[1].split('+').filter(token => token != '').sort((a, b) => {
+        		for (let info of properties.extensions.stylesheetDefinitionKeys) {
+        			allInheritanceHash[info.name] = info.inheritances.filter(token => token != '').sort((a, b) => {
         				let pa = prioritizedKeys.indexOf(a);
 					    	let pb = prioritizedKeys.indexOf(b);
 					    	
@@ -53,16 +54,14 @@ class CSSPresets extends Base<Props, State> {
         			});
         		}
         		
-		        for (let _key of properties.extensions.stylesheetDefinitionKeys) {
-		        		let key = _key.split(':')[0];
-		        		
-		            let isItself = (key == this.state.attributeValues['internal-fsb-reusable-preset-name']);
-		        		let chosen = (isItself) ? false : (this.state.attributeValues['internal-fsb-inherited-presets'] &&
-		                         this.state.attributeValues['internal-fsb-inherited-presets'].indexOf('+' + key + '+') != -1);
+		        for (let info of properties.extensions.stylesheetDefinitionKeys) {
+		            let isItself = (info.name == this.state.styleValues['-fsb-reusable-name']);
+		        		let chosen = (isItself) ? false : (this.state.styleValues['-fsb-inherited-presets'] &&
+		                         (', ' + this.state.styleValues['-fsb-inherited-presets']).indexOf(', ' + info.name) != -1);
 		        		
 		        		let childNodes = [];
-		        		if (allInheritanceHash[key]) {
-		        			for (let childKey of allInheritanceHash[key]) {
+		        		if (allInheritanceHash[info.name]) {
+		        			for (let childKey of allInheritanceHash[info.name]) {
 		        				childNodes.push({
 		        					id: null,
 		        					name: childKey + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
@@ -75,7 +74,7 @@ class CSSPresets extends Base<Props, State> {
 		        		}
 		        		
 		            nodes.push({
-		                name: key,
+		                name: info.name,
 		                selectable: true,
 		                disabled: isItself,
 		                selected: chosen,
@@ -91,24 +90,24 @@ class CSSPresets extends Base<Props, State> {
     
     protected onUpdate(node: ITreeNode) {
         let presets = [];
+        let klasses = [];
         for (let node of this.state.nodes) {
             if (node.selected) {
                 presets.push(node.name);
             }
         }
         
-        if (this.state.attributeValues['internal-fsb-reusable-preset-name']) {
-        		presets.push(this.state.attributeValues['internal-fsb-reusable-preset-name']);
-        }
+        let className = this.state.attributeValues['class'] || '';
+        
     
         perform('update', {
-            attributes: [{
-                name: 'internal-fsb-inherited-presets',
-                value: '+' + presets.join('+') + '+'
-            }],
+        		attributes: [{
+        				name: 'class',
+        				value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-preset-', presets)
+        		}],
             styles: [{
                 name: '-fsb-inherited-presets',
-                value: '+' + presets.join('+') + '+'
+                value: presets.join(', ')
             }]
         });
     }

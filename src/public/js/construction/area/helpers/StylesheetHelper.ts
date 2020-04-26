@@ -10,33 +10,32 @@ function renderStylesheet() {
   let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
   let inversedReferenceHash = {};
   
-	for (let key of prioritizedKeys) {
-		let splited = key.split(':');
-		let references = splited[1].split('+').filter(token => token != '');
+	for (let info of prioritizedKeys) {
+		let references = info.inheritances.filter(token => token != '');
 		
 		for (let reference of references) {
 			if (!inversedReferenceHash[reference]) {
 					inversedReferenceHash[reference] = [];
 			}
 			
-			if (inversedReferenceHash[reference].indexOf(key) == -1) {
-					inversedReferenceHash[reference].push(key);
+			if (inversedReferenceHash[reference].indexOf(info.name) == -1) {
+					inversedReferenceHash[reference].push(info.name);
 			}
 		}
 	}
   
   for (let i=prioritizedKeys.length-1; i>=0; i--) {
-    let key = prioritizedKeys[i].split(':')[0];
+    let info = prioritizedKeys[i];
     let prefixes = [];
-    let isForChildren = (stylesheetDefinitions[key].indexOf('-fsb-for-children: true') != -1);
+    let isForChildren = (stylesheetDefinitions[info.name].indexOf('-fsb-for-children: true') != -1);
     let suffix = (isForChildren) ? ' > :first-child' : '';
     
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-inherited-presets*="+' + key + '+"]' + suffix);
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-reusable-preset-name="' + key + '"]' + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-' + info.name + suffix);
+    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + info.name + suffix);
     
     // Inheritance
     //
-    let inversedReferences = inversedReferenceHash[key] || [];
+    let inversedReferences = inversedReferenceHash[info.name] || [];
     inversedReferences.sort((a, b) => {
     	let pa = prioritizedKeys.indexOf(a);
     	let pb = prioritizedKeys.indexOf(b);
@@ -48,14 +47,14 @@ function renderStylesheet() {
     });
     
     for (let inheritingKey of inversedReferences) {
-    	prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element[internal-fsb-inherited-presets*="+' + inheritingKey.split(':')[0] + '+"]' + suffix);
+    	prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + inheritingKey + suffix);
     }
     
-    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[key] + ' }');
+    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.name] + ' }');
     
     // Table Cell Property (With Reusable Stylesheet)
     // 
-    let tableCellDefinitions = stylesheetDefinitions[key].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+    let tableCellDefinitions = stylesheetDefinitions[info.name].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
     if (tableCellDefinitions !== null) {
 	   	for (let tableCellDefinition of tableCellDefinitions) {
    			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
@@ -113,13 +112,13 @@ var StylesheetHelper = {
   removeStylesheetDefinition: function(name: string, guid: string) {
     delete stylesheetDefinitions[name];
     
-    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
-    for (let element of elements) {
-      HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + name + '+', '+' + guid + '+'));
-    }
     for (let key in stylesheetDefinitions) {
     	if (stylesheetDefinitions.hasOwnProperty(key)) {
-    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + name + '+', '+' + guid + '+');
+    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
+    		let splited = presets && presets.split(', ') || [];
+    		splited = splited.map(presetName => (presetName == name) ? guid : presetName);
+    		
+    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
     	}
     }
     
@@ -127,13 +126,13 @@ var StylesheetHelper = {
   },
   setStylesheetDefinition: function(name: string, content: string, guid: string) {
     if (stylesheetDefinitions[name] === undefined) {
-      let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
-      for (let element of elements) {
-        HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + guid + '+', '+' + name + '+'));
-      }
       for (let key in stylesheetDefinitions) {
 	    	if (stylesheetDefinitions.hasOwnProperty(key)) {
-	    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + guid + '+', '+' + name + '+');
+	    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
+	    		let splited = presets && presets.split(', ') || [];
+	    		splited = splited.map(presetName => (presetName == guid) ? name : presetName);
+	    		
+	    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
 	    	}
 	    }
     }
@@ -149,13 +148,13 @@ var StylesheetHelper = {
     
     stylesheetDefinitionRevision++;
     
-    let elements = HTMLHelper.getElementsByAttribute('internal-fsb-inherited-presets');
-    for (let element of elements) {
-      HTMLHelper.setAttribute(element, 'internal-fsb-inherited-presets', (HTMLHelper.getAttribute(element, 'internal-fsb-inherited-presets') || '').replace('+' + previousName + '+', '+' + nextName + '+'));
-    }
     for (let key in stylesheetDefinitions) {
     	if (stylesheetDefinitions.hasOwnProperty(key)) {
-    		stylesheetDefinitions[key] = stylesheetDefinitions[key].replace('+' + previousName + '+', '+' + nextName + '+');
+    		let presets = HTMLHelper.getInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets');
+    		let splited = presets && presets.split(', ') || [];
+    		splited = splited.map(presetName => (presetName == previousName) ? nextName : presetName);
+    		
+    		stylesheetDefinitions[key] = HTMLHelper.setInlineStyle(stylesheetDefinitions[key], '-fsb-inherited-presets', splited.join(', '));
     	}
     }
     
@@ -170,9 +169,15 @@ var StylesheetHelper = {
         
         return (pa != pb) ? pa < pb : a > b;
       });
-      cachedPrioritizedKeys = cachedPrioritizedKeys.map(key => key + ':' +
-      	(HTMLHelper.getInlineStyle((stylesheetDefinitions[key] || '').replace('+' + key + '+', ''), '-fsb-inherited-presets') || ''));
+      cachedPrioritizedKeys = cachedPrioritizedKeys.map((name) => {
+      	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[name], '-fsb-inherited-presets');
+      	return {
+	      	name: name,
+	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetName => presetName != name) || []
+	      }
+      });
     }
+    
     return cachedPrioritizedKeys;
   },
   getStylesheetDefinitionRevision: function() {

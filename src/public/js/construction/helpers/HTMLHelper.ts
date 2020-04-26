@@ -249,6 +249,7 @@ var HTMLHelper = {
     return splited.join('; ');
   },
   getInlineStyle: (inlineStyle: string, styleName: string) => {
+  	if (!inlineStyle) return null;
     if (('; ' + inlineStyle).indexOf('; ' + styleName + ': ') == -1) return null;
     
     let splited = inlineStyle.replace(/;$/, '').split('; ');
@@ -263,6 +264,7 @@ var HTMLHelper = {
     return null;
   },
   getHashMapFromInlineStyle: (inlineStyle: string) => {
+  	if (!inlineStyle) return {};
     let splited = inlineStyle.replace(/;$/, '').split('; ');
     let hashMap = {};
     
