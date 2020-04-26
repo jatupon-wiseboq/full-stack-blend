@@ -226,13 +226,6 @@ body.internal-fsb-focusing-text-element {
 //
 .internal-fsb-guide-on {
   @include media-breakpoint-only(xs) {
-  	.d-none {
-  		display: block !important;
-  	}
-  	table.d-none {
-  		display: table !important;
-  	}
-  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
@@ -252,13 +245,6 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(sm) {
-  	.d-sm-none {
-  		display: block !important;
-  	}
-  	table.d-sm-none {
-  		display: table !important;
-  	}
-  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
@@ -278,13 +264,6 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(md) {
-  	.d-md-none {
-  		display: block !important;
-  	}
-  	table.d-md-none {
-  		display: table !important;
-  	}
-  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
@@ -304,13 +283,6 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(lg) {
-  	.d-lg-none {
-  		display: block !important;
-  	}
-  	table.d-lg-none {
-  		display: table !important;
-  	}
-  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
@@ -330,13 +302,6 @@ body.internal-fsb-focusing-text-element {
     }
   }
   @include media-breakpoint-only(xl) {
-  	.d-xl-none {
-  		display: block !important;
-  	}
-  	table.d-xl-none {
-  		display: table !important;
-  	}
-  	
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-xl-none {
@@ -355,4 +320,21 @@ body.internal-fsb-focusing-text-element {
       }
     }
   }
+  
+  .internal-fsb-element.d-none,
+  .internal-fsb-element.d-sm-none,
+  .internal-fsb-element.d-md-none,
+  .internal-fsb-element.d-lg-none,
+  .internal-fsb-element.d-xl-none {
+		display: block !important;
+		visibility: visible !important;
+	}
+  table.internal-fsb-element.d-none,
+  table.internal-fsb-element.d-sm-none,
+  table.internal-fsb-element.d-md-none,
+  table.internal-fsb-element.d-lg-none,
+  table.internal-fsb-element.d-xl-none {
+		display: table !important;
+		visibility: visible !important;
+	}
 }

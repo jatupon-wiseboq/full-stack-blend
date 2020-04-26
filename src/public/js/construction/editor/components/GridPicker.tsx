@@ -9,6 +9,8 @@ declare let React: any;
 declare let ReactDOM: any;
 declare let perform: any;
 
+const INHERITING_OPTION = '<i class="fa fa-angle-left"></i>';
+
 interface Props extends IProps {
     options: [number];
     defaultOption: number;
@@ -51,7 +53,7 @@ class GridPicker extends Base<Props, State> {
         let elementClassName = this.recentElementClassName;
         
         elementClassName = elementClassName.replace(this.props.watchingClassNames[identity], '');
-        if (value != '<i class="fa fa-angle-left"></i>') {
+        if (value != INHERITING_OPTION) {
             switch (identity) {
                 case 0:
                     elementClassName += ` ${this.props.prefix}-${value}`;
@@ -78,7 +80,7 @@ class GridPicker extends Base<Props, State> {
             }]
         });
         
-        ReactDOM.findDOMNode(this.refs["selectedValue" + identity]).innerText = value;
+        ReactDOM.findDOMNode(this.refs["selectedValue" + identity]).innerHTML = value.toString();
     }
     
     private getSelectedValue(index: number) {
@@ -86,7 +88,7 @@ class GridPicker extends Base<Props, State> {
         if (status) {
             return status[1].toString();
         } else {
-            return '<i class="fa fa-angle-left"></i>';
+            return INHERITING_OPTION;
         }
     }
     
@@ -98,7 +100,7 @@ class GridPicker extends Base<Props, State> {
                     return (
                         <FullStackBlend.Controls.DropDownList key={"element-" + index}
                                                           identity={index}
-                                                          options={['<i class="fa fa-angle-left"></i>', ...this.props.options]}
+                                                          options={[INHERITING_OPTION, ...this.props.options]}
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
