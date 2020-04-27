@@ -17,6 +17,8 @@ import './components/RadioButtonPicker.js';
 import './components/LayerManager.js';
 import './components/NumberPicker.js';
 import './components/TextPicker.js';
+import './components/CodeEditor.js';
+import './components/ReactEventBinder.js';
 
 let recentExtraPanelSelector: string = null;
 
@@ -88,11 +90,16 @@ let recentExtraPanelSelector: string = null;
       case 'select':
         break;
       case 'updateEditorProperties':
-        if (content && content['attributes'] && content['attributes']['internal-fsb-class']) {
-          let elementClass = content['attributes']['internal-fsb-class'];
-          $('[internal-fsb-for]').hide();
-          $('[internal-fsb-for*="' + elementClass + '"]').show();
-        }
+	      $('[internal-fsb-for]').hide();
+	      if (content && content['attributes']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode']) {
+	      		let value = content['attributes'][key];
+	      		if (value) {
+		          $('[internal-fsb-for="' + key + '"]').show();
+		          $('[internal-fsb-for*="' + key + ':' + value + '"]').show();
+		        }
+	      	}
+	      }
         
         window.controls.forEach((control) => {
           control.update(content);

@@ -84,3 +84,12 @@ export const TABLE_CELL_1_OPTIONS = [
 	[[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
 ];
 export const FONT_FAMILY_OPTIONS = FontHelper.listAllFonts();
+export const REACT_MODE_OPTIONS = [["internal-fsb-react-mode", "document", ["fa-thumb-tack", "Document"]], ["internal-fsb-react-mode", "site", ["fa-puzzle-piece", "Site"]], ["internal-fsb-react-mode", "global", ["fa-globe", "Global"]]];
+export const MOUSE_EVENT_HANDLING_OPTIONS = [["x1", "y1", "z1"]];
+export const KEYBOARD_EVENT_HANDLING_OPTIONS = [["x2", "y2", "z2"]];
+export const TOUCH_EVENT_HANDLING_OPTIONS = [["x3", "y3", "z3"]];
+export const DRAG_EVENT_HANDLING_OPTIONS = [["x4", "y4", "z4"]];
+export const FORM_EVENT_HANDLING_OPTIONS = [["x5", "y5", "z5"]];
+export const DOCUMENT_EVENT_HANDLING_OPTIONS = [["x6", "y6", "z6"]];
+export const CLIPBOARD_EVENT_HANDLING_OPTIONS = [["x7", "y7", "z7"]];
+export const MEDIA_EVENT_HANDLING_OPTIONS = [["x8", "y8", "z8"]];

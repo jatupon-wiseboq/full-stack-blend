@@ -8,7 +8,8 @@ let options = {
     "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS,
     "table-cell-0": CONSTANTS.TABLE_CELL_0_OPTIONS,
-    "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS
+    "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS,
+    "internal-fsb-react-mode": CONSTANTS.REACT_MODE_OPTIONS
 }
 
 const Mode = Object.freeze({
@@ -31,6 +32,10 @@ interface State extends IState {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     customClassName: null
+});
+
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
 });
 
 class RadioButtonPicker extends Base<Props, State> {
@@ -178,16 +183,28 @@ class RadioButtonPicker extends Base<Props, State> {
             .btn-group.btn-group-sm.mr-1.mb-1(role="group")
               if options[this.props.watchingStyleNames[0]]
                 each value, index in options[this.props.watchingStyleNames[0]]
-                  button.btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE))
-                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
+                  button.btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE) style={fontSize: '12px'})
+                    if typeof value[2] == 'string'
+                      i.m-0(className="fa "+ value[2])
+                    else
+                      i.m-0(className="fa "+ value[2][0])
+                      = ' ' + value[2][1]
               if options[this.props.watchingAttributeNames[0]]
                 each value, index in options[this.props.watchingAttributeNames[0]]
-                  button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE))
-                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
+                  button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE) style={fontSize: '12px'})
+                    if typeof value[2] == 'string'
+                      i.m-0(className="fa "+ value[2])
+                    else
+                      i.m-0(className="fa "+ value[2][0])
+                      = ' ' + value[2][1]
               if options[this.props.watchingExtensionNames[0]]
                 each value, index in options[this.props.watchingExtensionNames[0]]
-                  button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION))
-                    i.m-0(className="fa "+ value[2], style={fontSize: '12px'})
+                  button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION) style={fontSize: '12px'})
+                    if typeof value[2] == 'string'
+                      i.m-0(className="fa "+ value[2])
+                    else
+                      i.m-0(className="fa "+ value[2][0])
+                      = ' ' + value[2][1]
           `
         )
     }
@@ -195,4 +212,4 @@ class RadioButtonPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.RadioButtonPicker', RadioButtonPicker);
 
-export {Props, State, RadioButtonPicker};
+export {Props, State, ExtendedDefaultProps, ExtendedDefaultState, RadioButtonPicker};

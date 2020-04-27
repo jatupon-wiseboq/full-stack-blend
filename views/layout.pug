@@ -34,12 +34,15 @@ html(lang='')
                   include partials/explorer
                 .workspace-horizontal-panel.full-relative-size
                   .workspace-container
-                    .workspace-vertical-container.full-relative-size
-                      .workspace-vertical-panel.full-relative-size
+                    .workspace-vertical-container
+                      .workspace-vertical-panel
                         include partials/construction
                     .workspace-vertical-container(id='timeline')
                       .workspace-vertical-panel
                         include partials/timeline
+                    .workspace-vertical-container(id='codeEditor')
+                      .workspace-vertical-panel
+                        include partials/coding
                 .workspace-horizontal-panel
                   include partials/sidebar
     else

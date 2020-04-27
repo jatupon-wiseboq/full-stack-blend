@@ -1,1 +1,135 @@
-| Action
+include ../../mixin/CreateReactComponent
+.section-container
+  .section-title
+    | React Component
+  .section-subtitle
+    | Generalizability 
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
+  .section-subtitle(internal-fsb-for="internal-fsb-react-mode:site, internal-fsb-react-mode:global")
+    | Namespace
+  .section-body(internal-fsb-for="internal-fsb-react-mode:site, internal-fsb-react-mode:global")
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{inline: true, button: false}")
+  .section-subtitle(internal-fsb-for="internal-fsb-react-mode:site, internal-fsb-react-mode:global")
+    | Reusable Component Name
+  .section-body(internal-fsb-for="internal-fsb-react-mode:site, internal-fsb-react-mode:global")
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{inline: true, button: false}")
+  .section-subtitle
+    | Reference ID
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{inline: true, button: false}")
+  .section-hr
+.section-container
+  .section-title
+    | Hierarchical Data Binding
+  .section-subtitle
+    | Dot Notation
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{inline: true, button: false}")
+  .section-note
+    | The notation extends its parent, and non-leaf node makes it repeating.
+  .section-hr
+.section-container
+  .section-title
+    | Events Binding
+  .section-subtitle
+    | Mouse
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onClick']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDblClick']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseDown']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseMove']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseOut']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseOver']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseUp']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMouseWheel']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onWheel']}")
+  .section-subtitle
+    | Keyboard
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onKeyDown']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onKeyPress']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onKeyUp']}")
+  .section-subtitle
+    | Touch
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onTouchStart']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onTouchMove']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onTouchEnd']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onTouchCancel']}")
+  .section-subtitle
+    | Dragging
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDrag']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDragEnd']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDragEnter']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDragLeave']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDragOver']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDragStart']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onDrop']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onScroll']}")
+  .section-subtitle
+    | Document
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onAfterPrint']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onBeforePrint']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onBeforeUnload']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onError']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onHashChange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onLoad']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onMessage']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onOffline']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onOnline']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onPageHide']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onPageShow']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onPopState']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onResize']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onStorage']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onUnload']}")
+  .section-subtitle
+    | Clipboard
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onCopy']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onCut']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onPaste']}")
+  .section-subtitle(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+    | Form
+  .section-body(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onBlur']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onChange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onContextMenu']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onFocus']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onInput']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onInvalid']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onReset']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onSearch']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onSelect']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onSubmit']}")
+  .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    | Media
+  .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onabort']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['oncanplay']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['oncanplaythrough']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['oncuechange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['ondurationchange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onemptied']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onended']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onerror']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onloadeddata']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onloadedmetadata']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onloadstart']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onpause']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onplay']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onplaying']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onprogress']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onratechange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onseeked']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onseeking']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onstalled']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onsuspend']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['ontimeupdate']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onvolumechange']}")
+    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingExtensionNames: ['onwaiting']}")
+  .section-note
+    | These will generating event boilerplates in the current folding react component.

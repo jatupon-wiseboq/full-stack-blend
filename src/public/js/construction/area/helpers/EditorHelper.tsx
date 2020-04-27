@@ -111,6 +111,18 @@ var EditorHelper = {
   },
   updateEditorProperties: () => {
     let element = EditorHelper.getSelectingElement();
+    
+    let current = element;
+    let found = false;
+   	while (current) {
+   		if (HTMLHelper.getAttribute(current, 'internal-fsb-guid') == '0') {
+   			found = true;
+   			break;
+   		}
+   		current = current.parentNode;
+   	}
+   	if (!found) element = null;
+   	
     if (element == null) {
     	EditorHelper.synchronize('updateEditorProperties', {
 	      extensions: Object.assign({
@@ -132,8 +144,6 @@ var EditorHelper = {
     } else {
       attributes = HTMLHelper.getAttributes(element, false);
     }
-    
-    console.log('StylesheetHelper.getStylesheetDefinitionKeys()', StylesheetHelper.getStylesheetDefinitionKeys());
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,

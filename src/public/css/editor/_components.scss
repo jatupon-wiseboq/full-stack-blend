@@ -333,6 +333,14 @@
       background-color: rgb(255, 255, 255);
     }
   }
+  
+  .hover-body {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
 }
 .boundary-picker {
   .hover-container {
@@ -352,6 +360,38 @@
     bottom: 20px;
     left: 40px;
     height: 139px;
+  }
+}
+.internal-fsb-selecting-off .dimension-picker {
+	.hover-container {
+		top: 60px;
+		right: 60px;
+		bottom: 60px;
+		left: 60px;
+		height: 99px;
+		overflow: hidden;
+	}
+	.hover-body {
+    top: -40px;
+    right: -40px;
+    bottom: -40px;
+    left: -40px;
+  }
+}
+.internal-fsb-selecting-off .appearance-picker {
+	.hover-container {
+		top: 40px;
+		right: 60px;
+		bottom: 40px;
+		left: 60px;
+    height: 99px;
+		overflow: hidden;
+	}
+	.hover-body {
+    top: -20px;
+    right: -20px;
+    bottom: -20px;
+    left: -20px;
   }
 }
 

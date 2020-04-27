@@ -423,7 +423,11 @@ var ManipulationHelper = {
             default:
               if (selectingElement.getAttribute(attribute.name) != attribute.value) {
                 found = true;
-                HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
+                if (attribute.value !== null) {
+                	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
+                } else {
+                	HTMLHelper.removeAttribute(selectingElement, attribute.name);
+                }
               }
               break;
           }

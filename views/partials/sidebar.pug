@@ -3,9 +3,6 @@
     .workspace-vertical-panel
       .workspace-panel-container.sidebar
         .workspace-container
-          .workspace-vertical-container(id='event')
-            .workspace-vertical-panel
-              include design/coding/event
           .workspace-vertical-container.full-relative-size
             .workspace-vertical-panel
               .workspace-container
@@ -23,7 +20,7 @@
                           input(type='radio', name='options', checked=false)
                           | Format
                 .workspace-vertical-container.full-relative-size
-                  .workspace-vertical-panel.internal-fsb-selecting-on
+                  .workspace-vertical-panel
                     .workspace-panel-container.scrollable
                       .panel.sidebar-main-panel.active
                         .workspace-container
@@ -40,10 +37,6 @@
                         include common/shape
                       .panel.sidebar-format-panel
                         include common/format
-                  .workspace-vertical-panel.internal-fsb-selecting-off
-                    .workspace-panel-container.scrollable
-                      .panel.active
-                        include common/empty
   .workspace-vertical-container
     .workspace-vertical-panel
       include common/artboard

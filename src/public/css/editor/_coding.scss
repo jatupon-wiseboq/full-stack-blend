@@ -1,10 +1,10 @@
-// Timeline
+// Coding
 // -------------------------
-#timeline {
+#codeEditor {
   display: none;
   
   &.active {
     display: table-row;
-    height: 25%;
+    height: 50%;
   }
 }
