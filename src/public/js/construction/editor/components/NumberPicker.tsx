@@ -2,7 +2,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
 import '../controls/DropDownControl.js';
 

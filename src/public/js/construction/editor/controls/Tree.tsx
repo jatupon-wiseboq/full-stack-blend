@@ -1,5 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import {ITreeNode, TreeNode, InsertDirection} from './TreeNode.js';
 import {Point, MathHelper} from '../../helpers/MathHelper.js';
 

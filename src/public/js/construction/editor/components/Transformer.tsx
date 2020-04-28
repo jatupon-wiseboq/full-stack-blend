@@ -4,7 +4,7 @@ import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from 
 import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../lib/three.module.js';
 import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../lib/CSS3DRenderer.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;

@@ -1,64 +1,13 @@
 doctype html
 html(lang='')
-  head
-    meta(charset='utf-8')
-    meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1.0')
-    title #{title} - Hackathon Starter
-    meta(name='description', content='')
-    meta(name='theme-color' content='#4DA5F4')
-    meta(name='csrf-token', content=_csrf)
-    link(rel='shortcut icon', href='/images/favicon.png')
-    link(rel='stylesheet', href='/css/main.css')
+  include partials/head
 
   body.noselect.internal-fsb-selecting-off
-    include partials/header
-    if user
-      link(rel='stylesheet', href='/css/editor.css')
-      script(src='https://unpkg.com/react@16/umd/react.development.js')
-      script(src='https://unpkg.com/react-dom@16/umd/react-dom.development.js')
-      script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
-      script(src='https://cdn.jsdelivr.net/npm/jquery-colpick@3.1.0/js/colpick.min.js')
-      script(src='https://unpkg.com/github-api/dist/GitHub.bundle.min.js')
-      script(src='/js/construction/editor/Editor.bundle.js')
-      
-      .workspace-container
-        .workspace-vertical-container
-          .workspace-vertical-panel
-            include partials/toolbar
-        .workspace-vertical-container.full-relative-size
-          .workspace-vertical-panel
-            .workspace-container
-              .workspace-horizontal-container
-                .workspace-horizontal-panel
-                  include partials/explorer
-                .workspace-horizontal-panel.full-relative-size
-                  .workspace-container
-                    .workspace-vertical-container
-                      .workspace-vertical-panel
-                        include partials/construction
-                    .workspace-vertical-container(id='timeline')
-                      .workspace-vertical-panel
-                        include partials/timeline
-                    .workspace-vertical-container(id='codeEditor')
-                      .workspace-vertical-panel
-                        include partials/coding
-                .workspace-horizontal-panel
-                  include partials/sidebar
-    else
-      include partials/flash
-      block content
+    include partials/navigation
+    include partials/flash
+    block content
     
-    script(src='https://kit.fontawesome.com/a1b6590f7b.js', crossorigin='anonymous')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
     script(async defer src="https://buttons.github.io/buttons.js")
     script(src='/js/Main.js')
-    script.
-      if (window.setup) window.setup();
 
-    //- Google Analytics: change UA-38177297-2 to be your site's ID
-    script.
-      window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-      ga('create','UA-38177297-2','auto');ga('send','pageview')
-    script(src='https://www.google-analytics.com/analytics.js' async defer)
+    include partials/analytics

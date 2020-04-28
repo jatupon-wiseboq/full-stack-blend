@@ -1,4 +1,4 @@
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker} from './DisplayPicker.js'
 
 declare let React: any;

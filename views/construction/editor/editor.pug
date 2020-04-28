@@ -1,0 +1,40 @@
+link(rel='stylesheet', href='/css/construction/editor.css')
+script(src='https://unpkg.com/react@16/umd/react.development.js')
+script(src='https://unpkg.com/react-dom@16/umd/react-dom.development.js')
+link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/vs2015.min.css')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/typescript.min.js')
+script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+script(src='https://cdn.jsdelivr.net/npm/jquery-colpick@3.1.0/js/colpick.min.js')
+script(src='https://unpkg.com/github-api/dist/GitHub.bundle.min.js')
+script(src='/js/construction/Editor.bundle.js')
+
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      include partials/toolbar
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel
+      .workspace-container
+        .workspace-horizontal-container
+          .workspace-horizontal-panel
+            include partials/explorer
+          .workspace-horizontal-panel.full-relative-size
+            .workspace-container
+              .workspace-vertical-container
+                .workspace-vertical-panel
+                  include partials/construction
+              .workspace-vertical-container(id='timeline')
+                .workspace-vertical-panel
+                  include partials/timeline
+              .workspace-vertical-container(id='codeEditor')
+                .workspace-vertical-panel
+                  include partials/coding
+          .workspace-horizontal-panel
+            include partials/sidebar
+
+script(src='https://kit.fontawesome.com/a1b6590f7b.js', crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+script.
+  if (window.setup) window.setup();

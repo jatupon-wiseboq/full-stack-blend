@@ -1,6 +1,6 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import '../controls/Tree.js';
 
 declare let React: any;

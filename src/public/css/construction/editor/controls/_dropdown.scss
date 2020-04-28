@@ -1,0 +1,75 @@
+// Dropdown List & Control
+// -------------------------
+.fsb-dropdown-menu {
+  font-size: 0.8rem;
+  overflow-x: hidden;
+  min-width: inherit;
+  width: auto;
+  padding: 3.5px;
+  z-index: #{$maximum-z-index - 5};
+  display: none;
+  
+  .fsb-controller-area-container {
+    display: table-row;
+    
+    .fsb-controller-area-body {
+      display: table-cell;
+      padding: 0 0 3.5px 0;
+    }
+  }
+  .fsb-content-area-container {
+    display: table-row;
+    height: 100%;
+    
+    .fsb-content-area-body {
+      display: table-cell;
+      position: relative;
+      
+      .fsb-content-area-scrollable {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+      
+        .dropdown-item {
+          display: block;
+          padding: 0.25rem 0.5rem;
+          text-align: center;
+          cursor: pointer;
+        }
+        
+        > .input-group {
+          border-radius: 0.2em;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+  .section-container {
+    padding: 3px;
+  }
+  
+  &.measure {
+    width: auto !important;
+    height: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: hidden !important;
+    
+    .input-group {
+      width: 100px;
+      
+      &.inline {
+        width: 135px;
+      }
+    }
+    .color-picker {
+      width: 349px;
+    }
+  }
+  &.hide {
+    display: none;
+  }
+  &.show {
+    display: table;
+  }
+}

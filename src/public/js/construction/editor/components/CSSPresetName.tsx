@@ -1,6 +1,6 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import '../controls/Textbox.js';
 
 declare let React: any;

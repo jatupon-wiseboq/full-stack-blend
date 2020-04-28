@@ -1,6 +1,6 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;

@@ -1,6 +1,6 @@
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import '../controls/ColorPicker.js';
 import '../controls/DropDownControl.js';
 

@@ -1,12 +1,23 @@
 import {Request, Response} from "express";
 
 /**
- * GET /
- * Construction page.
+ * GET /editor
+ * Editor page.
  */
 export const index = (req: Request, res: Response) => {
 
-    res.render("construction/area", {
+    res.render("construction/index", {
+    });
+
+};
+
+/**
+ * GET /editor/construction/area
+ * Construction area page.
+ */
+export const area = (req: Request, res: Response) => {
+
+    res.render("construction/area/area", {
     });
 
 };

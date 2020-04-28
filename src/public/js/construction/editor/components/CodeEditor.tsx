@@ -1,5 +1,5 @@
 import {IProps, IState, DefaultProps, DefaultState, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -22,13 +22,20 @@ class CodeEditor extends Base<Props, State> {
         super(props);
     }
     
+    componentDidMount() {
+        const code = ReactDOM.findDOMNode(this.refs.code);
+        const worker = new Worker('/js/construction/Worker.bundle.js');
+        worker.onmessage = (event) => { code.innerHTML = event.data; }
+        worker.postMessage(code.textContent);
+    }
+    
     public update(properties: any) {
         if (!super.update(properties)) return;
     }
     
     render() {
       return (
-        <div>ABC</div>
+        <div ref="code">let x = 0;</div>
       )
     }
 }

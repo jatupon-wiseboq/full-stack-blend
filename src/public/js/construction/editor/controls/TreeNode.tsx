@@ -1,7 +1,7 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {Point, MathHelper} from '../../helpers/MathHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;

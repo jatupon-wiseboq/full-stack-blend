@@ -1,7 +1,7 @@
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import {ITreeNode} from './TreeNode.js';
 import '../controls/Tree.js';
 

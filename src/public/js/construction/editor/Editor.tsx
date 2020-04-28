@@ -1,4 +1,4 @@
-import {FullStackBlend} from '../../helpers/DeclarationHelper.js';
+import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import './components/GridPicker.js';
 import './components/OffsetPicker.js';
@@ -19,6 +19,8 @@ import './components/NumberPicker.js';
 import './components/TextPicker.js';
 import './components/CodeEditor.js';
 import './components/ReactEventBinder.js';
+
+//import GitHub from 'github-api';
 
 let recentExtraPanelSelector: string = null;
 
@@ -145,7 +147,24 @@ let recentExtraPanelSelector: string = null;
   });
   
   window.save = (() => {
-  	
+  	/*var gh = new GitHub({
+			token: 'MY_OAUTH_TOKEN'
+		});
+		let gist = gh.getGist();
+		gist.create({
+			public: true,
+			description: 'ABC',
+			files: {
+				"abc.txt": {
+					content: "ABC"
+				}
+			}
+		}).then(function({data}) {
+			let createdGist = data;
+			return gist.read();
+		}).then(function({data}) {
+			let retrievedGist = data;
+		});*/
   });
   window.deploy = (() => {
   	
