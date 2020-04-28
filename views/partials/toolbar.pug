@@ -42,11 +42,11 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         i.fa.fa-repeat.m-0
         .title
           | Redo
-      a.btn.btn-sm.btn-light.mr-1(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
+      a.btn.btn-sm.btn-light.mr-1(onclick="save()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
         i.fa.fa-save.m-0
         .title
           | Save
-      a.btn.btn-sm.btn-light(href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
+      a.btn.btn-sm.btn-light(onclick="deploy()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
         i.fa.fa-cloud-upload.m-0
         .title
           | Deploy

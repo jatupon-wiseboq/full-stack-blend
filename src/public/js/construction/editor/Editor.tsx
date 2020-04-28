@@ -143,4 +143,11 @@ let recentExtraPanelSelector: string = null;
       window.document.body.click();
     });
   });
+  
+  window.save = (() => {
+  	
+  });
+  window.deploy = (() => {
+  	
+ 	});
 })();
