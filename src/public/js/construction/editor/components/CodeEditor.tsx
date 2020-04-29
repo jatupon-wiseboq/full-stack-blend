@@ -24,9 +24,7 @@ class CodeEditor extends Base<Props, State> {
         
         this.state = {
             value:
-`// Auto generated code will begin and end with // Auto[*]---> and // <---Auto[*], respectively.
-//
-// Auto[Import]--->
+`// Auto[Import]--->
 import {CodeHelper} from '../helpers/CodeHelper';
 import {DeclarationHelper} from '../helpers/DeclarationHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
@@ -105,7 +103,7 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
             showLineNumbers: true
         };
         
-        ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/');
+        ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
     }
     
     public update(properties: any) {
@@ -119,7 +117,6 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
         window.require = ace.require;
         
         let editor = ace.edit("reactEditor");
-        editor.setTheme("ace/theme/github");
         editor.session.setMode("ace/mode/typescript");
         
         let beginRegEx = /Auto\[[a-zA-Z]+\]--->/;
@@ -152,9 +149,6 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
                      isPreventedFromEditing = true;
                   }
                 }
-                if (rowCol.row <= 1) {
-                  isPreventedFromEditing = true;
-                }
                 
                 if (isPreventedFromEditing) {
                     e.preventDefault();
@@ -184,13 +178,13 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
                     }
                 }
                 
-                if (j <= 1) readonly = true;
-                
                 if (aceLines[j]) {
                     aceLines[j].style.opacity = (readonly) ? 0.15 : 1.0;
                 }
             }
         });
+        
+        editor.session.setUseWrapMode(true);
     }
     onChange(value) {
         this.setState({
