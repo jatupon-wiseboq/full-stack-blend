@@ -136,7 +136,7 @@ let recentExtraPanelSelector: string = null;
   
   window.addEventListener("keydown", (event: any) => {
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "INPUT" || element.getAttribute('type') != 'text') {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
@@ -144,7 +144,7 @@ let recentExtraPanelSelector: string = null;
   });
   window.addEventListener("keyup", (event: any) => {
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "INPUT" || element.getAttribute('type') != 'text') {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       perform('keyup', event.keyCode);
       
       return EventHelper.cancel(event);

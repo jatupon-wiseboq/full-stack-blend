@@ -24,11 +24,8 @@ class CodeEditor extends Base<Props, State> {
         
         this.state = {
             value: 'let x = 0;',
-            placeholder: "Placeholder Text",
-            theme: "ace/theme/github",
-            mode: "ace/mode/typescript",
-            enableBasicAutocompletion: false,
-            enableLiveAutocompletion: false,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
             fontSize: 12,
             showGutter: true,
             showPrintMargin: true,
@@ -51,8 +48,8 @@ class CodeEditor extends Base<Props, State> {
         window.require = ace.require;
         
         let editor = ace.edit("reactEditor");
-        editor.setTheme(this.state.theme);
-        editor.session.setMode(this.state.mode);
+        editor.setTheme("ace/theme/github");
+        editor.session.setMode("ace/mode/typescript");
     }
     onChange(newValue) {
         console.log("change", newValue);
@@ -78,7 +75,6 @@ class CodeEditor extends Base<Props, State> {
     render() {
       return (
         <ReactAce.default style={{position: 'absolute', width: '100%', height: '100%'}}
-          placeholder={this.state.placeholder}
           name="reactEditor"
           onLoad={this.onLoad.bind(this)}
           onChange={this.onChange.bind(this)}
@@ -91,7 +87,7 @@ class CodeEditor extends Base<Props, State> {
           showGutter={this.state.showGutter}
           highlightActiveLine={this.state.highlightActiveLine}
           setOptions={{
-            useWorker: false,
+            useWorker: true,
             enableBasicAutocompletion: this.state.enableBasicAutocompletion,
             enableLiveAutocompletion: this.state.enableLiveAutocompletion,
             enableSnippets: this.state.enableSnippets,
