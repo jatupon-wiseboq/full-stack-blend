@@ -135,14 +135,16 @@ let recentExtraPanelSelector: string = null;
   };
   
   window.addEventListener("keydown", (event: any) => {
-    if (EventHelper.getOriginalElement(event).tagName != "INPUT") {
+    let element = EventHelper.getOriginalElement(event);
+    if (element.tagName != "INPUT" || element.getAttribute('type') != 'text') {
       perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
     }
   });
   window.addEventListener("keyup", (event: any) => {
-    if (EventHelper.getOriginalElement(event).tagName != "INPUT") {
+    let element = EventHelper.getOriginalElement(event);
+    if (element.tagName != "INPUT" || element.getAttribute('type') != 'text') {
       perform('keyup', event.keyCode);
       
       return EventHelper.cancel(event);
