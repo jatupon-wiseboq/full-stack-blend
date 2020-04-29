@@ -25,6 +25,7 @@ class CodeEditor extends Base<Props, State> {
         this.state = {
             value:
 `// Auto generated code will begin and end with // Auto[*]---> and // <---Auto[*], respectively.
+//
 // Auto[Import]--->
 import {CodeHelper} from '../helpers/CodeHelper';
 import {DeclarationHelper} from '../helpers/DeclarationHelper';
@@ -123,9 +124,10 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
         
         let beginRegEx = /Auto\[[a-zA-Z]+\]--->/;
         let endRegEx = /<---Auto\[[a-zA-Z]+\]/;
-        let lines = this.state.value.split('\n');
         
         editor.commands.on("exec", (function(e) {
+            let lines = this.state.value.split('\n');
+        
             if (e.command && (e.command.name == 'backspace' || e.command.name == 'insertstring')) {
                 let rowCol = editor.selection.getCursor();
                 let isPreventedFromEditing = false;
@@ -150,7 +152,7 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
                      isPreventedFromEditing = true;
                   }
                 }
-                if (rowCol.row == 0) {
+                if (rowCol.row <= 1) {
                   isPreventedFromEditing = true;
                 }
                 
@@ -181,6 +183,8 @@ export {IProps, IState, DefaultProps, DefaultState, KlassA};
                         break;
                     }
                 }
+                
+                if (j <= 1) readonly = true;
                 
                 if (aceLines[j]) {
                     aceLines[j].style.opacity = (readonly) ? 0.15 : 1.0;
