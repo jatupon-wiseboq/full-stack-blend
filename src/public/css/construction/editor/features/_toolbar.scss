@@ -31,6 +31,10 @@
     
     .dropdown-item {
       cursor: pointer;
+      
+      &.active {
+        background-color: transparent;
+      }
     }
   }
 }

@@ -123,7 +123,8 @@ html, body {
     @include animation(0, 1s, animation-blink);
   }
 }
-body.internal-fsb-focusing-text-element {
+body.internal-fsb-focusing-text-element,
+body.internal-fsb-mode-coding {
   .internal-fsb-cursor {
     display: none;
   }

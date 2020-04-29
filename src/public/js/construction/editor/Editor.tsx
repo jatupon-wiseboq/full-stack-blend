@@ -47,12 +47,14 @@ let recentExtraPanelSelector: string = null;
   };
   
   window.swap = (selector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
-    let button = $('.btn' + selector);
+    let button = $(EventHelper.getCurrentElement(event));
+    if (button.prop('tagName') != 'A') button = button.parent();
+    if (button.hasClass('active')) return;
     
-    button.each((index, value) => {
-      $(value).parent().find('> .btn').removeClass('active');
-      $(value).addClass('active');
-    });
+    let accessory = button.parent().find('> a.active').attr('id');
+    
+    button.parent().find('> a.active').removeClass('active');
+    button.addClass('active');
     
     let panel = $('.panel' + selector);
     
@@ -79,6 +81,14 @@ let recentExtraPanelSelector: string = null;
       
       recentExtraPanelSelector = extraPanelSelector;
     }
+    
+    if (button.attr('skip-perform') !== 'true') {
+      perform('swap', {
+        id: button.attr('id'),
+        accessory: accessory
+      });
+    }
+    button.removeAttr('skip-perform');
     
     synchronize('click');
   };
@@ -113,6 +123,13 @@ let recentExtraPanelSelector: string = null;
         break;
       case 'click':
         window.document.body.click();
+        break;
+      case 'swap':
+        let element = document.getElementById(content);
+        if (element) {
+          element.setAttribute('skip-perform', 'true');
+          element.click();
+        }
         break;
     }
   };

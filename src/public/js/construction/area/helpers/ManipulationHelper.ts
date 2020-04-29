@@ -104,6 +104,9 @@ var ManipulationHelper = {
       case 'redo':
       	[accessory, remember] = ManipulationHelper.handleRedo(name, content, remember, promise);
         break;
+      case 'swap':
+      	[accessory, content, remember] = ManipulationHelper.handleToggleEditorPanel(name, content, remember, promise);
+        break;
     }
     
     if (remember) {
@@ -982,6 +985,25 @@ var ManipulationHelper = {
     }
   	
   	return [accessory, remember];
+  },
+  handleToggleEditorPanel: (name: string, content: any, remember: boolean, promise: Promise) => {
+    let accessory = null;
+    let link = false;
+    
+    if (content.accessory) {
+      // The action has taken before this line.
+      // 
+      accessory = content.accessory;
+      content = content.id;
+    } else {
+      // This line is trying to undo/redo. Send the action out.
+      // 
+      if (content != null) {
+        EditorHelper.synchronize('swap', content);
+      }
+    }
+    
+    return [accessory, content, remember];
   }
 };
 

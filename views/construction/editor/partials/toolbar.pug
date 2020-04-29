@@ -7,28 +7,28 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Explore
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick="swap('#site', null, '#exploreIcon', 'fa-sitemap')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Explore Sitemap</b></p><p>This will show all pages on front-end which web cilents can see.</p>")
+          a.dropdown-item.active(id='siteButton', onclick="swap('#site', null, '#exploreIcon', 'fa-sitemap')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Explore Sitemap</b></p><p>This will show all pages on front-end which web cilents can see.</p>")
             i.fa.fa-sitemap
             | Site
-          a.dropdown-item(onclick="swap('#data', null, '#exploreIcon', 'fa-database')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>")
+          a.dropdown-item(id='dataButton', onclick="swap('#data', null, '#exploreIcon', 'fa-database')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>")
             i.fa.fa-database
             | Data
-          a.dropdown-item(onclick="swap('#services', null, '#exploreIcon', 'fa-cogs')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>")
+          a.dropdown-item(id='servicesButton', onclick="swap('#services', null, '#exploreIcon', 'fa-cogs')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>")
             i.fa.fa-cogs
             | Services
-          a.dropdown-item(onclick="swap('#components', null, '#exploreIcon', 'fa-puzzle-piece')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
+          a.dropdown-item(id='componentsButton', onclick="swap('#components', null, '#exploreIcon', 'fa-puzzle-piece')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
             i.fa.fa-puzzle-piece
             | Components
-          a.dropdown-item(onclick="swap('#popups', null, '#exploreIcon', 'fa-list-alt')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
+          a.dropdown-item(id='popupsButton', onclick="swap('#popups', null, '#exploreIcon', 'fa-list-alt')", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
             i.fa.fa-list-alt
             | Popups
       .btn-group.btn-group-toggle(data-toggle='buttons')
-        label.btn.btn-sm.btn-light.active(data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Desktop Layout</b></p><p>Design the placement and sizing of the desktop layout which is independent from the mobile layout.</p><p><i>However, you need to resize the current window to see the differences of the responsive layout configuration</i>.</p>", style='width: 50px;')
+        a.btn.btn-sm.btn-light.active(id='desktopButton', onclick="swap('#desktop')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Desktop Layout</b></p><p>Design the placement and sizing of the desktop layout which is independent from the mobile layout.</p><p><i>However, you need to resize the current window to see the differences of the responsive layout configuration</i>.</p>", style='width: 50px;')
           input(type='radio', name='options', checked=true)
           i.fa.fa-desktop.m-0
           .title
             | Desktop
-        label.btn.btn-sm.btn-light(data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Mobile Layout</b></p><p>Design the placement and sizing the mobile layout but won't be able to delete any elements from the page.</p>", style='width: 50px;')
+        a.btn.btn-sm.btn-light(id='mobileButton', onclick="swap('#mobile')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Mobile Layout</b></p><p>Design the placement and sizing the mobile layout but won't be able to delete any elements from the page.</p>", style='width: 50px;')
           input(type='radio', name='options', checked=false)
           i.fa.fa-mobile.m-0(style='font-size: 18px;')
           .title
@@ -149,17 +149,17 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
             | Toggle
     .ml-auto.py-1
       .btn-group.btn-group-toggle.mr-1(data-toggle='buttons')
-        label.btn.btn-sm.btn-light.active(onclick="swap('#design')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>", style='width: 50px;')
+        a.btn.btn-sm.btn-light.active(id='designButton', onclick="swap('#design')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>", style='width: 50px;')
           input(type='radio', name='options', checked=true)
           i.fa.fa-paint-brush.m-0
           .title
             | Design
-        label.btn.btn-sm.btn-light(onclick="swap('#animation', '#timeline')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Animation</b></p><p>This will allow you to design the animation of the selected element.</p>", style='width: 60px;')
+        a.btn.btn-sm.btn-light(id='animationButton', onclick="swap('#animation', '#timeline')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Animation</b></p><p>This will allow you to design the animation of the selected element.</p>", style='width: 60px;')
           input(type='radio', name='options', checked=false)
           i.fa.fa-bolt.m-0
           .title
             | Animation
-        label.btn.btn-sm.btn-light(onclick="swap('#coding', '#codeEditor')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Coding</b></p><p>This will allow you to add a specific coding of the selected element at front-end and back-end using JavaScript language.</p>", style='width: 50px;')
+        a.btn.btn-sm.btn-light(id='codingButton', onclick="swap('#coding', '#codeEditor')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Coding</b></p><p>This will allow you to add a specific coding of the selected element at front-end and back-end using JavaScript language.</p>", style='width: 50px;')
           input(type='radio', name='options', checked=false)
           i.fa.fa-code.font-weight-bold.m-0
           .title

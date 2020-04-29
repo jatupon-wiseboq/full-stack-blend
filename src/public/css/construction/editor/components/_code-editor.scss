@@ -2,10 +2,14 @@
 // -------------------------
 #codeEditor {
   display: none;
-  background-color: #1e1e1e;
   
   &.active {
     display: table-row;
     height: 50%;
   }
+}
+
+.ace_editor {
+  border-top: solid 1px #c8c8c8;
+  margin-top: -1px;
 }

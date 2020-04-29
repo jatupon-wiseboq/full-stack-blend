@@ -10,13 +10,13 @@
                   .workspace-vertical-panel
                     .workspace-tab-container
                       .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(onclick="swap('.sidebar-main-panel', null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(id='sidebarAction', onclick="swap('.sidebar-main-panel', [null, '#sidebarAction'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=true)
                           | Action
-                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-shape-panel(onclick="swap('.sidebar-shape-panel', null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-shape-panel(id='sidebarShape', onclick="swap('.sidebar-shape-panel', [null, '#sidebarShape'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=false)
                           | Shape
-                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-format-panel(onclick="swap('.sidebar-format-panel', null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        label.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-format-panel(id='sidebarFormat', onclick="swap('.sidebar-format-panel', [null, '#sidebarFormat'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=false)
                           | Format
                 .workspace-vertical-container.full-relative-size
