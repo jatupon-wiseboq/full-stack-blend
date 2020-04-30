@@ -11,6 +11,7 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
+   value: string
 }
 
 const CAMEL_OF_EVENTS_DICTIONARY = {
@@ -97,6 +98,11 @@ let watchingAttributeNames = [...Object.keys(CAMEL_OF_EVENTS_DICTIONARY)];
 watchingAttributeNames.push('internal-fsb-name');
 watchingAttributeNames.push('internal-fsb-class');
 watchingAttributeNames.push('internal-fsb-guid');
+watchingAttributeNames.push('internal-fsb-react-namespace');
+watchingAttributeNames.push('internal-fsb-react-class');
+watchingAttributeNames.push('internal-fsb-react-id');
+watchingAttributeNames.push('internal-fsb-react-mode');
+watchingAttributeNames.push('internal-fsb-react-data');
 
 Object.assign(ExtendedDefaultProps, {
   watchingAttributeNames: watchingAttributeNames
@@ -109,8 +115,25 @@ class ReactCodeEditor extends Base<Props, State> {
         super(props);
         
         this.state = CodeHelper.clone(Object.assign({}, DefaultState, {
-            value:
-`// Auto[Import]--->
+            value: ''
+        }));
+        
+        ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
+    }
+    
+    public update(properties: any) {
+        if (!super.update(properties)) return;
+        
+        if (this.state.attributeValues['internal-fsb-react-mode']) {
+            let code = this.state.value;
+            let klass = this.state.attributeValues['internal-fsb-react-class'] ||
+                this.state.attributeValues['internal-fsb-class'] + '_' + this.state.attributeValues['internal-fsb-guid'];
+            let namespace = this.state.attributeValues['internal-fsb-react-namespace'] || 'Controls';
+            let fullnamespace = namespace + '.' + klass;
+            let dotNotation = this.state.attributeValues['internal-fsb-react-data'] || null;
+            
+            if (code == '') {
+                code = `// Auto[Import]--->
 import {CodeHelper} from '../helpers/CodeHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {DeclarationHelper} from '../helpers/DeclarationHelper';
@@ -154,6 +177,8 @@ class KlassA extends Base<IProps, IState> {
   constructor(props) {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
+    
+    super.load(${JSON.stringify(dotNotation)});
     this.initialize();
   }
   // <---Auto[ClassBegin]
@@ -161,7 +186,6 @@ class KlassA extends Base<IProps, IState> {
   // Declare class variables and functions here:
   //
   protected initialize(): void {
-    
   }
 
   // Auto[ClassEnd]--->
@@ -173,67 +197,79 @@ class KlassA extends Base<IProps, IState> {
     )
   }
 }
-DeclarationHelper.declare('Demo.KlassA', KlassA);
+DeclarationHelper.declare('${fullnamespace}', ${klass});
 // <---Auto[ClassEnd]
 
 // Export variables here:
 //
-export {IProps, IState, DefaultProps, DefaultState, KlassA};
+export {IProps, IState, DefaultProps, DefaultState};
 `
-        }));
-        
-        ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
-    }
-    
-    public update(properties: any) {
-        if (!super.update(properties)) return;
-        
-        let code = this.state.value;
-        
-        for (let i=0; i<CAMEL_OF_EVENTS_COUNT; i++) {
-            let name = this.props.watchingAttributeNames[i];
+            }
             
-            let value = this.state.attributeValues[name];
-            if (value) value = JSON.parse(value);
-            else value = {};
-            
-            let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + this.state.attributeValues['internal-fsb-class']) + '_' + this.state.attributeValues['internal-fsb-guid'];
-            let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + this.state.attributeValues['internal-fsb-class']) + ' (' + this.state.attributeValues['internal-fsb-name'] + ')';
-            let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
-            let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
-            let FUNCTION_END_BEGIN = `\n    // Auto[${FUNCTION_NAME}:End]--->`;
-            let FUNCTION_END_END = `\n  // <---Auto[${FUNCTION_NAME}:End]`;
-            let CLASS_END_BEGIN = `\n  // Auto[ClassEnd]--->`;
-            let NO_PROPAGATION = `\n    return EventHelper.stopPropagation(event);`;
-            
-            if (value.event) {
-                if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
-                    code = code.replace(CLASS_END_BEGIN,
+            for (let i=0; i<CAMEL_OF_EVENTS_COUNT; i++) {
+                let name = this.props.watchingAttributeNames[i];
+                
+                let value = this.state.attributeValues[name];
+                if (value) value = JSON.parse(value);
+                else value = {};
+                
+                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + this.state.attributeValues['internal-fsb-class']) + '_' + this.state.attributeValues['internal-fsb-guid'];
+                let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + this.state.attributeValues['internal-fsb-class']) + ' (' + this.state.attributeValues['internal-fsb-name'] + ')';
+                let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
+                let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
+                let FUNCTION_END_BEGIN = `\n    // Auto[${FUNCTION_NAME}:End]--->`;
+                let FUNCTION_END_END = `\n  // <---Auto[${FUNCTION_NAME}:End]`;
+                let CLASS_END_BEGIN = `\n  // Auto[ClassEnd]--->`;
+                let NO_PROPAGATION = `\n    return EventHelper.stopPropagation(event);`;
+                
+                if (value.event) {
+                    if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
+                        code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
   protected ${FUNCTION_NAME}(event: HTMLEvent) {${FUNCTION_BEGIN_END}
-    
+
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
     // 
-    ${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
-                } else {
-                    code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+                    } else {
+                        code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
-                }
-            } else {
-                if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
-                    code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
+                    }
+                } else {
+                    if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
+                        code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
+                    }
                 }
             }
+            
+            let DECLARATION_BEGIN = `DeclarationHelper.declare(`;
+            let DECLARATION_END = `);\n// <---Auto[ClassEnd]`;
+            
+            code = `${code.split(DECLARATION_BEGIN)[0]}${DECLARATION_BEGIN}'${fullnamespace}', ${klass}${DECLARATION_END}${code.split(DECLARATION_END)[1]}`;
+            
+            let CLASS_BEGIN = `// Auto[ClassBegin]--->\nclass `;
+            let CLASS_END = ` extends Base<IProps, IState> {`;
+              
+            code = `${code.split(CLASS_BEGIN)[0]}${CLASS_BEGIN}${klass}${CLASS_END}${code.split(CLASS_END)[1]}`;
+            
+            let LOAD_BEGIN = `CodeHelper.clone(DefaultState);
+    
+    super.load(`;
+            let LOAD_END = `);
+    this.initialize();
+  }`;
+  
+            code = `${code.split(LOAD_BEGIN)[0]}${LOAD_BEGIN}${JSON.stringify(dotNotation)}${LOAD_END}${code.split(LOAD_END)[1]}`;
+            
+            this.state.value = code;
+            
+            let editor = ace.edit("reactEditor");
+            
+            editor.setValue(this.state.value);
+            editor.clearSelection();
         }
-        
-        this.state.value = code;
-        
-        let editor = ace.edit("reactEditor");
-        
-        editor.setValue(this.state.value);
-        editor.clearSelection();
     }
     
     private onLoad() {
