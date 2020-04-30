@@ -1,2 +1,6 @@
 include ./mixin/CreateReactComponent
-+CreateReactComponent('FullStackBlend.Components.ReactCodeEditor')
+.workspace-decoration-top-horizontal-line
+div(internal-fsb-for="internal-fsb-react-mode")
+  +CreateReactComponent('FullStackBlend.Components.ReactCodeEditor')
+div(internal-fsb-not-for="internal-fsb-react-mode")
+  include common/empty

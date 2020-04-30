@@ -103,12 +103,15 @@ let recentExtraPanelSelector: string = null;
         break;
       case 'updateEditorProperties':
 	      $('[internal-fsb-for]').hide();
+	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
 	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').show();
 		          $('[internal-fsb-for*="' + key + ':' + value + '"]').show();
+		          $('[internal-fsb-not-for="' + key + '"]').hide();
+		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
 	      	}
 	      }

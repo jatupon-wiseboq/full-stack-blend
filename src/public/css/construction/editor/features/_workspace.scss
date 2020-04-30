@@ -90,6 +90,15 @@
   }
 }
 
+.workspace-decoration-top-horizontal-line {
+  content: '';
+  position: relative;
+  display: block;
+  height: 0px;
+  border-top: solid 2px #c8c8c8;
+  margin-top: -2px;
+}
+
 // Default Workspace State
 //
 [internal-fsb-for] {

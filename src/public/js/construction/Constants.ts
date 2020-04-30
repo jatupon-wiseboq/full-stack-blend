@@ -84,7 +84,7 @@ export const TABLE_CELL_1_OPTIONS = [
 	[[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
 ];
 export const FONT_FAMILY_OPTIONS = FontHelper.listAllFonts();
-export const REACT_MODE_OPTIONS = [["internal-fsb-react-mode", "document", ["fa-thumb-tack", "Document"]], ["internal-fsb-react-mode", "site", ["fa-puzzle-piece", "Site"]], ["internal-fsb-react-mode", "global", ["fa-globe", "Global"]]];
+export const REACT_MODE_OPTIONS = [["internal-fsb-react-mode", "Document", ["fa-thumb-tack", "Document"]], ["internal-fsb-react-mode", "Site", ["fa-puzzle-piece", "Site"]], ["internal-fsb-react-mode", "Global", ["fa-globe", "Global"]]];
 export const MOUSE_EVENT_HANDLING_OPTIONS = [];
 export const KEYBOARD_EVENT_HANDLING_OPTIONS = [];
 export const TOUCH_EVENT_HANDLING_OPTIONS = [];

@@ -131,6 +131,7 @@ class ReactCodeEditor extends Base<Props, State> {
             let namespace = this.state.attributeValues['internal-fsb-react-namespace'] || 'Controls';
             let fullnamespace = namespace + '.' + klass;
             let dotNotation = this.state.attributeValues['internal-fsb-react-data'] || null;
+            let mode = this.state.attributeValues['internal-fsb-react-mode'];
             
             if (code == '') {
                 code = `// Auto[Import]--->
@@ -197,7 +198,7 @@ class KlassA extends Base<IProps, IState> {
     )
   }
 }
-DeclarationHelper.declare('${fullnamespace}', ${klass});
+DeclarationHelper.declare('${mode}', '${fullnamespace}', ${klass});
 // <---Auto[ClassEnd]
 
 // Export variables here:
@@ -247,7 +248,7 @@ ${CLASS_END_BEGIN}`);
             let DECLARATION_BEGIN = `DeclarationHelper.declare(`;
             let DECLARATION_END = `);\n// <---Auto[ClassEnd]`;
             
-            code = `${code.split(DECLARATION_BEGIN)[0]}${DECLARATION_BEGIN}'${fullnamespace}', ${klass}${DECLARATION_END}${code.split(DECLARATION_END)[1]}`;
+            code = `${code.split(DECLARATION_BEGIN)[0]}${DECLARATION_BEGIN}'${mode}', '${fullnamespace}', ${klass}${DECLARATION_END}${code.split(DECLARATION_END)[1]}`;
             
             let CLASS_BEGIN = `// Auto[ClassBegin]--->\nclass `;
             let CLASS_END = ` extends Base<IProps, IState> {`;
@@ -264,12 +265,14 @@ ${CLASS_END_BEGIN}`);
             code = `${code.split(LOAD_BEGIN)[0]}${LOAD_BEGIN}${JSON.stringify(dotNotation)}${LOAD_END}${code.split(LOAD_END)[1]}`;
             
             this.state.value = code;
-            
-            let editor = ace.edit("reactEditor");
-            
-            editor.setValue(this.state.value);
-            editor.clearSelection();
+        } else {
+            this.state.value = '';
         }
+        
+        let editor = ace.edit("reactEditor");
+        
+        editor.setValue(this.state.value);
+        editor.clearSelection();
     }
     
     private onLoad() {
