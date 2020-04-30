@@ -104,7 +104,7 @@ class GridPicker extends Base<Props, State> {
                                                           onUpdate={this.dropdownOnUpdate.bind(this)}
                         >
                             {pug `
-                              i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-desktop", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
+                              i.mb-1(className=["fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-laptop", "fa fa-desktop"][index] + (($this.state.extensionValues['currentActiveLayout'] == index) ? ' active' : ' inactive'))
                               br
                               span(ref="selectedValue" + index, dangerouslySetInnerHTML={__html: $this.getSelectedValue(index)})
                             `}

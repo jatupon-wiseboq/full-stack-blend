@@ -122,18 +122,18 @@ class ReactEventBinder extends Base<Props, State> {
     
     render() {
         return (
-            <div className="btn-group btn-group-sm mr-1 mb-1">
-                <button className={"btn text-center" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px'}}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.props.watchingAttributeNames[0].replace('onfsb', '')} offsetX={-8} offsetY={7}>
-                        <div className="section-container" style={{width: '200px'}}>
+            <div className="btn-group btn-group-sm">
+                <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
+                    <FullStackBlend.Controls.DropDownControl representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7}>
+                        <div className="section-container" style={{width: '175px'}}>
 		                        <div className="section-title">Event Binding</div>
-		                        <div className="section-subtitle">Enable</div>
-		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-bolt", "enable"]]]}/></div>
-		                        <div className="section-subtitle">Propagation</div>
-		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-unlink", "disable"]]]}/></div>
+		                        <div className="section-subtitle">Binding</div>
+		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
+		                        <div className="section-subtitle">No Propagation</div>
+		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
 		                    </div>
                     </FullStackBlend.Controls.DropDownControl>
-                </button>
+                </a>
             </div>
         )
     }
