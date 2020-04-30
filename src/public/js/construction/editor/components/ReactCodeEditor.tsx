@@ -118,6 +118,9 @@ class ReactCodeEditor extends Base<Props, State> {
             value: ''
         }));
         
+        window.define = ace.define;
+        window.require = ace.require;
+        
         ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
     }
     
@@ -276,13 +279,7 @@ ${CLASS_END_BEGIN}`);
     }
     
     private onLoad() {
-        console.log("loaded");
-        
-        window.define = ace.define;
-        window.require = ace.require;
-        
         let editor = ace.edit("reactEditor");
-        editor.session.setMode("ace/mode/typescript");
         
         let beginRegEx = /Auto\[[0-9a-zA-Z\:_]+\]--->/;
         let endRegEx = /<---Auto\[[0-9a-zA-Z\:_]+\]/;
@@ -366,6 +363,8 @@ ${CLASS_END_BEGIN}`);
       return (
         <ReactAce.default style={{position: 'absolute', width: '100%', height: '100%'}}
           name="reactEditor"
+          mode="typescript"
+          theme="github"
           onLoad={this.onLoad.bind(this)}
           onChange={this.onChange.bind(this)}
           value={this.state.value}
@@ -375,9 +374,6 @@ ${CLASS_END_BEGIN}`);
           highlightActiveLine={true}
           setOptions={{
             useWorker: true,
-            enableBasicAutocompletion: true,
-            enableLiveAutocompletion: true,
-            enableSnippets: false,
             showLineNumbers: true,
             tabSize: 2
          }}
