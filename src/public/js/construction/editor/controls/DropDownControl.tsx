@@ -9,6 +9,8 @@ interface Props extends IProps {
     representing: string;
     onVisibleChanged(visible: boolean);
     autohide: boolean;
+    offsetX: number;
+    offsetY: number;
 }
 
 interface State extends IState {
@@ -17,7 +19,9 @@ interface State extends IState {
 class DropDownControl extends React.Component<Props, State> {
     static defaultProps: Props = {
         options: [],
-        autohide: true
+        autohide: true,
+        offsetX: 0,
+        offsetY: 0
     }
     
     private documentOnClickDelegate: Function = null;
@@ -65,6 +69,8 @@ class DropDownControl extends React.Component<Props, State> {
             
             // Assign Size & Position
             //
+            position[0] += this.props.offsetX;
+            position[1] += this.props.offsetY;
             
             if (position[0] + Math.max(dropDownClientWidth, size[0]) < windowWidth) {
                 dropdown.style.left = (position[0] - 1) + 'px';

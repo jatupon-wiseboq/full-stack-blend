@@ -17,7 +17,7 @@ import './components/RadioButtonPicker.js';
 import './components/LayerManager.js';
 import './components/NumberPicker.js';
 import './components/TextPicker.js';
-import './components/CodeEditor.js';
+import './components/ReactCodeEditor.js';
 import './components/ReactEventBinder.js';
 
 //import GitHub from 'github-api';

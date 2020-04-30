@@ -24,6 +24,7 @@ declare let perform: any;
 
 interface Props extends IProps {
     customClassName: string
+    options: any
 }
 
 interface State extends IState {
@@ -31,7 +32,8 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    customClassName: null
+    customClassName: null,
+    options: null
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -92,6 +94,65 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.ATTRIBUTE:
                 		perform('update', {
 						            attributes: list
+						        });
+						        break;
+            }
+        } else if (this.getOptions()[0][1][0] == '{') {
+            let target = this.getOptions()[0][1];
+            let current;
+            
+            switch(mode) {
+		            case Mode.STYLE:
+		            		current = this.state.styleValues[nameOrArrayOfRegularExpression];
+		            		break;
+		            case Mode.ATTRIBUTE:
+		            		current = this.state.attributeValues[nameOrArrayOfRegularExpression];
+		            		break;
+		            case Mode.EXTENSION:
+		            		current = this.state.extensionValues[nameOrArrayOfRegularExpression];
+		            		break;
+            }
+            
+            let currentDict = JSON.parse(current || '{}');
+            let targetDict = JSON.parse(target);
+            
+            if (!currentState) {
+                for (let target in targetDict) {
+                    if (targetDict.hasOwnProperty(target)) {
+                        currentDict[target] = targetDict[target];
+                    }
+                }
+            } else {
+                for (let target in targetDict) {
+                    if (targetDict.hasOwnProperty(target)) {
+                        delete currentDict[target];
+                    }
+                }
+            }
+            
+            switch(mode) {
+		            case Mode.STYLE:
+		            		perform('update', {
+						            styles: [{
+						                name: nameOrArrayOfRegularExpression,
+						                value: JSON.stringify(currentDict)
+						            }]
+						        });
+						        break;
+		            case Mode.ATTRIBUTE:
+		            		perform('update', {
+						            attributes: [{
+						                name: nameOrArrayOfRegularExpression,
+						                value: JSON.stringify(currentDict)
+						            }]
+						        });
+						        break;
+		            case Mode.EXTENSION:
+		            		perform('style', {
+						            styles: [{
+						                name: nameOrArrayOfRegularExpression,
+						                value: JSON.stringify(currentDict)
+						            }]
 						        });
 						        break;
             }
@@ -165,6 +226,35 @@ class RadioButtonPicker extends Base<Props, State> {
      				}
      				
      				return found;
+        } else if (this.getOptions()[0][1][0] == '{') {
+            let _target = this.getOptions()[0][1];
+            let current;
+            
+            switch(mode) {
+		            case Mode.STYLE:
+		            		current = this.state.styleValues[nameOrArrayOfRegularExpression];
+		            		break;
+		            case Mode.ATTRIBUTE:
+		            		current = this.state.attributeValues[nameOrArrayOfRegularExpression];
+		            		break;
+		            case Mode.EXTENSION:
+		            		current = this.state.extensionValues[nameOrArrayOfRegularExpression];
+		            		break;
+            }
+            
+            let currentDict = JSON.parse(current || '{}');
+            let targetDict = JSON.parse(_target || '{}');
+            
+            let isHavingAll = true;
+            for (let target in targetDict) {
+                if (targetDict.hasOwnProperty(target)) {
+                    if (currentDict[target] !== targetDict[target]) {
+                        isHavingAll = false;
+                    }
+                }
+            }
+            
+            return isHavingAll;
         } else {
             switch(mode) {
 		            case Mode.STYLE:
@@ -177,28 +267,38 @@ class RadioButtonPicker extends Base<Props, State> {
         }
     }
     
+    private getOptions() {
+        if (this.props.watchingStyleNames[0]) {
+            return options[this.props.watchingStyleNames[0]] || this.props.options;
+        } else if (this.props.watchingAttributeNames[0]) {
+            return options[this.props.watchingAttributeNames[0]] || this.props.options;
+        } else if (this.props.watchingExtensionNames[0]) {
+            return options[this.props.watchingExtensionNames[0]] || this.props.options;
+        }
+    }
+    
     render() {
         return (
           pug `
             .btn-group.btn-group-sm.mr-1.mb-1(role="group")
-              if options[this.props.watchingStyleNames[0]]
-                each value, index in options[this.props.watchingStyleNames[0]]
+              if this.props.watchingStyleNames[0]
+                each value, index in this.getOptions()
                   button.btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else
                       i.m-0(className="fa "+ value[2][0])
                       = ' ' + value[2][1]
-              if options[this.props.watchingAttributeNames[0]]
-                each value, index in options[this.props.watchingAttributeNames[0]]
+              if this.props.watchingAttributeNames[0]
+                each value, index in this.getOptions()
                   button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else
                       i.m-0(className="fa "+ value[2][0])
                       = ' ' + value[2][1]
-              if options[this.props.watchingExtensionNames[0]]
-                each value, index in options[this.props.watchingExtensionNames[0]]
+              if this.props.watchingExtensionNames[0]
+                each value, index in this.getOptions()
                   button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])

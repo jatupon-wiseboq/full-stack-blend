@@ -1,83 +1,85 @@
 import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import '../controls/DropDownControl.js';
+import '../components/RadioButtonPicker.js';
 import * as CONSTANTS from '../../Constants.js';
 
 let options = {
-		"onClick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onDblClick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseDown": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseMove": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseOut": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseOver": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseUp": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onMouseWheel": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onWheel": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
-    "onKeyDown": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
-    "onKeyPress": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
-    "onKeyUp": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
-    "onTouchStart": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
-    "onTouchMove": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
-    "onTouchEnd": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
-    "onTouchCancel": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
-    "onDrag": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDragEnd": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDragEnter": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDragLeave": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDragOver": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDragStart": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onDrop": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onScroll": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
-    "onBlur": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onChange": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onContextMenu": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onFocus": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onInput": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onInvalid": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onReset": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onSearch": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onSelect": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onSubmit": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
-    "onAfterPrint": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onBeforePrint": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onBeforeUnload": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onError": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onHashChange": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onLoad": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onMessage": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onOffline": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onOnline": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onPageHide": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onPageShow": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onPopState": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onResize": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onStorage": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onUnload": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
-    "onCopy": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
-    "onCut": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
-    "onPaste": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
-    "onabort": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "oncanplay": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "oncanplaythrough": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "oncuechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "ondurationchange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onemptied": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onended": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onerror": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onloadeddata": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onloadedmetadata": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onloadstart": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onpause": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onplay": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onplaying": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onprogress": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onratechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onseeked": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onseeking": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onstalled": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onsuspend": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "ontimeupdate": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onvolumechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onwaiting": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS	
+		"onfsbclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbdblclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmousedown": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmousemove": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmouseout": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmouseover": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmouseup": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbmousewheel": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbwheel": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbkeydown": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbkeypress": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbkeyup": CONSTANTS.KEYBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbtouchstart": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
+    "onfsbtouchmove": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
+    "onfsbtouchend": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
+    "onfsbtouchcancel": CONSTANTS.TOUCH_EVENT_HANDLING_OPTIONS,
+    "onfsbdrag": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdragend": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdragenter": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdragleave": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdragover": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdragstart": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbdrop": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbscroll": CONSTANTS.DRAG_EVENT_HANDLING_OPTIONS,
+    "onfsbblur": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbchange": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbcontextmenu": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbfocus": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbinput": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbinvalid": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbreset": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbsearch": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbselect": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbsubmit": CONSTANTS.FORM_EVENT_HANDLING_OPTIONS,
+    "onfsbafterprint": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbbeforeprint": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbbeforeunload": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsberror": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbhashchange": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbload": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbmessage": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsboffline": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbonline": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbpagehide": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbpageshow": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbpopstate": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbresize": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbstorage": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbunload": CONSTANTS.DOCUMENT_EVENT_HANDLING_OPTIONS,
+    "onfsbcopy": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbcut": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbpaste": CONSTANTS.CLIPBOARD_EVENT_HANDLING_OPTIONS,
+    "onfsbabort": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbcanplay": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbcanplaythrough": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbcuechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbdurationchange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbemptied": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbended": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsberror": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbloadeddata": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbloadedmetadata": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbloadstart": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbpause": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbplay": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbplaying": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbprogress": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbratechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbseeked": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbseeking": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbstalled": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbsuspend": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbtimeupdate": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbvolumechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
+    "onfsbwaiting": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS	
 }
 
 declare let React: any;
@@ -105,18 +107,34 @@ class ReactEventBinder extends Base<Props, State> {
     }
     
     public update(properties: any) {
+        this.refs.picker.update(properties);
+      
         if (!super.update(properties)) return;
+    }
+    
+    private getState() {
+        let value = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        if (value) value = JSON.parse(value);
+        else value = {};
+        
+        return (value.event == true);
     }
     
     render() {
         return (
-          pug `
-            .btn-group.btn-group-sm.mr-1.mb-1(role="group")
-              if options[this.props.watchingExtensionNames[0]]
-                each value, index in options[this.props.watchingExtensionNames[0]]
-                  button.btn.text-center(key="item-extension-" + index, className=(false ? 'btn-primary' : (this.props.customClassName || 'btn-light')), style={fontSize: '12px'})
-                    = this.props.watchingExtensionNames[0].replace(/^on/, '').toLowerCase()
-          `
+            <div className="btn-group btn-group-sm mr-1 mb-1">
+                <button className={"btn text-center" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px'}}>
+                    <FullStackBlend.Controls.DropDownControl representing={this.props.watchingAttributeNames[0].replace('onfsb', '')} offsetX={-8} offsetY={7}>
+                        <div className="section-container" style={{width: '200px'}}>
+		                        <div className="section-title">Event Binding</div>
+		                        <div className="section-subtitle">Enable</div>
+		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-bolt", "enable"]]]}/></div>
+		                        <div className="section-subtitle">Propagation</div>
+		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-unlink", "disable"]]]}/></div>
+		                    </div>
+                    </FullStackBlend.Controls.DropDownControl>
+                </button>
+            </div>
         )
     }
 }
