@@ -204,7 +204,7 @@ var ManipulationHelper = {
       case 'TextElement':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element(contentEditable='true')
+          .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true)
             | ABC
         `, element);
         break;

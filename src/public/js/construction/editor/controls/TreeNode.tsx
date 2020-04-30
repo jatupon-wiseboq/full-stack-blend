@@ -194,7 +194,7 @@ class TreeNode extends React.Component<IProps, IState> {
                   <div className={"treenode-body col offset-" + this.props.deep} onMouseDown={this.mouseDown.bind(this)} node={node.id}>
                     <div className="form-check">
                       <label className="form-check-label noselect">
-                        <input type="checkbox" className="form-check-input" disabled={node.disabled} checked={node.selected} onClick={this.onClick.bind(this, node)} />
+                        <input type="checkbox" className="form-check-input" disabled={node.disabled} defaultChecked={node.selected} onClick={this.onClick.bind(this, node)} />
                         <div className={"treenode-title"}>{node.name}</div>
                       </label>
                     </div>

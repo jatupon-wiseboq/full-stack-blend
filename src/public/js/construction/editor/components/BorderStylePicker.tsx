@@ -89,7 +89,7 @@ class BorderStylePicker extends Base<Props, State> {
     		if (this.props.inline) {
 		        return (
 		            <div className={"btn-group btn-group-sm mr-1 mb-1"}>
-		            		<button className="btn text-center btn-light">
+		            		<a className="btn text-center btn-light">
 				                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={'<div style="width: 90px;"><div style="border-width: 6px; border-style: ' + this.state.styleValues[this.props.watchingStyleNames[0]] + '; border-color: ' + this.state.styleValues[this.props.watchingStyleNames[1]] + '; height: 16px;"/></div>'} onVisibleChanged={this.onVisibleChanged.bind(this)}>
 				                    <div className="section-container">
 				                        <div className="section-title">Border</div>
@@ -105,7 +105,7 @@ class BorderStylePicker extends Base<Props, State> {
 				                        </div>
 				                    </div>
 				                </FullStackBlend.Controls.DropDownControl>
-				            </button>
+				            </a>
 		            </div>
 		        )
 		    } else {
