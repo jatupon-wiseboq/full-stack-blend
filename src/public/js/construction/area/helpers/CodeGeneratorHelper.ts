@@ -9,7 +9,7 @@ var CodeGeneratorHelper = {
     
     return '\n' + lines.join('\n');
   },
-  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, lines: [string], isFirstElement: boolean=true) {
+  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, lines: [string], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (element == Accessories.cursor.getDOMNode()) return;
     if (element == Accessories.resizer.getDOMNode()) return;
     if (element == Accessories.guide.getDOMNode()) return;
@@ -107,23 +107,32 @@ var CodeGeneratorHelper = {
         }
         
         if (reactData !== null) {
-          lines.push(indent + 'each data, index in this.getDataFromNotation("' + reactData + '")');
+          lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")');
           
           indent += '  ';
+          
+          cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
         }
         
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '= ${(<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + index} ' : '') + (reactID ? 'ref="' + reactID + '" ' : '') + (reactData ? 'data={data} ' : '') + '/>)}';
+          composed += '= ${(<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID ? 'ref="' + reactID + '" ' : '') + (reactData ? 'data={data} ' : '') + '/>)}';
           
           lines.push(composed);
-        } else {
+        }
+        
+        if (reactData) {
+          attributes.splice(0, 0, 'key={"item_" + ' + dotNotationChar + '}');
+        }
+        
+        if (reactData !== null || (reactMode && !isFirstElement)) {
+          let charcode = dotNotationChar.charCodeAt() + 1;
+          dotNotationChar = String.fromCharCode(charcode);
+        }
+        
+        if (!reactMode || isFirstElement) {
           let composed = indent;
-          
-          if (reactData) {
-            attributes.splice(0, 0, 'key={"item_" + index}');
-          }
           
           if (tag != 'div' || (classes == '' && styles == null && attributes.length == 0)) composed += tag;
           if (classes != '') composed += ('.' + classes).replace('.internal-fsb-allow-cursor', '');
@@ -138,7 +147,7 @@ var CodeGeneratorHelper = {
           
           let children = [...element.childNodes];
           for (let child of children) {
-            CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent, lines, false);
+            CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent, lines, false, cumulatedDotNotation, dotNotationChar);
           }
         }
       }
