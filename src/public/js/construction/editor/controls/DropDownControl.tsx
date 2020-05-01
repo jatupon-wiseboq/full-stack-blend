@@ -11,6 +11,7 @@ interface Props extends IProps {
     autohide: boolean;
     offsetX: number;
     offsetY: number;
+    width: number;
 }
 
 interface State extends IState {
@@ -21,14 +22,15 @@ class DropDownControl extends React.Component<Props, State> {
         options: [],
         autohide: true,
         offsetX: 0,
-        offsetY: 0
+        offsetY: 0,
+        width: 0
     }
     
     private documentOnClickDelegate: Function = null;
     private maximumWidth: number = 0;
     
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         
         this.documentOnClickDelegate = this.documentOnClick.bind(this);
     }
@@ -56,6 +58,7 @@ class DropDownControl extends React.Component<Props, State> {
             window.document.body.appendChild(dropdown);
             
             let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
+            dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
             this.maximumWidth = dropDownClientWidth;
             let dropDownClientHeight = dropdown.clientHeight + 5;
             let windowWidth = window.innerWidth;
@@ -144,6 +147,8 @@ class DropDownControl extends React.Component<Props, State> {
             .fsb-dropdown-button(ref="button", aria-haspopup="true", aria-expanded="false")
               if (this.props.representing == null)
                 span &nbsp;
+              else if (typeof this.props.representing == 'string' && this.props.representing.indexOf('ICON:') == 0)
+                i(className=this.props.representing.split('ICON:')[1])
               else
                 span(dangerouslySetInnerHTML={__html: this.props.representing})
             .fsb-dropdown-menu.dropdown-menu.hide(ref="dropdown", internal-fsb-event-no-propagate="click")

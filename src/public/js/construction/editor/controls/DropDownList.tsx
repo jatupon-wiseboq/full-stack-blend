@@ -15,6 +15,8 @@ interface Props extends IProps {
     customClassName: string;
     searchBox: boolean;
     useMaximumHeight: boolean;
+    width: number;
+    optionPadding: number;
 }
 
 interface State extends IState {
@@ -29,7 +31,9 @@ class DropDownList extends React.Component<Props, State> {
         autohide: true,
         customClassName: null,
         searchBox: false,
-        useMaximumHeight: false
+        useMaximumHeight: false,
+        width: 0,
+        optionPadding: null
     }
     
     private documentOnClickDelegate: Function = null;
@@ -65,6 +69,7 @@ class DropDownList extends React.Component<Props, State> {
             window.document.body.appendChild(dropdown);
             
             let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
+            dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
             this.maximumWidth = dropDownClientWidth;
             let dropDownClientHeight = dropdown.clientHeight + 5;
             let windowWidth = window.innerWidth;
@@ -184,7 +189,7 @@ class DropDownList extends React.Component<Props, State> {
                 .fsb-content-area-body
                   .fsb-content-area-scrollable
                     each value, index in filtered
-                      .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click")
+                      .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click" style={padding: (this.props.optionPadding !== null) ? this.props.optionPadding : ''})
                         if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
                           = this.props.controls[value]
                         else

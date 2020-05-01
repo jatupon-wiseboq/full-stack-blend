@@ -114,6 +114,15 @@ let recentExtraPanelSelector: string = null;
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
 	      	}
+	      	for (let key of ['editorCurrentMode']) {
+	      		let value = content['extensions'][key];
+	      		if (value) {
+		          $('[internal-fsb-for="' + key + '"]').show();
+		          $('[internal-fsb-for*="' + key + ':' + value + '"]').show();
+		          $('[internal-fsb-not-for="' + key + '"]').hide();
+		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
+		        }
+	      	}
 	      }
         
         window.controls.forEach((control) => {

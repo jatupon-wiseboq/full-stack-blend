@@ -6,6 +6,10 @@ import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper
 import '../controls/Textbox.js';
 import '../controls/DropDownList.js';
 import '../controls/DropDownControl.js';
+import './SettingPicker.js';
+import './PropertyPicker.js';
+import './StatePicker.js';
+import './CustomCodePicker.js';
 import {SIZES_IN_DESCRIPTION, SIZES_IN_UNIT} from '../../Constants.js';
 
 declare let React: any;
@@ -33,6 +37,13 @@ Object.assign(ExtendedDefaultProps, {
     inline: false,
     manual: false
 });
+
+let iconDict = {
+    "SETTING": "ICON:fa fa-wrench m-0",
+    "PROPERTY": "ICON:fa fa-plug m-0",
+    "STATE": "ICON:fa fa-database m-0",
+    "CODE": "ICON:fa fa-code m-0"
+}
 
 class SizePicker extends Base<Props, State> {
     protected state: State = {};
@@ -66,10 +77,10 @@ class SizePicker extends Base<Props, State> {
             index = 0;
         }
         
-        this.state.value = value;
-        this.state.index = index;
-        
-        this.forceUpdate();
+        this.setState({
+          value: value,
+          index: index
+        });
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -131,18 +142,42 @@ class SizePicker extends Base<Props, State> {
             )
         } else {
             return (
-                <div className={"size-picker " + this.props.additionalClassName}>
-                    <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()}>
-                        <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                            <div className="input-group-append">
-                                <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                                    <span>{SIZES_IN_UNIT[this.state.index]}</span>
-                                </FullStackBlend.Controls.DropDownList>
-                            </div>
-                        </div>
-                    </FullStackBlend.Controls.DropDownControl>
-                </div>
+                <span>
+                    {(() => {
+                        if (this.props.watchingStyleNames.length != 0) {
+                            return (
+                                <div className={"size-picker " + this.props.additionalClassName} internal-fsb-not-for="editorCurrentMode:coding">
+                                    <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()}>
+                                        <div className="input-group">
+                                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                                            <div className="input-group-append">
+                                                <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                                                    <span>{SIZES_IN_UNIT[this.state.index]}</span>
+                                                </FullStackBlend.Controls.DropDownList>
+                                            </div>
+                                        </div>
+                                    </FullStackBlend.Controls.DropDownControl>
+                                </div>
+                            )
+                        }
+                    })()}
+                    {(() => {
+                        if (this.props.watchingAttributeNames.length != 0) {
+                            return (
+                                <div className={"size-picker " + this.props.additionalClassName} internal-fsb-for="editorCurrentMode:coding">
+                                    <FullStackBlend.Controls.DropDownControl representing={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]]}>
+                                        <div style={{width: '243px'}}>
+                                            <FullStackBlend.Components.SettingPicker ref="setting" watchingAttributeNames={this.props.watchingAttributeNames} />
+                                            <FullStackBlend.Components.PropertyPicker ref="property" watchingAttributeNames={this.props.watchingAttributeNames} />
+                                            <FullStackBlend.Components.StatePicker ref="state" watchingAttributeNames={this.props.watchingAttributeNames} />
+                                            <FullStackBlend.Components.CustomCodePicker ref="code" watchingAttributeNames={this.props.watchingAttributeNames} />
+                                        </div>
+                                    </FullStackBlend.Controls.DropDownControl>
+                                </div>
+                            )
+                        }
+                    })()}
+                </span>
             )
         }
     }

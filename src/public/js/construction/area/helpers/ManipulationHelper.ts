@@ -1003,6 +1003,18 @@ var ManipulationHelper = {
       }
     }
     
+    switch (content) {
+      case 'designButton':
+        EditorHelper.setEditorCurrentMode('design');
+        break;
+      case 'animationButton':
+        EditorHelper.setEditorCurrentMode('animation');
+        break;
+      case 'codingButton':
+        EditorHelper.setEditorCurrentMode('coding');
+        break;
+    }
+    
     return [accessory, content, remember];
   }
 };

@@ -20,17 +20,17 @@ class BoundaryPicker extends Base<Props, State> {
         return (
             <div className="boundary-picker">
                 <div className="boundary-panel boundary-position">
-                    <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["max-width"]} />
+                    <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["max-width"]} watchingAttributeNames={['internal-fsb-react-style-max-width']} />
                     <span> &times; </span>
-                    <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["max-height"]} />
+                    <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["max-height"]} watchingAttributeNames={['internal-fsb-react-style-max-height']} />
                 </div>
                 <div className="hover-container">
                     <div className="boundary-panel boundary-border">
                     </div>
                     <div className="boundary-panel boundary-size">
-                        <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["min-width"]} />
+                        <FullStackBlend.Components.SizePicker additionalClassName="w" watchingStyleNames={["min-width"]} watchingAttributeNames={['internal-fsb-react-style-min-width']} />
                         <span> &times; </span>
-                        <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["min-height"]} />
+                        <FullStackBlend.Components.SizePicker additionalClassName="h" watchingStyleNames={["min-height"]} watchingAttributeNames={['internal-fsb-react-style-min-height']} />
                     </div>
                 </div>
             </div>

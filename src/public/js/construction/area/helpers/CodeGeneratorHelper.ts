@@ -22,6 +22,7 @@ var CodeGeneratorHelper = {
         let _attributes = HTMLHelper.getAttributes(element, true);
         let classes = '';
         let styles = null;
+        let bindingStyles = {};
         let attributes = [];
         let isForChildren = false;
         let isReactElement = false;
@@ -32,6 +33,29 @@ var CodeGeneratorHelper = {
         let reactData = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
+        
+        for (let attribute of _attributes) {
+          if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
+            let bindingName = attribute.name.replace('internal-fsb-react-style-', '');
+            let bindingType = attribute.value.split('[')[0];
+            let bindingValue = attribute.value.match(/^[A-Z]+\[(.+)\]$/)[1];
+            
+            switch (bindingType) {
+              case 'SETTING':
+                bindingStyles[bindingName] = 'Project.Settings.' + bindingValue;
+                break;
+              case 'PROPERTY':
+                bindingStyles[bindingName] = 'this.props.' + bindingValue;
+                break;
+              case 'STATE':
+                bindingStyles[bindingName] = 'this.state.' + bindingValue;
+                break;
+              case 'CODE':
+                bindingStyles[bindingName] = '(()=>{' + bindingValue + '})()';
+                break;
+            }
+          }
+        }
         
         for (let attribute of _attributes) {
           switch (attribute.name) {
@@ -49,7 +73,12 @@ var CodeGeneratorHelper = {
                     isForChildren = true;
                     continue;
                   }
-                  styles.push(camelKey + ': "' + hashMap[key] + '"');
+                  if (bindingStyles[key]) {
+                    styles.push(camelKey + ': ' + bindingStyles[key] + ' || "' + hashMap[key] + '"');
+                    delete bindingStyles[key];
+                  } else {
+                    styles.push(camelKey + ': "' + hashMap[key] + '"');
+                  }
                 }
               }
               break;
@@ -84,6 +113,14 @@ var CodeGeneratorHelper = {
           }
         }
         
+        for (let key in bindingStyles) {
+          if (bindingStyles.hasOwnProperty(key)) {
+            if (styles == null) styles = [];
+            let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+            styles.push(camelKey + ': ' + bindingStyles[key]);
+          }
+        }
+        
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           styles = null;
         } else if (isForChildren) {
@@ -91,7 +128,7 @@ var CodeGeneratorHelper = {
         }
         
         if (!reactNamespace) {
-          reactNamespace = 'Controls';
+          reactNamespace = 'Project.Controls';
         }
         
         if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {

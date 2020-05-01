@@ -9,6 +9,10 @@ import './NumberPicker.js';
 import './TextPicker.js';
 import './ColorPicker.js';
 import './FilePicker.js';
+import './SettingPicker.js';
+import './PropertyPicker.js';
+import './StatePicker.js';
+import './CustomCodePicker.js';
 import * as CONSTANTS from '../../Constants.js';
 
 let options = {
@@ -71,7 +75,12 @@ let options = {
     "font-stretch": CONSTANTS.FONT_STRETCH_OPTIONS,
     "text-justify": CONSTANTS.TEXT_JUSTIFY_OPTIONS,
     "font-family": CONSTANTS.FONT_FAMILY_OPTIONS,
-    "-fsb-cell-border-size": CONSTANTS.CELL_BORDER_OPTIONS
+    "font-style": CONSTANTS._FONT_STYLE_OPTIONS,
+    "color": CONSTANTS._FONT_COLOR_OPTIONS,
+    "text-align": CONSTANTS._TEXT_ALIGN_OPTIONS,
+    "text-decoration-color": CONSTANTS._TEXT_DECORATION_COLOR_OPTIONS,
+    "-fsb-cell-border-size": CONSTANTS.CELL_BORDER_OPTIONS,
+    "background-color": CONSTANTS.BACKGROUND_COLOR_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -103,6 +112,12 @@ let reject = {
 let defaults = {
     "font-family": "Roboto"
 }
+let iconDict = {
+    "SETTING": "fa fa-wrench",
+    "PROPERTY": "fa fa-plug",
+    "STATE": "fa fa-database",
+    "CODE": "fa fa-code"
+}
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -111,13 +126,13 @@ declare let perform: any;
 interface Props extends IProps {
     customClassName: string,
     searchBox: boolean,
-    useMaximumHeight: boolean
+    useMaximumHeight: boolean,
+    width: number
 }
 
 interface State extends IState {
     controls: any,
-    index: number,
-    value: any
+    index: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -131,7 +146,8 @@ let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     customClassName: null,
     searchBox: false,
-    useMaximumHeight: false
+    useMaximumHeight: false,
+    width: 0
 });
 
 class DropDownPicker extends Base<Props, State> {
@@ -146,14 +162,17 @@ class DropDownPicker extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let index = this.getOptions().indexOf(this.state.styleValues[this.props.watchingStyleNames[0]] || defaults[this.props.watchingStyleNames[0]]);
-        if (index == -1) {
-            index = 0;
+        if (this.props.watchingStyleNames.length != 0) {
+            let index = this.getOptions().indexOf(this.state.styleValues[this.props.watchingStyleNames[0]] || defaults[this.props.watchingStyleNames[0]]);
+            
+            if (index == -1) {
+                index = 0;
+            }
+            
+            this.setState({
+                index: index
+            });
         }
-        
-        this.setState({
-            index: index
-        });
     }
     
     protected dropdownOnUpdate(identity: any, value: any, index: any) {
@@ -174,19 +193,30 @@ class DropDownPicker extends Base<Props, State> {
     
     private getComponentInstances(options) {
         let controls = {};
-        if (options.indexOf('{SIZE}') != -1) {
-            controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-        } else if (options.indexOf('{NUMBER}') != -1) {
-            controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-        } else if (options.indexOf('{FLOAT}') != -1) {
-            controls['{FLOAT}'] = <FullStackBlend.Components.NumberPicker ref="float" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} float={true} />
-        } else if (options.indexOf('{TEXT}') != -1) {
-            controls['{TEXT}'] = <FullStackBlend.Components.TextPicker ref="text" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-        } else if (options.indexOf('{COLOR}') != -1) {
-            controls['{COLOR}'] = <FullStackBlend.Components.ColorPicker ref="color" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-        } else if (options.indexOf('{BROWSE}') != -1) {
-            controls['{BROWSE}'] = <FullStackBlend.Components.FilePicker ref="file" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+        
+        if (this.props.watchingStyleNames.length != 0) {
+            if (options.indexOf('{SIZE}') != -1) {
+                controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+            } else if (options.indexOf('{NUMBER}') != -1) {
+                controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+            } else if (options.indexOf('{FLOAT}') != -1) {
+                controls['{FLOAT}'] = <FullStackBlend.Components.NumberPicker ref="float" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} float={true} />
+            } else if (options.indexOf('{TEXT}') != -1) {
+                controls['{TEXT}'] = <FullStackBlend.Components.TextPicker ref="text" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+            } else if (options.indexOf('{COLOR}') != -1) {
+                controls['{COLOR}'] = <FullStackBlend.Components.ColorPicker ref="color" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+            } else if (options.indexOf('{BROWSE}') != -1) {
+                controls['{BROWSE}'] = <FullStackBlend.Components.FilePicker ref="file" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
+            }
         }
+        
+        if (this.props.watchingAttributeNames.length != 0) {
+            controls['{SETTING}'] = <FullStackBlend.Components.SettingPicker ref="setting" watchingAttributeNames={this.props.watchingAttributeNames} />
+            controls['{PROPERTY}'] = <FullStackBlend.Components.PropertyPicker ref="property" watchingAttributeNames={this.props.watchingAttributeNames} />
+            controls['{STATE}'] = <FullStackBlend.Components.StatePicker ref="state" watchingAttributeNames={this.props.watchingAttributeNames} />
+            controls['{CODE}'] = <FullStackBlend.Components.CustomCodePicker ref="code" watchingAttributeNames={this.props.watchingAttributeNames} />
+        }
+        
         return controls;
     }
     
@@ -204,17 +234,29 @@ class DropDownPicker extends Base<Props, State> {
                 return this.refs.color.getValue();
             case '{BROWSE}':
                 return this.refs.file.getValue();
+            case '{SETTING}':
+                return this.refs.setting.getValue();
+            case '{PROPERTY}':
+                return this.refs.property.getValue();
+            case '{STATE}':
+                return this.refs.state.getValue();
+            case '{CODE}':
+                return this.refs.code.getValue();
             default:
                 return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0px');
         }
     }
     
     private getOptions() {
-        let filteredOptions = options[this.props.watchingStyleNames[0]];
+        let filteredOptions = [];
         
-        if (reject[this.props.watchingStyleNames[0]]) {
-            let list = reject[this.props.watchingStyleNames[0]](this);
-            filteredOptions = filteredOptions.filter(option => list.indexOf(option) == -1);
+        if (this.props.watchingStyleNames.length != 0) {
+            filteredOptions = options[this.props.watchingStyleNames[0]];
+            
+            if (reject[this.props.watchingStyleNames[0]]) {
+                let list = reject[this.props.watchingStyleNames[0]](this);
+                filteredOptions = filteredOptions.filter(option => list.indexOf(option) == -1);
+            }
         }
         
         return filteredOptions;
@@ -228,11 +270,30 @@ class DropDownPicker extends Base<Props, State> {
         }
         
         return (
-            <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group">
-                <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight}>
-                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
-                </FullStackBlend.Controls.DropDownList>
-            </div>
+            <span>
+                {(() => {
+                    if (this.props.watchingStyleNames.length != 0) {
+                        return (
+                            <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-not-for="editorCurrentMode:coding">
+                                <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width}>
+                                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                                </FullStackBlend.Controls.DropDownList>
+                            </div>
+                        )
+                    }
+                })()}
+                {(() => {
+                    if (this.props.watchingAttributeNames.length != 0) {
+                        return (
+                            <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-for="editorCurrentMode:coding">
+                                <FullStackBlend.Controls.DropDownList customClassName={this.state.attributeValues[this.props.watchingAttributeNames[0]] ? 'btn-primary' : ''} options={["{SETTING}", "{PROPERTY}", "{STATE}", "{CODE}"]} controls={this.state.controls} width={Math.max(250, this.props.width)} optionPadding={0}>
+                                    <span>{(map[this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')] || this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')).replace(/(border|background|object|text|list)\-/, '')}: </span><span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
+                                </FullStackBlend.Controls.DropDownList>
+                            </div>
+                        )
+                    }
+                })()}
+           </span>
         )
     }
 }
