@@ -70,7 +70,7 @@ class StatePicker extends Base<Props, State> {
     render() {
         return (
             <div className="input-group inline state-picker" internal-fsb-event-no-propagate="click">
-                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="([a-zA-Z]|[a-zA-Z][a-zA-Z0-9 ]+)?" postRegExp="[a-zA-Z0-9 ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="[a-zA-Z0-9\.\[\]\' ]*" postRegExp="[a-zA-Z0-9\.\[\]\' ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-database m-0" internal-fsb-event-always-propagate="click" />
