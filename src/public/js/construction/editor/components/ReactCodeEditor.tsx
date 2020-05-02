@@ -314,7 +314,7 @@ DeclarationHelper.declare(`;
         <ReactAce.default style={{position: 'absolute', width: '100%', height: '100%'}}
           name="reactEditor"
           mode="typescript"
-          theme="github"
+          theme="tomorrow"
           onLoad={this.onLoad.bind(this)}
           onChange={this.onChange.bind(this)}
           value={this.state.value}
