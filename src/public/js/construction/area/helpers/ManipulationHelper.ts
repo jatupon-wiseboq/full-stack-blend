@@ -80,6 +80,9 @@ var ManipulationHelper = {
       case 'update[responsive]':
       	[accessory, remember, link] = ManipulationHelper.handleUpdateResponsiveSize(name, content, remember, promise, link);
         break;
+      case 'update[code]':
+      	[accessory, remember] = ManipulationHelper.handleUpdateCode(name, content, remember, promise, link);
+        break;
       case 'move[cursor]':
       	[accessory, remember, link] = ManipulationHelper.handleMoveCursor(name, content, remember, promise, link);
         break;
@@ -644,6 +647,11 @@ var ManipulationHelper = {
     remember = false;
   	
   	return [accessory, remember, link];
+  },
+  handleUpdateCode: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+    
+    
+    return [accessory, remember, link];
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
