@@ -63,6 +63,7 @@ var ManipulationHelper = {
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
     let replace = (content && (typeof content === 'object') && content.replace) || false;
+    let tag = (content && (typeof content === 'object') && content.tag) || null;
     
     switch (name) {
       case 'select':
@@ -79,9 +80,6 @@ var ManipulationHelper = {
         break;
       case 'update[responsive]':
       	[accessory, remember, link] = ManipulationHelper.handleUpdateResponsiveSize(name, content, remember, promise, link);
-        break;
-      case 'update[code]':
-      	[accessory, remember] = ManipulationHelper.handleUpdateCode(name, content, remember, promise, link);
         break;
       case 'move[cursor]':
       	[accessory, remember, link] = ManipulationHelper.handleMoveCursor(name, content, remember, promise, link);
@@ -112,6 +110,10 @@ var ManipulationHelper = {
         break;
     }
     
+    if (content && typeof content === 'object') {
+      content.tag = null;
+    }
+    
     if (remember) {
       if (replace && performedIndex >= 0) {
         if (performed[performed.length - 1].replace === replace) {
@@ -138,7 +140,7 @@ var ManipulationHelper = {
       resolve();
     }
     
-    EditorHelper.update();
+    EditorHelper.update(tag);
   },
   
   handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -368,10 +370,23 @@ var ManipulationHelper = {
         };
       } else {
         accessory = {
-          attributes: HTMLHelper.getAttributes(selectingElement, true, {
-            'internal-fsb-reusable-preset-name': null
-          })
+          attributes: HTMLHelper.getAttributes(selectingElement, true)
         };
+      }
+      
+      let dictionary = {};
+      for (let attribute of accessory.attributes) {
+        dictionary[attribute.name] = true;
+      }
+      if (content.attributes !== undefined) {
+        for (let attribute of content.attributes) {
+          if (!!attribute.value && !dictionary[attribute.name]) {
+            accessory.attributes.push({
+              name: attribute.name,
+              value: null
+            });
+          }
+        }
       }
       
       let found = false;
@@ -647,11 +662,6 @@ var ManipulationHelper = {
     remember = false;
   	
   	return [accessory, remember, link];
-  },
-  handleUpdateCode: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
-    
-    
-    return [accessory, remember, link];
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;

@@ -16,7 +16,12 @@ interface State extends IState {
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
-let watchingAttributeNames = [...Object.keys(CAMEL_OF_EVENTS_DICTIONARY)];
+let keys = [...Object.keys(CAMEL_OF_EVENTS_DICTIONARY)];
+let watchingAttributeNames = [];
+for (let name of keys) {
+	watchingAttributeNames.push(name);
+	watchingAttributeNames.push('internal-fsb-react-code-' + name);
+}
 watchingAttributeNames.push('internal-fsb-name');
 watchingAttributeNames.push('internal-fsb-class');
 watchingAttributeNames.push('internal-fsb-guid');
@@ -25,9 +30,57 @@ watchingAttributeNames.push('internal-fsb-react-class');
 watchingAttributeNames.push('internal-fsb-react-id');
 watchingAttributeNames.push('internal-fsb-react-mode');
 watchingAttributeNames.push('internal-fsb-react-data');
+watchingAttributeNames.push('internal-fsb-react-code-import');
+watchingAttributeNames.push('internal-fsb-react-code-declare');
+watchingAttributeNames.push('internal-fsb-react-code-interface');
+watchingAttributeNames.push('internal-fsb-react-code-body');
+watchingAttributeNames.push('internal-fsb-react-code-footer');
 
 let USER_CODE_REGEX_GLOBAL = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]+?)(\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|$)/g;
 let USER_CODE_REGEX_GROUP = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]+?)(\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|$)/;
+
+let defaults = {
+  Import: `
+
+// Import additional modules here:
+//
+import * from '...';
+
+`,
+  Declare: `
+
+// Declare private static variables here:
+//
+let x: number = 0;
+
+`,
+  Interface: `
+
+// Declare or extend interfaces here:
+//
+let DefaultProps = Object.assign({}, DefaultBaseProps, {
+  
+});
+let DefaultState = Object.assign({}, DefaultBaseState, {
+  
+});
+
+`,
+  ClassBegin: `
+  
+  // Declare class variables and functions here:
+  //
+  protected initialize(): void {
+  }
+
+  `,
+  ClassEnd: `
+
+// Export variables here:
+//
+export {IProps, IState, DefaultProps, DefaultState};
+`
+}
 
 Object.assign(ExtendedDefaultProps, {
   watchingAttributeNames: watchingAttributeNames,
@@ -54,11 +107,14 @@ class ReactCodeEditor extends Base<Props, State> {
         ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
     }
     
+    functionNameMapping: any = {}
+    
     public update(properties: any) {
         if (!super.update(properties)) return;
+        if (properties.tag == 'user-action') return;
         
+        let code;
         if (this.state.attributeValues['internal-fsb-react-mode']) {
-            let code = this.state.value;
             let klass = this.state.attributeValues['internal-fsb-react-class'] ||
                 this.state.attributeValues['internal-fsb-class'] + '_' + this.state.attributeValues['internal-fsb-guid'];
             let namespace = this.state.attributeValues['internal-fsb-react-namespace'] || 'Project.Controls';
@@ -66,65 +122,21 @@ class ReactCodeEditor extends Base<Props, State> {
             let dotNotation = this.state.attributeValues['internal-fsb-react-data'] || null;
             let mode = this.state.attributeValues['internal-fsb-react-mode'];
             
-            let defaults = {
-                Import: `
-
-// Import additional modules here:
-//
-import * from '...';
-
-`,
-                Declare: `
-
-// Declare private static variables here:
-//
-let x: number = 0;
-
-`,
-                Interface: `
-
-// Declare or extend interfaces here:
-//
-let DefaultProps = Object.assign({}, DefaultBaseProps, {
-  
-});
-let DefaultState = Object.assign({}, DefaultBaseState, {
-  
-});
-
-`,
-                ClassBegin: `
-  
-  // Declare class variables and functions here:
-  //
-  protected initialize(): void {
-  }
-
-  `,
-                ClassEnd: `
-
-// Export variables here:
-//
-export {IProps, IState, DefaultProps, DefaultState};
-`
-            }
-            
-            if (code == '') {
-                code = `// Auto[Import]--->
+            code = `// Auto[Import]--->
 import {CodeHelper} from '../helpers/CodeHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {DeclarationHelper} from '../helpers/DeclarationHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
-// <---Auto[Import]${defaults.Import}// Auto[Declare]--->
+// <---Auto[Import]${this.state.attributeValues['internal-fsb-react-code-import'] || defaults.Import}// Auto[Declare]--->
 declare let React: any;
 declare let ReactDOM: any;
-// <---Auto[Declare]${defaults.Declare}// Auto[Interface]--->
+// <---Auto[Declare]${this.state.attributeValues['internal-fsb-react-code-declare'] || defaults.Declare}// Auto[Interface]--->
 interface IProps extends IBaseProps {
   
 }
 interface IState extends IBaseState { 
 }
-// <---Auto[Interface]${defaults.Interface}// Auto[ClassBegin]--->
+// <---Auto[Interface]${this.state.attributeValues['internal-fsb-react-code-interface'] || defaults.Interface}// Auto[ClassBegin]--->
 class KlassA extends Base<IProps, IState> {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
@@ -135,7 +147,7 @@ class KlassA extends Base<IProps, IState> {
     
     this.initialize();
   }
-  // <---Auto[ClassBegin]${defaults.ClassBegin}// Auto[ClassEnd]--->
+  // <---Auto[ClassBegin]${this.state.attributeValues['internal-fsb-react-code-body'] || defaults.ClassBegin}// Auto[ClassEnd]--->
   protected render(): any {
     return (
       pug \`
@@ -144,11 +156,10 @@ class KlassA extends Base<IProps, IState> {
   }
 }
 DeclarationHelper.declare();
-// <---Auto[ClassEnd]${defaults.ClassEnd}`
-            }
+// <---Auto[ClassEnd]${this.state.attributeValues['internal-fsb-react-code-footer'] || defaults.ClassEnd}`
             
             for (let i=0; i<CAMEL_OF_EVENTS_COUNT; i++) {
-                let name = this.props.watchingAttributeNames[i];
+                let name = this.props.watchingAttributeNames[i * 2];
                 
                 let value = this.state.attributeValues[name];
                 if (value) value = JSON.parse(value);
@@ -158,20 +169,22 @@ DeclarationHelper.declare();
                 let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + this.state.attributeValues['internal-fsb-class']) + ' (' + this.state.attributeValues['internal-fsb-name'] + ')';
                 let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
                 let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
-                let FUNCTION_END_BEGIN = `\n    // Auto[${FUNCTION_NAME}:End]--->`;
+                let FUNCTION_END_BEGIN = `// Auto[${FUNCTION_NAME}:End]--->`;
                 let FUNCTION_END_END = `\n  // <---Auto[${FUNCTION_NAME}:End]`;
                 let CLASS_END_BEGIN = `\n  // Auto[ClassEnd]--->`;
                 let NO_PROPAGATION = `\n    return EventHelper.stopPropagation(event);`;
+                let FUNCTION_BODY = `
+
+    // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
+    // 
+    
+    `;
                 
                 if (value.event) {
                     if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                         code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: HTMLEvent) {${FUNCTION_BEGIN_END}
-
-    // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
-    // 
-${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: HTMLEvent) {${FUNCTION_BEGIN_END}${this.state.attributeValues['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                     } else {
@@ -183,6 +196,8 @@ ${CLASS_END_BEGIN}`);
                         code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
                     }
                 }
+                
+                this.functionNameMapping[`${FUNCTION_NAME}:Begin`] = 'internal-fsb-react-code-' + name;
             }
             
             let DECLARATION_BEGIN = `DeclarationHelper.declare(`;
@@ -225,16 +240,17 @@ ${CLASS_END_BEGIN}`);
 DeclarationHelper.declare(`;
 
             code = `${code.split(RENDER_BEGIN)[0]}${RENDER_BEGIN}${this.state.extensionValues['autoGeneratedCode']}${RENDER_END}${code.split(RENDER_END)[1]}`;
-            
-            this.state.value = code;
         } else {
-            this.state.value = '';
+            code = '';
         }
         
-        let editor = ace.edit("reactEditor");
-        
-        editor.setValue(this.state.value);
-        editor.clearSelection();
+        if (this.state.value !== code) {
+            this.state.value = code;
+          
+            let editor = ace.edit("reactEditor");
+            editor.setValue(code);
+            editor.clearSelection();
+        }
     }
     
     private onLoad() {
@@ -315,15 +331,53 @@ DeclarationHelper.declare(`;
         editor.session.setUseWrapMode(true);
     }
     private onChange(value) {
-        if (!this.state.attributeValues['internal-fsb-react-mode']) {
-            this.state.value = '';
-        } else if (value) {
-            this.state.value = value;
-            console.log(this.getValue(value));
+        let editor = ace.edit("reactEditor");
+        if (!editor.curOp || !editor.curOp.command.name) return;
+      
+        this.state.value = value;
+      
+        if (this.state.attributeValues['internal-fsb-react-mode'] && value) {
+            let extractedInfo = this.extractCode(value);
+            let defaultDict = {
+            		Import: "internal-fsb-react-code-import",
+            		Declare: "internal-fsb-react-code-declare",
+            		Interface: "internal-fsb-react-code-interface",
+            		ClassBegin: "internal-fsb-react-code-body",
+            		ClassEnd: "internal-fsb-react-code-footer"
+            };
+            
+            let willUpdateAttributes = [];
+            for (let key in extractedInfo) {
+            		if (extractedInfo.hasOwnProperty(key)) {
+            				if (defaultDict[key]) {
+            						if (extractedInfo[key] != defaults[key] && this.state.attributeValues[defaultDict[key]] != extractedInfo[key]) {
+            								willUpdateAttributes.push({
+            										name: defaultDict[key],
+            										value: extractedInfo[key]
+            								});
+            						}
+            				} else if (this.functionNameMapping[key]) {
+            						if (this.state.attributeValues[this.functionNameMapping[key]] != extractedInfo[key]) {
+            								willUpdateAttributes.push({
+            										name: this.functionNameMapping[key],
+            										value: extractedInfo[key]
+            								});
+            						}
+            				}
+            		}
+            }
+            
+            if (willUpdateAttributes.length != 0) {
+		            perform('update', {
+		            		attributes: willUpdateAttributes,
+		                replace: (willUpdateAttributes.length != 1) ? null : willUpdateAttributes[0].name + '+text',
+		                tag: 'user-action'
+		            });
+		        }
         }
     }
     
-    private getValue(code) {
+    private extractCode(code) {
         let resultDictionary = {};
         if (!this.state.attributeValues['internal-fsb-react-mode']) return resultDictionary;
         
