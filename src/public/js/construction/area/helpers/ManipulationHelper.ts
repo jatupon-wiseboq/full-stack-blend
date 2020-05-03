@@ -810,7 +810,7 @@ var ManipulationHelper = {
   	let accessory = null;
   	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
-  	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination);
+  	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
   	
   	if (remember) {
 	  	let nextSibling = HTMLHelper.getNextSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
