@@ -279,7 +279,10 @@ class SitePreview extends Base<Props, State> {
       	.site-preview
       		.close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
       			i.fa.fa-close.m-0
-      		iframe(ref="preview")
+      		.iframe-container
+      			.iframe-navigation-bar
+      			.iframe-body
+      				iframe(ref="preview")
       		.loading-container(style={display: this.state.loading ? 'block' : 'none'})
       			.linear-background
       				.inter-left
