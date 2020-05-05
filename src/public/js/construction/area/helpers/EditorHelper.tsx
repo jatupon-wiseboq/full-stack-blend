@@ -102,6 +102,7 @@ var EditorHelper = {
   },
   synchronize: (name: string, content: any) => {
     window.top.postMessage(JSON.stringify({
+    	target: 'editor',
       name: name,
       content: content
     }), '*');

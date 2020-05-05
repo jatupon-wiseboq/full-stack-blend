@@ -43,6 +43,7 @@
         "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-sass\" \"npm run watch-sass-area\" \"npm run watch-ts\" \"npm run serve-debug\""
     },
     "dependencies": {
+        "amd-module": "0.0.20151203",
         "assert": "^2.0.0",
         "async": "^3.1.0",
         "babel-polyfill": "^6.26.0",
@@ -79,6 +80,7 @@
         "@babel/preset-env": "^7.8.4",
         "@babel/preset-react": "^7.8.3",
         "@babel/preset-typescript": "^7.8.3",
+        "@types/archiver": "^3.1.0",
         "@types/async": "^3.0.2",
         "@types/bcrypt-nodejs": "^0.0.30",
         "@types/bluebird": "^3.5.27",
@@ -111,6 +113,7 @@
         "@types/winston": "^2.4.4",
         "@typescript-eslint/eslint-plugin": "^2.3.1",
         "@typescript-eslint/parser": "^2.3.1",
+        "archiver": "^4.0.1",
         "babel-core": "^6.26.3",
         "babel-eslint": "^10.0.3",
         "babel-plugin-react-auto-binding": "^1.0.5",

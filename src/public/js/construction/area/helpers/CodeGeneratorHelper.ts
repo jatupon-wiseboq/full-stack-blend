@@ -5,7 +5,7 @@ import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants.js';
 var CodeGeneratorHelper = {
   generateCodeForReactRenderMethod: function(element: HTMLElement) {
     let lines: [string] = [];
-    CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(element, '        ', lines);
+    CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', lines);
     
     return '\n' + lines.join('\n');
   },
@@ -16,7 +16,7 @@ var CodeGeneratorHelper = {
     
     if (element) {
       if (!element.tagName) {
-        lines.push(indent + '| ' + element.textContent);
+        lines.push(indent + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
         let _attributes = HTMLHelper.getAttributes(element, true);
@@ -60,7 +60,7 @@ var CodeGeneratorHelper = {
         for (let attribute of _attributes) {
           switch (attribute.name) {
             case 'class':
-              classes = attribute.value.trim().split(' ').join('.').replace(/[\.]+/g, '.');
+              classes = attribute.value.trim().replace(/[\ ]+/g, ' ');
               break;
             case 'style':
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
@@ -143,10 +143,12 @@ var CodeGeneratorHelper = {
           reactData = null;
         }
         
+        let _indent = indent;
         if (reactData !== null) {
-          lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")');
+          lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '").forEach((data, ' + dotNotationChar + ') => {');
+          lines.push(_indent + '  return (');
           
-          indent += '  ';
+          indent += '    ';
           
           cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
         }
@@ -171,21 +173,27 @@ var CodeGeneratorHelper = {
         if (!reactMode || isFirstElement) {
           let composed = indent;
           
-          if (tag != 'div' || (classes == '' && styles == null && attributes.length == 0)) composed += tag;
-          if (classes != '') composed += ('.' + classes).replace('.internal-fsb-allow-cursor', '');
-          if (styles != null || attributes.length != 0) composed += '(';
-          if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
-          if (attributes.length != 0) composed += attributes.join(' ');
-          if (styles != null || attributes.length != 0) composed += ')';
+          composed += '<' + tag;
+          if (classes != '') composed += ' className="' + classes + '"';
+          if (styles != null) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
+          if (attributes.length != 0) composed += ' ' + attributes.join(' ');
+          composed += '>';
           
           lines.push(composed);
           
-          indent += '  ';
-          
           let children = [...element.childNodes];
           for (let child of children) {
-            CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent, lines, false, cumulatedDotNotation, dotNotationChar);
+            CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', lines, false, cumulatedDotNotation, dotNotationChar);
           }
+          
+          composed = indent;
+          composed += '</' + tag + '>';
+          lines.push(composed);
+        }
+        
+        if (reactData !== null) {
+        	lines.push(_indent + '  )');
+        	lines.push(_indent + '})()}');
         }
       }
     }

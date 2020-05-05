@@ -19,8 +19,16 @@ import './components/NumberPicker.js';
 import './components/TextPicker.js';
 import './components/ReactCodeEditor.js';
 import './components/ReactEventBinder.js';
+import './components/SitePreview.js';
 
 //import GitHub from 'github-api';
+
+declare let React: any;
+declare let ReactDOM: any;
+
+let Accessories = {
+  preview: null
+};
 
 let recentExtraPanelSelector: string = null;
 
@@ -168,7 +176,9 @@ let recentExtraPanelSelector: string = null;
   
   window.addEventListener("message", (event) => {
     let data = JSON.parse(event.data);
-    synchronize(data.name, data.content);
+  	if (data.target == 'editor') {
+    	synchronize(data.name, data.content);
+    }
   });
   
   window.setup = (() => {
@@ -177,6 +187,9 @@ let recentExtraPanelSelector: string = null;
     });
   });
   
+  window.preview = (() => {
+  	Accessories.preview.current.start();
+ 	});
   window.save = (() => {
   	/*var gh = new GitHub({
 			token: 'MY_OAUTH_TOKEN'
@@ -200,4 +213,12 @@ let recentExtraPanelSelector: string = null;
   window.deploy = (() => {
   	
  	});
+ 	
+ 	let setup = (() => {
+ 		let previewContainer = document.createElement('div');
+    Accessories.preview = React.createRef();
+    ReactDOM.render(<FullStackBlend.Components.SitePreview ref={Accessories.preview} />, previewContainer);
+    document.body.appendChild(previewContainer);
+ 	});
+ 	setup();
 })();
