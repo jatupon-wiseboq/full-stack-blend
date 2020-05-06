@@ -355,6 +355,8 @@ var ManipulationHelper = {
     return [accessory, remember, link];
   },
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+  	debugger;
+  	
 		let accessory = null;
 		let selectingElement = EditorHelper.getSelectingElement() || document.body;
 		

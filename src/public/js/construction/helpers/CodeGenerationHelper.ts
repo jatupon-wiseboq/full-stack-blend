@@ -212,8 +212,12 @@ export {${previewReactClassName}};
             if (value) value = JSON.parse(value);
             else value = {};
                 
-            let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + '_' + info['internal-fsb-guid'];
-            let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + ' (' + info['internal-fsb-name'] + ')';
+            let FUNCTION_NAME = (info['internal-fsb-class']) ?
+            	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + '_' + info['internal-fsb-guid'] :
+            	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'onDocument');
+            let FUNCTION_COMPREHEND_NAME = (info['internal-fsb-class']) ?
+            	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + ' (' + info['internal-fsb-name'] + ')' :
+            	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'onDocument');
             let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
             let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
             let FUNCTION_END_BEGIN = `// Auto[${FUNCTION_NAME}:End]--->`;

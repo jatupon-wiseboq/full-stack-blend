@@ -180,23 +180,25 @@ var CodeGeneratorHelper = {
         
         if (!reactMode || isFirstElement) {
           let composed = indent;
+          let children = [...element.childNodes];
           
           composed += '<' + tag;
           if (classes != '') composed += ' className="' + classes + '"';
           if (styles != null) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
-          composed += '>';
+          composed += (children.length == 0) ? ' />' : '>';
           
           lines.push(composed);
           
-          let children = [...element.childNodes];
           for (let child of children) {
             CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', lines, false, cumulatedDotNotation, dotNotationChar);
           }
           
-          composed = indent;
-          composed += '</' + tag + '>';
-          lines.push(composed);
+          if (children.length != 0) {
+	          composed = indent;
+	          composed += '</' + tag + '>';
+	          lines.push(composed);
+	        }
         }
         
         if (reactData !== null) {
