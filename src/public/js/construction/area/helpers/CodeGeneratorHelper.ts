@@ -1,5 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
+import {CodeGenerationHelper, DEFAULTS} from '../../helpers/CodeGenerationHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants.js';
 
 var CodeGeneratorHelper = {
@@ -8,6 +10,12 @@ var CodeGeneratorHelper = {
     CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', lines);
     
     return '\n' + lines.join('\n');
+  },
+  generateCodeForMergingSection: function(element: HTMLElement) {
+  	let lines: [string] = [];
+  	CodeGeneratorHelper.recursiveGenerateCodeForMergingSection(element, lines);
+    
+    return lines.join('\n');
   },
   recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, lines: [string], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (element == Accessories.cursor.getDOMNode()) return;
@@ -195,6 +203,39 @@ var CodeGeneratorHelper = {
         	lines.push(_indent + '  )');
         	lines.push(_indent + '})()}');
         }
+      }
+    }
+  },
+  recursiveGenerateCodeForMergingSection: function(element: HTMLElement, lines: [string], isFirstElement: boolean=true) {
+  	if (element == Accessories.cursor.getDOMNode()) return;
+    if (element == Accessories.resizer.getDOMNode()) return;
+    if (element == Accessories.guide.getDOMNode()) return;
+    
+    if (element && element.tagName) {
+    	if (!isFirstElement && HTMLHelper.getAttribute(element, 'internal-fsb-react-mode')) return;
+    	
+    	if (!isFirstElement) {
+    		let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+		    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+		    let attributes = null;
+		    
+		    if (reusablePresetName) {
+		      attributes = HTMLHelper.getAttributes(element, false, {
+		        style: StylesheetHelper.getStylesheetDefinition(presetId)
+		      });
+		    } else {
+		      attributes = HTMLHelper.getAttributes(element, false);
+		    }
+    		
+	    	let code, mapping;
+	    	[code, mapping] = CodeGenerationHelper.generateMergingCode(attributes, true);
+	    	
+	    	if (code) lines.push(code);
+    	}
+    	
+    	let children = [...element.childNodes];
+      for (let child of children) {
+        CodeGeneratorHelper.recursiveGenerateCodeForMergingSection(child, lines, false);
       }
     }
   }
