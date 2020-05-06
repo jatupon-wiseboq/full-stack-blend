@@ -16,7 +16,8 @@ interface Props extends IProps {
 
 interface State extends IState {
    value: string,
-   loading: boolean
+   loading: boolean,
+   requiredFilesLoaded: boolean
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -50,7 +51,8 @@ Object.assign(ExtendedDefaultProps, {
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
     value: '',
-    loading: false
+    loading: false,
+    requiredFilesLoaded: false
 });
 
 class SitePreview extends Base<Props, State> {
@@ -64,8 +66,6 @@ class SitePreview extends Base<Props, State> {
     
     componentDidMount() {
     		window.addEventListener("message", (event) => {
-    			console.log(event.data);
-    			
 			    let data = JSON.parse(event.data);
 			  	if (data.target == 'site-preview') {
 			  		switch (data.name) {
@@ -79,13 +79,13 @@ class SitePreview extends Base<Props, State> {
 			  });
     }
     
-   	requireFiles: any = {
+   	requiredFiles: any = {
     		"src/public/js/helpers/CodeHelper.ts": false,
     		"src/public/js/helpers/DeclarationHelper.ts": false,
     		"src/public/js/helpers/EventHelper.ts": false,
     		"src/public/js/components/Base.tsx": false
     };
-    requireFilesRemainingCount: number = 4;
+    requiredFilesRemainingCount: number = 4;
     zipReader: any = null;
     reader: any = null;
     currentKey: string = null;
@@ -96,13 +96,13 @@ class SitePreview extends Base<Props, State> {
     
     public clear() {
     		let count = 0;
-    		for (let key in this.requireFiles) {
-    				if (this.requireFiles.hasOwnProperty(key)) {
-    							this.requireFiles[key] = false;
+    		for (let key in this.requiredFiles) {
+    				if (this.requiredFiles.hasOwnProperty(key)) {
+    							this.requiredFiles[key] = false;
     							count += 1;
     				}
     		}
-    		this.requireFilesRemainingCount = count;
+    		this.requiredFilesRemainingCount = count;
     		if (this.zipReader) this.zipReader.close();
     		this.zipReader = null;
     		this.reader = null;
@@ -110,29 +110,35 @@ class SitePreview extends Base<Props, State> {
     }
     
     public start() {
-    		this.clear();
-    		
     		this.setState({
     			loading: true	
     		});
     		
-    		HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
-    		
-    		var request = new XMLHttpRequest();
-				request.addEventListener("load", this.unzip.bind(this, request));
-				request.addEventListener("error", this.close.bind(this));
-				request.responseType = 'blob';
-				request.open("GET", "/boilerplate.zip");
-				request.send();
+    		if (!this.state.requiredFilesLoaded) {
+		    		this.clear();
+		    		
+		    		HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+		    		
+		    		var request = new XMLHttpRequest();
+						request.addEventListener("load", this.unzip.bind(this, request));
+						request.addEventListener("error", this.close.bind(this));
+						request.responseType = 'blob';
+						request.open("GET", "/boilerplate.zip");
+						request.send();
+				} else {
+						HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+						
+						this.display();
+				}
     }
     
-    public unzip(request) {
+    private unzip(request) {
     		this.currentKey = null;
 			  zip.createReader(new zip.BlobReader(request.response), ((zipReader) => {
 			    zipReader.getEntries(((entries) => {
 			    	for (let entry of entries) {
-			    		if (typeof this.requireFiles[entry.filename] === 'boolean') {
-			    			this.requireFiles[entry.filename] = entry;
+			    		if (typeof this.requiredFiles[entry.filename] === 'boolean') {
+			    			this.requiredFiles[entry.filename] = entry;
 			    		}
 				    }
 				    this.read();
@@ -141,28 +147,31 @@ class SitePreview extends Base<Props, State> {
 			  }).bind(this), this.close.bind(this));
     }
     
-    public read() {
+    private read() {
     		if (this.reader == null) {
     				this.reader = new FileReader();
     				this.reader.addEventListener('loadend', ((event) => {
-    						if (typeof this.requireFiles[this.currentKey] === 'object') {
-				    				this.requireFiles[this.currentKey] = event.srcElement.result;
-				    				this.requireFilesRemainingCount -= 1;
+    						if (typeof this.requiredFiles[this.currentKey] === 'object') {
+				    				this.requiredFiles[this.currentKey] = event.srcElement.result;
+				    				this.requiredFilesRemainingCount -= 1;
 				    		}
-				    		if (this.requireFilesRemainingCount > 0) this.read();
+				    		if (this.requiredFilesRemainingCount > 0) this.read();
 				    		else {
 				    			if (this.zipReader) this.zipReader.close();
 				    			this.zipReader = null;
-				    			this.display();
+				    			
+				    			this.state.requiredFilesLoaded = true;
+				    			
+				    			this.compile();
 				    		}
 						}).bind(this));
 						this.reader.addEventListener('error', this.close.bind(this));
     		}
-    		for (let key in this.requireFiles) {
-    				if (this.requireFiles.hasOwnProperty(key)) {
-    						if (typeof this.requireFiles[key] === 'object') {
+    		for (let key in this.requiredFiles) {
+    				if (this.requiredFiles.hasOwnProperty(key)) {
+    						if (typeof this.requiredFiles[key] === 'object') {
 	    							this.currentKey = key;
-    								let entry = this.requireFiles[key];
+    								let entry = this.requiredFiles[key];
 	    							entry.getData(new zip.BlobWriter("text/plain", this.close.bind(this)), ((data) => {
 								        this.reader.readAsText(data);
 							      }).bind(this));
@@ -172,7 +181,20 @@ class SitePreview extends Base<Props, State> {
     		}
     }
     
-    public display() {
+    private compile() {
+    		for (let key in this.requiredFiles) {
+		        if (this.requiredFiles.hasOwnProperty(key)) {
+		        		if (typeof this.requiredFiles[key] === 'string') {
+										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
+										this.requiredFiles[key] = URL.createObjectURL(new Blob([this.requiredFiles[key]]));
+								}
+		    		}
+		    }
+		    
+		    this.display();
+    }
+    
+    private display() {
     		let code, mapping;
     		if (this.state.attributeValues['internal-fsb-react-mode']) {
           	let info = this.state.attributeValues;
@@ -185,13 +207,6 @@ class SitePreview extends Base<Props, State> {
             
         		[code, mapping] = CodeGenerationHelper.generateMergingCode(info, 'Main');
         }
-        
-        for (let key in this.requireFiles) {
-		        if (this.requireFiles.hasOwnProperty(key)) {
-								this.requireFiles[key] = ts.transpileModule(this.requireFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
-								this.requireFiles[key] = URL.createObjectURL(new Blob([this.requireFiles[key]]));
-		    		}
-		    }
         
         code = ts.transpileModule(code, {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
         let url = 'data:text/javascript;charset=utf8;base64,' + CodeHelper.convertToBase64(code);
@@ -213,7 +228,7 @@ class SitePreview extends Base<Props, State> {
 		<script type="text/typescript">
 			// Load AMD modules.
 			// 
-			let requireFiles = ${JSON.stringify(this.requireFiles)};
+			let requiredFiles = ${JSON.stringify(this.requiredFiles)};
 			
 			require(["https://unpkg.com/react@16/umd/react.development.js"], (React) => {
 				define('react', React);
@@ -223,16 +238,16 @@ class SitePreview extends Base<Props, State> {
 					window.ReactDOM = ReactDOM;
 					
 					require([
-						requireFiles["src/public/js/helpers/CodeHelper.ts"],
-						requireFiles["src/public/js/helpers/DeclarationHelper.ts"],
-						requireFiles["src/public/js/helpers/EventHelper.ts"]
+						requiredFiles["src/public/js/helpers/CodeHelper.ts"],
+						requiredFiles["src/public/js/helpers/DeclarationHelper.ts"],
+						requiredFiles["src/public/js/helpers/EventHelper.ts"]
 					], (CodeHelper, DeclarationHelper, EventHelper) => {
 						define('CodeHelper', CodeHelper);
 						define('DeclarationHelper', DeclarationHelper);
 						define('EventHelper', EventHelper);
 						
 						require([
-							requireFiles["src/public/js/components/Base.tsx"]
+							requiredFiles["src/public/js/components/Base.tsx"]
 						], (Base) => {
 							define('Base', Base);
 							
@@ -262,9 +277,10 @@ class SitePreview extends Base<Props, State> {
     }
     
     private close(error) {
-    		if (error) console.log(error);
-    		
-    		this.clear();
+    		if (error instanceof Error) {
+    			console.log(error.message);
+    			this.clear();
+    		}
     	
     		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
     		
