@@ -116,8 +116,16 @@ let recentExtraPanelSelector: string = null;
 	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
-		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {$(element).css('display', $(element).attr('internal-fsb-for-display-value') || 'block');});
-		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {$(element).css('display', $(element).attr('internal-fsb-for-display-value') || 'block');});
+		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
+		          	element = $(element);
+		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+		          	else element.show();
+		          });
+		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
+		          	element = $(element);
+		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+		          	else element.show();
+		          });
 		          $('[internal-fsb-not-for="' + key + '"]').hide();
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
@@ -125,8 +133,16 @@ let recentExtraPanelSelector: string = null;
 	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
-		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {$(element).css('display', $(element).attr('internal-fsb-for-display-value') || 'block');});
-		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {$(element).css('display', $(element).attr('internal-fsb-for-display-value') || 'block');});
+		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
+		          	element = $(element);
+		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+		          	else element.show();
+		          });
+		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
+		          	element = $(element);
+		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+		          	else element.show();
+		          });
 		          $('[internal-fsb-not-for="' + key + '"]').hide();
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
