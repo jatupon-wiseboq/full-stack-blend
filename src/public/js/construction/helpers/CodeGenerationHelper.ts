@@ -248,14 +248,10 @@ ${MERGE_END_BEGIN}`);
         }
         
         if (removeAutoGeneratingWarning) {
-        		console.log(code);
-        		
         		code = code.replace(SYSTEM_CODE_REGEX_BEGIN_GLOBAL, '');
         		code = code.replace(SYSTEM_CODE_REGEX_END_GLOBAL, '');
         		code = code.replace(SYSTEM_CODE_REGEX_BEGIN_GLOBAL, '');
         		code = code.replace(SYSTEM_CODE_REGEX_END_GLOBAL, '');
-
-						console.log(code);
         }
         
         return [code, functionNameMapping];
