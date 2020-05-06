@@ -129,6 +129,7 @@ var EditorHelper = {
    	
     if (element == null) {
     	EditorHelper.synchronize('updateEditorProperties', {
+    		attributes: HTMLHelper.getAttributes(document.body, false),
 	      extensions: Object.assign({
 	        isSelectingElement: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
@@ -196,6 +197,7 @@ var EditorHelper = {
     if (Accessories.resizer.getDOMNode().parentNode != null) {
       Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     }
+    EditorHelper.synchronize("click", null);
   },
   selectNextElement: () => {
     let allElements = [...HTMLHelper.getElementsByClassName('internal-fsb-element')];

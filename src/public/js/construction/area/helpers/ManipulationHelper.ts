@@ -356,7 +356,7 @@ var ManipulationHelper = {
   },
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
 		let accessory = null;
-		let selectingElement = EditorHelper.getSelectingElement();
+		let selectingElement = EditorHelper.getSelectingElement() || document.body;
 		
     if (selectingElement) {
       let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
@@ -665,6 +665,8 @@ var ManipulationHelper = {
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
+  	
+  	EditorHelper.synchronize("click", null);
   	
   	switch (content) {
       case 37:
