@@ -1,5 +1,5 @@
 include ../../mixin/CreateReactComponent
-.section-container.internal-fsb-selecting-on
+.section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
   .section-title
     | React Component
   .section-subtitle
@@ -19,7 +19,15 @@ include ../../mixin/CreateReactComponent
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
   .section-hr
-.section-container.internal-fsb-selecting-on
+.section-container.internal-fsb-selecting-on(internal-fsb-not-for="hasParentReactComponent")
+  .section-title
+    | React Component
+  .section-subtitle
+    | Generalizability 
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
+  .section-hr
+.section-container(internal-fsb-for="hasParentReactComponent")
   .section-title
     | Hierarchical Data Binding
   .section-subtitle

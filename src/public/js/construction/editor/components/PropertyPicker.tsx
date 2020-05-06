@@ -69,7 +69,7 @@ class PropertyPicker extends Base<Props, State> {
     
     render() {
         return (
-            <div className="input-group inline property-picker internal-fsb-selecting-on" internal-fsb-event-no-propagate="click">
+            <div className="input-group inline property-picker" internal-fsb-for="hasParentReactComponent" internal-fsb-event-no-propagate="click" internal-fsb-for-display-value="flex">
                 <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="[a-zA-Z0-9\.\[\]\' ]*" postRegExp="[a-zA-Z0-9\.\[\]\' ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">

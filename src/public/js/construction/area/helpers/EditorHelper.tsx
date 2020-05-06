@@ -132,6 +132,7 @@ var EditorHelper = {
     		attributes: HTMLHelper.getAttributes(document.body, false),
 	      extensions: Object.assign({
 	        isSelectingElement: false,
+	        hasParentReactComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
 	        editorCurrentMode: editorCurrentMode
 	      }),
@@ -156,6 +157,7 @@ var EditorHelper = {
       attributes: attributes,
       extensions: Object.assign({
       	isSelectingElement: true,
+	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),
         stylesheetDefinitionRevision: StylesheetHelper.getStylesheetDefinitionRevision(),
@@ -237,6 +239,9 @@ var EditorHelper = {
   },
   setEditorCurrentMode: (mode: string) => {
     editorCurrentMode = mode;
+  },
+  hasParentReactComponent: (element: HTMLElement) => {
+  	return HTMLHelper.findAllParentValuesInAttributeName("internal-fsb-react-mode", element, document.body, true).length != 0;
   }
 };
 
