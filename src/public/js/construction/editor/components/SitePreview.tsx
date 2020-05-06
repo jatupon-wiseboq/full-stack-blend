@@ -175,11 +175,16 @@ class SitePreview extends Base<Props, State> {
     		let construction = document.getElementById('construction');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
     		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts] = constructionWindow.generateHTMLCodeForPage();
+    		
+    		console.log(combinedHTMLTags);
+    		console.log(combinedMinimalFeatureScripts);
+    		console.log(combinedExpandingFeatureScripts);
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
+        let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
         
         combinedExpandingFeatureScripts = ts.transpileModule(combinedExpandingFeatureScripts, {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
-        let combinedExpandingFeatureScriptsURI = 'data:text/javascript;charset=utf8;base64,' + CodeHelper.convertToBase64(combinedExpandingFeatureScripts);
+        let combinedExpandingFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedExpandingFeatureScripts]));
     		
         let preview = ReactDOM.findDOMNode(this.refs.preview);
         let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
@@ -195,8 +200,7 @@ class SitePreview extends Base<Props, State> {
 	</head>
 	<body>
 		${combinedHTMLTags}
-		<script type="text/javascript">${combinedMinimalFeatureScripts}</script>
-		
+		<script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 		<script type="text/typescript">
 			// Load AMD modules.

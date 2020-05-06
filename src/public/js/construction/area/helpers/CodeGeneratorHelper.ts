@@ -30,7 +30,36 @@ var CodeGeneratorHelper = {
     let allReactPrerequisiteScript = executions.join('\n');
     
   	let combinedHTMLTags = `${rootHTML}`;
-		let combinedMinimalFeatureScripts = `${rootScript}\n${functionDeclarations}\n${functionBindings}`;
+		let combinedMinimalFeatureScripts = 
+`private class Controller {
+  const dictionary: {string: {string: string}} = {};
+  
+  ${functionDeclarations}
+  
+  public register(guid, eventName, functionName) {
+    if (!this.dictionary[guid]) this.dictionary[guid] = {};
+    this.dictionary[guid][eventName] = functionName;
+  }
+  public listen(guid: string) {
+    if (this.dictionary[guid]) {
+      for (let key in this.dictionary[guid]) {
+        if (this.dictionary[guid].hasOwnProperty(key)) {
+          const eventName = key;
+          const functionName = this.dictionary[guid][key];
+          const element = this.getElementUsingGUID(guid);
+          
+          element.addEventListener(eventName, this[functionName].bind(this), false);
+        }
+      }
+    }
+  }
+  public getElementUsingGUID(guid: string): HTMLElement {
+    return document.querySelectorAll('[internal-fsb-guid="' + guid + '"]')[0];
+  }
+}
+let controller = new Controller();
+${functionBindings}
+${rootScript}`;
 		let combinedExpandingFeatureScripts = `${allReactPrerequisiteScript}${allReactComponentsScript}`;
     
     return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts];
@@ -388,7 +417,7 @@ var CodeGeneratorHelper = {
           lines.push(composed);
           
           for (let eventInfo of events) {
-          	executions.push(`HTMLHelper.getElementByAttribute('internal-fsb-guid', '${guid}').addEventListener('${eventInfo[0]}', this.${eventInfo[1]}, false);`);
+          	executions.push(`controller.listen('${guid}');`);
           }
           
           for (let child of children) {
@@ -407,7 +436,7 @@ var CodeGeneratorHelper = {
   generateCodeForMergingSection: function(element: HTMLElement) {
   	let executions: [string] = [];
   	let lines: [string] = [];
-  	CodeGeneratorHelper.recursiveGenerateCodeForMergingSection(element, executions, lines, EditorHelper.hasParentReactComponent(element));
+  	CodeGeneratorHelper.recursiveGenerateCodeForMergingSection(element, executions, lines, true, EditorHelper.hasParentReactComponent(element));
     
     return [executions.join('\n'), lines.join('\n')];
   },

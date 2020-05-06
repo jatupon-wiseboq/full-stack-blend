@@ -4,7 +4,7 @@ import archiver from "archiver";
 
 shell.cp("-R", "src/public/fonts", "dist/public/");
 shell.cp("-R", "src/public/images", "dist/public/");
-shell.cp("-R", "src/public/js/lib", "dist/public/js/lib");
+shell.cp("-R", "src/public/js/lib", "dist/public/js");
 
 const archive = archiver("zip", { zlib: { level: 9 }});
 const stream = fs.createWriteStream("dist/public/boilerplate.zip");

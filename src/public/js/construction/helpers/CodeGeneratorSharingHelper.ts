@@ -246,6 +246,10 @@ ${MERGE_END_BEGIN}`);
                     code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
                 }
+                
+                if (executions) {
+                		executions.push(`controller.register('${info['internal-fsb-guid']}', '${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '').toLowerCase()}', '${FUNCTION_NAME}');`);
+                }
             } else {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
                     code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
@@ -253,10 +257,6 @@ ${MERGE_END_BEGIN}`);
             }
             
             functionNameMapping[`${FUNCTION_NAME}:Begin`] = 'internal-fsb-react-code-' + name;
-            
-            if (executions) {
-            		executions.push(`HTMLHelper.getElementByAttribute('internal-fsb-guid', '${info['internal-fsb-guid']}').addEventListener('${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '')}', this.${FUNCTION_NAME}, false);`);
-            }
         }
         
         if (removeAutoGeneratingWarning) {
