@@ -164,7 +164,7 @@ var CodeGeneratorHelper = {
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '= ${(<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID ? 'ref="' + reactID + '" ' : '') + (reactData ? 'data={data} ' : '') + '/>)}';
+          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={data} ' : '') + '/>';
           
           lines.push(composed);
         }
