@@ -3,6 +3,7 @@ import {EventHelper} from '../helpers/EventHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
 import {CursorHelper} from './helpers/CursorHelper.js';
 import {CapabilityHelper} from './helpers/CapabilityHelper.js';
+import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
 
 (() => {
   // Setup a cursor and a resizer.
@@ -53,6 +54,9 @@ import {CapabilityHelper} from './helpers/CapabilityHelper.js';
       previousWindowSize.height = window.innerHeight;
       EditorHelper.updateEditorProperties();
     }
+  });
+  window.generateHTMLCodeForPage = (() => {
+  	return CodeGeneratorHelper.generateHTMLCodeForPage();
   });
   
   // Install capabilities.
