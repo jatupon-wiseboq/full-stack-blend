@@ -182,6 +182,8 @@ var CodeGeneratorHelper = {
           let composed = indent;
           let children = [...element.childNodes];
           
+          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
+          
           composed += '<' + tag;
           if (classes != '') composed += ' className="' + classes + '"';
           if (styles != null) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
