@@ -241,7 +241,7 @@ ${rootScript}`;
         
         // For react rendering method:
         // 
-        if (reactID) {
+        if (reactID && (!isForChildren || classes.indexOf('internal-fsb-element') == -1)) {
           attributes.splice(0, 0, 'ref="' + reactID + '"');
         }
         
