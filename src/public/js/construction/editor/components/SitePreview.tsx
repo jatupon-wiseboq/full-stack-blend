@@ -175,10 +175,6 @@ class SitePreview extends Base<Props, State> {
     		let construction = document.getElementById('construction');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
     		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts] = constructionWindow.generateHTMLCodeForPage();
-    		
-    		console.log(combinedHTMLTags);
-    		console.log(combinedMinimalFeatureScripts);
-    		console.log(combinedExpandingFeatureScripts);
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
@@ -200,55 +196,36 @@ class SitePreview extends Base<Props, State> {
 	</head>
 	<body>
 		${combinedHTMLTags}
+		<script src="/js/Embed.bundle.js"></script>
 		<script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>
+		<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-		<script type="text/typescript">
-			// Load AMD modules.
-			// 
+		<script type="text/javascript">
 			let requiredFiles = ${JSON.stringify(this.requiredFiles)};
+			require.config({
+        paths: {
+          CodeHelper: requiredFiles["src/public/js/helpers/CodeHelper.ts"],
+          DeclarationHelper: requiredFiles["src/public/js/helpers/DeclarationHelper.ts"],
+          EventHelper: requiredFiles["src/public/js/helpers/EventHelper.ts"],
+          Base: requiredFiles["src/public/js/components/Base.tsx"]
+      	}
+      });
 			
-			require(["https://unpkg.com/react@16/umd/react.development.js"], (React) => {
-				define('react', React);
+			require(["${combinedExpandingFeatureScriptsURI}"], function(Component) {
+				if (Component.Main) {
+					var container = document.createElement('div');
+					ReactDOM.render(React.createElement(Component.Main, {}, null), container);
+					document.body.appendChild(container);
+				}
 				
-				require(["https://unpkg.com/react-dom@16/umd/react-dom.development.js"], (ReactDOM) => {
-					window.React = React;
-					window.ReactDOM = ReactDOM;
-					
-					require([
-						requiredFiles["src/public/js/helpers/CodeHelper.ts"],
-						requiredFiles["src/public/js/helpers/DeclarationHelper.ts"],
-						requiredFiles["src/public/js/helpers/EventHelper.ts"]
-					], (CodeHelper, DeclarationHelper, EventHelper) => {
-						define('CodeHelper', CodeHelper);
-						define('DeclarationHelper', DeclarationHelper);
-						define('EventHelper', EventHelper);
-						
-						require([
-							requiredFiles["src/public/js/components/Base.tsx"]
-						], (Base) => {
-							define('Base', Base);
-							
-							require(["${combinedExpandingFeatureScriptsURI}"], (Component) => {
-								if (Component.Main) {
-									let container = document.createElement('div');
-									ReactDOM.render(React.createElement(Component.Main, {}, null), container);
-									document.body.appendChild(container);
-								}
-								
-								window.top.postMessage(JSON.stringify({
-						    	target: 'site-preview',
-						      name: 'load',
-						      content: false
-						    }), '*');
-							});
-						});
-					});
-				});
+				window.top.postMessage(JSON.stringify({
+		    	target: 'site-preview',
+		      name: 'load',
+		      content: false
+		    }), '*');
 			});
 		</script>
-		<script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
-		<script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
-		<script src="/js/Embed.bundle.js"></script>
 	</body>
 </html>
 `);
