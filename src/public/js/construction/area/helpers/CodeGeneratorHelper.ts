@@ -80,7 +80,6 @@ ${rootScript}`;
     		[_code, _mapping] = CodeGeneratorSharingHelper.generateReactCode(_info);
     		
     		lines.push(_code);
-    		console.log(_code);
     	}
     	
     	let children = [...element.childNodes];
@@ -414,7 +413,7 @@ ${rootScript}`;
       	// Include Another React Class Feature
         // 
       	if (reactMode && !isFirstElement) {
-      		lines.push('[' + reactNamespace + '.' + reactClass + ']');
+      		lines.push('<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"></span>');
       	}
       	
       	// Recursive Children Feature

@@ -18,7 +18,7 @@ var DeclarationHelper = {
     return current;
   },
   
-  'declare': (path: string, klass: any) => {
+  'declare': (level: string, path: string, klass: any) => {
     let splited = path.split('.');
     let name = splited.pop();
     let namespacePath = splited.join('.');

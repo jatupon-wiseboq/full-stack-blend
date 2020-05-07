@@ -212,11 +212,12 @@ class SitePreview extends Base<Props, State> {
       	}
       });
 			
-			require(["${combinedExpandingFeatureScriptsURI}"], function(Component) {
-				if (Component.Main) {
-					var container = document.createElement('div');
-					ReactDOM.render(React.createElement(Component.Main, {}, null), container);
-					document.body.appendChild(container);
+			require(["DeclarationHelper", "${combinedExpandingFeatureScriptsURI}"], function(ExportedDeclarationHelper, ExportedFeatures) {
+				let Project = ExportedDeclarationHelper.Project;
+				let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
+				
+				for (let expandingPlaceholder of expandingPlaceholders) {
+					ReactDOM.render(React.createElement(eval(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
 				}
 				
 				window.top.postMessage(JSON.stringify({

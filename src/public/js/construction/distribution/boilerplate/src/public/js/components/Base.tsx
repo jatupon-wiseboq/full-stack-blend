@@ -30,7 +30,7 @@ class Base extends React.Component {
     protected render() { }
 }
 
-DeclarationHelper.declare('Components.Base', Base);
+DeclarationHelper.declare('Site', 'Components.Base', Base);
 
 export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base};
 
