@@ -199,9 +199,15 @@ ${rootScript}`;
               break;
             default:
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
-                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-                
-                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
+              	let value = null;
+              	if (attribute.value) value = JSON.parse(attribute.value);
+            		else value = {};
+            		
+            		if (value.event) {
+	                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	                
+	                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
+	              }
               }
               break;
           }
@@ -390,9 +396,15 @@ ${rootScript}`;
               break;
             default:
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
-                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-                
-                events.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
+              	let value = null;
+              	if (attribute.value) value = JSON.parse(attribute.value);
+            		else value = {};
+            		
+            		if (value.event) {
+	                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	                
+	                events.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
+	              }
               }
               break;
           }

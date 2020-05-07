@@ -175,6 +175,13 @@ class SitePreview extends Base<Props, State> {
     		let construction = document.getElementById('construction');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
     		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts] = constructionWindow.generateHTMLCodeForPage();
+    		
+    		console.log('combinedHTMLTags');
+    		console.log(combinedHTMLTags);
+    		console.log('combinedMinimalFeatureScripts');
+    		console.log(combinedMinimalFeatureScripts);
+    		console.log('combinedExpandingFeatureScripts');
+    		console.log(combinedExpandingFeatureScripts);
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
