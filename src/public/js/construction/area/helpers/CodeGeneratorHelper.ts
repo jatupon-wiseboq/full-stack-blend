@@ -162,11 +162,13 @@ ${rootScript}`;
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
                   let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+                  if (!camelKey) continue;
                   if (camelKey.indexOf('FsbCell') == 0) continue;
                   if (camelKey.indexOf('FsbForChildren') == 0 && hashMap[key] == 'true') {
                     isForChildren = true;
                     continue;
                   }
+                  
                   if (bindingStyles[key]) {
                     styles.push(camelKey + ': ' + bindingStyles[key] + ' || "' + hashMap[key] + '"');
                     delete bindingStyles[key];
