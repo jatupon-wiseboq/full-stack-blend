@@ -1,8 +1,8 @@
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import {CodeGeneratorSharingHelper, DEFAULTS} from '../../helpers/CodeGeneratorSharingHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {CodeGeneratorSharingHelper, DEFAULTS} from '../../../helpers/CodeGeneratorSharingHelper.js';
+import {CAMEL_OF_EVENTS_DICTIONARY} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;

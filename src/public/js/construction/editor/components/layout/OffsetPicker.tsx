@@ -1,6 +1,6 @@
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker} from './GridPicker.js'
-import {RESPONSIVE_OFFSET_REGEX} from '../../Constants.js';
+import {RESPONSIVE_OFFSET_REGEX} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;

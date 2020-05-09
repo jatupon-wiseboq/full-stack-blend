@@ -1,5 +1,5 @@
-import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import './BorderStylePicker.js';
 import './SizePicker.js';
 import './BackgroundStylePicker.js';

@@ -1,7 +1,7 @@
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import '../controls/Textbox.js';
+import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import '../../controls/Textbox.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -23,7 +23,7 @@ let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
 });
 
-class SettingPicker extends Base<Props, State> {
+class CustomCodePicker extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
@@ -40,7 +40,7 @@ class SettingPicker extends Base<Props, State> {
         		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         }
         
-        if (original && original.indexOf("SETTING[") == 0) {
+        if (original && original.indexOf("CODE[") == 0) {
             this.state.value = (original || '').match(/^[A-Z]+\[(.+)\]$/)[1];
         } else {
             this.state.value = null;
@@ -64,16 +64,16 @@ class SettingPicker extends Base<Props, State> {
     
     public getValue() {
         let value = this.state.value;
-        return (value) ? 'SETTING[' + value + ']' : null;
+        return (value) ? 'CODE[' + value + ']' : null;
     }
     
     render() {
         return (
-            <div className="input-group inline setting-picker" internal-fsb-event-no-propagate="click">
-                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="[a-zA-Z0-9\.\[\]\' ]*" postRegExp="[a-zA-Z0-9\.\[\]\' ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+            <div className="input-group inline custom-code-picker" internal-fsb-event-no-propagate="click">
+                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp=".*" postRegExp=".*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
-                            <i className="fa fa-wrench m-0" internal-fsb-event-always-propagate="click" />
+                            <i className="fa fa-code m-0" internal-fsb-event-always-propagate="click" />
                         </div>
                     </div>
             </div>
@@ -81,6 +81,6 @@ class SettingPicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.SettingPicker', SettingPicker);
+DeclarationHelper.declare('Components.CustomCodePicker', CustomCodePicker);
 
-export {Props, State, SettingPicker};
+export {Props, State, CustomCodePicker};

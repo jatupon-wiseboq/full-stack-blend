@@ -1,7 +1,7 @@
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from './Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import '../controls/Textbox.js';
+import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import '../../controls/Textbox.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -23,7 +23,7 @@ let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
 });
 
-class CustomCodePicker extends Base<Props, State> {
+class PropertyPicker extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
@@ -40,8 +40,8 @@ class CustomCodePicker extends Base<Props, State> {
         		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         }
         
-        if (original && original.indexOf("CODE[") == 0) {
-            this.state.value = (original || '').match(/^[A-Z]+\[(.+)\]$/)[1];
+        if (original && original.indexOf("PROPERTY[") == 0) {
+          this.state.value = (original || '').match(/^[A-Z]+\[(.+)\]$/)[1];
         } else {
             this.state.value = null;
         }
@@ -64,16 +64,16 @@ class CustomCodePicker extends Base<Props, State> {
     
     public getValue() {
         let value = this.state.value;
-        return (value) ? 'CODE[' + value + ']' : null;
+        return (value) ? 'PROPERTY[' + value + ']' : null;
     }
     
     render() {
         return (
-            <div className="input-group inline custom-code-picker" internal-fsb-event-no-propagate="click">
-                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp=".*" postRegExp=".*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+            <div className="input-group inline property-picker" internal-fsb-for="hasParentReactComponent" internal-fsb-event-no-propagate="click" internal-fsb-for-display-value="flex">
+                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="[a-zA-Z0-9\.\[\]\' ]*" postRegExp="[a-zA-Z0-9\.\[\]\' ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
-                            <i className="fa fa-code m-0" internal-fsb-event-always-propagate="click" />
+                            <i className="fa fa-plug m-0" internal-fsb-event-always-propagate="click" />
                         </div>
                     </div>
             </div>
@@ -81,6 +81,6 @@ class CustomCodePicker extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.CustomCodePicker', CustomCodePicker);
+DeclarationHelper.declare('Components.PropertyPicker', PropertyPicker);
 
-export {Props, State, CustomCodePicker};
+export {Props, State, PropertyPicker};

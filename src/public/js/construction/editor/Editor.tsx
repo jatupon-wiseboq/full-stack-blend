@@ -1,25 +1,29 @@
 import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
-import './components/GridPicker.js';
-import './components/OffsetPicker.js';
-import './components/DisplayPicker.js';
-import './components/PreservePicker.js';
-import './components/CSSPresets.js';
-import './components/CSSStyles.js';
-import './components/CSSPresetName.js';
-import './components/DimensionPicker.js';
-import './components/AppearancePicker.js';
-import './components/BoundaryPicker.js';
-import './components/Transformer.js';
-import './components/SizePicker.js';
-import './components/DropDownPicker.js';
-import './components/RadioButtonPicker.js';
-import './components/LayerManager.js';
-import './components/NumberPicker.js';
-import './components/TextPicker.js';
-import './components/ReactCodeEditor.js';
-import './components/ReactEventBinder.js';
-import './components/SitePreview.js';
+import './components/layout/GridPicker.js';
+import './components/layout/OffsetPicker.js';
+import './components/layout/DisplayPicker.js';
+import './components/layout/PreservePicker.js';
+import './components/layout/LayerManager.js';
+
+import './components/css/CSSPresets.js';
+import './components/css/CSSStyles.js';
+import './components/css/CSSPresetName.js';
+
+import './components/shape/DimensionPicker.js';
+import './components/shape/AppearancePicker.js';
+import './components/shape/BoundaryPicker.js';
+import './components/shape/Transformer.js';
+import './components/shape/SizePicker.js';
+
+import './components/generic/DropDownPicker.js';
+import './components/generic/RadioButtonPicker.js';
+import './components/generic/NumberPicker.js';
+import './components/generic/TextPicker.js';
+
+import './components/code/ReactCodeEditor.js';
+import './components/code/ReactEventBinder.js';
+import './components/code/SitePreview.js';
 
 //import GitHub from 'github-api';
 
