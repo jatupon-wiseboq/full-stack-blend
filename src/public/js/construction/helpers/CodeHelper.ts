@@ -1,3 +1,5 @@
+import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX} from '../Constants.js';
+
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 function utf8_encode(source: string) {
@@ -36,28 +38,34 @@ var CodeHelper = {
     source = utf8_encode(source);
 
     while (i < source.length) {
-        chr1 = source.charCodeAt(i++);
-        chr2 = source.charCodeAt(i++);
-        chr3 = source.charCodeAt(i++);
+      chr1 = source.charCodeAt(i++);
+      chr2 = source.charCodeAt(i++);
+      chr3 = source.charCodeAt(i++);
 
-        enc1 = chr1 >> 2;
-        enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-        enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-        enc4 = chr3 & 63;
+      enc1 = chr1 >> 2;
+      enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+      enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+      enc4 = chr3 & 63;
 
-        if (isNaN(chr2)) {
-            enc3 = enc4 = 64;
-        } else if (isNaN(chr3)) {
-            enc4 = 64;
-        }
+      if (isNaN(chr2)) {
+        enc3 = enc4 = 64;
+      } else if (isNaN(chr3)) {
+        enc4 = 64;
+      }
 
-        output = output +
-        KEYSTRING.charAt(enc1) + KEYSTRING.charAt(enc2) +
-        KEYSTRING.charAt(enc3) + KEYSTRING.charAt(enc4);
+      output = output +
+      KEYSTRING.charAt(enc1) + KEYSTRING.charAt(enc2) +
+      KEYSTRING.charAt(enc3) + KEYSTRING.charAt(enc4);
     }
     
     return output;
-	}
+	},
+	getCustomClasses: (value: string) => {
+    return (value || '').replace(INTERNAL_CLASSES_GLOBAL_REGEX, '').replace(NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, ' ').trimStart();
+  },  
+  getInternalClasses: (value: string) => {
+    return (value || '').match(INTERNAL_CLASSES_GLOBAL_REGEX).join(' ');
+  }
 };
 
 export {CodeHelper};

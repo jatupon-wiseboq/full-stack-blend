@@ -1,3 +1,4 @@
+import {CodeHelper} from './CodeHelper.js';
 import {VENDOR_PREFIXES} from '../VendorPrefixes.js';
 
 let vendor_prefixes_hash = {};
@@ -110,15 +111,20 @@ var HTMLHelper = {
   	if (!element) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.getAttribute(name);
+  	} else if (name == 'class' && element.getAttribute(name) == '-fsb-empty') {
+  		return [element.getAttribute(name), element.firstChild.getAttribute(name)].join(' ');
   	} else {
   		return element.getAttribute(name);
   	}
   },
-  setAttribute: (element: HTMLElement, name: string, value: any) => {
+  setAttribute: (element: HTMLElement, name: string, value: any) => {    
   	if (!element) return;
-  	if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
+  	if (name == 'style' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
+  	} else if (name == 'class' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
+  		element.setAttribute(name, CodeHelper.getInternalClasses(value));
+  		return element.firstChild.setAttribute(name, CodeHelper.getCustomClasses(value));
   	} else {
   		return element.setAttribute(name, value);
   	}

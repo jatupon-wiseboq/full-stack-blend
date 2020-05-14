@@ -100,3 +100,5 @@ export const FORM_EVENT_HANDLING_OPTIONS = [];
 export const DOCUMENT_EVENT_HANDLING_OPTIONS = [];
 export const CLIPBOARD_EVENT_HANDLING_OPTIONS = [];
 export const MEDIA_EVENT_HANDLING_OPTIONS = [];
+export const INTERNAL_CLASSES_GLOBAL_REGEX = /(internal-fsb|-fsb|col|offset|d)-[a-zA-Z0-9\-]+/g;
+export const NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX = /[ ]+/g;
