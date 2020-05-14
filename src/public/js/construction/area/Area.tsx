@@ -4,6 +4,7 @@ import {EditorHelper} from './helpers/EditorHelper.js';
 import {CursorHelper} from './helpers/CursorHelper.js';
 import {CapabilityHelper} from './helpers/CapabilityHelper.js';
 import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
+import {StylesheetHelper} from './helpers/StylesheetHelper.js';
 
 (() => {
   // Setup a cursor and a resizer.
@@ -56,7 +57,10 @@ import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
     }
   });
   window.generateHTMLCodeForPage = (() => {
-  	return CodeGeneratorHelper.generateHTMLCodeForPage();
+  	let results = CodeGeneratorHelper.generateHTMLCodeForPage();
+  	results.push(StylesheetHelper.renderStylesheet(true));
+  	
+  	return results;
   });
   
   // Install capabilities.

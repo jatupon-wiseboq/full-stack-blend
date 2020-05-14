@@ -5,80 +5,6 @@ let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
 
-function renderStylesheet() {
-  let lines = [];
-  let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
-  let inversedReferenceHash = {};
-  
-	for (let info of prioritizedKeys) {
-		let references = info.inheritances.filter(token => token != '');
-		
-		for (let reference of references) {
-			if (!inversedReferenceHash[reference]) {
-					inversedReferenceHash[reference] = [];
-			}
-			
-			if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
-					inversedReferenceHash[reference].push(info.id);
-			}
-		}
-	}
-  
-  for (let i=prioritizedKeys.length-1; i>=0; i--) {
-    let info = prioritizedKeys[i];
-    let prefixes = [];
-    let isForChildren = (stylesheetDefinitions[info.id].indexOf('-fsb-for-children: true') != -1);
-    let suffix = (isForChildren) ? ' > :first-child' : '';
-    
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-' + info.id + suffix);
-    prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + info.id + suffix);
-    
-    // Inheritance
-    //
-    let inversedReferences = inversedReferenceHash[info.id] || [];
-    inversedReferences.sort((a, b) => {
-    	let pa = prioritizedKeys.indexOf(a);
-    	let pb = prioritizedKeys.indexOf(b);
-    	
-    	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
-    	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
-    	
-    	return pa > pb;
-    });
-    
-    for (let inheritingKey of inversedReferences) {
-    	prefixes.push('.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-' + inheritingKey + suffix);
-    }
-    
-    lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
-    
-    // Table Cell Property (With Reusable Stylesheet)
-    // 
-    let tableCellDefinitions = stylesheetDefinitions[info.id].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
-    if (tableCellDefinitions !== null) {
-	   	for (let tableCellDefinition of tableCellDefinitions) {
-   			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
-   			
-   			for (let prefix of prefixes) {
-   				lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
-   								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
-   			}
-	   	}
-	  }
-  }
-  let source = lines.join('\n');
-  
-  let element = document.getElementById('internal-fsb-stylesheet');
-  if (!element) {
-    element = document.createElement('style');
-    HTMLHelper.setAttribute(element, 'type', 'text/css');
-    HTMLHelper.setAttribute(element, 'id', 'internal-fsb-stylesheet');
-    document.head.appendChild(element);
-  }
-  
-  element.innerText = source;
-}
-
 var StylesheetHelper = {
 	setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
@@ -116,14 +42,14 @@ var StylesheetHelper = {
     
     stylesheetDefinitionRevision++;
     
-    renderStylesheet();
+    StylesheetHelper.renderStylesheetElement();
   },
   setStylesheetDefinition: function(presetId: string, presetName: string, content: string) {
     stylesheetDefinitions[presetId] = content;
     
     stylesheetDefinitionRevision++;
     
-    renderStylesheet();
+    StylesheetHelper.renderStylesheetElement();
   },
   getStylesheetDefinitionKeys: function() {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
@@ -152,6 +78,83 @@ var StylesheetHelper = {
   },
   getStylesheetDefinitionRevision: function() {
     return stylesheetDefinitionRevision;
+  },
+  renderStylesheetElement: function() {
+    let element = document.getElementById('internal-fsb-stylesheet');
+    if (!element) {
+      element = document.createElement('style');
+      HTMLHelper.setAttribute(element, 'type', 'text/css');
+      HTMLHelper.setAttribute(element, 'id', 'internal-fsb-stylesheet');
+      document.head.appendChild(element);
+    }
+    
+    element.innerText = StylesheetHelper.renderStylesheet();
+  },
+  renderStylesheet: function(production: boolean=false) {
+    let lines = [];
+    let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
+    let inversedReferenceHash = {};
+    let wysiwygCSSSelectorPrefix = (production) ? '' : '.internal-fsb-allow-cursor > .internal-fsb-element';
+    
+  	for (let info of prioritizedKeys) {
+  		let references = info.inheritances.filter(token => token != '');
+  		
+  		for (let reference of references) {
+  			if (!inversedReferenceHash[reference]) {
+  					inversedReferenceHash[reference] = [];
+  			}
+  			
+  			if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
+  					inversedReferenceHash[reference].push(info.id);
+  			}
+  		}
+  	}
+    
+    for (let i=prioritizedKeys.length-1; i>=0; i--) {
+      let info = prioritizedKeys[i];
+      let prefixes = [];
+      let isForChildren = (stylesheetDefinitions[info.id].indexOf('-fsb-for-children: true') != -1);
+      let suffix = (isForChildren) ? ' > :first-child' : '';
+      
+      prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-self-' + info.id + suffix);
+      prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-preset-' + info.id + suffix);
+      
+      // Inheritance
+      //
+      let inversedReferences = inversedReferenceHash[info.id] || [];
+      inversedReferences.sort((a, b) => {
+      	let pa = prioritizedKeys.indexOf(a);
+      	let pb = prioritizedKeys.indexOf(b);
+      	
+      	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
+      	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
+      	
+      	return pa > pb;
+      });
+      
+      for (let inheritingKey of inversedReferences) {
+      	prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-preset-' + inheritingKey + suffix);
+      }
+      
+      lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
+      
+      // Table Cell Property (With Reusable Stylesheet)
+      // 
+      let tableCellDefinitions = stylesheetDefinitions[info.id].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+      if (tableCellDefinitions !== null) {
+  	   	for (let tableCellDefinition of tableCellDefinitions) {
+     			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
+     			
+     			for (let prefix of prefixes) {
+     				lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
+     								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
+     			}
+  	   	}
+  	  }
+    }
+    let source = lines.join('\n');
+    
+    return source;
   }
 };
 

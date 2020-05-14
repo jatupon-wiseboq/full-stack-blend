@@ -170,12 +170,14 @@ class SitePreview extends Base<Props, State> {
     }
     
     private display() {
-    		let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts;
+    		let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedStylesheet;
     		
     		let construction = document.getElementById('construction');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts] = constructionWindow.generateHTMLCodeForPage();
+    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
     		
+    		console.log('combinedStylesheet');
+    		console.log(combinedStylesheet);
     		console.log('combinedHTMLTags');
     		console.log(combinedHTMLTags);
     		console.log('combinedMinimalFeatureScripts');
@@ -200,6 +202,7 @@ class SitePreview extends Base<Props, State> {
 		<title>Untitled - Construction Area</title>
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="/css/embed.css">
+		<style type="text/css">${combinedStylesheet}</style>
 	</head>
 	<body>
 		${combinedHTMLTags}
