@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CodeGeneratorSharingHelper, DEFAULTS} from '../../helpers/CodeGeneratorSharingHelper.js';
@@ -225,6 +226,7 @@ ${rootScript}`;
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           styles = null;
+          classes = CodeHelper.getInternalClasses(classes);
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
         }
@@ -410,6 +412,11 @@ ${rootScript}`;
               }
               break;
           }
+        }
+        
+        if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
+          styles = null;
+          classes = CodeHelper.getInternalClasses(classes);
         }
         
         if (!reactNamespace) {
