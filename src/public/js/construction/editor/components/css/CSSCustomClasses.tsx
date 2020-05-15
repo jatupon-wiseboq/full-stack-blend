@@ -33,7 +33,6 @@ class CSSCustomClasses extends Base<Props, State> {
         if (!super.update(properties)) return;
         
         this.state.value = CodeHelper.getCustomClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]);
-        console.log('this.state.value', this.state.value, this.state.attributeValues[this.props.watchingAttributeNames[0]]);
         
         this.forceUpdate();
     }
