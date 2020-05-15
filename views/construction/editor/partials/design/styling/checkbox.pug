@@ -2,7 +2,27 @@
   .section-title
     | Checkbox Options
   .section-subtitle
-    | Placeholder
+    | Label Title
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['placeholder'], inline: true, button: false}")
+  .section-subtitle
+    | Default Checked
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['checked']}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
+  .section-subtitle
+    | Editable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
+  .section-subtitle
+    | Required
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['require']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
   .section-hr

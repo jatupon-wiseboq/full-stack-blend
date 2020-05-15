@@ -21,6 +21,7 @@ import './components/generic/DropDownPicker.js';
 import './components/generic/RadioButtonPicker.js';
 import './components/generic/NumberPicker.js';
 import './components/generic/TextPicker.js';
+import './components/generic/ListManager.js';
 
 import './components/code/ReactCodeEditor.js';
 import './components/code/ReactEventBinder.js';

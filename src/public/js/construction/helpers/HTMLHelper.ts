@@ -72,6 +72,18 @@ var HTMLHelper = {
   getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}) => {
     if (array) {
       let elementAttributes = [];
+      
+      if (HTMLHelper.isForChildren(element)) {
+        for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
+          if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
+            elementAttributes.push({
+              name: attributeName,
+              value: HTMLHelper.getAttribute(element.firstChild, attributeName)
+            });
+          }
+        }
+      }
+      
       if (element.hasAttributes()) {
         let attrs = element.attributes;
         for (let attr of attrs) {
@@ -100,6 +112,14 @@ var HTMLHelper = {
       
       return elementAttributes;
     } else {
+      if (HTMLHelper.isForChildren(element)) {
+        for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
+          if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
+            mergeAttributes[attributeName] = HTMLHelper.getAttribute(element.firstChild, attributeName);
+          }
+        }
+      }
+      
       if (element.hasAttributes()) {
         let attrs = element.attributes;
         for (let attr of attrs) {
@@ -146,6 +166,8 @@ var HTMLHelper = {
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		element.removeAttribute(name);
   		element.firstChild.removeAttribute(name);
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
+  		return element.firstChild.removeAttribute(name);
   	} else {
   		return element.removeAttribute(name);
   	}
@@ -153,6 +175,8 @@ var HTMLHelper = {
   hasAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute || !element.hasAttribute) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
+  		return element.firstChild.hasAttribute(name);
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
   		return element.firstChild.hasAttribute(name);
   	} else {
   		return element.hasAttribute(name);

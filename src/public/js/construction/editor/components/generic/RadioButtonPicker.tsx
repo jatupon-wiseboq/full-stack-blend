@@ -9,7 +9,11 @@ let options = {
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS,
     "table-cell-0": CONSTANTS.TABLE_CELL_0_OPTIONS,
     "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS,
-    "internal-fsb-react-mode": CONSTANTS.REACT_MODE_OPTIONS
+    "internal-fsb-react-mode": CONSTANTS.REACT_MODE_OPTIONS,
+    "disabled": CONSTANTS.ENABLED_OPTIONS,
+    "checked": CONSTANTS.CHECKED_OPTIONS,
+    "readonly": CONSTANTS.READONLY_OPTIONS,
+    "require": CONSTANTS.REQUIRE_OPTIONS
 }
 
 const Mode = Object.freeze({
