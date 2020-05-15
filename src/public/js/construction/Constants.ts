@@ -102,3 +102,205 @@ export const CLIPBOARD_EVENT_HANDLING_OPTIONS = [];
 export const MEDIA_EVENT_HANDLING_OPTIONS = [];
 export const INTERNAL_CLASSES_GLOBAL_REGEX = /(internal-fsb|-fsb|col|offset|d)-[a-zA-Z0-9\-]+/g;
 export const NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX = /[ ]+/g;
+export const LIBRARIES = [{
+  id: 'react@16',
+  name: 'React',
+  prerequisite: true,
+  version: '16',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://unpkg.com/react@16/umd/react.production.min.js",
+      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://unpkg.com/react@16/umd/react.development.js",
+      "https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+    ]
+  }
+},{
+  id: 'jquery-core@3',
+  name: 'Jquery',
+  prerequisite: false,
+  version: '3.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-3.5.1.min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-3.5.1.js"
+    ]
+  }
+},{
+  id: 'jquery-core@2',
+  name: 'Jquery',
+  prerequisite: false,
+  version: '2.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-2.2.4.min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-2.2.4.js"
+    ]
+  }
+},{
+  id: 'jquery-core@1',
+  name: 'Jquery',
+  prerequisite: false,
+  version: '1.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-1.12.4.min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://code.jquery.com/jquery-1.12.4.js"
+    ]
+  }
+},{
+  id: 'bootstrap@4',
+  name: 'Bootstrap',
+  prerequisite: false,
+  version: '4.x',
+  production: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    ]
+  },
+  development: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    ]
+  }
+},{
+  id: 'bootstrap@3',
+  name: 'Bootstrap',
+  prerequisite: false,
+  version: '3.x',
+  production: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+    ]
+  },
+  development: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+    ]
+  }
+},{
+  id: 'bootstrap@2',
+  name: 'Bootstrap',
+  prerequisite: false,
+  version: '2.x',
+  production: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"
+    ]
+  },
+  development: {
+    stylesheets: [
+      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+    ],
+    scripts: [
+      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"
+    ]
+  }
+},{
+  id: 'underscore@1',
+  name: 'Underscore',
+  prerequisite: false,
+  version: '1.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js"
+    ]
+  }
+},{
+  id: 'underscore',
+  name: 'Underscore',
+  prerequisite: false,
+  version: '0.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/0.6.0/underscore-min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/0.6.0/underscore.js"
+    ]
+  }
+},{
+  id: 'backbone@1',
+  name: 'Backbone',
+  prerequisite: false,
+  version: '1.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone.js"
+    ]
+  }
+},{
+  id: 'backbone',
+  name: 'Backbone',
+  prerequisite: false,
+  version: '0.x',
+  production: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"
+    ]
+  },
+  development: {
+    stylesheets: null,
+    scripts: [
+      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"
+    ]
+  }
+}];

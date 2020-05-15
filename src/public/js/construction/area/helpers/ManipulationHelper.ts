@@ -1,9 +1,10 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {RandomHelper} from '../../helpers/RandomHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {TextHelper} from '../../helpers/TextHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
+import {Accessories, InternalProjectSettings, EditorHelper} from './EditorHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -366,11 +367,13 @@ var ManipulationHelper = {
         accessory = {
           attributes: HTMLHelper.getAttributes(selectingElement, true, {
             style: StylesheetHelper.getStylesheetDefinition(presetId)
-          })
+          }),
+          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings)
         };
       } else {
         accessory = {
-          attributes: HTMLHelper.getAttributes(selectingElement, true)
+          attributes: HTMLHelper.getAttributes(selectingElement, true),
+          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings)
         };
       }
       
@@ -548,6 +551,21 @@ var ManipulationHelper = {
 					   	}
 					  }
 					}
+        }
+      }
+      {
+        let projectSettingsHaveChanged = false;
+        if (content.extensions !== undefined) {
+          for (let extension of content.extensions) {
+            if (InternalProjectSettings[extension.name] != extension.value) {
+              found = true;
+              projectSettingsHaveChanged = true;
+              InternalProjectSettings[extension.name] = extension.value;
+            }
+          }
+        }
+        if (projectSettingsHaveChanged) {
+          EditorHelper.updateExternalLibraries();
         }
       }
       

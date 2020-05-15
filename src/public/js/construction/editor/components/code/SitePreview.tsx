@@ -2,6 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {LIBRARIES} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -21,6 +22,7 @@ zip.workerScriptsPath = "/js/lib/";
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
+    watchingExtensionNames: ["externalLibraries"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -176,6 +178,28 @@ class SitePreview extends Base<Props, State> {
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
     		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
     		
+    		let externalStylesheets = [];
+    		let externalScripts = [];
+    		let selectedLibraries: [string] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+        for (let library of LIBRARIES) {
+            if (selectedLibraries.indexOf(library.id) != -1) {
+                if (library.development.stylesheets) {
+                    for (let stylesheet of library.development.stylesheets) {
+                        externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
+                    }
+                }
+                if (library.development.scripts) {
+                    for (let script of library.development.scripts) {
+                        externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
+                    }
+                }
+            }
+        }
+    		
+    		console.log('externalStylesheets');
+    		console.log(externalStylesheets);
+    		console.log('externalScripts');
+    		console.log(externalScripts);
     		console.log('combinedStylesheet');
     		console.log(combinedStylesheet);
     		console.log('combinedHTMLTags');
@@ -203,13 +227,13 @@ class SitePreview extends Base<Props, State> {
 		<meta name="description" content="" />
 		<link rel="stylesheet" href="/css/embed.css">
 		<style type="text/css">${combinedStylesheet}</style>
+		${externalStylesheets.join('\n')}
 	</head>
 	<body>
 		${combinedHTMLTags}
 		<script src="/js/Embed.bundle.js"></script>
 		<script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>
-		<script src="https://unpkg.com/react@16/umd/react.development.js"></script>
-		<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+		${externalScripts.join('\n')}
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
 		<script type="text/javascript">
 			let requiredFiles = ${JSON.stringify(this.requiredFiles)};

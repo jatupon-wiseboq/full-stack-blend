@@ -25,6 +25,7 @@ import './components/generic/TextPicker.js';
 import './components/code/ReactCodeEditor.js';
 import './components/code/ReactEventBinder.js';
 import './components/code/SitePreview.js';
+import './components/code/ExternalLibrariesChooser.js';
 
 //import GitHub from 'github-api';
 

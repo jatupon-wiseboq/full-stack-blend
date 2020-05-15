@@ -111,8 +111,8 @@ var HTMLHelper = {
   	if (!element) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.getAttribute(name);
-  	} else if (name == 'class' && element.getAttribute(name) == '-fsb-empty') {
-  		return [element.getAttribute(name), element.firstChild.getAttribute(name)].join(' ');
+  	} else if (name == 'class' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
+  		return [element.getAttribute(name) || '', element.firstChild.getAttribute(name) || ''].join(' ');
   	} else {
   		return element.getAttribute(name);
   	}

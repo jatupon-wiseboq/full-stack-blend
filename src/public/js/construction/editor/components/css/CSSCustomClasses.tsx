@@ -33,26 +33,27 @@ class CSSCustomClasses extends Base<Props, State> {
         if (!super.update(properties)) return;
         
         this.state.value = CodeHelper.getCustomClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]);
+        console.log('this.state.value', this.state.value, this.state.attributeValues[this.props.watchingAttributeNames[0]]);
         
         this.forceUpdate();
     }
     
     protected textboxOnUpdate(value: any) {
-    		value = CodeHelper.getCustomClasses(value);
+    		let filteredValue = CodeHelper.getCustomClasses(value);
     		
-    		if (this.state.value != value) {
-    		    this.state.value = value;
+    		if (this.state.value != filteredValue) {
+    		    this.state.value = filteredValue;
     		    
             perform('update', {
             		attributes: [{
         						name: 'class',
-        						value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), value].join(' ')
+        						value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), filteredValue].join(' ')
         				}],
                 replace: 'custom-classname'
             });
         }
         
-        return value;
+        if (filteredValue != value) return filteredValue;
     }
     
     render() {

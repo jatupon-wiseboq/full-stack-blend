@@ -11,6 +11,7 @@ import '../controls/Resizer.js';
 import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
+import {LIBRARIES} from '../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -24,6 +25,9 @@ let Accessories = {
 };
 
 let editorCurrentMode: string = null;
+let InternalProjectSettings: {string: any} = {
+  externalLibraries: 'react@16'
+};
 
 var EditorHelper = {
   setup: () => {
@@ -130,7 +134,7 @@ var EditorHelper = {
     if (element == null) {
     	EditorHelper.synchronize('updateEditorProperties', {
     		attributes: HTMLHelper.getAttributes(document.body, false),
-	      extensions: Object.assign({
+	      extensions: Object.assign({}, InternalProjectSettings, {
 	        isSelectingElement: false,
 	        hasParentReactComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
@@ -155,7 +159,7 @@ var EditorHelper = {
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
-      extensions: Object.assign({
+      extensions: Object.assign({}, InternalProjectSettings, {
       	isSelectingElement: true,
 	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
@@ -168,6 +172,31 @@ var EditorHelper = {
       }, Accessories.cellFormater.getInfo()),
 	    tag: tag
     });
+  },
+  updateExternalLibraries: () => {
+    let externalStylesheets = [];
+		let externalScripts = [];
+		let selectedLibraries: [string] = (InternalProjectSettings.externalLibraries || '').split(' ');
+		
+    for (let library of LIBRARIES) {
+        if (selectedLibraries.indexOf(library.id) != -1) {
+            if (library.development.stylesheets) {
+                for (let stylesheet of library.development.stylesheets) {
+                    let element = document.createElement('link');
+                    element.setAttribute('rel', 'stylesheet');
+                    element.setAttribute('type', 'text/css');
+                    element.setAttribute('href', stylesheet);
+                    element.setAttribute('internal-stylesheet-element', library.id);
+                    document.head.appendChild(element);
+                }
+            }
+        } else {
+            let elements = [...HTMLHelper.getElementsByAttribute("internal-stylesheet-element")].filter(element => HTMLHelper.getAttribute(element, 'internal-stylesheet-element') == library.id);
+            for (let element of elements) {
+                document.head.removeChild(element);
+            }
+        }
+    }
   },
   
   select: (element: HTMLElement) => {
@@ -245,4 +274,4 @@ var EditorHelper = {
   }
 };
 
-export {Accessories, EditorHelper};
+export {Accessories, InternalProjectSettings, EditorHelper};

@@ -13,7 +13,13 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
+    nodes: [ITreeNode]
 }
+
+let ExtendedDefaultState = Object.assign({}, DefaultState);
+Object.assign(ExtendedDefaultState, {
+    nodes: []
+});
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
@@ -23,10 +29,12 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class CSSPresets extends Base<Props, State> {
+    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
 
     constructor(props) {
         super(props);
+        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
     public update(properties: any) {
