@@ -1,5 +1,6 @@
 import {CodeHelper} from './CodeHelper.js';
-import {VENDOR_PREFIXES, FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../VendorPrefixes.js';
+import {VENDOR_PREFIXES} from '../VendorPrefixes.js';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../Constants.js'
 
 let vendor_prefixes_hash = {};
 for (let prefix of VENDOR_PREFIXES) {
@@ -112,15 +113,15 @@ var HTMLHelper = {
     }
   },
   isForChildren: (element: HTMLElement) => {
-    return (HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true');
+    return (HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true' && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
   },
   getAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.getAttribute(name);
-  	} else if (name == 'class' && isForChildren(element)) {
+  	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
   		return [element.getAttribute(name) || '', element.firstChild.getAttribute(name) || ''].join(' ');
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && isForChildren(element)) {
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
   		return element.firstChild.getAttribute(name);
   	} else {
   		return element.getAttribute(name);
@@ -128,13 +129,13 @@ var HTMLHelper = {
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {    
   	if (!element || !element.getAttribute || !element.setAttribute) return;
-  	if (name == 'style' && isForChildren(element)) {
+  	if (name == 'style' && HTMLHelper.isForChildren(element)) {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
-  	} else if (name == 'class' && isForChildren(element)) {
+  	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
   		element.setAttribute(name, CodeHelper.getInternalClasses(value));
   		return element.firstChild.setAttribute(name, CodeHelper.getCustomClasses(value));
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && isForChildren(element)) {
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
   		return element.firstChild.setAttribute(name, value);
   	} else {
   		return element.setAttribute(name, value);
