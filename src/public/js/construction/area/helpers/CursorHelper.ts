@@ -12,6 +12,7 @@ var CursorHelper = {
   },
   moveCursorToTheLeft: () => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
+    console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
     let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
     let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
@@ -39,6 +40,7 @@ var CursorHelper = {
   },
   moveCursorToTheRight: () => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
+    console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
     let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
     let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
@@ -63,7 +65,8 @@ var CursorHelper = {
     
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-      let allowCursorElements = HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element');
+      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+        [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];
       
       if (theAllowCursorElement) {
@@ -82,20 +85,25 @@ var CursorHelper = {
     
     let children = [...container.children];
     let count = 0;
+    let total = 0;
     for (let i=0; i<children.length; i++) {
-      if (isContainerAllowedCursor && children[i] != Accessories.cursor.getDOMNode()) {
+      if (children[i] == Accessories.cursor.getDOMNode()) continue;
+      if (children[i] == Accessories.resizer.getDOMNode()) continue;
+      if (isContainerAllowedCursor) {
         allAllowCursorElements.push(container);
-        allAllowCursorPositions.push(i);
+        allAllowCursorPositions.push(count);
         
         count += 1;
       }
-    
+      
+      total += 1;
+      
       CursorHelper.getDepthFirstReferencesForCursorWalks(children[i], allAllowCursorElements, allAllowCursorPositions);
     }
     
     if (isContainerAllowedCursor) {
       allAllowCursorElements.push(container);
-      allAllowCursorPositions.push(children.length);
+      allAllowCursorPositions.push(total);
     }
     
     return {allAllowCursorElements, allAllowCursorPositions};
@@ -103,7 +111,8 @@ var CursorHelper = {
 	findWalkPathForElement: function(allowCursorElement: HTMLElement) {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (referenceElement) {
-      let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+        [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElement;
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
       
@@ -120,7 +129,8 @@ var CursorHelper = {
   findWalkPathForCursor: function() {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (referenceElement) {
-      let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+        [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
       
@@ -146,7 +156,7 @@ var CursorHelper = {
   },
   createWalkPathForCursor: function(referenceElementGUID: string='0', indexOfAllowCursorElement: number=0,
                                     positionXInTheAllowCursorElement: number=null, positionYInTheAllowCursorElement: number=null) {
-    if (positionXInTheAllowCursorElement == -1) {
+    if (positionXInTheAllowCursorElement == null) {
       let children = [...HTMLHelper.getElementByClassName('internal-fsb-begin-layout').children];
       let count = (children.indexOf(Accessories.cursor.getDOMNode()) !== -1) ? children.length - 1 : children.length;
       let maximum = count;
@@ -158,7 +168,8 @@ var CursorHelper = {
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-      let allowCursorElements = HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element');
+      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+        [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];
       
       if (theAllowCursorElement) {

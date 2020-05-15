@@ -37,7 +37,7 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
   window.document.body.addEventListener("click", (event) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
     
-    CursorHelper.moveCursorToTheEndOfDocument();
+    if (EventHelper.getOriginalElement(event) == document.body) CursorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
   }, true);
   window.document.body.addEventListener("focus", (event) => {
