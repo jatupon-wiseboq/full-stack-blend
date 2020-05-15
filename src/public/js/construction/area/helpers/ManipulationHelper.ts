@@ -284,11 +284,10 @@ var ManipulationHelper = {
       case 'Button':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
-        		input(type='button')
+          button.internal-fsb-element.internal-fsb-allow-cursor(type='button')
+            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
+              | Button
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Image':
       	element = document.createElement('div');
@@ -311,9 +310,14 @@ var ManipulationHelper = {
     }
     
     if (element !== null) {
+      // Assign GUID and name.
+      // 
+      HTMLHelper.setAttribute(element, 'internal-fsb-guid', content.guid);
+      HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
+      
       // Being selected capability
       // 
-      CapabilityHelper.installCapabilityOfBeingSelected(element, content.guid);
+      CapabilityHelper.installCapabilityOfBeingSelected(element);
       promise.then(() => {
         ManipulationHelper.perform('select', content.guid);
       });
@@ -344,10 +348,6 @@ var ManipulationHelper = {
         StylesheetHelper.setStyleAttribute(element, 'width', '150px');
         Accessories.cursor.getDOMNode().parentNode.appendChild(element);
       }
-      
-      // Name the layer.
-      // 
-      HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
       
       // Update Editor UI
       EditorHelper.updateEditorProperties();
@@ -869,7 +869,7 @@ var ManipulationHelper = {
   		
 	  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
 	  	
-	  	if (HTMLHelper.getAttribute(destination, 'internal-fsb-class') == 'Rectangle') {
+	  	if (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
 	  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
 				elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
 	  	}

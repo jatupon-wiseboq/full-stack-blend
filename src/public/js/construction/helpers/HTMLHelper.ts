@@ -1,5 +1,5 @@
 import {CodeHelper} from './CodeHelper.js';
-import {VENDOR_PREFIXES} from '../VendorPrefixes.js';
+import {VENDOR_PREFIXES, FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../VendorPrefixes.js';
 
 let vendor_prefixes_hash = {};
 for (let prefix of VENDOR_PREFIXES) {
@@ -38,8 +38,12 @@ var HTMLHelper = {
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
   },
-  getElementsByAttribute: (attributeName: string, container: HTMLElement=document) => {
-    return container.querySelectorAll('[' + attributeName + ']');
+  getElementsByAttribute: (attributeName: string, container: HTMLElement=document, includingSelf: boolean=false) => {
+    let results = [...container.querySelectorAll('[' + attributeName + ']')];
+    if (includingSelf && HTMLHelper.hasAttribute(container, attributeName)) {
+      results.splice(0, 0, container);
+    }
+    return results;
   },
   getElementsByTagName: (tagName: string, _window: Window=window) => {
     if (_window === null) return [];
@@ -107,30 +111,37 @@ var HTMLHelper = {
       return mergeAttributes;
     }
   },
+  isForChildren: (element: HTMLElement) => {
+    return (HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true');
+  },
   getAttribute: (element: HTMLElement, name: string) => {
-  	if (!element) return null;
+  	if (!element || !element.getAttribute) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.getAttribute(name);
-  	} else if (name == 'class' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
+  	} else if (name == 'class' && isForChildren(element)) {
   		return [element.getAttribute(name) || '', element.firstChild.getAttribute(name) || ''].join(' ');
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && isForChildren(element)) {
+  		return element.firstChild.getAttribute(name);
   	} else {
   		return element.getAttribute(name);
   	}
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {    
-  	if (!element) return;
-  	if (name == 'style' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
+  	if (!element || !element.getAttribute || !element.setAttribute) return;
+  	if (name == 'style' && isForChildren(element)) {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
-  	} else if (name == 'class' && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true') {
+  	} else if (name == 'class' && isForChildren(element)) {
   		element.setAttribute(name, CodeHelper.getInternalClasses(value));
   		return element.firstChild.setAttribute(name, CodeHelper.getCustomClasses(value));
+  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && isForChildren(element)) {
+  		return element.firstChild.setAttribute(name, value);
   	} else {
   		return element.setAttribute(name, value);
   	}
   },
   removeAttribute: (element: HTMLElement, name: string) => {
-  	if (!element) return;
+  	if (!element || !element.getAttribute || !element.removeAttribute) return;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		element.removeAttribute(name);
   		element.firstChild.removeAttribute(name);
@@ -139,7 +150,7 @@ var HTMLHelper = {
   	}
   },
   hasAttribute: (element: HTMLElement, name: string) => {
-  	if (!element) return null;
+  	if (!element || !element.getAttribute || !element.hasAttribute) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		return element.firstChild.hasAttribute(name);
   	} else {

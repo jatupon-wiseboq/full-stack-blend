@@ -304,3 +304,4 @@ export const LIBRARIES = [{
     ]
   }
 }];
+export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value'];

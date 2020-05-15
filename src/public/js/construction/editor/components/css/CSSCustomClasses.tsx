@@ -58,7 +58,7 @@ class CSSCustomClasses extends Base<Props, State> {
     
     render() {
       return (
-        <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp="([a-zA-Z0-9]\-]|[a-zA-Z0-9\- ]+)?" postRegExp="[a-zA-Z0-9\- ]*" onUpdate={this.textboxOnUpdate.bind(this)} />
+        <FullStackBlend.Controls.Textbox spellCheck={false} ref="input" value={this.state.value} preRegExp="([a-zA-Z0-9]\-]|[a-zA-Z0-9\- ]+)?" postRegExp="[a-zA-Z0-9\- ]*" onUpdate={this.textboxOnUpdate.bind(this)} />
       )
     }
 }

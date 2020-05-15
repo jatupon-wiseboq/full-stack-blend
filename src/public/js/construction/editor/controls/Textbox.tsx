@@ -8,6 +8,7 @@ interface Props extends IProps {
     preRegEx: String;
     postRegEx: String;
     onUpdate(value: any);
+    spellCheck: boolean;
 }
 
 interface State extends IState {
@@ -15,6 +16,7 @@ interface State extends IState {
 
 class Textbox extends React.Component<Props, State> {
     static defaultProps: Props = {
+        spellCheck: true
     }
     
     private previousValue: String = "";
@@ -105,7 +107,7 @@ class Textbox extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          input.form-control.form-control-sm(ref="input", type="text", onKeyUp=this.inputOnKeyUp)
+          input.form-control.form-control-sm(ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString())
         `
       )
     }
