@@ -81,20 +81,6 @@ include ../../mixin/CreateReactComponent
   .section-note
     | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
   .section-hr
-.section-container(internal-fsb-for="hasParentReactComponent")
-  .section-title
-    | Front-End Data Binding
-  .section-subtitle
-    | Hierarchical Dot Notation
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
-  .section-subtitle
-    | Paging Size
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-react-paging'], inline: true, button: false}")
-  .section-note
-    | The notation extends its parent, and non-leaf node makes it repeating.
-  .section-hr
 .section-container.internal-fsb-selecting-on
   .section-title
     | Custom Properties
