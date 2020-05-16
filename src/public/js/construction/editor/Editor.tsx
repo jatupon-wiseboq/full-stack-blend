@@ -106,6 +106,8 @@ let recentExtraPanelSelector: string = null;
     button.removeAttr('skip-perform');
     
     synchronize('click');
+    
+    if (event) return EventHelper.cancel(event);
   };
   
   window.FullStackBlend = FullStackBlend;
