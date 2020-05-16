@@ -64,6 +64,84 @@ include ../mixin/CreateReactComponent
   .section-hr
 .section-container
   .section-title
+    | Dimension
+  .section-subtitle
+    | Size & Position
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DimensionPicker')
+  .section-subtitle
+    | Minimum & Maximum Size
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.BoundaryPicker')
+  .section-subtitle
+    | Containing Behaviours
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-fit'], watchingAttributeNames: ['internal-fsb-react-style-object-fit']}")
+    span(internal-fsb-not-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[0,2]', 'object-position']}")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[1,2]', 'object-position']}")
+    span(internal-fsb-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-object-position']}")
+  .section-subtitle
+    | Container Behaviours
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-x'], watchingAttributeNames: ['internal-fsb-react-style-overflow-x']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-y'], watchingAttributeNames: ['internal-fsb-react-style-overflow-y']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
+  .section-hr
+.section-container
+  .section-title
+    | Appearance
+  .section-subtitle
+    | Style & Color
+  .section-body(internal-fsb-not-for="editorCurrentMode:coding")
+    +CreateReactComponent('FullStackBlend.Components.AppearancePicker')
+  .section-body(internal-fsb-for="editorCurrentMode:coding")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-top-style']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-top-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-right-style']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-right-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-bottom-style']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-bottom-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-left-style']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-left-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-border-radius']}")
+  .section-subtitle
+    | Background Options
+  .section-body
+    span(internal-fsb-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-background-color']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-image'], watchingAttributeNames: ['internal-fsb-react-style-background-image']}")
+    span(internal-fsb-not-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-position[0,2]', 'background-position']}")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-position[1,2]', 'background-position']}")
+    span(internal-fsb-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-background-position']}")
+    span(internal-fsb-not-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-size[0,2]', 'background-size']}")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-size[1,2]', 'background-size']}")
+    span(internal-fsb-for="editorCurrentMode:coding")
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-background-size']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-origin'], watchingAttributeNames: ['internal-fsb-react-style-background-origin']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-clip'], watchingAttributeNames: ['internal-fsb-react-style-background-clip']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-repeat'], watchingAttributeNames: ['internal-fsb-react-style-background-repeat']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-attachment'], watchingAttributeNames: ['internal-fsb-react-style-background-attachment']}")
+  .section-subtitle.internal-fsb-selecting-on
+    | Blending Options
+  .section-body.internal-fsb-selecting-on
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['opacity'], watchingAttributeNames: ['internal-fsb-react-style-opacity']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['background-blend-mode'], watchingAttributeNames: ['internal-fsb-react-style-background-blend-mode']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['mix-blend-mode'], watchingAttributeNames: ['internal-fsb-react-style-mix-blend-mode']}")
+    +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['image-rendering'], watchingAttributeNames: ['internal-fsb-react-style-image-rendering']}")
+  .section-hr(internal-fsb-not-for="editorCurrentMode:coding")
+.section-container.internal-fsb-selecting-on(internal-fsb-not-for="editorCurrentMode:coding")
+  .section-title
+    | Transform
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.Transformer')
+  .section-hr
+.section-container
+  .section-title
     | Others
   .section-subtitle
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['clear'], watchingAttributeNames: ['internal-fsb-react-style-clear']}")
