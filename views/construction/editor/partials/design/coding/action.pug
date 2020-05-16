@@ -27,11 +27,28 @@ include ../../mixin/CreateReactComponent
   .section-body
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
   .section-hr
+.section-container(internal-fsb-for="internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File")
+  .section-title
+    | Back-End Data Binding
+  .section-subtitle
+    | Data Source
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-1', 'internal-fsb-data-source-type']}")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-2', 'internal-fsb-data-source-type']}")
+  .section-subtitle
+    | Table Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false}")
+  .section-subtitle
+    | Column Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
+  .section-hr
 .section-container(internal-fsb-for="hasParentReactComponent")
   .section-title
-    | Hierarchical Data Binding
+    | Front-End Data Binding
   .section-subtitle
-    | Dot Notation
+    | Hierarchical Dot Notation
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
   .section-subtitle

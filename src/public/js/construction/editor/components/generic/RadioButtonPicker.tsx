@@ -14,7 +14,13 @@ let options = {
     "checked": CONSTANTS.CHECKED_OPTIONS,
     "readonly": CONSTANTS.READONLY_OPTIONS,
     "require": CONSTANTS.REQUIRE_OPTIONS,
-    "multiple": CONSTANTS.MULTIPLE_OPTIONS
+    "multiple": CONSTANTS.MULTIPLE_OPTIONS,
+    "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
+    "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2
+}
+let map = {
+    "data-source-type-1": "internal-fsb-data-source-type",
+    "data-source-type-2": "internal-fsb-data-source-type"
 }
 
 const Mode = Object.freeze({
@@ -108,13 +114,13 @@ class RadioButtonPicker extends Base<Props, State> {
             
             switch(mode) {
 		            case Mode.STYLE:
-		            		current = this.state.styleValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
 		            case Mode.ATTRIBUTE:
-		            		current = this.state.attributeValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
 		            case Mode.EXTENSION:
-		            		current = this.state.extensionValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
             }
             
@@ -139,7 +145,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.STYLE:
 		            		perform('update', {
 						            styles: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: JSON.stringify(currentDict)
 						            }]
 						        });
@@ -147,7 +153,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.ATTRIBUTE:
 		            		perform('update', {
 						            attributes: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: JSON.stringify(currentDict)
 						            }]
 						        });
@@ -155,7 +161,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.EXTENSION:
 		            		perform('style', {
 						            styles: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: JSON.stringify(currentDict)
 						            }]
 						        });
@@ -166,7 +172,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.STYLE:
 		            		perform('update', {
 						            styles: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: (currentState) ? null : target
 						            }]
 						        });
@@ -174,7 +180,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.ATTRIBUTE:
 		            		perform('update', {
 						            attributes: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: (currentState) ? null : target
 						            }]
 						        });
@@ -182,7 +188,7 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.EXTENSION:
 		            		perform('style', {
 						            styles: [{
-						                name: nameOrArrayOfRegularExpression,
+						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 						                value: (currentState) ? null : target
 						            }]
 						        });
@@ -237,13 +243,13 @@ class RadioButtonPicker extends Base<Props, State> {
             
             switch(mode) {
 		            case Mode.STYLE:
-		            		current = this.state.styleValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
 		            case Mode.ATTRIBUTE:
-		            		current = this.state.attributeValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
 		            case Mode.EXTENSION:
-		            		current = this.state.extensionValues[nameOrArrayOfRegularExpression];
+		            		current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
             }
             
@@ -263,11 +269,11 @@ class RadioButtonPicker extends Base<Props, State> {
         } else {
             switch(mode) {
 		            case Mode.STYLE:
-		            		return this.state.styleValues[nameOrArrayOfRegularExpression] == target;
+		            		return this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
 		            case Mode.ATTRIBUTE:
-		            		return this.state.attributeValues[nameOrArrayOfRegularExpression] == target;
+		            		return this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
 		            case Mode.EXTENSION:
-		            		return this.state.extensionValues[nameOrArrayOfRegularExpression] == target;
+		            		return this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
             }
         }
     }
