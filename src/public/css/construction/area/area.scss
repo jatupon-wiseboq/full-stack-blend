@@ -346,3 +346,7 @@ body.internal-fsb-mode-coding {
 		visibility: visible !important;
 	}
 }
+
+input[type='radio'], input[type='checkbox'] {
+  pointer-events: none !important;
+}

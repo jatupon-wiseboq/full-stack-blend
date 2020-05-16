@@ -272,6 +272,14 @@ var ManipulationHelper = {
         
         isForwardingStyleToChildren = true;
         break;
+      case 'Label':
+      	element = document.createElement('label');
+        element = ReactDOM.render(pug `
+          label.internal-fsb-element
+            .container-fluid
+              .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+        `, element);
+        break;
       case 'File':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `

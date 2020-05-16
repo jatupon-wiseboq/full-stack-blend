@@ -13,7 +13,8 @@ let options = {
     "disabled": CONSTANTS.ENABLED_OPTIONS,
     "checked": CONSTANTS.CHECKED_OPTIONS,
     "readonly": CONSTANTS.READONLY_OPTIONS,
-    "require": CONSTANTS.REQUIRE_OPTIONS
+    "require": CONSTANTS.REQUIRE_OPTIONS,
+    "multiple": CONSTANTS.MULTIPLE_OPTIONS
 }
 
 const Mode = Object.freeze({
@@ -101,7 +102,7 @@ class RadioButtonPicker extends Base<Props, State> {
 						        });
 						        break;
             }
-        } else if (this.getOptions()[0][1][0] == '{') {
+        } else if (this.getOptions()[0][1] && this.getOptions()[0][1][0] == '{') {
             let target = this.getOptions()[0][1];
             let current;
             
@@ -230,7 +231,7 @@ class RadioButtonPicker extends Base<Props, State> {
      				}
      				
      				return found;
-        } else if (this.getOptions()[0][1][0] == '{') {
+        } else if (this.getOptions()[0][1] && this.getOptions()[0][1][0] == '{') {
             let _target = this.getOptions()[0][1];
             let current;
             
