@@ -27,7 +27,30 @@ include ../../mixin/CreateReactComponent
   .section-body
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
   .section-hr
-.section-container(internal-fsb-for="internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File")
+.section-container(internal-fsb-for="internal-fsb-class:Button")
+  .section-title
+    | Form Wizard
+  .section-subtitle
+    | Action
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-1', 'internal-fsb-data-wizard-type']}")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-2', 'internal-fsb-data-wizard-type']}")
+  .section-hr
+.section-container(internal-fsb-for="hasParentReactComponent")
+  .section-title
+    | Front-End Data Binding
+  .section-subtitle
+    | Hierarchical Dot Notation
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+  .section-subtitle
+    | Paging Size
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-react-paging'], inline: true, button: false}")
+  .section-note
+    | The notation extends its parent, and non-leaf node makes it repeating.
+  .section-hr
+.section-container(internal-fsb-for="internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Hidden")
   .section-title
     | Back-End Data Binding
   .section-subtitle
@@ -43,6 +66,10 @@ include ../../mixin/CreateReactComponent
     | Column Name
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
+  .section-subtitle
+    | Default Value
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
   .section-hr
 .section-container(internal-fsb-for="hasParentReactComponent")
   .section-title

@@ -304,7 +304,7 @@ export const LIBRARIES = [{
     ]
   }
 }];
-export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column'];
+export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'type', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column'];
 export const ENABLED_OPTIONS = [["disabled", null, ["fa-circle", "Enable"]], ["disabled", "true", ["fa-circle-o", "Disable"]]];
 export const CHECKED_OPTIONS = [["checked", "true", ["fa-circle", "Yes"]], ["checked", null, ["fa-circle-o", "No"]]];
 export const READONLY_OPTIONS = [["readonly", "true", ["fa-circle", "Allow"]], ["readonly", null, ["fa-circle-o", "Disallow"]]];
@@ -312,3 +312,5 @@ export const REQUIRE_OPTIONS = [["require", "true", ["fa-circle", "Necessary"]],
 export const MULTIPLE_OPTIONS = [["multiple", "true", ["fa-circle", "Enable"]], ["multiple", null, ["fa-circle-o", "Disable"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "relational", ["fa-share-alt", "Relational"]], ["internal-fsb-data-source-type", "worker", ["fa-sort-numeric-asc", "Prioritized Worker"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_2 = [["internal-fsb-data-source-type", "document", ["fa-file-o", "Document"]], ["internal-fsb-data-source-type", "volatile-memory", ["fa-thumb-tack", "Volatile Memory"]]];
+export const DATA_WIZARD_TYPE_OPTIONS_1 = [["internal-fsb-data-wizard-type", "insert", ["fa-save", "Insert"]], ["internal-fsb-data-wizard-type", "update", ["fa-save", "Update"]], ["internal-fsb-data-wizard-type", "delete", ["fa-save", "Delete"]]];
+export const DATA_WIZARD_TYPE_OPTIONS_2 = [["internal-fsb-data-wizard-type", "retreive", ["fa-database", "Retreive"]], ["internal-fsb-data-wizard-type", "popup", ["fa-list-alt", "Popup"]], ["internal-fsb-data-wizard-type", "navigate", ["fa-link", "Navigate"]]];

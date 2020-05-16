@@ -16,11 +16,15 @@ let options = {
     "require": CONSTANTS.REQUIRE_OPTIONS,
     "multiple": CONSTANTS.MULTIPLE_OPTIONS,
     "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
-    "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2
+    "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
+    "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
+    "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
-    "data-source-type-2": "internal-fsb-data-source-type"
+    "data-source-type-2": "internal-fsb-data-source-type",
+    "data-wizard-type-1": "internal-fsb-data-wizard-type",
+    "data-wizard-type-2": "internal-fsb-data-wizard-type"
 }
 
 const Mode = Object.freeze({

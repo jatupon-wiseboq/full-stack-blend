@@ -236,6 +236,12 @@ var ManipulationHelper = {
         		| <b>HTML Content</b>
         `, element);
         break;
+      case 'Hidden':
+      	element = document.createElement('div');
+        element = ReactDOM.render(pug `
+        	input.internal-fsb-element(type='hidden')
+        `, element);
+        break;
       case 'Textbox':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
