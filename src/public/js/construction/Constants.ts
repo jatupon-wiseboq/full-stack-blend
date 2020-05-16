@@ -304,7 +304,7 @@ export const LIBRARIES = [{
     ]
   }
 }];
-export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require'];
+export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex'];
 export const ENABLED_OPTIONS = [["disabled", "false", ["fa-circle", "Enable"]], ["disabled", "true", ["fa-circle-o", "Disable"]]];
 export const CHECKED_OPTIONS = [["checked", "true", ["fa-circle", "Yes"]], ["checked", "false", ["fa-circle-o", "No"]]];
 export const READONLY_OPTIONS = [["readonly", "true", ["fa-circle", "Allow"]], ["readonly", "false", ["fa-circle-o", "Disallow"]]];

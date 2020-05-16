@@ -55,10 +55,20 @@ class NumberPicker extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let original = this.state.styleValues[this.props.watchingStyleNames[0]];
-        let isString = typeof original === 'string';
-        let value = (isString) ? parseInt(original) : null;
-        this.state.value = value;
+        let original = null;
+        if (this.props.watchingStyleNames[0]) {
+        		original = this.state.styleValues[this.props.watchingStyleNames[0]];
+        } else if (this.props.watchingAttributeNames[0]) {
+        		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        }
+        
+        if (original !== null) {
+            let isString = typeof original === 'string';
+            let value = (isString) ? parseInt(original) : null;
+            this.state.value = value;
+        } else {
+            this.state.value = '';
+        }
         
         this.forceUpdate();
     }
@@ -74,10 +84,32 @@ class NumberPicker extends Base<Props, State> {
                 replace: this.props.watchingStyleNames[0]
             });
         }
+        if (this.props.watchingAttributeNames[0] && !this.props.manual) {
+            perform('update', {
+                attributes: [{
+                    name: this.props.watchingAttributeNames[0].split('[')[0],
+                    value: this.composeValue(value)
+                }],
+                replace: this.props.watchingAttributeNames[0]
+            });
+        }
     }
     
     private composeValue(value: any) {
-        return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value, this.state.styleValues[this.props.watchingStyleNames[1]], '0');
+        if (!value) return null;
+        if (this.props.watchingStyleNames[0]) {
+    				if (this.props.watchingStyleNames[1]) {
+        				return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value.toString(), this.state.styleValues[this.props.watchingStyleNames[1]], '0');
+        		} else {
+        				return value.toString();
+        		}
+        } else if (this.props.watchingAttributeNames[0]) {
+        		if (this.props.watchingAttributeNames[1]) {
+        				return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], value.toString(), this.state.attributeValues[this.props.watchingAttributeNames[1]], '0');
+        		} else {
+        				return value.toString();
+        		}
+        }
     }
     
     public getValue() {
