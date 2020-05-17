@@ -5,18 +5,18 @@
         .workspace-container
           .workspace-vertical-container.full-relative-size
             .workspace-vertical-panel
-              .workspace-container
+              .workspace-container.siteToolset.popupsToolset.componentsToolset.toolset
                 .workspace-vertical-container
                   .workspace-vertical-panel
                     .workspace-tab-container
                       .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(id='sidebarAction', onclick="swap('.sidebar-main-panel', [null, '#sidebarAction'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(id='sidebarAction', onclick="swap('.sidebar-main-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=true)
                           | Action
-                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-shape-panel(id='sidebarStyle', onclick="swap('.sidebar-style-panel', [null, '#sidebarStyle'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-shape-panel(id='sidebarStyle', onclick="swap('.sidebar-style-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=false)
                           | Style
-                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-format-panel(id='sidebarLayers', onclick="swap('.sidebar-layers-panel', [null, '#sidebarLayers'], null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-format-panel(id='sidebarLayers', onclick="swap('.sidebar-layers-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=false)
                           | Layers
                 .workspace-vertical-container.full-relative-size
@@ -37,3 +37,29 @@
                         include common/style
                       .panel.sidebar-layers-panel
                         include common/layers
+              .workspace-container.dataToolset.toolset
+                .workspace-vertical-container
+                  .workspace-vertical-panel
+                    .workspace-tab-container
+                      .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+                          input(type='radio', name='options', checked=true)
+                          | Properties
+                .workspace-vertical-container.full-relative-size
+                  .workspace-vertical-panel
+                    .workspace-panel-container.scrollable
+                      .panel.active
+                        | Data Toolset ABC
+              .workspace-container.servicesToolset.toolset
+                .workspace-vertical-container
+                  .workspace-vertical-panel
+                    .workspace-tab-container
+                      .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+                          input(type='radio', name='options', checked=true)
+                          | Properties
+                .workspace-vertical-container.full-relative-size
+                  .workspace-vertical-panel
+                    .workspace-panel-container.scrollable
+                      .panel.active
+                        | Services Toolset ABC

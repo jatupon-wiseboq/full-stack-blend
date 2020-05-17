@@ -63,7 +63,7 @@ let recentExtraPanelSelector: string = null;
     synchronize('click');
   };
   
-  window.swap = (selector: string, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
+  window.swap = (selector: string, toolsetSelector: string=null, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
     let button = $(EventHelper.getCurrentElement(event));
     if (button.prop('tagName') != 'A') button = button.parent();
     if (button.hasClass('active')) return;
@@ -97,6 +97,11 @@ let recentExtraPanelSelector: string = null;
       }
       
       recentExtraPanelSelector = extraPanelSelector;
+    }
+    
+    if (toolsetSelector) {
+      $('.toolset').hide();
+      $(toolsetSelector).show();
     }
     
     if (button.attr('skip-perform') !== 'true') {
