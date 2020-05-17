@@ -11,17 +11,19 @@ interface IProps {
   onUpdate(node: ITreeNode);
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   enableDragging: boolean;
+  draggableAfterSelected: boolean;
 }
 
 interface IState {
 	currentDraggingNode: ITreeNode,
 	currentInsertingReferenceNode: ITreeNode,
 	currentInsertingDirection: InsertDirection,
-	revision: number
+	revision: number,
+	isDragging: boolean
 }
 
 class Tree extends React.Component<IProps, IState> {
-		state: IState = {currentDraggingNode: null, currentInsertingReferenceNode: null, currentInsertingDirection: InsertDirection.NONE, revision: 0}
+		state: IState = {currentDraggingNode: null, currentInsertingReferenceNode: null, currentInsertingDirection: InsertDirection.NONE, revision: 0, isDragging: false, draggableAfterSelected: true}
     protected static defaultProps: IProps = {
       nodes: [],
       onUpdate: null,
@@ -42,6 +44,10 @@ class Tree extends React.Component<IProps, IState> {
     private onStartDragging(node: ITreeNode) {
     	this.state.currentDraggingNode = node;
     	this.setDragging(true, [node]);
+    	
+    	this.setState({
+    	  isDragging: true
+    	});
     }
     
     private onDragging(point: Point) {
@@ -113,7 +119,8 @@ class Tree extends React.Component<IProps, IState> {
     	this.state.currentInsertingDirection = InsertDirection.NONE;
     	
     	this.setState({
-				revision: this.state.revision + 1
+				revision: this.state.revision + 1,
+				isDragging: false
 			});
     }
     
@@ -153,9 +160,11 @@ class Tree extends React.Component<IProps, IState> {
     
     render() {
       return (
-        <div ref="container" className="tree-container">
+        <div ref="container" className={"tree-container" + (this.state.isDragging ? ' dragging' : '')}>
           <div className="container-fluid">
-            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} />
+            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected}>
+              {this.props.children}
+            </TreeNode>
           </div>
         </div>
       )

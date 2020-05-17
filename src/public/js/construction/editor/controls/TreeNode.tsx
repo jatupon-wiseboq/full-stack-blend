@@ -2,6 +2,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {Point, MathHelper} from '../../helpers/MathHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {DropDownControl} from './DropDownControl.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -22,6 +23,7 @@ interface ITreeNode {
   disabled: boolean,
   selected: boolean,
   insert: InsertDirection,
+  customClassName: string,
   nodes: [ITreeNode]
 }
 
@@ -33,6 +35,7 @@ interface IProps {
   onStartDragging(node: ITreeNode);
   onDragging(point: Point);
   onEndDragging();
+  draggableAfterSelected: boolean;
 }
 
 interface IState {
@@ -103,7 +106,7 @@ class TreeNode extends React.Component<IProps, IState> {
 			let originalElement = EventHelper.getCurrentElement(event);
 			
 			let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
-			if (!node.selectable || !node.selected) return;
+			if (this.props.draggableAfterSelected && (!node.selectable || !node.selected)) return;
 			
 			this.originalElement = originalElement;
 			
@@ -189,9 +192,18 @@ class TreeNode extends React.Component<IProps, IState> {
         <div ref="container">
           {this.props.nodes.map((node, index) => {
             return (
-              <div key={'node-' + index}>
+              <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '')}>
                 <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "")}>
                   <div className={"treenode-body col offset-" + this.props.deep} onMouseDown={this.mouseDown.bind(this)} node={node.id}>
+                    {(() => {
+                      if (this.props.children) {
+                        return (
+                          <FullStackBlend.Controls.DropDownControl representing="ICON:fa fa-edit">
+                            {this.props.children}
+                          </FullStackBlend.Controls.DropDownControl>
+                        )
+                      }
+                    })()}
                     <div className="form-check">
                       <label className="form-check-label noselect">
                         <input type="checkbox" className="form-check-input" disabled={node.disabled} checked={node.selected} onChange={this.onChange.bind(this, node)} />
@@ -201,7 +213,9 @@ class TreeNode extends React.Component<IProps, IState> {
                   </div>
                 </div>
                 <div style={{display: (node.insert == InsertDirection.BOTTOM || node.dragging) ? 'none' : 'inherit'}}>
-                	<FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging}></FullStackBlend.Controls.TreeNode>
+                	<FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging}>
+                	  {this.props.children}
+                	</FullStackBlend.Controls.TreeNode>
                 </div>
               </div>
             )
