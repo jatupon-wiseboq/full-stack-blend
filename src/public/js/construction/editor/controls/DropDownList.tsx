@@ -10,13 +10,14 @@ interface Props extends IProps {
     controls: any;
     identity: any;
     onUpdate(identity: any, value: any, index: any);
-    onVisibleChanged(visible: boolean);
+    onVisibleChanged(visible: boolean, tag: any);
     autohide: boolean;
     customClassName: string;
     searchBox: boolean;
     useMaximumHeight: boolean;
     width: number;
     optionPadding: number;
+    tag: any;
 }
 
 interface State extends IState {
@@ -107,7 +108,7 @@ class DropDownList extends React.Component<Props, State> {
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
             if (this.props.onVisibleChanged) {
-                this.props.onVisibleChanged(true);
+                this.props.onVisibleChanged(true, this.props.tag);
             }
             
             this.recentDropDownMaxHeight = dropDownMaxHeight;
@@ -120,7 +121,7 @@ class DropDownList extends React.Component<Props, State> {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
-            this.props.onVisibleChanged(false);
+            this.props.onVisibleChanged(false, this.props.tag);
         }
     }
     
@@ -147,7 +148,7 @@ class DropDownList extends React.Component<Props, State> {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
-            this.props.onVisibleChanged(false);
+            this.props.onVisibleChanged(false, this.props.tag);
         }
     }
     

@@ -21,12 +21,14 @@ import './components/generic/DropDownPicker.js';
 import './components/generic/RadioButtonPicker.js';
 import './components/generic/NumberPicker.js';
 import './components/generic/TextPicker.js';
-import './components/generic/ListManager.js';
 
 import './components/code/ReactCodeEditor.js';
 import './components/code/ReactEventBinder.js';
 import './components/code/SitePreview.js';
 import './components/code/ExternalLibrariesChooser.js';
+import './components/code/AttributeManager.js';
+import './components/code/DictionaryManager.js';
+import './components/code/WizardInputManager.js';
 
 //import GitHub from 'github-api';
 

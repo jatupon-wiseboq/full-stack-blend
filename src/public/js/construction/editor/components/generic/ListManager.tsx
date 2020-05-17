@@ -3,12 +3,17 @@ import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode, InsertDirection} from '../../controls/TreeNode.js';
 import '../../controls/Tree.js';
+import '../../controls/DropDownControl.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
+  onUpdate(node: ITreeNode);
+  onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
+  onInsertOptionVisibleChanged(value: boolean);
+  onUpdateOptionVisibleChanged(value: boolean, tag: any);
 }
 
 interface State extends IState {
@@ -76,40 +81,36 @@ class ListManager extends Base<Props, State> {
     }
     
     private onUpdate(node: ITreeNode) {
-        // perform('select', node.selected ? node.id : null);
+        if (this.props.onUpdate) {
+            this.props.onUpdate(node);
+        }
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		let value = null;
-    	  
-    		switch (direction) {
-    				case InsertDirection.TOP:
-    					value = 'insertBefore';
-    					break;
-    				case InsertDirection.INSIDE:
-    					value = 'delete';
-    					break;
-    				case InsertDirection.BOTTOM:
-    					value = 'insertAfter';
-    					break;
-    				default:
-    					return;
-    		}
-    	  
-    		perform('move[element]', {
-	    			target: element.id,
-	    			destination: reference.id,
-	    			direction: value
-    		});
+    		if (this.props.onDragged) {
+            this.props.onDragged(element, reference, direction);
+        }
+    }
+    
+    private onInsertOptionVisibleChanged(value: boolean) {
+        if (this.props.onInsertOptionVisibleChanged) {
+            this.props.onInsertOptionVisibleChanged(value);
+        }
+    }
+    
+    private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
+        if (this.props.onUpdateOptionVisibleChanged) {
+            this.props.onUpdateOptionVisibleChanged(value, node);
+        }
     }
     
     render() {
       return (
       	<div className="list-manager-container">
-      		<FullStackBlend.Controls.Tree enableDragging={true} draggableAfterSelected={false} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged}>
-      		 | ABC
+      		<FullStackBlend.Controls.Tree enableDragging={true} draggableAfterSelected={false} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+      		  {this.props.children}
       		</FullStackBlend.Controls.Tree>
-      		<button className="btn btn-light btn-sm add">+</button>
+      		<FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
       	</div>
       );
     }
@@ -117,4 +118,4 @@ class ListManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.ListManager', ListManager);
 
-export {Props, State, ListManager};
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, ListManager};

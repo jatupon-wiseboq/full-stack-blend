@@ -35,6 +35,7 @@ interface IProps {
   onStartDragging(node: ITreeNode);
   onDragging(point: Point);
   onEndDragging();
+  onUpdateOptionVisibleChanged(value: boolean, tag: any);
   draggableAfterSelected: boolean;
 }
 
@@ -187,6 +188,12 @@ class TreeNode extends React.Component<IProps, IState> {
 			return null;
 		}
     
+    private onVisibleChanged(value: boolean, tag: any) {
+        if (this.props.onUpdateOptionVisibleChanged) {
+            this.props.onUpdateOptionVisibleChanged(value, tag);
+        }
+    }
+    
     render() {
       return (
         <div ref="container">
@@ -198,7 +205,7 @@ class TreeNode extends React.Component<IProps, IState> {
                     {(() => {
                       if (this.props.children) {
                         return (
-                          <FullStackBlend.Controls.DropDownControl representing="ICON:fa fa-edit">
+                          <FullStackBlend.Controls.DropDownControl representing="ICON:fa fa-edit" onVisibleChanged={this.onVisibleChanged.bind(this)} tag={node}>
                             {this.props.children}
                           </FullStackBlend.Controls.DropDownControl>
                         )

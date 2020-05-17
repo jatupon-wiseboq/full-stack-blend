@@ -7,11 +7,12 @@ declare let ReactDOM: any;
 
 interface Props extends IProps {
     representing: string;
-    onVisibleChanged(visible: boolean);
+    onVisibleChanged(visible: boolean, tag: any);
     autohide: boolean;
     offsetX: number;
     offsetY: number;
     width: number;
+    tag: any;
 }
 
 interface State extends IState {
@@ -23,7 +24,8 @@ class DropDownControl extends React.Component<Props, State> {
         autohide: true,
         offsetX: 0,
         offsetY: 0,
-        width: 0
+        width: 0,
+        tag: null
     }
     
     private documentOnClickDelegate: Function = null;
@@ -98,7 +100,7 @@ class DropDownControl extends React.Component<Props, State> {
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
             if (this.props.onVisibleChanged) {
-                this.props.onVisibleChanged(true);
+                this.props.onVisibleChanged(true, this.props.tag);
             }
             
             return EventHelper.cancel(event);
@@ -109,7 +111,7 @@ class DropDownControl extends React.Component<Props, State> {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
-            this.props.onVisibleChanged(false);
+            this.props.onVisibleChanged(false, this.props.tag);
         }
     }
     
@@ -130,7 +132,7 @@ class DropDownControl extends React.Component<Props, State> {
         window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
-            this.props.onVisibleChanged(false);
+            this.props.onVisibleChanged(false, this.props.tag);
         }
     }
     
@@ -143,7 +145,7 @@ class DropDownControl extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          .fsb-dropdown-container(ref="group", internal-fsb-event-no-propagate="click")
+          div(className=("fsb-dropdown-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')) ref="group", internal-fsb-event-no-propagate="click")
             .fsb-dropdown-button(ref="button", aria-haspopup="true", aria-expanded="false")
               if (this.props.representing == null)
                 span &nbsp;

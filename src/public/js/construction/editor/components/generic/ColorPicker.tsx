@@ -64,7 +64,7 @@ class ColorPicker extends Base<Props, State> {
         }
     }
     
-    protected onVisibleChanged(visible: boolean) {
+    protected onVisibleChanged(visible: boolean, tag: any) {
         this.setState({
             visible: visible
         });

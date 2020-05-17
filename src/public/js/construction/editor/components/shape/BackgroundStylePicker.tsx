@@ -34,7 +34,7 @@ class BackgroundStylePicker extends Base<Props, State> {
         if (!super.update(properties)) return;
     }
     
-    protected onVisibleChanged(visible: boolean) {
+    protected onVisibleChanged(visible: boolean, tag: any) {
         this.setState({visible: visible});
     }
     
