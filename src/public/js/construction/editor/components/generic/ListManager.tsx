@@ -106,7 +106,7 @@ class ListManager extends Base<Props, State> {
     
     render() {
       return (
-      	<div className="list-manager-container">
+      	<div className={"list-manager-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')}>
       		<FullStackBlend.Controls.Tree enableDragging={true} draggableAfterSelected={false} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
       		  {this.props.children}
       		</FullStackBlend.Controls.Tree>

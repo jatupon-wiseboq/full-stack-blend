@@ -44,7 +44,7 @@ class AttributeManager extends Base<Props, State> {
     
     render() {
         return (
-            <FullStackBlend.Components.ListManager onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+            <FullStackBlend.Components.ListManager customClassName="non-selectable" onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '175px'}}>
                     <div className="section-title">Customize Attribute</div>
                     <div className="section-subtitle">Binding</div>

@@ -149,4 +149,21 @@
 		z-index: #{$maximum-z-index - 1000};
 		opacity: 0.5;
 	}
+	
+	&.non-selectable {
+	  .tree-container {
+  	  .treenode-outer-container {
+  	    .treenode-container {
+    	    .treenode-body {
+      			.form-check {
+      			  padding-left: 0;
+      				input[type="checkbox"] {
+      					display: none;
+      				}
+      			}
+      	  }
+      	}
+      }
+  	}
+	}
 }
