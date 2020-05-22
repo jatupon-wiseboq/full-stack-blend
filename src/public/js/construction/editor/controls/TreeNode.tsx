@@ -24,7 +24,8 @@ interface ITreeNode {
   selected: boolean,
   insert: InsertDirection,
   customClassName: string,
-  nodes: [ITreeNode]
+  nodes: [ITreeNode],
+  tag: any
 }
 
 interface IProps {

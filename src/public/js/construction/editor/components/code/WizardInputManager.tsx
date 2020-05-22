@@ -23,6 +23,8 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
+    watchingAttributeNames: ['internal-fsb-data-controls'],
+    watchingExtensionNames: ['elementTreeNodes']
 });
 
 class WizardInputManager extends Base<Props, State> {
@@ -37,13 +39,42 @@ class WizardInputManager extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        this.state.nodes = [];
+        let nodes = CodeHelper.clone(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
+        nodes = nodes.filter((node: ITreeNode) => {
+          return ['Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Hidden'].indexOf(node.tag.class) != -1;
+        });
+        
+        let guids = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').split(' ');
+        for (let node of nodes) {
+            node.selected = (guids.indexOf(node.tag.guid) != -1);
+        }
+        
+        this.state.nodes = nodes;
         
         this.forceUpdate();
     }
     
     protected onUpdate(node: ITreeNode) {
-      
+        let guids = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').split(' ');
+        
+        if (node.selected) {
+            let index = guids.indexOf(node.tag.guid);
+            if (index == -1) {
+                guids.push(node.tag.guid);
+            }
+        } else {
+            let index = guids.indexOf(node.tag.guid);
+            if (index != -1) {
+                guids = guids.splice(index, 1);
+            }
+        }
+        
+        perform('update', {
+            attributes: [{
+                name: this.props.watchingAttributeNames[0],
+                value: guids.join(' ')
+            }]
+        });
     }
     
     render() {

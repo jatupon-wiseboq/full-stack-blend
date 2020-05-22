@@ -30,6 +30,7 @@ var LayoutHelper = {
   		
   		let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
   		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
+  		let guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -43,7 +44,11 @@ var LayoutHelper = {
   				dropable: isTableLayoutCell || ['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1,
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
-  				nodes: this.getElementTreeNodes([], element)
+  				nodes: this.getElementTreeNodes([], element),
+  				tag: {
+  				  class: klass,
+  				  guid: guid
+  				}
   			});
   		} else {
   			this.getElementTreeNodes(nodes, element);
