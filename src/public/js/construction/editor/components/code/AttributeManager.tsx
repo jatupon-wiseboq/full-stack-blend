@@ -62,7 +62,7 @@ class AttributeManager extends Base<Props, State> {
                 let value = hash[name];
                 this.state.nodes.push({
                     id: JSON.stringify({name: name, value: value}),
-                    name: name + '=' + value,
+                    name: name + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
                     selectable: true,
                     dropable: false,
                     disabled: false,
