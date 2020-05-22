@@ -9,6 +9,7 @@ interface Props extends IProps {
     postRegEx: String;
     onUpdate(value: any);
     spellCheck: boolean;
+    failedValidationMessage: String;
 }
 
 interface State extends IState {
@@ -107,7 +108,10 @@ class Textbox extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          input.form-control.form-control-sm(ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString())
+          div
+            input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString())
+            if this.props.failedValidationMessage
+              span.invalid-feedback ${this.props.failedValidationMessage}
         `
       )
     }

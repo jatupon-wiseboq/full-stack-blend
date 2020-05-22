@@ -5,6 +5,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import {ITreeNode} from '../../controls/TreeNode.js';
 import '../../controls/TextBox.js';
 import '../generic/ListManager.js';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -18,6 +19,7 @@ interface State extends IState {
   isAdding: boolean;
   name: string;
   value: string;
+  nameInputFailedValidationMessage: string;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -25,7 +27,8 @@ Object.assign(ExtendedDefaultState, {
   nodes: [],
   isAdding: false,
   name: '',
-  value: ''
+  value: '',
+  nameInputFailedValidationMessage: null
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -58,6 +61,7 @@ class AttributeManager extends Base<Props, State> {
         
         let hash = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         for (let name in hash) {
+            if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name.toLowerCase().trim()) != -1) continue;
             if (hash.hasOwnProperty(name)) {
                 let value = hash[name];
                 this.state.nodes.push({
@@ -92,11 +96,14 @@ class AttributeManager extends Base<Props, State> {
     		        }]
     		    });
     		}
+    		
+    		window.document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
         this.setState({
-            isAdding: value
+            isAdding: value,
+            nameInputFailedValidationMessage: null
         });
         
         if (value) {
@@ -108,6 +115,11 @@ class AttributeManager extends Base<Props, State> {
     }
     
     private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
+        this.setState({
+            isAdding: false,
+            nameInputFailedValidationMessage: null
+        });
+        
         if (value) {
             let info = JSON.parse(node.id);
             
@@ -129,8 +141,18 @@ class AttributeManager extends Base<Props, State> {
     private addOnClick(event) {
         if (this.state.name && this.state.value) {
             if (this.state.name.match(this.props.watchingAttributeNames[0]) == null) {
+                this.state.nameInputFailedValidationMessage = "This is reserved for internal use.";
+                this.forceUpdate();
                 return EventHelper.cancel(event);
             }
+            if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(this.state.name.toLowerCase().trim()) != -1) {
+                this.state.nameInputFailedValidationMessage = "Please configure this attribute via user interface.";
+                this.forceUpdate();
+                return EventHelper.cancel(event);
+            }
+            this.setState({
+              nameInputFailedValidationMessage: null
+            });
           
             perform('update', {
     		        attributes: [{
@@ -163,7 +185,7 @@ class AttributeManager extends Base<Props, State> {
                     <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update Attribute"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>Name</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
-                        <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox failedValidationMessage={this.state.nameInputFailedValidationMessage} ref="name" value={this.state.name} preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle">Value</div>
                     <div className="section-body">

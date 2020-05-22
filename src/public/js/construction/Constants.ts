@@ -304,10 +304,10 @@ export const LIBRARIES = [{
     ]
   }
 }];
-export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'type', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column'];
+export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'type', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column', 'multiple'];
 export const ENABLED_OPTIONS = [["disabled", null, ["fa-circle", "Enable"]], ["disabled", "true", ["fa-circle-o", "Disable"]]];
 export const CHECKED_OPTIONS = [["checked", "true", ["fa-circle", "Yes"]], ["checked", null, ["fa-circle-o", "No"]]];
-export const READONLY_OPTIONS = [["readonly", "true", ["fa-circle", "Allow"]], ["readonly", null, ["fa-circle-o", "Disallow"]]];
+export const READONLY_OPTIONS = [["readonly", null, ["fa-circle", "Allow"]], ["readonly", "true", ["fa-circle-o", "Disallow"]]];
 export const REQUIRE_OPTIONS = [["require", "true", ["fa-circle", "Necessary"]], ["require", null, ["fa-circle-o", "Additional"]]];
 export const MULTIPLE_OPTIONS = [["multiple", "true", ["fa-circle", "Enable"]], ["multiple", null, ["fa-circle-o", "Disable"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "relational", ["fa-share-alt", "Relational"]], ["internal-fsb-data-source-type", "worker", ["fa-sort-numeric-asc", "Prioritized Worker"]]];
