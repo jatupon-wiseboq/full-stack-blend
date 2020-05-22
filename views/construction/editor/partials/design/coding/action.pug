@@ -62,21 +62,33 @@ include ../../mixin/CreateReactComponent
   .section-body
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-1', 'internal-fsb-data-source-type']}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-2', 'internal-fsb-data-source-type']}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
     | Table Name
-  .section-body
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
+    | Queue Name
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
+    | Table Name
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
+    | Group
+  .section-body(internal-fsb-for="internal-fsb-data-source-type")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
     | Column Name
-  .section-body
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
+    | Priority
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
+    | Hierarchical Dot Notation
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
+    | Key
+  .section-body(internal-fsb-for="internal-fsb-data-source-type")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
     | Default Value
-  .section-body
+  .section-body(internal-fsb-for="internal-fsb-data-source-type")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
     | Required
-  .section-body
+  .section-body(internal-fsb-for="internal-fsb-data-source-type")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['require']}")
   .section-note
     | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
