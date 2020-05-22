@@ -14,10 +14,10 @@ interface Props extends IProps {
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   onInsertOptionVisibleChanged(value: boolean);
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
+  nodes: [ITreeNode];
 }
 
 interface State extends IState {
-    nodes: [ITreeNode]
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -27,7 +27,8 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
   	watchingAttributeNames: ['internal-fsb-name'],
-  	watchingExtensionNames: ['elementTreeNodes']
+  	watchingExtensionNames: ['elementTreeNodes'],
+  	nodes: []
 });
 
 class ListManager extends Base<Props, State> {
@@ -41,43 +42,6 @@ class ListManager extends Base<Props, State> {
     
     public update(properties: any) {
         if (!super.update(properties)) return;
-        
-        this.state.nodes = [{
-            id: 'delete',
-            name: 'Delete',
-            selectable: false,
-            dropable: true,
-            disabled: false,
-            selected: false,
-            customClassName: 'delete',
-            nodes: []
-        },{
-            id: 'temp1',
-            name: 'Item',
-            selectable: true,
-            dropable: false,
-            disabled: false,
-            selected: false,
-            nodes: []
-        },{
-            id: 'temp2',
-            name: 'Item',
-            selectable: true,
-            dropable: false,
-            disabled: false,
-            selected: false,
-            nodes: []
-        },{
-            id: 'temp3',
-            name: 'Item',
-            selectable: true,
-            dropable: false,
-            disabled: false,
-            selected: false,
-            nodes: []
-        }];
-        
-        this.forceUpdate();
     }
     
     private onUpdate(node: ITreeNode) {
@@ -107,7 +71,7 @@ class ListManager extends Base<Props, State> {
     render() {
       return (
       	<div className={"list-manager-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')}>
-      		<FullStackBlend.Controls.Tree enableDragging={true} draggableAfterSelected={false} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+      		<FullStackBlend.Controls.Tree enableDragging={true} draggableAfterSelected={false} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
       		  {this.props.children}
       		</FullStackBlend.Controls.Tree>
       		<FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
