@@ -382,12 +382,14 @@ var ManipulationHelper = {
           attributes: HTMLHelper.getAttributes(selectingElement, true, {
             style: StylesheetHelper.getStylesheetDefinition(presetId)
           }),
-          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings)
+          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
+          options: LayoutHelper.getElementOptions(selectingElement)
         };
       } else {
         accessory = {
           attributes: HTMLHelper.getAttributes(selectingElement, true),
-          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings)
+          extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
+          options: LayoutHelper.getElementOptions(selectingElement)
         };
       }
       
@@ -580,6 +582,21 @@ var ManipulationHelper = {
         }
         if (projectSettingsHaveChanged) {
           EditorHelper.updateExternalLibraries();
+        }
+      }
+      {
+        if (content.options !== undefined && content.options !== null) {
+          selectingElement.firstChild.innerText = '';
+          found = true;
+          for (let option of content.options) {
+            let optionElement = document.createElement('option');
+            
+            optionElement.setAttribute('value', option.value);
+            if (option.selected) optionElement.setAttribute('selected', 'true');
+            optionElement.innerText = option.name;
+            
+            selectingElement.firstChild.appendChild(optionElement);
+          }
         }
       }
       

@@ -158,12 +158,12 @@ class AttributeManager extends Base<Props, State> {
     
     render() {
         return (
-            <FullStackBlend.Components.ListManager customClassName="non-selectable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+            <FullStackBlend.Components.ListManager customClassName="non-selectable non-insertable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '175px'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update Attribute"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>Name</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
-                        <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='[^"]*' postRegExp='[^"]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle">Value</div>
                     <div className="section-body">

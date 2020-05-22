@@ -47,7 +47,8 @@ var LayoutHelper = {
   				nodes: this.getElementTreeNodes([], element),
   				tag: {
   				  class: klass,
-  				  guid: guid
+  				  guid: guid,
+  				  options: LayoutHelper.getElementOptions(element)
   				}
   			});
   		} else {
@@ -55,6 +56,21 @@ var LayoutHelper = {
   		}
   	}
   	return nodes;
+  },
+  getElementOptions: function(element: HTMLElement) {
+    if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Select') {
+      let children = HTMLHelper.getElementsByTagName('option', element.firstChild);
+      return [...children].map((child) => {
+        if (child.tagName)
+  	    return {
+  	      name: child.innerText,
+  	      value: child.getAttribute('value'),
+  	      selected: child.getAttribute('selected') == 'true'
+  	    }
+  	  });
+  	} else {
+  	  return null;
+  	}
   }
 };
 

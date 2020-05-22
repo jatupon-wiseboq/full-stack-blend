@@ -46,10 +46,10 @@ var HTMLHelper = {
     }
     return results;
   },
-  getElementsByTagName: (tagName: string, _window: Window=window) => {
-    if (_window === null) return [];
+  getElementsByTagName: (tagName: string, container: HTMLElement=window) => {
+    if (container === null) return [];
     
-    return _window.document.getElementsByTagName(tagName);
+    return container.getElementsByTagName(tagName);
   },
   getNextSibling: (element: HTMLElement, skipIds: [string]=[]) => {
   	if (!element) return null;
@@ -349,7 +349,7 @@ var HTMLHelper = {
     return [object.offsetWidth, object.offsetHeight];
   },
   getContainingIframe: (currentWindow: Window) => {
-    let iframeElements = HTMLHelper.getElementsByTagName('iframe', currentWindow.parent);
+    let iframeElements = HTMLHelper.getElementsByTagName('iframe', currentWindow.parent.document);
     
     for (var i=0; i<iframeElements.length; i++) {
       if (HTMLHelper.getIframeContentWindow(iframeElements[i]) === currentWindow) {

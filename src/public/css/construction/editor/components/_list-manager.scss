@@ -166,4 +166,23 @@
       }
   	}
 	}
+	
+	&.non-insertable {
+	  .tree-container {
+  	  .treenode-outer-container {
+  	    .treenode-container {
+    	    &.insert-top {
+    	      .treenode-body::before {
+    	        display: none;
+    	      }
+    	    }
+      		&.insert-bottom {
+      			.treenode-body::after {
+    	        display: none;
+    	      }
+      		}
+      	}
+      }
+  	}
+	}
 }
