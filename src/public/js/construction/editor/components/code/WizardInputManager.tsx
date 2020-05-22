@@ -40,9 +40,7 @@ class WizardInputManager extends Base<Props, State> {
         if (!super.update(properties)) return;
         
         let nodes = CodeHelper.clone(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
-        nodes = nodes.filter((node: ITreeNode) => {
-          return ['Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Hidden'].indexOf(node.tag.class) != -1;
-        });
+        nodes = this.recursiveWalkAllNodes(nodes);
         
         let guids = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').split(' ');
         for (let node of nodes) {
@@ -52,6 +50,16 @@ class WizardInputManager extends Base<Props, State> {
         this.state.nodes = nodes;
         
         this.forceUpdate();
+    }
+    
+    private recursiveWalkAllNodes(nodes: [ITreeNode], output: [ITreeNode]=[]) {
+        for (let node of nodes) {
+            if (['Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Hidden'].indexOf(node.tag.class) != -1) {
+                output.push(node);
+            }
+            this.recursiveWalkAllNodes(node.nodes, output);
+        }
+        return output;
     }
     
     protected onUpdate(node: ITreeNode) {
@@ -65,7 +73,7 @@ class WizardInputManager extends Base<Props, State> {
         } else {
             let index = guids.indexOf(node.tag.guid);
             if (index != -1) {
-                guids = guids.splice(index, 1);
+                guids.splice(index, 1);
             }
         }
         
