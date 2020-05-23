@@ -252,6 +252,8 @@ class SitePreview extends Base<Props, State> {
 				
 				for (let expandingPlaceholder of expandingPlaceholders) {
 					ReactDOM.render(React.createElement(eval(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
+					expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
+					expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 				}
 				
 				window.top.postMessage(JSON.stringify({

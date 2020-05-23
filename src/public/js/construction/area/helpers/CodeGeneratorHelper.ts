@@ -114,7 +114,7 @@ ${rootScript}`;
         lines.push(indent + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
-        let _attributes = HTMLHelper.getAttributes(element, true);
+        let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let classes = '';
         let styles = null;
         let bindingStyles = {};
@@ -211,6 +211,8 @@ ${rootScript}`;
 	                
 	                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 	              }
+              } else {
+                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
               }
               break;
           }
@@ -328,11 +330,12 @@ ${rootScript}`;
         lines.push(indent + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
-        let _attributes = HTMLHelper.getAttributes(element, true);
+        let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let classes = '';
         let styles = null;
         let bindingStyles = {};
         let events = [];
+        let attributes = [];
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
@@ -409,6 +412,8 @@ ${rootScript}`;
 	                
 	                events.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
 	              }
+              } else {
+                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
               }
               break;
           }
@@ -449,7 +454,8 @@ ${rootScript}`;
           if (reactClassComposingInfoGUID != null) composed += ' internal-fsb-guid="' + reactClassComposingInfoGUID + '"';
           if (classes != '') composed += ' class="' + classes + '"';
           if (styles != null) composed += ' style="' + styles.join('; ') + ';"';
-          composed += (children.length == 0) ? ' />' : '>';
+          if (attributes.length != 0) composed += ' ' + attributes.join(' ');
+          composed += (children.length == 0 && ['select'].indexOf(tag) == -1) ? ' />' : '>';
           
           lines.push(composed);
           
@@ -461,7 +467,7 @@ ${rootScript}`;
             CodeGeneratorHelper.recursiveGenerateCodeForFallbackRendering(child, indent + '  ', executions, lines, false);
           }
           
-          if (children.length != 0) {
+          if (children.length != 0 || ['select'].indexOf(tag) != -1) {
 	          composed = indent;
 	          composed += '</' + tag + '>';
 	          lines.push(composed);

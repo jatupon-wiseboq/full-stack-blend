@@ -69,11 +69,11 @@ var HTMLHelper = {
   	}
   	return null;
   },
-  getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}) => {
+  getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}, reverseForwarding: boolean=true) => {
     if (array) {
       let elementAttributes = [];
       
-      if (HTMLHelper.isForChildren(element)) {
+      if (reverseForwarding && HTMLHelper.isForChildren(element)) {
         for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
           if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
             elementAttributes.push({
@@ -112,7 +112,7 @@ var HTMLHelper = {
       
       return elementAttributes;
     } else {
-      if (HTMLHelper.isForChildren(element)) {
+      if (reverseForwarding && HTMLHelper.isForChildren(element)) {
         for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
           if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
             mergeAttributes[attributeName] = HTMLHelper.getAttribute(element.firstChild, attributeName);
