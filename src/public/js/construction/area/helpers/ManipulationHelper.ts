@@ -223,7 +223,7 @@ var ManipulationHelper = {
       case 'Iframe':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '400px', height: '300px'})
+        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '100%', minHeight: '300px'})
         		iframe
         `, element);
         
@@ -245,7 +245,7 @@ var ManipulationHelper = {
       case 'Textbox':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
+        	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='text')
         `, element);
         
@@ -254,7 +254,7 @@ var ManipulationHelper = {
       case 'Select':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
+        	.internal-fsb-element(style={display: 'block', width: '100%'})
         		select
         `, element);
         
@@ -289,7 +289,7 @@ var ManipulationHelper = {
       case 'File':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
+        	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='file')
         `, element);
         
@@ -306,7 +306,7 @@ var ManipulationHelper = {
       case 'Image':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', width: '100px', height: '100px'})
+        	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
         		img
         `, element);
         
@@ -315,7 +315,7 @@ var ManipulationHelper = {
       case 'Video':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', width: '300px', height: '150px'})
+        	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
         		video
         `, element);
         

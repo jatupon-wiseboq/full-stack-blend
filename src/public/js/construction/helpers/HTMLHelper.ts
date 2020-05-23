@@ -132,8 +132,8 @@ var HTMLHelper = {
       return mergeAttributes;
     }
   },
-  isForChildren: (element: HTMLElement) => {
-    return (HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true' && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
+  isForChildren: (element: HTMLElement, styleAttributeValue: string=null) => {
+    return (HTMLHelper.getInlineStyle(styleAttributeValue || HTMLHelper.getAttribute(element, 'style'), '-fsb-for-children') == 'true' && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
   },
   getAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute) return null;
@@ -149,7 +149,7 @@ var HTMLHelper = {
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {    
   	if (!element || !element.getAttribute || !element.setAttribute) return;
-  	if (name == 'style' && HTMLHelper.isForChildren(element)) {
+  	if (name == 'style' && HTMLHelper.isForChildren(element, value)) {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
   	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {

@@ -304,7 +304,7 @@ export const LIBRARIES = [{
     ]
   }
 }];
-export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'type', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column', 'multiple', 'rows'];
+export const FORWARED_ATTRIBUTES_FOR_CHILDREN = ['placeholder', 'value', 'checked', 'disabled', 'readonly', 'require', 'tabIndex', 'size', 'type', 'internal-fsb-data-source-type', 'internal-fsb-data-source-name', 'internal-fsb-data-source-column', 'multiple', 'rows', 'src'];
 export const ENABLED_OPTIONS = [["disabled", null, ["fa-circle", "Enable"]], ["disabled", "true", ["fa-circle-o", "Disable"]]];
 export const CHECKED_OPTIONS = [["checked", "true", ["fa-circle", "Yes"]], ["checked", null, ["fa-circle-o", "No"]]];
 export const READONLY_OPTIONS = [["readonly", null, ["fa-circle", "Allow"]], ["readonly", "true", ["fa-circle-o", "Disallow"]]];

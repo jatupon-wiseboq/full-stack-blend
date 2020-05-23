@@ -350,3 +350,11 @@ body.internal-fsb-mode-coding {
 input[type='radio'], input[type='checkbox'] {
   pointer-events: none !important;
 }
+
+.internal-fsb-element[internal-fsb-class="Iframe"],
+.internal-fsb-element[internal-fsb-class="HTML"],
+.internal-fsb-element[internal-fsb-class="Video"] {
+  iframe {
+    pointer-events: none;
+  }
+}
