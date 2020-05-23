@@ -3,7 +3,7 @@ import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CodeGeneratorSharingHelper, DEFAULTS} from '../../helpers/CodeGeneratorSharingHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS} from '../../Constants.js';
 
 // This code generator relies on elements in construction area.
 // 
@@ -296,7 +296,7 @@ ${rootScript}`;
           if (classes != '') composed += ' className="' + classes + '"';
           if (styles != null) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
-          composed += (children.length == 0) ? ' />' : '>';
+          composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
           
           lines.push(composed);
           
@@ -304,8 +304,12 @@ ${rootScript}`;
             CodeGeneratorHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
           }
           
-          if (children.length != 0) {
-	          composed = indent;
+          if (children.length != 0 || REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) != -1) {
+	          if (CONTAIN_TEXT_CONTENT_TAGS.indexOf(tag) == -1) {
+	            composed = indent;
+	          } else {
+	            composed = '';
+	          }
 	          composed += '</' + tag + '>';
 	          lines.push(composed);
 	        }
@@ -455,7 +459,7 @@ ${rootScript}`;
           if (classes != '') composed += ' class="' + classes + '"';
           if (styles != null) composed += ' style="' + styles.join('; ') + ';"';
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
-          composed += (children.length == 0 && ['select'].indexOf(tag) == -1) ? ' />' : '>';
+          composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
           
           lines.push(composed);
           
@@ -467,8 +471,12 @@ ${rootScript}`;
             CodeGeneratorHelper.recursiveGenerateCodeForFallbackRendering(child, indent + '  ', executions, lines, false);
           }
           
-          if (children.length != 0 || ['select'].indexOf(tag) != -1) {
-	          composed = indent;
+          if (children.length != 0 || REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) != -1) {
+	          if (CONTAIN_TEXT_CONTENT_TAGS.indexOf(tag) == -1) {
+	            composed = indent;
+	          } else {
+	            composed = '';
+	          }
 	          composed += '</' + tag + '>';
 	          lines.push(composed);
 	        }

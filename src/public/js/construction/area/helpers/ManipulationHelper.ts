@@ -460,6 +460,18 @@ var ManipulationHelper = {
                 }
               }
               break;
+            case 'internal-fsb-textbox-mode':
+              if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
+                found = true;
+                if (attribute.value !== null) {
+                	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
+                  selectingElement.firstChild.outerHTML = selectingElement.firstChild.outerHTML.replace(/<input/,"<textarea");
+                } else {
+                	HTMLHelper.removeAttribute(selectingElement, attribute.name);
+                  selectingElement.firstChild.outerHTML = selectingElement.firstChild.outerHTML.replace(/<textarea/,"<input");
+                }
+              }
+              break;
             default:
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
                 found = true;

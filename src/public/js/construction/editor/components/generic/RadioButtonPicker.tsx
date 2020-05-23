@@ -18,7 +18,8 @@ let options = {
     "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
     "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
-    "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2
+    "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
+    "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",

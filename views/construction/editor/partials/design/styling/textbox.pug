@@ -2,6 +2,14 @@
   .section-title
     | Textbox Options
   .section-subtitle
+    | Text Mode
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-textbox-mode']}")
+  .section-subtitle(internal-fsb-for="internal-fsb-textbox-mode:multiple")
+    | Number of Lines
+  .section-body(internal-fsb-for="internal-fsb-textbox-mode:multiple")
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['rows'], inline: true, button: false}")
+  .section-subtitle
     | Placeholder
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['placeholder'], inline: true, button: false}")
