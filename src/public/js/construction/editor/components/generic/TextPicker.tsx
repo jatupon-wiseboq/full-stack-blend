@@ -13,7 +13,8 @@ declare let perform: any;
 interface Props extends IProps {
     inline: boolean,
     button: boolean,
-    manual: boolean
+    manual: boolean,
+    multiline: boolean
 }
 
 interface State extends IState {
@@ -29,7 +30,8 @@ let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     inline: false,
     button: true,
-    manual: false
+    manual: false,
+    multiline: false
 });
 
 class TextPicker extends Base<Props, State> {
@@ -108,7 +110,7 @@ class TextPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
                     {(() => {
                         if (this.props.button) {
                             return (
@@ -127,7 +129,7 @@ class TextPicker extends Base<Props, State> {
                 <div className={"text-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>

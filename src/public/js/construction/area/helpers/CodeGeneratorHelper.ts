@@ -201,6 +201,7 @@ ${rootScript}`;
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
             default:
+              if (attribute.name.indexOf('internal-fsb-') == 0) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
               	let value = null;
               	if (attribute.value) value = JSON.parse(attribute.value);
@@ -406,6 +407,7 @@ ${rootScript}`;
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
             default:
+              if (attribute.name.indexOf('internal-fsb-') == 0) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
               	let value = null;
               	if (attribute.value) value = JSON.parse(attribute.value);

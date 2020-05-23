@@ -233,7 +233,7 @@ var ManipulationHelper = {
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
         	.internal-fsb-element
-        		| <b>HTML Content</b>
+        	  .html
         `, element);
         break;
       case 'Hidden':
@@ -469,6 +469,18 @@ var ManipulationHelper = {
                 } else {
                 	HTMLHelper.removeAttribute(selectingElement, attribute.name);
                   selectingElement.firstChild.outerHTML = selectingElement.firstChild.outerHTML.replace(/<textarea/,"<input");
+                }
+              }
+              break;
+            case 'internal-fsb-inner-html':
+              if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
+                found = true;
+                if (attribute.value !== null) {
+                	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
+                  selectingElement.firstChild.innerHTML = attribute.value.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '<div style="font-family: Courier; font-size: 10px; color: #dc3545;">&lt;script&gt;Please compose custom scripts in coding user interface.&lt;/script&gt;</div>');
+                } else {
+                	HTMLHelper.removeAttribute(selectingElement, attribute.name);
+                  selectingElement.firstChild.innerHTML = '';
                 }
               }
               break;
