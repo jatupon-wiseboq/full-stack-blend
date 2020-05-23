@@ -1,3 +1,7 @@
 @import "controls/dropdown";
 @import "controls/file";
 @import "controls/tree";
+
+.input-group.inline {
+  display: block;
+}
