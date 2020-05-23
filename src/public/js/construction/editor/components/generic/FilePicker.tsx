@@ -49,7 +49,9 @@ class FilePicker extends Base<Props, State> {
         if (this.recentGuid != properties.elementGuid) {
             this.recentGuid = properties.elementGuid;
             
-            let value = imageURLCache[this.recentGuid] || this.state.styleValues[this.props.watchingStyleNames[0]];
+            let value = imageURLCache[this.recentGuid] ||
+              this.state.styleValues[this.props.watchingStyleNames[0]] ||
+              this.state.attributeValues[this.props.watchingAttributeNames[0]];
             this.setState({
                 value: value
             });
@@ -57,8 +59,7 @@ class FilePicker extends Base<Props, State> {
     }
     
     protected fileOnUpdate(value: any) {
-        let composedValue = 'url(' + URL.createObjectURL(value) + ')';
-        
+        let composedValue = this.composeValue(value);     
         this.setState({
             value: composedValue
         });
@@ -72,6 +73,24 @@ class FilePicker extends Base<Props, State> {
                 }],
                 replace: this.props.watchingStyleNames[0]
             });
+        }
+        if (this.props.watchingAttributeNames[0] && !this.props.manual) {
+            perform('update', {
+                attributes: [{
+                    name: this.props.watchingAttributeNames[0].split('[')[0],
+                    value: composedValue
+                }],
+                replace: this.props.watchingAttributeNames[0]
+            });
+        }
+    }
+    
+    protected composeValue(value: any) {
+        if (this.props.watchingStyleNames[0]) {
+            return 'url(' + URL.createObjectURL(value) + ')';   
+        }
+        if (this.props.watchingAttributeNames[0]) {
+            return URL.createObjectURL(value);   
         }
     }
     
