@@ -244,7 +244,12 @@ var EditorHelper = {
     }
   },
   getSelectingElement: () => {
-    if (Accessories.resizer && Accessories.resizer.getDOMNode().parentNode && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
+    let current = Accessories.resizer.getDOMNode();
+    while (current != null && current != document.body) {
+      current = current.parentNode;
+    }
+    
+    if (current == document.body && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
       return Accessories.resizer.getDOMNode().parentNode;
     } else {
       return null;
