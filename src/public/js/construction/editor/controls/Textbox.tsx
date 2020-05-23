@@ -108,7 +108,7 @@ class Textbox extends React.Component<Props, State> {
     render() {
       return (
         pug `
-          div
+          div(style={width: '100%'})
             input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString())
             if this.props.failedValidationMessage
               span.invalid-feedback ${this.props.failedValidationMessage}

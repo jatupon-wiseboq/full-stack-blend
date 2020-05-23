@@ -2,6 +2,6 @@
 @import "controls/file";
 @import "controls/tree";
 
-.input-group.inline {
-  display: block;
+.input-group {
+  flex-wrap: nowrap;
 }
