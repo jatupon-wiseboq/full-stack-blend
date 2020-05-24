@@ -29,6 +29,9 @@ var MathHelper = {
   },
   isOverlap: (a: Region, b: Region): boolean => {
     return (a.x < b.x + b.width) && (a.x + a.width > b.x) && (a.y < b.y + b.height) && (a.y + a.height > b.y);
+  },
+  clamp: (value: number, minimum: number, maximum: number): number => {
+    return Math.min(Math.max(value, minimum), maximum);
   }
 };
 

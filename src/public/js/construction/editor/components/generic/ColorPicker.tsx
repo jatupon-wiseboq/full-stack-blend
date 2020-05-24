@@ -50,21 +50,23 @@ class ColorPicker extends Base<Props, State> {
         this.forceUpdate();
     }
     
-    protected colorPickerOnUpdate(value: any) {
-        let composedValue = '#' + value;
-        this.state.value = composedValue;
-        if (this.props.watchingStyleNames[0] && !this.props.manual) {
-            perform('update', {
-                styles: [{
-                    name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: composedValue
-                }],
-                replace: this.props.watchingStyleNames[0]
-            });
-        }
+    protected colorPickerOnUpdate(rgba: any) {
+        rgba = rgba || 'rgba(0, 0, 0, 1.0)';
+        this.state.value = rgba;
+        this.refs.swatchPicker.setCurrentSwatchColor(rgba);
+      
+        perform('update', {
+            styles: [{
+                name: this.props.watchingStyleNames[0].split('[')[0],
+                value: rgba
+            }],
+            replace: this.props.watchingStyleNames[0]
+        });
     }
     
     protected onVisibleChanged(visible: boolean, tag: any) {
+        if (visible) this.refs.swatchPicker.deselect();
+        
         this.setState({
             visible: visible
         });
@@ -81,6 +83,21 @@ class ColorPicker extends Base<Props, State> {
     public hide() {
     }
     
+    protected onColorPicked(color: string) {
+        this.setState({
+            value: color
+        });
+        this.refs.colorPicker.setCurrentColor(color);
+        
+        perform('update', {
+            styles: [{
+                name: this.props.watchingStyleNames[0].split('[')[0],
+                value: color
+            }],
+            replace: this.props.watchingStyleNames[0]
+        });
+    }
+    
     render() {
         if (this.props.inline) {
             return (
@@ -88,8 +105,13 @@ class ColorPicker extends Base<Props, State> {
                     <div className="btn btn-secondary btn-sm" internal-fsb-event-no-propagate="click" style={{flex: 'auto'}}>
                         <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.value} autohide={false} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                             <div className="section-container">
+                                <div className="section-subtitle">Swatches</div>
                                 <div className="section-body">
-                                    <FullStackBlend.Controls.ColorPicker value={this.state.value} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                    <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
+                                </div>
+                                <div className="section-subtitle">Color</div>
+                                <div className="section-body">
+                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.value} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
                                 </div>
                             </div>
                         </FullStackBlend.Controls.DropDownControl>
@@ -106,7 +128,16 @@ class ColorPicker extends Base<Props, State> {
                 <div className="btn-group btn-group-sm mr-1 mb-1" role="group">
                     <button className={"btn btn-light color-picker p-0 " + this.props.additionalClassName}>
                         <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={"<div style=\"width: 36px; height: 28px; padding: 4px 8px;\"><div style=\"width: 20px; height: 20px; background-color: " + this.state.value + "; \" /></div>"} onVisibleChanged={this.onVisibleChanged.bind(this)}>
-                            <FullStackBlend.Controls.ColorPicker value={this.state.styleValues[this.props.watchingStyleNames[0]]}  visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                             <div className="section-container">
+                                <div className="section-subtitle">Swatches</div>
+                                <div className="section-body">
+                                    <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
+                                </div>
+                                <div className="section-subtitle">Color</div>
+                                <div className="section-body">
+                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]}  visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                </div>
+                            </div>
                         </FullStackBlend.Controls.DropDownControl>
                     </button>
                 </div>

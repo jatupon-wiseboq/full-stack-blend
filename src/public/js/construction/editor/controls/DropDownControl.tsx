@@ -52,6 +52,10 @@ class DropDownControl extends React.Component<Props, State> {
             // Measure Size & Position
             //
             
+            if (this.props.onVisibleChanged) {
+                this.props.onVisibleChanged(true, this.props.tag);
+            }
+            
             let position = HTMLHelper.getPosition(button);
             let size = HTMLHelper.getSize(button);
             let buttonWidth = size[0];
@@ -98,10 +102,6 @@ class DropDownControl extends React.Component<Props, State> {
             //
             
             window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
-            
-            if (this.props.onVisibleChanged) {
-                this.props.onVisibleChanged(true, this.props.tag);
-            }
             
             return EventHelper.cancel(event);
         });

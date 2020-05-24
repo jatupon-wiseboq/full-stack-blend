@@ -54,7 +54,7 @@ class AppearancePicker extends Base<Props, State> {
 		                    <div className="appearance-panel appearance-padding" style={{
 		                        backgroundColor: (!this.state.styleValues[this.props.watchingStyleNames[8]]) ? '' : this.state.styleValues[this.props.watchingStyleNames[8]]
 		                    }}>
-		                        <FullStackBlend.Components.BackgroundStylePicker watchingStyleNames={["background-color"]} />
+		                        <FullStackBlend.Components.BackgroundStylePicker watchingStyleNames={["background"]} />
 		                    </div>
 		                </div>
                 </div>

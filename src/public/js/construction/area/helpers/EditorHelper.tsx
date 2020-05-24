@@ -26,7 +26,8 @@ let Accessories = {
 
 let editorCurrentMode: string = null;
 let InternalProjectSettings: {string: any} = {
-  externalLibraries: 'react@16'
+  externalLibraries: 'react@16',
+  colorSwatches: new Array(28)
 };
 
 var EditorHelper = {

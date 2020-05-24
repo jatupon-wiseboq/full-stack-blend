@@ -317,3 +317,4 @@ export const DATA_WIZARD_TYPE_OPTIONS_2 = [["internal-fsb-data-wizard-type", "re
 export const TEXTBOX_MODE_OPTIONS = [["internal-fsb-textbox-mode", null, ["fa-minus", "Single"]], ["internal-fsb-textbox-mode", "multiple", ["fa-reorder", "Multiple"]]];
 export const REQUIRE_FULL_CLOSING_TAGS = ["select", "textarea"];
 export const CONTAIN_TEXT_CONTENT_TAGS = ["textarea"];
+export const BACKGROUND_TYPE_OPTIONS = [["-fsb-background-type", null, ["d-none", "Solid"]], ["-fsb-background-type", "linear", ["d-none", "Linear Gradient"]], ["-fsb-background-type", "dial", ["d-none", "Dial Gradient"]]];

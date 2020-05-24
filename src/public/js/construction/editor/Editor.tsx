@@ -16,6 +16,8 @@ import './components/shape/AppearancePicker.js';
 import './components/shape/BoundaryPicker.js';
 import './components/shape/Transformer.js';
 import './components/shape/SizePicker.js';
+import './components/shape/SwatchPicker.js';
+import './components/shape/GradientPicker.js';
 
 import './components/generic/DropDownPicker.js';
 import './components/generic/RadioButtonPicker.js';
@@ -43,6 +45,10 @@ let recentExtraPanelSelector: string = null;
 
 (function() {
   window.perform = (name: string, content: any) => {
+    if (['undo', 'redo'].indexOf(name) != -1) {
+      window.document.body.click();
+    }
+    
     let element = document.getElementById('construction') as HTMLFrameElement;
     let contentWindow = element.contentWindow;
     contentWindow.postMessage(JSON.stringify({
@@ -187,6 +193,8 @@ let recentExtraPanelSelector: string = null;
   };
   
   window.addEventListener("keydown", (event: any) => {
+    if (EventHelper.checkIfDenyForHandle(event)) return;
+    
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       perform('keydown', event.keyCode);
@@ -195,6 +203,8 @@ let recentExtraPanelSelector: string = null;
     }
   });
   window.addEventListener("keyup", (event: any) => {
+    if (EventHelper.checkIfDenyForHandle(event)) return;
+    
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       perform('keyup', event.keyCode);
