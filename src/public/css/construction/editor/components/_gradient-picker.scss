@@ -37,4 +37,18 @@
       }
     }
   }
+  
+  .gradient-rotation-input {
+    display: inline-block;
+    width: 80px;
+    padding: 10px 0 0;
+    transform: scale(0.85);
+  }
+  .gradient-rotation-unit {
+    display: inline-block;
+    font-size: 11px;
+    position: relative;
+    top: -2px;
+    color: #444;
+  }
 }

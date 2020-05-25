@@ -98,9 +98,7 @@ class DropDownList extends React.Component<Props, State> {
             dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
-            setTimeout(() => {
-                dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
-            }, 0);
+            dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
             
             // Handling Events
             //

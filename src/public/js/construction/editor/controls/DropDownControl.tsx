@@ -49,54 +49,11 @@ class DropDownControl extends React.Component<Props, State> {
                 window.document.body.click();
             }
             
-            // Measure Size & Position
-            //
-            
             if (this.props.onVisibleChanged) {
                 this.props.onVisibleChanged(true, this.props.tag);
             }
             
-            let position = HTMLHelper.getPosition(button);
-            let size = HTMLHelper.getSize(button);
-            let buttonWidth = size[0];
-            
-            dropdown.className = 'fsb-dropdown-menu dropdown-menu show measure';
-            window.document.body.appendChild(dropdown);
-            
-            let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
-            dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
-            this.maximumWidth = dropDownClientWidth;
-            let dropDownClientHeight = dropdown.clientHeight + 5;
-            let windowWidth = window.innerWidth;
-            let windowHeight = window.innerHeight;
-            let dropDownMaxHeight = windowHeight - position[1] - size[1] - 2;
-            let overflowY = false;
-            if (dropDownClientHeight > dropDownMaxHeight) {
-                dropDownClientWidth += 7;
-                overflowY = true;
-            }
-            
-            // Assign Size & Position
-            //
-            position[0] += this.props.offsetX;
-            position[1] += this.props.offsetY;
-            
-            if (position[0] + Math.max(dropDownClientWidth, size[0]) < windowWidth) {
-                dropdown.style.left = (position[0] - 1) + 'px';
-            } else {
-                dropdown.style.left = (windowWidth - Math.max(dropDownClientWidth, size[0])) + 'px';
-            }
-            
-            dropdown.style.position = 'fixed';
-            dropdown.style.top = (position[1] + size[1]) + 'px';
-            dropdown.style.width = Math.max(dropDownClientWidth, size[0]) + 'px';
-            dropdown.style.height = Math.min(dropDownClientHeight, dropDownMaxHeight) + 'px';
-            dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
-            
-            dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
-            setTimeout(() => {
-                dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
-            }, 0);
+            this.measureAndPosition();
             
             // Handling Events
             //
@@ -115,7 +72,59 @@ class DropDownControl extends React.Component<Props, State> {
         }
     }
     
-    public hide() {
+    private measureAndPosition(recalculate: boolean=false) {
+        let button = ReactDOM.findDOMNode(this.refs.button);
+        let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
+        
+        // Measure Size & Position
+        //       
+        let position = HTMLHelper.getPosition(button);
+        let size = HTMLHelper.getSize(button);
+        let buttonWidth = size[0];
+        
+        dropdown.className = 'fsb-dropdown-menu dropdown-menu show measure';
+        window.document.body.appendChild(dropdown);
+        
+        let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
+        dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
+        this.maximumWidth = dropDownClientWidth;
+        let dropDownClientHeight = dropdown.clientHeight + 5;
+        let windowWidth = window.innerWidth;
+        let windowHeight = window.innerHeight;
+        let dropDownMaxHeight = windowHeight - position[1] - size[1] - 2;
+        let overflowY = false;
+        if (dropDownClientHeight > dropDownMaxHeight) {
+            dropDownClientWidth += 7;
+            overflowY = true;
+        }
+        
+        // Assign Size & Position
+        //
+        position[0] += this.props.offsetX;
+        position[1] += this.props.offsetY;
+        
+        if (position[0] + Math.max(dropDownClientWidth, size[0]) < windowWidth) {
+            dropdown.style.left = (position[0] - 1) + 'px';
+        } else {
+            dropdown.style.left = (windowWidth - Math.max(dropDownClientWidth, size[0])) + 'px';
+        }
+        
+        dropdown.style.position = 'fixed';
+        dropdown.style.top = (position[1] + size[1]) + 'px';
+        dropdown.style.width = Math.max(dropDownClientWidth, size[0]) + 'px';
+        dropdown.style.height = Math.min(dropDownClientHeight, dropDownMaxHeight) + 'px';
+        dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
+        
+        dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
+        dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
+    }
+    
+    public updateHeight() {
+        this.hide(false);
+        this.measureAndPosition();
+    }
+    
+    public hide(invokeEvent: boolean=true) {
         let group = ReactDOM.findDOMNode(this.refs.group);
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
@@ -129,9 +138,9 @@ class DropDownControl extends React.Component<Props, State> {
         dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
         group.appendChild(dropdown);
         
-        window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        if (invokeEvent && this.props.onVisibleChanged) {
+            window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
-        if (this.props.onVisibleChanged) {
             this.props.onVisibleChanged(false, this.props.tag);
         }
     }

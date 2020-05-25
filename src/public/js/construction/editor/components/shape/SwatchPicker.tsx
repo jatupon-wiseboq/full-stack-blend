@@ -44,7 +44,7 @@ class SwatchPicker extends Base<Props, State> {
         this.forceUpdate();
         
         if (this.props.onColorPicked) {
-            this.props.onColorPicked(this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index]);
+            this.props.onColorPicked(this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] || 'rgba(255, 255, 255, 1.0)');
         }
     }
     

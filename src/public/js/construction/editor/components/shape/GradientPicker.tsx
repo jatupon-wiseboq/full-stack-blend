@@ -6,17 +6,21 @@ import {Point, MathHelper} from '../../../helpers/MathHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../../controls/Tree.js';
+import '../../controls/Textbox.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
-    onChangeSelection(color: String);
+    onSelectionChange(color: String);
+    onValueChange(color: String);
+    value: String;
 }
 
 interface State extends IState {
     pickers: [{position: Number, color: String}],
-    draggingIndex: number
+    draggingIndex: number,
+    degree: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -25,7 +29,8 @@ Object.assign(ExtendedDefaultState, {
         {position: 0, color: 'rgba(0, 0, 0, 1.0)'},
         {position: 100, color: 'rgba(0, 0, 0, 1.0)'}
     ],
-    draggingIndex: -1
+    draggingIndex: -1,
+    degree: 90
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -66,7 +71,37 @@ class GradientPicker extends Base<Props, State> {
     }
     
     public update(properties: any) {
+        let recentGUID = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        
         if (!super.update(properties)) return;
+        
+        if (this.state.styleValues[this.props.watchingStyleNames[1]] === null) {
+            this.deselect();
+        }
+        if (recentGUID != this.state.attributeValues[this.props.watchingAttributeNames[0]]) {
+            let backgroundStyleValue = this.state.styleValues[this.props.watchingStyleNames[0]];
+            if (backgroundStyleValue) {
+                let match = backgroundStyleValue.match(/(radial|linear)-gradient\(([0-9]+deg, )?(.+)\)$/);
+                if (match) {
+                    this.deselect()
+                    this.state.pickers = [];
+                    
+                    let splited = match[3].split('%, ');
+                    for (let token of splited) {
+                        let lastIndex = token.lastIndexOf(' ');
+                        let color = token.substring(0, lastIndex);
+                        let percent = token.substring(lastIndex + 1, token.length);
+                        
+                        this.state.pickers.push({
+                            position: parseFloat(percent),
+                            color: color
+                        });
+                    }
+                    
+                    this.forceUpdate();
+                }
+            }
+        }
     }
     
     protected gradientPickerOnClick(event: HTMLEvent) {
@@ -108,7 +143,7 @@ class GradientPicker extends Base<Props, State> {
         this.originalElementPos.y = elementPosition[1] - containerPosition[1];
         this.containerWidth = containerSize[0];
         
-        if (this.props.onChangeSelection) this.props.onChangeSelection(this.state.pickers[this.state.draggingIndex].color);
+        if (this.props.onSelectionChange) this.props.onSelectionChange(this.state.pickers[this.state.draggingIndex].color);
         
         return EventHelper.cancel(event);
     }
@@ -121,6 +156,8 @@ class GradientPicker extends Base<Props, State> {
         
         this.state.pickers[this.state.draggingIndex].position = percent;
         this.forceUpdate();
+        
+        if (this.props.onValueChange) this.props.onValueChange();
         
         return EventHelper.cancel(event);
     }
@@ -142,7 +179,7 @@ class GradientPicker extends Base<Props, State> {
         
         if (event.keyCode == 8) {
             this.state.pickers.splice(this.state.draggingIndex, 1);
-            this.state.draggingIndex = -1;
+            this.deselect();
             this.forceUpdate();
         }
     }
@@ -154,15 +191,30 @@ class GradientPicker extends Base<Props, State> {
         this.forceUpdate();
     }
     
-    public generateCSSGradientBackgroundValue() {
+    public generateCSSGradientBackgroundValue(radial: boolean=false, rotate: boolean=false) {
         let pickers = CodeHelper.clone(this.state.pickers);
         pickers = pickers.sort((a, b) => {
           return a.position > b.position;
         });
-        return `linear-gradient(90deg, ${pickers.map(picker => picker.color + ' ' + picker.position + '%').join(', ')})`;
+        return `${radial ? 'radial' : 'linear'}-gradient(${radial ? '' : `${(rotate) ? this.state.degree : 90}deg, `}${pickers.map(picker => picker.color + ' ' + picker.position + '%').join(', ')})`;
+    }
+    
+    protected rotationPickerOnUpdate(value: string) {
+        this.state.degree = (value == '') ? 90 : parseInt(value);
+        this.forceUpdate();
+        if (this.props.onValueChange) this.props.onValueChange();
+    }
+    
+    public deselect() {
+        this.setState({
+            draggingIndex: -1
+        });
     }
     
     render() {
+      let match = this.props.value && this.props.value.match(/([0-9]+)deg/) || null
+      let rotationPicker = (<FullStackBlend.Controls.Textbox placeholder="rotation" value={match && match[1] || '90'} preRegExp="([1-3]|[1-2][0-9]|[1-2][0-9][0-9]|3[0-5]|3[0-5][0-9]|360|[0-9]|[1-9][0-9])?" postRegExp="[0-9]*" onUpdate={this.rotationPickerOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>);
+      
       return (
         pug `
           .gradient-picker-container
@@ -170,6 +222,10 @@ class GradientPicker extends Base<Props, State> {
               each picker, index in this.state.pickers
                 .picker(className=((index == this.state.draggingIndex) ? 'active' : ''), key='picker-' + index, style={left: picker.position + '%'}, onMouseDown=this.pickerOnMouseDown.bind(this))
                   .picker-inner-body(style={borderColor: picker.color})
+            .gradient-rotation-input
+              = rotationPicker
+            .gradient-rotation-unit
+              | deg
         `
       )
     }

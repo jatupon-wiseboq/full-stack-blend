@@ -40,8 +40,9 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
-    customClassName: string
-    options: any
+    customClassName: string;
+    options: any;
+    onValueChange(value: any);
 }
 
 interface State extends IState {
@@ -201,6 +202,8 @@ class RadioButtonPicker extends Base<Props, State> {
 						        break;
             }
         }
+        
+        if (this.props.onValueChange) this.props.onValueChange((currentState) ? null : target);
     }
     
     private getState(value: any, mode: Mode): boolean {

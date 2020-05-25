@@ -387,7 +387,9 @@ var ManipulationHelper = {
         };
       } else {
         accessory = {
-          attributes: HTMLHelper.getAttributes(selectingElement, true),
+          attributes: HTMLHelper.getAttributes(selectingElement, true, {
+            style: HTMLHelper.getAttribute(selectingElement, 'style')
+          }),
           extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
           options: LayoutHelper.getElementOptions(selectingElement)
         };
