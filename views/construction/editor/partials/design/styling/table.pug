@@ -9,6 +9,26 @@
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['table-cell-0', '-fsb-cell-style', /^-fsb-cell-([0-9]+)-([0-9]+)-top/, /^-fsb-cell-([0-9]+)-([0-9]+)-right/, /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/, /^-fsb-cell-([0-9]+)-([0-9]+)-left/, /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/, /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/]}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['table-cell-1', '-fsb-cell-style', /^-fsb-cell-([0-9]+)-([0-9]+)-top/, /^-fsb-cell-([0-9]+)-([0-9]+)-right/, /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/, /^-fsb-cell-([0-9]+)-([0-9]+)-left/, /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/, /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/]}")
   .section-subtitle
+    | Rows
+  .section-body
+    .btn-group.btn-group-sm.mr-1.mb-1(role="group")
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-row-above')")
+        | Add Above
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-row-below')")
+        | Add Below
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'delete-row')")
+        | Delete
+  .section-subtitle
+    | Columns
+  .section-body
+    .btn-group.btn-group-sm.mr-1.mb-1(role="group")
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-column-before')")
+        | Add Before
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-column-after')")
+        | Add After
+      button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'delete-column')")
+        | Delete
+  .section-subtitle
     | Miscellaneous
   .section-body
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['table-layout']}")

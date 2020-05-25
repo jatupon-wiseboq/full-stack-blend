@@ -36,6 +36,19 @@ var CursorHelper = {
     let walkPath = [...CursorHelper.findWalkPathForCursor()];
     walkPath[2] = Math.max(0, walkPath[2] - 1);
     
+    if (walkPath[2] == 0) {
+      if (Accessories.cursor.getDOMNode().parentNode.tagName == 'TD' &&
+        Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling &&
+        Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling.tagName == 'TR') {
+        
+        let colIndex = [...Accessories.cursor.getDOMNode().parentNode.parentNode.children].indexOf(Accessories.cursor.getDOMNode().parentNode);
+        let nextContainer = Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling.children[colIndex];
+        
+        walkPath[1] -= Accessories.cursor.getDOMNode().parentNode.parentNode.children.length;
+        walkPath[2] = nextContainer.children.length;
+      }
+    }
+    
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
   moveCursorToTheRight: () => {
@@ -77,6 +90,19 @@ var CursorHelper = {
     }
     
     walkPath[2] = Math.min(maximum, walkPath[2] + 1);
+    
+    if (walkPath[2] == Accessories.cursor.getDOMNode().parentNode.children.length - 1) {
+      if (Accessories.cursor.getDOMNode().parentNode.tagName == 'TD' &&
+        Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling &&
+        Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling.tagName == 'TR') {
+        
+        let colIndex = [...Accessories.cursor.getDOMNode().parentNode.parentNode.children].indexOf(Accessories.cursor.getDOMNode().parentNode);
+        let nextContainer = Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling.children[colIndex];
+        
+        walkPath[1] += Accessories.cursor.getDOMNode().parentNode.parentNode.children.length;
+        walkPath[2] = 0;
+      }
+    }
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },

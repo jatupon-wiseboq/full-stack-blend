@@ -64,6 +64,11 @@ class CellFormater extends React.Component<Props, State> {
 
 		this.tableElement = element;
 	}
+	public refresh() {
+	  let tableElement = this.tableElement;
+	  this.setTableElement(null);
+	  this.setTableElement(tableElement);
+	}
 	public getInfo() {
 		let li = Number.MAX_SAFE_INTEGER;
 		let ri = Number.MIN_SAFE_INTEGER;

@@ -91,6 +91,9 @@ var ManipulationHelper = {
       case 'delete':
       	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
         break;
+      case 'table':
+      	[accessory, remember, link, content] = ManipulationHelper.handleModifyTable(name, content, remember, promise, link);
+        break;
       case 'keydown':
       	[accessory, remember, link] = ManipulationHelper.handleKeyDown(name, content, remember, promise, link);
         break;
@@ -123,7 +126,7 @@ var ManipulationHelper = {
         }
       }
       
-      console.log('remember', name, content, accessory, replace);
+      console.log('remember', name, content, accessory, replace, link);
       
       performedIndex += 1;
       performed = performed.splice(0, performedIndex);
@@ -883,6 +886,199 @@ var ManipulationHelper = {
   	
   	return [accessory, remember, link];
   },
+  handleModifyTable: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+  	let accessory = null;
+  	
+  	if (typeof content === 'string') {
+  	  content = {
+  	    action: content,
+  	    elements: null
+  	  }
+  	}
+  	
+  	let selectingElement = EditorHelper.getSelectingElement();
+  	let cursorContainer = Accessories.cursor.getDOMNode().parentNode;
+  	
+    if (selectingElement && cursorContainer.tagName == 'TD') {
+      switch (content.action) {
+        case 'delete-row':
+          if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
+            let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
+            let td = cursorContainer.parentNode.nextSibling.children[colIndex];
+            
+            link = Math.random();
+            ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            content.action = 'delete-row-above';
+          } else if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+            let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
+            let td = cursorContainer.parentNode.previousSibling.children[colIndex];
+            
+            link = Math.random();
+            ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            content.action = 'delete-row-below';
+          }
+          break;
+        case 'delete-column':
+          if (cursorContainer.nextSibling && cursorContainer.nextSibling.tagName == 'TD') {
+            let td = cursorContainer.nextSibling;
+             
+            link = Math.random();
+            ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            content.action = 'delete-column-before';
+          } else if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
+            let td = cursorContainer.previousSibling;
+            
+            link = Math.random();
+            ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            content.action = 'delete-column-after';
+          }
+          break;
+      }
+      
+      cursorContainer = Accessories.cursor.getDOMNode().parentNode;
+      
+    	switch (content.action) {
+    	  case 'add-row-above':
+    	  case 'add-row-below':
+    	    if (content.elements == null) {
+    	      let tr = document.createElement('tr');
+    	      content.elements = [tr];
+    	      
+    	      for (let i=0; i<cursorContainer.parentNode.children.length; i++) {
+    	        let td = document.createElement('td');
+    	        td.className = 'internal-fsb-strict-layout internal-fsb-allow-cursor';
+    	        content.elements[0].appendChild(td);
+    	      }
+    	    }
+    	    
+    	    if (content.action == 'add-row-above') {
+      	    accessory = {
+      	      action: 'delete-row-above'
+      	    };
+      	    cursorContainer.parentNode.parentNode.insertBefore(content.elements[0], cursorContainer.parentNode);
+    	    } else {
+    	      accessory = {
+      	      action: 'delete-row-below'
+      	    };
+    	      cursorContainer.parentNode.parentNode.insertBefore(content.elements[0], cursorContainer.parentNode.nextSibling);
+    	    }
+    	    
+    	    Accessories.cellFormater.refresh();
+    	    CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
+    	    break;
+    	  case 'delete-row-above': // Internal Use
+    	    if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+      	    accessory = {
+      	      action: 'add-row-above',
+      	      elements: [cursorContainer.parentNode.previousSibling]
+      	    };
+      	    cursorContainer.parentNode.parentNode.removeChild(cursorContainer.parentNode.previousSibling);
+      	  } else {
+      	    remember = false;
+      	  }
+    	    break;
+    	  case 'delete-row-below': // Internal Use
+    	    if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+      	    accessory = {
+      	      action: 'add-row-below',
+      	      elements: [cursorContainer.parentNode.nextSibling]
+      	    };
+      	    cursorContainer.parentNode.parentNode.removeChild(cursorContainer.parentNode.nextSibling);
+      	  } else {
+      	    remember = false;
+      	  }
+    	    break;
+    	  case 'add-column-before':
+    	  case 'add-column-after':
+    	    let count = 0;
+    	    if (content.elements == null) {
+    	      content.elements = [];
+    	      for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
+    	        if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
+    	          count += 1;
+    	        }
+    	      }
+    	      for (let i=0; i<count; i++) {
+    	        let td = document.createElement('td');
+    	        td.className = 'internal-fsb-strict-layout internal-fsb-allow-cursor';
+    	        content.elements.push(td);
+    	      }
+    	    }
+    	    
+    	    let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
+    	    
+    	    count = 0;
+    	    
+    	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
+    	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
+    	        let element = document.createElement('td');
+    	        element.innerHTML = 'ABC';
+    	        
+    	        cursorContainer.parentNode.parentNode.children[i].insertBefore(
+    	          content.elements[count++],
+    	          (content.action == 'add-column-before') ?
+    	            cursorContainer.parentNode.parentNode.children[i].children[colIndex] :
+    	            cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling
+    	        );
+    	      }
+    	    }
+    	    
+    	    if (content.action == 'add-column-before') {
+      	    accessory = {
+      	      action: 'delete-column-before'
+      	    };
+    	    } else {
+    	      accessory = {
+      	      action: 'delete-column-after'
+      	    };
+    	    }
+    	    
+    	    Accessories.cellFormater.refresh();
+    	    CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
+    	    break;
+    	  case 'delete-column-before': // Internal Use
+    	    if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
+      	    accessory = {
+      	      action: 'add-column-before',
+      	      elements: []
+      	    };
+      	    
+      	    let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
+      	    
+      	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
+      	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
+      	        accessory.elements.push(cursorContainer.parentNode.parentNode.children[i].children[colIndex].previousSibling);
+      	        cursorContainer.parentNode.parentNode.children[i].removeChild(cursorContainer.parentNode.parentNode.children[i].children[colIndex].previousSibling);
+      	      }
+      	    }
+      	  }
+    	    break;
+    	  case 'delete-column-after': // Internal Use
+    	    if (cursorContainer.nextSibling && cursorContainer.nextSibling.tagName == 'TD') {
+      	    accessory = {
+      	      action: 'add-column-before',
+      	      elements: []
+      	    };
+      	    
+      	    let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
+      	    
+      	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
+      	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
+      	        accessory.elements.push(cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling);
+      	        cursorContainer.parentNode.parentNode.children[i].removeChild(cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling);
+      	      }
+      	    }
+      	  }
+    	    break;
+    	}
+    }
+  	
+  	return [accessory, remember, link, content.action];
+  },
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
@@ -1073,7 +1269,7 @@ var ManipulationHelper = {
     
     remember = false;
     
-    if (link && performedIndex + 1 < performed.length - 1 && performed[performedIndex + 1].link === link) {
+    if (link && performedIndex + 1 < performed.length && performed[performedIndex + 1].link === link) {
     	promise.then(() => {
         ManipulationHelper.perform('redo', null);
       });
