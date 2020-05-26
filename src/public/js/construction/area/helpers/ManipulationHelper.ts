@@ -903,6 +903,8 @@ var ManipulationHelper = {
       switch (content.action) {
         case 'delete-row':
           if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
+            console.log('delete-row', 'delete-row-above');
+            
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             let td = cursorContainer.parentNode.nextSibling.children[colIndex];
             
@@ -911,6 +913,8 @@ var ManipulationHelper = {
             
             content.action = 'delete-row-above';
           } else if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+            console.log('delete-row', 'delete-row-below');
+            
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             let td = cursorContainer.parentNode.previousSibling.children[colIndex];
             
@@ -982,7 +986,7 @@ var ManipulationHelper = {
       	  }
     	    break;
     	  case 'delete-row-below': // Internal Use
-    	    if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+    	    if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
       	    accessory = {
       	      action: 'add-row-below',
       	      elements: [cursorContainer.parentNode.nextSibling]
