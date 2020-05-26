@@ -318,3 +318,5 @@ export const TEXTBOX_MODE_OPTIONS = [["internal-fsb-textbox-mode", null, ["fa-mi
 export const REQUIRE_FULL_CLOSING_TAGS = ["select", "textarea"];
 export const CONTAIN_TEXT_CONTENT_TAGS = ["textarea"];
 export const BACKGROUND_TYPE_OPTIONS = [["-fsb-background-type", null, ["d-none", "Solid"]], ["-fsb-background-type", "linear", ["d-none", "Linear Gradient"]], ["-fsb-background-type", "radial", ["d-none", "Radial Gradient"]]];
+export const CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g;
+export const CELL_STYLE_ATTRIBUTE_REGEX_LOCAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/;

@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../Constants.js';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
@@ -140,10 +141,10 @@ var StylesheetHelper = {
       
       // Table Cell Property (With Reusable Stylesheet)
       // 
-      let tableCellDefinitions = stylesheetDefinitions[info.id].match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+      let tableCellDefinitions = stylesheetDefinitions[info.id].match(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL);
       if (tableCellDefinitions !== null) {
   	   	for (let tableCellDefinition of tableCellDefinitions) {
-     			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
+     			let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
      			
      			for (let prefix of prefixes) {
      				lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +

@@ -9,7 +9,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX} from '../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -570,10 +570,10 @@ var ManipulationHelper = {
         	}
         	
         	if (!HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name')) {
-          	let tableCellDefinitions = inlineStyle.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g);
+          	let tableCellDefinitions = inlineStyle.match(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL);
           	if (tableCellDefinitions !== null) {
 					   	for (let tableCellDefinition of tableCellDefinitions) {
-				   			let matchedInfo = tableCellDefinition.match(/-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/);
+				   			let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
 				   			
 				   			let x = parseInt(matchedInfo[1]);
 				   			let y = parseInt(matchedInfo[2]);
@@ -896,6 +896,8 @@ var ManipulationHelper = {
   	  }
   	}
   	
+  	debugger;
+  	
   	let selectingElement = EditorHelper.getSelectingElement();
   	let cursorContainer = Accessories.cursor.getDOMNode().parentNode;
   	
@@ -903,23 +905,75 @@ var ManipulationHelper = {
       switch (content.action) {
         case 'delete-row':
           if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
-            console.log('delete-row', 'delete-row-above');
-            
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             let td = cursorContainer.parentNode.nextSibling.children[colIndex];
+            let rowIndex = [...cursorContainer.parentNode.parentNode.children].indexOf(cursorContainer.parentNode);
             
             link = Math.random();
+            let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
+            let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
+            inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
+            
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            promise.then(() => {
+              inlineStyle = inlineStyle.replace(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, (value) => {
+                let matches = value.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
+                
+                let row = parseInt(matches[2]);
+                if (row == rowIndex) {
+                  return '';
+                } else if (row > rowIndex) {
+                  return `-fsb-cell-${matches[1]}-${row-1}-${matches[3]}: ${matches[4]}`;
+                } else {
+                  return matches[0];
+                }
+              });
+              
+              ManipulationHelper.perform('update', {
+                attributes: [{
+                  name: 'style',
+                  value: inlineStyle
+                }]
+              }, true, false, link);
+            });
             
             content.action = 'delete-row-above';
           } else if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
-            console.log('delete-row', 'delete-row-below');
-            
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             let td = cursorContainer.parentNode.previousSibling.children[colIndex];
+            let rowIndex = [...cursorContainer.parentNode.parentNode.children].indexOf(cursorContainer.parentNode);
             
             link = Math.random();
+            let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
+            let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
+            inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
+            
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            promise.then(() => {
+              inlineStyle = inlineStyle.replace(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, (value) => {
+                let matches = value.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
+                
+                let row = parseInt(matches[2]);
+                if (row == rowIndex + 1) {
+                  return '';
+                } else if (row > rowIndex + 1) {
+                  return `-fsb-cell-${matches[1]}-${row-1}-${matches[3]}: ${matches[4]}`;
+                } else {
+                  return matches[0];
+                }
+              });
+              
+              ManipulationHelper.perform('update', {
+                attributes: [{
+                  name: 'style',
+                  value: inlineStyle
+                }]
+              }, true, false, link);
+            });
             
             content.action = 'delete-row-below';
           }
@@ -927,16 +981,72 @@ var ManipulationHelper = {
         case 'delete-column':
           if (cursorContainer.nextSibling && cursorContainer.nextSibling.tagName == 'TD') {
             let td = cursorContainer.nextSibling;
+            let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
              
             link = Math.random();
+            let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
+            let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
+            inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
+            
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            promise.then(() => {
+              inlineStyle = inlineStyle.replace(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, (value) => {
+                let matches = value.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
+                
+                let col = parseInt(matches[1]);
+                if (col == colIndex) {
+                  return '';
+                } else if (col > colIndex) {
+                  return `-fsb-cell-${col-1}-${matches[2]}-${matches[3]}: ${matches[4]}`;
+                } else {
+                  return matches[0];
+                }
+              });
+              
+              ManipulationHelper.perform('update', {
+                attributes: [{
+                  name: 'style',
+                  value: inlineStyle
+                }]
+              }, true, false, link);
+            });
             
             content.action = 'delete-column-before';
           } else if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
             let td = cursorContainer.previousSibling;
+            let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             
             link = Math.random();
+            let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
+            let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
+            inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
+            
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
+            
+            promise.then(() => {
+              inlineStyle = inlineStyle.replace(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, (value) => {
+                let matches = value.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
+                
+                let col = parseInt(matches[1]);
+                if (col == colIndex + 1) {
+                  return '';
+                } else if (col > colIndex + 1) {
+                  return `-fsb-cell-${col-1}-${matches[2]}-${matches[3]}: ${matches[4]}`;
+                } else {
+                  return matches[0];
+                }
+              });
+              
+              ManipulationHelper.perform('update', {
+                attributes: [{
+                  name: 'style',
+                  value: inlineStyle
+                }]
+              }, true, false, link);
+            });
             
             content.action = 'delete-column-after';
           }
@@ -970,9 +1080,6 @@ var ManipulationHelper = {
       	    };
     	      cursorContainer.parentNode.parentNode.insertBefore(content.elements[0], cursorContainer.parentNode.nextSibling);
     	    }
-    	    
-    	    Accessories.cellFormater.refresh();
-    	    CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
     	    break;
     	  case 'delete-row-above': // Internal Use
     	    if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
@@ -1019,9 +1126,6 @@ var ManipulationHelper = {
     	    
     	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
     	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
-    	        let element = document.createElement('td');
-    	        element.innerHTML = 'ABC';
-    	        
     	        cursorContainer.parentNode.parentNode.children[i].insertBefore(
     	          content.elements[count++],
     	          (content.action == 'add-column-before') ?
@@ -1040,9 +1144,6 @@ var ManipulationHelper = {
       	      action: 'delete-column-after'
       	    };
     	    }
-    	    
-    	    Accessories.cellFormater.refresh();
-    	    CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
     	    break;
     	  case 'delete-column-before': // Internal Use
     	    if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
@@ -1079,6 +1180,9 @@ var ManipulationHelper = {
       	  }
     	    break;
     	}
+    	
+    	Accessories.cellFormater.refresh();
+    	CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
     }
   	
   	return [accessory, remember, link, content.action];
