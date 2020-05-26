@@ -24,6 +24,12 @@ let x: number = 0;
 
 // Declare or extend interfaces here:
 //
+interface IProps extends IAutoBaseProps {
+  
+}
+interface IState extends IAutoBaseState { 
+}
+
 let DefaultProps = Object.assign({}, DefaultBaseProps, {
   
 });
@@ -57,10 +63,10 @@ declare let React: any;
 declare let ReactDOM: any;
 
 // <---Auto[Declare]// Auto[Interface]--->
-interface IProps extends IBaseProps {
+interface IProps extends IAutoBaseProps {
   
 }
-interface IState extends IBaseState { 
+interface IState extends IAutoBaseState { 
 }
 // <---Auto[Interface]// Auto[ClassBegin]--->
 class KlassA extends Base<IProps, IState> {

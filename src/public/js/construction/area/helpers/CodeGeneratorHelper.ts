@@ -200,6 +200,8 @@ ${rootScript}`;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
+            case 'contenteditable':
+              continue;
             default:
               if (attribute.name.indexOf('internal-fsb-') == 0) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
@@ -406,6 +408,8 @@ ${rootScript}`;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
+            case 'contenteditable':
+              continue;
             default:
               if (attribute.name.indexOf('internal-fsb-') == 0) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
