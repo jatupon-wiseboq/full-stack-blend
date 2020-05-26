@@ -197,15 +197,20 @@ class DropDownPicker extends Base<Props, State> {
         if (this.props.watchingStyleNames.length != 0) {
             if (options.indexOf('{SIZE}') != -1) {
                 controls['{SIZE}'] = <FullStackBlend.Components.SizePicker ref="size" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-            } else if (options.indexOf('{NUMBER}') != -1) {
+            }
+            if (options.indexOf('{NUMBER}') != -1) {
                 controls['{NUMBER}'] = <FullStackBlend.Components.NumberPicker ref="number" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-            } else if (options.indexOf('{FLOAT}') != -1) {
+            }
+            if (options.indexOf('{FLOAT}') != -1) {
                 controls['{FLOAT}'] = <FullStackBlend.Components.NumberPicker ref="float" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} float={true} />
-            } else if (options.indexOf('{TEXT}') != -1) {
+            }
+            if (options.indexOf('{TEXT}') != -1) {
                 controls['{TEXT}'] = <FullStackBlend.Components.TextPicker ref="text" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-            } else if (options.indexOf('{COLOR}') != -1) {
+            }
+            if (options.indexOf('{COLOR}') != -1) {
                 controls['{COLOR}'] = <FullStackBlend.Components.ColorPicker ref="color" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
-            } else if (options.indexOf('{BROWSE}') != -1) {
+            }
+            if (options.indexOf('{BROWSE}') != -1) {
                 controls['{BROWSE}'] = <FullStackBlend.Components.FilePicker ref="file" watchingStyleNames={this.props.watchingStyleNames} inline={true} manual={true} />
             }
         }
