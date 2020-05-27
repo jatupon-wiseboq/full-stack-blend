@@ -17,7 +17,7 @@ export const index = (req: Request, res: Response) => {
  */
 export const area = (req: Request, res: Response) => {
 
-    res.render("construction/area/area", {
+    res.render("construction/area/iframe/index", {
     });
 
 };

@@ -13,26 +13,21 @@ script(src='/js/construction/Editor.bundle.js')
 .workspace-container
   .workspace-vertical-container
     .workspace-vertical-panel
-      include partials/toolbar
+      include toolbar/toolbar
   .workspace-vertical-container.full-relative-size
     .workspace-vertical-panel
       .workspace-container
         .workspace-horizontal-container
           .workspace-horizontal-panel
-            include partials/explorer
+            include explorer/explorer
           .workspace-horizontal-panel.full-relative-size
             .workspace-container
               .workspace-vertical-container
                 .workspace-vertical-panel
-                  include partials/construction
-              .workspace-vertical-container(id='timeline')
-                .workspace-vertical-panel
-                  include partials/timeline
-              .workspace-vertical-container(id='codeEditor')
-                .workspace-vertical-panel
-                  include partials/coding
+                  include area/area
+              include footer/footer
           .workspace-horizontal-panel
-            include partials/sidebar
+            include sidebar/sidebar
 
 script(src='https://kit.fontawesome.com/a1b6590f7b.js', crossorigin='anonymous')
 script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
