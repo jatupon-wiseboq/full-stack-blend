@@ -28,28 +28,38 @@
                             .workspace-vertical-panel
                               .workspace-panel-container.white
                                 .panel.active(id='design')
-                                  include design/action/action
+                                  include html-design/action/action
                                 .panel(id='animation')
-                                  include animation/timeline
+                                  include html-animation/timeline
                                 .panel(id='coding')
-                                  include coding/coding
+                                  include html-coding/coding
                       .panel.sidebar-style-panel
-                        include common/style/style
+                        include html-common/style/style
                       .panel.sidebar-layers-panel
-                        include common/layers/layers
+                        include html-common/layers/layers
               .workspace-container.dataToolset.toolset
                 .workspace-vertical-container
                   .workspace-vertical-panel
                     .workspace-tab-container
                       .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-properties-panel.active(id='sidebarProperties', onclick="swap('.sidebar-properties-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
                           input(type='radio', name='options', checked=true)
                           | Properties
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-migration-panel(id='sidebarPriviledge', onclick="swap('.sidebar-priviledges-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                          input(type='radio', name='options', checked=false)
+                          | Priviledges
+                        a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-restoration-panel(id='sidebarRestoration', onclick="swap('.sidebar-restoration-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                          input(type='radio', name='options', checked=false)
+                          | Restoration
                 .workspace-vertical-container.full-relative-size
                   .workspace-vertical-panel
                     .workspace-panel-container.scrollable
-                      .panel.active
-                        | Data Toolset ABC
+                      .panel.sidebar-properties-panel.active
+                        | Properties
+                      .panel.sidebar-migration-panel
+                        | Priviledges
+                      .panel.sidebar-restoration-panel
+                        | Restoration
               .workspace-container.servicesToolset.toolset
                 .workspace-vertical-container
                   .workspace-vertical-panel
@@ -62,4 +72,4 @@
                   .workspace-vertical-panel
                     .workspace-panel-container.scrollable
                       .panel.active
-                        | Services Toolset ABC
+                        | Services
