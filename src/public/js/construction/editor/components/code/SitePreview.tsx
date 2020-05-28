@@ -174,7 +174,7 @@ class SitePreview extends Base<Props, State> {
     private display() {
     		let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedStylesheet;
     		
-    		let construction = document.getElementById('construction');
+    		let construction = document.getElementById('html');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
     		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
     		

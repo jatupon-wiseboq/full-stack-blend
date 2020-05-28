@@ -1,0 +1,19 @@
+doctype html
+html(lang='')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title #{title} - Construction Area
+    meta(name='description', content='')
+    meta(name='theme-color' content='#4DA5F4')
+    meta(name='csrf-token', content=_csrf)
+    link(rel='shortcut icon', href='/images/favicon.png')
+
+  body.internal-fsb-guide-on
+    .container-fluid.internal-fsb-begin(internal-fsb-guid='0')
+      .row.internal-fsb-strict-layout.internal-fsb-begin-layout.internal-fsb-allow-cursor
+  
+    script(src='https://unpkg.com/react@16/umd/react.development.js')
+    script(src='https://unpkg.com/react-dom@16/umd/react-dom.development.js')
+    script(src='/js/construction/Area.bundle.js')

@@ -49,7 +49,7 @@ let recentExtraPanelSelector: string = null;
       window.document.body.click();
     }
     
-    let element = document.getElementById('construction') as HTMLFrameElement;
+    let element = document.getElementById('html') as HTMLFrameElement;
     let contentWindow = element.contentWindow;
     contentWindow.postMessage(JSON.stringify({
       name: name,

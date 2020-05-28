@@ -15,9 +15,15 @@ export const index = (req: Request, res: Response) => {
  * GET /editor/construction/area
  * Construction area page.
  */
-export const area = (req: Request, res: Response) => {
+export const html = (req: Request, res: Response) => {
 
-    res.render("construction/area/iframe/index", {
+    res.render("construction/area/html/index", {
+    });
+
+};
+export const data = (req: Request, res: Response) => {
+
+    res.render("construction/area/data/index", {
     });
 
 };
