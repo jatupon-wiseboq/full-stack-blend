@@ -53,7 +53,7 @@ class DropDownList extends React.Component<Props, State> {
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
         button.addEventListener('click', ((event) => {
-            if (dropdown.className != 'fsb-dropdown-menu dropdown-menu hide') return EventHelper.cancel(event);
+            if (dropdown.className.indexOf('hide') == -1) return EventHelper.cancel(event);
         
             if (this.props.autohide) {
                 window.document.body.click();

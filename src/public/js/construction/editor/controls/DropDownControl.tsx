@@ -43,7 +43,7 @@ class DropDownControl extends React.Component<Props, State> {
         let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
         
         button.addEventListener('click', (event) => {
-            if (dropdown.className != 'fsb-dropdown-menu dropdown-menu hide') return EventHelper.cancel(event);
+            if (dropdown.className.indexOf('hide') == -1) return EventHelper.cancel(event);
         
             if (this.props.autohide) {
                 window.document.body.click();
@@ -82,7 +82,7 @@ class DropDownControl extends React.Component<Props, State> {
         let size = HTMLHelper.getSize(button);
         let buttonWidth = size[0];
         
-        dropdown.className = 'fsb-dropdown-menu dropdown-menu show measure';
+        dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu show measure';
         window.document.body.appendChild(dropdown);
         
         let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
@@ -115,8 +115,8 @@ class DropDownControl extends React.Component<Props, State> {
         dropdown.style.height = Math.min(dropDownClientHeight, dropDownMaxHeight) + 'px';
         dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
         
-        dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
-        dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
+        dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu hide';
+        dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu show';
     }
     
     public updateHeight() {
@@ -135,7 +135,7 @@ class DropDownControl extends React.Component<Props, State> {
         dropdown.style.height = 'auto';
         dropdown.style.overflowY = '';
         
-        dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
+        dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu hide';
         group.appendChild(dropdown);
         
         if (invokeEvent && this.props.onVisibleChanged) {

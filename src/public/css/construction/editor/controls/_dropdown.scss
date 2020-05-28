@@ -17,6 +17,9 @@
       padding: 0 0 3.5px 0;
     }
   }
+  &.for-dropdown-control.fsb-controller-area-container {
+    display: block;
+  }
   .fsb-content-area-container {
     display: table-row;
     height: 100%;
@@ -71,6 +74,9 @@
     display: none;
   }
   &.show {
+    display: table;
+  }
+  &.for-dropdown-control.show {
     display: block;
   }
 }
