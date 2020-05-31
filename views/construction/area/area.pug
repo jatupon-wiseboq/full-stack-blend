@@ -2,6 +2,7 @@ script(type="text/javascript").
   window.TOKENS = !{JSON.stringify(user.tokens)};
   window.GITHUB_ALIAS = "!{user.alias}";
   window.GITHUB_PROJECT = "!{user.project}";
-  window.GITHUB_BRANCH = "!{user.branch}";
+  window.GITHUB_DEVELOP_BRANCH = "!{user.develop}";
+  window.GITHUB_STAGING_BRANCH = "!{user.staging}";
 iframe.construction.siteToolset.toolset(id='html', src='/editor/construction/area/html')
 iframe.construction.dataToolset.toolset(id='data', src='/editor/construction/area/data', style={display: 'none'})

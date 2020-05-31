@@ -277,7 +277,8 @@ export const postUpdateGitHub = async (req: Request, res: Response, next: NextFu
         }
         user.alias = req.body.alias || "";
         user.project = req.body.project || "";
-        user.branch = req.body.branch || "";
+        user.develop = req.body.develop || "";
+        user.staging = req.body.staging || "";
         user.save((err: WriteError) => {
 
             if (err) {

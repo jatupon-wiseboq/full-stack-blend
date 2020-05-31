@@ -50,7 +50,8 @@ const userSchema = new mongoose.Schema({
     
     alias: String,
     project: String,
-    branch: String,
+    develop: String,
+    staging: String,
 
     profile: {
         name: String,

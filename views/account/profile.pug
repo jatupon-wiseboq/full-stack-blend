@@ -65,9 +65,13 @@ block content
         .col-sm-7
           input.form-control(type='text', name='project', id='project', value=user.project)
       .form-group.row.justify-content-md-center
-        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='branch') Project Branch
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='develop') Develop Branch (Save)
         .col-sm-7
-          input.form-control(type='text', name='branch', id='branch', value=user.branch)
+          input.form-control(type='text', name='develop', id='develop', value=user.branch)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='staging') Staging Branch (Deploy)
+        .col-sm-7
+          input.form-control(type='text', name='staging', id='staging', value=user.branch)
       .form-group.row.justify-content-md-center
         .col-sm-4
           button.btn.btn.btn-primary(type='submit')
