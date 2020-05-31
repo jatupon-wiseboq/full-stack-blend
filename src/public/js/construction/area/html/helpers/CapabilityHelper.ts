@@ -1,5 +1,5 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {EventHelper} from '../../helpers/EventHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {EventHelper} from '../../../helpers/EventHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';

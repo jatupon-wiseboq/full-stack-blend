@@ -216,8 +216,16 @@ passport.use(new GitHubStrategy({
             }
             if (existingUser) {
 
-                req.flash("errors", {msg: "There is already a GitHub account that belongs to you. Sign in with that account or delete it, then link it with your current account."});
-                done(err);
+                existingUser.github = profile.id;
+                existingUser.tokens = existingUser.tokens.filter(token => token.kind != "github");
+                existingUser.tokens.push({kind: "github",
+                    accessToken});
+                existingUser.save((err: Error) => {
+
+                    req.flash("info", {msg: "GitHub account has been linked."});
+                    done(err, existingUser);
+
+                });
 
             } else {
 

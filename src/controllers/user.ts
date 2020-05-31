@@ -251,6 +251,50 @@ export const postUpdateProfile = async (req: Request, res: Response, next: NextF
 };
 
 /**
+ * POST /account/github
+ * Update profile information.
+ */
+export const postUpdateGitHub = async (req: Request, res: Response, next: NextFunction) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+        req.flash("errors", errors.array());
+
+        return res.redirect("/account");
+
+    }
+
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+
+        if (err) {
+
+            return next(err);
+
+        }
+        user.alias = req.body.alias || "";
+        user.project = req.body.project || "";
+        user.branch = req.body.branch || "";
+        user.save((err: WriteError) => {
+
+            if (err) {
+
+                return next(err);
+
+            }
+            req.flash("success", {msg: "GitHub information has been updated."});
+            res.redirect("/account");
+
+        });
+
+    });
+
+};
+
+/**
  * POST /account/password
  * Update current password.
  */

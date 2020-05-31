@@ -1,4 +1,4 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 
 var LayoutHelper = {

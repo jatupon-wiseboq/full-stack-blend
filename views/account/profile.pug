@@ -46,6 +46,35 @@ block content
           | Update Profile
 
   .page-header
+    h3 GitHub Account
+    h5 Please create a dedicate GitHub account to use with StackBlend: a separate developer account, instead of admin one, that has a writing permission of the project which will be developed on StackBlend platform.
+    hr
+
+  form.form-horizontal(action='/account/github', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    if !user.github
+      a.btn.btn.btn-primary(href=-"/auth/github")
+        | Connect to a Developer Account
+    else
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='alias') Organization Or User Alias
+        .col-sm-7
+          input.form-control(type='text', name='alias', id='alias', value=user.alias)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='project') Project Name
+        .col-sm-7
+          input.form-control(type='text', name='project', id='project', value=user.project)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='branch') Project Branch
+        .col-sm-7
+          input.form-control(type='text', name='branch', id='branch', value=user.branch)
+      .form-group.row.justify-content-md-center
+        .col-sm-4
+          button.btn.btn.btn-primary(type='submit')
+            i.fa.fa-pencil
+            | Update GitHub Information
+
+  .page-header
     h3 Change Password
     hr
 

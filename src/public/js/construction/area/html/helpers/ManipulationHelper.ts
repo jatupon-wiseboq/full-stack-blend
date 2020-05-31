@@ -1,9 +1,9 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {RandomHelper} from '../../helpers/RandomHelper.js';
-import {EventHelper} from '../../helpers/EventHelper.js';
-import {TextHelper} from '../../helpers/TextHelper.js';
-import {FontHelper} from '../../helpers/FontHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {RandomHelper} from '../../../helpers/RandomHelper.js';
+import {EventHelper} from '../../../helpers/EventHelper.js';
+import {TextHelper} from '../../../helpers/TextHelper.js';
+import {FontHelper} from '../../../helpers/FontHelper.js';
 import {Accessories, InternalProjectSettings, EditorHelper} from './EditorHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';

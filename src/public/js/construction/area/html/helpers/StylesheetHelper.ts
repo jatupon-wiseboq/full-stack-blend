@@ -1,5 +1,5 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../Constants.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../../Constants.js';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;

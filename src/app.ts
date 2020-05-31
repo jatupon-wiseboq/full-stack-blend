@@ -111,6 +111,7 @@ app.get("/contact", contactController.getContact);
 app.post("/contact", contactController.postContact);
 app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
 app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
+app.post("/account/github", passportConfig.isAuthenticated, userController.postUpdateGitHub);
 app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
@@ -128,13 +129,13 @@ app.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email",
     "public_profile"]}));
 app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/login"}), (req, res) => {
 
-    res.redirect(req.session.returnTo || "/");
+    res.redirect("/editor");
 
 });
-app.get("/auth/github", passport.authenticate("github"));
+app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
 app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/login"}), (req, res) => {
 
-    res.redirect(req.session.returnTo || "/");
+    res.redirect("/account/profile");
 
 });
 

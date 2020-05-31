@@ -1,7 +1,7 @@
-import {EventHelper} from '../../helpers/EventHelper.js';
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {Point, MathHelper} from '../../helpers/MathHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {EventHelper} from '../../../helpers/EventHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {Point, MathHelper} from '../../../helpers/MathHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {EditorHelper} from '../helpers/EditorHelper.js';
 import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
 

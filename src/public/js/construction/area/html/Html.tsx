@@ -1,10 +1,10 @@
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {EditorHelper} from './helpers/EditorHelper.js';
-import {CursorHelper} from './helpers/CursorHelper.js';
-import {CapabilityHelper} from './helpers/CapabilityHelper.js';
-import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
-import {StylesheetHelper} from './helpers/StylesheetHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {EventHelper} from '../../helpers/EventHelper.js';
+import {EditorHelper} from '../helpers/EditorHelper.js';
+import {CursorHelper} from '../helpers/CursorHelper.js';
+import {CapabilityHelper} from '../helpers/CapabilityHelper.js';
+import {CodeGeneratorHelper} from '../helpers/CodeGeneratorHelper.js';
+import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
 
 (() => {
   // Setup a cursor and a resizer.

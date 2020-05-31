@@ -1,11 +1,11 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {TextHelper} from '../../helpers/TextHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {TextHelper} from '../../../helpers/TextHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
 import '../controls/Resizer.js';
 import '../controls/CellFormater.js';

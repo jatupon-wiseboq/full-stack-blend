@@ -23,9 +23,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light.fixed-top.p-0
                 img.profile(src=user.gravatar(60), alt=(user.profile.name || user.email || user.id))
             ul.dropdown-menu.dropdown-menu-right
               li.nav-item
-                a.nav-link(href='/account') My Account
-              li.nav-item
-                a.nav-link(href='/auth/github') Connect GitHub
+                a.nav-link(href='/editor') Editor
               li.dropdown-divider
+              li.nav-item
+                a.nav-link(href='/account') Settings
               li.nav-item
                 a.nav-link(href='/logout') Logout

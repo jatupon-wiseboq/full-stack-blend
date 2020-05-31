@@ -32,6 +32,8 @@ import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 
+import './components/content/PageManager.js';
+
 //import GitHub from 'github-api';
 
 declare let React: any;
@@ -233,24 +235,99 @@ let recentExtraPanelSelector: string = null;
   	Accessories.preview.current.start();
  	});
   window.save = (() => {
-  	/*var gh = new GitHub({
-			token: 'MY_OAUTH_TOKEN'
+    let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
+    if (GITHUB_TOKEN.length == 0) {
+      alert('You cannot save until you have connected to a GitHub account.');
+      return;
+    }
+    
+    GITHUB_TOKEN = GITHUB_TOKEN[0].accessToken;
+    
+  	var gh = new GitHub({
+			token: GITHUB_TOKEN
 		});
-		let gist = gh.getGist();
-		gist.create({
-			public: true,
-			description: 'ABC',
-			files: {
-				"abc.txt": {
-					content: "ABC"
-				}
-			}
-		}).then(function({data}) {
-			let createdGist = data;
-			return gist.read();
-		}).then(function({data}) {
-			let retrievedGist = data;
-		});*/
+		
+	  gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getBranch(GITHUB_BRANCH, (error, result, request) => {
+      if (error) {
+        alert('Please setup your GitHub\'s alias, project name, and branch in Settings and on GitHub.com to continue.');
+        return;
+      }
+      
+      console.log(result);
+      
+      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).listCommits((error, result, request) => {
+        if (error) {
+          alert('There was an error while retrieving last commits, please try again.');
+          return;
+        }
+        
+        console.log(result);
+        let baseCommitSHA = result && result[0] && result[0].sha;
+        let baseTreeSHA = result && result[0] && result[0].commit.tree.sha;
+        
+        console.log('baseCommitSHA', baseCommitSHA);
+        console.log('baseTreeSHA', baseTreeSHA);
+        
+        gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getTree(result && result[0] && result[0].commit.tree.sha, (error, result, request) => {
+          if (error) {
+            alert('There was an error while retrieving an existing tree, please try again.');
+            return;
+          }
+          
+          console.log(result);
+          
+          gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createBlob("TEST", (error, result, request) => {
+            if (error) {
+              alert('There was an error while creating blob, please try again.');
+              return;
+            }
+            
+            console.log(result);
+            let projectSettingsSHA = result.sha;
+            
+            console.log('projectSettingsSHA', projectSettingsSHA);
+            
+            gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createTree([{
+              path: "ProjectSettings.stackblend",
+              mode: "100644",
+              type: "blob",
+              sha: projectSettingsSHA
+            }], baseTreeSHA, (error, result, request) => {
+              if (error) {
+                alert('There was an error while creating a new tree, please try again.');
+                return;
+              }
+              
+              console.log(result);
+              let updatedTreeSHA = result.sha;
+            
+              console.log('updatedTreeSHA', updatedTreeSHA);
+              
+              gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).commit(baseCommitSHA, updatedTreeSHA, "Updated ProjectSettings.stackblend", (error, result, request) => {
+                if (error) {
+                  alert('There was an error while committing a new change, please try again.');
+                  return;
+                }
+                
+                console.log(result);
+                let recentCommitSHA = result.sha;
+                
+                console.log('recentCommitSHA', recentCommitSHA);
+                
+                gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).updateHead(GITHUB_BRANCH, recentCommitSHA, true, (error, result, request) => {
+                  if (error) {
+                    alert('There was an error while updating head for the current branch, please try again.');
+                    return;
+                  }
+                  
+                  console.log(result);
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   });
   window.deploy = (() => {
   	

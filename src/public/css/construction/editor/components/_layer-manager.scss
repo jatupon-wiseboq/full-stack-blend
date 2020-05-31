@@ -1,7 +1,12 @@
 // Layer Manager
 // -------------------------
 .layer-manager-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+  
 	.tree-container {
+    height: 100%;
 		border: none;
 		height: auto;
 		padding: 2px 0 2px 2px;

@@ -5,10 +5,13 @@ import {Request, Response} from "express";
  * Editor page.
  */
 export const index = (req: Request, res: Response) => {
-
+    
+    const user = req.user as UserDocument;
+    
     res.render("construction/index", {
+        user: user
     });
-
+    
 };
 
 /**
@@ -17,13 +20,19 @@ export const index = (req: Request, res: Response) => {
  */
 export const html = (req: Request, res: Response) => {
 
+    const user = req.user as UserDocument;
+
     res.render("construction/area/html/index", {
+        user: user
     });
 
 };
 export const data = (req: Request, res: Response) => {
-
+    
+    const user = req.user as UserDocument;
+    
     res.render("construction/area/data/index", {
+        user: user
     });
 
 };
