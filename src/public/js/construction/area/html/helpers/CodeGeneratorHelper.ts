@@ -1,6 +1,6 @@
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {StylesheetHelper} from '.StylesheetHelper.js';
+import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CodeGeneratorSharingHelper, DEFAULTS} from '../../../helpers/CodeGeneratorSharingHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS} from '../../../Constants.js';

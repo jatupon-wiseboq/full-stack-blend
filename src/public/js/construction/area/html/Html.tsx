@@ -1,10 +1,10 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
-import {EditorHelper} from '../helpers/EditorHelper.js';
-import {CursorHelper} from '../helpers/CursorHelper.js';
-import {CapabilityHelper} from '../helpers/CapabilityHelper.js';
-import {CodeGeneratorHelper} from '../helpers/CodeGeneratorHelper.js';
-import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
+import {EditorHelper} from './helpers/EditorHelper.js';
+import {CursorHelper} from './helpers/CursorHelper.js';
+import {CapabilityHelper} from './helpers/CapabilityHelper.js';
+import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
+import {StylesheetHelper} from './helpers/StylesheetHelper.js';
 
 (() => {
   // Setup a cursor and a resizer.
@@ -34,18 +34,18 @@ import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
   window.addEventListener("click", (event) => {
     EditorHelper.synchronize("click", null);
   }, false);
-  window.document.body.addEventListener("click", (event) => {
+  window.document.addEventListener("click", (event) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
     
     if (EventHelper.getOriginalElement(event) == document.body) CursorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
   }, true);
-  window.document.body.addEventListener("focus", (event) => {
+  window.document.addEventListener("focus", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
     }
   }, true);
-  window.document.body.addEventListener("blur", (event) => {
+  window.document.addEventListener("blur", (event) => {
     HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
   let previousWindowSize = {width: null, height: null};
@@ -61,6 +61,12 @@ import {StylesheetHelper} from '../helpers/StylesheetHelper.js';
   	results.push(StylesheetHelper.renderStylesheet(true));
   	
   	return results;
+  });
+  window.generateWorkspaceData = (() => {
+  	return EditorHelper.generateWorkspaceData();
+  });
+ 	window.initializeWorkspaceData = ((data) => {
+  	return EditorHelper.initializeWorkspaceData(data);
   });
   
   // Install capabilities.

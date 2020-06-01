@@ -13,8 +13,17 @@ class LayoutInfo extends React.Component<Props, State> {
     static defaultProps: Props = {
     }
     
+	  private domElement: HTMLElement = null;
+    
     constructor() {
         super();
+    }
+
+    public getDOMNode() {
+        return this.domElement;
+    }
+    public setDOMNode(element: HTMLElement) {
+        this.domElement = element;
     }
     
     public currentActiveLayout() {

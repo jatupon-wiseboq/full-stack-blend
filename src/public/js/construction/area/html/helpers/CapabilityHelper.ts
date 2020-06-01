@@ -39,8 +39,8 @@ var CapabilityHelper = {
         allowCursorElements.push(container);
       }
       allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
-        if (HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-binded-click') != '1') {
-          HTMLHelper.setAttribute(allowCursorElement, 'internal-fsb-binded-click', '1');
+        if (!allowCursorElement.internalFsbBindedClick) {
+          allowCursorElement.internalFsbBindedClick = true;
           
           if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
             allowCursorElement.addEventListener('click', (event) => {
@@ -109,6 +109,9 @@ var CapabilityHelper = {
         CapabilityHelper.installCapabilityOfBeingSelected(element);
       });
       CapabilityHelper.installCapabilityOfBeingMoveInCursor(container);
+      if (HTMLHelper.getAttribute(container, 'contentEditable') == 'true') {
+      	CapabilityHelper.installCapabilityOfBeingPasted(container);
+      }
     });
   },
   installCapabilityOfForwardingStyle: (_container: HTMLElement) => {

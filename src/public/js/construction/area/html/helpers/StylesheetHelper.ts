@@ -7,6 +7,15 @@ let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
 
 var StylesheetHelper = {
+  generateStylesheetData: () => {
+    return stylesheetDefinitions;
+  },
+  initializeStylesheetData: (data: any) => {
+    stylesheetDefinitions = data || {};
+    stylesheetDefinitionRevision = 0;
+    cachedPrioritizedKeys = null;
+    cachedPrioritizedKeysRevision = -1;
+  },
 	setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');

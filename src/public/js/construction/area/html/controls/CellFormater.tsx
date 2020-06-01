@@ -28,6 +28,7 @@ class CellFormater extends React.Component<Props, State> {
 
 	private tableElement: HTMLTableElement = null;
 	private allCellElements: [HTMLTableCellElement] = [];
+	private domElement: HTMLElement = null;
 
 	private originalMousePos: Point = {
 		x: 0,
@@ -39,7 +40,14 @@ class CellFormater extends React.Component<Props, State> {
 	}
 
 	componentDidMount() {
-	}
+  }
+
+  public getDOMNode() {
+      return this.domElement;
+  }
+  public setDOMNode(element: HTMLElement) {
+      this.domElement = element;
+  }
 
 	public setTableElement(element: HTMLTableElement) {
 		if (this.tableElement == element) return;

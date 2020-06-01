@@ -229,6 +229,8 @@ let recentExtraPanelSelector: string = null;
     $('.workspace-panel-container.scrollable').on('scroll', (event) => {
       window.document.body.click();
     });
+    
+    load();
   });
   
   window.preview = (() => {
@@ -241,11 +243,11 @@ let recentExtraPanelSelector: string = null;
  	    return 'It seemed that your internet connection is unavailable.'
  	  }
  	});
-  window.save = (() => {
-    let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
+ 	window.initGitHubInstance = (() => {
+ 	  let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
     if (GITHUB_TOKEN.length == 0) {
       alert('You cannot save until you have connected to a GitHub account.');
-      return;
+      return null;
     }
     
     GITHUB_TOKEN = GITHUB_TOKEN[0].accessToken;
@@ -253,52 +255,126 @@ let recentExtraPanelSelector: string = null;
   	var gh = new GitHub({
 			token: GITHUB_TOKEN
 		});
-		
-	  gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getBranch(GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+		return gh;
+ 	});
+ 	window.load = (() => {
+ 	  let construction = document.getElementById('html');
+    let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+    
+    if (!constructionWindow.initializeWorkspaceData) {
+      window.setTimeout(load, 500);
+      return; 
+    }
+ 	  
+    let gh = initGitHubInstance();
+    if (gh == null) return;
+      
+    gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
       if (error) {
-        alert(`Please setup your GitHub\'s alias, project name, and branch in Settings and on GitHub.com to continue.\n\n${extractErrorMessage(error)}`);
+        alert(`There was an error while retrieving the last commit, please try again.`);
         return;
       }
       
       console.log(result);
+      let baseCommitSHA = result && result.sha;
+      let baseTreeSHA = result && result.commit && result.commit.tree.sha;
       
-      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).listCommits((error, result, request) => {
+      console.log('baseCommitSHA', baseCommitSHA);
+      console.log('baseTreeSHA', baseTreeSHA);
+      
+      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getTree(baseTreeSHA, (error, result, request) => {
         if (error) {
-          alert(`There was an error while retrieving last commits, please try again.`);
+          alert(`There was an error while retrieving project tree:\n${extractErrorMessage(error)}`);
           return;
         }
         
         console.log(result);
-        let baseCommitSHA = result && result[0] && result[0].sha;
-        let baseTreeSHA = result && result[0] && result[0].commit.tree.sha;
+        let previousProjectDataSHA = result.tree.filter(node => node.path == 'project.stackblend')[0] || null;
+        if (previousProjectDataSHA) previousProjectDataSHA = previousProjectDataSHA.sha;
         
-        console.log('baseCommitSHA', baseCommitSHA);
-        console.log('baseTreeSHA', baseTreeSHA);
+        console.log('previousProjectDataSHA', previousProjectDataSHA);
         
-        gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getTree(result && result[0] && result[0].commit.tree.sha, (error, result, request) => {
-          if (error) {
-            alert(`There was an error while retrieving an existing tree:\n${extractErrorMessage(error)}`);
-            return;
-          }
+        let continueFn = ((previousProjectData) => {
+          constructionWindow.initializeWorkspaceData(previousProjectData);
+          window.initializeWorkspaceData(previousProjectData);
+        });
+        
+        if (previousProjectDataSHA) {
+          gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getBlob(previousProjectDataSHA, (error, result, request) => {
+           if (error) {
+              alert(`There was an error while retrieving data:\n${extractErrorMessage(error)}`);
+              return;
+            }
+            
+            console.log(result);
+            
+            if (typeof result !== 'object') {
+              alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
+              return;
+            }
+            
+            continueFn(result);
+          });
+        } else {
+          continueFn({version: 1.0});
+        }
+      });
+    });
+ 	});
+  window.save = (() => {
+    let gh = initGitHubInstance();
+    if (gh == null) return;
+      
+    gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+      if (error) {
+        alert(`There was an error while retrieving the last commit, please try again.`);
+        return;
+      }
+      
+      console.log(result);
+      let baseCommitSHA = result && result.sha;
+      let baseTreeSHA = result && result.commit && result.commit.tree.sha;
+      
+      console.log('baseCommitSHA', baseCommitSHA);
+      console.log('baseTreeSHA', baseTreeSHA);
+      
+      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getTree(baseTreeSHA, (error, result, request) => {
+        if (error) {
+          alert(`There was an error while retrieving project tree:\n${extractErrorMessage(error)}`);
+          return;
+        }
+        
+        console.log(result);
+        let previousProjectDataSHA = result.tree.filter(node => node.path == 'project.stackblend')[0] || null;
+        if (previousProjectDataSHA) previousProjectDataSHA = previousProjectDataSHA.sha;
+        
+        console.log('previousProjectDataSHA', previousProjectDataSHA);
+        
+        let continueFn = ((previousProjectData) => {
+          let construction = document.getElementById('html');
+      		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+      		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
+      		let constructionEditorData = window.generateWorkspaceData() || {};
           
-          console.log(result);
+          Object.assign(previousProjectData, constructionAreaHTMLData);
+          Object.assign(previousProjectData, constructionEditorData);
           
-          gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createBlob("TEST", (error, result, request) => {
+          gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createBlob(JSON.stringify(previousProjectData), (error, result, request) => {
             if (error) {
               alert(`There was an error while creating blob:\n${extractErrorMessage(error)}`);
               return;
             }
             
             console.log(result);
-            let projectSettingsSHA = result.sha;
+            let nextProjectDataSHA = result.sha;
             
-            console.log('projectSettingsSHA', projectSettingsSHA);
+            console.log('nextProjectDataSHA', nextProjectDataSHA);
             
             gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createTree([{
-              path: "ProjectSettings.stackblend",
+              path: 'project.stackblend',
               mode: "100644",
               type: "blob",
-              sha: projectSettingsSHA
+              sha: nextProjectDataSHA
             }], baseTreeSHA, (error, result, request) => {
               if (error) {
                 alert(`There was an error while creating a new tree:\n${extractErrorMessage(error)}`);
@@ -310,7 +386,7 @@ let recentExtraPanelSelector: string = null;
             
               console.log('updatedTreeSHA', updatedTreeSHA);
               
-              gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).commit(baseCommitSHA, updatedTreeSHA, "Updated ProjectSettings.stackblend", (error, result, request) => {
+              gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).commit(baseCommitSHA, updatedTreeSHA, "Updated project.stackblend", (error, result, request) => {
                 if (error) {
                   alert(`There was an error while committing a new change:\n${extractErrorMessage(error)}`);
                   return;
@@ -335,21 +411,32 @@ let recentExtraPanelSelector: string = null;
             });
           });
         });
+        
+        if (previousProjectDataSHA) {
+          gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getBlob(previousProjectDataSHA, (error, result, request) => {
+           if (error) {
+              alert(`There was an error while retrieving data:\n${extractErrorMessage(error)}`);
+              return;
+            }
+            
+            console.log(result);
+            
+            if (typeof result !== 'object') {
+              alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
+              return;
+            }
+            
+            continueFn(result);
+          });
+        } else {
+          continueFn({version: 1.0});
+        }
       });
     });
   });
   window.deploy = (() => {
-  	let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
-    if (GITHUB_TOKEN.length == 0) {
-      alert('You cannot save until you have connected to a GitHub account.');
-      return;
-    }
-    
-    GITHUB_TOKEN = GITHUB_TOKEN[0].accessToken;
-    
-  	var gh = new GitHub({
-			token: GITHUB_TOKEN
-		});
+    let gh = initGitHubInstance();
+    if (gh == null) return;
 		
     gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).createPullRequest({
       title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_STAGING_BRANCH}`,
@@ -377,6 +464,12 @@ let recentExtraPanelSelector: string = null;
       });
     });
  	});
+ 	window.generateWorkspaceData = (() => {
+  	return {};
+  });
+ 	window.initializeWorkspaceData = ((data) => {
+  	
+  });
  	
  	let setup = (() => {
  		let previewContainer = document.createElement('div');
