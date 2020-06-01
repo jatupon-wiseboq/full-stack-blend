@@ -172,11 +172,14 @@ class SitePreview extends Base<Props, State> {
     }
     
     private display() {
-    		let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedStylesheet;
+    		let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
     		
     		let construction = document.getElementById('html');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
+    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
+    		
+    		if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
+    		else combinedInlineBodyStyle = '';
     		
     		let externalStylesheets = [];
     		let externalScripts = [];
@@ -220,7 +223,8 @@ class SitePreview extends Base<Props, State> {
         
 				previewWindow.document.open();
 				previewWindow.document.write(
-`<html>
+`<!DOCTYPE html>
+<html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Untitled - Construction Area</title>
@@ -230,7 +234,7 @@ class SitePreview extends Base<Props, State> {
 		<style type="text/css">${combinedStylesheet}</style>
 		${externalStylesheets.join('\n')}
 	</head>
-	<body>
+	<body${combinedInlineBodyStyle}>
 		${combinedHTMLTags}
 		<script src="/js/Embed.bundle.js"></script>
 		<script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>

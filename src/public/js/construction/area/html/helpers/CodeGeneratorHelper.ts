@@ -66,8 +66,10 @@ ${rootScript}`;
 		let links = HTMLHelper.getElementsByAttribute('internal-fsb-link');
 		links = links.map(link => link.outerHTML);
 		let combinedFontTags = links;
+		
+		let combinedInlineBodyStyle = HTMLHelper.getAttribute(document.body, 'style');
     
-    return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags];
+    return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle];
 	},
 	recursiveGenerateCodeForPage: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
 		if (element == Accessories.cursor.getDOMNode()) return;
