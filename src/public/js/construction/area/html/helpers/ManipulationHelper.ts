@@ -182,18 +182,19 @@ var ManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed'}, internal-fsb-table-collapse="false")
-            tr
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-            tr
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-            tr
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
-              td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+            tbody
+              tr
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+              tr
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+              tr
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
+                td.internal-fsb-strict-layout.internal-fsb-allow-cursor
         `, element);
         
         style = HTMLHelper.getAttribute(element, 'style');
@@ -556,7 +557,7 @@ var ManipulationHelper = {
         	let isCollapse = (hash['border-collapse'] == 'collapse');
         	HTMLHelper.setAttribute(selectingElement, 'internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
         	
-        	for (let childY of [...selectingElement.childNodes]) {
+        	for (let childY of [...selectingElement.firstChild.childNodes]) {
         		for (let childX of [...childY.childNodes]) {
         			let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
         			
@@ -580,7 +581,7 @@ var ManipulationHelper = {
 				   			let side = matchedInfo[3];
 				   			let style = matchedInfo[4];
 				   			
-				   			let childY = selectingElement.childNodes[y];
+				   			let childY = selectingElement.firstChild.childNodes[y];
 				   			if (childY) {
 				   				if (childY.childNodes[x]) {
 				   					let childX = childY.childNodes[x];
@@ -867,7 +868,7 @@ var ManipulationHelper = {
   	accessory = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
   	
   	if (accessory && HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name')) {
-  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name') + '"?')) {
+  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
   			shouldContinue = false;
   		}
   	}
@@ -876,6 +877,7 @@ var ManipulationHelper = {
   	promise.then(() => {
   		let presetId = HTMLHelper.getAttribute(accessory, 'internal-fsb-guid');
 			removeAllPresetReferences(presetId, link);
+			StylesheetHelper.removeStylesheetDefinition(presetId);
 		});
   	
     if (shouldContinue && accessory) {
@@ -895,8 +897,6 @@ var ManipulationHelper = {
   	    elements: null
   	  }
   	}
-  	
-  	debugger;
   	
   	let selectingElement = EditorHelper.getSelectingElement();
   	let cursorContainer = Accessories.cursor.getDOMNode().parentNode;

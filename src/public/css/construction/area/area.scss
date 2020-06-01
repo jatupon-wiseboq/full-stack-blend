@@ -12,41 +12,39 @@ html, body {
 }
 
 .internal-fsb-guide-on {
-	.internal-fsb-element {
-	  padding: 1px;
-	}
-
   // Layout
   //
   .internal-fsb-table-layout {
-    > tr {
-      height: 20px;
-      
-      > td {
-        border: dashed 1px rgba(0, 0, 255, 127);
+    > tbody {
+      > tr {
+        height: 20px;
         
-        &.internal-fsb-selected {
-          background-color: rgba(0, 144, 255, 0.5) !important;
+        > td {
+          outline: dashed 1px rgba(0, 0, 255, 127);
+          
+          &.internal-fsb-selected {
+            background-color: rgba(0, 144, 255, 0.5) !important;
+          }
         }
       }
-    }
-    
-    .internal-fsb-resizer {
-      display: table-caption !important;
+      
+      .internal-fsb-resizer {
+        display: table-caption !important;
+      }
     }
   }
   
   .internal-fsb-strict-layout {
     > .internal-fsb-element {
     	min-height: 20px;
-      border: solid 1px rgba(0, 0, 255, 127);
+      outline: solid 1px rgba(0, 0, 255, 127);
     }
   }
   
   .internal-fsb-absolute-layout {
     > .internal-fsb-element {
     	min-height: 20px;
-      border: solid 1px rgba(0, 255, 0, 127);
+      outline: solid 1px rgba(0, 255, 0, 127);
     }
   }
   
@@ -171,7 +169,7 @@ body.internal-fsb-mode-coding {
         background-color: white;
         width: #{$selected-element-resizer-size}px;
         height: #{$selected-element-resizer-size}px;
-        border: solid 1px rgb(0, 0, 255);
+        outline: solid 1px rgb(0, 0, 255);
       }
       
       &.t { top: 0 !important; left: 50%; cursor: n-resize; }
@@ -201,7 +199,7 @@ body.internal-fsb-mode-coding {
       
       span {
         &::before {
-          border: solid 1px rgb(0, 255, 0);
+          outline: solid 1px rgb(0, 255, 0);
         }
       }
     }
@@ -237,17 +235,17 @@ body.internal-fsb-mode-coding {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
         &.d-preserve-space {
           visibility: visible !important;
-          border-style: dashed;
+          outline-style: dashed;
         }
       }
     }
@@ -256,17 +254,17 @@ body.internal-fsb-mode-coding {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
         &.d-sm-preserve-space {
           visibility: visible !important;
-          border-style: dashed;
+          outline-style: dashed;
         }
       }
     }
@@ -275,17 +273,17 @@ body.internal-fsb-mode-coding {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
         &.d-md-preserve-space {
           visibility: visible !important;
-          border-style: dashed;
+          outline-style: dashed;
         }
       }
     }
@@ -294,17 +292,17 @@ body.internal-fsb-mode-coding {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
         &.d-lg-preserve-space {
           visibility: visible !important;
-          border-style: dashed;
+          outline-style: dashed;
         }
       }
     }
@@ -313,17 +311,17 @@ body.internal-fsb-mode-coding {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-xl-none {
-        border: solid 1px red;
+        outline: solid 1px red;
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
         &.d-xl-preserve-space {
           visibility: visible !important;
-          border-style: dashed;
+          outline-style: dashed;
         }
       }
     }

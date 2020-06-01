@@ -62,8 +62,12 @@ let controller = new Controller();
 ${functionBindings}
 ${rootScript}`;
 		let combinedExpandingFeatureScripts = `${allReactPrerequisiteScript}${allReactComponentsScript}`;
+		
+		let links = HTMLHelper.getElementsByAttribute('internal-fsb-link');
+		links = links.map(link => link.outerHTML);
+		let combinedFontTags = links;
     
-    return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts];
+    return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags];
 	},
 	recursiveGenerateCodeForPage: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
 		if (element == Accessories.cursor.getDOMNode()) return;

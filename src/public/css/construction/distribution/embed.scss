@@ -27,23 +27,27 @@ html, body {
   }
 }
 .internal-fsb-table-layout {
-	> tr {
-		> td {
-			position: relative;
-		}
-	}
+  > tbody {
+  	> tr {
+  		> td {
+  			position: relative;
+  		}
+  	}
+  }
 }
 .internal-fsb-table-layout[internal-fsb-table-collapse="true"] {
 	border: none;
 	
-	> tr:not(:last-of-type) {
-		> td {
-			border-bottom: none !important;
-		}
-	}
-	> tr {
-		> td:not(:last-of-type) {
-			border-right: none !important;
-		}
-	}
+	> tbody {
+  	> tr:not(:last-of-type) {
+  		> td {
+  			border-bottom: none !important;
+  		}
+  	}
+  	> tr {
+  		> td:not(:last-of-type) {
+  			border-right: none !important;
+  		}
+  	}
+  }
 }

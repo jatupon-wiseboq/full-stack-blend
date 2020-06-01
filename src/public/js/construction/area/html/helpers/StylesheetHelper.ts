@@ -158,7 +158,7 @@ var StylesheetHelper = {
      			let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
      			
      			for (let prefix of prefixes) {
-     				lines.push(prefix + ' > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
+     				lines.push(prefix + ' tbody > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
      								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
      			}
   	   	}

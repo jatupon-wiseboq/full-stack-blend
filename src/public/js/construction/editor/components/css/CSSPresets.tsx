@@ -87,7 +87,7 @@ class CSSPresets extends Base<Props, State> {
 		        		
 		            nodes.push({
 		            		id: info.id,
-		                name: info.name,
+		                name: info.name.replace(/_/g, ' '),
 		                selectable: true,
 		                disabled: isItself,
 		                selected: chosen,
