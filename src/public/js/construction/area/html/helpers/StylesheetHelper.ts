@@ -15,6 +15,8 @@ var StylesheetHelper = {
     stylesheetDefinitionRevision = 0;
     cachedPrioritizedKeys = null;
     cachedPrioritizedKeysRevision = -1;
+    
+    StylesheetHelper.renderStylesheetElement();
   },
 	setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;

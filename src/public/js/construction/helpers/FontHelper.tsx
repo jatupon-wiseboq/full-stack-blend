@@ -8,6 +8,20 @@ let italicsCache = {};
 let normalsCache = {};
 
 var FontHelper = {
+  generateFontData: () => {
+    return setupFont;
+  },
+  initializeFontData: (data: any) => {
+    if (data == null) return;
+    
+    setupFont = {};
+    
+    for (let name in data) {
+      if (data.hasOwnProperty(name)) {
+        FontHelper.load(name);
+      }
+    }
+  },
   listAllFonts: function() {
     if (allFontsCache != null) return allFontsCache;
   

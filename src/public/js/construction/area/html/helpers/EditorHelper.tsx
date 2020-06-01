@@ -1,5 +1,6 @@
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
+import {FontHelper} from '../../../helpers/FontHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -36,23 +37,19 @@ const DEFAULT_HTML = document.body.outerHTML;
 
 var EditorHelper = {
   generateWorkspaceData: () => {
-    if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
-    if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
-    if (Accessories.cellFormater) Accessories.cellFormater.setTableElement(null);
-    if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
-    if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
+    EditorHelper.detach();
     
     let outerHTML = document.body.outerHTML;
     
-    window.document.body.appendChild(Accessories.cellFormater.getDOMNode());
-    window.document.body.appendChild(Accessories.layoutInfo.getDOMNode());
+    EditorHelper.init();
     
     return {
       globalSettings: InternalProjectSettings,
       sites: {
         default: {
           head: {
-            stylesheets: StylesheetHelper.generateStylesheetData()
+            stylesheets: StylesheetHelper.generateStylesheetData(),
+            fonts: FontHelper.generateFontData()
           },
           body: outerHTML
         }
@@ -64,12 +61,12 @@ var EditorHelper = {
     
     StylesheetHelper.initializeStylesheetData(data && data.sites && data.sites.default
       && data.sites.default.head && data.sites.default.head.stylesheets || null);
+    FontHelper.initializeFontData(data && data.sites && data.sites.default
+      && data.sites.default.head && data.sites.default.head.fonts || null)
     
     document.body.outerHTML = data && data.sites && data.sites.default && data.sites.default.body || DEFAULT_HTML;
     
-    CapabilityHelper.installCapabilitiesForInternalElements(document.body);
-    
-    EditorHelper.updateEditorProperties();
+    EditorHelper.init();
   },
   setup: () => {
     let cursorContainer = document.createElement('div');
@@ -129,7 +126,6 @@ var EditorHelper = {
     let cellFormaterContainer = document.createElement('div');
     Accessories.cellFormater = ReactDOM.render(<FullStackBlend.Controls.CellFormater />, cellFormaterContainer);
     Accessories.cellFormater.setDOMNode(cellFormaterContainer.firstChild);
-    window.document.body.appendChild(Accessories.cellFormater.getDOMNode());
     
     let guideContainer = document.createElement('div');
     Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
@@ -139,7 +135,26 @@ var EditorHelper = {
     let layoutContainer = document.createElement('div');
     Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
     Accessories.layoutInfo.setDOMNode(layoutContainer.firstChild);
+    
+    EditorHelper.init();
+  },
+  detach: () => {
+    if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
+    if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
+    if (Accessories.cellFormater) Accessories.cellFormater.setTableElement(null);
+    if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
+    if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
+  },
+  init: () => {
+    CapabilityHelper.installCapabilitiesForInternalElements(document.body);
+    
+    EditorHelper.updateEditorProperties();
+    EditorHelper.updateExternalLibraries();
+    
+    window.document.body.appendChild(Accessories.cellFormater.getDOMNode());
     window.document.body.appendChild(Accessories.layoutInfo.getDOMNode());
+    
+    CursorHelper.moveCursorToTheEndOfDocument(false);
   },
   
   perform: (name: string, content: any) => {
