@@ -66,6 +66,11 @@ var EditorHelper = {
     
     document.body.outerHTML = data && data.sites && data.sites.default && data.sites.default.body || DEFAULT_HTML;
     
+    // The second head element did appear after setting content to the outerHTML of body element.
+    // Remove the extra one.
+    //
+    if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+    
     EditorHelper.init();
   },
   setup: () => {
@@ -141,7 +146,10 @@ var EditorHelper = {
   detach: () => {
     if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
     if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
-    if (Accessories.cellFormater) Accessories.cellFormater.setTableElement(null);
+    if (Accessories.cellFormater) {
+      Accessories.cellFormater.setTableElement(null);
+      Accessories.cellFormater.getDOMNode().parentNode.removeChild(Accessories.cellFormater.getDOMNode());
+    }
     if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
     if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
   },
