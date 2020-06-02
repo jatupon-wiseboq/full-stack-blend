@@ -455,7 +455,7 @@ ${rootScript}`;
       	// Include Another React Class Feature
         // 
       	if (reactMode && !isFirstElement) {
-      		lines.push('<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"></span>');
+      		lines.push(indent + '<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"></span>');
       	}
       	
       	// Recursive Children Feature
