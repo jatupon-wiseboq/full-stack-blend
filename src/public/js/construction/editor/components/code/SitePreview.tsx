@@ -9,6 +9,9 @@ declare let ReactDOM: any;
 declare let ts: any;
 declare let zip: any;
 
+const STRIPPING_PATH_REGEX_GLOBAL = /from '([^']+)\/([a-zA-Z]+)\.js'/g
+const STRIPPING_PATH_REGEX_LOCAL = /from '([^']+)\/([a-zA-Z]+)\.js'/
+
 interface Props extends IProps {
 }
 
@@ -162,6 +165,10 @@ class SitePreview extends Base<Props, State> {
     		for (let key in this.requiredFiles) {
 		        if (this.requiredFiles.hasOwnProperty(key)) {
 		        		if (typeof this.requiredFiles[key] === 'string') {
+		        		    this.requiredFiles[key] = this.requiredFiles[key].replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
+                      return token.match(STRIPPING_PATH_REGEX_LOCAL)[2];
+                    });
+		        		  
 										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
 										this.requiredFiles[key] = URL.createObjectURL(new Blob([this.requiredFiles[key]]));
 								}
@@ -199,10 +206,9 @@ class SitePreview extends Base<Props, State> {
             }
         }
         
-        combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.split('../helpers/CodeHelper.js').join('CodeHelper')
-          .split('../helpers/DeclarationHelper.js').join('DeclarationHelper')
-          .split('../helpers/EventHelper.js').join('EventHelper')
-          .split('./Base.js').join('Base')
+        combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
+          return token.match(STRIPPING_PATH_REGEX_LOCAL)[2];
+        });
     		
     		console.log('externalStylesheets');
     		console.log(externalStylesheets);
