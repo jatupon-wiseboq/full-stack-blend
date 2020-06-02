@@ -46,7 +46,7 @@ var EditorHelper = {
     return {
       globalSettings: InternalProjectSettings,
       sites: {
-        default: {
+        index: {
           head: {
             stylesheets: StylesheetHelper.generateStylesheetData(),
             fonts: FontHelper.generateFontData()
@@ -59,12 +59,12 @@ var EditorHelper = {
   initializeWorkspaceData: (data: any) => {
     InternalProjectSettings = data && data.globalSettings || DefaultProjectSettings;
     
-    StylesheetHelper.initializeStylesheetData(data && data.sites && data.sites.default
-      && data.sites.default.head && data.sites.default.head.stylesheets || null);
-    FontHelper.initializeFontData(data && data.sites && data.sites.default
-      && data.sites.default.head && data.sites.default.head.fonts || null)
+    StylesheetHelper.initializeStylesheetData(data && data.sites && data.sites.index
+      && data.sites.index.head && data.sites.index.head.stylesheets || null);
+    FontHelper.initializeFontData(data && data.sites && data.sites.index
+      && data.sites.index.head && data.sites.index.head.fonts || null)
     
-    document.body.outerHTML = data && data.sites && data.sites.default && data.sites.default.body || DEFAULT_HTML;
+    document.body.outerHTML = data && data.sites && data.sites.index && data.sites.index.body || DEFAULT_HTML;
     
     // The second head element did appear after setting content to the outerHTML of body element.
     // Remove the extra one.
