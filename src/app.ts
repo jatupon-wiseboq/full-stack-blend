@@ -135,7 +135,7 @@ app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRed
 app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
 app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/login"}), (req, res) => {
 
-    res.redirect("/account/profile");
+    res.redirect("/account");
 
 });
 
