@@ -70,8 +70,10 @@ class ProjectManager extends Base<Props, State> {
    	  
       let gh = this.initGitHubInstance();
       if (gh == null) return;
+      
+      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
         
-      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+      repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
         if (error) {
           alert(`There was an error while retrieving the last commit, please try again.`);
           return;
@@ -84,7 +86,7 @@ class ProjectManager extends Base<Props, State> {
         console.log('baseCommitSHA', baseCommitSHA);
         console.log('baseTreeSHA', baseTreeSHA);
         
-        gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getTree(baseTreeSHA, (error, result, request) => {
+        repo.getTree(baseTreeSHA, (error, result, request) => {
           if (error) {
             alert(`There was an error while retrieving project tree:\n${this.extractErrorMessage(error)}`);
             return;
@@ -102,7 +104,7 @@ class ProjectManager extends Base<Props, State> {
           });
           
           if (previousProjectDataSHA) {
-            gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getBlob(previousProjectDataSHA, (error, result, request) => {
+            repo.getBlob(previousProjectDataSHA, (error, result, request) => {
              if (error) {
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
@@ -126,8 +128,10 @@ class ProjectManager extends Base<Props, State> {
     public save() {
       let gh = this.initGitHubInstance();
       if (gh == null) return;
+      
+      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
         
-      gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT).getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+      repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
         if (error) {
           alert(`There was an error while retrieving the last commit, please try again.`);
           return;
@@ -139,8 +143,6 @@ class ProjectManager extends Base<Props, State> {
         
         console.log('baseCommitSHA', baseCommitSHA);
         console.log('baseTreeSHA', baseTreeSHA);
-        
-        let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
         
         repo.getTree(baseTreeSHA, (error, result, request) => {
           if (error) {
@@ -321,6 +323,8 @@ class ProjectManager extends Base<Props, State> {
     public deploy() {
       let gh = this.initGitHubInstance();
       if (gh == null) return;
+      
+      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
   		
       repo.createPullRequest({
         title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_STAGING_BRANCH}`,
