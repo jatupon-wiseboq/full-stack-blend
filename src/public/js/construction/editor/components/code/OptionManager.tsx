@@ -3,7 +3,7 @@ import {EventHelper} from '../../../helpers/EventHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {InsertDirection, ITreeNode} from '../../controls/TreeNode.js';
-import '../../controls/TextBox.js';
+import '../../controls/Textbox.js';
 import '../generic/ListManager.js';
 
 declare let React: any;

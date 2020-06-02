@@ -3,7 +3,7 @@ import {EventHelper} from '../../../helpers/EventHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode} from '../../controls/TreeNode.js';
-import '../../controls/TextBox.js';
+import '../../controls/Textbox.js';
 import '../generic/ListManager.js';
 import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants.js';
 
