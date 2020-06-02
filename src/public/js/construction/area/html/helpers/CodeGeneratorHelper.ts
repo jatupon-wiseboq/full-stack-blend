@@ -32,8 +32,8 @@ var CodeGeneratorHelper = {
     
   	let combinedHTMLTags = `${rootHTML}`;
 		let combinedMinimalFeatureScripts = 
-`private class Controller {
-  const dictionary: {string: {string: string}} = {};
+`class Controller {
+  dictionary: {} = {};
   
   ${functionDeclarations}
   
@@ -41,7 +41,7 @@ var CodeGeneratorHelper = {
     if (!this.dictionary[guid]) this.dictionary[guid] = {};
     this.dictionary[guid][eventName] = functionName;
   }
-  public listen(guid: string) {
+  public listen(guid) {
     if (this.dictionary[guid]) {
       for (let key in this.dictionary[guid]) {
         if (this.dictionary[guid].hasOwnProperty(key)) {
@@ -54,7 +54,7 @@ var CodeGeneratorHelper = {
       }
     }
   }
-  public getElementUsingGUID(guid: string): HTMLElement {
+  public getElementUsingGUID(guid) {
     return document.querySelectorAll('[internal-fsb-guid="' + guid + '"]')[0];
   }
 }
