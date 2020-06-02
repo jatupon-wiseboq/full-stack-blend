@@ -166,7 +166,7 @@ class SitePreview extends Base<Props, State> {
 		        if (this.requiredFiles.hasOwnProperty(key)) {
 		        		if (typeof this.requiredFiles[key] === 'string') {
 		        		    this.requiredFiles[key] = this.requiredFiles[key].replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
-                      return token.match(STRIPPING_PATH_REGEX_LOCAL)[2];
+                      return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
                     });
 		        		  
 										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
@@ -207,7 +207,7 @@ class SitePreview extends Base<Props, State> {
         }
         
         combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
-          return token.match(STRIPPING_PATH_REGEX_LOCAL)[2];
+          return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
         });
     		
     		console.log('externalStylesheets');

@@ -2,7 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 var EventHelper = {
-  cancel: (event: HTMLEvent) => {
+  cancel: (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
     

@@ -69,7 +69,7 @@ interface IAutoBaseProps extends IBaseProps {
 interface IAutoBaseState extends IBaseState { 
 }
 // <---Auto[Interface]// Auto[ClassBegin]--->
-class KlassA extends Base<IProps, IState> {
+class KlassA extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -107,7 +107,7 @@ const DECLARATION_BEGIN = `DeclarationHelper.declare(`;
 const DECLARATION_END = `);\n// <---Auto[ClassEnd]`;
 
 const CLASS_BEGIN = `// Auto[ClassBegin]--->\nclass `;
-const CLASS_END = ` extends Base<IProps, IState> {`;
+const CLASS_END = ` extends Base {`;
 
 const LOAD_BEGIN = `super(props);
     this.state = CodeHelper.clone(DefaultState);
@@ -167,7 +167,7 @@ var CodeGeneratorSharingHelper = {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: HTMLEvent) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
@@ -245,7 +245,7 @@ export {${previewReactClassName}};
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(MERGE_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: HTMLEvent) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${MERGE_END_BEGIN}`);
                 } else {
