@@ -1,6 +1,5 @@
 import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
-import {ProjectHelper} from '../helpers/ProjectHelper.js';
 
 import './components/layout/GridPicker.js';
 import './components/layout/OffsetPicker.js';
@@ -33,6 +32,7 @@ import './components/code/ExternalLibrariesChooser.js';
 import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
+import './components/code/ProjectManager.js';
 
 import './components/content/PageManager.js';
 
@@ -231,13 +231,13 @@ let recentExtraPanelSelector: string = null;
     $('.workspace-panel-container.scrollable').on('scroll', (event) => {
       window.document.body.click();
     });
-    ProjectHelper.load();
+    Accessories.projectManager.current.load();
   });
   window.save = (() => {
-    ProjectHelper.save();
+    Accessories.projectManager.current.save();
   });
   window.deploy = (() => {
-    ProjectHelper.deploy();
+    Accessories.projectManager.current.deploy();
   });
   
   window.preview = (() => {
@@ -249,6 +249,11 @@ let recentExtraPanelSelector: string = null;
     Accessories.preview = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.SitePreview ref={Accessories.preview} />, previewContainer);
     document.body.appendChild(previewContainer);
+    
+    let projectManagerContainer = document.createElement('div');
+    Accessories.projectManager = React.createRef();
+    ReactDOM.render(<FullStackBlend.Components.ProjectManager ref={Accessories.projectManager} />, projectManagerContainer);
+    document.body.appendChild(projectManagerContainer);
  	});
  	setup();
 })();

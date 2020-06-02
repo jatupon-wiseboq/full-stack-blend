@@ -1,8 +1,8 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {CodeHelper} from 'CodeHelper';
-import {Project, DeclarationHelper} from 'DeclarationHelper';
+import {CodeHelper} from '../helpers/CodeHelper.js';
+import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;

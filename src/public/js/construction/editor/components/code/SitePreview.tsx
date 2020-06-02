@@ -198,6 +198,11 @@ class SitePreview extends Base<Props, State> {
                 }
             }
         }
+        
+        combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.split('../helpers/CodeHelper.js').join('CodeHelper')
+          .split('../helpers/DeclarationHelper.js').join('DeclarationHelper')
+          .split('../helpers/EventHelper.js').join('EventHelper')
+          .split('./Base.js').join('Base')
     		
     		console.log('externalStylesheets');
     		console.log(externalStylesheets);

@@ -53,20 +53,20 @@ export {IProps, IState, DefaultProps, DefaultState};
 }
 
 const FULL_BOILERPLATE = `// Auto[Import]--->
-import {Project, DeclarationHelper} from 'DeclarationHelper';
-import {CodeHelper} from 'CodeHelper';
-import {EventHelper} from 'EventHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from 'Base';
+import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
+import {CodeHelper} from '../helpers/CodeHelper.js';
+import {EventHelper} from '../helpers/EventHelper.js';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;
 declare let ReactDOM: any;
 
 // <---Auto[Declare]// Auto[Interface]--->
-interface IProps extends IAutoBaseProps {
+interface IAutoBaseProps extends IBaseProps {
   
 }
-interface IState extends IAutoBaseState { 
+interface IAutoBaseState extends IBaseState { 
 }
 // <---Auto[Interface]// Auto[ClassBegin]--->
 class KlassA extends Base<IProps, IState> {
