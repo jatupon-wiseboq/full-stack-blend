@@ -199,12 +199,14 @@ class ProjectManager extends Base<Props, State> {
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title></title>
       <meta name="description" content="" />
+      <link rel="stylesheet" href="http://staging.stackblend.com/css/embed.css">
       ${combinedFontTags}
       <style type="text/css">${combinedStylesheet}</style>
       ${externalStylesheets.join('\n')}
     </head>
     <body${combinedInlineBodyStyle}>
       ${combinedHTMLTags}
+      <script type="text/javascript" src="http://staging.stackblend.com/js/Embed.bundle.js"></script>
       <script type="text/javascript" src="/Site.bundle.js"></script>
     </body>
   </html>`
