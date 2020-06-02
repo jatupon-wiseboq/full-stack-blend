@@ -209,7 +209,7 @@ class ProjectManager extends Base<Props, State> {
     <body${combinedInlineBodyStyle}>
       ${combinedHTMLTags}
       <script type="text/javascript" src="http://staging.stackblend.com/js/Embed.bundle.js"></script>
-      <script type="text/javascript" src="/Site.bundle.js"></script>
+      <script type="text/javascript" src="/js/Site.bundle.js"></script>
     </body>
   </html>`
                 this.createViewBlob(repo, combinedHTMLPage, (viewBlobSHA: string) => {
