@@ -5,7 +5,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import {ITreeNode} from '../../controls/TreeNode.js';
 import '../../controls/Textbox.js';
 import '../generic/ListManager.js';
-import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants.js';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN, CAMEL_OF_EVENTS_DICTIONARY} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -63,6 +63,8 @@ class AttributeManager extends Base<Props, State> {
         for (let name in hash) {
             if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name.toLowerCase().trim()) != -1) continue;
             if (hash.hasOwnProperty(name)) {
+                if (CAMEL_OF_EVENTS_DICTIONARY[name]) continue;
+                
                 let value = hash[name];
                 this.state.nodes.push({
                     id: JSON.stringify({name: name, value: value}),
@@ -147,6 +149,11 @@ class AttributeManager extends Base<Props, State> {
             }
             if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(this.state.name.toLowerCase().trim()) != -1) {
                 this.state.nameInputFailedValidationMessage = "Please configure this attribute via user interface.";
+                this.forceUpdate();
+                return EventHelper.cancel(event);
+            }
+            if (CAMEL_OF_EVENTS_DICTIONARY[this.state.name.toLowerCase().trim()]) {
+                this.state.nameInputFailedValidationMessage = "This is reserved for internal use.";
                 this.forceUpdate();
                 return EventHelper.cancel(event);
             }
