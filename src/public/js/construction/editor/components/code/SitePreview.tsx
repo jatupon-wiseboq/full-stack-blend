@@ -263,11 +263,13 @@ class SitePreview extends Base<Props, State> {
       });
 			
 			require(["DeclarationHelper", "${combinedExpandingFeatureScriptsURI}"], function(ExportedDeclarationHelper, ExportedFeatures) {
-				let Project = ExportedDeclarationHelper.Project;
+				let DeclarationHelper = ExportedDeclarationHelper.DeclarationHelper;
 				let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 				
 				for (let expandingPlaceholder of expandingPlaceholders) {
-					ReactDOM.render(React.createElement(eval(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
+				  console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
+				
+					ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
 					expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
 					expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 				}

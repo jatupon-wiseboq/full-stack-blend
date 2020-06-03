@@ -202,13 +202,14 @@ class ProjectManager extends Base<Props, State> {
       <title></title>
       <meta name="description" content="" />
       <link rel="stylesheet" href="http://staging.stackblend.com/css/embed.css">
-      ${combinedFontTags}
+      ${combinedFontTags.join('\n      ')}
       <style type="text/css">${combinedStylesheet}</style>
-      ${externalStylesheets.join('\n')}
+      ${externalStylesheets.join('\n      ')}
     </head>
     <body${combinedInlineBodyStyle}>
       ${combinedHTMLTags}
       <script type="text/javascript" src="http://staging.stackblend.com/js/Embed.bundle.js"></script>
+      ${externalScripts.join('\n      ')}
       <script type="text/javascript" src="/js/Site.bundle.js"></script>
     </body>
   </html>`
@@ -353,8 +354,8 @@ class ProjectManager extends Base<Props, State> {
       });
    	}
    	createRouteBlob(repo: any, routes: [string], cb: any) {
-   	  repo.createBlob(`// Auto Generated Code--->
-// Please do not modifiy this file because it may be rewrited anytime.
+   	  repo.createBlob(`// Auto[Generating:V1]--->
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import * as homeController from './controllers/home.js';
 
@@ -364,8 +365,8 @@ ${routes.map(route => ` app.get("/${(route == 'index') ? '' : route}", homeContr
 
 export default route;
 
-// <--- Auto Generated Code
-// Please do not modifiy this file because it may be rewrited anytime.`, (error, result, request) => {
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -380,8 +381,8 @@ export default route;
       });
    	}
    	createControllerBlob(repo: any, routes: [string], cb: any) {
-   	  repo.createBlob(`// Auto Generated Code--->
-// Please do not modifiy this file because it may be rewrited anytime.
+   	  repo.createBlob(`// Auto[Generating:V1]--->
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
 
@@ -390,8 +391,8 @@ ${routes.map(route => `export const ${route} = (req: Request, res: Response) => 
   });
 }`).join('\n')}
 
-// <--- Auto Generated Code
-// Please do not modifiy this file because it may be rewrited anytime.`, (error, result, request) => {
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -406,13 +407,13 @@ ${routes.map(route => `export const ${route} = (req: Request, res: Response) => 
       });
    	}
    	createViewBlob(repo: any, content: string, cb: any) {
- 	    repo.createBlob(`//- Auto Generated Code--->
-//- Please do not modifiy this file because it may be rewrited anytime.
+ 	    repo.createBlob(`//- Auto[Generating:V1]--->
+//- PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 ${content}
 
-//- <--- Auto Generated Code
-//- Please do not modifiy this file because it may be rewrited anytime.`, (error, result, request) => {
+//- <--- Auto[Generating:V1]
+//- PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -427,13 +428,13 @@ ${content}
       });
  	  }
    	createReactComponentsBlob(repo: any, content: string, cb: any) {
-   	  repo.createBlob(`// Auto Generated Code--->
-// Please do not modifiy this file because it may be rewrited anytime.
+   	  repo.createBlob(`// Auto[Generating:V1]--->
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 ${content}
 
-// <--- Auto Generated Code
-// Please do not modifiy this file because it may be rewrited anytime.`, (error, result, request) => {
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -448,19 +449,27 @@ ${content}
       });
    	}
    	createSiteBundleBlob(repo: any, routes: [string], combinedMinimalFeatureScripts: string, cb: any) {
- 	    repo.createBlob(`// Auto Generated Code--->
-// Please do not modifiy this file because it may be rewrited anytime.
+ 	    repo.createBlob(`// Auto[Generating:V1]--->
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 ${routes.map(route => `import './components/${route}.js';`).join('\n')}
 
-declare let window: any;
-window.Project = Project;
+declare let React: any;
+declare let ReactDOM: any;
 
 ${combinedMinimalFeatureScripts}
 
-// <--- Auto Generated Code
-// Please do not modifiy this file because it may be rewrited anytime.`, (error, result, request) => {
+let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
+
+for (let expandingPlaceholder of expandingPlaceholders) {
+	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
+	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
+	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+}
+
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
