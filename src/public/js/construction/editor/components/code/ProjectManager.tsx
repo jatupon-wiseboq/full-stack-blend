@@ -355,7 +355,7 @@ class ProjectManager extends Base<Props, State> {
    	}
    	createRouteBlob(repo: any, routes: [string], cb: any) {
    	  repo.createBlob(`// Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import * as homeController from './controllers/home.js';
 
@@ -366,7 +366,7 @@ ${routes.map(route => ` app.get("/${(route == 'index') ? '' : route}", homeContr
 export default route;
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -382,7 +382,7 @@ export default route;
    	}
    	createControllerBlob(repo: any, routes: [string], cb: any) {
    	  repo.createBlob(`// Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
 
@@ -392,7 +392,7 @@ ${routes.map(route => `export const ${route} = (req: Request, res: Response) => 
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -408,12 +408,12 @@ ${routes.map(route => `export const ${route} = (req: Request, res: Response) => 
    	}
    	createViewBlob(repo: any, content: string, cb: any) {
  	    repo.createBlob(`//- Auto[Generating:V1]--->
-//- PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+//- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${content}
 
 //- <--- Auto[Generating:V1]
-//- PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+//- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -429,12 +429,12 @@ ${content}
  	  }
    	createReactComponentsBlob(repo: any, content: string, cb: any) {
    	  repo.createBlob(`// Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${content}
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -450,7 +450,7 @@ ${content}
    	}
    	createSiteBundleBlob(repo: any, routes: [string], combinedMinimalFeatureScripts: string, cb: any) {
  	    repo.createBlob(`// Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 ${routes.map(route => `import './components/${route}.js';`).join('\n')}
@@ -469,7 +469,7 @@ for (let expandingPlaceholder of expandingPlaceholders) {
 }
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;

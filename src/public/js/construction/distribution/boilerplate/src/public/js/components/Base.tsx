@@ -1,5 +1,5 @@
 // Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
@@ -35,4 +35,4 @@ DeclarationHelper.declare('Site', 'Components.Base', Base);
 export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base};
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

@@ -1,5 +1,5 @@
 // Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 var Project = {};
 
@@ -48,4 +48,4 @@ var DeclarationHelper = {
 export {Project, DeclarationHelper};
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
