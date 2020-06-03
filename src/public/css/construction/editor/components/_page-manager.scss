@@ -4,10 +4,81 @@
   display: table;
   width: 100%;
   height: 100%;
+  padding: 0 0 3px 0;
 	
 	.tree-container {
     display: table-row;
     height: 100%;
+    
+    .treenode-outer-container.delete {
+      margin: 6px 6px 0 6px;
+      
+      .treenode-container {
+        height: 60px;
+        
+        .treenode-body {
+          padding-top: 20px;
+        }
+      }
+    }
+  	
+  	.treenode-outer-container.page {
+  	  margin: 6px 6px 0 6px;
+  	  
+	    .treenode-container {
+	      background-color: #ddd;
+		    color: #444;
+	      height: 60px;
+	      position: relative;
+	      border-radius: 3px;
+	      
+  	    .treenode-body {
+  	      padding: 10px 0;
+  	      
+    			.form-check {
+    				.form-check-label {
+    				  input {
+    				    display: none;
+    				  }
+    				}
+    				.treenode-title {
+    				  width: 190px;
+    				  
+    				  .name, .path {
+    				    white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis;
+    				  }
+    				  .name {
+        		    font-size: 15px;
+        		    font-weight: 400;
+        		  }
+    				  .path {
+    				    font-size: 12px;
+    				  }
+    				}
+    			}
+    			
+    			.fsb-dropdown-container,
+    			.fsb-dropdown-container .fsb-dropdown-button {
+    			  position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            
+            i.fa {
+              display: none;
+            }
+    			}
+  	    }
+      }
+      
+      .treenode-container.selected {
+        background-color: #007bff;
+		    color: #fff;
+      }
+  	}
     
     .container-fluid {
       display: table-cell;
@@ -17,4 +88,27 @@
 	.add {
 	  display: table-row;
 	}
+}
+
+.draging-page-item {
+  .treenode-container {
+    .treenode-body {
+      height: 60px;
+      padding: 10px 15px;
+      border-radius: 3px;
+      
+      .name, .path {
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .name {
+        font-size: 15px;
+        font-weight: 400;
+      }
+      .path {
+        font-size: 12px;
+      }
+    }
+  }
 }

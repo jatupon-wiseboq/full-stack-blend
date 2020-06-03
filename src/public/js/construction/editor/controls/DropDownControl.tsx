@@ -109,10 +109,13 @@ class DropDownControl extends React.Component<Props, State> {
             dropdown.style.left = (windowWidth - Math.max(dropDownClientWidth, size[0])) + 'px';
         }
         
+        let minOfHeights = Math.min(dropDownClientHeight, dropDownMaxHeight);
+        let maxOfHeights = Math.max(dropDownClientHeight, dropDownMaxHeight);
+        
         dropdown.style.position = 'fixed';
-        dropdown.style.top = (position[1] + size[1]) + 'px';
+        dropdown.style.top = ((minOfHeights < 100) ? windowHeight - maxOfHeights : (position[1] + size[1])) + 'px';
         dropdown.style.width = Math.max(dropDownClientWidth, size[0]) + 'px';
-        dropdown.style.height = Math.min(dropDownClientHeight, dropDownMaxHeight) + 'px';
+        dropdown.style.height = ((minOfHeights < 100) ? maxOfHeights : minOfHeights) + 'px';
         dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
         
         dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu hide';

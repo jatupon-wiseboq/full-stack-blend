@@ -38,6 +38,7 @@ interface IProps {
   onEndDragging();
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
   draggableAfterSelected: boolean;
+  customDraggerClassName: string;
 }
 
 interface IState {
@@ -67,10 +68,8 @@ class TreeNode extends React.Component<IProps, IState> {
       node.selected = !node.selected;
       
       if (this.props.onUpdate != null) {
-          this.props.onUpdate(node);
+        this.props.onUpdate(node);
       }
-      
-      this.forceUpdate();
     }
     
     private installEventHandlers() {
@@ -88,12 +87,12 @@ class TreeNode extends React.Component<IProps, IState> {
 		private createDraggingElement(title: string, width: number) {
 			if (this.draggingElement == null) {
 				this.draggingElement = document.createElement('div');
-				this.draggingElement.className = 'layer-manager-container dragger';
+				this.draggingElement.className = 'layer-manager-container dragger' + ((this.props.customDraggerClassName) ? ' ' + this.props.customDraggerClassName : '');
 				this.draggingElement.innerHTML = '<div class="treenode-container selected"><div class="treenode-body"><div class="treenode-title"></div></div></div>';
 			}
 			
 			this.draggingElement.style.width = width + 'px';
-			this.draggingElement.firstChild.firstChild.firstChild.innerText = title;
+			this.draggingElement.firstChild.firstChild.firstChild.innerHTML = title;
 			
 			document.body.appendChild(this.draggingElement);
 		}
@@ -215,7 +214,7 @@ class TreeNode extends React.Component<IProps, IState> {
                     <div className="form-check">
                       <label className="form-check-label noselect">
                         <input type="checkbox" className="form-check-input" disabled={node.disabled} checked={node.selected} onChange={this.onChange.bind(this, node)} />
-                        <div className={"treenode-title"}>{node.name}</div>
+                        <div className={"treenode-title"} dangerouslySetInnerHTML={{__html: node.name}}></div>
                       </label>
                     </div>
                   </div>

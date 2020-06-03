@@ -13,6 +13,7 @@ interface IProps {
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
   enableDragging: boolean;
   draggableAfterSelected: boolean;
+  customDraggerClassName: string;
 }
 
 interface IState {
@@ -49,6 +50,8 @@ class Tree extends React.Component<IProps, IState> {
     	this.setState({
     	  isDragging: true
     	});
+    	
+    	window.document.body.click();
     }
     
     private onDragging(point: Point) {
@@ -169,7 +172,7 @@ class Tree extends React.Component<IProps, IState> {
       return (
         <div ref="container" className={"tree-container" + (this.state.isDragging ? ' dragging' : '')}>
           <div className="container-fluid">
-            <TreeNode deep={0} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+            <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
               {this.props.children}
             </TreeNode>
           </div>

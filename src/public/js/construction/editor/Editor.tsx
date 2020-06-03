@@ -32,9 +32,9 @@ import './components/code/ExternalLibrariesChooser.js';
 import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
-import './components/code/ProjectManager.js';
 
 import './components/content/PageManager.js';
+import './components/content/ProjectManager.js';
 
 //import GitHub from 'github-api';
 

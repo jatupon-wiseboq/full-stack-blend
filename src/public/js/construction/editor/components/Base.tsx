@@ -188,25 +188,25 @@ class Base extends React.Component {
         }
         
         this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
-            if (this.state.classNameStatuses[nameOrRegularExpression] != classNameStatuses[nameOrRegularExpression]) {
+            if (!CodeHelper.equals(this.state.classNameStatuses[nameOrRegularExpression], classNameStatuses[nameOrRegularExpression])) {
                 this.state.classNameStatuses[nameOrRegularExpression] = classNameStatuses[nameOrRegularExpression];
                 changed = true;
             }
         });
         this.props.watchingStyleNames.forEach((name: string) => {
-            if (this.state.styleValues[name] != styleValues[name]) {
+            if (!CodeHelper.equals(this.state.styleValues[name], styleValues[name])) {
                 this.state.styleValues[name] = styleValues[name];
                 changed = true;
             }
         });
         this.props.watchingAttributeNames.forEach((name: string) => {
-            if (this.state.attributeValues[name] != attributeValues[name]) {
+            if (!CodeHelper.equals(this.state.attributeValues[name], attributeValues[name])) {
                 this.state.attributeValues[name] = attributeValues[name];
                 changed = true;
             }
         });
         this.props.watchingExtensionNames.forEach((name: string) => {
-            if (this.state.extensionValues[name] != extensionValues[name]) {
+            if (!CodeHelper.equals(this.state.extensionValues[name], extensionValues[name])) {
                 this.state.extensionValues[name] = extensionValues[name];
                 changed = true;
             }

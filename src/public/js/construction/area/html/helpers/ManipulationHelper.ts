@@ -4,7 +4,7 @@ import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {EventHelper} from '../../../helpers/EventHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
-import {Accessories, InternalProjectSettings, EditorHelper} from './EditorHelper.js';
+import {Accessories, InternalProjectSettings, InternalSites, EditorHelper} from './EditorHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -358,7 +358,7 @@ var ManipulationHelper = {
       //
       HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-        if (!isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+        if (!isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col col-12');
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
       } else {
         StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
@@ -600,18 +600,28 @@ var ManipulationHelper = {
         }
       }
       {
-        let projectSettingsHaveChanged = false;
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
             if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
-              projectSettingsHaveChanged = true;
-              InternalProjectSettings[extension.name] = extension.value;
+              
+              if (extension.name == 'editingSiteName') {
+                EditorHelper.saveWorkspaceData();
+                InternalProjectSettings.editingSiteName = extension.value;
+                EditorHelper.loadWorkspaceData();
+              } else if (extension.name == 'pages') {
+                InternalSites[extension.value.id] = InternalSites[extension.value.id] || {};
+                InternalSites[extension.value.id].name = extension.value.name;
+                InternalSites[extension.value.id].path = extension.value.path;
+                InternalSites[extension.value.id].state = extension.value.state;
+              } else if (extension.name == 'externalLibraries') {
+                InternalProjectSettings[extension.name] = extension.value;
+                EditorHelper.updateExternalLibraries();
+              } else {
+                InternalProjectSettings[extension.name] = extension.value;
+              }
             }
           }
-        }
-        if (projectSettingsHaveChanged) {
-          EditorHelper.updateExternalLibraries();
         }
       }
       {
