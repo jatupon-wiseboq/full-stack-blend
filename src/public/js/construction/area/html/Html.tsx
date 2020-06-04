@@ -28,7 +28,17 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
   }, true);
   window.addEventListener("keydown", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
-      return true;
+      if (HTMLHelper.hasClass(document.activeElement.parentNode, 'internal-fsb-absolute-layout')) {
+        if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
+          EditorHelper.perform('keydown', event.keyCode);
+    
+          return EventHelper.cancel(event);
+        } else {
+          return true;
+        }
+      } else {
+        return true;
+      }
     } else {
       EditorHelper.perform('keydown', event.keyCode);
     
