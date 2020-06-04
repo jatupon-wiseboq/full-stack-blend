@@ -791,6 +791,16 @@ var ManipulationHelper = {
             if (Accessories.cursor.getDOMNode().previousSibling &&
                 HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
               ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'));
+            } else {
+              let selectingElement = EditorHelper.getSelectingElement();
+              if (selectingElement && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+                ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+              }
+            }
+          } else {
+            let selectingElement = EditorHelper.getSelectingElement();
+            if (selectingElement && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
             }
           }
           remember = false;
@@ -885,24 +895,28 @@ var ManipulationHelper = {
   handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	let shouldContinue = true;
+  	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
   	
-  	accessory = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
-  	
-  	if (accessory && HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name')) {
-  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(accessory, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
+  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
+  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
   			shouldContinue = false;
   		}
   	}
   	
+  	accessory = {
+  	  element: element,
+  	  container: element.parentNode
+  	}
+  	
   	link = Math.random();
   	promise.then(() => {
-  		let presetId = HTMLHelper.getAttribute(accessory, 'internal-fsb-guid');
+  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
 			removeAllPresetReferences(presetId, link);
 			StylesheetHelper.removeStylesheetDefinition(presetId);
 		});
   	
-    if (shouldContinue && accessory) {
-      accessory.parentNode.removeChild(accessory);
+    if (shouldContinue && element) {
+      element.parentNode.removeChild(element);
     } else {
     	remember = false;
     }
@@ -1342,8 +1356,12 @@ var ManipulationHelper = {
           content = accessory.guid;
           break;
         case 'delete':
-        	Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory, Accessories.cursor.getDOMNode());
-        	done = true;
+          if (HTMLHelper.hasClass(accessory.container, 'internal-fsb-absolute-layout')) {
+            accessory.container.appendChild(accessory.element);
+          } else {
+            Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory.element, Accessories.cursor.getDOMNode());
+          }
+          done = true;
         	break;
         case 'keydown':
           switch (content) {

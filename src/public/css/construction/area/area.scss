@@ -215,11 +215,11 @@ body.internal-fsb-mode-coding {
 .internal-fsb-element {
 	> .container,
   > .container-fluid {
-  	height: inherit;
+  	height: 100%;
   	min-height: inherit;
   	      
 	  > .row {
-	    height: inherit;
+	    height: 100%;
   		min-height: inherit;
 	  }
 	}
