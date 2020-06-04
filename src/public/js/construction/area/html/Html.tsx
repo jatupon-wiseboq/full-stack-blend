@@ -7,9 +7,18 @@ import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
 import {StylesheetHelper} from './helpers/StylesheetHelper.js';
 
 (() => {
-  // Setup a cursor and a resizer.
-  //
-  EditorHelper.setup();
+  let isLoaded: boolean = false;
+  window.addEventListener("load", (event) => {
+    // Setup a cursor and a resizer.
+    //
+    EditorHelper.setup();
+    
+    // Install capabilities.
+    //
+    CapabilityHelper.installCapabilitiesForInternalElements(document);
+    
+    isLoaded = true;
+  });
   
   // Bind events.
   //
@@ -50,6 +59,8 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
   }, true);
   let previousWindowSize = {width: null, height: null};
   window.addEventListener('resize', (event) => {
+    if (!isLoaded) return;
+    
     if (previousWindowSize.width != window.innerWidth || previousWindowSize.height != window.innerHeight) {
       previousWindowSize.width = window.innerWidth;
       previousWindowSize.height = window.innerHeight;
@@ -68,8 +79,4 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
  	window.initializeWorkspaceData = ((data) => {
   	return EditorHelper.initializeWorkspaceData(data);
   });
-  
-  // Install capabilities.
-  //
-  CapabilityHelper.installCapabilitiesForInternalElements(document);
 })();

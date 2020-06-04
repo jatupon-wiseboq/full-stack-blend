@@ -49,35 +49,7 @@ class PageManager extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        this.state.nodes = [{
-            id: 'delete',
-            name: 'Delete',
-            selectable: false,
-            dropable: true,
-            disabled: false,
-            selected: false,
-            customClassName: 'delete',
-            nodes: []
-        }];
-        
-        let pages = this.state.extensionValues[this.props.watchingExtensionNames[0]];
-        let editingSiteName = this.state.extensionValues[this.props.watchingExtensionNames[1]];
-        
-        for (let page of pages) {
-            this.state.nodes.push({
-                id: page.id,
-                name: `<div class="name">${page.name}</div><div class="path">${page.path}</div>`,
-                selectable: true,
-                dropable: false,
-                disabled: false,
-                selected: (page.id == editingSiteName),
-                customClassName: 'page',
-                nodes: [],
-                tag: page
-            });
-        }
-        
-        this.forceUpdate();
+        this.refresh();
     }
     
     private onUpdate(node: ITreeNode) {
@@ -86,17 +58,19 @@ class PageManager extends Base<Props, State> {
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (reference.id == 'delete') {
+    		    element.tag.state = 'delete';
+    		    
     		    perform('update', {
     		        extensions: [{
     		            name: this.props.watchingExtensionNames[0],
-    		            value: {
-    		                id: element.tag.id,
-    		                name: element.tag.name,
-    		                path: element.tag.path,
-    		                state: 'delete'
-    		            }
+    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
+    		        },{
+    		            name: this.props.watchingExtensionNames[1],
+    		            value: null
     		        }]
     		    });
+    		    
+    		    this.refresh();
     		}
     		
     		window.document.body.click();
@@ -122,9 +96,11 @@ class PageManager extends Base<Props, State> {
         });
         
         if (value) {
-            this.state.id = node.tag.id;
-            this.state.name = node.tag.name;
-            this.state.path = node.tag.path;
+            this.setState({
+                id: node.tag.id,
+                name: node.tag.name,
+                path: node.tag.path
+            });
         
             perform('update', {
     		        extensions: [{
@@ -145,17 +121,33 @@ class PageManager extends Base<Props, State> {
     
     private addOnClick(event) {
         if (this.state.name && this.state.path) {
+            let page = {
+                id: this.state.id,
+                name: this.state.name,
+                path: this.state.path,
+                state: 'update'
+            };
+            
+            this.state.nodes.push({
+                id: page.id,
+                name: `<div class="name">${page.name}</div><div class="path">${page.path}</div>`,
+                selectable: true,
+                dropable: false,
+                disabled: false,
+                selected: false,
+                customClassName: 'page',
+                nodes: [],
+                tag: page
+            });
+          
             perform('update', {
     		        extensions: [{
     		            name: this.props.watchingExtensionNames[0],
-    		            value: {
-    		                id: this.state.id,
-    		                name: this.state.name,
-    		                path: this.state.path,
-    		                state: 'update'
-    		            }
+    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
     		        }]
     		    });
+            
+            this.refresh();
             
             window.document.body.click();
         }
@@ -163,20 +155,55 @@ class PageManager extends Base<Props, State> {
     
     private updateOnClick(event) {
         if (this.state.name && this.state.path) {
+            let page = this.state.extensionValues[this.props.watchingExtensionNames[0]].filter(p => p.id == this.state.id)[0];
+            page.name = this.state.name;
+            page.path = this.state.path;
+            page.state = 'update';
+          
             perform('update', {
     		        extensions: [{
     		            name: this.props.watchingExtensionNames[0],
-    		            value: {
-    		                id: this.state.id,
-    		                name: this.state.name,
-    		                path: this.state.path,
-    		                state: 'update'
-    		            }
+    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
     		        }]
     		    });
+    		    
+    		    this.refresh();
             
             window.document.body.click();
         }
+    }
+    
+    private refresh() {
+        this.state.nodes = [{
+            id: 'delete',
+            name: 'Delete',
+            selectable: false,
+            dropable: true,
+            disabled: false,
+            selected: false,
+            customClassName: 'delete',
+            nodes: []
+        }];
+        
+        let pages = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+        let editingSiteName = this.state.extensionValues[this.props.watchingExtensionNames[1]];
+        pages = pages.filter(page => page.state != 'delete');
+        
+        for (let page of pages) {
+            this.state.nodes.push({
+                id: page.id,
+                name: `<div class="name">${page.name}</div><div class="path">${page.path}</div>`,
+                selectable: true,
+                dropable: false,
+                disabled: false,
+                selected: (page.id == editingSiteName),
+                customClassName: 'page',
+                nodes: [],
+                tag: page
+            });
+        }
+        
+        this.forceUpdate();
     }
     
     render() {

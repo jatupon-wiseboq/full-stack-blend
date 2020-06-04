@@ -606,14 +606,25 @@ var ManipulationHelper = {
               found = true;
               
               if (extension.name == 'editingSiteName') {
+                accessory = {
+                  extensions: [{
+                    name: 'editingSiteName',
+                    value: InternalProjectSettings.editingSiteName
+                  }]
+                };
+                
                 EditorHelper.saveWorkspaceData();
                 InternalProjectSettings.editingSiteName = extension.value;
                 EditorHelper.loadWorkspaceData();
               } else if (extension.name == 'pages') {
-                InternalSites[extension.value.id] = InternalSites[extension.value.id] || {};
-                InternalSites[extension.value.id].name = extension.value.name;
-                InternalSites[extension.value.id].path = extension.value.path;
-                InternalSites[extension.value.id].state = extension.value.state;
+                accessory = {
+                  extensions: [{
+                    name: 'pages',
+                    value: CodeHelper.clone(InternalProjectSettings.pages)
+                  }]
+                };
+                
+                InternalProjectSettings[extension.name] = extension.value;
               } else if (extension.name == 'externalLibraries') {
                 InternalProjectSettings[extension.name] = extension.value;
                 EditorHelper.updateExternalLibraries();

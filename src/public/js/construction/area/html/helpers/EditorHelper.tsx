@@ -1,6 +1,8 @@
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
+import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -26,19 +28,17 @@ let Accessories = {
   layoutInfo: null
 };
 
-const DEFAULT_HTML = document.body.outerHTML;
+const DEFAULT_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 
 let editorCurrentMode: string = null;
 const DefaultProjectSettings: {string: any} = {
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
-  editingSiteName: 'index'
+  editingSiteName: 'index',
+  pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}]
 };
-let InternalProjectSettings = DefaultProjectSettings;
+let InternalProjectSettings = CodeHelper.clone(DefaultProjectSettings);
 let InternalSites = {};
-
-let internalSitesRevision = 0;
-let cachedInternalSitesRevision = -1;
 
 var EditorHelper = {
   generateWorkspaceData: () => {
@@ -50,15 +50,15 @@ var EditorHelper = {
     };
   },
   initializeWorkspaceData: (data: any) => {
-    Object.assign(InternalProjectSettings, data && data.globalSettings || DefaultProjectSettings);
+    Object.assign(InternalProjectSettings, data && data.globalSettings || {});
     Object.assign(InternalSites, data && data.sites || {});
-    
-    InternalProjectSettings.editingSiteName = InternalProjectSettings.editingSiteName || 'index';
     
     EditorHelper.loadWorkspaceData();
   },
   loadWorkspaceData: () => {
-    let page = EditorHelper.getPageInfo();
+    if (InternalProjectSettings.editingSiteName == null) return;
+    
+    let page = EditorHelper.getPageInfo(InternalProjectSettings.editingSiteName);
     
     StylesheetHelper.initializeStylesheetData(page.head.stylesheets);
     FontHelper.initializeFontData(page.head.fonts)
@@ -72,10 +72,17 @@ var EditorHelper = {
     EditorHelper.init();
   },
   saveWorkspaceData: () => {
+    if (InternalProjectSettings.editingSiteName == null) return;
+    
     let page = EditorHelper.getPageInfo(InternalProjectSettings.editingSiteName);
     
     page.head.stylesheets = StylesheetHelper.generateStylesheetData();
     page.head.fonts = FontHelper.generateFontData();
+    
+    let selectingElement = EditorHelper.getSelectingElement();
+    
+    page.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
+    page.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
     
     EditorHelper.detach();
     page.body = document.body.outerHTML;
@@ -83,28 +90,17 @@ var EditorHelper = {
     
     InternalSites[InternalProjectSettings.editingSiteName] = page;
   },
-  getPageInfo: (currentPageID: String=InternalProjectSettings.editingSiteName) => {
+  getPageInfo: (currentPageID: String) => {
     let page = InternalSites[currentPageID] || {};
     
-    if (!page.name) page.name = (currentPageID == 'index') ? 'Home' : 'Untitled';
-    if (!page.path) page.path = (currentPageID == 'index') ? '/' : `/${currentPageID}`;
-    if (!page.state) page.state = 'update';
+    if (!page.id) page.id = currentPageID;
     if (!page.head) page.head = {};
     if (!page.head.stylesheets) page.head.stylesheets = {};
     if (!page.head.fonts) page.head.fonts = {};
     if (!page.body) page.body = DEFAULT_HTML;
+    if (!page.accessories) page.accessories = {};
     
     return page;
-  },
-  getListOfPageInfo: () => {
-    return Object.entries(InternalSites).map(([key, value]) => {
-      return {
-        id: key,
-        name: value.name,
-        path: value.path,
-        state: value.state
-      }
-    });
   },
   setup: () => {
     let cursorContainer = document.createElement('div');
@@ -195,7 +191,20 @@ var EditorHelper = {
     window.document.body.appendChild(Accessories.cellFormater.getDOMNode());
     window.document.body.appendChild(Accessories.layoutInfo.getDOMNode());
     
-    CursorHelper.moveCursorToTheEndOfDocument(false);
+    // Restore element selecting and cursor placement.
+    // 
+    let page = EditorHelper.getPageInfo(InternalProjectSettings.editingSiteName);
+    
+    if (page.accessories.selectingElementGUID) {
+      let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', page.accessories.selectingElementGUID);
+      EditorHelper.select(element);
+    }
+    
+    if (page.accessories.currentCursorWalkPath) {
+      CursorHelper.placingCursorUsingWalkPath(page.accessories.currentCursorWalkPath);
+    } else {
+      CursorHelper.moveCursorToTheEndOfDocument(false);
+    }
   },
   
   perform: (name: string, content: any) => {
@@ -235,8 +244,7 @@ var EditorHelper = {
 	        isSelectingElement: false,
 	        hasParentReactComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
-	        editorCurrentMode: editorCurrentMode,
-	        pages: EditorHelper.getListOfPageInfo()
+	        editorCurrentMode: editorCurrentMode
 	      }),
 	      tag: tag
 	    });
@@ -266,8 +274,7 @@ var EditorHelper = {
         elementTreeNodes: LayoutHelper.getElementTreeNodes(),
         autoGeneratedCodeForRenderMethod: CodeGeneratorHelper.generateCodeForReactRenderMethod(element),
         autoGeneratedCodeForMergingSection: CodeGeneratorHelper.generateCodeForMergingSection(element),
-        editorCurrentMode: editorCurrentMode,
-        pages: EditorHelper.getListOfPageInfo()
+        editorCurrentMode: editorCurrentMode
       }, Accessories.cellFormater.getInfo()),
 	    tag: tag
     });

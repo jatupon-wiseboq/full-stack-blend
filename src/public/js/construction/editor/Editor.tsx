@@ -156,7 +156,7 @@ let recentExtraPanelSelector: string = null;
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
 	      	}
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editingSiteName']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
