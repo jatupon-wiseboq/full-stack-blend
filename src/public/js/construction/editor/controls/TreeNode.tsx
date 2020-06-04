@@ -67,6 +67,8 @@ class TreeNode extends React.Component<IProps, IState> {
   		
       node.selected = !node.selected;
       
+      this.forceUpdate();
+      
       if (this.props.onUpdate != null) {
         this.props.onUpdate(node);
       }
