@@ -31,6 +31,8 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
       if (HTMLHelper.hasClass(document.activeElement.parentNode, 'internal-fsb-absolute-layout')) {
         if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
           EditorHelper.perform('keydown', event.keyCode);
+          
+          HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
     
           return EventHelper.cancel(event);
         } else {
