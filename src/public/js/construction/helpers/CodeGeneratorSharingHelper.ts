@@ -52,7 +52,8 @@ export {IProps, IState, DefaultProps, DefaultState};
 `
 }
 
-const FULL_BOILERPLATE = `// Auto[Import]--->
+const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
+// Auto[Import]--->
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
@@ -124,6 +125,8 @@ const RENDER_END = `
   }
 }
 DeclarationHelper.declare(`;
+const FILE_BEGIN = `// Auto[File]--->`;
+const FILE_END = `// <---Auto[File]`;
 
 // This code generator doesn't rely on elements in construction area and use in both
 // construction area and editor.
@@ -210,6 +213,10 @@ ${CLASS_END_BEGIN}`);
 export {${previewReactClassName}};
 // <---Auto[Export]`;
         }
+        
+        code = `${code.split(FILE_END)[0]}
+${klass}
+${FILE_END}${code.split(FILE_END)[1]}`;
         
         return [code, functionNameMapping];
     },

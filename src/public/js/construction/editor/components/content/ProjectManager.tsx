@@ -72,7 +72,7 @@ class ProjectManager extends Base<Props, State> {
       if (gh == null) return;
       
       let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
-        
+      
       repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
         if (error) {
           alert(`There was an error while retrieving the last commit, please try again.`);
@@ -214,8 +214,8 @@ class ProjectManager extends Base<Props, State> {
     </body>
   </html>`
                 this.createViewBlob(repo, combinedHTMLPage, (viewBlobSHA: string) => {
-                  this.createReactComponentsBlob(repo, combinedExpandingFeatureScripts, (reactComponentsBlobSHA: string) => {
-                    this.createSiteBundleBlob(repo, Object.keys(previousProjectData.sites), combinedMinimalFeatureScripts, (siteBundleBlobSHA: string) => {
+                  this.createReactComponentsBlob(repo, combinedExpandingFeatureScripts, (reactComponentsBlobSHAInfos: [[string, string]]) => {
+                    this.createSiteBundleBlob(repo, Object.keys(previousProjectData.sites), combinedMinimalFeatureScripts, reactComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
                       repo.createBlob(JSON.stringify(previousProjectData), (error, result, request) => {
                         if (error) {
                           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
@@ -227,7 +227,7 @@ class ProjectManager extends Base<Props, State> {
                         
                         console.log('nextProjectDataSHA', nextProjectDataSHA);
                         
-                        repo.createTree([{
+                        let tree = [{
                           path: 'project.stackblend',
                           mode: "100644",
                           type: "blob",
@@ -248,16 +248,22 @@ class ProjectManager extends Base<Props, State> {
                           type: "blob",
                           sha: viewBlobSHA
                         },{
-                          path: `src/public/js/components/index.tsx`,
-                          mode: "100644",
-                          type: "blob",
-                          sha: reactComponentsBlobSHA
-                        },{
                           path: `src/public/js/Site.tsx`,
                           mode: "100644",
                           type: "blob",
                           sha: siteBundleBlobSHA
-                        }], baseTreeSHA, (error, result, request) => {
+                        }];
+                        
+                        for (let reactComponentsBlobSHAInfo of reactComponentsBlobSHAInfos) {
+                          tree.push({
+                            path: `src/public/js/components/${reactComponentsBlobSHAInfo[0]}.tsx`,
+                            mode: "100644",
+                            type: "blob",
+                            sha: reactComponentsBlobSHAInfo[1]
+                          });
+                        }
+                        
+                        repo.createTree(tree, baseTreeSHA, (error, result, request) => {
                           if (error) {
                             alert(`There was an error while creating a new tree:\n${this.extractErrorMessage(error)}`);
                             return;
@@ -360,7 +366,7 @@ class ProjectManager extends Base<Props, State> {
 import * as homeController from './controllers/home.js';
 
 const route = (app: any) => {
-${routes.map(route => ` app.get("/${(route == 'index') ? '' : route}", homeController.${route});`).join('\n')}
+${routes.map(route => ` app.get("/${(route == 'index') ? '' : route}", homeController._${route});`).join('\n')}
 };
 
 export default route;
@@ -386,8 +392,8 @@ export default route;
 
 import {Request, Response} from "express";
 
-${routes.map(route => `export const ${route} = (req: Request, res: Response) => {
-  res.render("home/${route}", {
+${routes.map(route => `export const _${route} = (req: Request, res: Response) => {
+  res.render("home/_${route}", {
   });
 }`).join('\n')}
 
@@ -427,33 +433,44 @@ ${content}
         cb(nextViewDataSHA);
       });
  	  }
-   	createReactComponentsBlob(repo: any, content: string, cb: any) {
-   	  repo.createBlob(`// Auto[Generating:V1]--->
+   	createReactComponentsBlob(repo: any, _content: string, cb: any) {
+   	  let results = _content.split("// Auto[File]--->\n");
+   	  
+   	  let nextReactComponentsDataSHAInfos = [];
+   	  let process = (index: number) => {
+   	    let tokens = results[index].split("\n// <---Auto[File]");
+   	    
+   	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${content}
+${tokens[1]}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
-        if (error) {
-          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
-          return;
-        }
-        
-        console.log(result);
-        let nextReactComponentsDataSHA = result.sha;
-        
-        console.log('nextReactComponentsDataSHA', nextReactComponentsDataSHA);
-        
-        cb(nextReactComponentsDataSHA);
-      });
+          if (error) {
+            alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
+            return;
+          }
+          
+          console.log(result);
+          nextReactComponentsDataSHAInfos.push([tokens[0], result.sha]);
+          console.log('nextReactComponentsDataSHAInfos', nextReactComponentsDataSHAInfos);
+          
+          if (index + 1 < results.length) {
+            process(index + 1);
+          } else {
+            cb(nextReactComponentsDataSHAInfos);
+          }
+        });
+   	  }
+   	  process(1);
    	}
-   	createSiteBundleBlob(repo: any, routes: [string], combinedMinimalFeatureScripts: string, cb: any) {
+   	createSiteBundleBlob(repo: any, routes: [string], combinedMinimalFeatureScripts: string, reactComponentsBlobSHAInfos: [[string, string]], cb: any) {
  	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
-${routes.map(route => `import './components/${route}.js';`).join('\n')}
+${reactComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
