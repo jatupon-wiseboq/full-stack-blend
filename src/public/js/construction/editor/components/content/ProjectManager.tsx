@@ -243,7 +243,7 @@ class ProjectManager extends Base<Props, State> {
                           type: "blob",
                           sha: controllerBlobSHA
                         },{
-                          path: `views/home/index.pug`,
+                          path: `views/home/_index.pug`,
                           mode: "100644",
                           type: "blob",
                           sha: viewBlobSHA
