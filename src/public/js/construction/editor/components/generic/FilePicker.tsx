@@ -87,10 +87,10 @@ class FilePicker extends Base<Props, State> {
     
     protected composeValue(value: any) {
         if (this.props.watchingStyleNames[0]) {
-            return 'url(' + URL.createObjectURL(value) + ')';   
+            return 'url(' + value + ')';   
         }
         if (this.props.watchingAttributeNames[0]) {
-            return URL.createObjectURL(value);   
+            return value;
         }
     }
     

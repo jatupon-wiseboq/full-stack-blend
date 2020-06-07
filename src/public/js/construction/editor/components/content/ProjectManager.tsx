@@ -196,6 +196,15 @@ class ProjectManager extends Base<Props, State> {
                 let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
             		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = infoDict[key];
       		      
+      		      let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
+      		      
+      		      combinedHTMLTags.replace(REGEX, '/uploaded');
+      		      combinedMinimalFeatureScripts.replace(REGEX, '/uploaded');
+      		      combinedExpandingFeatureScripts.replace(REGEX, '/uploaded');
+      		      combinedFontTags.replace(REGEX, '/uploaded');
+      		      combinedInlineBodyStyle.replace(REGEX, '/uploaded');
+      		      combinedStylesheet.replace(REGEX, '/uploaded');
+      		      
       		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
       		      else combinedInlineBodyStyle = '';
     		        
