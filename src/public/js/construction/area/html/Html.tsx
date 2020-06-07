@@ -80,10 +80,10 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
     }
   });
   window.generateHTMLCodeForPage = (() => {
-  	let results = CodeGeneratorHelper.generateHTMLCodeForPage();
-  	results.push(StylesheetHelper.renderStylesheet(true));
-  	
-  	return results;
+  	return EditorHelper.generateHTMLCodeForPage();
+  });
+  window.generateHTMLCodeForPages = (() => {
+    return EditorHelper.generateHTMLCodeForPages();
   });
   window.generateWorkspaceData = (() => {
   	return EditorHelper.generateWorkspaceData();

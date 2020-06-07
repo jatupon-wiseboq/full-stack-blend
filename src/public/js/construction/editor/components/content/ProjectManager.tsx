@@ -6,6 +6,7 @@ import {LIBRARIES} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
+declare let ts: any;
 
 interface Props extends IProps {
 }
@@ -126,6 +127,9 @@ class ProjectManager extends Base<Props, State> {
       });
    	}
     public save() {
+      let construction = document.getElementById('html');
+      let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+      
       let gh = this.initGitHubInstance();
       if (gh == null) return;
       
@@ -157,43 +161,47 @@ class ProjectManager extends Base<Props, State> {
           console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
-            let construction = document.getElementById('html');
-        		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
         		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
         		let constructionEditorData = this.generateWorkspaceData() || {};
+        		let infoDict = constructionWindow.generateHTMLCodeForPages();
+            let nextProjectData = {};
             
-            Object.assign(previousProjectData, constructionAreaHTMLData);
-            Object.assign(previousProjectData, constructionEditorData);
+            Object.assign(nextProjectData, previousProjectData);
+            Object.assign(nextProjectData, constructionAreaHTMLData);
+            Object.assign(nextProjectData, constructionAreaHTMLData);
+            Object.assign(nextProjectData, constructionEditorData);
             
-            this.createRouteBlob(repo, Object.keys(previousProjectData.sites), (routeBlobSHA: string) => {
-              this.createControllerBlob(repo, Object.keys(previousProjectData.sites), (controllerBlobSHA: string) => {
-                
-                let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-                let construction = document.getElementById('html');
-            		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-            		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
-      		      
-      		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
-      		      else combinedInlineBodyStyle = '';
-      		      
-      		      let externalStylesheets = [];
-            		let externalScripts = [];
-            		let selectedLibraries: [string] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
-                for (let library of LIBRARIES) {
-                    if (selectedLibraries.indexOf(library.id) != -1) {
-                        if (library.production.stylesheets) {
-                            for (let stylesheet of library.production.stylesheets) {
-                                externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
-                            }
+            let externalStylesheets = [];
+        		let externalScripts = [];
+        		let selectedLibraries: [string] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+            for (let library of LIBRARIES) {
+                if (selectedLibraries.indexOf(library.id) != -1) {
+                    if (library.production.stylesheets) {
+                        for (let stylesheet of library.production.stylesheets) {
+                            externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
                         }
-                        if (library.production.scripts) {
-                            for (let script of library.production.scripts) {
-                                externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
-                            }
+                    }
+                    if (library.production.scripts) {
+                        for (let script of library.production.scripts) {
+                            externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
                         }
                     }
                 }
-    		      
+            }
+            
+            let combinedHTMLPageDict = {};
+            let arrayOfCombinedExpandingFeatureScripts = [];
+            for (let key in infoDict) {
+              if (infoDict.hasOwnProperty(key)) {
+                let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
+            		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = infoDict[key];
+      		      
+      		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
+      		      else combinedInlineBodyStyle = '';
+    		        
+    		        let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
+    		        compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+    		        
                 let combinedHTMLPage = `.
   <!DOCTYPE html>
   <html>
@@ -202,21 +210,31 @@ class ProjectManager extends Base<Props, State> {
       <title></title>
       <meta name="description" content="" />
       <link rel="stylesheet" href="http://staging.stackblend.com/css/embed.css">
-      ${combinedFontTags.join('\n      ')}
       <style type="text/css">${combinedStylesheet}</style>
-      ${externalStylesheets.join('\n      ')}
     </head>
     <body${combinedInlineBodyStyle}>
       ${combinedHTMLTags}
       <script type="text/javascript" src="http://staging.stackblend.com/js/Embed.bundle.js"></script>
+      <script type="text/javascript">
+      ${compiledCombinedMinimalFeatureScripts}
+      </script>
+      ${externalStylesheets.join('\n      ')}
+      ${combinedFontTags.join('\n      ')}
       ${externalScripts.join('\n      ')}
       <script type="text/javascript" src="/js/Site.bundle.js"></script>
     </body>
   </html>`
-                this.createViewBlob(repo, combinedHTMLPage, (viewBlobSHA: string) => {
-                  this.createReactComponentsBlob(repo, combinedExpandingFeatureScripts, (reactComponentsBlobSHAInfos: [[string, string]]) => {
-                    this.createSiteBundleBlob(repo, Object.keys(previousProjectData.sites), combinedMinimalFeatureScripts, reactComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
-                      repo.createBlob(JSON.stringify(previousProjectData), (error, result, request) => {
+                combinedHTMLPageDict[key] = combinedHTMLPage;
+                arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
+              }
+            }
+            
+            this.createRouteBlob(repo, nextProjectData.globalSettings.pages, (routeBlobSHA: string) => {
+              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, (controllerBlobSHA: string) => {
+                this.createViewBlob(repo, combinedHTMLPageDict, (viewBlobSHADict: string) => {
+                  this.createReactComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (reactComponentsBlobSHAInfos: [[string, string]]) => {
+                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, reactComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
+                      repo.createBlob(JSON.stringify(nextProjectData), (error, result, request) => {
                         if (error) {
                           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                           return;
@@ -243,11 +261,6 @@ class ProjectManager extends Base<Props, State> {
                           type: "blob",
                           sha: controllerBlobSHA
                         },{
-                          path: `views/home/_index.pug`,
-                          mode: "100644",
-                          type: "blob",
-                          sha: viewBlobSHA
-                        },{
                           path: `src/public/js/Site.tsx`,
                           mode: "100644",
                           type: "blob",
@@ -261,6 +274,16 @@ class ProjectManager extends Base<Props, State> {
                             type: "blob",
                             sha: reactComponentsBlobSHAInfo[1]
                           });
+                        }
+                        for (let key in viewBlobSHADict) {
+                          if (viewBlobSHADict.hasOwnProperty(key)) {
+                            tree.push({
+                              path: `views/home/_${key}.pug`,
+                              mode: "100644",
+                              type: "blob",
+                              sha: viewBlobSHADict[key]
+                            });
+                          }
                         }
                         
                         repo.createTree(tree, baseTreeSHA, (error, result, request) => {
@@ -366,7 +389,7 @@ class ProjectManager extends Base<Props, State> {
 import * as homeController from './controllers/home.js';
 
 const route = (app: any) => {
-${routes.map(route => ` app.get("/${(route == 'index') ? '' : route}", homeController._${route});`).join('\n')}
+${routes.map(route => ` app.get("${route.path}", homeController._${route.id});`).join('\n')}
 };
 
 export default route;
@@ -392,8 +415,8 @@ export default route;
 
 import {Request, Response} from "express";
 
-${routes.map(route => `export const _${route} = (req: Request, res: Response) => {
-  res.render("home/_${route}", {
+${routes.map(route => `export const _${route.id} = (req: Request, res: Response) => {
+  res.render("home/_${route.id}", {
   });
 }`).join('\n')}
 
@@ -412,60 +435,81 @@ ${routes.map(route => `export const _${route} = (req: Request, res: Response) =>
         cb(nextControllerDataSHA);
       });
    	}
-   	createViewBlob(repo: any, content: string, cb: any) {
- 	    repo.createBlob(`//- Auto[Generating:V1]--->
+   	createViewBlob(repo: any, inputDict: any, cb: any) {
+   	  let keys = Object.keys(inputDict);
+   	  let nextViewDataSHADict = {};
+   	  
+   	  let process = (index: number) => {
+   	    repo.createBlob(`//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${content}
+${inputDict[keys[index]]}
 
 //- <--- Auto[Generating:V1]
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
-        if (error) {
-          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
-          return;
-        }
-        
-        console.log(result);
-        let nextViewDataSHA = result.sha;
-        
-        console.log('nextViewDataSHA', nextViewDataSHA);
-        
-        cb(nextViewDataSHA);
-      });
- 	  }
-   	createReactComponentsBlob(repo: any, _content: string, cb: any) {
-   	  let results = _content.split("// Auto[File]--->\n");
-   	  
-   	  let nextReactComponentsDataSHAInfos = [];
-   	  let process = (index: number) => {
-   	    let tokens = results[index].split("\n// <---Auto[File]");
-   	    
-   	    repo.createBlob(`// Auto[Generating:V1]--->
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
-
-${tokens[1]}
-
-// <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
           if (error) {
             alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
             return;
           }
           
           console.log(result);
-          nextReactComponentsDataSHAInfos.push([tokens[0], result.sha]);
-          console.log('nextReactComponentsDataSHAInfos', nextReactComponentsDataSHAInfos);
+          nextViewDataSHADict[keys[index]] = result.sha;
+          console.log('nextViewDataSHADict', nextViewDataSHADict);
           
-          if (index + 1 < results.length) {
+          if (index + 1 < keys.length) {
             process(index + 1);
           } else {
-            cb(nextReactComponentsDataSHAInfos);
+            cb(nextViewDataSHADict);
           }
         });
    	  }
-   	  process(1);
+   	  process(0);
+ 	  }
+   	createReactComponentsBlob(repo: any, arrayOfContent: [string], cb: any) {
+   	  let nextReactComponentsDataSHAInfos = [];
+   	  let mainprocess = (mainIndex: number) => {
+     	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
+     	  if (results.length < 2) {
+     	    if (mainIndex + 1 < arrayOfContent.length) {
+     	      mainprocess(mainIndex + 1);
+     	    } else {
+     	      cb(nextReactComponentsDataSHAInfos);
+     	    }
+     	  } else {
+       	  let subprocess = (subIndex: number) => {
+       	    let tokens = results[subIndex].split("\n// <---Auto[File]");
+       	    
+       	    repo.createBlob(`// Auto[Generating:V1]--->
+    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+    
+    ${tokens[1]}
+    
+    // <--- Auto[Generating:V1]
+    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+              if (error) {
+                alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
+                return;
+              }
+              
+              console.log(result);
+              nextReactComponentsDataSHAInfos.push([tokens[0], result.sha]);
+              console.log('nextReactComponentsDataSHAInfos', nextReactComponentsDataSHAInfos);
+              
+              if (subIndex + 1 < results.length) {
+                subprocess(subIndex + 1);
+              } else if (mainIndex + 1 < arrayOfContent.length) {
+                mainprocess(mainIndex + 1);
+              } else {
+                cb(nextReactComponentsDataSHAInfos);
+              }
+            });
+       	  }
+       	  subprocess(1);
+       	}
+      }
+      mainprocess(0);
    	}
-   	createSiteBundleBlob(repo: any, routes: [string], combinedMinimalFeatureScripts: string, reactComponentsBlobSHAInfos: [[string, string]], cb: any) {
+   	createSiteBundleBlob(repo: any, routes: [string], reactComponentsBlobSHAInfos: [[string, string]], cb: any) {
  	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -474,8 +518,6 @@ ${reactComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`
 
 declare let React: any;
 declare let ReactDOM: any;
-
-${combinedMinimalFeatureScripts}
 
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 

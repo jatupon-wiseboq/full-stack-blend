@@ -31,6 +31,8 @@ let Accessories = {
 const DEFAULT_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 
 let editorCurrentMode: string = null;
+let cachedGenerateHTMLCodeForPages: any = {};
+
 const DefaultProjectSettings: {string: any} = {
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
@@ -75,6 +77,7 @@ var EditorHelper = {
     if (InternalProjectSettings.editingSiteName == null) return;
     
     let page = EditorHelper.getPageInfo(InternalProjectSettings.editingSiteName);
+    let cloned = CodeHelper.clone(page);
     
     page.head.stylesheets = StylesheetHelper.generateStylesheetData();
     page.head.fonts = FontHelper.generateFontData();
@@ -88,7 +91,10 @@ var EditorHelper = {
     page.body = document.body.outerHTML;
     EditorHelper.init();
     
-    InternalSites[InternalProjectSettings.editingSiteName] = page;
+    if (!CodeHelper.equals(cloned, page)) {
+      cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = EditorHelper.generateHTMLCodeForPage();
+      InternalSites[InternalProjectSettings.editingSiteName] = page;
+    }
   },
   getPageInfo: (currentPageID: String) => {
     let page = InternalSites[currentPageID] || {};
@@ -101,6 +107,20 @@ var EditorHelper = {
     if (!page.accessories) page.accessories = {};
     
     return page;
+  },
+  generateHTMLCodeForPage: () => {
+    let results = CodeGeneratorHelper.generateHTMLCodeForPage();
+  	results.push(StylesheetHelper.renderStylesheet(true));
+  	
+  	return results;
+  },
+  generateHTMLCodeForPages: (clean: boolean=true) => {
+    cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = EditorHelper.generateHTMLCodeForPage();
+    
+    let result = cachedGenerateHTMLCodeForPages;
+    if (clean) cachedGenerateHTMLCodeForPages = {};
+    
+    return result;
   },
   setup: () => {
     let cursorContainer = document.createElement('div');
