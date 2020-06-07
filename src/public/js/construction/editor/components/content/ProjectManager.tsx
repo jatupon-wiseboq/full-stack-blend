@@ -207,7 +207,7 @@ class ProjectManager extends Base<Props, State> {
   <html>
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title></title>
+      <title>#{title}</title>
       <meta name="description" content="" />
       <link rel="stylesheet" href="http://staging.stackblend.com/css/embed.css">
       <style type="text/css">${combinedStylesheet}</style>
@@ -231,7 +231,7 @@ class ProjectManager extends Base<Props, State> {
             
             this.createRouteBlob(repo, nextProjectData.globalSettings.pages, (routeBlobSHA: string) => {
               this.createControllerBlob(repo, nextProjectData.globalSettings.pages, (controllerBlobSHA: string) => {
-                this.createViewBlob(repo, combinedHTMLPageDict, (viewBlobSHADict: string) => {
+                this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: string) => {
                   this.createReactComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (reactComponentsBlobSHAInfos: [[string, string]]) => {
                     this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, reactComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
                       repo.createBlob(JSON.stringify(nextProjectData), (error, result, request) => {
@@ -435,15 +435,17 @@ ${routes.map(route => `export const _${route.id} = (req: Request, res: Response)
         cb(nextControllerDataSHA);
       });
    	}
-   	createViewBlob(repo: any, inputDict: any, cb: any) {
+   	createViewBlob(repo: any, inputDict: any, pages: any, cb: any) {
    	  let keys = Object.keys(inputDict);
    	  let nextViewDataSHADict = {};
    	  
    	  let process = (index: number) => {
+   	    let page = pages.filter(page => page.id == keys[index]);
+   	    
    	    repo.createBlob(`//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${inputDict[keys[index]]}
+${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
 
 //- <--- Auto[Generating:V1]
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {

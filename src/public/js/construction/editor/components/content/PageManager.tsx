@@ -211,12 +211,12 @@ class PageManager extends Base<Props, State> {
             <FullStackBlend.Components.ListManager customClassName="non-insertable page-manager" customDraggerClassName="draging-page-item" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '175px'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Page" : "Update Page"}</div>
-                    <div className="section-subtitle">Name</div>
+                    <div className="section-subtitle">Title</div>
                     <div className="section-body">
                         <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='.*' postRegExp='.*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
-                    <div className="section-subtitle">Path</div>
-                    <div className="section-body">
+                    <div className="section-subtitle" style={{display: (this.state.id == 'index') ? 'none' : 'block'}}>Path</div>
+                    <div className="section-body" style={{display: (this.state.id == 'index') ? 'none' : 'block'}}>
                         <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} preRegExp="(/|/([a-zA-Z]|[a-zA-Z][a-zA-Z0-9_]+|[a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
