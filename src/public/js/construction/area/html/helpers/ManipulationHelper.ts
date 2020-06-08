@@ -5,8 +5,7 @@ import {EventHelper} from '../../../helpers/EventHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
-import {WorkspaceHelper} from './WorkspaceHelper.js';
-import {InternalProjectSettings, InternalSites} from './WorkspaceHelper.js';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -170,6 +169,7 @@ var ManipulationHelper = {
     
     let style: string;
     let isForwardingStyleToChildren: boolean = false;
+    let isComponentInsertion: boolean = false;
     
     switch (content.klass) {
       case 'FlowLayout':
@@ -327,6 +327,26 @@ var ManipulationHelper = {
         
         isForwardingStyleToChildren = true;
         break;
+      case 'Component':
+        let componentInfo = WorkspaceHelper.getComponentData(content.id);
+        let componentName = componentInfo.name;
+  	  
+    	  if (composedUntitledNameCount[componentName] === undefined) {
+        	composedUntitledNameCount[componentName] = 0;
+        }
+        composedUntitledNameCount[componentName]++;
+        
+    	  content.guid = RandomHelper.generateGUID();
+    	  content.name = componentName + ' ' + composedUntitledNameCount[componentName];
+        
+        element = document.createElement('div');
+        element.innerHTML = componentInfo.html;
+        element = element.firstChild;
+        
+        HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);
+        
+        isComponentInsertion = true;
+        break;
     }
     
     if (element !== null) {
@@ -344,23 +364,23 @@ var ManipulationHelper = {
       
       // Moving cursor inside capability
       //
-      CapabilityHelper.installCapabilityOfBeingMoveInCursor(element);
+      if (!isComponentInsertion) CapabilityHelper.installCapabilityOfBeingMoveInCursor(element);
       
-      if (HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
+      if (!isComponentInsertion && HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
       	CapabilityHelper.installCapabilityOfBeingPasted(element);
       }
       
       // Forwarding style to its children capability
       //
-      if (isForwardingStyleToChildren) {
+      if (!isComponentInsertion && isForwardingStyleToChildren) {
       	CapabilityHelper.installCapabilityOfForwardingStyle(element);
       }
       
       // Insert the element before the cursor.
       //
-      HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
+      if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-        if (!isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
       } else {
         StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
@@ -493,6 +513,10 @@ var ManipulationHelper = {
               }
               break;
             default:
+              if (attribute.name == 'internal-fsb-react-mode' && attribute.value != 'Site') {
+                WorkspaceHelper.removeComponentData(HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+              }
+              
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
                 found = true;
                 if (attribute.value !== null) {
@@ -600,6 +624,16 @@ var ManipulationHelper = {
 					  }
 					}
         }
+        
+        // Sharing Components
+        // 
+        if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-mode') == 'Site') {
+          WorkspaceHelper.addOrReplaceComponentData(
+            HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'),
+            HTMLHelper.getAttribute(selectingElement, 'internal-fsb-name'),
+            selectingElement.outerHTML
+          );
+        }
       }
       {
         if (content.extensions !== undefined) {
@@ -623,6 +657,15 @@ var ManipulationHelper = {
                   extensions: [{
                     name: 'pages',
                     value: CodeHelper.clone(InternalProjectSettings.pages)
+                  }]
+                };
+                
+                InternalProjectSettings[extension.name] = extension.value;
+              } else if (extension.name == 'components') {
+                accessory = {
+                  extensions: [{
+                    name: 'components',
+                    value: CodeHelper.clone(InternalProjectSettings.components)
                   }]
                 };
                 

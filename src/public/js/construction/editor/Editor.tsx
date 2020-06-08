@@ -35,6 +35,7 @@ import './components/code/WizardInputManager.js';
 
 import './components/content/PageManager.js';
 import './components/content/ProjectManager.js';
+import './components/content/ComponentMenu.js';
 
 //import GitHub from 'github-api';
 
@@ -139,7 +140,7 @@ let recentExtraPanelSelector: string = null;
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {

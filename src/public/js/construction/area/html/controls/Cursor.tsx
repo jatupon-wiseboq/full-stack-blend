@@ -29,7 +29,7 @@ class Cursor extends React.Component<Props, State> {
     render() {
         return (
             pug `
-              .internal-fsb-cursor(id='internal-fsb-cursor', internal-cursor-mode='relative')
+              .internal-fsb-cursor.internal-fsb-accessory(id='internal-fsb-cursor', internal-cursor-mode='relative')
                 .col-1
             `
         )

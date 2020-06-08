@@ -2,6 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {EditorHelper} from './EditorHelper.js';
+import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
@@ -16,6 +17,7 @@ const DefaultProjectSettings: {string: any} = {
 };
 let InternalProjectSettings = CodeHelper.clone(DefaultProjectSettings);
 let InternalSites = {};
+let InternalComponents = {};
 
 const DEFAULT_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 
@@ -25,12 +27,14 @@ var WorkspaceHelper = {
     
     return {
       globalSettings: InternalProjectSettings,
-      sites: InternalSites
+      sites: InternalSites,
+      components: InternalComponents
     };
   },
   initializeWorkspaceData: (data: any) => {
     Object.assign(InternalProjectSettings, data && data.globalSettings || {});
     Object.assign(InternalSites, data && data.sites || {});
+    Object.assign(InternalComponents, data && data.components || {});
     
     WorkspaceHelper.loadWorkspaceData();
   },
@@ -48,6 +52,7 @@ var WorkspaceHelper = {
     //
     if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
     
+    WorkspaceHelper.updateInheritingComponents();
     EditorHelper.init();
   },
   saveWorkspaceData: () => {
@@ -72,6 +77,65 @@ var WorkspaceHelper = {
       cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
       InternalSites[InternalProjectSettings.editingSiteName] = page;
     }
+  },
+  removeComponentData: (id: string) => {
+    delete InternalComponents[id];
+    WorkspaceHelper.regenerateInfoOfComponentsInProjectSettings();
+  },
+  addOrReplaceComponentData: (id: string, name: string, html: string) => {
+    let element = document.createElement('div');
+    element.innerHTML = html;
+    
+    let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', element)];
+    accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
+    
+    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-react-mode');
+    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-name');
+    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-guid');
+    
+    html = element.innerHTML;
+    
+    InternalComponents[id] = {
+      name: name,
+      html: html
+    };
+    WorkspaceHelper.regenerateInfoOfComponentsInProjectSettings();
+    WorkspaceHelper.updateInheritingComponents();
+  },
+  updateInheritingComponents: (container: HTMLElement=window.document.body) => {
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
+    for (let component of components) {
+      let reservedAttributeNames = ['internal-fsb-guid', 'internal-fsb-inheriting', 'internal-fsb-name', 'internal-fsb-react-id'];
+      let reservedAttributeValues = reservedAttributeNames.map((name) => {
+        return HTMLHelper.getAttribute(component, name);
+      });
+      
+      let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[1]);
+      if (!componentInfo) continue;
+      
+      component.innerHTML = componentInfo.html;
+      let firstChild = component.firstChild;
+      component.parentNode.insertBefore(firstChild, component);
+      component.parentNode.removeChild(component);
+      component = firstChild;
+      
+      for (let i=0; i<reservedAttributeNames.length; i++) {
+        HTMLHelper.setAttribute(component, reservedAttributeNames[i], reservedAttributeValues[i]);
+      }
+      
+      CapabilityHelper.installCapabilityOfBeingSelected(component);
+    }
+  },
+  getComponentData: (id: string) => {
+    return InternalComponents[id];
+  },
+  regenerateInfoOfComponentsInProjectSettings: () => {
+    InternalProjectSettings.components = Object.keys(InternalComponents).map((key) => {
+      return {
+        id: key,
+        name: InternalComponents[key].name
+      }
+    });
   },
   getPageInfo: (currentPageID: String) => {
     let page = InternalSites[currentPageID] || {};
@@ -101,4 +165,4 @@ var WorkspaceHelper = {
   }
 }
 
-export {InternalProjectSettings, InternalSites, WorkspaceHelper};
+export {InternalProjectSettings, WorkspaceHelper}; 

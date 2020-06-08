@@ -54,6 +54,30 @@ html, body {
     padding: 1px;
   }
   
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+      z-index: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2) 10px,
+        rgba(0, 0, 0, 0.3) 10px,
+        rgba(0, 0, 0, 0.3) 20px
+      );
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
+  }
+  
   // Guide
   //
   .internal-fsb-guide {
@@ -103,6 +127,12 @@ html, body {
   //
   .internal-fsb-guide {
     display: none;
+  }
+  
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+    }
   }
 }
 

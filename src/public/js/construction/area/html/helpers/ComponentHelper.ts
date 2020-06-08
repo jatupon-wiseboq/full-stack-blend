@@ -1,8 +1,0 @@
-
-
-
-var ComponentHelper = {
-  
-}
-
-export {ComponentHelper}

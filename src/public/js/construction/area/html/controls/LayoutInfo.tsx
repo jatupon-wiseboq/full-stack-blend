@@ -39,7 +39,7 @@ class LayoutInfo extends React.Component<Props, State> {
     render() {
         return (
             pug `
-              .internal-layout-info
+              .internal-layout-info.internal-fsb-accessory
                 .d-block.d-sm-none(ref='xs')
                 .d-none.d-sm-block.d-md-none(ref='sm')
                 .d-none.d-md-block.d-lg-none(ref='md')

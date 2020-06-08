@@ -5,7 +5,7 @@ import {ManipulationHelper} from './ManipulationHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {InternalProjectSettings, InternalSites, WorkspaceHelper} from './WorkspaceHelper.js';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
 import '../controls/Resizer.js';
