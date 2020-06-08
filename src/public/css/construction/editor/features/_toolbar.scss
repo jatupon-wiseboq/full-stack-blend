@@ -28,6 +28,7 @@
   
   .dropdown-menu {
     top: 20px;
+    z-index: 2000;
     
     .dropdown-item {
       cursor: pointer;
