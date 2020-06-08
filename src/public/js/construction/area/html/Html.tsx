@@ -1,6 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {EditorHelper} from './helpers/EditorHelper.js';
+import {WorkspaceHelper} from './helpers/WorkspaceHelper.js';
 import {CursorHelper} from './helpers/CursorHelper.js';
 import {CapabilityHelper} from './helpers/CapabilityHelper.js';
 import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
@@ -80,15 +81,15 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
     }
   });
   window.generateHTMLCodeForPage = (() => {
-  	return EditorHelper.generateHTMLCodeForPage();
+  	return WorkspaceHelper.generateHTMLCodeForPage();
   });
   window.generateHTMLCodeForPages = (() => {
-    return EditorHelper.generateHTMLCodeForPages();
+    return WorkspaceHelper.generateHTMLCodeForPages();
   });
   window.generateWorkspaceData = (() => {
-  	return EditorHelper.generateWorkspaceData();
+  	return WorkspaceHelper.generateWorkspaceData();
   });
  	window.initializeWorkspaceData = ((data) => {
-  	return EditorHelper.initializeWorkspaceData(data);
+  	return WorkspaceHelper.initializeWorkspaceData(data);
   });
 })();

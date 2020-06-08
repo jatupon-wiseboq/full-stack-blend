@@ -4,7 +4,9 @@ import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {EventHelper} from '../../../helpers/EventHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
-import {Accessories, InternalProjectSettings, InternalSites, EditorHelper} from './EditorHelper.js';
+import {Accessories, EditorHelper} from './EditorHelper.js';
+import {WorkspaceHelper} from './WorkspaceHelper.js';
+import {InternalProjectSettings, InternalSites} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -613,9 +615,9 @@ var ManipulationHelper = {
                   }]
                 };
                 
-                EditorHelper.saveWorkspaceData();
+                WorkspaceHelper.saveWorkspaceData();
                 InternalProjectSettings.editingSiteName = extension.value;
-                EditorHelper.loadWorkspaceData();
+                WorkspaceHelper.loadWorkspaceData();
               } else if (extension.name == 'pages') {
                 accessory = {
                   extensions: [{
