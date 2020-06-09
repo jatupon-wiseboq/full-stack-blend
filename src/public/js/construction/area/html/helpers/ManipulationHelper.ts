@@ -653,6 +653,7 @@ var ManipulationHelper = {
                 };
                 
                 WorkspaceHelper.saveWorkspaceData();
+                
                 InternalProjectSettings[extension.name] = extension.value;
                 WorkspaceHelper.loadWorkspaceData();
               } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {

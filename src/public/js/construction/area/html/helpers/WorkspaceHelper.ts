@@ -28,16 +28,8 @@ let InternalPopups = {};
 
 const DEFAULT_PAGE_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
-const DEFAULT_COMPONENT_HTML = pug `
-  .internal-fsb-element
-    .container-fluid
-      .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-`;
-const DEFAULT_POPUP_HTML = pug `
-  .internal-fsb-element
-    .container-fluid
-      .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
-`;
+const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
+const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
 
 var WorkspaceHelper = {
   generateWorkspaceData: () => {
@@ -59,7 +51,7 @@ var WorkspaceHelper = {
     if (data && data.stylesheets) StylesheetHelper.initializeStylesheetData(data.stylesheets);
   },
   setMode: (mode: string) => {
-    WorkspaceHelper.saveWorkspaceData();
+    WorkspaceHelper.saveWorkspaceData(false);
     currentMode = mode;
     WorkspaceHelper.loadWorkspaceData();
   },
@@ -104,6 +96,7 @@ var WorkspaceHelper = {
         EditorHelper.init(false);
       } else {
         InternalProjectSettings.editingComponentID = null;
+        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
       }
     } else if (currentMode == 'popups') {
       let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
@@ -116,15 +109,16 @@ var WorkspaceHelper = {
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
         document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_POPUP_HTML;
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', component.id);
+        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Popup');
+        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', popup.id);
         EditorHelper.init(false);
       } else {
-        InternalProjectSettings.editingPopupID = null
+        InternalProjectSettings.editingPopupID = null;
+        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
       }
     }
   },
-  saveWorkspaceData: () => {
+  saveWorkspaceData: (reinit: boolean=true) => {
     if (currentMode == 'site') {
       if (InternalProjectSettings.editingSiteName == null) return;
       
@@ -140,11 +134,13 @@ var WorkspaceHelper = {
       
       EditorHelper.detach();
       page.body = document.body.outerHTML;
-      EditorHelper.init();
+      if (reinit) {
+        EditorHelper.init();
       
-      if (!CodeHelper.equals(cloned, page)) {
-        cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
-        InternalSites[InternalProjectSettings.editingSiteName] = page;
+        if (!CodeHelper.equals(cloned, page)) {
+          cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
+          InternalSites[InternalProjectSettings.editingSiteName] = page;
+        }
       }
     } else if (currentMode == 'components') {
       let component = InternalProjectSettings.components.filter(component => component.id == InternalProjectSettings.editingComponentID)[0];
@@ -158,7 +154,7 @@ var WorkspaceHelper = {
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
         component.html = document.body.firstChild.firstChild.innerHTML;
-        EditorHelper.init(false);
+        if (reinit) EditorHelper.init(false);
       }
     } else if (currentMode == 'popups') {
       let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
@@ -172,7 +168,7 @@ var WorkspaceHelper = {
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
         popup.html = document.body.firstChild.firstChild.innerHTML;
-        EditorHelper.init(false);
+        if (reinit) EditorHelper.init(false);
       }
     }
   },

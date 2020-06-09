@@ -103,7 +103,7 @@ var EditorHelper = {
     if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     if (Accessories.cellFormater) {
       Accessories.cellFormater.setTableElement(null);
-      Accessories.cellFormater.getDOMNode().parentNode.removeChild(Accessories.cellFormater.getDOMNode());
+      if (Accessories.cellFormater.getDOMNode().parentNode) Accessories.cellFormater.getDOMNode().parentNode.removeChild(Accessories.cellFormater.getDOMNode());
     }
     if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
     if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
