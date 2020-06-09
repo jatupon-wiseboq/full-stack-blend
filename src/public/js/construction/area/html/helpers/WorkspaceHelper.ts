@@ -89,6 +89,12 @@ var WorkspaceHelper = {
         
         EditorHelper.detach();
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
+        
+        // The second head element did appear after setting content to the outerHTML of body element.
+        // Remove the extra one.
+        //
+        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+        
         document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
@@ -107,6 +113,12 @@ var WorkspaceHelper = {
         
         EditorHelper.detach();
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
+        
+        // The second head element did appear after setting content to the outerHTML of body element.
+        // Remove the extra one.
+        //
+        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+        
         document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_POPUP_HTML;
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Popup');

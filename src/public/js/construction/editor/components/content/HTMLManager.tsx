@@ -208,7 +208,17 @@ class HTMLManager extends Base<Props, State> {
         
         if (!hasSelectingItem) {
             let nodes = this.state.nodes.filter(node => node.id != 'delete' && node.tag.state != 'delete');
-            if (nodes.length != 0) nodes[0].selected = true;
+            if (nodes.length != 0) {
+                nodes[0].selected = true;
+                this.state.extensionValues[this.props.watchingExtensionNames[1]] = nodes[0].id;
+                
+                perform('update', {
+        		        extensions: [{
+        		            name: this.props.watchingExtensionNames[1],
+        		            value: nodes[0].id
+        		        }]
+        		    });
+            }
         }
         
         this.forceUpdate();
