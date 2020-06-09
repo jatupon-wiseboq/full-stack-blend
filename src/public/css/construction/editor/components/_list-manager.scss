@@ -146,7 +146,7 @@
 		position: absolute;
 		left: 0;
 		top: 0;
-		z-index: #{$maximum-z-index - 1000};
+		z-index: #{$maximum-z-index - 100};
 		opacity: 0.5;
 	}
 	

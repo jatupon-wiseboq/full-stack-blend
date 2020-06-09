@@ -6,7 +6,7 @@
   min-width: inherit;
   width: auto;
   padding: 3.5px;
-  z-index: #{$maximum-z-index - 5};
+  z-index: #{$maximum-z-index - 200};
   display: none;
   
   .fsb-controller-area-container {

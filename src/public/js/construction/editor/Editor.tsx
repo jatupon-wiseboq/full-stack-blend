@@ -37,6 +37,7 @@ import './components/content/PageManager.js';
 import './components/content/ProjectManager.js';
 import './components/content/ComponentMenu.js';
 import './components/content/ComponentManager.js';
+import './components/content/PopupManager.js';
 
 //import GitHub from 'github-api';
 

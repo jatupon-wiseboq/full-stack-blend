@@ -6,14 +6,14 @@ declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
-    watchingExtensionNames: ['components', 'editingComponentID']
+    watchingExtensionNames: ['popups', 'editingPopupID']
 });
 
-class ComponentManager extends HTMLManager {
+class PopupManager extends HTMLManager {
     protected static defaultProps: Props = _ExtendedDefaultProps;
     
     protected getCategoryName() {
-        return 'Page';
+        return 'Popup';
     }
     
     protected getDisplay(item: any) {
@@ -21,6 +21,6 @@ class ComponentManager extends HTMLManager {
     }
 }
 
-DeclarationHelper.declare('Components.ComponentManager', ComponentManager);
+DeclarationHelper.declare('Components.PopupManager', PopupManager);
 
-export {ComponentManager};
+export {PopupManager};

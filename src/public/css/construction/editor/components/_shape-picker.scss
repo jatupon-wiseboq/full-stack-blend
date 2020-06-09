@@ -231,7 +231,7 @@
   .style-picker {
     width: 40px !important;
     margin: -7.5px 0 0 -20px !important;
-    z-index: #{$maximum-z-index - 10};
+    z-index: #{$maximum-z-index - 1000};
     
     &.r {
       right: -10px !important;

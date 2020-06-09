@@ -13,11 +13,16 @@ const DefaultProjectSettings: {string: any} = {
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
   editingSiteName: 'index',
-  pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}]
+  editingComponentID: null,
+  editingPopupID: null,
+  pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
+  components: [],
+  popups: []
 };
 let InternalProjectSettings = CodeHelper.clone(DefaultProjectSettings);
 let InternalSites = {};
 let InternalComponents = {};
+let InternalPopups = {};
 
 const DEFAULT_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 
@@ -28,7 +33,8 @@ var WorkspaceHelper = {
     return {
       globalSettings: InternalProjectSettings,
       sites: InternalSites,
-      components: InternalComponents
+      components: InternalComponents,
+      stylesheets: StylesheetHelper.generateStylesheetData()
     };
   },
   initializeWorkspaceData: (data: any) => {
@@ -37,13 +43,13 @@ var WorkspaceHelper = {
     Object.assign(InternalComponents, data && data.components || {});
     
     WorkspaceHelper.loadWorkspaceData();
+    if (data && data.stylesheets) StylesheetHelper.initializeStylesheetData(data.stylesheets);
   },
   loadWorkspaceData: () => {
     if (InternalProjectSettings.editingSiteName == null) return;
     
     let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
     
-    StylesheetHelper.initializeStylesheetData(page.head.stylesheets);
     FontHelper.initializeFontData(page.head.fonts)
     document.body.outerHTML = page.body;
     
@@ -61,7 +67,6 @@ var WorkspaceHelper = {
     let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
     let cloned = CodeHelper.clone(page);
     
-    page.head.stylesheets = StylesheetHelper.generateStylesheetData();
     page.head.fonts = FontHelper.generateFontData();
     
     let selectingElement = EditorHelper.getSelectingElement();
@@ -80,7 +85,7 @@ var WorkspaceHelper = {
   },
   removeComponentData: (id: string) => {
     delete InternalComponents[id];
-    WorkspaceHelper.regenerateInfoOfComponentsInProjectSettings();
+    InternalProjectSettings.components = InternalProjectSettings.components.filter(component => component.id != id);
   },
   addOrReplaceComponentData: (id: string, name: string, namespace: string, klass: string, html: string) => {
     let element = document.createElement('div');
@@ -98,10 +103,18 @@ var WorkspaceHelper = {
     InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
-      name: name,
       html: html
     };
-    WorkspaceHelper.regenerateInfoOfComponentsInProjectSettings();
+    
+    let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
+    if (!existingComponentInfo) {
+      InternalProjectSettings.components.push({
+        id: id,
+        name: name,
+        state: 'create'
+      });
+    }
+    
     WorkspaceHelper.updateInheritingComponents();
   },
   updateInheritingComponents: (container: HTMLElement=window.document.body) => {
@@ -129,22 +142,14 @@ var WorkspaceHelper = {
     }
   },
   getComponentData: (id: string) => {
-    return InternalComponents[id];
-  },
-  regenerateInfoOfComponentsInProjectSettings: () => {
-    InternalProjectSettings.components = Object.keys(InternalComponents).map((key) => {
-      return {
-        id: key,
-        name: InternalComponents[key].name
-      }
-    });
+    let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0] || {};
+    return Object.assign({}, InternalComponents[id], existingComponentInfo);
   },
   getPageInfo: (currentPageID: String) => {
     let page = InternalSites[currentPageID] || {};
     
     if (!page.id) page.id = currentPageID;
     if (!page.head) page.head = {};
-    if (!page.head.stylesheets) page.head.stylesheets = {};
     if (!page.head.fonts) page.head.fonts = {};
     if (!page.body) page.body = DEFAULT_HTML;
     if (!page.accessories) page.accessories = {};
