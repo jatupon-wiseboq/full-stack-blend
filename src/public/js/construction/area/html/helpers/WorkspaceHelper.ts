@@ -82,7 +82,7 @@ var WorkspaceHelper = {
     delete InternalComponents[id];
     WorkspaceHelper.regenerateInfoOfComponentsInProjectSettings();
   },
-  addOrReplaceComponentData: (id: string, name: string, html: string) => {
+  addOrReplaceComponentData: (id: string, name: string, namespace: string, klass: string, html: string) => {
     let element = document.createElement('div');
     element.innerHTML = html;
     
@@ -96,6 +96,8 @@ var WorkspaceHelper = {
     html = element.innerHTML;
     
     InternalComponents[id] = {
+      namespace: namespace,
+      klass: klass,
       name: name,
       html: html
     };
@@ -105,12 +107,12 @@ var WorkspaceHelper = {
   updateInheritingComponents: (container: HTMLElement=window.document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
     for (let component of components) {
-      let reservedAttributeNames = ['internal-fsb-guid', 'internal-fsb-inheriting', 'internal-fsb-name', 'internal-fsb-react-id'];
+      let reservedAttributeNames = ['internal-fsb-inheriting', 'class', 'internal-fsb-guid', 'internal-fsb-name', 'internal-fsb-react-id', 'internal-fsb-react-data'];
       let reservedAttributeValues = reservedAttributeNames.map((name) => {
         return HTMLHelper.getAttribute(component, name);
       });
       
-      let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[1]);
+      let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[0]);
       if (!componentInfo) continue;
       
       component.innerHTML = componentInfo.html;

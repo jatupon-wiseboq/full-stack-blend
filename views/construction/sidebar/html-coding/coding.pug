@@ -222,5 +222,12 @@ div(internal-fsb-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
     .section-hr
+  .section-container(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | Front-End Data Binding
+    .section-subtitle
+      | Hierarchical Dot Notation
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
   div(internal-fsb-not-for="hasParentReactComponent")
     include ../../common/component-guide

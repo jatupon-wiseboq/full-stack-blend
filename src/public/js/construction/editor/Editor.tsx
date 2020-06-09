@@ -36,6 +36,7 @@ import './components/code/WizardInputManager.js';
 import './components/content/PageManager.js';
 import './components/content/ProjectManager.js';
 import './components/content/ComponentMenu.js';
+import './components/content/ComponentManager.js';
 
 //import GitHub from 'github-api';
 

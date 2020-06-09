@@ -2,6 +2,7 @@ import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
+import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {CodeGeneratorSharingHelper, DEFAULTS} from '../../../helpers/CodeGeneratorSharingHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS} from '../../../Constants.js';
 
@@ -134,6 +135,7 @@ ${rootScript}`;
         let reactData = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
+        let inheritingID = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -206,6 +208,9 @@ ${rootScript}`;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
+            case 'internal-fsb-inheriting':
+              if (!!attribute.value) inheritingID = attribute.value;
+              break;
             case 'contenteditable':
               continue;
             default:
@@ -248,6 +253,15 @@ ${rootScript}`;
         
         if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+        }
+        
+        if (inheritingID) {
+          reactMode = 'Site';
+          let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
+          if (componentInfo) {
+            reactNamespace = componentInfo.namespace;
+            reactClass = componentInfo.klass;
+          }
         }
 	      
         if (isFirstElement) {
@@ -356,6 +370,7 @@ ${rootScript}`;
         let reactClass = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
+        let inheritingID = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -414,6 +429,9 @@ ${rootScript}`;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
+            case 'internal-fsb-inheriting':
+              if (!!attribute.value) inheritingID = attribute.value;
+              break;
             case 'contenteditable':
               continue;
             default:
@@ -446,6 +464,15 @@ ${rootScript}`;
         
         if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+        }
+        
+        if (inheritingID) {
+          let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
+          if (componentInfo) {
+            reactMode = 'Site';
+            reactNamespace = componentInfo.namespace;
+            reactClass = componentInfo.klass;
+          }
         }
         
 	      // For HTML5 fallback rendering:

@@ -627,10 +627,21 @@ var ManipulationHelper = {
         
         // Sharing Components
         // 
+        let reactNamespace = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-namespace') || 'Project.Controls';
+        let reactClass = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-class');
+        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class');
+        let reactClassComposingInfoGUID = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
+        
+        if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
+          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+        }
+        
         if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-mode') == 'Site') {
           WorkspaceHelper.addOrReplaceComponentData(
-            HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'),
+            reactClassComposingInfoGUID,
             HTMLHelper.getAttribute(selectingElement, 'internal-fsb-name'),
+            reactNamespace,
+            reactClass,
             selectingElement.outerHTML
           );
         }
