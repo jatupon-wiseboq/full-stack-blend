@@ -4,9 +4,9 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
   .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
     .section-title
       | React Component
-    .section-subtitle
+    .section-subtitle(internal-fsb-not-for="editing:components, editing:popups")
       | Generalizability 
-    .section-body
+    .section-body(internal-fsb-not-for="editing:components, editing:popups")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
     .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
       | Namespace

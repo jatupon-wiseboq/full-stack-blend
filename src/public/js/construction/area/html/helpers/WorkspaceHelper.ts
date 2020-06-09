@@ -57,11 +57,11 @@ var WorkspaceHelper = {
   },
   getEditable: () => {
     if (currentMode == 'site') {
-      return (InternalProjectSettings.editingSiteName != null);
+      return (InternalProjectSettings.editingSiteName != null) ? 'site' : false;
     } else if (currentMode == 'components') {
-      return (InternalProjectSettings.editingComponentID != null || InternalProjectSettings.components.filter(component => component.state != 'delete').length != 0);
+      return (InternalProjectSettings.editingComponentID != null || InternalProjectSettings.components.filter(component => component.state != 'delete').length != 0) ? 'components' : false;
     } else if (currentMode == 'popups') {
-      return (InternalProjectSettings.editingPopupID != null || InternalProjectSettings.popups.filter(popup => popup.state != 'delete').length != 0);
+      return (InternalProjectSettings.editingPopupID != null || InternalProjectSettings.popups.filter(popup => popup.state != 'delete').length != 0) ? 'popups' : false;
     }
   },
   loadWorkspaceData: () => {
