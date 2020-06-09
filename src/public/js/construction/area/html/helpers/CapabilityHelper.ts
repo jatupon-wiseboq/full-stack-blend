@@ -108,6 +108,10 @@ var CapabilityHelper = {
       elements.forEach((element) => {
         CapabilityHelper.installCapabilityOfBeingSelected(element);
       });
+      if (HTMLHelper.hasClass(container, 'internal-fsb-element') && !HTMLHelper.hasClass(container, 'internal-fsb-begin')) {
+        CapabilityHelper.installCapabilityOfBeingSelected(container);
+      }
+      
       CapabilityHelper.installCapabilityOfBeingMoveInCursor(container);
       if (HTMLHelper.getAttribute(container, 'contentEditable') == 'true') {
       	CapabilityHelper.installCapabilityOfBeingPasted(container);

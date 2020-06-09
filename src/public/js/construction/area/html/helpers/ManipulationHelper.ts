@@ -355,20 +355,12 @@ var ManipulationHelper = {
       HTMLHelper.setAttribute(element, 'internal-fsb-guid', content.guid);
       HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
       
-      // Being selected capability
+      // Install capabilities
       // 
-      CapabilityHelper.installCapabilityOfBeingSelected(element);
+      CapabilityHelper.installCapabilitiesForInternalElements(element);
       promise.then(() => {
         ManipulationHelper.perform('select', content.guid);
       });
-      
-      // Moving cursor inside capability
-      //
-      if (!isComponentInsertion) CapabilityHelper.installCapabilityOfBeingMoveInCursor(element);
-      
-      if (!isComponentInsertion && HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
-      	CapabilityHelper.installCapabilityOfBeingPasted(element);
-      }
       
       // Forwarding style to its children capability
       //
@@ -652,31 +644,22 @@ var ManipulationHelper = {
             if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
               
-              if (extension.name == 'editingSiteName') {
+              if (['editingSiteName', 'editingComponentID', 'editingPopupID'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
-                    name: 'editingSiteName',
-                    value: InternalProjectSettings.editingSiteName
+                    name: extension.name,
+                    value: InternalProjectSettings[extension.name]
                   }]
                 };
                 
                 WorkspaceHelper.saveWorkspaceData();
-                InternalProjectSettings.editingSiteName = extension.value;
-                WorkspaceHelper.loadWorkspaceData();
-              } else if (extension.name == 'pages') {
-                accessory = {
-                  extensions: [{
-                    name: 'pages',
-                    value: CodeHelper.clone(InternalProjectSettings.pages)
-                  }]
-                };
-                
                 InternalProjectSettings[extension.name] = extension.value;
-              } else if (extension.name == 'components') {
+                WorkspaceHelper.loadWorkspaceData();
+              } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
-                    name: 'components',
-                    value: CodeHelper.clone(InternalProjectSettings.components)
+                    name: extension.name,
+                    value: CodeHelper.clone(InternalProjectSettings[extension.name])
                   }]
                 };
                 
@@ -1500,6 +1483,10 @@ var ManipulationHelper = {
       case 'codingButton':
         EditorHelper.setEditorCurrentMode('coding');
         break;
+    }
+    
+    if (['siteButton', 'componentsButton', 'popupsButton'].indexOf(content) != -1) {
+      WorkspaceHelper.setMode(content.replace('Button', ''));
     }
     
     return [accessory, content, remember];

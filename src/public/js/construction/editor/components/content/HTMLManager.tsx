@@ -35,7 +35,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  path: false;
+  path: false
 });
 
 class HTMLManager extends Base<Props, State> {
@@ -121,7 +121,7 @@ class HTMLManager extends Base<Props, State> {
     }
     
     private addOnClick(event) {
-        if (this.state.name && this.state.path) {
+        if (this.state.name && (!this.props.path || this.state.path)) {
             let item = {
                 id: this.state.id,
                 name: this.state.name,
@@ -155,7 +155,7 @@ class HTMLManager extends Base<Props, State> {
     }
     
     private updateOnClick(event) {
-        if (this.state.name && this.state.path) {
+        if (this.state.name && (!this.props.path || this.state.path)) {
             let item = this.state.extensionValues[this.props.watchingExtensionNames[0]].filter(p => p.id == this.state.id)[0];
             item.name = this.state.name;
             item.path = this.state.path;
@@ -206,8 +206,9 @@ class HTMLManager extends Base<Props, State> {
             });
         }
         
-        if (!hasSelectingItem && this.state.nodes.length > 1) {
-            this.state.nodes[1].selected = true;
+        if (!hasSelectingItem) {
+            let nodes = this.state.nodes.filter(node => node.id != 'delete' && node.tag.state != 'delete');
+            if (nodes.length != 0) nodes[0].selected = true;
         }
         
         this.forceUpdate();

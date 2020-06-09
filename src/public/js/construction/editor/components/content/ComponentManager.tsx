@@ -13,7 +13,7 @@ class ComponentManager extends HTMLManager {
     protected static defaultProps: Props = _ExtendedDefaultProps;
     
     protected getCategoryName() {
-        return 'Page';
+        return 'Component';
     }
     
     protected getDisplay(item: any) {
