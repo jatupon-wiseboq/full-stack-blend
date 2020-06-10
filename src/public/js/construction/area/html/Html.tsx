@@ -56,18 +56,18 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
   window.addEventListener("click", (event) => {
     EditorHelper.synchronize("click", null);
   }, false);
-  window.document.addEventListener("click", (event) => {
+  window.addEventListener("click", (event) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
     
     if (EventHelper.getOriginalElement(event) == document.body) CursorHelper.moveCursorToTheEndOfDocument();
     EditorHelper.synchronize("click", null);
   }, true);
-  window.document.addEventListener("focus", (event) => {
+  window.addEventListener("focus", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
     }
   }, true);
-  window.document.addEventListener("blur", (event) => {
+  window.addEventListener("blur", (event) => {
     HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
   let previousWindowSize = {width: null, height: null};
