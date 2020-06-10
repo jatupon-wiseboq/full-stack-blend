@@ -505,8 +505,15 @@ var ManipulationHelper = {
               }
               break;
             default:
-              if (attribute.name == 'internal-fsb-react-mode' && attribute.value != 'Site') {
-                WorkspaceHelper.removeComponentData(HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+              if (attribute.name == 'internal-fsb-react-mode') {
+              	if (attribute.value != 'Site') {
+              		WorkspaceHelper.removeComponentData(HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+              	} else {
+              		if (HTMLHelper.hasAttribute(selectingElement, 'internal-fsb-inheriting')) {
+	              		alert('You cannot create a component of an inheriting one.');
+	              		return [accessory, false, link];
+	              	}
+              	}
               }
               
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
