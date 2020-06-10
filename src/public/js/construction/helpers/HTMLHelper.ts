@@ -201,7 +201,7 @@ var HTMLHelper = {
     let results = [];
     let current = element.parentNode;
     
-    while (current != null) {
+    while (current != null && current != document) {
       if (HTMLHelper.hasClass(current, className)) {
         results.push(current);
       }

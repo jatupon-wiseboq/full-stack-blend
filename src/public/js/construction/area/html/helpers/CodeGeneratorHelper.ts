@@ -290,13 +290,15 @@ ${rootScript}`;
         }
         
         if (inheritingID) {
-          reactMode = 'Inheriting';
           let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
           if (componentInfo) {
+          	reactMode = 'Inheriting';
             reactNamespace = componentInfo.namespace;
             reactClass = componentInfo.klass;
             
             inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
+          } else {
+          	inheritingID = null;
           }
         }
 	      
@@ -542,6 +544,8 @@ ${rootScript}`;
             reactClass = componentInfo.klass;
             
             inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
+          } else {
+          	inheritingID = null;
           }
         }
         

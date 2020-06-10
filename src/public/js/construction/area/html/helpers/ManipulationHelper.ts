@@ -144,9 +144,35 @@ var ManipulationHelper = {
     if (!skipAfterPromise) {
       resolve();
     }
-    
+	  
     EditorHelper.update(tag);
   },
+  updateComponentData: (node: any) => {
+    if (node) {
+	    let elements = HTMLHelper.findAllParentsInClassName('internal-fsb-element', node);
+	    
+	    for (let element of elements) {
+	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site') {
+	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
+	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
+	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
+	        let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	        
+	        if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
+	          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+	        }
+	    		
+	    		WorkspaceHelper.addOrReplaceComponentData(
+	          reactClassComposingInfoGUID,
+	          HTMLHelper.getAttribute(element, 'internal-fsb-name'),
+	          reactNamespace,
+	          reactClass,
+	          element.outerHTML
+	        );
+	    	}
+	    }
+	  }
+	},
   
   handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
@@ -370,6 +396,7 @@ var ManipulationHelper = {
       EditorHelper.updateEditorProperties();
     }
     
+    ManipulationHelper.updateComponentData(element);
     return [accessory, remember, link];
   },
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -608,27 +635,6 @@ var ManipulationHelper = {
 					  }
 					}
         }
-        
-        // Sharing Components
-        // 
-        let reactNamespace = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-namespace') || 'Project.Controls';
-        let reactClass = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-class');
-        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class');
-        let reactClassComposingInfoGUID = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
-        
-        if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
-          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
-        }
-        
-        if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-react-mode') == 'Site') {
-          WorkspaceHelper.addOrReplaceComponentData(
-            reactClassComposingInfoGUID,
-            HTMLHelper.getAttribute(selectingElement, 'internal-fsb-name'),
-            reactNamespace,
-            reactClass,
-            selectingElement.outerHTML
-          );
-        }
       }
       {
         if (content.extensions !== undefined) {
@@ -690,6 +696,7 @@ var ManipulationHelper = {
       remember = false;
     }
     
+    ManipulationHelper.updateComponentData(selectingElement);
     return [accessory, remember, link];
   },
   handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -716,6 +723,7 @@ var ManipulationHelper = {
       remember = false;
     }
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link];
   },
   handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -793,6 +801,7 @@ var ManipulationHelper = {
     }
     remember = false;
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link];
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -933,15 +942,18 @@ var ManipulationHelper = {
   	  container: element.parentNode
   	}
   	
-  	link = Math.random();
-  	promise.then(() => {
-  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-			removeAllPresetReferences(presetId, link);
-			StylesheetHelper.removeStylesheetDefinition(presetId);
-		});
-  	
     if (shouldContinue && element) {
-      element.parentNode.removeChild(element);
+    	link = Math.random();
+	  	promise.then(() => {
+	  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+				removeAllPresetReferences(presetId, link);
+				StylesheetHelper.removeStylesheetDefinition(presetId);
+			});
+			
+			let parentNode = element.parentNode;
+      parentNode.removeChild(element);
+      
+      ManipulationHelper.updateComponentData(parentNode);
     } else {
     	remember = false;
     }
@@ -1245,12 +1257,14 @@ var ManipulationHelper = {
     	CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
     }
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link, content.action];
   },
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
+  	let origin = target.parentNode;
   	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
   	
   	if (remember) {
@@ -1328,6 +1342,8 @@ var ManipulationHelper = {
     		break;
     }
   	
+  	ManipulationHelper.updateComponentData(destination);
+  	ManipulationHelper.updateComponentData(origin);
   	return [accessory, remember, link];
   },
   handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -1386,6 +1402,7 @@ var ManipulationHelper = {
           } else {
             Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory.element, Accessories.cursor.getDOMNode());
           }
+          ManipulationHelper.updateComponentData(accessory.element);
           done = true;
         	break;
         case 'keydown':
