@@ -53,7 +53,7 @@ var WorkspaceHelper = {
   setMode: (mode: string) => {
     WorkspaceHelper.saveWorkspaceData(false);
     currentMode = mode;
-    WorkspaceHelper.loadWorkspaceData();
+    WorkspaceHelper.loadWorkspaceData(false);
   },
   getEditable: () => {
     if (currentMode == 'site') {
@@ -64,7 +64,7 @@ var WorkspaceHelper = {
       return (InternalProjectSettings.editingPopupID != null || InternalProjectSettings.popups.filter(popup => popup.state != 'delete').length != 0) ? 'popups' : false;
     }
   },
-  loadWorkspaceData: () => {
+  loadWorkspaceData: (updateUI: boolean=false) => {
     if (currentMode == 'site') {
       if (InternalProjectSettings.editingSiteName == null) return;
       
@@ -79,7 +79,7 @@ var WorkspaceHelper = {
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
       WorkspaceHelper.updateInheritingComponents();
-      EditorHelper.init();
+      EditorHelper.init(true, updateUI);
     } else if (currentMode == 'components') {
       let component = InternalProjectSettings.components.filter(component => component.id == InternalProjectSettings.editingComponentID)[0];
       if (!component) component = InternalProjectSettings.components[0];
@@ -99,7 +99,7 @@ var WorkspaceHelper = {
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', component.id);
-        EditorHelper.init(false);
+        EditorHelper.init(false, updateUI);
       } else {
         InternalProjectSettings.editingComponentID = null;
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
@@ -123,7 +123,7 @@ var WorkspaceHelper = {
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Popup');
         HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', popup.id);
-        EditorHelper.init(false);
+        EditorHelper.init(false, updateUI);
       } else {
         InternalProjectSettings.editingPopupID = null;
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
@@ -147,7 +147,7 @@ var WorkspaceHelper = {
       EditorHelper.detach();
       page.body = document.body.outerHTML;
       if (reinit) {
-        EditorHelper.init();
+        EditorHelper.init(true, false);
       
         if (!CodeHelper.equals(cloned, page)) {
           cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
@@ -166,7 +166,7 @@ var WorkspaceHelper = {
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
         component.html = document.body.firstChild.firstChild.innerHTML;
-        if (reinit) EditorHelper.init(false);
+        if (reinit) EditorHelper.init(false, false);
       }
     } else if (currentMode == 'popups') {
       let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
@@ -180,7 +180,7 @@ var WorkspaceHelper = {
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
         HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
         popup.html = document.body.firstChild.firstChild.innerHTML;
-        if (reinit) EditorHelper.init(false);
+        if (reinit) EditorHelper.init(false, false);
       }
     }
   },

@@ -96,7 +96,7 @@ var EditorHelper = {
     Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
     Accessories.layoutInfo.setDOMNode(layoutContainer.firstChild);
     
-    EditorHelper.init();
+    EditorHelper.init(true, true);
   },
   detach: () => {
     if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
@@ -108,10 +108,10 @@ var EditorHelper = {
     if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
     if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
   },
-  init: (restore: boolean=true) => {
+  init: (restoreAccessoryStates: boolean, updateEditorUI: boolean) => {
     CapabilityHelper.installCapabilitiesForInternalElements(document.body);
     
-    EditorHelper.updateEditorProperties();
+    if (updateEditorUI) EditorHelper.updateEditorProperties();
     EditorHelper.updateExternalLibraries();
     
     window.document.body.appendChild(Accessories.cellFormater.getDOMNode());
@@ -119,7 +119,7 @@ var EditorHelper = {
     
     // Restore element selecting and cursor placement.
     // 
-    if (restore) {
+    if (restoreAccessoryStates) {
       let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
       
       if (page.accessories.selectingElementGUID) {
