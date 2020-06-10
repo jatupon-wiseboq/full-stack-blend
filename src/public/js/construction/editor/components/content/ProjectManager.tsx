@@ -535,7 +535,8 @@ declare let ReactDOM: any;
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 
 for (let expandingPlaceholder of expandingPlaceholders) {
-	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
+	let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
+	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward}, null), expandingPlaceholder);
 	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }

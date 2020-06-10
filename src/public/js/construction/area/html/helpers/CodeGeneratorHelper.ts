@@ -4,7 +4,7 @@ import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {CodeGeneratorSharingHelper, DEFAULTS} from '../../../helpers/CodeGeneratorSharingHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS} from '../../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX} from '../../../Constants.js';
 
 // This code generator relies on elements in construction area.
 // 
@@ -129,6 +129,7 @@ ${rootScript}`;
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
+        let reactCommand = null;
         let reactNamespace = null;
         let reactClass = null;
         let reactID = null;
@@ -136,6 +137,8 @@ ${rootScript}`;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let inheritingID = null;
+        let inheritingAttributes = [];
+        let inheritingStyles = [];
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -164,6 +167,11 @@ ${rootScript}`;
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.trim().replace(/[\ ]+/g, ' ');
+              
+		          let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
+		          let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
+		          
+              inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
@@ -179,16 +187,29 @@ ${rootScript}`;
                   }
                   
                   if (bindingStyles[key]) {
-                    styles.push(camelKey + ': ' + bindingStyles[key] + ' || "' + hashMap[key] + '"');
+                  	let token = "'" + camelKey + "': " + bindingStyles[key] + " || '" + hashMap[key] + "'";
+                    styles.push(token);
                     delete bindingStyles[key];
+                  
+	                  if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
+		                	inheritingStyles.push(token);
+		                }
                   } else {
-                    styles.push(camelKey + ': "' + hashMap[key] + '"');
+                  	let token = "'" + camelKey + "': '" + hashMap[key] + "'";
+                    styles.push(token);
+                  
+	                  if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
+		                	inheritingStyles.push(token);
+		                }
                   }
                 }
               }
               break;
             case 'internal-fsb-react-mode':
               if (!!attribute.value) reactMode = attribute.value;
+              break;
+            case 'internal-fsb-react-command':
+              if (!!attribute.value) reactCommand = attribute.value;
               break;
             case 'internal-fsb-react-namespace':
               if (!!attribute.value) reactNamespace = attribute.value;
@@ -227,6 +248,10 @@ ${rootScript}`;
 	              }
               } else {
                 attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                
+                if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
+                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                }
               }
               break;
           }
@@ -255,12 +280,23 @@ ${rootScript}`;
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
         }
         
+        if (reactMode == 'Site' && isFirstElement) {
+        	if (classes) classes = classes.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '').trim().replace(/[\ ]+/g, ' ');
+        	if (styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
+        }
+        
+        if (!inheritingID && WorkspaceHelper.getComponentData(reactClassComposingInfoGUID)) {
+        	inheritingID = reactClassComposingInfoGUID;
+        }
+        
         if (inheritingID) {
-          reactMode = 'Site';
+          reactMode = 'Inheriting';
           let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
           if (componentInfo) {
             reactNamespace = componentInfo.namespace;
             reactClass = componentInfo.klass;
+            
+            inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
           }
         }
 	      
@@ -291,7 +327,7 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={data} ' : '') + '/>';
+          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={data} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '') + '/>';
           
           lines.push(composed);
         }
@@ -316,8 +352,11 @@ ${rootScript}`;
           children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
           
           composed += '<' + tag;
-          if (classes != '') composed += ' className="' + classes + '"';
-          if (styles != null) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
+          if (classes != '') {
+          	if (!isFirstElement) composed += ' className="' + classes + '"';
+          	else composed += ' className={"' + classes + ' " + (this.props.forward && this.props.forward.classes || \'\')}';
+          }
+          if (styles != null) attributes.splice(0, 0, 'style={Object.assign({' + styles.join(', ') + '}, this.props.forward && this.props.forward.styles || {})}');
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
           composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
           
@@ -366,11 +405,14 @@ ${rootScript}`;
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
+        let reactCommand = null;
         let reactNamespace = null;
         let reactClass = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let inheritingID = null;
+        let inheritingAttributes = [];
+        let inheritingStyles = [];
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -399,6 +441,11 @@ ${rootScript}`;
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace(/(internal-fsb-allow-cursor)/g, '').trim();
+              
+              let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
+		          let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
+		          
+              inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
@@ -411,11 +458,19 @@ ${rootScript}`;
                     continue;
                   }
                   styles.push(key + ': ' + hashMap[key]);
+                  
+                  if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
+                  	let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+	                	inheritingStyles.push("'" + camelKey + "': '" + hashMap[key] + "'");
+	                }
                 }
               }
               break;
             case 'internal-fsb-react-mode':
               if (!!attribute.value) reactMode = attribute.value;
+              break;
+            case 'internal-fsb-react-command':
+              if (!!attribute.value) reactCommand = attribute.value;
               break;
             case 'internal-fsb-react-namespace':
               if (!!attribute.value) reactNamespace = attribute.value;
@@ -448,6 +503,10 @@ ${rootScript}`;
 	              }
               } else {
                 attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                
+                if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
+                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                }
               }
               break;
           }
@@ -466,12 +525,23 @@ ${rootScript}`;
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
         }
         
+        if (reactMode == 'Site' && isFirstElement) {
+        	if (classes) classes = classes.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '').trim().replace(/[\ ]+/g, ' ');
+        	if (styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
+        }
+        
+        if (!inheritingID && WorkspaceHelper.getComponentData(reactClassComposingInfoGUID)) {
+        	inheritingID = reactClassComposingInfoGUID;
+        }
+        
         if (inheritingID) {
           let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
           if (componentInfo) {
-            reactMode = 'Site';
+            reactMode = 'Inheriting';
             reactNamespace = componentInfo.namespace;
             reactClass = componentInfo.klass;
+            
+            inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
           }
         }
         
@@ -482,7 +552,7 @@ ${rootScript}`;
       	// Include Another React Class Feature
         // 
       	if (reactMode && !isFirstElement) {
-      		lines.push(indent + '<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"></span>');
+      		lines.push(indent + '<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ?' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + '></span>');
       	}
       	
       	// Recursive Children Feature

@@ -27,12 +27,12 @@ import './components/generic/TextPicker.js';
 
 import './components/code/ReactCodeEditor.js';
 import './components/code/ReactEventBinder.js';
-import './components/code/SitePreview.js';
 import './components/code/ExternalLibrariesChooser.js';
 import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 
+import './components/content/SitePreview.js';
 import './components/content/PageManager.js';
 import './components/content/ProjectManager.js';
 import './components/content/ComponentMenu.js';

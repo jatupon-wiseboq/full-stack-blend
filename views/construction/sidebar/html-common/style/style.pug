@@ -153,4 +153,16 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['cursor'], watchingAttributeNames: ['internal-fsb-react-style-cursor']}")
       +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['z-index'], watchingAttributeNames: ['internal-fsb-react-style-z-index']}")
 div(internal-fsb-for="internal-fsb-inheriting")
-  include ../../../common/component-guide
+  .section-container(internal-fsb-not-for="internal-fsb-class:Iframe, internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Image,internal-fsb-class:Video")
+    .section-title
+      | Dimension
+    .section-subtitle
+      | Size & Position
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.DimensionPicker')
+    .section-subtitle
+      | Container Behaviours
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
+  div(internal-fsb-for="internal-fsb-class:Iframe, internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Image,internal-fsb-class:Video")
+    include ../../../common/empty

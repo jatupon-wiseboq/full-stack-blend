@@ -10,7 +10,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -168,7 +168,6 @@ var ManipulationHelper = {
     accessory = content;
     
     let style: string;
-    let isForwardingStyleToChildren: boolean = false;
     let isComponentInsertion: boolean = false;
     
     switch (content.klass) {
@@ -232,8 +231,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '100%', minHeight: '300px'})
         		iframe
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'HTML':
       	element = document.createElement('div');
@@ -254,8 +251,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='text')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Select':
       	element = document.createElement('div');
@@ -263,8 +258,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		select
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Radio':
       	element = document.createElement('div');
@@ -272,8 +265,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block'})
         		input(type='radio')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Checkbox':
       	element = document.createElement('div');
@@ -281,8 +272,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block'})
         		input(type='checkbox')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Label':
       	element = document.createElement('label');
@@ -298,8 +287,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='file')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Button':
       	element = document.createElement('div');
@@ -315,8 +302,6 @@ var ManipulationHelper = {
         	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
         		img
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Video':
       	element = document.createElement('div');
@@ -324,8 +309,6 @@ var ManipulationHelper = {
         	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
         		video
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Component':
         let componentInfo = WorkspaceHelper.getComponentData(content.id);
@@ -364,6 +347,8 @@ var ManipulationHelper = {
       
       // Forwarding style to its children capability
       //
+    	let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(content.klass) != -1);
+    
       if (!isComponentInsertion && isForwardingStyleToChildren) {
       	CapabilityHelper.installCapabilityOfForwardingStyle(element);
       }

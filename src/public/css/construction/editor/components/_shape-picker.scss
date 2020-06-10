@@ -351,3 +351,13 @@
     left: -20px;
   }
 }
+[internal-fsb-for="internal-fsb-inheriting"] {
+	.dimension-padding,
+	.dimension-size {
+		display: none;
+	}
+	.dimension-border > span,
+	.dimension-border::before {
+		display: none;
+	}
+}

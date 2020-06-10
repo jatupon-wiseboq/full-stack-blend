@@ -320,3 +320,7 @@ export const CONTAIN_TEXT_CONTENT_TAGS = ["textarea"];
 export const BACKGROUND_TYPE_OPTIONS = [["-fsb-background-type", null, ["d-none", "Solid"]], ["-fsb-background-type", "linear", ["d-none", "Linear Gradient"]], ["-fsb-background-type", "radial", ["d-none", "Radial Gradient"]]];
 export const CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g;
 export const CELL_STYLE_ATTRIBUTE_REGEX_LOCAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/;
+export const FORWARD_STYLE_TO_CHILDREN_CLASS_LIST = ['Iframe', 'Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Image', 'Video'];
+export const INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES = ['internal-fsb-inheriting', 'internal-fsb-guid', 'class', 'style', 'internal-fsb-name', 'internal-fsb-react-id', 'internal-fsb-react-data', 'internal-fsb-react-mode'];
+export const INHERITING_COMPONENT_RESERVED_STYLE_NAMES = ['top', 'right', 'bottom', 'left', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'position'];
+export const INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL = ['top', 'right', 'bottom', 'left', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'position'];

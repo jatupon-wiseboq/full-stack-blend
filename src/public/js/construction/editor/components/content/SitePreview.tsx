@@ -270,8 +270,9 @@ class SitePreview extends Base<Props, State> {
 				
 				for (let expandingPlaceholder of expandingPlaceholders) {
 				  console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
+				  let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
 				
-					ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {}, null), expandingPlaceholder);
+					ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward}, null), expandingPlaceholder);
 					expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
 					expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 				}

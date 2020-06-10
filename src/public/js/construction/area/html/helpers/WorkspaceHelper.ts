@@ -6,7 +6,7 @@ import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX} from '../../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES} from '../../../Constants.js';
 
 let cachedgenerateHTMLCodeForAllPages: any = {};
 let currentMode = 'site';
@@ -85,21 +85,22 @@ var WorkspaceHelper = {
       if (!component) component = InternalProjectSettings.components[0];
       
       if (component) {
-        component = WorkspaceHelper.getComponentData(component.id);
-        
-        EditorHelper.detach();
-        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-        
-        // The second head element did appear after setting content to the outerHTML of body element.
-        // Remove the extra one.
-        //
-        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
-        
-        document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', component.id);
-        EditorHelper.init(false, updateUI);
+        let componentInfo = WorkspaceHelper.getComponentData(component.id);
+        if (componentInfo) {
+	        EditorHelper.detach();
+	        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
+	        
+	        // The second head element did appear after setting content to the outerHTML of body element.
+	        // Remove the extra one.
+	        //
+	        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+	        
+	        document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
+	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
+	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
+	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', component.id);
+	        EditorHelper.init(false, updateUI);
+	      }
       } else {
         InternalProjectSettings.editingComponentID = null;
         document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
@@ -159,14 +160,15 @@ var WorkspaceHelper = {
       if (!component) component = InternalProjectSettings.components[0];
       
       if (component) {
-        component = WorkspaceHelper.getComponentData(component.id);
-        
-        EditorHelper.detach();
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode');
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
-        component.html = document.body.firstChild.firstChild.innerHTML;
-        if (reinit) EditorHelper.init(false, false);
+        let componentInfo = WorkspaceHelper.getComponentData(component.id);
+        if (componentInfo) {
+	        EditorHelper.detach();
+	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode');
+	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
+	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
+	        componentInfo.html = document.body.firstChild.firstChild.innerHTML;
+	        if (reinit) EditorHelper.init(false, false);
+	      }
       }
     } else if (currentMode == 'popups') {
       let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
@@ -220,7 +222,6 @@ var WorkspaceHelper = {
   },
   updateInheritingComponents: (container: HTMLElement=window.document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
-    let reservedAttributeNames = ['internal-fsb-inheriting', 'internal-fsb-guid', 'class', 'internal-fsb-name', 'internal-fsb-react-id', 'internal-fsb-react-data', 'internal-fsb-react-mode'];
     
     let selectingElement = EditorHelper.getSelectingElement();
     for (let component of InternalProjectSettings.components) {
@@ -229,12 +230,14 @@ var WorkspaceHelper = {
     }
     
     for (let component of components) {
-      let reservedAttributeValues = reservedAttributeNames.map((name) => {
+      let reservedAttributeValues = INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.map((name) => {
         return HTMLHelper.getAttribute(component, name);
       });
       
       let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[0] || reservedAttributeValues[1]);
       if (!componentInfo) continue;
+      
+      let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(component, 'internal-fsb-class')) != -1);
       
       component.innerHTML = componentInfo.html;
       let firstChild = component.firstChild;
@@ -242,10 +245,10 @@ var WorkspaceHelper = {
       component.parentNode.removeChild(component);
       component = firstChild;
       
-      for (let i=0; i<reservedAttributeNames.length; i++) {
+      for (let i=0; i<INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.length; i++) {
         if (reservedAttributeValues[i] == null) continue;
         
-        if (reservedAttributeNames[i] == 'class') {
+        if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'class') {
           let previous = reservedAttributeValues[i];
           let next = HTMLHelper.getAttribute(component, 'class') || '';
           
@@ -255,9 +258,22 @@ var WorkspaceHelper = {
           next = next.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
           next = [...sizeMatches, ...offsetMatches, next].join(' ');
           
-          HTMLHelper.setAttribute(component, reservedAttributeNames[i], next);
+          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], next);
+        } else if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'style') {
+        	if (!isForwardingStyleToChildren) {
+	        	let previous = HTMLHelper.getHashMapFromInlineStyle(reservedAttributeValues[i]);
+	        	let next = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(component, 'style'));
+	        	
+	        	for (let reservedStyleName of INHERITING_COMPONENT_RESERVED_STYLE_NAMES) {
+	        		next[reservedStyleName] = previous[reservedStyleName];
+	        	}
+	        	
+	        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], HTMLHelper.getInlineStyleFromHashMap(next));
+	        } else {
+	        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
+	        }
         } else {
-          HTMLHelper.setAttribute(component, reservedAttributeNames[i], reservedAttributeValues[i]);
+          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
         }
       }
       
@@ -265,12 +281,18 @@ var WorkspaceHelper = {
     }
   },
   getComponentData: (id: string) => {
-    let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0] || {};
-    return Object.assign({}, InternalComponents[id], existingComponentInfo);
+    let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
+    if (!existingComponentInfo) return null;
+    
+    InternalComponents[id] = InternalComponents[id] || {};
+    return Object.assign(InternalComponents[id], existingComponentInfo);
   },
   getPopupData: (id: string) => {
-    let existingPopupInfo = InternalProjectSettings.popups.filter(popup => popup.id == id)[0] || {};
-    return Object.assign({}, InternalPopups[id], existingPopupInfo);
+    let existingPopupInfo = InternalProjectSettings.popups.filter(popup => popup.id == id)[0];
+    if (!existingPopupInfo) return null;
+    
+    InternalPopups[id] = InternalPopups[id] || {};
+    return Object.assign(InternalPopups[id], existingPopupInfo);
   },
   getPageInfo: (currentPageID: String) => {
     let page = InternalSites[currentPageID] || {};
