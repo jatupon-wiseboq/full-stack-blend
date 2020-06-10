@@ -163,7 +163,7 @@ class ProjectManager extends Base<Props, State> {
           let continueFn = ((previousProjectData) => {
         		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
         		let constructionEditorData = this.generateWorkspaceData() || {};
-        		let infoDict = constructionWindow.generateHTMLCodeForPages();
+        		let infoDict = constructionWindow.generateHTMLCodeForAllPages();
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);

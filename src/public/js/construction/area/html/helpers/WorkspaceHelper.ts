@@ -8,7 +8,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX} from '../../../Constants.js';
 
-let cachedGenerateHTMLCodeForPages: any = {};
+let cachedgenerateHTMLCodeForAllPages: any = {};
 let currentMode = 'site';
 
 const DefaultProjectSettings: {string: any} = {
@@ -150,7 +150,7 @@ var WorkspaceHelper = {
         EditorHelper.init(true, false);
       
         if (!CodeHelper.equals(cloned, page)) {
-          cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
+          cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
           InternalSites[InternalProjectSettings.editingSiteName] = page;
         }
       }
@@ -283,19 +283,52 @@ var WorkspaceHelper = {
     
     return page;
   },
-  generateHTMLCodeForPage: () => {
-    let results = CodeGeneratorHelper.generateHTMLCodeForPage();
+  generateHTMLCodeForCurrentPage: () => {
+    let results = CodeGeneratorHelper.generateHTMLCode();
   	results.push(StylesheetHelper.renderStylesheet(true));
   	
   	return results;
   },
-  generateHTMLCodeForPages: (clean: boolean=true) => {
-    cachedGenerateHTMLCodeForPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForPage();
+  generateHTMLCodeForAllPages: (clean: boolean=true) => {
+    cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
     
-    let result = cachedGenerateHTMLCodeForPages;
-    if (clean) cachedGenerateHTMLCodeForPages = {};
+    let result = cachedgenerateHTMLCodeForAllPages;
+    if (clean) cachedgenerateHTMLCodeForAllPages = {};
     
     return result;
+  },
+  getCommonExpandingFeatureScripts: () => {
+  	let container = document.createElement('div');
+  	
+  	for (let key in InternalComponents) {
+  		if (InternalComponents.hasOwnProperty(key)) {
+  			let element = document.createElement('div');
+  			element.innerHTML = InternalComponents[key].html;
+  			
+  			HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-react-mode', 'Site');
+		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-name', 'Component');
+		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-guid', key);
+  			
+  			container.appendChild(element);
+  		}
+  	}
+  	for (let key in InternalPopups) {
+  		if (InternalPopups.hasOwnProperty(key)) {
+  			let element = document.createElement('div');
+  			element.innerHTML = InternalPopups[key].html;
+  			
+  			HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-react-mode', 'Site');
+		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-name', 'Popup');
+		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-guid', key);
+  			
+  			container.appendChild(element);
+  		}
+  	}
+  	
+  	let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
+  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = CodeGeneratorHelper.generateHTMLCode(container);
+  	
+  	return combinedExpandingFeatureScripts || '';
   }
 }
 

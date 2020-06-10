@@ -9,7 +9,7 @@ import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONT
 // This code generator relies on elements in construction area.
 // 
 var CodeGeneratorHelper = {
-	generateHTMLCodeForPage: function(root: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
+	generateHTMLCode: function(root: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
     // Document Level
     // 
     let generatedRenderMethodRootResult = CodeGeneratorHelper.generateCodeForReactRenderMethod(root);

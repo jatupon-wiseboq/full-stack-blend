@@ -183,7 +183,9 @@ class SitePreview extends Base<Props, State> {
     		
     		let construction = document.getElementById('html');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateHTMLCodeForPage();
+    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateHTMLCodeForCurrentPage();
+    		
+    		combinedExpandingFeatureScripts += '\n' + constructionWindow.getCommonExpandingFeatureScripts();
     		
     		if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
     		else combinedInlineBodyStyle = '';
