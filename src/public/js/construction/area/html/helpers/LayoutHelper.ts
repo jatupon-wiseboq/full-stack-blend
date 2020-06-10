@@ -71,6 +71,20 @@ var LayoutHelper = {
   	} else {
   	  return null;
   	}
+  },
+  isNestedComponent: function(container: HTMLElement, componentID: string) {
+  	if (!componentID) return false;
+  	
+  	let elements = HTMLHelper.findAllParentsInClassName('internal-fsb-element', container);
+  	
+    for (let element of elements) {
+    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' &&
+    		HTMLHelper.getAttribute(element, 'internal-fsb-guid') == componentID) {
+    		return true;
+    	}
+    }
+    
+    return false;
   }
 };
 
