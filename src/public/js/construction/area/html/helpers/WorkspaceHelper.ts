@@ -224,7 +224,7 @@ var WorkspaceHelper = {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
     
     let selectingElement = EditorHelper.getSelectingElement();
-    let parents = selectingElement && HTMLHelper.findAllParentsInClassName('internal-fsb-element', selectingElement) || [];
+    let parents = selectingElement && [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', selectingElement), selectingElement] || [];
     
     for (let component of InternalProjectSettings.components) {
       let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', component.id);
