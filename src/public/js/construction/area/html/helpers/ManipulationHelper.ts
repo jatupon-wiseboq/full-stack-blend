@@ -152,7 +152,7 @@ var ManipulationHelper = {
 	    let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
 	    
 	    for (let element of elements) {
-	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site') {
+	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
 	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
 	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
 	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
@@ -647,7 +647,7 @@ var ManipulationHelper = {
             if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
               
-              if (['editingSiteName', 'editingComponentID', 'editingPopupID'].indexOf(extension.name) != -1) {
+              if (['editingPageID', 'editingComponentID', 'editingPopupID'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
                     name: extension.name,

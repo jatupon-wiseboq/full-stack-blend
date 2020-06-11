@@ -7,7 +7,7 @@ declare let ReactDOM: any;
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
     path: true,
-    watchingExtensionNames: ['pages', 'editingSiteName']
+    watchingExtensionNames: ['pages', 'editingPageID']
 });
 
 class PageManager extends HTMLManager {

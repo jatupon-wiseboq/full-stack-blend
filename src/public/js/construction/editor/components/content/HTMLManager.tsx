@@ -59,6 +59,11 @@ class HTMLManager extends Base<Props, State> {
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (reference.id == 'delete') {
+    		    if (element.tag.id == 'index') {
+    		    	alert('You cannot delete home page.');
+    		    	return;
+    		    }
+    		    
     		    element.tag.state = 'delete';
     		    
     		    perform('update', {

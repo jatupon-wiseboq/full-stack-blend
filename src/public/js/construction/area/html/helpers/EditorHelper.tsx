@@ -120,7 +120,7 @@ var EditorHelper = {
     // Restore element selecting and cursor placement.
     // 
     if (restoreAccessoryStates) {
-      let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
+      let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       
       if (page.accessories.selectingElementGUID) {
         let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', page.accessories.selectingElementGUID);

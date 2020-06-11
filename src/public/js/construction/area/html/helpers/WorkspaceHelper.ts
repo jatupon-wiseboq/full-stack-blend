@@ -14,7 +14,7 @@ let currentMode = 'site';
 const DefaultProjectSettings: {string: any} = {
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
-  editingSiteName: 'index',
+  editingPageID: 'index',
   editingComponentID: null,
   editingPopupID: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
@@ -39,16 +39,20 @@ var WorkspaceHelper = {
       globalSettings: InternalProjectSettings,
       sites: InternalSites,
       components: InternalComponents,
+      popups: InternalPopups,
       stylesheets: StylesheetHelper.generateStylesheetData()
     };
   },
   initializeWorkspaceData: (data: any) => {
-    Object.assign(InternalProjectSettings, data && data.globalSettings || {});
-    Object.assign(InternalSites, data && data.sites || {});
-    Object.assign(InternalComponents, data && data.components || {});
+    InternalProjectSettings = data && data.globalSettings || DefaultProjectSettings;
+    InternalSites = data && data.sites || {};
+    InternalComponents = data && data.components || {};
+    InternalPopups = data && data.popups || {};
     
     WorkspaceHelper.loadWorkspaceData();
     if (data && data.stylesheets) StylesheetHelper.initializeStylesheetData(data.stylesheets);
+    
+    EditorHelper.updateEditorProperties();
   },
   setMode: (mode: string) => {
     WorkspaceHelper.saveWorkspaceData(false);
@@ -57,7 +61,7 @@ var WorkspaceHelper = {
   },
   getEditable: () => {
     if (currentMode == 'site') {
-      return (InternalProjectSettings.editingSiteName != null) ? 'site' : false;
+      return (InternalProjectSettings.editingPageID != null) ? 'site' : false;
     } else if (currentMode == 'components') {
       return (InternalProjectSettings.editingComponentID != null || InternalProjectSettings.components.filter(component => component.state != 'delete').length != 0) ? 'components' : false;
     } else if (currentMode == 'popups') {
@@ -66,9 +70,10 @@ var WorkspaceHelper = {
   },
   loadWorkspaceData: (updateUI: boolean=false) => {
     if (currentMode == 'site') {
-      if (InternalProjectSettings.editingSiteName == null) return;
+      if (InternalProjectSettings.editingPageID == null) return;
       
-      let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
+      let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
+      if (page == null) return;
       
       FontHelper.initializeFontData(page.head.fonts)
       document.body.outerHTML = page.body;
@@ -78,106 +83,81 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
       EditorHelper.init(true, updateUI);
     } else if (currentMode == 'components') {
-      let component = InternalProjectSettings.components.filter(component => component.id == InternalProjectSettings.editingComponentID)[0];
-      if (!component) component = InternalProjectSettings.components[0];
+    	if (InternalProjectSettings.editingComponentID == null) return;
       
-      if (component) {
-        let componentInfo = WorkspaceHelper.getComponentData(component.id);
-        if (componentInfo) {
-	        EditorHelper.detach();
-	        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-	        
-	        // The second head element did appear after setting content to the outerHTML of body element.
-	        // Remove the extra one.
-	        //
-	        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
-	        
-	        document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
-	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
-	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Component');
-	        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', component.id);
-	        EditorHelper.init(false, updateUI);
-	      }
-      } else {
-        InternalProjectSettings.editingComponentID = null;
-        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-      }
+      let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+      if (component == null) return;
+      
+      document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
+      document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
+      
+      // The second head element did appear after setting content to the outerHTML of body element.
+      // Remove the extra one.
+      //
+      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      WorkspaceHelper.updateInheritingComponents();
+      
+      EditorHelper.init(false, updateUI);
     } else if (currentMode == 'popups') {
-      let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
-      if (!popup) popup = DefaultProjectSettings.popups[0];
+      if (InternalProjectSettings.editingPopupID == null) return;
       
-      if (popup) {
-        popup = WorkspaceHelper.getPopupData(popup.id);
-        
-        EditorHelper.detach();
-        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-        
-        // The second head element did appear after setting content to the outerHTML of body element.
-        // Remove the extra one.
-        //
-        if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
-        
-        document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_POPUP_HTML;
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode', 'Site');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name', 'Popup');
-        HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', popup.id);
-        EditorHelper.init(false, updateUI);
-      } else {
-        InternalProjectSettings.editingPopupID = null;
-        document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-      }
+      let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+      if (popup == null) return;
+      
+      document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
+      document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_COMPONENT_HTML;
+      
+      // The second head element did appear after setting content to the outerHTML of body element.
+      // Remove the extra one.
+      //
+      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      WorkspaceHelper.updateInheritingComponents();
+      
+      EditorHelper.init(false, updateUI);
     }
   },
   saveWorkspaceData: (reinit: boolean=true) => {
     if (currentMode == 'site') {
-      if (InternalProjectSettings.editingSiteName == null) return;
+      if (InternalProjectSettings.editingPageID == null) return;
       
-      let page = WorkspaceHelper.getPageInfo(InternalProjectSettings.editingSiteName);
+      let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       let cloned = CodeHelper.clone(page);
       
       page.head.fonts = FontHelper.generateFontData();
       
       let selectingElement = EditorHelper.getSelectingElement();
-      
       page.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       page.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       EditorHelper.detach();
       page.body = document.body.outerHTML;
+      
       if (reinit) {
         EditorHelper.init(true, false);
-      
+        
         if (!CodeHelper.equals(cloned, page)) {
-          cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
-          InternalSites[InternalProjectSettings.editingSiteName] = page;
+          cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
         }
       }
     } else if (currentMode == 'components') {
-      let component = InternalProjectSettings.components.filter(component => component.id == InternalProjectSettings.editingComponentID)[0];
-      if (!component) component = InternalProjectSettings.components[0];
-      
-      if (component) {
-        let componentInfo = WorkspaceHelper.getComponentData(component.id);
-        if (componentInfo) {
-	        EditorHelper.detach();
-	        componentInfo.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
-	        if (reinit) EditorHelper.init(false, false);
-	      }
-      }
+    	if (InternalProjectSettings.editingComponentID == null) return;
+    	
+    	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+    	
+      component.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
     } else if (currentMode == 'popups') {
-      let popup = InternalProjectSettings.popups.filter(popup => popup.id == InternalProjectSettings.editingPopupID)[0];
-      if (!popup) popup = InternalProjectSettings.popups[0];
-      
-      if (popup) {
-        popup = WorkspaceHelper.getPopupData(popup.id);
-        
-        EditorHelper.detach();
-        popup.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
-        if (reinit) EditorHelper.init(false, false);
-      }
+      if (InternalProjectSettings.editingPopupID == null) return;
+    	
+    	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+    	
+      popup.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
     }
   },
   removeComponentData: (id: string) => {
@@ -209,10 +189,6 @@ var WorkspaceHelper = {
     let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holder)];
     accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
     
-    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-react-mode');
-    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-name');
-    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-guid');
-    
     if (preview) {
     	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(holder.firstChild, true);
     }
@@ -242,16 +218,19 @@ var WorkspaceHelper = {
     	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(_element);
 	  }
   },
-  updateInheritingComponents: (container: HTMLElement=window.document.body) => {
-    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
-    
-    let selectingElement = EditorHelper.getSelectingElement();
-    let parents = selectingElement && [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', selectingElement), selectingElement] || [];
-    
+  updateInPageComponents: () => {
     for (let component of InternalProjectSettings.components) {
       let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', component.id);
-      if (element && parents.indexOf(element) == -1) components.push(element);
+      if (element) {
+	      let componentInfo = WorkspaceHelper.getComponentData(component.id);
+	      if (componentInfo) {
+		      element.outerHTML = componentInfo.html;
+	      }
+	    }
     }
+ 	},
+  updateInheritingComponents: (container: HTMLElement=window.document.body) => {
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
     
     for (let component of components) {
       let reservedAttributeValues = INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.map((name) => {
@@ -308,26 +287,36 @@ var WorkspaceHelper = {
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
     if (!existingComponentInfo) return null;
     
-    InternalComponents[id] = InternalComponents[id] || {};
-    return Object.assign(InternalComponents[id], existingComponentInfo);
+    InternalComponents[id] = InternalComponents[id] || CodeHelper.clone(existingComponentInfo) || {};
+    
+    Object.assign(InternalComponents[id], existingComponentInfo);
+    
+    return InternalComponents[id];
   },
   getPopupData: (id: string) => {
     let existingPopupInfo = InternalProjectSettings.popups.filter(popup => popup.id == id)[0];
     if (!existingPopupInfo) return null;
     
-    InternalPopups[id] = InternalPopups[id] || {};
-    return Object.assign(InternalPopups[id], existingPopupInfo);
+    InternalPopups[id] = InternalPopups[id] || CodeHelper.clone(existingPopupInfo) || {};
+    
+    Object.assign(InternalPopups[id], existingPopupInfo);
+    
+    return InternalPopups[id];
   },
-  getPageInfo: (currentPageID: String) => {
-    let page = InternalSites[currentPageID] || {};
+  getPageData: (id: String) => {
+  	let existingPageInfo = InternalProjectSettings.pages.filter(page => page.id == id)[0];
+    if (!existingPageInfo) return null;
     
-    if (!page.id) page.id = currentPageID;
-    if (!page.head) page.head = {};
-    if (!page.head.fonts) page.head.fonts = {};
-    if (!page.body) page.body = DEFAULT_PAGE_HTML;
-    if (!page.accessories) page.accessories = {};
+    InternalSites[id] = InternalSites[id] || CodeHelper.clone(existingPageInfo) || {};
     
-    return page;
+    Object.assign(InternalSites[id], existingPageInfo);
+    
+    InternalSites[id].head = InternalSites[id].head || {};
+    InternalSites[id].head.fonts = InternalSites[id].head.fonts || {};
+    InternalSites[id].body = InternalSites[id].body || DEFAULT_PAGE_HTML;
+    InternalSites[id].accessories = InternalSites[id].accessories || {};
+    
+    return InternalSites[id];
   },
   generateHTMLCodeForCurrentPage: () => {
     let results = CodeGeneratorHelper.generateHTMLCode();
@@ -336,7 +325,7 @@ var WorkspaceHelper = {
   	return results;
   },
   generateHTMLCodeForAllPages: (clean: boolean=true) => {
-    cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingSiteName] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
+    cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
     
     let result = cachedgenerateHTMLCodeForAllPages;
     if (clean) cachedgenerateHTMLCodeForAllPages = {};
@@ -351,10 +340,6 @@ var WorkspaceHelper = {
   			let element = document.createElement('div');
   			element.innerHTML = InternalComponents[key].html;
   			
-  			HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-react-mode', 'Site');
-		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-name', 'Component');
-		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-guid', key);
-  			
   			container.appendChild(element);
   		}
   	}
@@ -362,10 +347,6 @@ var WorkspaceHelper = {
   		if (InternalPopups.hasOwnProperty(key)) {
   			let element = document.createElement('div');
   			element.innerHTML = InternalPopups[key].html;
-  			
-  			HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-react-mode', 'Site');
-		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-name', 'Popup');
-		    HTMLHelper.setAttribute(element.firstChild, 'internal-fsb-guid', key);
   			
   			container.appendChild(element);
   		}
