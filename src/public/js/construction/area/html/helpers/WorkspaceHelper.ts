@@ -96,6 +96,8 @@ var WorkspaceHelper = {
       document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
       document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
       
+      HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
+      
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
@@ -112,6 +114,8 @@ var WorkspaceHelper = {
       
       document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
       document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_COMPONENT_HTML;
+      
+      HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID)
       
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
