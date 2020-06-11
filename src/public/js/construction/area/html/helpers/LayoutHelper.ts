@@ -86,10 +86,10 @@ var LayoutHelper = {
     
     return false;
   },
-  isContainedInInheritedComponent: function(container: HTMLElement) {
-  	if (!container) return false;
+  isContainedInInheritedComponent: function(_element: HTMLElement) {
+  	if (!_element) return false;
   	
-  	let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', container), container];
+  	let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', _element)];
   	
     for (let element of elements) {
     	if (HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {

@@ -163,10 +163,7 @@ var WorkspaceHelper = {
         let componentInfo = WorkspaceHelper.getComponentData(component.id);
         if (componentInfo) {
 	        EditorHelper.detach();
-	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode');
-	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
-	        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
-	        componentInfo.html = document.body.firstChild.firstChild.innerHTML;
+	        componentInfo.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
 	        if (reinit) EditorHelper.init(false, false);
 	      }
       }
@@ -178,10 +175,7 @@ var WorkspaceHelper = {
         popup = WorkspaceHelper.getPopupData(popup.id);
         
         EditorHelper.detach();
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-react-mode');
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-name');
-        HTMLHelper.removeAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid');
-        popup.html = document.body.firstChild.firstChild.innerHTML;
+        popup.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
         if (reinit) EditorHelper.init(false, false);
       }
     }
@@ -191,22 +185,10 @@ var WorkspaceHelper = {
     InternalProjectSettings.components = InternalProjectSettings.components.filter(component => component.id != id);
   },
   addOrReplaceComponentData: (id: string, name: string, namespace: string, klass: string, html: string) => {
-    let element = document.createElement('div');
-    element.innerHTML = html;
-    
-    let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', element)];
-    accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
-    
-    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-react-mode');
-    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-name');
-    HTMLHelper.removeAttribute(element.firstChild, 'internal-fsb-guid');
-    
-    html = element.innerHTML;
-    
-    InternalComponents[id] = {
+  	InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
-      html: html
+      html: WorkspaceHelper.cleanupComponentHTMLData(html)
     };
     
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
@@ -219,6 +201,46 @@ var WorkspaceHelper = {
     }
     
     WorkspaceHelper.updateInheritingComponents();
+  },
+  cleanupComponentHTMLData: (html: string, preview: boolean=false) => {
+  	let holder = document.createElement('div');
+    holder.innerHTML = html;
+    
+    let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holder)];
+    accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
+    
+    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-react-mode');
+    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-name');
+    HTMLHelper.removeAttribute(holder.firstChild, 'internal-fsb-guid');
+    
+    if (preview) {
+    	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(holder.firstChild, true);
+    }
+    
+    return holder.innerHTML;
+  },
+  recursiveCleanupComponentPreviewDOM: (element: HTMLElement, first: boolean=false) => {
+  	if (!first) {
+	    if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
+	    	HTMLHelper.addClass(element, 'internal-fsb-inheriting-element');
+	  		HTMLHelper.removeClass(element, 'internal-fsb-element');
+	    }
+	    HTMLHelper.removeClass(element, 'internal-fsb-allow-cursor');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-mode');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-command');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-namespace');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-class');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-id');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-data');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-class');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-guid');
+	    HTMLHelper.removeAttribute(element, 'internal-fsb-inheriting');
+  	}
+  	
+  	let elements = [...element.children];
+  	for (let _element of elements) {
+    	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(_element);
+	  }
   },
   updateInheritingComponents: (container: HTMLElement=window.document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
@@ -241,7 +263,7 @@ var WorkspaceHelper = {
       
       let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(component, 'internal-fsb-class')) != -1);
       
-      component.innerHTML = componentInfo.html;
+      component.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
       let firstChild = component.firstChild;
       component.parentNode.insertBefore(firstChild, component);
       component.parentNode.removeChild(component);
