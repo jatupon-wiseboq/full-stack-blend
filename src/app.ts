@@ -1,4 +1,5 @@
 import express from "express";
+import secure from "express-force-https";
 import compression from "compression"; // Compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -40,6 +41,8 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true,
         // Process.exit();
 
     });
+
+app.use(secure);
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);
