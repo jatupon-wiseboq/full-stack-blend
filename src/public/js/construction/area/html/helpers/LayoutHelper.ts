@@ -85,6 +85,19 @@ var LayoutHelper = {
     }
     
     return false;
+  },
+  isContainedInInheritedComponent: function(container: HTMLElement) {
+  	if (!container) return false;
+  	
+  	let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', container), container];
+  	
+    for (let element of elements) {
+    	if (HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+    		return true;
+    	}
+    }
+    
+    return false;
   }
 };
 
