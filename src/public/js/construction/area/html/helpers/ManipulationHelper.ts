@@ -149,7 +149,7 @@ var ManipulationHelper = {
   },
   updateComponentData: (node: any) => {
     if (node) {
-	    let elements = HTMLHelper.findAllParentsInClassName('internal-fsb-element', node);
+	    let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
 	    
 	    for (let element of elements) {
 	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site') {
@@ -1260,9 +1260,9 @@ var ManipulationHelper = {
     	
     	Accessories.cellFormater.refresh();
     	CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
-  	
-  		ManipulationHelper.updateComponentData(selectingElement);
     }
+  	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link, content.action];
   },
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -1359,10 +1359,10 @@ var ManipulationHelper = {
 	    		EditorHelper.move(target, destination, content.direction);
 	    		break;
 	    }
-  	
-	  	ManipulationHelper.updateComponentData(destination);
-	  	ManipulationHelper.updateComponentData(origin);
 	  }
+  	
+  	ManipulationHelper.updateComponentData(destination);
+  	ManipulationHelper.updateComponentData(origin);
   	return [accessory, remember, link];
   },
   handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
