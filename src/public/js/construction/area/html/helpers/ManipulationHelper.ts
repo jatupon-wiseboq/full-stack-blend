@@ -178,6 +178,11 @@ var ManipulationHelper = {
   	let accessory = null;
   	let element = null;
   	
+  	if (!Accessories.cursor.getDOMNode().parentNode) {
+  		alert('Please place a cursor anywhere before performing insertion.');
+  		return [accessory, false, link];
+  	}
+  	
   	if (typeof content === 'string') {
   		if (composedUntitledNameCount[content] === undefined) {
       	composedUntitledNameCount[content] = 0;
@@ -813,6 +818,11 @@ var ManipulationHelper = {
   	let accessory = null;
   	
   	EditorHelper.synchronize("click", null);
+  	  	
+ 	 	if ([37, 38, 39, 40, 8].indexOf(content) != -1 && !Accessories.cursor.getDOMNode().parentNode) {
+  		alert('Please place a cursor anywhere before performing keystroke action.');
+  		return [accessory, false, link];
+  	}
   	
   	switch (content) {
       case 37:
@@ -977,6 +987,11 @@ var ManipulationHelper = {
   	
   	let selectingElement = EditorHelper.getSelectingElement();
   	let cursorContainer = Accessories.cursor.getDOMNode().parentNode;
+  	
+  	if (!cursorContainer || cursorContainer.tagName != 'TD') {
+  		alert('Please place a cursor inside any cell before performing table modification.');
+  		return [accessory, false, link];
+  	}
   	
     if (selectingElement && cursorContainer.tagName == 'TD') {
       switch (content.action) {
