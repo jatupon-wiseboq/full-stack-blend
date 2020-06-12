@@ -246,11 +246,11 @@ var WorkspaceHelper = {
       
       let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(component, 'internal-fsb-class')) != -1);
       
-      component.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
-      let firstChild = component.firstChild;
-      component.parentNode.insertBefore(firstChild, component);
+      let element = document.createElement('div');
+      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
+      component.parentNode.insertBefore(element, component);
       component.parentNode.removeChild(component);
-      component = firstChild;
+      component = element;
       
       for (let i=0; i<INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.length; i++) {
         if (reservedAttributeValues[i] == null) continue;
