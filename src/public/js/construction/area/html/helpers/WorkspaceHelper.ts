@@ -223,12 +223,17 @@ var WorkspaceHelper = {
 	  }
   },
   updateInPageComponents: () => {
-    for (let component of InternalProjectSettings.components) {
-      let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', component.id);
-      if (element) {
-	      let componentInfo = WorkspaceHelper.getComponentData(component.id);
+    for (let _component of InternalProjectSettings.components) {
+      let component = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', _component.id);
+      if (component) {
+	      let componentInfo = WorkspaceHelper.getComponentData(_component.id);
 	      if (componentInfo) {
-		      element.outerHTML = componentInfo.html;
+		      let element = document.createElement('div');
+		      let parentNode = component.parentNode;
+		      element.innerHTML = componentInfo.html;
+		      let firstChild = element.firstChild;
+		      parentNode.insertBefore(firstChild, component);
+		      parentNode.removeChild(component);
 	      }
 	    }
     }
@@ -241,47 +246,51 @@ var WorkspaceHelper = {
         return HTMLHelper.getAttribute(component, name);
       });
       
-      let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[0] || reservedAttributeValues[1]);
+      let componentInfo = WorkspaceHelper.getComponentData(reservedAttributeValues[0]);
       if (!componentInfo) continue;
       
       let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(component, 'internal-fsb-class')) != -1);
       
       let element = document.createElement('div');
+      let parentNode = component.parentNode;
       element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
-      component.parentNode.insertBefore(element, component);
-      component.parentNode.removeChild(component);
-      component = element;
+      let firstChild = element.firstChild;
+      parentNode.insertBefore(firstChild, component);
+      parentNode.removeChild(component);
+      component = firstChild;
       
       for (let i=0; i<INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.length; i++) {
-        if (reservedAttributeValues[i] == null) continue;
-        
-        if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'class') {
-          let previous = reservedAttributeValues[i];
-          let next = HTMLHelper.getAttribute(component, 'class') || '';
-          
-          let sizeMatches = previous.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
-          let offsetMatches = previous.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
-          
-          next = next.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
-          next = [...sizeMatches, ...offsetMatches, next].join(' ');
-          
-          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], next);
-        } else if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'style') {
-        	if (!isForwardingStyleToChildren) {
-	        	let previous = HTMLHelper.getHashMapFromInlineStyle(reservedAttributeValues[i]);
-	        	let next = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(component, 'style'));
-	        	
-	        	for (let reservedStyleName of INHERITING_COMPONENT_RESERVED_STYLE_NAMES) {
-	        		next[reservedStyleName] = previous[reservedStyleName];
-	        	}
-	        	
-	        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], HTMLHelper.getInlineStyleFromHashMap(next));
+        if (reservedAttributeValues[i]) {
+	        if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'class') {
+	          let previous = reservedAttributeValues[i];
+	          let next = HTMLHelper.getAttribute(component, 'class') || '';
+	          
+	          let sizeMatches = previous.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
+	          let offsetMatches = previous.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
+	          
+	          next = next.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
+	          next = [...sizeMatches, ...offsetMatches, next].join(' ');
+	          
+	          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], next);
+	        } else if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i] == 'style') {
+	        	if (!isForwardingStyleToChildren) {
+		        	let previous = HTMLHelper.getHashMapFromInlineStyle(reservedAttributeValues[i]);
+		        	let next = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(component, 'style'));
+		        	
+		        	for (let reservedStyleName of INHERITING_COMPONENT_RESERVED_STYLE_NAMES) {
+		        		next[reservedStyleName] = previous[reservedStyleName];
+		        	}
+		        	
+		        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], HTMLHelper.getInlineStyleFromHashMap(next));
+		        } else {
+		        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
+		        }
 	        } else {
-	        	HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
+	          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
 	        }
-        } else {
-          HTMLHelper.setAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i], reservedAttributeValues[i]);
-        }
+	      } else {
+	      	 HTMLHelper.removeAttribute(component, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES[i]);
+	      }
       }
       
       CapabilityHelper.installCapabilitiesForInternalElements(component);

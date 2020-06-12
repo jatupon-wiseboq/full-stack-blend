@@ -354,7 +354,7 @@ var ManipulationHelper = {
     	  content.name = componentName + ' ' + composedUntitledNameCount[componentName];
         
         element = document.createElement('div');
-        element.innerHTML = componentInfo.html;
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
         element = element.firstChild;
         
         HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);
