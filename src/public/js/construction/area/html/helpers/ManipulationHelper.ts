@@ -1283,6 +1283,8 @@ var ManipulationHelper = {
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
+  	debugger;
+  	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
   	let origin = target.parentNode;
   	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);

@@ -24,7 +24,7 @@ var LayoutHelper = {
   },
   getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
   	if (!container.childNodes) return nodes;
-  	if (HTMLHelper.getAttribute(container, 'internal-fsb-inheriting')) return nodes;
+  	if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
   	
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
@@ -42,7 +42,9 @@ var LayoutHelper = {
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
-  				dropable: isTableLayoutCell || ['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1,
+  				dropable: (isTableLayoutCell ||
+  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1) &&
+  					!HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
   				nodes: this.getElementTreeNodes([], element),
