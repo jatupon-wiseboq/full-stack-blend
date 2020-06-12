@@ -43,7 +43,7 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true,
     });
 
 app.use(secure);
-if (['development', 'staging', 'production'].indexOf(process.env.NODE_ENV) != -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
 	app.enable("trust proxy");
 }
 

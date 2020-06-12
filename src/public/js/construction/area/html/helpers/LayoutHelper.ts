@@ -23,7 +23,8 @@ var LayoutHelper = {
     }
   },
   getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
-  	if (!container.childNodes) return;
+  	if (!container.childNodes) return nodes;
+  	if (HTMLHelper.getAttribute(container, 'internal-fsb-inheriting')) return nodes;
   	
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
