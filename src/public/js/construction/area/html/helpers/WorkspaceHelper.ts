@@ -240,8 +240,10 @@ var WorkspaceHelper = {
  	},
   updateInheritingComponents: (container: HTMLElement=window.document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
+    let selectedElement = EditorHelper.getSelectingElement();
     
     for (let component of components) {
+    	let isSelecting = (component == selectedElement);
       let reservedAttributeValues = INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.map((name) => {
         return HTMLHelper.getAttribute(component, name);
       });
@@ -294,6 +296,8 @@ var WorkspaceHelper = {
       }
       
       CapabilityHelper.installCapabilitiesForInternalElements(component);
+      
+      if (isSelecting) EditorHelper.select(component);
     }
   },
   getComponentData: (id: string) => {

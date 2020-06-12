@@ -1335,22 +1335,22 @@ var ManipulationHelper = {
 		  	
 		  	link = RandomHelper.generateGUID();
 	  		
-		  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
-		  	
 		  	if (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
+		  		let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
+		  		
 		  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
 					elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
+					
+					promise.then(() => {
+			      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
+						ManipulationHelper.perform('update', {
+							attributes: [{
+								name: 'class',
+								value: elementClassName
+							}]
+						}, true, false, link);
+					});
 		  	}
-	    	
-				promise.then(() => {
-		      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
-					ManipulationHelper.perform('update', {
-						attributes: [{
-							name: 'class',
-							value: elementClassName
-						}]
-					}, true, false, link);
-				});
 			}
 			
 			switch (content.direction) {
