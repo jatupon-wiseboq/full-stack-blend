@@ -1283,8 +1283,6 @@ var ManipulationHelper = {
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
-  	debugger;
-  	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
   	let origin = target.parentNode;
   	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
@@ -1322,7 +1320,7 @@ var ManipulationHelper = {
 		  		let suffix = "";
 		  		if (target.parentNode.tagName == 'TD') {
 		  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
-		  			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
+		  			let row = [...layout.firstChild.childNodes].indexOf(target.parentNode.parentNode);
 		  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
 		  			
 		  			suffix = ':' + row + ',' + column;
@@ -1366,7 +1364,7 @@ var ManipulationHelper = {
 	      			let row = parseInt(info[0]);
 	      			let column = parseInt(info[1]);
 	      			
-	      			destination = destination.childNodes[row].childNodes[column];
+	      			destination = destination.firstChild.childNodes[row].childNodes[column];
 	      			break;
 	      		case 'AbsoluteLayout':
 	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
