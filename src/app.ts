@@ -43,6 +43,9 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true,
     });
 
 app.use(secure);
+if (['development', 'staging', 'production'].indexOf(process.env.NODE_ENV) != -1) {
+	app.enable("trust proxy");
+}
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);
