@@ -1,3 +1,4 @@
+include ../mixin/CreateReactComponent
 nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
   .container-fluid.px-2
     .mr-auto.py-1
@@ -140,9 +141,10 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Component
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Component</b></p><p>Create a reusable component for placing throughout the site.</p>")
+          a.dropdown-item(onclick='perform("update", {attributes: [{name: "internal-fsb-react-mode", value: "Site"}]})', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Component</b></p><p>Create a reusable component for placing throughout the site.</p>")
             i.fa.fa-plus
             | Create
+          +CreateReactComponent('FullStackBlend.Components.ComponentMenu')
     .mx-auto.dataToolset.toolset.py-1(style='display: none;')
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 60px;')

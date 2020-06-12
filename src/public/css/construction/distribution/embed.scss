@@ -9,6 +9,7 @@ html, body {
   position: relative;
 }
 
+.internal-fsb-inheriting-element,
 .internal-fsb-element {
   padding: 0;
 }
@@ -16,12 +17,14 @@ html, body {
 // Layout
 //
 .internal-fsb-strict-layout {
+	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     position: relative;
   }
 }
       
 .internal-fsb-absolute-layout {
+	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     position: absolute;
   }

@@ -1,5 +1,8 @@
 .workspace-decoration-top-horizontal-line
-.timeline.internal-fsb-selecting-on
-  | ABC
-.timeline.internal-fsb-selecting-off
-  include ../../common/empty
+div(internal-fsb-not-for="internal-fsb-inheriting")
+  .timeline.internal-fsb-selecting-on
+    | ABC
+  .timeline.internal-fsb-selecting-off
+    include ../../common/empty
+div(internal-fsb-for="internal-fsb-inheriting")
+  include ../../common/component-guide

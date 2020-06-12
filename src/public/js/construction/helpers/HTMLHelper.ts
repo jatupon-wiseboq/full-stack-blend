@@ -39,6 +39,9 @@ var HTMLHelper = {
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
   },
+  getElementsByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
+    return container.querySelectorAll('[' + attributeName + '="' + value + '"]');
+  },
   getElementsByAttribute: (attributeName: string, container: HTMLElement=document, includingSelf: boolean=false) => {
     let results = [...container.querySelectorAll('[' + attributeName + ']')];
     if (includingSelf && HTMLHelper.hasAttribute(container, attributeName)) {
@@ -198,7 +201,7 @@ var HTMLHelper = {
     let results = [];
     let current = element.parentNode;
     
-    while (current != null) {
+    while (current != null && current != document) {
       if (HTMLHelper.hasClass(current, className)) {
         results.push(current);
       }

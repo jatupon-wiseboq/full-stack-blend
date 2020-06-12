@@ -172,7 +172,7 @@ class Resizer extends React.Component<Props, State> {
     render() {
         return (
             pug `
-                .internal-fsb-resizer(id='internal-fsb-resizer')
+                .internal-fsb-resizer.internal-fsb-accessory(id='internal-fsb-resizer')
                     span.t.l(onMouseDown=this.mouseDown)
                     span.t(onMouseDown=this.mouseDown)
                     span.t.r(onMouseDown=this.mouseDown)

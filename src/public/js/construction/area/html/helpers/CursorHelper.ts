@@ -1,5 +1,6 @@
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
+import {LayoutHelper} from './LayoutHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 
 var CursorHelper = {
@@ -10,7 +11,7 @@ var CursorHelper = {
       element.parentNode.appendChild(Accessories.guide.getDOMNode());
     }
   },
-  moveCursorToTheLeft: () => {
+  moveCursorToTheLeft: (link: any=Math.random()) => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
     console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
@@ -26,10 +27,11 @@ var CursorHelper = {
       let walkPath = CursorHelper.findWalkPathForElement(allAllowCursorElements[index - 1]);
       walkPath[2] = allAllowCursorPositions[index - 1];
       
-      ManipulationHelper.perform('move[cursor]', walkPath);
-    } else {
-      let walkPath = CursorHelper.createWalkPathForCursor();
-      walkPath[2] = 0;
+      ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
+      
+      if (LayoutHelper.isContainedInInheritedComponent(Accessories.cursor.getDOMNode())) {
+      	CursorHelper.moveCursorToTheLeft(link);
+      }
     }
   },
   moveCursorUp: () => {
@@ -51,7 +53,7 @@ var CursorHelper = {
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
-  moveCursorToTheRight: () => {
+  moveCursorToTheRight: (link: any=Math.random()) => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
     console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
@@ -67,7 +69,11 @@ var CursorHelper = {
       let walkPath = CursorHelper.findWalkPathForElement(allAllowCursorElements[index + 1]);
       walkPath[2] = allAllowCursorPositions[index + 1];
       
-      ManipulationHelper.perform('move[cursor]', walkPath);
+      ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
+      
+      if (LayoutHelper.isContainedInInheritedComponent(Accessories.cursor.getDOMNode())) {
+      	CursorHelper.moveCursorToTheRight(link);
+      }
     } else {
       CursorHelper.moveCursorToTheEndOfDocument();
     }

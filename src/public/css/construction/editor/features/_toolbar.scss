@@ -1,3 +1,5 @@
+@import "../../common/variables";
+
 // Toolbar
 // -------------------------
 .toolbar {
@@ -28,6 +30,7 @@
   
   .dropdown-menu {
     top: 20px;
+    z-index: #{$maximum-z-index - 50};
     
     .dropdown-item {
       cursor: pointer;

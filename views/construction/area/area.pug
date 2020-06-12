@@ -4,8 +4,8 @@ script(type="text/javascript").
   window.GITHUB_PROJECT = "!{user.project}";
   window.GITHUB_DEVELOP_BRANCH = "!{user.develop}";
   window.GITHUB_STAGING_BRANCH = "!{user.staging}";
-div(internal-fsb-for="editingSiteName", style="display: none;")
-  iframe.construction.siteToolset.toolset(id='html', src='/editor/construction/area/html')
-div(internal-fsb-not-for="editingSiteName")
+div(internal-fsb-for="editing", style="display: none;")
+  iframe.construction.siteToolset.componentsToolset.popupsToolset.toolset(id='html', src='/editor/construction/area/html')
+div(internal-fsb-not-for="editing")
   include ../common/empty
 iframe.construction.dataToolset.toolset(id='data', src='/editor/construction/area/data', style={display: 'none'})

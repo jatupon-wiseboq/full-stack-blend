@@ -6,22 +6,21 @@ declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
-    path: true,
-    watchingExtensionNames: ['pages', 'editingPageID']
+    watchingExtensionNames: ['components', 'editingComponentID']
 });
 
-class PageManager extends HTMLManager {
+class ComponentManager extends HTMLManager {
     protected static defaultProps: Props = _ExtendedDefaultProps;
     
     protected getCategoryName() {
-        return 'Page';
+        return 'Component';
     }
     
     protected getDisplay(item: any) {
-        return `<div class="name">${item.name}</div><div class="path">${item.path}</div>`;
+        return `<div class="name">${item.name}</div>`;
     }
 }
 
-DeclarationHelper.declare('Components.PageManager', PageManager);
+DeclarationHelper.declare('Components.ComponentManager', ComponentManager);
 
-export {PageManager};
+export {ComponentManager};

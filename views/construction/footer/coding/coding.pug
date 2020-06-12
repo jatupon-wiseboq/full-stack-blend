@@ -1,3 +1,6 @@
 include ../../mixin/CreateReactComponent
-.workspace-decoration-top-horizontal-line
-+CreateReactComponent('FullStackBlend.Components.ReactCodeEditor')
+div(internal-fsb-not-for="internal-fsb-inheriting")
+  .workspace-decoration-top-horizontal-line
+  +CreateReactComponent('FullStackBlend.Components.ReactCodeEditor')
+div(internal-fsb-for="internal-fsb-inheriting")
+  include ../../common/component-guide

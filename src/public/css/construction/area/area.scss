@@ -35,6 +35,7 @@ html, body {
   }
   
   .internal-fsb-strict-layout {
+  	> .internal-fsb-inheriting-element,
     > .internal-fsb-element {
     	min-height: 20px;
       border: solid 1px rgba(0, 0, 255, 127);
@@ -42,6 +43,7 @@ html, body {
   }
   
   .internal-fsb-absolute-layout {
+  	> .internal-fsb-inheriting-element,
     > .internal-fsb-element {
     	min-height: 20px;
       border: solid 1px rgba(0, 255, 0, 127);
@@ -52,6 +54,30 @@ html, body {
   [internal-fsb-class="AbsoluteLayout"],
   [internal-fsb-class="Rectangle"] {
     padding: 1px;
+  }
+  
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+      z-index: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2) 10px,
+        rgba(0, 0, 0, 0.3) 10px,
+        rgba(0, 0, 0, 0.3) 20px
+      );
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
   }
   
   // Guide
@@ -104,6 +130,12 @@ html, body {
   .internal-fsb-guide {
     display: none;
   }
+  
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+    }
+  }
 }
 
 // Cursor
@@ -151,6 +183,7 @@ body.internal-fsb-mode-coding {
 
 // Dragger
 //
+.internal-fsb-inheriting-element,
 .internal-fsb-element {
   &[internal-fsb-class="Button"] {
     -webkit-user-select: auto !important;
@@ -191,6 +224,7 @@ body.internal-fsb-mode-coding {
 }
 
 .internal-fsb-strict-layout {
+	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     > .internal-fsb-resizer {
       display: block;
@@ -199,6 +233,7 @@ body.internal-fsb-mode-coding {
 }
 
 .internal-fsb-absolute-layout {
+	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     > .internal-fsb-resizer {
       display: block;
@@ -212,6 +247,7 @@ body.internal-fsb-mode-coding {
   }
 }
 
+.internal-fsb-inheriting-element,
 .internal-fsb-element {
 	> .container,
   > .container-fluid {
@@ -221,6 +257,7 @@ body.internal-fsb-mode-coding {
 	  > .row {
 	    height: 100%;
   		min-height: inherit;
+  		display: flow-root;
 	  }
 	}
 }
@@ -238,6 +275,8 @@ body.internal-fsb-mode-coding {
 //
 .internal-fsb-guide-on {
   @include media-breakpoint-only(xs) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
@@ -257,6 +296,8 @@ body.internal-fsb-mode-coding {
     }
   }
   @include media-breakpoint-only(sm) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
@@ -276,6 +317,8 @@ body.internal-fsb-mode-coding {
     }
   }
   @include media-breakpoint-only(md) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
@@ -295,6 +338,8 @@ body.internal-fsb-mode-coding {
     }
   }
   @include media-breakpoint-only(lg) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
@@ -314,6 +359,8 @@ body.internal-fsb-mode-coding {
     }
   }
   @include media-breakpoint-only(xl) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-xl-none {
@@ -333,6 +380,11 @@ body.internal-fsb-mode-coding {
     }
   }
   
+  .internal-fsb-inheriting-element.d-none,
+  .internal-fsb-inheriting-element.d-sm-none,
+  .internal-fsb-inheriting-element.d-md-none,
+  .internal-fsb-inheriting-element.d-lg-none,
+  .internal-fsb-inheriting-element.d-xl-none,
   .internal-fsb-element.d-none,
   .internal-fsb-element.d-sm-none,
   .internal-fsb-element.d-md-none,
@@ -341,6 +393,11 @@ body.internal-fsb-mode-coding {
 		display: block !important;
 		visibility: visible !important;
 	}
+  table.internal-fsb-inheriting-element.d-none,
+  table.internal-fsb-inheriting-element.d-sm-none,
+  table.internal-fsb-inheriting-element.d-md-none,
+  table.internal-fsb-inheriting-element.d-lg-none,
+  table.internal-fsb-inheriting-element.d-xl-none,
   table.internal-fsb-element.d-none,
   table.internal-fsb-element.d-sm-none,
   table.internal-fsb-element.d-md-none,
@@ -355,6 +412,9 @@ input[type='radio'], input[type='checkbox'] {
   pointer-events: none !important;
 }
 
+.internal-fsb-inheriting-element[internal-fsb-class="Iframe"],
+.internal-fsb-inheriting-element[internal-fsb-class="HTML"],
+.internal-fsb-inheriting-element[internal-fsb-class="Video"],
 .internal-fsb-element[internal-fsb-class="Iframe"],
 .internal-fsb-element[internal-fsb-class="HTML"],
 .internal-fsb-element[internal-fsb-class="Video"] {

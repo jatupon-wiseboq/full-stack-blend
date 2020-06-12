@@ -27,14 +27,17 @@ import './components/generic/TextPicker.js';
 
 import './components/code/ReactCodeEditor.js';
 import './components/code/ReactEventBinder.js';
-import './components/code/SitePreview.js';
 import './components/code/ExternalLibrariesChooser.js';
 import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 
+import './components/content/SitePreview.js';
 import './components/content/PageManager.js';
 import './components/content/ProjectManager.js';
+import './components/content/ComponentMenu.js';
+import './components/content/ComponentManager.js';
+import './components/content/PopupManager.js';
 
 //import GitHub from 'github-api';
 
@@ -139,7 +142,7 @@ let recentExtraPanelSelector: string = null;
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
@@ -156,7 +159,7 @@ let recentExtraPanelSelector: string = null;
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
 	      	}
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editingSiteName']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {

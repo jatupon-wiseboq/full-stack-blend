@@ -65,7 +65,7 @@ declare let ReactDOM: any;
 
 // <---Auto[Declare]// Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {
-  
+  forward: {classes: String, styles: any};
 }
 interface IAutoBaseState extends IBaseState { 
 }

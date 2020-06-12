@@ -267,9 +267,13 @@ class CellFormater extends React.Component<Props, State> {
 		}
 	}
 
-	render() {
-		return (<div />);
-	}
+  render() {
+    return (
+        pug `
+          .internal-fsb-accessory
+        `
+    )
+  }
 }
 
 DeclarationHelper.declare('Controls.CellFormater', CellFormater);

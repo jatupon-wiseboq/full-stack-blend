@@ -4,12 +4,13 @@ import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {EventHelper} from '../../../helpers/EventHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
 import {FontHelper} from '../../../helpers/FontHelper.js';
-import {Accessories, InternalProjectSettings, InternalSites, EditorHelper} from './EditorHelper.js';
+import {Accessories, EditorHelper} from './EditorHelper.js';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -143,13 +144,44 @@ var ManipulationHelper = {
     if (!skipAfterPromise) {
       resolve();
     }
-    
+	  
     EditorHelper.update(tag);
   },
+  updateComponentData: (node: any) => {
+    if (node) {
+	    let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
+	    
+	    for (let element of elements) {
+	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
+	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
+	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
+	        let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	        
+	        if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
+	          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+	        }
+	    		
+	    		WorkspaceHelper.addOrReplaceComponentData(
+	          reactClassComposingInfoGUID,
+	          HTMLHelper.getAttribute(element, 'internal-fsb-name'),
+	          reactNamespace,
+	          reactClass,
+	          element.outerHTML
+	        );
+	    	}
+	    }
+	  }
+	},
   
   handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	let element = null;
+  	
+  	if (!Accessories.cursor.getDOMNode().parentNode) {
+  		alert('Please place a cursor anywhere before performing insertion.');
+  		return [accessory, false, link];
+  	}
   	
   	if (typeof content === 'string') {
   		if (composedUntitledNameCount[content] === undefined) {
@@ -167,7 +199,7 @@ var ManipulationHelper = {
     accessory = content;
     
     let style: string;
-    let isForwardingStyleToChildren: boolean = false;
+    let isComponentInsertion: boolean = false;
     
     switch (content.klass) {
       case 'FlowLayout':
@@ -230,8 +262,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '100%', minHeight: '300px'})
         		iframe
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'HTML':
       	element = document.createElement('div');
@@ -252,8 +282,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='text')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Select':
       	element = document.createElement('div');
@@ -261,8 +289,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		select
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Radio':
       	element = document.createElement('div');
@@ -270,8 +296,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block'})
         		input(type='radio')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Checkbox':
       	element = document.createElement('div');
@@ -279,8 +303,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block'})
         		input(type='checkbox')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Label':
       	element = document.createElement('label');
@@ -296,8 +318,6 @@ var ManipulationHelper = {
         	.internal-fsb-element(style={display: 'block', width: '100%'})
         		input(type='file')
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Button':
       	element = document.createElement('div');
@@ -313,8 +333,6 @@ var ManipulationHelper = {
         	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
         		img
         `, element);
-        
-        isForwardingStyleToChildren = true;
         break;
       case 'Video':
       	element = document.createElement('div');
@@ -322,8 +340,26 @@ var ManipulationHelper = {
         	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
         		video
         `, element);
+        break;
+      case 'Component':
+        let componentInfo = WorkspaceHelper.getComponentData(content.id);
+        let componentName = componentInfo.name;
+  	  
+    	  if (composedUntitledNameCount[componentName] === undefined) {
+        	composedUntitledNameCount[componentName] = 0;
+        }
+        composedUntitledNameCount[componentName]++;
         
-        isForwardingStyleToChildren = true;
+    	  content.guid = RandomHelper.generateGUID();
+    	  content.name = componentName + ' ' + composedUntitledNameCount[componentName];
+        
+        element = document.createElement('div');
+        element.innerHTML = componentInfo.html;
+        element = element.firstChild;
+        
+        HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);
+        
+        isComponentInsertion = true;
         break;
     }
     
@@ -333,44 +369,44 @@ var ManipulationHelper = {
       HTMLHelper.setAttribute(element, 'internal-fsb-guid', content.guid);
       HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
       
-      // Being selected capability
+      // Install capabilities
       // 
-      CapabilityHelper.installCapabilityOfBeingSelected(element);
+      CapabilityHelper.installCapabilitiesForInternalElements(element);
       promise.then(() => {
         ManipulationHelper.perform('select', content.guid);
       });
       
-      // Moving cursor inside capability
-      //
-      CapabilityHelper.installCapabilityOfBeingMoveInCursor(element);
-      
-      if (HTMLHelper.getAttribute(element, 'contentEditable') == 'true') {
-      	CapabilityHelper.installCapabilityOfBeingPasted(element);
-      }
-      
       // Forwarding style to its children capability
       //
-      if (isForwardingStyleToChildren) {
+    	let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(content.klass) != -1);
+    
+      if (!isComponentInsertion && isForwardingStyleToChildren) {
       	CapabilityHelper.installCapabilityOfForwardingStyle(element);
       }
       
       // Insert the element before the cursor.
       //
-      HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
-      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-        if (!isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
-        Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
-      } else {
-        StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
-        StylesheetHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
-        StylesheetHelper.setStyleAttribute(element, 'width', '150px');
-        Accessories.cursor.getDOMNode().parentNode.appendChild(element);
-      }
+      if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
+      if (LayoutHelper.isNestedComponent(Accessories.cursor.getDOMNode().parentNode, content.id)) {
+    		alert("The editor doesn't allow nest of components.");
+    		remember = false;
+    	} else {
+	      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+	        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+	        Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
+	      } else {
+	        StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
+	        StylesheetHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
+	        StylesheetHelper.setStyleAttribute(element, 'width', '150px');
+	        Accessories.cursor.getDOMNode().parentNode.appendChild(element);
+	      }
       
-      // Update Editor UI
-      EditorHelper.updateEditorProperties();
+	      // Update Editor UI
+	      EditorHelper.updateEditorProperties();
+	    }
     }
     
+    ManipulationHelper.updateComponentData(element);
     return [accessory, remember, link];
   },
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -491,6 +527,17 @@ var ManipulationHelper = {
               }
               break;
             default:
+              if (attribute.name == 'internal-fsb-react-mode') {
+              	if (attribute.value != 'Site') {
+              		WorkspaceHelper.removeComponentData(HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+              	} else {
+              		if (HTMLHelper.hasAttribute(selectingElement, 'internal-fsb-inheriting')) {
+	              		alert('You cannot create a component of an inheriting one.');
+	              		return [accessory, false, link];
+	              	}
+              	}
+              }
+              
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
                 found = true;
                 if (attribute.value !== null) {
@@ -605,22 +652,23 @@ var ManipulationHelper = {
             if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
               
-              if (extension.name == 'editingSiteName') {
+              if (['editingPageID', 'editingComponentID', 'editingPopupID'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
-                    name: 'editingSiteName',
-                    value: InternalProjectSettings.editingSiteName
+                    name: extension.name,
+                    value: InternalProjectSettings[extension.name]
                   }]
                 };
                 
-                EditorHelper.saveWorkspaceData();
-                InternalProjectSettings.editingSiteName = extension.value;
-                EditorHelper.loadWorkspaceData();
-              } else if (extension.name == 'pages') {
+                WorkspaceHelper.saveWorkspaceData();
+                
+                InternalProjectSettings[extension.name] = extension.value;
+                WorkspaceHelper.loadWorkspaceData();
+              } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
-                    name: 'pages',
-                    value: CodeHelper.clone(InternalProjectSettings.pages)
+                    name: extension.name,
+                    value: CodeHelper.clone(InternalProjectSettings[extension.name])
                   }]
                 };
                 
@@ -658,6 +706,7 @@ var ManipulationHelper = {
       remember = false;
     }
     
+    ManipulationHelper.updateComponentData(selectingElement);
     return [accessory, remember, link];
   },
   handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -684,6 +733,7 @@ var ManipulationHelper = {
       remember = false;
     }
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link];
   },
   handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -761,12 +811,18 @@ var ManipulationHelper = {
     }
     remember = false;
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link];
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	EditorHelper.synchronize("click", null);
+  	  	
+ 	 	if ([37, 38, 39, 40, 8].indexOf(content) != -1 && !Accessories.cursor.getDOMNode().parentNode) {
+  		alert('Please place a cursor anywhere before performing keystroke action.');
+  		return [accessory, false, link];
+  	}
   	
   	switch (content) {
       case 37:
@@ -901,15 +957,18 @@ var ManipulationHelper = {
   	  container: element.parentNode
   	}
   	
-  	link = Math.random();
-  	promise.then(() => {
-  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-			removeAllPresetReferences(presetId, link);
-			StylesheetHelper.removeStylesheetDefinition(presetId);
-		});
-  	
     if (shouldContinue && element) {
-      element.parentNode.removeChild(element);
+    	link = Math.random();
+	  	promise.then(() => {
+	  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+				removeAllPresetReferences(presetId, link);
+				StylesheetHelper.removeStylesheetDefinition(presetId);
+			});
+			
+			let parentNode = element.parentNode;
+      parentNode.removeChild(element);
+      
+      ManipulationHelper.updateComponentData(parentNode);
     } else {
     	remember = false;
     }
@@ -928,6 +987,11 @@ var ManipulationHelper = {
   	
   	let selectingElement = EditorHelper.getSelectingElement();
   	let cursorContainer = Accessories.cursor.getDOMNode().parentNode;
+  	
+  	if (!cursorContainer || cursorContainer.tagName != 'TD') {
+  		alert('Please place a cursor inside any cell before performing table modification.');
+  		return [accessory, false, link];
+  	}
   	
     if (selectingElement && cursorContainer.tagName == 'TD') {
       switch (content.action) {
@@ -1213,89 +1277,107 @@ var ManipulationHelper = {
     	CapabilityHelper.installCapabilityOfBeingMoveInCursor(selectingElement);
     }
   	
+  	ManipulationHelper.updateComponentData(selectingElement);
   	return [accessory, remember, link, content.action];
   },
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
   	let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
+  	let origin = target.parentNode;
   	let destination = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.destination.split(':')[0]);
   	
-  	if (remember) {
-	  	let nextSibling = HTMLHelper.getNextSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
-	  	let previousSibling = HTMLHelper.getPreviousSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
-	  	
-	  	if (nextSibling && HTMLHelper.hasAttribute(nextSibling, 'internal-fsb-guid')) {
-	  		accessory = {
-	  			target: content.target,
-	  			destination: HTMLHelper.getAttribute(nextSibling, 'internal-fsb-guid'),
-	  			direction: 'insertBefore'
-	  		};
-	  	} else if (previousSibling && HTMLHelper.hasAttribute(previousSibling, 'internal-fsb-guid')) {
-	  		accessory = {
-	  			target: content.target,
-	  			destination: HTMLHelper.getAttribute(previousSibling, 'internal-fsb-guid'),
-	  			direction: 'insertAfter'
-	  		};
-	  	} else {
-	  		let suffix = "";
-	  		if (target.parentNode.tagName == 'TD') {
-	  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
-	  			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
-	  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
-	  			
-	  			suffix = ':' + row + ',' + column;
-	  		}
-	  		let destination = HTMLHelper.getAttribute(HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode, true), 'internal-fsb-guid');
-	  		accessory = {
-	  			target: content.target,
-	  			destination: (destination == null) ? '0' : destination + suffix,
-	  			direction: 'appendChild'
-	  		};
-	  	}
-	  	
-	  	link = RandomHelper.generateGUID();
-  		
-	  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
-	  	
-	  	if (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
-	  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
-				elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
-	  	}
-    	
-			promise.then(() => {
-	      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
-				ManipulationHelper.perform('update', {
-					attributes: [{
-						name: 'class',
-						value: elementClassName
-					}]
-				}, true, false, link);
-			});
-		}
-		
-		switch (content.direction) {
-    	case 'appendChild':
-    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class')) {
-      		case 'FlowLayout':
-      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
-      			break;
-      		case 'TableLayout':
-      			let info = content.destination.split(':')[1].split(',');
-      			let row = parseInt(info[0]);
-      			let column = parseInt(info[1]);
-      			
-      			destination = destination.childNodes[row].childNodes[column];
-      			break;
-      		case 'AbsoluteLayout':
-      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
-      			break;
-      	}
-    	default:
-    		EditorHelper.move(target, destination, content.direction);
-    		break;
-    }
+  	let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', target), target];
+  	let foundNestComponents = false;
+  	for (let element of elements) {
+  		if (LayoutHelper.isNestedComponent(destination, HTMLHelper.getAttribute(element, 'internal-fsb-inheriting'))) {
+  			foundNestComponents = true;
+  			break;
+  		}
+  	}
   	
+  	if (foundNestComponents) {
+  		alert("The editor doesn't allow nest of components.");
+  		remember = false;
+  	} else {
+	  	if (remember) {
+		  	let nextSibling = HTMLHelper.getNextSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
+		  	let previousSibling = HTMLHelper.getPreviousSibling(target, ['internal-fsb-guide', 'internal-fsb-cursor', 'internal-fsb-resizer']);
+		  	
+		  	if (nextSibling && HTMLHelper.hasAttribute(nextSibling, 'internal-fsb-guid')) {
+		  		accessory = {
+		  			target: content.target,
+		  			destination: HTMLHelper.getAttribute(nextSibling, 'internal-fsb-guid'),
+		  			direction: 'insertBefore'
+		  		};
+		  	} else if (previousSibling && HTMLHelper.hasAttribute(previousSibling, 'internal-fsb-guid')) {
+		  		accessory = {
+		  			target: content.target,
+		  			destination: HTMLHelper.getAttribute(previousSibling, 'internal-fsb-guid'),
+		  			direction: 'insertAfter'
+		  		};
+		  	} else {
+		  		let suffix = "";
+		  		if (target.parentNode.tagName == 'TD') {
+		  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
+		  			let row = [...layout.childNodes].indexOf(target.parentNode.parentNode);
+		  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
+		  			
+		  			suffix = ':' + row + ',' + column;
+		  		}
+		  		let destination = HTMLHelper.getAttribute(HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode, true), 'internal-fsb-guid');
+		  		accessory = {
+		  			target: content.target,
+		  			destination: (destination == null) ? '0' : destination + suffix,
+		  			direction: 'appendChild'
+		  		};
+		  	}
+		  	
+		  	link = RandomHelper.generateGUID();
+	  		
+		  	let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
+		  	
+		  	if (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
+		  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');
+					elementClassName = elementClassName.replace(ALL_RESPONSIVE_OFFSET_REGEX, '');
+		  	}
+	    	
+				promise.then(() => {
+		      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
+					ManipulationHelper.perform('update', {
+						attributes: [{
+							name: 'class',
+							value: elementClassName
+						}]
+					}, true, false, link);
+				});
+			}
+			
+			switch (content.direction) {
+	    	case 'appendChild':
+	    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class')) {
+	      		case 'FlowLayout':
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			break;
+	      		case 'TableLayout':
+	      			let info = content.destination.split(':')[1].split(',');
+	      			let row = parseInt(info[0]);
+	      			let column = parseInt(info[1]);
+	      			
+	      			destination = destination.childNodes[row].childNodes[column];
+	      			break;
+	      		case 'AbsoluteLayout':
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			break;
+	      	}
+	    	default:
+	    		EditorHelper.move(target, destination, content.direction);
+	    		break;
+	    }
+	  }
+  	
+  	ManipulationHelper.updateComponentData(destination);
+  	ManipulationHelper.updateComponentData(origin);
   	return [accessory, remember, link];
   },
   handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -1354,6 +1436,7 @@ var ManipulationHelper = {
           } else {
             Accessories.cursor.getDOMNode().parentNode.insertBefore(accessory.element, Accessories.cursor.getDOMNode());
           }
+          ManipulationHelper.updateComponentData(accessory.element);
           done = true;
         	break;
         case 'keydown':
@@ -1444,6 +1527,10 @@ var ManipulationHelper = {
       case 'codingButton':
         EditorHelper.setEditorCurrentMode('coding');
         break;
+    }
+    
+    if (['siteButton', 'componentsButton', 'popupsButton'].indexOf(content) != -1) {
+      WorkspaceHelper.setMode(content.replace('Button', ''));
     }
     
     return [accessory, content, remember];

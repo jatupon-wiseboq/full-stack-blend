@@ -1,214 +1,233 @@
 include ../../mixin/CreateReactComponent
 include ./partials/html
-.section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
-  .section-title
-    | React Component
-  .section-subtitle
-    | Generalizability 
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
-  .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-    | Namespace
-  .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-namespace'], inline: true, button: false}")
-  .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-    | Reusable Component Name
-  .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-class'], inline: true, button: false}")
-  .section-subtitle
-    | Reference ID
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
-  .section-hr
-.section-container.internal-fsb-selecting-on(internal-fsb-not-for="hasParentReactComponent")
-  .section-title
-    | React Component
-  .section-subtitle
-    | Generalizability 
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
-  .section-hr
-.section-container(internal-fsb-for="internal-fsb-class:Button")
-  .section-title
-    | Form Wizard
-  .section-subtitle
-    | Action
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-1', 'internal-fsb-data-wizard-type']}")
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-2', 'internal-fsb-data-wizard-type']}")
-  .section-subtitle
-    | Inputs
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.WizardInputManager', "{}")
-  .section-hr
-.section-container(internal-fsb-for="hasParentReactComponent")
-  .section-title
-    | Front-End Data Binding
-  .section-subtitle
-    | Hierarchical Dot Notation
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
-  .section-subtitle
-    | Paging Size
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-react-paging'], inline: true, button: false}")
-  .section-note
-    | Having an automatic generated hierarchical data, the notation extends from its parent, and non-leaf node makes it repeating.
-  .section-hr
-.section-container(internal-fsb-for="internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Hidden")
-  .section-title
-    | Back-End Data Binding
-  .section-subtitle
-    | Data Source
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-1', 'internal-fsb-data-source-type']}")
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-2', 'internal-fsb-data-source-type']}")
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
-    | Table Name
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
-    | Queue Name
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
-    | Table Name
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
-    | Group
-  .section-body(internal-fsb-for="internal-fsb-data-source-type")
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false}")
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
-    | Column Name
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
-    | Priority
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
-    | Hierarchical Dot Notation
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
-    | Key
-  .section-body(internal-fsb-for="internal-fsb-data-source-type")
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
-    | Default Value
-  .section-body(internal-fsb-for="internal-fsb-data-source-type")
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
-  .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
-    | Required
-  .section-body(internal-fsb-for="internal-fsb-data-source-type")
-    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['require']}")
-  .section-note
-    | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
-  .section-hr
-.section-container.internal-fsb-selecting-on
-  .section-title
-    | Custom Properties
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
-  .section-note
-    | These can be both forwarding react properties or HTML tag attributes.
-  .section-hr
-.section-container
-  .section-title
-    | Events Binding
-  .section-subtitle
-    | Mouse
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbclick']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdblclick']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousedown']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousemove']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseout']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseover']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseup']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousewheel']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwheel']}")
-  .section-subtitle
-    | Keyboard
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeydown']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeypress']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeyup']}")
-  .section-subtitle
-    | Touch
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchstart']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchmove']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchend']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchcancel']}")
-  .section-subtitle
-    | Dragging
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrag']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragend']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragenter']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragleave']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragover']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragstart']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrop']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbscroll']}")
-  .section-subtitle
-    | Document
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbafterprint']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeprint']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeunload']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbhashchange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbload']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmessage']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsboffline']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbonline']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpagehide']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpageshow']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpopstate']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbresize']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstorage']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbunload']}")
-  .section-subtitle
-    | Clipboard
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcopy']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcut']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpaste']}")
-  .section-subtitle(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
-    | Form
-  .section-body(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbblur']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbchange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcontextmenu']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfocus']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinput']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinvalid']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbreset']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsearch']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbselect']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmit']}")
-  .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
-    | Media
-  .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbabort']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplay']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplaythrough']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcuechange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdurationchange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbemptied']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbended']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadeddata']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadedmetadata']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadstart']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpause']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplay']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplaying']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbprogress']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbratechange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeked']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeking']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstalled']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsuspend']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtimeupdate']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange']}")
-    +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting']}")
-  .section-note
-    | These will generating event boilerplates in the current folding react component.
-  .section-hr
-.section-container
-  .section-title
-    | External Libraries
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
+div(internal-fsb-not-for="internal-fsb-inheriting")
+  .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | React Component
+    .section-subtitle(internal-fsb-not-for="editing:components, editing:popups")
+      | Generalizability 
+    .section-body(internal-fsb-not-for="editing:components, editing:popups")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
+      | Namespace
+    .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-namespace'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
+      | Reusable Component Name
+    .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-class'], inline: true, button: false}")
+    .section-subtitle
+      | Reference ID
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
+    .section-hr
+  .section-container.internal-fsb-selecting-on(internal-fsb-not-for="hasParentReactComponent")
+    .section-title
+      | React Component
+    .section-subtitle
+      | Generalizability 
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-mode']}")
+    .section-hr
+  .section-container(internal-fsb-for="internal-fsb-class:Button")
+    .section-title
+      | Form Wizard
+    .section-subtitle
+      | Action
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-1', 'internal-fsb-data-wizard-type']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-2', 'internal-fsb-data-wizard-type']}")
+    .section-subtitle
+      | Inputs
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.WizardInputManager', "{}")
+    .section-hr
+  .section-container(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | Front-End Data Binding
+    .section-subtitle
+      | Hierarchical Dot Notation
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+    .section-subtitle
+      | Paging Size
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-react-paging'], inline: true, button: false}")
+    .section-note
+      | Having an automatic generated hierarchical data, the notation extends from its parent, and non-leaf node makes it repeating.
+    .section-hr
+  .section-container(internal-fsb-for="internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Hidden")
+    .section-title
+      | Back-End Data Binding
+    .section-subtitle
+      | Data Source
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-1', 'internal-fsb-data-source-type']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-source-type-2', 'internal-fsb-data-source-type']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
+      | Table Name
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
+      | Queue Name
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
+      | Table Name
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
+      | Group
+    .section-body(internal-fsb-for="internal-fsb-data-source-type")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
+      | Column Name
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
+      | Priority
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:document")
+      | Hierarchical Dot Notation
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
+      | Key
+    .section-body(internal-fsb-for="internal-fsb-data-source-type")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
+      | Default Value
+    .section-body(internal-fsb-for="internal-fsb-data-source-type")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
+      | Required
+    .section-body(internal-fsb-for="internal-fsb-data-source-type")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['require']}")
+    .section-note
+      | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
+    .section-hr
+  .section-container.internal-fsb-selecting-on
+    .section-title
+      | Custom Properties
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
+    .section-note
+      | These can be both forwarding react properties or HTML tag attributes.
+    .section-hr
+  .section-container
+    .section-title
+      | Events Binding
+    .section-subtitle
+      | Mouse
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbclick']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdblclick']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousedown']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousemove']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseout']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseover']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseup']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousewheel']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwheel']}")
+    .section-subtitle
+      | Keyboard
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeydown']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeypress']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeyup']}")
+    .section-subtitle
+      | Touch
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchstart']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchmove']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchend']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchcancel']}")
+    .section-subtitle
+      | Dragging
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrag']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragend']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragenter']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragleave']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragover']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragstart']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrop']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbscroll']}")
+    .section-subtitle
+      | Document
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbafterprint']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeprint']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeunload']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbhashchange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbload']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmessage']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsboffline']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbonline']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpagehide']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpageshow']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpopstate']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbresize']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstorage']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbunload']}")
+    .section-subtitle
+      | Clipboard
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcopy']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcut']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpaste']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+      | Form
+    .section-body(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbblur']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbchange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcontextmenu']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfocus']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinput']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinvalid']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbreset']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsearch']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbselect']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmit']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+      | Media
+    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbabort']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplay']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplaythrough']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcuechange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdurationchange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbemptied']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbended']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadeddata']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadedmetadata']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadstart']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpause']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplay']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplaying']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbprogress']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbratechange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeked']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeking']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstalled']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsuspend']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtimeupdate']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting']}")
+    .section-note
+      | These will generating event boilerplates in the current folding react component.
+    .section-hr
+  .section-container
+    .section-title
+      | External Libraries
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
+div(internal-fsb-for="internal-fsb-inheriting")
+  .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | React Component
+    .section-subtitle
+      | Reference ID
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
+    .section-hr
+  .section-container(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | Front-End Data Binding
+    .section-subtitle
+      | Hierarchical Dot Notation
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+  div(internal-fsb-not-for="hasParentReactComponent")
+    include ../../common/component-guide
