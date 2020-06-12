@@ -324,3 +324,8 @@ export const FORWARD_STYLE_TO_CHILDREN_CLASS_LIST = ['Iframe', 'Textbox', 'Selec
 export const INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES = ['internal-fsb-inheriting', 'internal-fsb-guid', 'class', 'style', 'internal-fsb-name', 'internal-fsb-react-id', 'internal-fsb-react-data', 'internal-fsb-react-mode'];
 export const INHERITING_COMPONENT_RESERVED_STYLE_NAMES = ['top', 'right', 'bottom', 'left', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'position'];
 export const INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL = ['top', 'right', 'bottom', 'left', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'position'];
+
+export const IS_DEVELOPMENT_ENVIRONMENT = (['localhost', 'develop.stackblend.com'].indexOf(window.location.hostname) != -1);
+export const DEBUG_MANIPULATION_HELPER = IS_DEVELOPMENT_ENVIRONMENT;
+export const DEBUG_GITHUB_UPLOADER = IS_DEVELOPMENT_ENVIRONMENT;
+export const DEBUG_SITE_PREVIEW = IS_DEVELOPMENT_ENVIRONMENT;

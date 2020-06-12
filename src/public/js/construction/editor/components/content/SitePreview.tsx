@@ -2,7 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {LIBRARIES} from '../../../Constants.js';
+import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -212,18 +212,18 @@ class SitePreview extends Base<Props, State> {
           return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
         });
     		
-    		console.log('externalStylesheets');
-    		console.log(externalStylesheets);
-    		console.log('externalScripts');
-    		console.log(externalScripts);
-    		console.log('combinedStylesheet');
-    		console.log(combinedStylesheet);
-    		console.log('combinedHTMLTags');
-    		console.log(combinedHTMLTags);
-    		console.log('combinedMinimalFeatureScripts');
-    		console.log(combinedMinimalFeatureScripts);
-    		console.log('combinedExpandingFeatureScripts');
-    		console.log(combinedExpandingFeatureScripts);
+    		if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
+    		if (DEBUG_SITE_PREVIEW) console.log(externalStylesheets);
+    		if (DEBUG_SITE_PREVIEW) console.log('externalScripts');
+    		if (DEBUG_SITE_PREVIEW) console.log(externalScripts);
+    		if (DEBUG_SITE_PREVIEW) console.log('combinedStylesheet');
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedStylesheet);
+    		if (DEBUG_SITE_PREVIEW) console.log('combinedHTMLTags');
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedHTMLTags);
+    		if (DEBUG_SITE_PREVIEW) console.log('combinedMinimalFeatureScripts');
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedMinimalFeatureScripts);
+    		if (DEBUG_SITE_PREVIEW) console.log('combinedExpandingFeatureScripts');
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts);
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));

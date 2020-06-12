@@ -68,7 +68,6 @@ var CapabilityHelper = {
           		}
           		
           		if (found != -1) {
-          			console.log(found);
           			let walkPath = CursorHelper.createWalkPathForCursor('0', 0, found + 1);
           			ManipulationHelper.perform('move[cursor]', walkPath);
           		} else {

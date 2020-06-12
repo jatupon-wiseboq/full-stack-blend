@@ -13,7 +13,6 @@ var CursorHelper = {
   },
   moveCursorToTheLeft: (link: any=Math.random()) => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
-    console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
     let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
     let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
@@ -55,7 +54,6 @@ var CursorHelper = {
   },
   moveCursorToTheRight: (link: any=Math.random()) => {
     let {allAllowCursorElements, allAllowCursorPositions} = CursorHelper.getDepthFirstReferencesForCursorWalks();
-    console.log('allAllowCursorElements, allAllowCursorPositions', allAllowCursorElements, allAllowCursorPositions);
     
     let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
     let indexOfTheCursor = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());

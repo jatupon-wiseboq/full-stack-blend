@@ -96,8 +96,6 @@ class OptionManager extends Base<Props, State> {
     		this.state.nodes.splice(index, 1);
     		let refIndex = this.state.nodes.indexOf(reference);
     		
-    		console.log(this.state.nodes, element, reference, direction, index, refIndex);
-    		
     		switch (direction) {
     				case InsertDirection.TOP:
     					this.state.nodes.splice(refIndex, 0, element);

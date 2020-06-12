@@ -10,7 +10,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, DEBUG_MANIPULATION_HELPER} from '../../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -127,7 +127,7 @@ var ManipulationHelper = {
         }
       }
       
-      console.log('remember', name, content, accessory, replace, link);
+      if (DEBUG_MANIPULATION_HELPER) console.log('remember', name, content, accessory, replace, link);
       
       performedIndex += 1;
       performed = performed.splice(0, performedIndex);
@@ -889,7 +889,7 @@ var ManipulationHelper = {
         break;
       case 90:
         {
-          console.log(isShiftKeyActive, isCommandKeyActive, isCtrlKeyActive);
+          if (DEBUG_MANIPULATION_HELPER) console.log(isShiftKeyActive, isCommandKeyActive, isCtrlKeyActive);
           
           if ((!isShiftKeyActive && isCommandKeyActive && !isCtrlKeyActive) ||
               (!isShiftKeyActive && !isCommandKeyActive && isCtrlKeyActive)) { // Undo
@@ -1423,7 +1423,7 @@ var ManipulationHelper = {
       
       link = performed[performedIndex].link;
       
-      console.log('undo', name, content, accessory);
+      if (DEBUG_MANIPULATION_HELPER) console.log('undo', name, content, accessory);
       
       switch (name) {
         case 'insert':
@@ -1485,7 +1485,7 @@ var ManipulationHelper = {
       
       link = performed[performedIndex].link;
       
-      console.log('redo', name, content, accessory);
+      if (DEBUG_MANIPULATION_HELPER) console.log('redo', name, content, accessory);
       
       ManipulationHelper.perform(name, (name == 'insert') ? accessory : content, false, true);
     }

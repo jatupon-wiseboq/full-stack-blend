@@ -2,7 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {LIBRARIES} from '../../../Constants.js';
+import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -110,12 +110,10 @@ class ProjectManager extends Base<Props, State> {
           return;
         }
         
-        console.log(result);
         let baseCommitSHA = result && result.sha;
         let baseTreeSHA = result && result.commit && result.commit.tree.sha;
-        
-        console.log('baseCommitSHA', baseCommitSHA);
-        console.log('baseTreeSHA', baseTreeSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('baseCommitSHA', baseCommitSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('baseTreeSHA', baseTreeSHA);
         
         repo.getTree(baseTreeSHA, (error, result, request) => {
           if (error) {
@@ -123,11 +121,9 @@ class ProjectManager extends Base<Props, State> {
             return;
           }
           
-          console.log(result);
           let previousProjectDataSHA = result.tree.filter(node => node.path == 'project.stackblend')[0] || null;
           if (previousProjectDataSHA) previousProjectDataSHA = previousProjectDataSHA.sha;
-          
-          console.log('previousProjectDataSHA', previousProjectDataSHA);
+          if (DEBUG_GITHUB_UPLOADER) console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
             constructionWindow.initializeWorkspaceData(previousProjectData);
@@ -140,8 +136,6 @@ class ProjectManager extends Base<Props, State> {
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
               }
-              
-              console.log(result);
               
               if (typeof result !== 'object') {
                 alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
@@ -168,12 +162,10 @@ class ProjectManager extends Base<Props, State> {
           return;
         }
         
-        console.log(result);
         let baseCommitSHA = result && result.sha;
         let baseTreeSHA = result && result.commit && result.commit.tree.sha;
-        
-        console.log('baseCommitSHA', baseCommitSHA);
-        console.log('baseTreeSHA', baseTreeSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('baseCommitSHA', baseCommitSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('baseTreeSHA', baseTreeSHA);
         
         repo.getTree(baseTreeSHA, (error, result, request) => {
           if (error) {
@@ -181,11 +173,9 @@ class ProjectManager extends Base<Props, State> {
             return;
           }
           
-          console.log(result);
           let previousProjectDataSHA = result.tree.filter(node => node.path == 'project.stackblend')[0] || null;
           if (previousProjectDataSHA) previousProjectDataSHA = previousProjectDataSHA.sha;
-          
-          console.log('previousProjectDataSHA', previousProjectDataSHA);
+          if (DEBUG_GITHUB_UPLOADER) console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
         		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
@@ -278,10 +268,8 @@ class ProjectManager extends Base<Props, State> {
                           return;
                         }
                         
-                        console.log(result);
                         let nextProjectDataSHA = result.sha;
-                        
-                        console.log('nextProjectDataSHA', nextProjectDataSHA);
+                        if (DEBUG_GITHUB_UPLOADER) console.log('nextProjectDataSHA', nextProjectDataSHA);
                         
                         let tree = [{
                           path: 'project.stackblend',
@@ -330,10 +318,8 @@ class ProjectManager extends Base<Props, State> {
                             return;
                           }
                           
-                          console.log(result);
                           let updatedTreeSHA = result.sha;
-                        
-                          console.log('updatedTreeSHA', updatedTreeSHA);
+                          if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
                           
                           repo.commit(baseCommitSHA, updatedTreeSHA, "Updated project.stackblend", (error, result, request) => {
                             if (error) {
@@ -341,18 +327,14 @@ class ProjectManager extends Base<Props, State> {
                               return;
                             }
                             
-                            console.log(result);
                             let recentCommitSHA = result.sha;
-                            
-                            console.log('recentCommitSHA', recentCommitSHA);
+                            if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
                             
                             repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
                               if (error) {
                                 alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
                                 return;
                               }
-                              
-                              console.log(result);
                               
                               alert('Your changes have been saved successfully.');
                             });
@@ -372,8 +354,6 @@ class ProjectManager extends Base<Props, State> {
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
               }
-              
-              console.log(result);
               
               if (typeof result !== 'object') {
                 alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
@@ -401,10 +381,8 @@ class ProjectManager extends Base<Props, State> {
           return;
         }
         
-        console.log(result);
         let pullRequestNumber = result.number;
-        
-        console.log('pullRequestNumber', pullRequestNumber);
+        if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
         
         repo.mergePullRequest(pullRequestNumber, {
         }, (error, result, request) => {
@@ -436,10 +414,8 @@ export default route;
           return;
         }
         
-        console.log(result);
         let nextRouteDataSHA = result.sha;
-        
-        console.log('nextRouteDataSHA', nextRouteDataSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('nextRouteDataSHA', nextRouteDataSHA);
         
         cb(nextRouteDataSHA);
       });
@@ -462,10 +438,8 @@ ${routes.map(route => `export const _${route.id} = (req: Request, res: Response)
           return;
         }
         
-        console.log(result);
         let nextControllerDataSHA = result.sha;
-        
-        console.log('nextControllerDataSHA', nextControllerDataSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('nextControllerDataSHA', nextControllerDataSHA);
         
         cb(nextControllerDataSHA);
       });
@@ -489,9 +463,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
             return;
           }
           
-          console.log(result);
           nextViewDataSHADict[keys[index]] = result.sha;
-          console.log('nextViewDataSHADict', nextViewDataSHADict);
+          if (DEBUG_GITHUB_UPLOADER) console.log('nextViewDataSHADict', nextViewDataSHADict);
           
           if (index + 1 < keys.length) {
             process(index + 1);
@@ -528,9 +501,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
                 return;
               }
               
-              console.log(result);
               nextReactComponentsDataSHAInfos.push([tokens[0], result.sha]);
-              console.log('nextReactComponentsDataSHAInfos', nextReactComponentsDataSHAInfos);
+              if (DEBUG_GITHUB_UPLOADER) console.log('nextReactComponentsDataSHAInfos', nextReactComponentsDataSHAInfos);
               
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
@@ -572,10 +544,8 @@ for (let expandingPlaceholder of expandingPlaceholders) {
           return;
         }
         
-        console.log(result);
         let nextSiteBundleDataSHA = result.sha;
-        
-        console.log('nextSiteBundleDataSHA', nextSiteBundleDataSHA);
+        if (DEBUG_GITHUB_UPLOADER) console.log('nextSiteBundleDataSHA', nextSiteBundleDataSHA);
         
         cb(nextSiteBundleDataSHA);
       });

@@ -1,6 +1,7 @@
 import {EventHelper} from '../../helpers/EventHelper.js';
 import {RandomHelper} from '../../helpers/RandomHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {DEBUG_GITHUB_UPLOADER} from '../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -48,8 +49,6 @@ class FileBrowser extends React.Component<Props, State> {
                   return;
               }
               
-              console.log(result);
-              
               let guid = RandomHelper.generateGUID();
               let splited = file.name.split('.');
               let extension = (splited[splited.length - 1] || '.png').toLowerCase();
@@ -59,7 +58,7 @@ class FileBrowser extends React.Component<Props, State> {
                   sha: result.sha,
                   url: `https://raw.githubusercontent.com/${GITHUB_ALIAS}/${GITHUB_PROJECT}/${GITHUB_DEVELOP_BRANCH}/src/public/images/uploaded/${guid}.${extension}`
               }
-              console.log('fileDataInfo', fileDataInfo);
+              if (DEBUG_GITHUB_UPLOADER) console.log('fileDataInfo', fileDataInfo);
               
               repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
               if (error) {
@@ -67,12 +66,10 @@ class FileBrowser extends React.Component<Props, State> {
                 return;
               }
               
-              console.log(result);
               let baseCommitSHA = result && result.sha;
               let baseTreeSHA = result && result.commit && result.commit.tree.sha;
-              
-              console.log('baseCommitSHA', baseCommitSHA);
-              console.log('baseTreeSHA', baseTreeSHA);
+              if (DEBUG_GITHUB_UPLOADER) console.log('baseCommitSHA', baseCommitSHA);
+              if (DEBUG_GITHUB_UPLOADER) console.log('baseTreeSHA', baseTreeSHA);
             
               let tree = [{
                 path: fileDataInfo.path,
@@ -87,10 +84,8 @@ class FileBrowser extends React.Component<Props, State> {
                   return;
                 }
                 
-                console.log(result);
                 let updatedTreeSHA = result.sha;
-              
-                console.log('updatedTreeSHA', updatedTreeSHA);
+                if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
                 
                 repo.commit(baseCommitSHA, updatedTreeSHA, "Updated project.stackblend", (error, result, request) => {
                   if (error) {
@@ -98,10 +93,8 @@ class FileBrowser extends React.Component<Props, State> {
                     return;
                   }
                   
-                  console.log(result);
                   let recentCommitSHA = result.sha;
-                  
-                  console.log('recentCommitSHA', recentCommitSHA);
+                  if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
                   
                   repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
                     if (error) {
@@ -109,10 +102,11 @@ class FileBrowser extends React.Component<Props, State> {
                       return;
                     }
                     
-                    console.log(result);
+                    let uploadedResultURL = fileDataInfo.url;
+                    if (DEBUG_GITHUB_UPLOADER) console.log('uploadedResultURL', uploadedResultURL);
                     
                     if ($this.props.onUpdate) {
-                      $this.props.onUpdate(fileDataInfo.url);
+                      $this.props.onUpdate(uploadedResultURL);
                     }
                   });
                 });
