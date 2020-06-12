@@ -46,7 +46,7 @@ class ProjectManager extends Base<Props, State> {
    	    return 'It seemed that your internet connection is unavailable.'
    	  }
    	}
-   	initGitHubInstance() {
+   	getGitHubInstance() {
    	  let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
       if (GITHUB_TOKEN.length == 0) {
         alert('You cannot save until you have connected to a GitHub account.');
@@ -60,6 +60,39 @@ class ProjectManager extends Base<Props, State> {
   		});
   		return gh;
    	}
+   	getGitHubInstance() {
+   	  let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
+      if (GITHUB_TOKEN.length == 0) {
+        alert('You cannot save until you have connected to a GitHub account.');
+        return null;
+      }
+      
+      GITHUB_TOKEN = GITHUB_TOKEN[0].accessToken;
+      
+    	var gh = new GitHub({
+  			token: GITHUB_TOKEN
+  		});
+  		return gh;
+   	}
+   	getGitHubRepo() {
+   		let gh = this.getGitHubInstance();
+   	  if (gh == null) return;
+   	  
+   	  let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
+   	  
+   	  repo.createBlob = (content, cb) => {
+   	  	let utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+		    	return String.fromCharCode('0x' + p1);
+		    });
+				let postBody = {
+					content: btoa(utf8Bytes),
+					encoding: 'base64'
+				};
+				return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, cb);
+			};
+   	  
+   	  return repo;
+   	}
    	public load() {
    	  let construction = document.getElementById('html');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
@@ -69,10 +102,7 @@ class ProjectManager extends Base<Props, State> {
         return; 
       }
    	  
-      let gh = this.initGitHubInstance();
-      if (gh == null) return;
-      
-      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
+      let repo = this.getGitHubRepo();
       
       repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
         if (error) {
@@ -130,10 +160,7 @@ class ProjectManager extends Base<Props, State> {
       let construction = document.getElementById('html');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
-      let gh = this.initGitHubInstance();
-      if (gh == null) return;
-      
-      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
+      let repo = this.getGitHubRepo();
         
       repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
         if (error) {
@@ -362,10 +389,7 @@ class ProjectManager extends Base<Props, State> {
       });
     }
     public deploy() {
-      let gh = this.initGitHubInstance();
-      if (gh == null) return;
-      
-      let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
+      let repo = this.getGitHubRepo();
   		
       repo.createPullRequest({
         title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_STAGING_BRANCH}`,
