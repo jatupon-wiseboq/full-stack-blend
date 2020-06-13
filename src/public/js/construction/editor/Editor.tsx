@@ -25,12 +25,13 @@ import './components/generic/RadioButtonPicker.js';
 import './components/generic/NumberPicker.js';
 import './components/generic/TextPicker.js';
 
-import './components/code/ReactCodeEditor.js';
+import './components/code/FrontEndScriptEditor.js';
 import './components/code/ReactEventBinder.js';
 import './components/code/ExternalLibrariesChooser.js';
 import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
+import './components/code/BackEndScriptEditor.js';
 
 import './components/content/SitePreview.js';
 import './components/content/PageManager.js';

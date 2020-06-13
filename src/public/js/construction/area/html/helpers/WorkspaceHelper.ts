@@ -5,7 +5,7 @@ import {EditorHelper} from './EditorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
-import {CodeGeneratorHelper} from './CodeGeneratorHelper.js';
+import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES} from '../../../Constants.js';
 
 let cachedgenerateHTMLCodeForAllPages: any = {};
@@ -336,7 +336,7 @@ var WorkspaceHelper = {
     return InternalSites[id];
   },
   generateHTMLCodeForCurrentPage: () => {
-    let results = CodeGeneratorHelper.generateHTMLCode();
+    let results = FrontEndDOMHelper.generateHTMLCode();
   	results.push(StylesheetHelper.renderStylesheet(true));
   	
   	return results;
@@ -370,7 +370,7 @@ var WorkspaceHelper = {
   	}
   	
   	let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = CodeGeneratorHelper.generateHTMLCode(container);
+  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateHTMLCode(container);
   	
   	return combinedExpandingFeatureScripts || '';
   }

@@ -4,7 +4,7 @@ import {EditorHelper} from './helpers/EditorHelper.js';
 import {WorkspaceHelper} from './helpers/WorkspaceHelper.js';
 import {CursorHelper} from './helpers/CursorHelper.js';
 import {CapabilityHelper} from './helpers/CapabilityHelper.js';
-import {CodeGeneratorHelper} from './helpers/CodeGeneratorHelper.js';
+import {FrontEndDOMHelper} from './helpers/FrontEndDOMHelper.js';
 import {StylesheetHelper} from './helpers/StylesheetHelper.js';
 
 (() => {
