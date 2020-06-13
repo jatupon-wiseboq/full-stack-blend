@@ -13,7 +13,7 @@ let options = {
     "disabled": CONSTANTS.ENABLED_OPTIONS,
     "checked": CONSTANTS.CHECKED_OPTIONS,
     "readonly": CONSTANTS.READONLY_OPTIONS,
-    "require": CONSTANTS.REQUIRE_OPTIONS,
+    "required": CONSTANTS.REQUIRE_OPTIONS,
     "multiple": CONSTANTS.MULTIPLE_OPTIONS,
     "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
