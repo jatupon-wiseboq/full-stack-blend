@@ -26,23 +26,23 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
-  protected insert(data: [Input]): HierarchicalDataRow {
- 		return DatabaseHelper.insert(data);
+  protected async insert(action: ActionType, data: [Input]): HierarchicalDataRow {
+ 		return await DatabaseHelper.insert(action, data);
   }
   
-  protected update(data: [Input]): HierarchicalDataRow {
- 		return DatabaseHelper.update(data);
+  protected async update(action: ActionType, data: [Input]): HierarchicalDataRow {
+ 		return await DatabaseHelper.update(action, data);
   }
   
-  protected delete(data: [Input]): boolean {
- 		return DatabaseHelper.delete(data);
+  protected async delete(action: ActionType, data: [Input]): boolean {
+ 		return await DatabaseHelper.delete(action, data);
   }
   
-  protected retrieve(data: [Input]): HierarchicalDataTable {
- 		return DatabaseHelper.retrieve(data);
+  protected async retrieve(action: ActionType, data: [Input]): HierarchicalDataTable {
+ 		return await DatabaseHelper.retrieve(action, data);
   }
   
-  protected navigate(data: [Input]): string {
+  protected async navigate(action: ActionType, data: [Input]): string {
  		return '/';
   }`,
   ClassEnd: `
