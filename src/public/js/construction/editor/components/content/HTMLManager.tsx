@@ -79,7 +79,7 @@ class HTMLManager extends Base<Props, State> {
     		    this.refresh();
     		}
     		
-    		window.document.body.click();
+    		document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -155,7 +155,7 @@ class HTMLManager extends Base<Props, State> {
             
             this.refresh();
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     
@@ -175,7 +175,7 @@ class HTMLManager extends Base<Props, State> {
     		    
     		    this.refresh();
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     

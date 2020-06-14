@@ -1398,12 +1398,12 @@ var ManipulationHelper = {
   	
   	switch (content) {
       case 'guide':
-        if (HTMLHelper.hasClass(window.document.body, 'internal-fsb-guide-on')) {
-          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-on');
-          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-off');
+        if (HTMLHelper.hasClass(document.body, 'internal-fsb-guide-on')) {
+          HTMLHelper.removeClass(document.body, 'internal-fsb-guide-on');
+          HTMLHelper.addClass(document.body, 'internal-fsb-guide-off');
         } else {
-          HTMLHelper.removeClass(window.document.body, 'internal-fsb-guide-off');
-          HTMLHelper.addClass(window.document.body, 'internal-fsb-guide-on');
+          HTMLHelper.removeClass(document.body, 'internal-fsb-guide-off');
+          HTMLHelper.addClass(document.body, 'internal-fsb-guide-on');
         }
     }
     

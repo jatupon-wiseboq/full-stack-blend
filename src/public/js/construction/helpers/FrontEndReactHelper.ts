@@ -1,9 +1,4 @@
-import {CAMEL_OF_EVENTS_DICTIONARY} from '../Constants.js';
-
-const USER_CODE_REGEX_GLOBAL = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]+?)(\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|$)/g;
-const USER_CODE_REGEX_GROUP = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]+?)(\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|$)/;
-const SYSTEM_CODE_REGEX_BEGIN_GLOBAL = /(\n[ ]*\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]|[ ]*\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]\n)/g;
-const SYSTEM_CODE_REGEX_END_GLOBAL = /(\n[ ]*\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|[ ]*\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->\n)/g;
+import {CAMEL_OF_EVENTS_DICTIONARY, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants.js';
 
 const DEFAULTS = {
   Import: `

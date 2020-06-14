@@ -88,7 +88,7 @@ class OptionManager extends Base<Props, State> {
         
         this.performUpdate();
         
-        window.document.body.click();
+        document.body.click();
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
@@ -111,7 +111,7 @@ class OptionManager extends Base<Props, State> {
     		
     		this.performUpdate();
     		
-    		window.document.body.click();
+    		document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -164,7 +164,7 @@ class OptionManager extends Base<Props, State> {
             
             this.performUpdate();
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     
@@ -177,7 +177,7 @@ class OptionManager extends Base<Props, State> {
             
             this.performUpdate();
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     

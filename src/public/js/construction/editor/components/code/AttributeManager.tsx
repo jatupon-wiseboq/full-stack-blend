@@ -99,7 +99,7 @@ class AttributeManager extends Base<Props, State> {
     		    });
     		}
     		
-    		window.document.body.click();
+    		document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -168,7 +168,7 @@ class AttributeManager extends Base<Props, State> {
     		        }]
     		    });
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     
@@ -181,7 +181,7 @@ class AttributeManager extends Base<Props, State> {
     		        }]
     		    });
             
-            window.document.body.click();
+            document.body.click();
         }
     }
     

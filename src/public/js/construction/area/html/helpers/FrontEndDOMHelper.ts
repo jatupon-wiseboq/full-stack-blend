@@ -73,9 +73,7 @@ ${rootScript}`;
     return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle];
 	},
 	recursiveGenerateCodeForPage: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
-		if (element == Accessories.cursor.getDOMNode()) return;
-    if (element == Accessories.resizer.getDOMNode()) return;
-    if (element == Accessories.guide.getDOMNode()) return;
+		if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
     	if (!isFirstElement && HTMLHelper.getAttribute(element, 'internal-fsb-react-mode')) {
@@ -112,9 +110,7 @@ ${rootScript}`;
     return ['\n' + executions.join('\n'), '\n' + lines.join('\n')];
   },
   recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
-    if (element == Accessories.cursor.getDOMNode()) return;
-    if (element == Accessories.resizer.getDOMNode()) return;
-    if (element == Accessories.guide.getDOMNode()) return;
+    if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
       if (!element.tagName) {
@@ -389,9 +385,7 @@ ${rootScript}`;
 	  }
 	},
 	recursiveGenerateCodeForFallbackRendering: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
-    if (element == Accessories.cursor.getDOMNode()) return;
-    if (element == Accessories.resizer.getDOMNode()) return;
-    if (element == Accessories.guide.getDOMNode()) return;
+    if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
       if (!element.tagName) {
@@ -605,9 +599,7 @@ ${rootScript}`;
     return [executions.join('\n'), lines.join('\n')];
   },
   recursiveGenerateCodeForMergingSection: function(element: HTMLElement, executions: [string], lines: [string], isFirstElement: boolean=true, hasParentReactComponent: boolean=true) {
-  	if (element == Accessories.cursor.getDOMNode()) return;
-    if (element == Accessories.resizer.getDOMNode()) return;
-    if (element == Accessories.guide.getDOMNode()) return;
+  	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
     	if (!isFirstElement && HTMLHelper.getAttribute(element, 'internal-fsb-react-mode')) return;

@@ -54,7 +54,7 @@ let recentExtraPanelSelector: string = null;
 (function() {
   window.perform = (name: string, content: any) => {
     if (['undo', 'redo'].indexOf(name) != -1) {
-      window.document.body.click();
+      document.body.click();
     }
     
     let element = document.getElementById('html') as HTMLFrameElement;
@@ -143,7 +143,7 @@ let recentExtraPanelSelector: string = null;
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
@@ -188,7 +188,7 @@ let recentExtraPanelSelector: string = null;
         	'internal-fsb-selecting-on' : 'internal-fsb-selecting-off');
         break;
       case 'click':
-        window.document.body.click();
+        document.body.click();
         break;
       case 'swap':
         let element = document.getElementById(content);
@@ -233,7 +233,7 @@ let recentExtraPanelSelector: string = null;
   
   window.setup = (() => {
     $('.workspace-panel-container.scrollable').on('scroll', (event) => {
-      window.document.body.click();
+      document.body.click();
     });
     Accessories.projectManager.current.load();
   });

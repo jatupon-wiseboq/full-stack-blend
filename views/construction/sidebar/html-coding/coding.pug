@@ -3,7 +3,7 @@ include ./partials/html
 div(internal-fsb-not-for="internal-fsb-inheriting")
   .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
     .section-title
-      | React Component
+      | Front-End React Component
     .section-subtitle(internal-fsb-not-for="editing:components, editing:popups")
       | Generalizability 
     .section-body(internal-fsb-not-for="editing:components, editing:popups")
@@ -23,7 +23,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-hr
   .section-container.internal-fsb-selecting-on(internal-fsb-not-for="hasParentReactComponent")
     .section-title
-      | React Component
+      | Front-End React Component
     .section-subtitle
       | Generalizability 
     .section-body
@@ -31,7 +31,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-hr
   .section-container(internal-fsb-for="internal-fsb-class:Button")
     .section-title
-      | Form Wizard
+      | Back-End Data Manipulation
     .section-subtitle
       | Action
     .section-body
@@ -92,12 +92,16 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Required
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['required']}")
+    .section-subtitle(internal-fsb-for="required")
+      | Validation Message
+    .section-body(internal-fsb-for="required")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-message'], inline: true, button: false}")
     .section-note
       | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
     .section-hr
   .section-container.internal-fsb-selecting-on
     .section-title
-      | Custom Properties
+      | Front-End Custom Attributes
     .section-body
       +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
     .section-note
@@ -105,7 +109,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-hr
   .section-container
     .section-title
-      | Events Binding
+      | Front-End Events Binding
     .section-subtitle
       | Mouse
     .section-body
@@ -210,13 +214,13 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-hr
   .section-container
     .section-title
-      | External Libraries
+      | Front-End External Libraries
     .section-body
       +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
 div(internal-fsb-for="internal-fsb-inheriting")
   .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
     .section-title
-      | React Component
+      | Front-End React Component
     .section-subtitle
       | Reference ID
     .section-body

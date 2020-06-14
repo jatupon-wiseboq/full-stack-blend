@@ -238,7 +238,7 @@ var WorkspaceHelper = {
 	    }
     }
  	},
-  updateInheritingComponents: (container: HTMLElement=window.document.body) => {
+  updateInheritingComponents: (container: HTMLElement=document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
     let selectedElement = EditorHelper.getSelectingElement();
     

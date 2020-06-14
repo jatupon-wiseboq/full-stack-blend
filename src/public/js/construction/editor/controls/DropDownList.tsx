@@ -56,7 +56,7 @@ class DropDownList extends React.Component<Props, State> {
             if (dropdown.className.indexOf('hide') == -1) return EventHelper.cancel(event);
         
             if (this.props.autohide) {
-                window.document.body.click();
+                document.body.click();
             }
             
             // Measure Size & Position
@@ -67,7 +67,7 @@ class DropDownList extends React.Component<Props, State> {
             let buttonWidth = size[0];
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu show measure';
-            window.document.body.appendChild(dropdown);
+            document.body.appendChild(dropdown);
             
             let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
             dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
@@ -103,7 +103,7 @@ class DropDownList extends React.Component<Props, State> {
             // Handling Events
             //
             
-            window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
+            document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
             if (this.props.onVisibleChanged) {
                 this.props.onVisibleChanged(true, this.props.tag);
@@ -116,7 +116,7 @@ class DropDownList extends React.Component<Props, State> {
     }
     
     componentWillUnmount() {
-        window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
             this.props.onVisibleChanged(false, this.props.tag);
@@ -143,7 +143,7 @@ class DropDownList extends React.Component<Props, State> {
         dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
         group.appendChild(dropdown);
         
-        window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
             this.props.onVisibleChanged(false, this.props.tag);

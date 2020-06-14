@@ -46,7 +46,7 @@ class DropDownControl extends React.Component<Props, State> {
             if (dropdown.className.indexOf('hide') == -1) return EventHelper.cancel(event);
         
             if (this.props.autohide) {
-                window.document.body.click();
+                document.body.click();
             }
             
             if (this.props.onVisibleChanged) {
@@ -58,14 +58,14 @@ class DropDownControl extends React.Component<Props, State> {
             // Handling Events
             //
             
-            window.document.body.addEventListener('click', this.documentOnClickDelegate, false);
+            document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
             return EventHelper.cancel(event);
         });
     }
     
     componentWillUnmount() {
-        window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+        document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
         if (this.props.onVisibleChanged) {
             this.props.onVisibleChanged(false, this.props.tag);
@@ -83,7 +83,7 @@ class DropDownControl extends React.Component<Props, State> {
         let buttonWidth = size[0];
         
         dropdown.className = 'fsb-dropdown-menu for-dropdown-control dropdown-menu show measure';
-        window.document.body.appendChild(dropdown);
+        document.body.appendChild(dropdown);
         
         let dropDownClientWidth = Math.max(dropdown.clientWidth + 2, this.maximumWidth);
         dropDownClientWidth = Math.max(dropDownClientWidth, this.props.width);
@@ -144,7 +144,7 @@ class DropDownControl extends React.Component<Props, State> {
         group.appendChild(dropdown);
         
         if (invokeEvent && this.props.onVisibleChanged) {
-            window.document.body.removeEventListener('click', this.documentOnClickDelegate, false);
+            document.body.removeEventListener('click', this.documentOnClickDelegate, false);
         
             this.props.onVisibleChanged(false, this.props.tag);
         }

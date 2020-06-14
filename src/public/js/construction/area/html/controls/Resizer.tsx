@@ -60,14 +60,14 @@ class Resizer extends React.Component<Props, State> {
         window.top.document.body.appendChild(this.draggingArea);
     }
     private installEventHandlers() {
-        window.document.body.addEventListener('mouseup', this.mouseUp, false);
-        window.document.body.addEventListener('mousemove', this.mouseMove, false);
+        document.body.addEventListener('mouseup', this.mouseUp, false);
+        document.body.addEventListener('mousemove', this.mouseMove, false);
         window.top.document.body.addEventListener('mouseup', this.mouseUp, false);
         window.top.document.body.addEventListener('mousemove', this.mouseMove, false);
     }
     private uninstallEventHandlers() {
-        window.document.body.removeEventListener('mouseup', this.mouseUp, false);
-        window.document.body.removeEventListener('mousemove', this.mouseMove, false);
+        document.body.removeEventListener('mouseup', this.mouseUp, false);
+        document.body.removeEventListener('mousemove', this.mouseMove, false);
         window.top.document.body.removeEventListener('mouseup', this.mouseUp, false);
         window.top.document.body.removeEventListener('mousemove', this.mouseMove, false);
     }

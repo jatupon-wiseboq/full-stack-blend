@@ -51,7 +51,7 @@ class Tree extends React.Component<IProps, IState> {
     	  isDragging: true
     	});
     	
-    	window.document.body.click();
+    	document.body.click();
     }
     
     private onDragging(point: Point) {
