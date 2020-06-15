@@ -5,14 +5,12 @@ const DEFAULTS = {
 
 // Import additional modules here:
 //
-// import * as module from '...';
 
 `,
   Declare: `
 
 // Declare private static variables here:
 //
-let x: number = 0;
 
 `,
   Interface: `

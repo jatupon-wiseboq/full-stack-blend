@@ -14,7 +14,8 @@ var BackEndDOMHelper = {
   	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
-    	if (FORM_CONTROL_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class'))) {
+    	if (HTMLHelper.hasClass(element, 'internal-fsb-element') &&
+    		FORM_CONTROL_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
 		    let info = HTMLHelper.getAttributes(element, false);
     		
 	    	let code, mapping;
