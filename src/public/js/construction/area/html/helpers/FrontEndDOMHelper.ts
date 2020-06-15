@@ -4,7 +4,7 @@ import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX} from '../../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST} from '../../../Constants.js';
 
 // This code generator relies on elements in construction area.
 // 
@@ -135,6 +135,7 @@ ${rootScript}`;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
+        let submitControls = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -219,6 +220,9 @@ ${rootScript}`;
             case 'internal-fsb-react-data':
               if (!!attribute.value) reactData = attribute.value;
               break;
+            case 'internal-fsb-data-controls':
+              if (!!attribute.value) submitControls = attribute.value.trim();
+              break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -251,6 +255,11 @@ ${rootScript}`;
               }
               break;
           }
+        }
+        
+        if (submitControls) {
+        	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
+        	attributes.push(`onClick="internalFsbSubmit()"`);
         }
         
         for (let key in bindingStyles) {
@@ -409,6 +418,7 @@ ${rootScript}`;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
+        let submitControls = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -474,6 +484,9 @@ ${rootScript}`;
             case 'internal-fsb-react-class':
               if (!!attribute.value) reactClass = attribute.value;
               break;
+            case 'internal-fsb-data-controls':
+              if (!!attribute.value) submitControls = attribute.value.trim();
+              break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -506,6 +519,11 @@ ${rootScript}`;
               }
               break;
           }
+        }
+        
+        if (submitControls) {
+        	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
+        	attributes.push(`onClick="internalFsbSubmit()"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {

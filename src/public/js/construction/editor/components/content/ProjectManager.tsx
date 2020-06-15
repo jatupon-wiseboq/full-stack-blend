@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {TextHelper} from '../../../helpers/TextHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants.js';
@@ -85,6 +86,9 @@ class ProjectManager extends Base<Props, State> {
    	  let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
    	  
    	  repo.createBlob = (content, cb) => {
+   	  	if (content) {
+        	content = TextHelper.removeMultipleBlankLines(content);
+        }
    	  	let utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function(match, p1) {
 		    	return String.fromCharCode('0x' + p1);
 		    });
@@ -595,18 +599,27 @@ ${tokens[1]}
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
+import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
+import {HTMLHelper} from './helpers/HTMLHelper.js';
 ${frontEndComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
+declare let window: any;
 
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
-
 for (let expandingPlaceholder of expandingPlaceholders) {
 	let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
 	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward}, null), expandingPlaceholder);
 	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+}
+
+window.internalFsbSubmit = (button: HTMLElement) => {
+	const guid = HTMLHelper.getAttribute(button, 'internal-fsb-guid');
+	const dataControls = HTMLHelper.getAttribute(button, 'internal-fsb-data-controls');
+	DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
+	DataManipulationHelper.request(guid);
 }
 
 // <--- Auto[Generating:V1]
