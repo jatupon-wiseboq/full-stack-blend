@@ -26,23 +26,23 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
-  protected async insert(action: ActionType, data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.insert(action, data);
+  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
+ 		return await DatabaseHelper.insert(data);
   }
   
-  protected async update(action: ActionType, data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.update(action, data);
+  protected async update(data: Input[]): Promise<HierarchicalDataRow> {
+ 		return await DatabaseHelper.update(data);
   }
   
-  protected async delete(action: ActionType, data: Input[]): Promise<boolean> {
- 		return await DatabaseHelper.delete(action, data);
+  protected async delete(data: Input[]): Promise<boolean> {
+ 		return await DatabaseHelper.delete(data);
   }
   
-  protected async retrieve(action: ActionType, data: Input[]): Promise<HierarchicalDataTable> {
- 		return await DatabaseHelper.retrieve(action, data);
+  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {
+ 		return await DatabaseHelper.retrieve(data);
   }
   
-  protected async navigate(action: ActionType, data: Input[]): Promise<string> {
+  protected async navigate(data: Input[]): Promise<string> {
  		return '/';
   }`,
   ClassEnd: `
@@ -55,9 +55,11 @@ export default Controller;
 
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
+import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
 import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
 import {RequestHelper} from '../helpers/RequestHelper.js';
+import {RenderHelper} from '../helpers/RenderHelper.js';
 import {Base} from './Base.js';
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -109,13 +111,17 @@ class Controller extends Base {
   constructor(request: Request, response: Response) {
   	super(request, response);
   	
-    let [action, data] = this.initialize(request);
-    this.perform(action, data);
+  	try {
+	    let [action, data] = this.initialize(request);
+	    this.perform(action, data);
+   	} catch(error) {
+	  	RenderHelper.error(this.response, error);
+	  }
   }
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [action: ActionType, data: Input[]] {
+  private initialize(request: Request): [ActionType, Input[]] {
   	let action: ActionType = RequestHelper.getAction(request);
   	let data: Input[] = [];
   	let input: Input = null;

@@ -426,7 +426,8 @@ import * as homeController from './controllers/Home.js';
 const route = (app: any) => {
 ${routes.map(route => ` app.get("${route.path}", homeController.${this.getRepresentativeName(route.id)});
  app.post("${route.path}", homeController.${this.getRepresentativeName(route.id)});`).join('\n')
-};
+}
+}
 
 export default route;
 
@@ -448,14 +449,14 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
+${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
 	if (req.method == 'GET') {
 		res.render("home/${this.getRepresentativeName(route.id)}", {
   	});
 	} else {
-		import Controller from './controllers/${this.getRepresentativeName(route.id)}.js';
-		const controller = new Controller(req, res);
+		new Component${route.id}(req, res);
 	}
 }`).join('\n')}
 
