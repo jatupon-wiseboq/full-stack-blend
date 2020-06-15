@@ -136,6 +136,7 @@ ${rootScript}`;
         let inheritingAttributes = [];
         let inheritingStyles = [];
         let submitControls = null;
+        let submitType = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -223,6 +224,9 @@ ${rootScript}`;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
+            case 'internal-fsb-data-wizard-type':
+            	if (!!attribute.value) submitType = attribute.value;
+              break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -259,7 +263,7 @@ ${rootScript}`;
         
         if (submitControls) {
         	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
-        	attributes.push(`onClick="internalFsbSubmit()"`);
+        	attributes.push(`onClick="internalFsbSubmit(this, '${submitType}')"`);
         }
         
         for (let key in bindingStyles) {
@@ -419,6 +423,7 @@ ${rootScript}`;
         let inheritingAttributes = [];
         let inheritingStyles = [];
         let submitControls = null;
+        let submitType = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -487,6 +492,9 @@ ${rootScript}`;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
+            case 'internal-fsb-data-wizard-type':
+            	if (!!attribute.value) submitType = attribute.value;
+              break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -523,7 +531,7 @@ ${rootScript}`;
         
         if (submitControls) {
         	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
-        	attributes.push(`onClick="internalFsbSubmit()"`);
+        	attributes.push(`onClick="internalFsbSubmit(this, '${submitType}')"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {

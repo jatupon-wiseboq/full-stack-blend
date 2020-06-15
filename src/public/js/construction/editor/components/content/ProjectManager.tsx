@@ -615,11 +615,11 @@ for (let expandingPlaceholder of expandingPlaceholders) {
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
 
-window.internalFsbSubmit = (button: HTMLElement) => {
+window.internalFsbSubmit = (button: HTMLElement, action: string) => {
 	const guid = HTMLHelper.getAttribute(button, 'internal-fsb-guid');
 	const dataControls = HTMLHelper.getAttribute(button, 'internal-fsb-data-controls');
 	DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
-	DataManipulationHelper.request(guid);
+	DataManipulationHelper.request(guid, action);
 }
 
 // <--- Auto[Generating:V1]
