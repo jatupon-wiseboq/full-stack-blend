@@ -110,7 +110,7 @@ var CursorHelper = {
     
     ManipulationHelper.perform('move[cursor]', walkPath);
   },
-  getDepthFirstReferencesForCursorWalks: (container: HTMLElement=document.body, allAllowCursorElements: [HTMLElement]=[], allAllowCursorPositions: [number]=[]) => {
+  getDepthFirstReferencesForCursorWalks: (container: HTMLElement=document.body, allAllowCursorElements: [HTMLElement]=[], allAllowCursorPositions: number[]=[]) => {
     let isContainerAllowedCursor = HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor');
     
     let children = [...container.children];

@@ -26,7 +26,7 @@ var TextHelper = {
     }
     return tokens.join(' ');
   },
-  mergeClassNameWithPrefixedClasses: function(original: string, prefix: string, targets: [string]): string {
+  mergeClassNameWithPrefixedClasses: function(original: string, prefix: string, targets: string[]): string {
  		let klasses = original && original.split(' ') || [];
  		klasses = klasses.filter(klass => klass.indexOf(prefix) != 0);
  		

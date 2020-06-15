@@ -80,11 +80,14 @@ import {StylesheetHelper} from './helpers/StylesheetHelper.js';
       EditorHelper.updateEditorProperties();
     }
   });
-  window.generateHTMLCodeForCurrentPage = (() => {
-  	return WorkspaceHelper.generateHTMLCodeForCurrentPage();
+  window.generateFrontEndCodeForCurrentPage = (() => {
+  	return WorkspaceHelper.generateFrontEndCodeForCurrentPage();
   });
-  window.generateHTMLCodeForAllPages = (() => {
-    return WorkspaceHelper.generateHTMLCodeForAllPages();
+  window.generateFrontEndCodeForAllPages = (() => {
+    return WorkspaceHelper.generateFrontEndCodeForAllPages();
+  });
+  window.generateBackEndCodeForAllPages = (() => {
+    return WorkspaceHelper.generateBackEndCodeForAllPages();
   });
   window.getCommonExpandingFeatureScripts = (() => {
     return WorkspaceHelper.getCommonExpandingFeatureScripts();

@@ -49,15 +49,15 @@ const DEFAULTS = {
 
 // Export variables here:
 //
-export {Controller};
+export default Controller;
 `
 }
 
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from './helpers/DatabaseHelper.js';
-import {ValidationInfo, ValidationHelper} from './helpers/ValidationHelper.js';
-import {RequestHelper} from './helpers/RequestHelper.js';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
+import {RequestHelper} from '../helpers/RequestHelper.js';
 import {Base} from './Base.js';
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -143,9 +143,11 @@ const MERGING_BOILERPLATE = `// Auto[Merging:Begin]--->
 
 const MAIN_MERGE_END_BEGIN = `	  // <---Auto[Merging]`;
 const SUB_MERGE_END_BEGIN = `\n// Auto[Merging:End]--->`;
+const FILE_BEGIN = `// Auto[File]--->`;
+const FILE_END = `// <---Auto[File]`;
 
 var BackEndScriptHelper = {
-		generateScriptCode: (info: any, previewReactClassName: string=null) => {
+		generateScriptCode: (info: any) => {
 				let code = FULL_BOILERPLATE;
 		    code = code.replace('// <---Auto[Import]', '// <---Auto[Import]' + (info['internal-fsb-data-code-import'] || DEFAULTS.Import));
 		    code = code.replace('// <---Auto[Declare]', '// <---Auto[Declare]' + (info['internal-fsb-data-code-declare'] || DEFAULTS.Declare));
@@ -165,9 +167,13 @@ var BackEndScriptHelper = {
 				
 				code = code.replace(MAIN_MERGE_END_BEGIN, `${mergingCode}${MAIN_MERGE_END_BEGIN}`);
 				
+				code = `${code.split(FILE_END)[0]}
+${info['editingPageID']}
+${FILE_END}${code.split(FILE_END)[1]}`;
+				
 				return [code, functionNameMapping];
 		},
-		generateMergingCode: (info: any, executions: [string], removeAutoGeneratingWarning: boolean=false) => {
+		generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false) => {
 				let code = '';
 	      let functionNameMapping = {};
 	      

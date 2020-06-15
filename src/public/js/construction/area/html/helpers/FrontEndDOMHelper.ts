@@ -9,7 +9,7 @@ import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONT
 // This code generator relies on elements in construction area.
 // 
 var FrontEndDOMHelper = {
-	generateHTMLCode: function(root: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
+	generateFrontEndCode: function(root: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
     // Document Level
     // 
     let generatedRenderMethodRootResult = FrontEndDOMHelper.generateCodeForReactRenderMethod(root);
@@ -23,8 +23,8 @@ var FrontEndDOMHelper = {
 		// Generate Scripts
 		// SEO: Optimize Score of Google PageSpeed Insights.
 		// 
-		let executions: [string] = [];
-    let lines: [string] = [];
+		let executions: string[] = [];
+    let lines: string[] = [];
     
     FrontEndDOMHelper.recursiveGenerateCodeForPage(root, '      ', executions, lines);
     
@@ -72,7 +72,7 @@ ${rootScript}`;
     
     return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle];
 	},
-	recursiveGenerateCodeForPage: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
+	recursiveGenerateCodeForPage: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true) {
 		if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
@@ -98,8 +98,8 @@ ${rootScript}`;
     }
 	},
   generateCodeForReactRenderMethod: function(element: HTMLElement) {
-    let executions: [string] = [];
-    let lines: [string] = [];
+    let executions: string[] = [];
+    let lines: string[] = [];
     
     if (EditorHelper.hasParentReactComponent(element)) {
     	FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', executions, lines);
@@ -109,7 +109,7 @@ ${rootScript}`;
     
     return ['\n' + executions.join('\n'), '\n' + lines.join('\n')];
   },
-  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
+  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
@@ -384,7 +384,7 @@ ${rootScript}`;
       }
 	  }
 	},
-	recursiveGenerateCodeForFallbackRendering: function(element: HTMLElement, indent: string, executions: [string], lines: [string], isFirstElement: boolean=true) {
+	recursiveGenerateCodeForFallbackRendering: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
@@ -592,13 +592,13 @@ ${rootScript}`;
     }
   },
   generateCodeForMergingSection: function(element: HTMLElement) {
-  	let executions: [string] = [];
-  	let lines: [string] = [];
+  	let executions: string[] = [];
+  	let lines: string[] = [];
   	FrontEndDOMHelper.recursiveGenerateCodeForMergingSection(element, executions, lines, true, EditorHelper.hasParentReactComponent(element));
     
     return [executions.join('\n'), lines.join('\n')];
   },
-  recursiveGenerateCodeForMergingSection: function(element: HTMLElement, executions: [string], lines: [string], isFirstElement: boolean=true, hasParentReactComponent: boolean=true) {
+  recursiveGenerateCodeForMergingSection: function(element: HTMLElement, executions: string[], lines: string[], isFirstElement: boolean=true, hasParentReactComponent: boolean=true) {
   	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {

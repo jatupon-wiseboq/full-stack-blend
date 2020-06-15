@@ -213,7 +213,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
         
         return [code, functionNameMapping];
     },
-    generateMergingCode: (info: any, executions: [string], removeAutoGeneratingWarning: boolean=false) => {
+    generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false) => {
         let code = '';
         let functionNameMapping = {};
         

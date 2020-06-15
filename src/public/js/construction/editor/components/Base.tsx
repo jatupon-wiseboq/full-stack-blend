@@ -18,9 +18,9 @@ let keysMapping: any = {};
 
 interface IProps {
     watchingClassNames: [any];
-    watchingStyleNames: [string];
-    watchingAttributeNames: [string];
-    watchingExtentionNames: [string];
+    watchingStyleNames: string[];
+    watchingAttributeNames: string[];
+    watchingExtentionNames: string[];
 }
 
 interface IState {

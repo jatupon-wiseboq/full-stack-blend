@@ -12,7 +12,7 @@ declare let perform: any;
 const INHERITING_OPTION = '<i class="fa fa-angle-left"></i>';
 
 interface Props extends IProps {
-    options: [number];
+    options: number[];
     defaultOption: number;
     prefix: string;
 }

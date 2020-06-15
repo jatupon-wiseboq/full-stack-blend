@@ -215,7 +215,7 @@ var EditorHelper = {
   updateExternalLibraries: () => {
     let externalStylesheets = [];
 		let externalScripts = [];
-		let selectedLibraries: [string] = (InternalProjectSettings.externalLibraries || '').split(' ');
+		let selectedLibraries: string[] = (InternalProjectSettings.externalLibraries || '').split(' ');
     for (let library of LIBRARIES) {
         if (selectedLibraries.indexOf(library.id) != -1) {
             if (library.development.stylesheets) {

@@ -39,7 +39,7 @@ class ExternalLibrariesChooser extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let values: [string] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+        let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
         let nodes: [ITreeNode] = [];
         for (let library of LIBRARIES) {
             nodes.push({

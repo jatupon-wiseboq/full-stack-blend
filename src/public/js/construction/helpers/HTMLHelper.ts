@@ -54,7 +54,7 @@ var HTMLHelper = {
     
     return container.getElementsByTagName(tagName);
   },
-  getNextSibling: (element: HTMLElement, skipIds: [string]=[]) => {
+  getNextSibling: (element: HTMLElement, skipIds: string[]=[]) => {
   	if (!element) return null;
   	while (element.nextSibling) {
   		element = element.nextSibling;
@@ -63,7 +63,7 @@ var HTMLHelper = {
   	}
   	return null;
   },
-  getPreviousSibling: (element: HTMLElement, skipIds: [string]=[]) => {
+  getPreviousSibling: (element: HTMLElement, skipIds: string[]=[]) => {
   	if (!element) return null;
   	while (element.previousSibling) {
   		element = element.previousSibling;
@@ -261,7 +261,7 @@ var HTMLHelper = {
     }
     element.className = HTMLHelper.cleanArray(splited).join(' ');
   },
-  cleanArray: (splited: [string]) => {
+  cleanArray: (splited: string[]) => {
     let results = [];
     splited.forEach((token) => {
       if (token) {

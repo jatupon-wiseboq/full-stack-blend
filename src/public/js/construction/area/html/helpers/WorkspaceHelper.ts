@@ -6,9 +6,11 @@ import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
+import {BackEndDOMHelper} from './BackEndDOMHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES} from '../../../Constants.js';
 
-let cachedgenerateHTMLCodeForAllPages: any = {};
+let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
+let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 let currentMode = 'site';
 
 const DefaultProjectSettings: {string: any} = {
@@ -147,7 +149,7 @@ var WorkspaceHelper = {
         EditorHelper.init(true, false);
         
         if (!CodeHelper.equals(cloned, page)) {
-          cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
+          cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
         }
       }
     } else if (currentMode == 'components') {
@@ -335,20 +337,33 @@ var WorkspaceHelper = {
     
     return InternalSites[id];
   },
-  generateHTMLCodeForCurrentPage: () => {
-    let results = FrontEndDOMHelper.generateHTMLCode();
+  generateFrontEndCodeForCurrentPage: () => {
+    let results = FrontEndDOMHelper.generateFrontEndCode();
   	results.push(StylesheetHelper.renderStylesheet(true));
   	
   	return results;
   },
-  generateHTMLCodeForAllPages: (clean: boolean=true) => {
-    cachedgenerateHTMLCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateHTMLCodeForCurrentPage();
+  generateBackEndCodeForCurrentPage: () => {
+    let results = BackEndDOMHelper.generateBackEndCode();
+  	
+  	return results;
+  },
+  generateFrontEndCodeForAllPages: (clean: boolean=true) => {
+    cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
     
-    let result = cachedgenerateHTMLCodeForAllPages;
-    if (clean) cachedgenerateHTMLCodeForAllPages = {};
+    let result = cacheOfGeneratedFrontEndCodeForAllPages;
+    if (clean) cacheOfGeneratedFrontEndCodeForAllPages = {};
     
     return result;
   },
+  generateBackEndCodeForAllPages: (clean: boolean=true) => {
+  	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+    
+    let result = cacheOfGeneratedBackEndCodeForAllPages;
+    if (clean) cacheOfGeneratedBackEndCodeForAllPages = {};
+    
+    return result;
+ 	},
   getCommonExpandingFeatureScripts: () => {
   	let container = document.createElement('div');
   	
@@ -370,7 +385,7 @@ var WorkspaceHelper = {
   	}
   	
   	let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateHTMLCode(container);
+  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateFrontEndCode(container);
   	
   	return combinedExpandingFeatureScripts || '';
   }

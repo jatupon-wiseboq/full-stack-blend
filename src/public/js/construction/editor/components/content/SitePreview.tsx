@@ -183,7 +183,7 @@ class SitePreview extends Base<Props, State> {
     		
     		let construction = document.getElementById('html');
     		let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateHTMLCodeForCurrentPage();
+    		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = constructionWindow.generateFrontEndCodeForCurrentPage();
     		
     		combinedExpandingFeatureScripts += '\n' + constructionWindow.getCommonExpandingFeatureScripts();
     		
@@ -192,7 +192,7 @@ class SitePreview extends Base<Props, State> {
     		
     		let externalStylesheets = [];
     		let externalScripts = [];
-    		let selectedLibraries: [string] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+    		let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
         for (let library of LIBRARIES) {
             if (selectedLibraries.indexOf(library.id) != -1) {
                 if (library.development.stylesheets) {
