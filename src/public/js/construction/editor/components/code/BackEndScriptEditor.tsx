@@ -2,6 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {BackEndScriptHelper, DEFAULTS} from '../../../helpers/BackEndScriptHelper.js';
+import {TextHelper} from '../../../helpers/TextHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST} from '../../../Constants.js';
 
 declare let React: any;
@@ -76,6 +77,10 @@ class BackEndScriptEditor extends Base<Props, State> {
         		[code, mapping] = BackEndScriptHelper.generateMergingCode(info);
         }
         this.functionNameMapping = mapping;
+        
+        if (code) {
+        	code = TextHelper.removeMultipleBlankLines(code);
+        }
         
         if (this.state.value !== code) {
             this.state.value = code;

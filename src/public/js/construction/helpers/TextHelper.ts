@@ -36,6 +36,14 @@ var TextHelper = {
  		}
     
     return klasses.join(' ').trim();
+ 	},
+ 	removeMultipleBlankLines: function(code: string): string {
+ 		const MULTIPLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/g;
+ 		const MULTIPLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/;
+ 		
+ 		return code.replace(MULTIPLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
+ 			return `${blankLines.match(MULTIPLE_BLANK_LINES_REGEX_LOCAL)[1]}\n`;
+ 		});
  	}
 };
 

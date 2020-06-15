@@ -2,6 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../../helpers/FrontEndReactHelper.js';
+import {TextHelper} from '../../../helpers/TextHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY} from '../../../Constants.js';
 
 declare let React: any;
@@ -79,6 +80,10 @@ class FrontEndScriptEditor extends Base<Props, State> {
         		[code, mapping] = FrontEndReactHelper.generateMergingCode(info);
         }
         this.functionNameMapping = mapping;
+        
+        if (code) {
+        	code = TextHelper.removeMultipleBlankLines(code);
+        }
         
         if (this.state.value !== code) {
             this.state.value = code;
