@@ -20,7 +20,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingExtensionNames: ['components']
+    watchingExtensionNames: ['components', 'editingComponentID']
 });
 
 class ComponentMenu extends Base<Props, State> {
@@ -40,13 +40,14 @@ class ComponentMenu extends Base<Props, State> {
         return pug `
           div
             each component, index in (this.state.extensionValues[this.props.watchingExtensionNames[0]] || [])
-              div(key='item-' + index)
-                a.dropdown-item(onClick=perform.bind(window, 'insert', {
-                  klass: 'Component',
-                  id: component.id
-                }))
-                  i.fa.fa-puzzle-piece
-                  = component.name
+              if component.state != 'delete'
+                div(key='item-' + index)
+                  a.dropdown-item(onClick=perform.bind(window, 'insert', {
+                    klass: 'Component',
+                    id: component.id
+                  }))
+                    i.fa.fa-puzzle-piece
+                    = component.name
         `
     }
 }
