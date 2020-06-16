@@ -1,16 +1,16 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {RandomHelper} from '../../../helpers/RandomHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {FontHelper} from '../../../helpers/FontHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
+import {RandomHelper} from '../../helpers/RandomHelper.js';
+import {EventHelper} from '../../helpers/EventHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
+import {FontHelper} from '../../helpers/FontHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, DEBUG_MANIPULATION_HELPER} from '../../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, DEBUG_MANIPULATION_HELPER} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -72,7 +72,11 @@ var ManipulationHelper = {
       	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
         break;
       case 'insert':
-      	[accessory, remember, link] = ManipulationHelper.handleInsert(name, content, remember, promise, link);
+        if (InternalProjectSettings.currentMode != 'data') {
+      	  [accessory, remember, link] = ManipulationHelper.handleInsert(name, content, remember, promise, link);
+      	} else {
+      	  [accessory, remember, link] = ManipulationHelper.handleInsert(name, content, remember, promise, link);
+      	}
         break;
       case 'update':
         [accessory, remember, link] = ManipulationHelper.handleUpdate(name, content, remember, promise, link);
@@ -1529,7 +1533,7 @@ var ManipulationHelper = {
         break;
     }
     
-    if (['siteButton', 'componentsButton', 'popupsButton'].indexOf(content) != -1) {
+    if (['siteButton', 'componentsButton', 'popupsButton', 'dataButton'].indexOf(content) != -1) {
       WorkspaceHelper.setMode(content.replace('Button', ''));
     }
     

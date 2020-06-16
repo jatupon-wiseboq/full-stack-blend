@@ -102,7 +102,7 @@ class ProjectManager extends Base<Props, State> {
    	  return repo;
    	}
    	public load() {
-   	  let construction = document.getElementById('html');
+   	  let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
       if (!constructionWindow.initializeWorkspaceData) {
@@ -159,7 +159,7 @@ class ProjectManager extends Base<Props, State> {
       });
    	}
     public save() {
-      let construction = document.getElementById('html');
+      let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
       let repo = this.getGitHubRepo();

@@ -137,7 +137,7 @@ class TreeNode extends React.Component<IProps, IState> {
 			if (!this.isMouseMoveReachedThreshold) {
 				this.isMouseMoveReachedThreshold = true;
 				
-				document.getElementById('html').style.pointerEvents = 'none';
+				document.getElementById('area').style.pointerEvents = 'none';
 				
 				let node = this.getNode(HTMLHelper.getAttribute(this.originalElement, 'node'));
 				let elementSize = HTMLHelper.getSize(this.originalElement);
@@ -160,7 +160,7 @@ class TreeNode extends React.Component<IProps, IState> {
 			
 			this.isMouseMoveReachedThreshold = false;
 			
-			document.getElementById('html').style.pointerEvents = 'all';
+			document.getElementById('area').style.pointerEvents = 'all';
 			
 			if (this.props.onEndDragging != null) {
 				this.props.onEndDragging();

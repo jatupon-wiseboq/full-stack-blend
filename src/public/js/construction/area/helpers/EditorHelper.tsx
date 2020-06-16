@@ -1,4 +1,4 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -7,13 +7,13 @@ import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 import '../controls/Cursor.js';
 import '../controls/Resizer.js';
 import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
-import {LIBRARIES} from '../../../Constants.js';
+import {LIBRARIES} from '../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;

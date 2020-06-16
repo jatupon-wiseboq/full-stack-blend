@@ -1,7 +1,7 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {BackEndScriptHelper, DEFAULTS} from '../../../helpers/BackEndScriptHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {BackEndScriptHelper, DEFAULTS} from '../../helpers/BackEndScriptHelper.js';
 import {InternalProjectSettings} from './WorkspaceHelper.js';
-import {FORM_CONTROL_CLASS_LIST} from '../../../Constants.js';
+import {FORM_CONTROL_CLASS_LIST} from '../../Constants.js';
 
 var BackEndDOMHelper = {
 	generateBackEndCode: function() {

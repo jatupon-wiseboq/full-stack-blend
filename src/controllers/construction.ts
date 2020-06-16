@@ -27,12 +27,3 @@ export const html = (req: Request, res: Response) => {
     });
 
 };
-export const data = (req: Request, res: Response) => {
-    
-    const user = req.user as UserDocument;
-    
-    res.render("construction/area/data/index", {
-        user: user
-    });
-
-};

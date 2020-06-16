@@ -57,7 +57,7 @@ let recentExtraPanelSelector: string = null;
       document.body.click();
     }
     
-    let element = document.getElementById('html') as HTMLFrameElement;
+    let element = document.getElementById('area') as HTMLFrameElement;
     let contentWindow = element.contentWindow;
     contentWindow.postMessage(JSON.stringify({
       name: name,
