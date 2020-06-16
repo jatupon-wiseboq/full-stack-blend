@@ -60,12 +60,15 @@ class SitePreview extends Base<Props, State> {
     }
     
    	requiredFiles: any = {
-    		"src/public/js/helpers/CodeHelper.ts": false,
-    		"src/public/js/helpers/DeclarationHelper.ts": false,
-    		"src/public/js/helpers/EventHelper.ts": false,
-    		"src/public/js/components/Base.tsx": false
+    		"public/js/helpers/CodeHelper.ts": false,
+    		"public/js/helpers/DataManipulationHelper.ts": false,
+    		"public/js/helpers/DeclarationHelper.ts": false,
+    		"public/js/helpers/EventHelper.ts": false,
+    		"public/js/helpers/HTMLHelper.ts": false,
+    		"public/js/helpers/RequestHelper.ts": false,
+    		"public/js/components/Base.tsx": false
     };
-    requiredFilesRemainingCount: number = 4;
+    requiredFilesRemainingCount: number = 7;
     zipReader: any = null;
     reader: any = null;
     currentKey: string = null;
@@ -103,7 +106,7 @@ class SitePreview extends Base<Props, State> {
 						request.addEventListener("load", this.unzip.bind(this, request));
 						request.addEventListener("error", this.close.bind(this));
 						request.responseType = 'blob';
-						request.open("GET", "/boilerplate.zip");
+						request.open("GET", "/boilerplate.v1.zip");
 						request.send();
 				} else {
 						HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
@@ -257,10 +260,13 @@ class SitePreview extends Base<Props, State> {
 			let requiredFiles = ${JSON.stringify(this.requiredFiles)};
 			require.config({
         paths: {
-          CodeHelper: requiredFiles["src/public/js/helpers/CodeHelper.ts"],
-          DeclarationHelper: requiredFiles["src/public/js/helpers/DeclarationHelper.ts"],
-          EventHelper: requiredFiles["src/public/js/helpers/EventHelper.ts"],
-          Base: requiredFiles["src/public/js/components/Base.tsx"]
+          CodeHelper: requiredFiles["public/js/helpers/CodeHelper.ts"],
+          DataManipulationHelper: requiredFiles["public/js/helpers/DataManipulationHelper.ts"],
+          DeclarationHelper: requiredFiles["public/js/helpers/DeclarationHelper.ts"],
+          EventHelper: requiredFiles["public/js/helpers/EventHelper.ts"],
+          HTMLHelper: requiredFiles["public/js/helpers/HTMLHelper.ts"],
+          RequestHelper: requiredFiles["public/js/helpers/RequestHelper.ts"],
+          Base: requiredFiles["public/js/components/Base.tsx"]
       	}
       });
 			
@@ -282,6 +288,9 @@ class SitePreview extends Base<Props, State> {
 		      name: 'load',
 		      content: false
 		    }), '*');
+		    window.internalFsbSubmit = function(button, action) {
+		      alert('Please test data manipulation from the localhost machine which is running the project manually.');
+		    };
 			});
 		</script>
 	</body>

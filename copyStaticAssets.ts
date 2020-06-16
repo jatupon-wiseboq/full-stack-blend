@@ -7,9 +7,9 @@ shell.cp("-R", "src/public/images", "dist/public/");
 shell.cp("-R", "src/public/js/lib", "dist/public/js");
 
 const archive = archiver("zip", { zlib: { level: 9 }});
-const stream = fs.createWriteStream("dist/public/boilerplate.zip");
+const stream = fs.createWriteStream("dist/public/boilerplate.v1.zip");
 
 archive
-	.directory("src/public/js/construction/distribution/boilerplate", false)
+	.directory("boilerplate/src", false)
   .pipe(stream);
 archive.finalize();
