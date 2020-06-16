@@ -6,7 +6,7 @@ shell.cp("-R", "src/public/fonts", "dist/public/");
 shell.cp("-R", "src/public/images", "dist/public/");
 shell.cp("-R", "src/public/js/lib", "dist/public/js");
 
-shell.exec("git submodule update --init --recursive");
+shell.exec("git clone git@github.com:SoftenStorm/boilerplate.git");
 
 const archive = archiver("zip", { zlib: { level: 9 }});
 const stream = fs.createWriteStream("dist/public/boilerplate.v1.zip");
