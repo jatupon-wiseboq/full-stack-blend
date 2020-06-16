@@ -157,13 +157,13 @@ var WorkspaceHelper = {
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
     	
-      component.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
+      component.html = WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementByClassName('internal-fsb-element').outerHTML);
     } else if (currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
     	
-      popup.html = WorkspaceHelper.cleanupComponentHTMLData(document.body.firstChild.firstChild.innerHTML);
+      popup.html = WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementByClassName('internal-fsb-element').outerHTML);
     }
   },
   removeComponentData: (id: string) => {
