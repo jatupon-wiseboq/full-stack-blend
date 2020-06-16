@@ -346,24 +346,27 @@ class ProjectManager extends Base<Props, State> {
 	                          let updatedTreeSHA = result.sha;
 	                          if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
 	                          
-	                          repo.commit(baseCommitSHA, updatedTreeSHA, "Updated project.stackblend", (error, result, request) => {
-	                            if (error) {
-	                              alert(`There was an error while committing a new change:\n${this.extractErrorMessage(error)}`);
-	                              return;
-	                            }
-	                            
-	                            let recentCommitSHA = result.sha;
-	                            if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
-	                            
-	                            repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
-	                              if (error) {
-	                                alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
-	                                return;
-	                              }
-	                              
-	                              alert('Your changes have been saved successfully.');
-	                            });
-	                          });
+	                          let message = prompt('Please describe your recent changes:');
+	                          if (message !== null && message.trim() !== "") {
+  	                          repo.commit(baseCommitSHA, updatedTreeSHA, message, (error, result, request) => {
+  	                            if (error) {
+  	                              alert(`There was an error while committing a new change:\n${this.extractErrorMessage(error)}`);
+  	                              return;
+  	                            }
+  	                            
+  	                            let recentCommitSHA = result.sha;
+  	                            if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
+  	                            
+  	                            repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
+  	                              if (error) {
+  	                                alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
+  	                                return;
+  	                              }
+  	                              
+  	                              alert('Your changes have been saved successfully.');
+  	                            });
+  	                          });
+  	                        }
 	                        });
 	                      });
 	                    });
