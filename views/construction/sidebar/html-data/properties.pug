@@ -1,0 +1,43 @@
+include ../../mixin/CreateReactComponent
+.internal-fsb-selecting-on
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase")
+    .section-title
+      | Relational Database Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Database URL Enironment Variable
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-database-key'], inline: true, button: false}")
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalTable")
+    .section-title
+      | Relational Table Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalColumn")
+    .section-title
+      | Relational Column Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Column
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-column-type']}")
+    .section-subtitle
+      | Kind
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-field-type']}")
+    .section-subtitle
+      | Required
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-required']}")
+    .section-subtitle
+      | Unique
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-unique']}")

@@ -1,6 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {InternalProjectSettings} from './WorkspaceHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 
 var CursorHelper = {

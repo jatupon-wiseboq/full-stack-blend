@@ -138,6 +138,12 @@ html, body {
   }
 }
 
+.internal-fsb-disabled-guide {
+	.internal-fsb-guide {
+    display: none !important;
+  }
+}
+
 // Cursor
 //
 .internal-fsb-cursor {
