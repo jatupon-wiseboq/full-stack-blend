@@ -29,7 +29,8 @@ let options = {
 		"data-column-type": CONSTANTS.BACKEND_DATA_COLUMN_TYPE,
 		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
-		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE
+		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
+		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
