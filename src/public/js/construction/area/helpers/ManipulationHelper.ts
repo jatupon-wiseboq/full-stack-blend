@@ -306,7 +306,7 @@ var ManipulationHelper = {
 	              	}
               	}
               } else if (attribute.name == 'data-title-name') {
-              	let titleElement = HTMLHelper.getElementByClassName('internal-fsb-title', selectingElement);
+              	let titleElement = HTMLHelper.getElementsByClassName('internal-fsb-title', selectingElement, false)[0];
               	if (titleElement) {
               		titleElement.innerText = attribute.value;
               	}
