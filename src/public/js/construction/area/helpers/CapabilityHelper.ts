@@ -22,11 +22,14 @@ var CapabilityHelper = {
           willSelected = parents[parents.length - 1];
         }
         
+        EditorHelper.synchronize("click", null);
+        
         if (selecting != willSelected) {
           ManipulationHelper.perform('select', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
+	        EventHelper.setDenyForHandle("click", true);
+	        EventHelper.setDenyForHandle("click", false, 100);
         }
         
-        EditorHelper.synchronize("click", null);
         return EventHelper.cancel(event);
       }, false);
       EventHelper.setDenyForEarlyHandle(container);
