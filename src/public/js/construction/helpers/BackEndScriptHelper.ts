@@ -85,6 +85,7 @@ enum ValidationInfo {
 // <---Auto[Declare]
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
+  source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
 }
