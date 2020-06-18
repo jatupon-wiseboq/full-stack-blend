@@ -604,6 +604,7 @@ ${tokens[1]}
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
+import {EventHelper} from './helpers/EventHelper.js';
 ${frontEndComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`).join('\n')}
 
 declare let React: any;
@@ -618,9 +619,7 @@ for (let expandingPlaceholder of expandingPlaceholders) {
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
 
-window.internalFsbSubmit = (button: HTMLElement, action: string) => {
-	const guid = HTMLHelper.getAttribute(button, 'internal-fsb-guid');
-	const dataControls = HTMLHelper.getAttribute(button, 'internal-fsb-data-controls');
+window.internalFsbSubmit = (guid: string, action: string, dataControls: string) => {
 	DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
 	DataManipulationHelper.request(guid, action);
 }

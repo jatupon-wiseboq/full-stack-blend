@@ -262,8 +262,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
-        	attributes.push(`onClick={() => { window.internalFsbSubmit(this, '${submitType}'); }}`);
+        	attributes.push(`onClick={() => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}'); }}`);
         }
         
         for (let key in bindingStyles) {
@@ -367,6 +366,7 @@ ${rootScript}`;
           	if (!isFirstElement) composed += ' className="' + classes + '"';
           	else composed += ' className={"' + classes + ' " + (this.props.forward && this.props.forward.classes || \'\')}';
           }
+          if (reactClassComposingInfoGUID != null) composed += ' internal-fsb-guid="' + reactClassComposingInfoGUID + '"';
           if (styles != null) attributes.splice(0, 0, 'style={Object.assign({' + styles.join(', ') + '}, this.props.forward && this.props.forward.styles || {})}');
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
           composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
@@ -530,8 +530,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
-        	attributes.push(`onClick="internalFsbSubmit(this, '${submitType}')"`);
+        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}')"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
