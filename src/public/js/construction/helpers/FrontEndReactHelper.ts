@@ -36,7 +36,14 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   // Declare class variables and functions here:
   //
   protected initialize(): void {
-  }`,
+  }
+  
+  // Providing data array base on dot notation:
+  // 
+  protected getDataFromNotation(notation: string): any[] {
+    return super.getDataFromNotation(notation, this.state.data);
+  }
+  `,
   ClassEnd: `
 
 // Export variables here:
@@ -62,6 +69,7 @@ interface IAutoBaseProps extends IBaseProps {
   forward: {classes: String, styles: any};
 }
 interface IAutoBaseState extends IBaseState { 
+  data: any[];
 }
 // <---Auto[Interface]// Auto[ClassBegin]--->
 class KlassA extends Base {
