@@ -619,9 +619,9 @@ for (let expandingPlaceholder of expandingPlaceholders) {
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
 
-window.internalFsbSubmit = (guid: string, action: string, dataControls: string) => {
+window.internalFsbSubmit = (guid: string, action: string, dataControls: string, control: any) => {
 	DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
-	DataManipulationHelper.request(guid, action);
+	DataManipulationHelper.request(guid, action, control);
 }
 
 // <--- Auto[Generating:V1]

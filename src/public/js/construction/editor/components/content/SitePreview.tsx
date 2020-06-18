@@ -288,7 +288,7 @@ class SitePreview extends Base<Props, State> {
 		      name: 'load',
 		      content: false
 		    }), '*');
-  	    window.internalFsbSubmit = function(action) {
+  	    window.internalFsbSubmit = function() {
   	      alert('Please test data manipulation from the localhost machine which is running the project manually.');
   	    };
 			});

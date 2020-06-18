@@ -262,7 +262,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick={() => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}'); }}`);
+        	attributes.push(`onClick={((button) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', button); }).bind(this)}`);
         }
         
         for (let key in bindingStyles) {
@@ -530,7 +530,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}')"`);
+        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', null)"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
