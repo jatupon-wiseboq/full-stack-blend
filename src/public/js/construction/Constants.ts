@@ -334,3 +334,9 @@ export const USER_CODE_REGEX_GLOBAL = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]
 export const USER_CODE_REGEX_GROUP = /\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]([\s\S]+?)(\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|$)/;
 export const SYSTEM_CODE_REGEX_BEGIN_GLOBAL = /(\n[ ]*\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]|[ ]*\/\/ \<---Auto\[([a-zA-Z0-9_:]+)\]\n)/g;
 export const SYSTEM_CODE_REGEX_END_GLOBAL = /(\n[ ]*\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->|[ ]*\/\/ \Auto\[([a-zA-Z0-9_:]+)\]--->\n)/g;
+
+export const BACKEND_DATA_COLUMN_TYPE = [["data-column-type", "true", ["fa-circle", "Primary"]], ["data-column-type", null, ["fa-circle-o", "General"]]];
+export const BACKEND_DATA_FIELD_TYPE = [["data-field-type", "auto", ["d-none", "Increase"]], ["data-field-type", null, ["d-none", "String"]], ["data-field-type", "number", ["d-none", "Number"]], ["data-field-type", "boolean", ["d-none", "Boolean"]]];
+export const BACKEND_DATA_REQUIRED = [["data-required", "true", ["fa-circle", "Necessary"]], ["data-required", null, ["fa-circle-o", "Additional"]]];
+export const BACKEND_DATA_UNIQUE = [["data-unique", "true", ["fa-circle", "Unique"]], ["data-unique", null, ["fa-circle-o", "Common"]]];
+export const BACKEND_DATA_FORCE_CONSTRAINT = [["data-force-constraint", "true", ["fa-circle", "Always Have"]], ["data-force-constraint", null, ["fa-circle-o", "None"]]];

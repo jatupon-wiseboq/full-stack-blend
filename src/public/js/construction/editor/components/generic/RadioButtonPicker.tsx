@@ -5,6 +5,8 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import * as CONSTANTS from '../../../Constants.js';
 
 let options = {
+		// Front-End Options
+		// 
     "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
     "font-style": CONSTANTS.FONT_STYLE_OPTIONS,
     "table-cell-0": CONSTANTS.TABLE_CELL_0_OPTIONS,
@@ -20,7 +22,15 @@ let options = {
     "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
     "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
     "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
-    "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS
+    "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
+    
+    // Back-End Options
+		// 
+		"data-column-type": CONSTANTS.BACKEND_DATA_COLUMN_TYPE,
+		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
+		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
+		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
+		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
