@@ -171,9 +171,11 @@ var BackEndManipulationHelper = {
               | Volatile Memory
         `, element);
         break;
-      case 'Relation':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside outside any element to insert a relation.');
+      case 'Connection':
+      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
+      		alert('Please place a cursor outside outside any element for cross database relation, or inside a database element for cross table relation, to insert such a relation.');
       		return [accessory, false, link];
       	}
       	
@@ -181,7 +183,7 @@ var BackEndManipulationHelper = {
         element = ReactDOM.render(pug `
           .internal-fsb-element
             .internal-fsb-title
-              | Volatile Memory
+              | Relation
         `, element);
         break;
     }

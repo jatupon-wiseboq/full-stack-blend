@@ -84,6 +84,8 @@ class DropDownList extends React.Component<Props, State> {
             
             // Assign Size & Position
             //
+            // position[0] += this.props.offsetX;
+            // position[1] += this.props.offsetY;
             
             if (position[0] + Math.max(dropDownClientWidth, size[0]) < windowWidth) {
                 dropdown.style.left = (position[0] - 1) + 'px';
@@ -91,10 +93,15 @@ class DropDownList extends React.Component<Props, State> {
                 dropdown.style.left = (windowWidth - Math.max(dropDownClientWidth, size[0])) + 'px';
             }
             
+            let minOfHeights = Math.min(dropDownClientHeight, dropDownMaxHeight);
+            let maxOfHeights = Math.min(Math.max(dropDownClientHeight, dropDownMaxHeight), windowHeight);
+            let spaceleft = windowHeight - position[1] - size[1];
+            let shiftPositionY = (spaceleft < 100);
+            
             dropdown.style.position = 'fixed';
-            dropdown.style.top = (position[1] + size[1]) + 'px';
+            dropdown.style.top = ((shiftPositionY) ? windowHeight - maxOfHeights : (position[1] + size[1])) + 'px';
             dropdown.style.width = Math.max(dropDownClientWidth, size[0]) + 'px';
-            dropdown.style.height = (this.props.useMaximumHeight ? dropDownMaxHeight : Math.min(dropDownClientHeight, dropDownMaxHeight)) + 'px';
+            dropdown.style.height = ((shiftPositionY) ? maxOfHeights : minOfHeights) + 'px';
             dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';

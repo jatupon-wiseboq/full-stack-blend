@@ -110,9 +110,9 @@ class DropDownControl extends React.Component<Props, State> {
         }
         
         let minOfHeights = Math.min(dropDownClientHeight, dropDownMaxHeight);
-        let maxOfHeights = Math.max(dropDownClientHeight, dropDownMaxHeight);
+        let maxOfHeights = Math.min(Math.max(dropDownClientHeight, dropDownMaxHeight), windowHeight);
         let spaceleft = windowHeight - position[1] - size[1];
-        let shiftPositionY = (dropDownClientHeight >= 100 && spaceleft < 100);
+        let shiftPositionY = (spaceleft < 100);
         
         dropdown.style.position = 'fixed';
         dropdown.style.top = ((shiftPositionY) ? windowHeight - maxOfHeights : (position[1] + size[1])) + 'px';

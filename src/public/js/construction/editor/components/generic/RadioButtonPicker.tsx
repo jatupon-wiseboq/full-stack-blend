@@ -23,13 +23,15 @@ let options = {
     "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
     "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
     "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
+    "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
     
     // Back-End Options
 		// 
 		"data-column-type": CONSTANTS.BACKEND_DATA_COLUMN_TYPE,
 		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
-		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE
+		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
+		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
@@ -52,6 +54,7 @@ interface Props extends IProps {
     customClassName: string;
     options: any;
     onValueChange(value: any);
+    required: boolean;
 }
 
 interface State extends IState {
@@ -60,7 +63,8 @@ interface State extends IState {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     customClassName: null,
-    options: null
+    options: null,
+    required: false
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -82,6 +86,8 @@ class RadioButtonPicker extends Base<Props, State> {
     		let currentState = this.getState(value, mode);
     		let nameOrArrayOfRegularExpression = value[0];
     		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
+    		
+    		if (this.props.required && currentState) return;
     		
         if (typeof nameOrArrayOfRegularExpression === 'object') { // Array of Regular Expression
 		        let list = [];

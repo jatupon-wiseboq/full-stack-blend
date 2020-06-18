@@ -41,3 +41,30 @@ include ../../mixin/CreateReactComponent
       | Unique
     .section-body(internal-fsb-not-for="data-field-type:auto")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-unique']}")
+  .section-container(internal-fsb-for="internal-fsb-class:Connection")
+    .section-title
+      | Relation Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Source Group
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-group-name'], inline: true, button: false}")
+    .section-subtitle
+      | Source Entity
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-entity-name'], inline: true, button: false}")
+    .section-subtitle
+      | Target Group
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-group-name'], inline: true, button: false}")
+    .section-subtitle
+      | Target Entity
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-entity-name'], inline: true, button: false}")
+    .section-subtitle
+      | Force Constraint
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-force-constraint']}")
