@@ -55,6 +55,7 @@ import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from '
 
 declare let React: any;
 declare let ReactDOM: any;
+declare let window: any;
 
 // <---Auto[Declare]// Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {

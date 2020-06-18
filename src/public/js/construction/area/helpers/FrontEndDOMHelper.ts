@@ -263,7 +263,7 @@ ${rootScript}`;
         
         if (submitControls) {
         	attributes.push(`internal-fsb-data-controls="${submitControls}"`);
-        	attributes.push(`onClick="internalFsbSubmit(this, '${submitType}')"`);
+        	attributes.push(`onClick={() => { window.internalFsbSubmit(this, '${submitType}'); }}`);
         }
         
         for (let key in bindingStyles) {
