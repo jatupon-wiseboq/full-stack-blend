@@ -231,8 +231,18 @@ class SitePreview extends Base<Props, State> {
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
         
-        combinedExpandingFeatureScripts = ts.transpileModule(combinedExpandingFeatureScripts, {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
-        let combinedExpandingFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedExpandingFeatureScripts]));
+        let splitedCombinedExpandingFeatureScripts = combinedExpandingFeatureScripts.split("// Auto[File]--->\n");
+        let requiredURLs = ["DeclarationHelper"];
+        
+        for (let splitedCombinedExpandingFeatureScript of splitedCombinedExpandingFeatureScripts) {
+          if (!splitedCombinedExpandingFeatureScript) continue;
+          
+          let tokens = splitedCombinedExpandingFeatureScript.split("\n// <---Auto[File]");
+          let compiled = ts.transpileModule(tokens[1], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
+          
+          let combinedExpandingFeatureScriptsURI = window.URL.createObjectURL(new Blob([compiled]));
+          requiredURLs.push(combinedExpandingFeatureScriptsURI);
+        }
     		
         let preview = ReactDOM.findDOMNode(this.refs.preview);
         let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
@@ -270,7 +280,7 @@ class SitePreview extends Base<Props, State> {
       	}
       });
 			
-			require(["DeclarationHelper", "${combinedExpandingFeatureScriptsURI}"], function(ExportedDeclarationHelper, ExportedFeatures) {
+			require(${JSON.stringify(requiredURLs)}, function(ExportedDeclarationHelper) {
 				let DeclarationHelper = ExportedDeclarationHelper.DeclarationHelper;
 				let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 				
