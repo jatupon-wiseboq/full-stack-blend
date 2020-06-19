@@ -47,6 +47,10 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         i.fa.fa-save.m-0
         .title
           | Save
+      a.btn.btn-sm.btn-light.mr-1(onclick="merge()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Merge</b></p><p>This will merge your changes with other colleagues, and replace your project with the merged one.</p>")
+        i.fa.fa-save.m-0
+        .title
+          | Merge
       a.btn.btn-sm.btn-light(onclick="deploy()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
         i.fa.fa-cloud-upload.m-0
         .title

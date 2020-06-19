@@ -101,7 +101,7 @@ class ProjectManager extends Base<Props, State> {
    	  
    	  return repo;
    	}
-   	public load() {
+   	public load(callback: any = null) {
    	  let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
@@ -112,7 +112,7 @@ class ProjectManager extends Base<Props, State> {
    	  
       let repo = this.getGitHubRepo();
       
-      repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+      repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
         if (error) {
           alert(`There was an error while retrieving the last commit, please try again.`);
           return;
@@ -136,6 +136,8 @@ class ProjectManager extends Base<Props, State> {
           let continueFn = ((previousProjectData) => {
             constructionWindow.initializeWorkspaceData(previousProjectData);
             this.initializeWorkspaceData(previousProjectData);
+            
+            if (callback) callback();
           });
           
           if (previousProjectDataSHA) {
@@ -164,7 +166,7 @@ class ProjectManager extends Base<Props, State> {
       
       let repo = this.getGitHubRepo();
         
-      repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+      repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
         if (error) {
           alert(`There was an error while retrieving the last commit, please try again.`);
           return;
@@ -357,7 +359,7 @@ class ProjectManager extends Base<Props, State> {
   	                            let recentCommitSHA = result.sha;
   	                            if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
   	                            
-  	                            repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
+  	                            repo.updateHead('heads/' + GITHUB_FEATURE_BRANCH, recentCommitSHA, true, (error, result, request) => {
   	                              if (error) {
   	                                alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
   	                                return;
@@ -397,6 +399,57 @@ class ProjectManager extends Base<Props, State> {
         });
       });
     }
+    public merge() {
+      let repo = this.getGitHubRepo();
+  		
+      repo.createPullRequest({
+        title: `Merging ${GITHUB_FEATURE_BRANCH} into ${GITHUB_DEVELOP_BRANCH}`,
+        head: GITHUB_FEATURE_BRANCH,
+        base: GITHUB_DEVELOP_BRANCH
+      }, (error, result, request) => {
+        if (error) {
+          alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
+          return;
+        }
+        
+        let pullRequestNumber = result.number;
+        if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+        
+        repo.mergePullRequest(pullRequestNumber, {
+        }, (error, result, request) => {
+          if (error) {
+            alert(`There was an error while merging a pull request into a develop branch. However, your changes didn't lose and you can go to your GitHub.com and perform it later.'`);
+            return;
+          }
+          
+          repo.createPullRequest({
+            title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_FEATURE_BRANCH}`,
+            head: GITHUB_DEVELOP_BRANCH,
+            base: GITHUB_FEATURE_BRANCH
+          }, (error, result, request) => {
+            if (error) {
+              alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
+              return;
+            }
+            
+            let pullRequestNumber = result.number;
+            if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+            
+            repo.mergePullRequest(pullRequestNumber, {
+            }, (error, result, request) => {
+              if (error) {
+                alert(`There was an error while merging a pull request into your feature branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}'`);
+                return;
+              }
+              
+              this.load(() => {
+                alert(`Your changes have been merged with other colleagues and have been reloaded.`);
+              });
+            });
+          });
+        });
+      });
+   	}
     public deploy() {
       let repo = this.getGitHubRepo();
   		
@@ -416,7 +469,7 @@ class ProjectManager extends Base<Props, State> {
         repo.mergePullRequest(pullRequestNumber, {
         }, (error, result, request) => {
           if (error) {
-            alert(`There was an error while merging a pull request, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}`);
+            alert(`There was an error while merging a pull request into a staging branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}`);
             return;
           }
           

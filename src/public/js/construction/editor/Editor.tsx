@@ -240,6 +240,9 @@ let recentExtraPanelSelector: string = null;
   window.save = (() => {
     Accessories.projectManager.current.save();
   });
+  window.merge = (() => {
+    Accessories.projectManager.current.merge();
+  });
   window.deploy = (() => {
     Accessories.projectManager.current.deploy();
   });

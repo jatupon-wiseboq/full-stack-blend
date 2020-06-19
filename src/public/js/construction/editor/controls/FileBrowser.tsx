@@ -56,11 +56,11 @@ class FileBrowser extends React.Component<Props, State> {
               let fileDataInfo = {
                   path: `src/public/images/uploaded/${guid}.${extension}`,
                   sha: result.sha,
-                  url: `https://raw.githubusercontent.com/${GITHUB_ALIAS}/${GITHUB_PROJECT}/${GITHUB_DEVELOP_BRANCH}/src/public/images/uploaded/${guid}.${extension}`
+                  url: `https://raw.githubusercontent.com/${GITHUB_ALIAS}/${GITHUB_PROJECT}/${GITHUB_FEATURE_BRANCH}/src/public/images/uploaded/${guid}.${extension}`
               }
               if (DEBUG_GITHUB_UPLOADER) console.log('fileDataInfo', fileDataInfo);
               
-              repo.getSingleCommit('heads/' + GITHUB_DEVELOP_BRANCH, (error, result, request) => {
+              repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
               if (error) {
                 alert(`There was an error while retrieving the last commit, please try again.`);
                 return;
@@ -96,7 +96,7 @@ class FileBrowser extends React.Component<Props, State> {
                   let recentCommitSHA = result.sha;
                   if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
                   
-                  repo.updateHead('heads/' + GITHUB_DEVELOP_BRANCH, recentCommitSHA, true, (error, result, request) => {
+                  repo.updateHead('heads/' + GITHUB_FEATURE_BRANCH, recentCommitSHA, true, (error, result, request) => {
                     if (error) {
                       alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
                       return;

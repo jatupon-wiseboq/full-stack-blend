@@ -14,7 +14,9 @@ export type UserDocument = mongoose.Document & {
     
     alias: string;
     project: string;
-    branch: string;
+    feature: string;
+    develop: string;
+    staging: string;
 
     profile: {
         name: string;
@@ -50,6 +52,7 @@ const userSchema = new mongoose.Schema({
     
     alias: String,
     project: String,
+    feature: String,
     develop: String,
     staging: String,
 

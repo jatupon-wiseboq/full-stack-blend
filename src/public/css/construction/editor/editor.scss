@@ -35,6 +35,9 @@
 body {
 	cursor: default;
 }
+html, body {
+  overflow: hidden;
+}
 div, span, label {
 	cursor: inherit;
 }

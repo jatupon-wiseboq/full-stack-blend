@@ -67,7 +67,11 @@ block content
         .col-sm-7
           input.form-control(type='text', name='project', id='project', value=user.project)
       .form-group.row.justify-content-md-center
-        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='develop') Develop Branch (Save)
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='feature') Feature Branch (Isolate Save)
+        .col-sm-7
+          input.form-control(type='text', name='feature', id='feature', value=user.feature)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='develop') Develop Branch (Merged Save)
         .col-sm-7
           input.form-control(type='text', name='develop', id='develop', value=user.develop)
       .form-group.row.justify-content-md-center
