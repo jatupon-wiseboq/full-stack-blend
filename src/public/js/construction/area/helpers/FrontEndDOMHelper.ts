@@ -367,7 +367,12 @@ ${rootScript}`;
           	else composed += ' className={"' + classes + ' " + (this.props.forward && this.props.forward.classes || \'\')}';
           }
           if (reactClassComposingInfoGUID != null) composed += ' internal-fsb-guid="' + reactClassComposingInfoGUID + '"';
-          if (styles != null) attributes.splice(0, 0, 'style={Object.assign({' + styles.join(', ') + '}, this.props.forward && this.props.forward.styles || {})}');
+          if (styles != null) {
+            if (!isFirstElement) attributes.splice(0, 0, 'style={{' + styles.join(', ') + '}}');
+            else attributes.splice(0, 0, 'style={Object.assign({' + styles.join(', ') + '}, this.props.forward && this.props.forward.styles || {})}');
+          } else if (isFirstElement) {
+            attributes.splice(0, 0, 'style={Object.assign({}, this.props.forward && this.props.forward.styles || {})}');
+          }
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
           composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
           
