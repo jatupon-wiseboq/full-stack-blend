@@ -7,7 +7,7 @@ import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES} from '../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
 let cacheOfGeneratedBackEndCodeForAllPages: any = {};
@@ -34,6 +34,11 @@ const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body class="internal-fsb-guide-on"><d
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-guide-on internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`;
 const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
 const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
+
+const DEFAULT_PAGE_EXTENSIONS = {};
+for (let key of BACKEND_DATA_EXTENSIONS) {
+  DEFAULT_PAGE_EXTENSIONS[key] = null;
+}
 
 var WorkspaceHelper = {
   generateWorkspaceData: () => {
@@ -92,6 +97,8 @@ var WorkspaceHelper = {
       // Remove the extra one.
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      Object.assign(InternalProjectSettings, page.extensions);
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
@@ -161,6 +168,11 @@ var WorkspaceHelper = {
       
       EditorHelper.detach();
       page.body = document.body.outerHTML;
+      
+      page.extensions = {};
+      for (let key of BACKEND_DATA_EXTENSIONS) {
+        page.extensions[key] = InternalProjectSettings[key];
+      }
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -358,6 +370,7 @@ var WorkspaceHelper = {
     InternalSites[id].head.fonts = InternalSites[id].head.fonts || {};
     InternalSites[id].body = InternalSites[id].body || DEFAULT_FLOW_PAGE_HTML;
     InternalSites[id].accessories = InternalSites[id].accessories || {};
+    InternalSites[id].extensions = InternalSites[id].extensions || CodeHelper.clone(DEFAULT_PAGE_EXTENSIONS);
     
     return InternalSites[id];
   },
