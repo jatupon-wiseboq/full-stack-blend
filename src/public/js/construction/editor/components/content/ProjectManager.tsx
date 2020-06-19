@@ -442,9 +442,11 @@ class ProjectManager extends Base<Props, State> {
                 return;
               }
               
-              this.load(() => {
-                alert(`Your changes have been merged with other colleagues and have been reloaded.`);
-              });
+              window.setTimeout(() => {
+                this.load(() => {
+                  alert(`Your changes have been merged with other colleagues and have been reloaded.`);
+                });
+              }, 5000);
             });
           });
         });
