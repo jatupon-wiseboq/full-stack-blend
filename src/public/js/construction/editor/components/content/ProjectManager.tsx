@@ -283,6 +283,25 @@ class ProjectManager extends Base<Props, State> {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: string) => {
                 	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, (backEndControllerBlobSHAInfos: [[string, string]]) => {
 	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHAInfos: [[string, string]]) => {
+	                    
+	                    nextProjectData.frontEndComponentsBlobSHAInfos = nextProjectData.frontEndComponentsBlobSHAInfos || [];
+	                    
+	                    let frontEndComponentsBlobDict = {};
+	                    for (let frontEndComponentsBlobSHAInfo of nextProjectData.frontEndComponentsBlobSHAInfos) {
+	                      frontEndComponentsBlobDict[frontEndComponentsBlobSHAInfo[0]] = frontEndComponentsBlobSHAInfo[1];
+	                    }
+	                    for (let frontEndComponentsBlobSHAInfo of frontEndComponentsBlobSHAInfos) {
+	                      frontEndComponentsBlobDict[frontEndComponentsBlobSHAInfo[0]] = frontEndComponentsBlobSHAInfo[1];
+	                    }
+	                    
+	                    frontEndComponentsBlobSHAInfos = [];
+	                    for (let key in frontEndComponentsBlobDict) {
+	                      if (frontEndComponentsBlobDict.hasOwnProperty(key)) {
+	                        frontEndComponentsBlobSHAInfos.push([key, frontEndComponentsBlobDict[key]]);
+	                      }
+	                    }
+	                    nextProjectData.frontEndComponentsBlobSHAInfos = frontEndComponentsBlobSHAInfos;
+	                    
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, frontEndComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
 	                        if (error) {
