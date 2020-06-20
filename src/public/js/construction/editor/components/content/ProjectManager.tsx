@@ -260,7 +260,7 @@ class ProjectManager extends Base<Props, State> {
       ${externalStylesheets.join('\n      ')}
       ${combinedFontTags.join('\n      ')}
       <script type="text/javascript">
-      window.data = #{data} || null;
+      window.data = !{data} || null;
       </script>
       ${externalScripts.join('\n      ')}
       <script type="text/javascript" src="/js/Site.bundle.js"></script>
