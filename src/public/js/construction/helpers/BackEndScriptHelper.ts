@@ -50,7 +50,7 @@ const DEFAULTS = {
  		return await DatabaseHelper.update(data);
   }
   
-  protected async delete(data: Input[]): Promise<boolean> {
+  protected async remove(data: Input[]): Promise<boolean> {
  		return await DatabaseHelper.delete(data);
   }
   
