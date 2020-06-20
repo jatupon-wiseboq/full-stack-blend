@@ -62,8 +62,6 @@ import {RequestHelper} from '../helpers/RequestHelper.js';
 import {RenderHelper} from '../helpers/RenderHelper.js';
 import {Base} from './Base.js';
 
-(() => {
-
 // <---Auto[Import]
 // Auto[Declare]--->
 /*enum SourceType {
@@ -143,10 +141,7 @@ class Controller extends Base {
   
   // Auto[ClassEnd]--->
 }
-// <---Auto[ClassEnd]
-
-})();
-`;
+// <---Auto[ClassEnd]`;
 
 const MERGING_BOILERPLATE = `// Auto[Merging:Begin]--->
 // <---Auto[Merging:Begin]
