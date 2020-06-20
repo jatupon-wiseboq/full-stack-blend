@@ -82,14 +82,18 @@
                               | Services
     .workspace-horizontal-panel(style="border-left: solid 1px #c8c8c8;")
       .workspace-container(style="width: 259px;")
-        .workspace-vertical-container
+        .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
           .workspace-vertical-panel
             .workspace-tab-container
               .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
                 a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '100px'})
                   input(type='radio', name='options', checked=true)
                   | Layers
-        .workspace-vertical-container.full-relative-size
+        .workspace-vertical-container.full-relative-size(internal-fsb-for="editing", style="display: none;")
           .workspace-vertical-panel
             .workspace-panel-container
               include html-common/layers/layers
+        .workspace-vertical-container.full-relative-size(internal-fsb-not-for="editing")
+          .workspace-vertical-panel
+            .workspace-panel-container
+              include ../common/empty
