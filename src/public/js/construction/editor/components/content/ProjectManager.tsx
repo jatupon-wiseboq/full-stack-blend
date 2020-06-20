@@ -281,7 +281,7 @@ class ProjectManager extends Base<Props, State> {
                 	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, (backEndControllerBlobSHAInfos: [[string, string]]) => {
 	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHAInfos: [[string, string]]) => {
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, frontEndComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
-	                      repo.createBlob(JSON.stringify(nextProjectData), (error, result, request) => {
+	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
 	                          return;
