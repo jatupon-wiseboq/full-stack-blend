@@ -26,6 +26,22 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
+  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
+ 		return await DatabaseHelper.get(data);
+  }
+  
+  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {
+ 		return await DatabaseHelper.post(data);
+  }
+  
+  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {
+ 		return await DatabaseHelper.put(data);
+  }
+  
+  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {
+ 		return await DatabaseHelper.delete(data);
+  }
+  
   protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
  		return await DatabaseHelper.insert(data);
   }
@@ -110,8 +126,8 @@ interface Input {
 // <---Auto[Interface]
 // Auto[ClassBegin]--->
 class Controller extends Base {
-  constructor(request: Request, response: Response) {
-  	super(request, response);
+  constructor(request: Request, response: Response, template: string) {
+  	super(request, response, template);
   	
   	try {
 	    let [action, data] = this.initialize(request);

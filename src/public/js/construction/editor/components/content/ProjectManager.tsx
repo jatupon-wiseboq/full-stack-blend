@@ -259,6 +259,9 @@ class ProjectManager extends Base<Props, State> {
       </script>
       ${externalStylesheets.join('\n      ')}
       ${combinedFontTags.join('\n      ')}
+      <script type="text/javascript">
+      window.data = ${JSON.stringify(data)} || null;
+      </script>
       ${externalScripts.join('\n      ')}
       <script type="text/javascript" src="/js/Site.bundle.js"></script>
     </body>
@@ -514,12 +517,7 @@ import {Request, Response} from "express";
 ${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	if (req.method == 'GET') {
-		res.render("home/${this.getRepresentativeName(route.id)}", {
-  	});
-	} else {
-		new Component${route.id}(req, res);
-	}
+	new Component${route.id}(req, res, "home/${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
@@ -669,7 +667,7 @@ declare let window: any;
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 for (let expandingPlaceholder of expandingPlaceholders) {
 	let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
-	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward}, null), expandingPlaceholder);
+	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
 	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
 	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
