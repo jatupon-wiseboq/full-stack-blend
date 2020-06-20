@@ -27,19 +27,19 @@ const DEFAULTS = {
   }
   
   protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return await DatabaseHelper.get(data);
+ 		return super.get(data);
   }
   
   protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return await DatabaseHelper.post(data);
+ 		return super.post(data);
   }
   
   protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return await DatabaseHelper.put(data);
+ 		return super.put(data);
   }
   
   protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return await DatabaseHelper.delete(data);
+ 		return super.delete(data);
   }
   
   protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
