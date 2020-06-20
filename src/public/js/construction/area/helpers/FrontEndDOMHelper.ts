@@ -262,7 +262,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick={((button) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', button); }).bind(this)}`);
+        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', ((results: any) => { this.setState({data: results}); }).bind(this)); }).bind(this)}`);
         }
         
         for (let key in bindingStyles) {
