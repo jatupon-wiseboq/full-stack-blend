@@ -145,11 +145,11 @@ ${rootScript}`;
         
         if (dotNotation) {
 	        if (consumableTagItem) {
-	        	let index = attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
+	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
-	        		attributes[index].value = consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3];
+	        		_attributes[index].value = consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3];
 	        	} else {
-	        		attributes.push({
+	        		_attributes.push({
 	        			name: consumableTagItem[1],
 	        			value: consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3]
 	        		});
@@ -157,11 +157,11 @@ ${rootScript}`;
 	        }
 	        
 	        if (consumableClassItem) {
-	        	let index = attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
+	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
 	        	if (index != -1) {
-	        		attributes[index].value = consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3];
+	        		_attributes[index].value = consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3];
 	        	} else {
-	        		attributes.push({
+	        		_attributes.push({
 	        			name: consumableClassItem[1],
 	        			value: consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3]
 	        		});
