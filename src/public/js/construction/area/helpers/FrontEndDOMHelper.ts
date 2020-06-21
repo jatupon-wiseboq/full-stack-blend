@@ -4,7 +4,7 @@ import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST} from '../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST} from '../../Constants.js';
 
 // This code generator relies on elements in construction area.
 // 
@@ -136,7 +136,38 @@ ${rootScript}`;
         let inheritingAttributes = [];
         let inheritingStyles = [];
         let submitControls = null;
-        let submitType = null;
+        let submitType = null;        
+        
+        let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
+        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == reactClass))[0];
+        let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
+        		element : element.parentNode, 'internal-fsb-react-data');
+        
+        if (dotNotation) {
+	        if (consumableTagItem) {
+	        	let index = attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
+	        	if (index != -1) {
+	        		attributes[index].value = consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3];
+	        	} else {
+	        		attributes.push({
+	        			name: consumableTagItem[1],
+	        			value: consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3]
+	        		});
+	        	}
+	        }
+	        
+	        if (consumableClassItem) {
+	        	let index = attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
+	        	if (index != -1) {
+	        		attributes[index].value = consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3];
+	        	} else {
+	        		attributes.push({
+	        			name: consumableClassItem[1],
+	        			value: consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3]
+	        		});
+	        	}
+	        }
+	      }
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
