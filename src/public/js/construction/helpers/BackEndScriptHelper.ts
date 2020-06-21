@@ -113,7 +113,6 @@ interface HierarchicalDataRow {
 interface HierarchicalDataColumn {
 	name: string;
   value: any;
-  relations: HierarchicalDataTable[];
 }
 interface Input {
   target: SourceType;

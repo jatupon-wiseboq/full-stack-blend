@@ -219,21 +219,6 @@ class Base extends React.Component {
         return changed;
     }
     
-    protected getDataFromNotation(notation: string, data: any): any[] {
-        if (!notation) {
-            alert('There was an error processing hierarchical data on client side (missing notation).');
-            return [];
-        }
-        
-        if (!data) {
-            alert('There was an error processing hierarchical data on client side (no data).');
-            return [];
-        }
-        
-        alert('There was an error processing hierarchical data on client side (not implemented).');
-        return [];
-    }
-    
     protected render() { }
 }
 

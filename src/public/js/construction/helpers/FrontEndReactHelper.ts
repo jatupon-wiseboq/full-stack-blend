@@ -40,8 +40,8 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   
   // Providing data array base on dot notation:
   // 
-  protected getDataFromNotation(notation: string): any[] {
-    return super.getDataFromNotation(notation, this.state.data);
+  protected getDataFromNotation(notation: string): any {
+    return super.getDataFromNotation(notation);
   }
   `,
   ClassEnd: `
@@ -68,8 +68,7 @@ declare let window: any;
 interface IAutoBaseProps extends IBaseProps {
   forward: {classes: String, styles: any};
 }
-interface IAutoBaseState extends IBaseState { 
-  data: any[];
+interface IAutoBaseState extends IBaseState {
 }
 // <---Auto[Interface]// Auto[ClassBegin]--->
 class KlassA extends Base {
