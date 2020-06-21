@@ -142,11 +142,11 @@ ${rootScript}`;
         let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == reactClass))[0];
         let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
         		element : element.parentNode, 'internal-fsb-react-data');
-        let skipChildren = false
+        let dangerouslySetInnerHTML = false
         
         if (dotNotation) {
 	        if (consumableTagItem) {
-	          skipChildren = consumableTagItem[1] == 'dangerouslySetInnerHTML';
+	          dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
@@ -160,7 +160,7 @@ ${rootScript}`;
 	        }
 	        
 	        if (consumableClassItem) {
-	          skipChildren = consumableTagItem[1] == 'dangerouslySetInnerHTML';
+	          dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
 	        	if (index != -1) {
@@ -410,9 +410,10 @@ ${rootScript}`;
             attributes.splice(0, 0, 'style={Object.assign({}, this.props.forward && this.props.forward.styles || {})}');
           }
           if (attributes.length != 0) composed += ' ' + attributes.join(' ');
-          composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
           
-          if (!skipChildren) {
+          if (!dangerouslySetInnerHTML) {
+            composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
+            
             lines.push(composed);
             
             for (let child of children) {
@@ -429,6 +430,7 @@ ${rootScript}`;
   	          lines.push(composed);
   	        }
   	      } else {
+  	        composed += '>';
   	        composed += '</' + tag + '>';
   	        
   	        lines.push(composed);
