@@ -27,8 +27,8 @@ import * as passportConfig from "./config/passport";
 // Create Express server
 const app = express(),
 
-    // Connect to MongoDB
-    mongoUrl = MONGODB_URI;
+// Connect to MongoDB
+mongoUrl = MONGODB_URI;
 
 mongoose.Promise = bluebird;
 
@@ -69,13 +69,10 @@ app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
-
     res.locals.user = req.user;
     next();
-
 });
 app.use((req, res, next) => {
-
     // After successful login, redirect back to the intended page
     if (!req.user &&
     req.path !== "/login" &&
@@ -92,7 +89,6 @@ app.use((req, res, next) => {
 
     }
     next();
-
 });
 
 app.use(express.static(path.join(__dirname, "public"), {maxAge: 3600000}));
