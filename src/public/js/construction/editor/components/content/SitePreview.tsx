@@ -25,7 +25,7 @@ zip.workerScriptsPath = "/js/lib/";
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingExtensionNames: ["externalLibraries"]
+    watchingExtensionNames: ["externalLibraries", "editingPageID", "pages"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -171,6 +171,8 @@ class SitePreview extends Base<Props, State> {
 		        		    this.requiredFiles[key] = this.requiredFiles[key].replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
                       return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
                     });
+                    
+                    console.log(this.requiredFiles[key]);
 		        		  
 										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
 										this.requiredFiles[key] = URL.createObjectURL(new Blob([this.requiredFiles[key]]));
@@ -232,7 +234,7 @@ class SitePreview extends Base<Props, State> {
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
         
         let splitedCombinedExpandingFeatureScripts = combinedExpandingFeatureScripts.split("// Auto[File]--->\n");
-        let requiredURLs = ["DeclarationHelper"];
+        let requiredURLs = ["DeclarationHelper", "DataManipulationHelper", "RequestHelper"];
         
         for (let splitedCombinedExpandingFeatureScript of splitedCombinedExpandingFeatureScripts) {
           if (!splitedCombinedExpandingFeatureScript) continue;
@@ -247,28 +249,36 @@ class SitePreview extends Base<Props, State> {
         let preview = ReactDOM.findDOMNode(this.refs.preview);
         let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
         
+        let pages = this.state.extensionValues['pages'];
+        let editingPageID = this.state.extensionValues['editingPageID'];
+        pages = pages.filter(page => page.id == editingPageID);
+        let PATH = pages && pages[0] && pages[0].path || null;
+        
 				previewWindow.document.open();
 				previewWindow.document.write(
 `<!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Untitled - Construction Area</title>
-		<meta name="description" content="" />
-		<link rel="stylesheet" href="/css/embed.css">
-		${combinedFontTags.join('\n')}
-		<style type="text/css">${combinedStylesheet}</style>
-		${externalStylesheets.join('\n')}
-	</head>
-	<body${combinedInlineBodyStyle}>
-		${combinedHTMLTags}
-		<script src="/js/Embed.bundle.js"></script>
-		<script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>
-		${externalScripts.join('\n')}
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
-		<script type="text/javascript">
-			let requiredFiles = ${JSON.stringify(this.requiredFiles)};
-			require.config({
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Untitled - Construction Area</title>
+    <meta name="description" content="" />
+    <link rel="stylesheet" href="/css/embed.css">
+    ${combinedFontTags.join('\n')}
+    <style type="text/css">${combinedStylesheet}</style>
+    ${externalStylesheets.join('\n')}
+  </head>
+  <body${combinedInlineBodyStyle}>
+    ${combinedHTMLTags}
+    <script src="/js/Embed.bundle.js"></script>
+    <script type="text/javascript" src="${combinedMinimalFeatureScriptsURI}"></script>
+    ${externalScripts.join('\n')}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js"></script>
+    <script type="text/javascript">
+      window.ENDPOINT = '${ENDPOINT}';
+      window.PATH = '${PATH}';
+      
+      var requiredFiles = ${JSON.stringify(this.requiredFiles)};
+      require.config({
         paths: {
           CodeHelper: requiredFiles["public/js/helpers/CodeHelper.ts"],
           DataManipulationHelper: requiredFiles["public/js/helpers/DataManipulationHelper.ts"],
@@ -277,36 +287,63 @@ class SitePreview extends Base<Props, State> {
           HTMLHelper: requiredFiles["public/js/helpers/HTMLHelper.ts"],
           RequestHelper: requiredFiles["public/js/helpers/RequestHelper.ts"],
           Base: requiredFiles["public/js/components/Base.tsx"]
-      	}
+        }
       });
-			
-			require(${JSON.stringify(requiredURLs)}, function(ExportedDeclarationHelper) {
-				let DeclarationHelper = ExportedDeclarationHelper.DeclarationHelper;
-				let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
-				
-				for (let expandingPlaceholder of expandingPlaceholders) {
-				  console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
-				  let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
-				
-					ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward}, null), expandingPlaceholder);
-					expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
-					expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
-				}
-				
-				window.top.postMessage(JSON.stringify({
-		    	target: 'site-preview',
-		      name: 'load',
-		      content: false
-		    }), '*');
-  	    window.internalFsbSubmit = function() {
-  	      alert('Please test data manipulation from the localhost machine which is running the project manually.');
-  	    };
-			});
-		</script>
-	</body>
+      
+      require(${JSON.stringify(requiredURLs)}, function(ExportedDeclarationHelper, ExportedDataManipulationHelper, ExportedRequestHelper) {
+        var DeclarationHelper = ExportedDeclarationHelper.DeclarationHelper;
+        var DataManipulationHelper = ExportedDataManipulationHelper.DataManipulationHelper;
+        var RequestHelper = ExportedRequestHelper.RequestHelper;
+        var expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
+        
+        var continueFn = (function(data) {
+	        for (var expandingPlaceholder of expandingPlaceholders) {
+	          console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
+	          var forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
+	        
+	          ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: data}, null), expandingPlaceholder);
+	          expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstChild, expandingPlaceholder);
+	          expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+	        }
+	        
+	        window.top.postMessage(JSON.stringify({
+	          target: 'site-preview',
+	          name: 'load',
+	          content: false
+	        }), '*');
+	        window.internalFsbSubmit = function(guid, action, dataControls, callback) {
+	          if (!window.ENDPOINT || !window.PATH) {
+	            alert('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
+	          } else {
+	            DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
+	            DataManipulationHelper.request(guid, action, callback);
+	          }
+	        };
+        });
+        
+        if (!window.ENDPOINT || !window.PATH) {
+        	console.log('Please specify endpoint in Settings to test Server-Side Rendering (SSR).');
+        	continueFn(null);
+        } else {
+        	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
+        		continueFn(data.results);
+        	}).catch(function(error) {
+        		if (confirm('Server-Side Rendering (SSR) is unable to test (' + error + '). Do you want to continue?')) {
+        			continueFn(null);
+        		} else {
+        			window.closeSitePreview();
+        		}
+        	});
+        }
+      });
+    </script>
+  </body>
 </html>
 `);
 				previewWindow.document.close();
+				previewWindow.closeSitePreview = (() => {
+					this.close();
+				}).bind(this);
     }
     
     private close(error) {
