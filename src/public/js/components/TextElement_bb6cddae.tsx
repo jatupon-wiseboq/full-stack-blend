@@ -46,7 +46,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class TextElement_738cbdce extends Base {
+class TextElement_bb6cddae extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -72,28 +72,28 @@ class TextElement_738cbdce extends Base {
   // Auto[Merging]--->
   // <---Auto[Merging]
   
-  // Auto[onTextElementClick_738cbdce:Begin]--->
-  protected onTextElementClick_738cbdce(event: Event) {
-    // <---Auto[onTextElementClick_738cbdce:Begin]
+  // Auto[onTextElementClick_bb6cddae:Begin]--->
+  protected onTextElementClick_bb6cddae(event: Event) {
+    // <---Auto[onTextElementClick_bb6cddae:Begin]
 
-    // Handle the event of onTextElementClick (TextElement 4) here:
+    // Handle the event of onTextElementClick (TextElement 1) here:
     // 
-    window.open('https://www.softenstorm.com/stackblend-policy-and-terms');
+    window.open('https://github.com/SoftenStorm/boilerplate');
     
-    // Auto[onTextElementClick_738cbdce:End]--->
+    // Auto[onTextElementClick_bb6cddae:End]--->
   }
-  // <---Auto[onTextElementClick_738cbdce:End]
+  // <---Auto[onTextElementClick_bb6cddae:End]
 
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="738cbdce" style={Object.assign({'FsbInheritedPresets': 'bb6cddae', 'textAlign': 'center', 'textDecorationLine': 'underline', 'WebkitTextDecorationLine': 'underline', 'MozTextDecorationLine': 'underline', 'cursor': 'pointer'}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_738cbdce.bind(this)}>
-        Privacy Policy and Terms of Service
+      <div className={"internal-fsb-element col-12 -fsb-preset-08abd2c9 -fsb-self-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="bb6cddae" style={Object.assign({}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_bb6cddae.bind(this)}>
+        Get Started
       </div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.TextElement_738cbdce', TextElement_738cbdce);
+DeclarationHelper.declare('Document', 'Controls.TextElement_bb6cddae', TextElement_bb6cddae);
 // <---Auto[ClassEnd]
 
 // Export variables here:
