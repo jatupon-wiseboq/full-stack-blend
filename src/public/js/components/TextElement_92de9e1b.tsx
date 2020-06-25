@@ -46,7 +46,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class TextElement_738cbdce extends Base {
+class TextElement_92de9e1b extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -72,28 +72,28 @@ class TextElement_738cbdce extends Base {
   // Auto[Merging]--->
   // <---Auto[Merging]
   
-  // Auto[onTextElementClick_738cbdce:Begin]--->
-  protected onTextElementClick_738cbdce(event: Event) {
-    // <---Auto[onTextElementClick_738cbdce:Begin]
+  // Auto[onTextElementClick_92de9e1b:Begin]--->
+  protected onTextElementClick_92de9e1b(event: Event) {
+    // <---Auto[onTextElementClick_92de9e1b:Begin]
 
-    // Handle the event of onTextElementClick (TextElement 4) here:
+    // Handle the event of onTextElementClick (TextElement 3) here:
     // 
-    window.open('https://www.softenstorm.com/stackblend-policy-and-terms');
+    window.open('https://staging.stackblend.com/editor');
     
-    // Auto[onTextElementClick_738cbdce:End]--->
+    // Auto[onTextElementClick_92de9e1b:End]--->
   }
-  // <---Auto[onTextElementClick_738cbdce:End]
+  // <---Auto[onTextElementClick_92de9e1b:End]
 
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="738cbdce" style={Object.assign({'FsbInheritedPresets': 'bb6cddae', 'textAlign': 'center', 'textDecorationLine': 'underline', 'WebkitTextDecorationLine': 'underline', 'MozTextDecorationLine': 'underline', 'cursor': 'pointer'}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_738cbdce.bind(this)}>
-        Privacy Policy and Terms of Service
+      <div className={"internal-fsb-element col-12 -fsb-preset-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="92de9e1b" style={Object.assign({'FsbInheritedPresets': 'bb6cddae'}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_92de9e1b.bind(this)}>
+        Open StackBlend Editor
       </div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.TextElement_738cbdce', TextElement_738cbdce);
+DeclarationHelper.declare('Document', 'Controls.TextElement_92de9e1b', TextElement_92de9e1b);
 // <---Auto[ClassEnd]
 
 // Export variables here:
