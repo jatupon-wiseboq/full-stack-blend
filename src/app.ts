@@ -10,6 +10,8 @@ import path from "path";
 import mongoose from "mongoose";
 import passport from "passport";
 import bluebird from "bluebird";
+import cors from "cors";
+import route from "./route";
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 
 const MongoStore = mongo(session);
@@ -117,6 +119,8 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 
+route(app);
+
 /**
  * API examples routes.
  */
@@ -139,5 +143,12 @@ app.get("/auth/github/callback", passport.authenticate("github", {failureRedirec
     res.redirect("/account");
 
 });
+
+/**
+ * CORS configuration
+ */
+if (["production"].indexOf(process.env.NODE_ENV) == -1) {
+	app.use(cors());
+}
 
 export default app;
