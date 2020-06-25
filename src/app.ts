@@ -17,7 +17,6 @@ import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 const MongoStore = mongo(session);
 
 // Controllers (route handlers)
-import * as homeController from "./controllers/home";
 import * as constructionController from "./controllers/construction";
 import * as userController from "./controllers/user";
 import * as apiController from "./controllers/api";
@@ -98,7 +97,6 @@ app.use(express.static(path.join(__dirname, "public"), {maxAge: 3600000}));
 /**
  * Primary app routes.
  */
-app.get("/", homeController.index);
 app.get("/editor", constructionController.index);
 app.get("/editor/construction/area/html", constructionController.html);
 app.get("/login", userController.getLogin);
