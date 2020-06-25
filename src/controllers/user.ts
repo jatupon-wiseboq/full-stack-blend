@@ -280,6 +280,7 @@ export const postUpdateGitHub = async (req: Request, res: Response, next: NextFu
         user.feature = req.body.feature || "";
         user.develop = req.body.develop || "";
         user.staging = req.body.staging || "";
+        user.endpoint = req.body.endpoint || "";
         user.save((err: WriteError) => {
 
             if (err) {
