@@ -95,6 +95,13 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, "public"), {maxAge: 3600000}));
 
 /**
+ * CORS configuration
+ */
+if (["production"].indexOf(process.env.NODE_ENV) == -1) {
+	app.use(cors());
+}
+
+/**
  * Primary app routes.
  */
 app.get("/editor", constructionController.index);
@@ -141,12 +148,5 @@ app.get("/auth/github/callback", passport.authenticate("github", {failureRedirec
     res.redirect("/account");
 
 });
-
-/**
- * CORS configuration
- */
-if (["production"].indexOf(process.env.NODE_ENV) == -1) {
-	app.use(cors());
-}
 
 export default app;
