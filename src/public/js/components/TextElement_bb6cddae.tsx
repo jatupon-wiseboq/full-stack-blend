@@ -87,7 +87,7 @@ class TextElement_bb6cddae extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-08abd2c9 -fsb-self-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="bb6cddae" style={Object.assign({}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_bb6cddae.bind(this)}>
+      <div className={"internal-fsb-element col-12 -fsb-self-bb6cddae -fsb-preset-08abd2c9 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="bb6cddae" style={Object.assign({}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_bb6cddae.bind(this)}>
         Get Started
       </div>
     )
