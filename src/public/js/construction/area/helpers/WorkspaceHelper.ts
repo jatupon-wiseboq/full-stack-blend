@@ -28,6 +28,7 @@ let InternalSites = {};
 let InternalComponents = {};
 let InternalPopups = {};
 let InternalDataFlows = {};
+let InternalServices = {};
 
 const DEFAULT_FLOW_PAGE_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
@@ -50,6 +51,7 @@ var WorkspaceHelper = {
       components: InternalComponents,
       popups: InternalPopups,
       flows: InternalDataFlows,
+      services: InternalServices,
       stylesheets: StylesheetHelper.generateStylesheetData()
     };
   },
@@ -59,6 +61,7 @@ var WorkspaceHelper = {
     InternalComponents = data && data.components || {};
     InternalPopups = data && data.popups || {};
     InternalDataFlows = data && data.flows || {};
+    InternalServices = data && data.services || {};
     
     InternalProjectSettings.currentMode = 'site';
     
@@ -70,7 +73,7 @@ var WorkspaceHelper = {
   setMode: (mode: string) => {
     WorkspaceHelper.saveWorkspaceData(false);
     InternalProjectSettings.currentMode = mode;
-    WorkspaceHelper.loadWorkspaceData(false);
+    WorkspaceHelper.loadWorkspaceData(true);
   },
   getEditable: () => {
     if (InternalProjectSettings.currentMode == 'site') {
@@ -81,6 +84,8 @@ var WorkspaceHelper = {
       return (InternalProjectSettings.editingPopupID != null || InternalProjectSettings.popups.filter(popup => popup.state != 'delete').length != 0) ? 'popups' : false;
     } else if (InternalProjectSettings.currentMode == 'data') {
       return 'data';
+    } else if (InternalProjectSettings.currentMode == 'services') {
+      return 'services';
     }
   },
   loadWorkspaceData: (updateUI: boolean=false) => {
@@ -106,6 +111,15 @@ var WorkspaceHelper = {
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
       document.body.outerHTML = InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML;
+            
+      // The second head element did appear after setting content to the outerHTML of body element.
+      // Remove the extra one.
+      //
+      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      EditorHelper.init(false, updateUI);
+    } else if (InternalProjectSettings.currentMode == 'services') {
+      document.body.outerHTML = InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML;
             
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -184,6 +198,13 @@ var WorkspaceHelper = {
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = document.body.outerHTML;
+      
+      if (reinit) {
+        EditorHelper.init(true, false);
+      }
+    } else if (InternalProjectSettings.currentMode == 'services') {
+      EditorHelper.detach();
+      InternalServices.default = document.body.outerHTML;
       
       if (reinit) {
         EditorHelper.init(true, false);

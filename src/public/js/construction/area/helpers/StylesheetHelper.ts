@@ -171,7 +171,7 @@ var StylesheetHelper = {
   	   	}
   	  }
     }
-    let source = lines.join('\n');
+    let source = lines.join(' ');
     
     return source;
   }

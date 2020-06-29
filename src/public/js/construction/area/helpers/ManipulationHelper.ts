@@ -435,7 +435,6 @@ var ManipulationHelper = {
                 };
                 
                 WorkspaceHelper.saveWorkspaceData();
-                
                 InternalProjectSettings[extension.name] = extension.value;
                 WorkspaceHelper.loadWorkspaceData();
               } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {
@@ -1301,9 +1300,15 @@ var ManipulationHelper = {
       case 'codingButton':
         EditorHelper.setEditorCurrentMode('coding');
         break;
+      case 'dataButton':
+        EditorHelper.setEditorCurrentMode('data');
+        break;
+      case 'servicesButton':
+        EditorHelper.setEditorCurrentMode('services');
+        break;
     }
     
-    if (['siteButton', 'componentsButton', 'popupsButton', 'dataButton'].indexOf(content) != -1) {
+    if (['siteButton', 'componentsButton', 'popupsButton', 'dataButton', 'servicesButton'].indexOf(content) != -1) {
       WorkspaceHelper.setMode(content.replace('Button', ''));
     }
     
