@@ -42,12 +42,15 @@ var CapabilityHelper = {
         allowCursorElements.push(container);
       }
       allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
+        let listenEventFromElement = (HTMLHelper.hasClass(allowCursorElement.parentNode, 'container-fluid')) ?
+          allowCursorElement.parentNode : allowCursorElement;
+        
         if (!allowCursorElement.internalFsbBindedClick) {
           allowCursorElement.internalFsbBindedClick = true;
           
           if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
           	if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout')) {
-	          	allowCursorElement.addEventListener('click', (event) => {
+	          	listenEventFromElement.addEventListener('click', (event) => {
 	          		if (EventHelper.checkIfDenyForHandle(event)) return;
 	          		
 	          		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
@@ -82,7 +85,7 @@ var CapabilityHelper = {
 	              return EventHelper.cancel(event);
 	            }, false);
 	          } else {
-	            allowCursorElement.addEventListener('click', (event) => {
+	            listenEventFromElement.addEventListener('click', (event) => {
 	              if (EventHelper.checkIfDenyForHandle(event)) return;
 	              
 	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
@@ -107,7 +110,7 @@ var CapabilityHelper = {
 	            }, false);
 	          }
           } else if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-absolute-layout')) {
-            allowCursorElement.addEventListener('click', (event) => {
+            listenEventFromElement.addEventListener('click', (event) => {
               if (EventHelper.checkIfDenyForHandle(event)) return;
               
               if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout')) {
