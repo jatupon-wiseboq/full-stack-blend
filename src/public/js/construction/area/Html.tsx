@@ -26,7 +26,8 @@ import {EditorHelper} from './helpers/EditorHelper.js';
     EditorHelper.perform(data.name, data.content);
   }, true);
   window.addEventListener("keydown", (event) => {
-    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
+    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
+      [27].indexOf(event.keyCode) == -1) {
       if (HTMLHelper.hasClass(document.activeElement.parentNode, 'internal-fsb-absolute-layout')) {
         if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
           EditorHelper.perform('keydown', event.keyCode);
@@ -41,6 +42,12 @@ import {EditorHelper} from './helpers/EditorHelper.js';
         return true;
       }
     } else {
+      switch (event.keyCode) {
+        case 27:
+          document.activeElement.blur();
+          break;
+      }
+      
       EditorHelper.perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
