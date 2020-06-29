@@ -617,13 +617,15 @@ var ManipulationHelper = {
       case 8:
         {
           let selectingElement = EditorHelper.getSelectingElement();
-          if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
-            ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
-          } else if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+          if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (Accessories.cursor.getDOMNode().previousSibling &&
                 HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
               ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'));
+            } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
             }
+          } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+            ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
           }
           remember = false;
         }
