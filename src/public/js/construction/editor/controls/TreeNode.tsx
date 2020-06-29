@@ -106,6 +106,7 @@ class TreeNode extends React.Component<IProps, IState> {
 		}
     
     private mouseDown(event) {
+			if (!this.props.enableDragging) return;
 			let originalElement = EventHelper.getCurrentElement(event);
 			
 			let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
