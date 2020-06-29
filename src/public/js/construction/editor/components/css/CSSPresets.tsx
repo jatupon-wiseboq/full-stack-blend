@@ -59,7 +59,7 @@ class CSSPresets extends Base<Props, State> {
 					    	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
 					    	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
 					    	
-					    	return pa > pb;
+					    	return (pa > pb) ? 1 : -1;
         			});
         		}
         		
