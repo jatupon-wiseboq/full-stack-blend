@@ -95,7 +95,6 @@ var WorkspaceHelper = {
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       if (page == null) return;
       
-      FontHelper.initializeFontData(page.head.fonts)
       document.body.outerHTML = page.body;
       
       // The second head element did appear after setting content to the outerHTML of body element.
@@ -107,6 +106,7 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      FontHelper.initializeFontData(page.head.fonts)
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {

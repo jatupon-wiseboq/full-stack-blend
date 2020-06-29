@@ -104,7 +104,8 @@ var StylesheetHelper = {
       element = document.createElement('style');
       HTMLHelper.setAttribute(element, 'type', 'text/css');
       HTMLHelper.setAttribute(element, 'id', 'internal-fsb-stylesheet');
-      document.head.appendChild(element);
+      HTMLHelper.className = 'internal-fsb-accessory';
+      document.body.appendChild(element);
     }
     
     element.innerText = StylesheetHelper.renderStylesheet();

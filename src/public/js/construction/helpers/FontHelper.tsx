@@ -92,8 +92,9 @@ var FontHelper = {
       HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
       HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
       HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
+      HTMLHelper.className = 'internal-fsb-accessory';
       
-      document.head.appendChild(link);
+      document.body.appendChild(link);
     }
     
     let italics = FontHelper.getAllNormals(info);
@@ -106,8 +107,9 @@ var FontHelper = {
       HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
       HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
       HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
+      HTMLHelper.className = 'internal-fsb-accessory';
       
-      document.head.appendChild(link);
+      document.body.appendChild(link);
     }
     
     setupFont[name] = true;
