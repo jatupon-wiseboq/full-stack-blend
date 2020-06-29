@@ -108,6 +108,8 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       FontHelper.initializeFontData(page.head.fonts);
       
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
       document.body.outerHTML = InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML;
@@ -117,6 +119,8 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
       document.body.outerHTML = InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML;
@@ -125,6 +129,8 @@ var WorkspaceHelper = {
       // Remove the extra one.
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'components') {
@@ -145,6 +151,8 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInheritingComponents();
       
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
@@ -163,6 +171,8 @@ var WorkspaceHelper = {
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
       WorkspaceHelper.updateInheritingComponents();
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       
       EditorHelper.init(false, updateUI);
     }

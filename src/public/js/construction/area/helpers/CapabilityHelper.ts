@@ -161,11 +161,21 @@ var CapabilityHelper = {
   	  container.addEventListener('paste', EventHelper.pasteEventInTextPlain, false);
   	});
   },
+  installCapabilityOfBeingDragged: (_container: HTMLElement) => {
+    HTMLHelper.getElementsByClassName('internal-fsb-dragging-handle', _container, true).forEach((element) => {
+  	  if (!element.internalFsbBindedDragging) {
+        element.internalFsbBindedDragging = true;
+        
+        Accessories.dragger.bind(element);
+      }
+  	});
+  },
   installCapabilitiesForInternalElements: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
       elements.forEach((element) => {
         CapabilityHelper.installCapabilityOfBeingSelected(element);
+        CapabilityHelper.installCapabilityOfBeingDragged(element);
       });
       if (HTMLHelper.hasClass(container, 'internal-fsb-element') && !HTMLHelper.hasClass(container, 'internal-fsb-begin')) {
         CapabilityHelper.installCapabilityOfBeingSelected(container);

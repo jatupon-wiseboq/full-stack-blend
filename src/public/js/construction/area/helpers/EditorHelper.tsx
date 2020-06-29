@@ -13,6 +13,7 @@ import '../controls/Resizer.js';
 import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
+import '../controls/Dragger.js';
 import {LIBRARIES} from '../../Constants.js';
 
 declare let React: any;
@@ -23,7 +24,8 @@ let Accessories = {
   resizer: null,
   cellFormater: null,
   guide: null,
-  layoutInfo: null
+  layoutInfo: null,
+  dragger: null
 };
 
 let editorCurrentMode: string = null;
@@ -96,6 +98,11 @@ var EditorHelper = {
     let layoutContainer = document.createElement('div');
     Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
     Accessories.layoutInfo.setDOMNode(layoutContainer.firstChild);
+    
+    let draggerContainer = document.createElement('div');
+    Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger />, draggerContainer);
+    Accessories.dragger.setDOMNode(draggerContainer.firstChild);
+    draggerContainer.removeChild(Accessories.dragger.getDOMNode());
     
     EditorHelper.init(true, true);
   },

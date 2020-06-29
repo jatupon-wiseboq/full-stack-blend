@@ -48,7 +48,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Database
             .container-fluid
               .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor(style={position: 'absolute', top: '0px', right: '0px', bottom: '0px', left: '0px'})
@@ -64,7 +64,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Table
             .container-fluid
               .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -93,7 +93,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Document Database
             .container-fluid
               .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor(style={position: 'absolute', top: '0px', right: '0px', bottom: '0px', left: '0px'})
@@ -109,7 +109,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Document Table
             .container-fluid
               .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -138,7 +138,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Worker Instance
             .container-fluid
               .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -167,7 +167,7 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element
-            .internal-fsb-title
+            .internal-fsb-title.internal-fsb-dragging-handle
               | Volatile Memory
         `, element);
         break;
@@ -181,9 +181,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
-            .internal-fsb-title
-              | Relation
+          .internal-fsb-element.internal-fsb-dragging-handle
         `, element);
         break;
     }
