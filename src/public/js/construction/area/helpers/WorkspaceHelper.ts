@@ -106,7 +106,7 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
-      FontHelper.initializeFontData(page.head.fonts)
+      FontHelper.initializeFontData(page.head.fonts);
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
