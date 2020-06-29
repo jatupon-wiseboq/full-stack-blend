@@ -79,7 +79,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element.col-12
             .internal-fsb-title
               | Relational Column
         `, element);
@@ -124,7 +124,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element.col-12
             .internal-fsb-title
               | Document Column
         `, element);
@@ -153,7 +153,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element.col-12
             .internal-fsb-title
               | Worker Queue
         `, element);
