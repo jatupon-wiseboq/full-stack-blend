@@ -42,7 +42,8 @@ var CapabilityHelper = {
         allowCursorElements.push(container);
       }
       allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
-        let listenEventFromElement = (HTMLHelper.hasClass(allowCursorElement.parentNode, 'container-fluid')) ?
+        let listenEventFromElement = (!HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout') &&
+          HTMLHelper.hasClass(allowCursorElement.parentNode, 'container-fluid')) ?
           allowCursorElement.parentNode : allowCursorElement;
         
         if (!allowCursorElement.internalFsbBindedClick) {
@@ -146,8 +147,11 @@ var CapabilityHelper = {
               return EventHelper.cancel(event);
             }, false);
           }
-            
-          EventHelper.setDenyForEarlyHandle(allowCursorElement);
+          
+          EventHelper.setDenyForEarlyHandle(listenEventFromElement);
+          // Migrate: setDenyForEarlyHandle shouldn't be active in allowCursorElement if handle in the container.
+          //
+          if (allowCursorElement != listenEventFromElement) EventHelper.setAllowForEarlyHandle(allowCursorElement);
         }
       });
     });
