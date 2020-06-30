@@ -68,48 +68,51 @@ class Overlay extends React.Component<Props, State> {
           let connectorSize = HTMLHelper.getSize(connector);
           let connectorCenter = [connectorPosition[0] + connectorSize[0] / 2, connectorPosition[1] + connectorSize[1] / 2];
           
+          let slots = [[connectorCenter[0] - connectorSize[0] / 2, connectorCenter[1]],
+            [connectorCenter[0], connectorCenter[1] - connectorSize[1] / 2],
+            [connectorCenter[0] + connectorSize[0] / 2, connectorCenter[1]],
+            [connectorCenter[0], connectorCenter[1] + connectorSize[1] / 2]];
+          let findClosetPointOfTheConnector = (x: number, y: number) => {
+            let minimum = Number.MAX_SAFE_INTEGER;
+            let foundIndex = -1;
+            
+            for (const [i, slot] of slots.entries()) {
+              let distance = Math.sqrt(Math.pow(x - slot[0], 2) + Math.pow(y - slot[1], 2));
+              if (distance < minimum) {
+                minimum = distance;
+                foundIndex = i;
+              }
+            }
+            
+            return slots.splice(foundIndex, 1)[0];
+          };
+          
           if (Math.abs(sourcePosition[0] - connectorCenter[0]) < Math.abs(sourcePosition[0] + sourceSize[0] - connectorCenter[0])) {
             circles.push({
               x1: sourcePosition[0] - 8,
               y1: sourceCenter[1]
             });
             
-            if (sourcePosition[0] < connectorCenter[0]) {
-              lines.push({
-                x1: sourcePosition[0] - 8,
-                y1: sourceCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            } else {
-              lines.push({
-                x1: sourcePosition[0] - 8,
-                y1: sourceCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            }
+            let closet = findClosetPointOfTheConnector(sourcePosition[0] - 8, sourceCenter[1]);
+            lines.push({
+              x1: sourcePosition[0] - 8,
+              y1: sourceCenter[1],
+              x2: closet[0],
+              y2: closet[1]
+            });
           } else {
             circles.push({
               x1: sourcePosition[0] + sourceSize[0] + 8,
               y1: sourceCenter[1]
             });
             
-            if (sourcePosition[0] < connectorCenter[0]) {
-              lines.push({
-                x1: sourcePosition[0] + sourceSize[0] + 8,
-                y1: sourceCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            } else {
-              lines.push({
-                x1: sourcePosition[0] + sourceSize[0] + 8,
-                y1: sourceCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            }
+            let closet = findClosetPointOfTheConnector(sourcePosition[0] + sourceSize[0] + 8, sourceCenter[1]);
+            lines.push({
+              x1: sourcePosition[0] + sourceSize[0] + 8,
+              y1: sourceCenter[1],
+              x2: closet[0],
+              y2: closet[1]
+            });
           }
           
           if (Math.abs(targetPosition[0] - connectorCenter[0]) < Math.abs(targetPosition[0] + targetSize[0] - connectorCenter[0])) {
@@ -118,42 +121,26 @@ class Overlay extends React.Component<Props, State> {
               y1: targetCenter[1]
             });
             
-            if (targetPosition[0] < connectorCenter[0]) {
-              lines.push({
-                x1: targetPosition[0] - 8,
-                y1: targetCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            } else {
-              lines.push({
-                x1: targetPosition[0] - 8,
-                y1: targetCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            }
+            let closet = findClosetPointOfTheConnector(targetPosition[0] - 8, targetCenter[1]);
+            lines.push({
+              x1: targetPosition[0] - 8,
+              y1: targetCenter[1],
+              x2: closet[0],
+              y2: closet[1]
+            });
           } else {
             circles.push({
               x1: targetPosition[0] + targetSize[0] + 8,
               y1: targetCenter[1]
             });
             
-            if (targetPosition[0] < connectorCenter[0]) {
-              lines.push({
-                x1: targetPosition[0] + targetSize[0] + 8,
-                y1: targetCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            } else {
-              lines.push({
-                x1: targetPosition[0] + targetSize[0] + 8,
-                y1: targetCenter[1],
-                x2: connectorCenter[0],
-                y2: connectorCenter[1]
-              });
-            }
+            let closet = findClosetPointOfTheConnector(targetPosition[0] + targetSize[0] + 8, targetCenter[1]);
+            lines.push({
+              x1: targetPosition[0] + targetSize[0] + 8,
+              y1: targetCenter[1],
+              x2: closet[0],
+              y2: closet[1]
+            });
           }
         }
       }

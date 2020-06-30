@@ -37,6 +37,7 @@ body * {
   width: 5120px;
   height: 5120px;
   pointer-events: none;
+  z-index: 2000;
 }
 
 .internal-fsb-dragging-handle {
@@ -205,5 +206,5 @@ body * {
   z-index: 400;
 }
 .internal-fsb-element[internal-fsb-class="Connection"] {
-  z-index: 500;
+  z-index: 3000;
 }
