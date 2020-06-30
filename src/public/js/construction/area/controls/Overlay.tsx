@@ -60,56 +60,100 @@ class Overlay extends React.Component<Props, State> {
         if (source && target) {
           let sourcePosition = HTMLHelper.getPosition(source, true, true);
           let sourceSize = HTMLHelper.getSize(source);
+          let sourceCenter = [sourcePosition[0] + sourceSize[0] / 2, sourcePosition[1] + sourceSize[1] / 2];
           let targetPosition = HTMLHelper.getPosition(target, true, true);
           let targetSize = HTMLHelper.getSize(target);
+          let targetCenter = [targetPosition[0] + targetSize[0] / 2, targetPosition[1] + targetSize[1] / 2];
           let connectorPosition = HTMLHelper.getPosition(connector, true, true);
           let connectorSize = HTMLHelper.getSize(connector);
-          let isSourceOnTheLeft = (sourcePosition[0] + sourceSize[0] / 2 < targetPosition[0] + targetSize[0] / 2);
+          let connectorCenter = [connectorPosition[0] + connectorSize[0] / 2, connectorPosition[1] + connectorSize[1] / 2];
           
-          if (isSourceOnTheLeft) {
-            lines.push({
-              x1: sourcePosition[0] + sourceSize[0] + 8,
-              y1: sourcePosition[1] + sourceSize[1] / 2,
-              x2: connectorPosition[0],
-              y2: connectorPosition[1] + connectorSize[1] / 2
-            });
-            lines.push({
-              x1: connectorPosition[0] + connectorSize[0],
-              y1: connectorPosition[1] + connectorSize[1] / 2,
-              x2: targetPosition[0] - 8,
-              y2: targetPosition[1] + targetSize[1] / 2
-            });
-            
-            circles.push({
-              x1: sourcePosition[0] + sourceSize[0] + 8,
-              y1: sourcePosition[1] + sourceSize[1] / 2
-            });
-            circles.push({
-              x1: targetPosition[0] - 8,
-              y1: targetPosition[1] + targetSize[1] / 2
-            });
-          } else {
-            lines.push({
-              x1: targetPosition[0] + targetSize[0] + 8,
-              y1: targetPosition[1] + targetSize[1] / 2,
-              x2: connectorPosition[0],
-              y2: connectorPosition[1] + connectorSize[1] / 2
-            });
-            lines.push({
-              x1: connectorPosition[0] + connectorSize[0],
-              y1: connectorPosition[1] + connectorSize[1] / 2,
-              x2: sourcePosition[0] - 8,
-              y2: sourcePosition[1] + sourceSize[1] / 2
-            });
-            
-            circles.push({
-              x1: targetPosition[0] + targetSize[0] + 8,
-              y1: targetPosition[1] + targetSize[1] / 2
-            });
+          if (Math.abs(sourcePosition[0] - connectorCenter[0]) < Math.abs(sourcePosition[0] + sourceSize[0] - connectorCenter[0])) {
             circles.push({
               x1: sourcePosition[0] - 8,
-              y1: sourcePosition[1] + sourceSize[1] / 2
+              y1: sourceCenter[1]
             });
+            
+            if (sourcePosition[0] < connectorCenter[0]) {
+              lines.push({
+                x1: sourcePosition[0] - 8,
+                y1: sourceCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            } else {
+              lines.push({
+                x1: sourcePosition[0] - 8,
+                y1: sourceCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            }
+          } else {
+            circles.push({
+              x1: sourcePosition[0] + sourceSize[0] + 8,
+              y1: sourceCenter[1]
+            });
+            
+            if (sourcePosition[0] < connectorCenter[0]) {
+              lines.push({
+                x1: sourcePosition[0] + sourceSize[0] + 8,
+                y1: sourceCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            } else {
+              lines.push({
+                x1: sourcePosition[0] + sourceSize[0] + 8,
+                y1: sourceCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            }
+          }
+          
+          if (Math.abs(targetPosition[0] - connectorCenter[0]) < Math.abs(targetPosition[0] + targetSize[0] - connectorCenter[0])) {
+            circles.push({
+              x1: targetPosition[0] - 8,
+              y1: targetCenter[1]
+            });
+            
+            if (targetPosition[0] < connectorCenter[0]) {
+              lines.push({
+                x1: targetPosition[0] - 8,
+                y1: targetCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            } else {
+              lines.push({
+                x1: targetPosition[0] - 8,
+                y1: targetCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            }
+          } else {
+            circles.push({
+              x1: targetPosition[0] + targetSize[0] + 8,
+              y1: targetCenter[1]
+            });
+            
+            if (targetPosition[0] < connectorCenter[0]) {
+              lines.push({
+                x1: targetPosition[0] + targetSize[0] + 8,
+                y1: targetCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            } else {
+              lines.push({
+                x1: targetPosition[0] + targetSize[0] + 8,
+                y1: targetCenter[1],
+                x2: connectorCenter[0],
+                y2: connectorCenter[1]
+              });
+            }
           }
         }
       }
