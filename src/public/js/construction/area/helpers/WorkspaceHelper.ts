@@ -1,7 +1,7 @@
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {EditorHelper} from './EditorHelper.js';
+import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
@@ -109,6 +109,7 @@ var WorkspaceHelper = {
       FontHelper.initializeFontData(page.head.fonts);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
@@ -120,6 +121,7 @@ var WorkspaceHelper = {
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      Accessories.overlay.setEnable(true);
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
@@ -131,6 +133,7 @@ var WorkspaceHelper = {
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'components') {
@@ -152,6 +155,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'popups') {
@@ -173,6 +177,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     }

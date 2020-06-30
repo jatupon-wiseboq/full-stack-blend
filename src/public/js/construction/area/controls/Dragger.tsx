@@ -2,6 +2,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {Point, MathHelper} from '../../helpers/MathHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {Accessories, EditorHelper} from '../helpers/EditorHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -55,6 +56,7 @@ class Dragger extends React.Component<IProps, IState> {
 	
 	private isMouseMoveReachedThreshold: boolean = false;
 	private draggingElement: HTMLElement = null;
+	private mousePosition: any = null;
   
   protected onChange(node) {
 		if (!node.selectable) return;
@@ -71,14 +73,10 @@ class Dragger extends React.Component<IProps, IState> {
   private installEventHandlers() {
 		document.body.addEventListener('mouseup', this.mouseUp, false);
 		document.body.addEventListener('mousemove', this.mouseMove, false);
-		window.top.document.body.addEventListener('mouseup', this.mouseUp, false);
-		window.top.document.body.addEventListener('mousemove', this.mouseMove, false);
 	}
 	private uninstallEventHandlers() {
 		document.body.removeEventListener('mouseup', this.mouseUp, false);
 		document.body.removeEventListener('mousemove', this.mouseMove, false);
-		window.top.document.body.removeEventListener('mouseup', this.mouseUp, false);
-		window.top.document.body.removeEventListener('mousemove', this.mouseMove, false);
 	}
 	private destoryDraggingElement() {
 		if (this.draggingElement && this.draggingElement.parentNode) {
@@ -103,8 +101,6 @@ class Dragger extends React.Component<IProps, IState> {
 		this.originalElementPos.x = elementPosition[0] - containerPosition[0];
 		this.originalElementPos.y = elementPosition[1] - containerPosition[1];
 		
-		console.log(this.originalMousePos, this.originalElementPos);
-		
 		this.installEventHandlers();
 	}
 	private mouseMove(event) {
@@ -119,6 +115,7 @@ class Dragger extends React.Component<IProps, IState> {
 		
 		if (!this.isMouseMoveReachedThreshold) {
 			this.isMouseMoveReachedThreshold = true;
+			EditorHelper.perform('select', HTMLHelper.getAttribute(this.draggingElement, 'internal-fsb-guid'));
 		}
 		
 		if (this.isMouseMoveReachedThreshold) {
@@ -133,18 +130,37 @@ class Dragger extends React.Component<IProps, IState> {
 		  EventHelper.setDenyForHandle('click', false, 100);
 		}
 		this.isMouseMoveReachedThreshold = false;
+		this.mousePosition = null;
+		
+		if (this.mousePosition) {
+  		let diffX = this.mousePosition.x - this.originalMousePos.x;
+  		let diffY = this.mousePosition.y - this.originalMousePos.y;
+  		
+  		EditorHelper.perform('update', {
+  		  styles: [{
+  		    name: 'left',
+  		    value: (this.originalElementPos.x + diffX) + 'px'
+  		  }, {
+  		    name: 'top',
+  		    value: (this.originalElementPos.y + diffY) + 'px'
+  		  }],
+  		  replace: 'dragging'
+  		});
+  	}
 		
 		return EventHelper.cancel(event);
 	}
 	
 	private moveDraggingContent(mousePosition: Point) {
+		this.mousePosition = mousePosition;
+		
 		let diffX = mousePosition.x - this.originalMousePos.x;
 		let diffY = mousePosition.y - this.originalMousePos.y;
 		
 		this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
 		this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
 		
-		console.log(diffX, diffY);
+		Accessories.overlay.renderAllRelations();
 	}
 	
 	render() {

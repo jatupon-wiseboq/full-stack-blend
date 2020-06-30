@@ -148,7 +148,8 @@ var ManipulationHelper = {
     if (!skipAfterPromise) {
       resolve();
     }
-	  
+    
+    Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
   },
   updateComponentData: (node: any) => {

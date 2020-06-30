@@ -198,7 +198,7 @@ const HTMLHelper = {
   
   // Size and Position Queries
 	// 
-  getPosition: (object: any, ofDocument: boolean=true): [number, number] => {
+  getPosition: (object: any, ofDocument: boolean=true, addScrolling: boolean=false): [number, number] => {
     var curleft = 0;
     var curtop = 0;
     var computedStyle = null;
@@ -212,6 +212,11 @@ const HTMLHelper = {
         curtop += parseInt(computedStyle.getPropertyValue('border-top-width'));
         curtop -= object.scrollTop;
       } while (ofDocument && (object = object.offsetParent));
+    }
+    
+    if (addScrolling) {
+      curleft += document.body.scrollLeft;
+      curtop += document.body.scrollTop;
     }
     
     return [curleft, curtop];

@@ -14,6 +14,7 @@ import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
 import '../controls/Dragger.js';
+import '../controls/Overlay.js';
 import {LIBRARIES} from '../../Constants.js';
 
 declare let React: any;
@@ -25,7 +26,8 @@ let Accessories = {
   cellFormater: null,
   guide: null,
   layoutInfo: null,
-  dragger: null
+  dragger: null,
+  overlay: null
 };
 
 let editorCurrentMode: string = null;
@@ -103,6 +105,11 @@ var EditorHelper = {
     Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger />, draggerContainer);
     Accessories.dragger.setDOMNode(draggerContainer.firstChild);
     draggerContainer.removeChild(Accessories.dragger.getDOMNode());
+    
+    let overlayContainer = document.createElement('div');
+    Accessories.overlay = ReactDOM.render(<FullStackBlend.Controls.Overlay />, overlayContainer);
+    Accessories.overlay.setDOMNode(overlayContainer.firstChild);
+    overlayContainer.removeChild(Accessories.overlay.getDOMNode());
     
     EditorHelper.init(true, true);
   },
