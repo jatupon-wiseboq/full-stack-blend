@@ -208,3 +208,7 @@ body * {
 .internal-fsb-element[internal-fsb-class="Connection"] {
   z-index: 3000;
 }
+
+[data-column-type="primary"] {
+  font-weight: bold;
+}
