@@ -169,6 +169,22 @@ var BackEndManipulationHelper = {
           .internal-fsb-element
             .internal-fsb-title.internal-fsb-dragging-handle
               | Volatile Memory
+            .container-fluid
+              .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+        `, element);
+        break;
+      case 'VolatilePrefix':
+      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'VolatileMemory') {
+      		alert('Please place a cursor inside a volatile memory to insert a volatile prefix.');
+      		return [accessory, false, link];
+      	}
+      	
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element.col-12
+            .internal-fsb-title
+              | Volatile Prefix
         `, element);
         break;
       case 'Connection':

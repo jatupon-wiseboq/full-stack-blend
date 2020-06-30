@@ -213,6 +213,7 @@ var WorkspaceHelper = {
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = document.body.outerHTML;
+      Accessories.overlay.setEnable(true);
       
       if (reinit) {
         EditorHelper.init(true, false);

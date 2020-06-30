@@ -114,14 +114,14 @@ var EditorHelper = {
     EditorHelper.init(true, true);
   },
   detach: () => {
-    if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
-    if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
-    if (Accessories.cellFormater) {
-      Accessories.cellFormater.setTableElement(null);
-      if (Accessories.cellFormater.getDOMNode().parentNode) Accessories.cellFormater.getDOMNode().parentNode.removeChild(Accessories.cellFormater.getDOMNode());
+    Accessories.cellFormater.setTableElement(null);
+    
+    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory')];
+    for (let element of elements) {
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
     }
-    if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
-    if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
   },
   init: (restoreAccessoryStates: boolean, updateEditorUI: boolean) => {
     CapabilityHelper.installCapabilitiesForInternalElements(document.body);

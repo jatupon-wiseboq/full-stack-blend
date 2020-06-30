@@ -1,4 +1,4 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
 
 declare let React: any;
@@ -18,7 +18,7 @@ class Overlay extends React.Component<Props, State> {
     static defaultProps: Props = {
     }
     
-	  private domElement: HTMLElement = null;
+	  private domElement: HTMLElement = null;  
     
     constructor() {
       super();
@@ -167,7 +167,7 @@ class Overlay extends React.Component<Props, State> {
       if (!groupName || !entityName) return null;
       
       const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory'];
-      const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatileKey'];
+      const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix'];
       
       for (const [i, group] of groups.entries()) {
         let tables = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', group);
