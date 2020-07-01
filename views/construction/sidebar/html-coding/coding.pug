@@ -37,6 +37,10 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-1', 'internal-fsb-data-wizard-type']}")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-2', 'internal-fsb-data-wizard-type']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:popup")
+      | Popup React Class
+    .section-body(internal-fsb-for="internal-fsb-data-wizard-type:popup")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-popup-init-class'], inline: true, button: false}")
     .section-subtitle
       | Inputs
     .section-body

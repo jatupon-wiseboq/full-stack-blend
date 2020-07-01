@@ -66,7 +66,7 @@ var CodeHelper = {
   getInternalClasses: (value: string) => {
     return (value || '').match(INTERNAL_CLASSES_GLOBAL_REGEX).join(' ');
   },
-  convertDictionaryIntoPairs: (dictionary: {string: any}) => {
+  convertDictionaryIntoPairs: (dictionary: {[Identifier: string]: any}) => {
     let pairs = [];
     
     for (let key in dictionary) {

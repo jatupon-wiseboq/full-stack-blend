@@ -7,12 +7,13 @@ import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
+import {SchemaHelper} from './SchemaHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
 let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 
-const DefaultProjectSettings: {string: any} = {
+const DefaultProjectSettings: {[Identifier: string]: any} = {
   currentMode: 'site',
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
@@ -21,7 +22,8 @@ const DefaultProjectSettings: {string: any} = {
   editingPopupID: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
-  popups: []
+  popups: [],
+  dataSchema: {}
 };
 let InternalProjectSettings = CodeHelper.clone(DefaultProjectSettings);
 let InternalSites = {};
@@ -29,6 +31,7 @@ let InternalComponents = {};
 let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
+let InternalStylesheets = {};
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
@@ -62,12 +65,12 @@ var WorkspaceHelper = {
     InternalPopups = data && data.popups || {};
     InternalDataFlows = data && data.flows || {};
     InternalServices = data && data.services || {};
+    InternalStylesheets = data && data.stylesheets || {};
     
     InternalProjectSettings.currentMode = 'site';
+    InternalProjectSettings.dataSchema = InternalProjectSettings.dataSchema || {};
     
     WorkspaceHelper.loadWorkspaceData();
-    if (data && data.stylesheets) StylesheetHelper.initializeStylesheetData(data.stylesheets);
-    
     EditorHelper.updateEditorProperties();
   },
   setMode: (mode: string) => {
@@ -106,7 +109,9 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
       FontHelper.initializeFontData(page.head.fonts);
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -152,7 +157,10 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -174,7 +182,10 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -214,6 +225,8 @@ var WorkspaceHelper = {
       EditorHelper.detach();
       InternalDataFlows.default = document.body.outerHTML;
       Accessories.overlay.setEnable(true);
+      
+      InternalProjectSettings.dataSchema = SchemaHelper.generateDataSchema();
       
       if (reinit) {
         EditorHelper.init(true, false);

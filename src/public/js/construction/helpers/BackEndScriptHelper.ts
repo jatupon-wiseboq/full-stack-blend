@@ -26,35 +26,35 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
-  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.get(data);
   }
   
-  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.post(data);
   }
   
-  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.put(data);
   }
   
-  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.delete(data);
   }
   
-  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
+  protected async insert(data: Input[]): Promise<HierarchicalDataRow[]> {
  		return await DatabaseHelper.insert(data);
   }
   
-  protected async update(data: Input[]): Promise<HierarchicalDataRow> {
+  protected async update(data: Input[]): Promise<HierarchicalDataRow[]> {
  		return await DatabaseHelper.update(data);
   }
   
-  protected async remove(data: Input[]): Promise<boolean> {
+  protected async remove(data: Input[]): Promise<HierarchicalDataRow[]> {
  		return await DatabaseHelper.delete(data);
   }
   
-  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {
+  protected async retrieve(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return await DatabaseHelper.retrieve(data);
   }
   
@@ -102,13 +102,14 @@ enum ValidationInfo {
 // <---Auto[Declare]
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-  source: SourceType;
+	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
-  columns: HierarchicalDataColumn[];
-  relations: HierarchicalDataTable[];
+  keys: {[Identifier: string]: HierarchicalDataColumn};
+  columns: {[Identifier: string]: HierarchicalDataColumn};
+  relations: {[Identifier: string]: HierarchicalDataTable};
 }
 interface HierarchicalDataColumn {
 	name: string;
