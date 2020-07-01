@@ -1,3 +1,5 @@
+import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+
 var SchemaHelper = {
   generateDataSchema: (): any => {
     let tables = {};
@@ -9,8 +11,8 @@ var SchemaHelper = {
       let tableElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', group);
       
       for (let tableElement of tableElements) {
-        let tableName = HTMLHelper.getElementsByAttributeNameAndValue('data-title-name', tableElement);
-        let tableGUID = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', tableElement);
+        let tableName = HTMLHelper.getAttribute(tableElement, 'data-title-name');
+        let tableGUID = HTMLHelper.getAttribute(tableElement, 'internal-fsb-guid');
         let columnElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', entities[i], tableElement);
         let relationElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'Connection');
         
@@ -19,39 +21,39 @@ var SchemaHelper = {
         let relations = {};
         
         for (let columnElement of columnElements) {
-          let columnName = HTMLHelper.getElementsByAttributeNameAndValue('data-title-name', columnElement);
-          let columnGUID = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', columnElement);
-          let columnType = HTMLHelper.getElementsByAttributeNameAndValue('data-column-type', columnElement);
-          let fieldType = HTMLHelper.getElementsByAttributeNameAndValue('data-field-type', columnElement);
-          let required = HTMLHelper.getElementsByAttributeNameAndValue('data-required', columnElement);
-          let unique = HTMLHelper.getElementsByAttributeNameAndValue('data-unique', columnElement);
+          let columnName = HTMLHelper.getAttribute(columnElement, 'data-title-name');
+          let columnGUID = HTMLHelper.getAttribute(columnElement, 'internal-fsb-guid');
+          let columnType = HTMLHelper.getAttribute(columnElement, 'data-column-type');
+          let fieldType = HTMLHelper.getAttribute(columnElement, 'data-field-type');
+          let required = HTMLHelper.getAttribute(columnElement, 'data-required');
+          let unique = HTMLHelper.getAttribute(columnElement, 'data-unique');
           
           if (columnType == 'primary') {
             keys[columnName] = {
               name: columnName,
             	guid: columnGUID,
             	fieldType: fieldType,
-            	required: required,
-            	unique: unique
+            	required: (required == 'true'),
+            	unique: (unique == 'true')
             }
           } else {
             columns[columnName] = {
               name: columnName,
             	guid: columnGUID,
             	fieldType: fieldType,
-            	required: required,
-            	unique: unique
+            	required: (required == 'true'),
+            	unique: (unique == 'true')
             }
           }
         }
         
         for (let relationElement of relationElements) {
-          let relationName = HTMLHelper.getElementsByAttributeNameAndValue('data-title-name', relationElement);
-          let relationGUID = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', relationElement);
-          let sourceGroupName = HTMLHelper.getElementsByAttributeNameAndValue('data-source-group-name', relationElement);
-          let sourceEntityName = HTMLHelper.getElementsByAttributeNameAndValue('data-source-entity-name', relationElement);
-          let targetGroupName = HTMLHelper.getElementsByAttributeNameAndValue('data-target-group-name', relationElement);
-          let targetEntityName = HTMLHelper.getElementsByAttributeNameAndValue('data-target-entity-name', relationElement);
+          let relationName = HTMLHelper.getAttribute(relationElement, 'data-title-name');
+          let relationGUID = HTMLHelper.getAttribute(relationElement, 'internal-fsb-guid');
+          let sourceGroupName = HTMLHelper.getAttribute(relationElement, 'data-source-group-name');
+          let sourceEntityName = HTMLHelper.getAttribute(relationElement, 'data-source-entity-name');
+          let targetGroupName = HTMLHelper.getAttribute(relationElement, 'data-target-group-name');
+          let targetEntityName = HTMLHelper.getAttribute(relationElement, 'data-target-entity-name');
           
           if (sourceGroupName && sourceEntityName && targetGroupName && targetEntityName) {
             if (tableName == sourceGroupName) {
@@ -76,7 +78,7 @@ var SchemaHelper = {
           }
         }
         
-        results[tableName] = {
+        tables[tableName] = {
           source: ['relational', 'worker', 'document', 'volatile-memory'][i],
           group: tableName,
           guid: tableGUID,
@@ -87,7 +89,7 @@ var SchemaHelper = {
       }
     }
     
-    return results;
+    return tables;
   }
 };
 

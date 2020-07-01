@@ -228,6 +228,8 @@ var WorkspaceHelper = {
       
       InternalProjectSettings.dataSchema = SchemaHelper.generateDataSchema();
       
+      console.log(InternalProjectSettings.dataSchema);
+      
       if (reinit) {
         EditorHelper.init(true, false);
       }
