@@ -153,13 +153,13 @@ class TreeNode extends React.Component<IProps, IState> {
 				this.props.onDragging(mousePositionInPoint);
 			}
 			
-			this.moveDraggingContent(mousePositionInPoint);
+		  if (this.isMouseMoveReachedThreshold) {
+		    this.moveDraggingContent(mousePositionInPoint);
+		  }
 		}
 		private mouseUp(event) {
 			this.uninstallEventHandlers();
 			this.destoryDraggingElement();
-			
-			this.isMouseMoveReachedThreshold = false;
 			
 			document.getElementById('area').style.pointerEvents = 'all';
 			
@@ -167,7 +167,12 @@ class TreeNode extends React.Component<IProps, IState> {
 				this.props.onEndDragging();
 			}
 			
-			EventHelper.setDenyForHandle('click', false, 100);
+			if (this.isMouseMoveReachedThreshold) {
+			  EventHelper.setDenyForHandle('click', true);
+			  EventHelper.setDenyForHandle('click', false, 100);
+			}
+			this.isMouseMoveReachedThreshold = false;
+			
 			return EventHelper.cancel(event);
 		}
 		

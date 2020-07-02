@@ -235,7 +235,7 @@ var HTMLHelper = {
     if (typeof element === 'object') {
       classAttributeValue = (element.className || '');
     }
-    let splited = classAttributeValue.split(' ');
+    let splited = classAttributeValue.split && classAttributeValue.split(' ') || [];
     return splited.indexOf(name) != -1;
   },
   removeClass: (element: HTMLElement, name: string) => {
@@ -243,7 +243,8 @@ var HTMLHelper = {
     if (typeof element === 'object') {
       classAttributeValue = (element.className || '');
     }
-    let splited = classAttributeValue.split(' ');
+    if (!classAttributeValue.split) return;
+    let splited = classAttributeValue.split(' ') || [];
     let index = splited.indexOf(name);
     if (index != -1) {
       splited.splice(index, 1);
@@ -255,7 +256,8 @@ var HTMLHelper = {
     if (typeof element === 'object') {
       classAttributeValue = (element.className || '');
     }
-    let splited = classAttributeValue.split(' ');
+    if (!classAttributeValue.split) return;
+    let splited = classAttributeValue.split(' ') || [];
     if (splited.indexOf(name) == -1) {
       splited.push(name);
     }
@@ -330,7 +332,7 @@ var HTMLHelper = {
     return results.join('; ');
   },
   
-  getPosition: (object: HTMLElement, ofDocument: boolean=true) => {
+  getPosition: (object: HTMLElement, ofDocument: boolean=true, ofOrigin: boolean=false) => {
     var curleft = 0;
     var curtop = 0;
     var computedStyle = null;
@@ -344,6 +346,10 @@ var HTMLHelper = {
         curtop += parseInt(computedStyle.getPropertyValue('border-top-width'));
         curtop -= object.scrollTop;
       } while (ofDocument && (object = object.offsetParent));
+    }
+    
+    if (ofOrigin) {
+      curtop += document.body.scrollTop;
     }
     
     return [curleft, curtop];

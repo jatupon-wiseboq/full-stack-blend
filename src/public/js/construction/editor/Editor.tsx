@@ -143,7 +143,7 @@ let recentExtraPanelSelector: string = null;
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {

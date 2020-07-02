@@ -161,6 +161,20 @@ var CapabilityHelper = {
   	  container.addEventListener('paste', EventHelper.pasteEventInTextPlain, false);
   	});
   },
+  installCapabilityOfBeingDragged: (_container: HTMLElement) => {
+    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-dragging-handle', _container)];
+    if (HTMLHelper.hasClass(_container, 'internal-fsb-dragging-handle')) {
+      elements.push(_container);
+    }
+    
+    elements.forEach((element) => {
+  	  if (!element.internalFsbBindedDragging) {
+        element.internalFsbBindedDragging = true;
+        
+        Accessories.dragger.bind(element);
+      }
+  	});
+  },
   installCapabilitiesForInternalElements: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
@@ -176,6 +190,7 @@ var CapabilityHelper = {
       	CapabilityHelper.installCapabilityOfBeingPasted(container);
       }
     });
+    CapabilityHelper.installCapabilityOfBeingDragged(_container);
   },
   installCapabilityOfForwardingStyle: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
