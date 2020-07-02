@@ -120,6 +120,8 @@ var SchemaHelper = {
         SchemaHelper.recursiveAccumulateDotNotations(notations, element, accumulatedNotation, isContainingInReactClass);
       }
     }
+    
+    return notations;
   },
   declareNamespace: (tree: any, path: string) => {
     let splited = path.split('.');
