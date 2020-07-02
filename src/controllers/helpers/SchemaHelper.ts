@@ -124,7 +124,26 @@ const SchemaHelper = {
 			}
 		}
   },
-	verifyNotations: (notations: string[], data: DataSchema): void => {
+  findAllPossibleNotations: (tree: any, accumulatedNotation: string=null, notations: string[]=[]): string[] => {
+    for (let key in tree) {
+      if (tree.hasOwnProperty(key)) {
+        if (accumulatedNotation == null) {
+          accumulatedNotation = key.split('[')[0];
+        } else {
+          accumulatedNotation = accumulatedNotation + key.split('[')[0];
+        }
+      }
+      if (Object.keys(tree[key]) == 0) {
+        notations.push(accumulatedNotation);
+      } else {
+        SchemaHelper.findAllPossibleNotations(tree[key], accumulatedNotation, notations);
+      }
+    }
+    
+    return notations;
+  },
+	verifyNotations: (tree: any, current: any, data: DataSchema) => {
+	  let notations = SchemaHelper.findAllPossibleNotations(tree || {});
 	  for (const notation of notations) {
 	    const splited = notation.split(".");
   		let shifted: string = splited.shift();
