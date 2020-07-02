@@ -11,7 +11,7 @@ const data = JSON.parse(file);
 const ProjectConfigurationHelper = {
 	getDataSchema: (): DataSchema => {
 	  return {
-	    tables: data.globalSettings.dataSchema || {}
+	    tables: data.flows.schema || {}
 	  };
 	},
 	getDotNotationPossibilities: (page: string): any => {
