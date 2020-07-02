@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {SourceType} from "./DatabaseHelper.js";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 
 enum FieldType {
   AutoNumber,
@@ -50,7 +51,7 @@ const SchemaHelper = {
 				return FieldType.String;
 		}
 	},
-	verifyDataSchema: (data: DataSchema) => {
+	verifyDataSchema: (data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
 	  for (const tableKey in data.tables) {
 	    if (data.tables.hasOwnProperty(tableKey)) {
   	    const table = data.tables[tableKey];
@@ -139,7 +140,7 @@ const SchemaHelper = {
 	}
 };
 
-export {SchemaHelper};
+export {DataSchema, DataTableSchema, DataColumnSchema, DataRelationSchema, SchemaHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
