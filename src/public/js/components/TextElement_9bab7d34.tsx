@@ -46,7 +46,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class FlowLayout_83e416bb extends Base {
+class TextElement_9bab7d34 extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -75,11 +75,11 @@ class FlowLayout_83e416bb extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
+      <div className={"internal-fsb-element col-12 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="9bab7d34" style={Object.assign({}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('Custom.message')}}></div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout_83e416bb);
+DeclarationHelper.declare('Document', 'Controls.TextElement_9bab7d34', TextElement_9bab7d34);
 // <---Auto[ClassEnd]
 
 // Export variables here:
