@@ -90,6 +90,52 @@ var SchemaHelper = {
     }
     
     return tables;
+  },
+  recursiveAccumulateDotNotations: (notations: string[]=[], current: HTMLElement=document.body, accumulatedNotation: string=null, isContainingInReactClass: boolean=false): any => {
+    if (HTMLHelper.hasAttribute(current, 'internal-fsb-react-mode')) {
+      isContainingInReactClass = true;
+    }
+    
+    if (isContainingInReactClass) {
+      let reactData = HTMLHelper.getAttribute(current, 'internal-fsb-react-data');
+      if (reactData) {
+        if (accumulatedNotation == null) {
+          accumulatedNotation = reactData;
+        } else {
+          accumulatedNotation = accumulatedNotation + '.' + reactData;
+        }
+        notations.push(accumulatedNotation);
+      }
+    }
+    
+    for (let element of [...current.children]) {
+      if (element.tagName) {
+        SchemaHelper.recursiveAccumulateDotNotations(notations, element, accumulatedNotation, isContainingInReactClass);
+      }
+    }
+  },
+  declareNamespace: (tree: any, path: string) => {
+    let splited = path.split('.');
+    let current: any = tree;
+    
+    splited.forEach((name) => {
+      if (current[name] === undefined) {
+        current[name] = {};
+      }
+      current = current[name];
+    });
+    
+    return current;
+  },
+  generateTreeOfDotNotations: (): any => {
+    let notations = SchemaHelper.recursiveAccumulateDotNotations();
+    let tree = {};
+    
+    for (let notation of notations) {
+      SchemaHelper.declareNamespace(tree, notation);
+    }
+    
+    return tree;
   }
 };
 

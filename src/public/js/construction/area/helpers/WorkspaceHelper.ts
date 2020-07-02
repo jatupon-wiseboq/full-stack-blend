@@ -214,6 +214,8 @@ var WorkspaceHelper = {
         page.extensions[key] = InternalProjectSettings[key];
       }
       
+      page.notations = SchemaHelper.generateTreeOfDotNotations();
+      
       if (reinit) {
         EditorHelper.init(true, false);
         
