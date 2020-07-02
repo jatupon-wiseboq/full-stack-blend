@@ -46,7 +46,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class FlowLayout_83e416bb extends Base {
+class FlowLayout_5382c791 extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -75,11 +75,28 @@ class FlowLayout_83e416bb extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
+      <div className={"internal-fsb-element " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="5382c791" style={Object.assign({'minHeight': '200px', 'FsbBackgroundType': 'linear', 'background': 'linear-gradient(90deg, rgba(3, 115, 252, 1) 0%, rgba(255, 0, 85, 1) 100%)'}, this.props.forward && this.props.forward.styles || {})}>
+        <div className="container-fluid">
+          <div className="row internal-fsb-strict-layout internal-fsb-allow-cursor">
+            <div className="internal-fsb-element col-12 offset-0" internal-fsb-guid="7e72dc95" style={{'color': 'rgba(255, 255, 255, 0.83)', 'textAlign': 'center'}}>
+              <div>
+                <br />
+              </div>
+              <div>
+                <br />
+              </div>
+              <div>
+                <br />
+              </div>
+              This is a component which can be duplicated.
+            </div>
+          </div>
+        </div>
+      </div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout_83e416bb);
+DeclarationHelper.declare('Site', 'Controls.FlowLayout_5382c791', FlowLayout_5382c791);
 // <---Auto[ClassEnd]
 
 // Export variables here:

@@ -7,6 +7,7 @@ import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Hier
 import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
 import {RequestHelper} from '../helpers/RequestHelper.js';
 import {RenderHelper} from '../helpers/RenderHelper.js';
+import {DataTableSchema} from '../helpers/SchemaHelper.js';
 import {Base} from './Base.js';
 
 // <---Auto[Import]
@@ -73,8 +74,8 @@ class Controller extends Base {
   	super(request, response, template);
   	
   	try {
-	    let [action, data] = this.initialize(request);
-	    this.perform(action, data);
+	    let [action, schema, data] = this.initialize(request);
+	    this.perform(action, schema, data);
    	} catch(error) {
 	  	RenderHelper.error(this.response, error);
 	  }
@@ -105,29 +106,30 @@ class Controller extends Base {
  		return super.delete(data);
   }
   
-  protected async insert(data: Input[]): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.insert(data);
+  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.insert(data, schema);
   }
   
-  protected async update(data: Input[]): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.update(data);
+  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.update(data, schema);
   }
   
-  protected async remove(data: Input[]): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.delete(data);
+  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.delete(data, schema);
   }
   
-  protected async retrieve(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return await DatabaseHelper.retrieve(data);
+  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+ 		return await DatabaseHelper.retrieve(data, schema);
   }
   
-  protected async navigate(data: Input[]): Promise<string> {
+  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
  		return '/';
   }
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, Input[]] {
   	let action: ActionType = RequestHelper.getAction(request);
+  	let schema: DataTableSchema = RequestHelper.getSchema(request);
   	let data: Input[] = [];
   	let input: Input = null;
   	
