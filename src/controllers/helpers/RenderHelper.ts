@@ -29,6 +29,7 @@ const RenderHelper = {
 	  });
 	},
 	error: (response: Response, error: Error) => {
+	  throw error;
 	  if (response.headersSent) return;
 	  response.json({
 			success: false,
