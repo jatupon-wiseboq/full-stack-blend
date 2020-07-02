@@ -22,8 +22,7 @@ const DefaultProjectSettings: {[Identifier: string]: any} = {
   editingPopupID: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
-  popups: [],
-  dataSchema: {}
+  popups: []
 };
 let InternalProjectSettings = CodeHelper.clone(DefaultProjectSettings);
 let InternalSites = {};
@@ -66,9 +65,9 @@ var WorkspaceHelper = {
     InternalDataFlows = data && data.flows || {};
     InternalServices = data && data.services || {};
     InternalStylesheets = data && data.stylesheets || {};
+    InternalDataFlows.schema = InternalDataFlows.schema || {};
     
     InternalProjectSettings.currentMode = 'site';
-    InternalProjectSettings.dataSchema = InternalProjectSettings.dataSchema || {};
     
     WorkspaceHelper.loadWorkspaceData();
     EditorHelper.updateEditorProperties();
@@ -228,9 +227,7 @@ var WorkspaceHelper = {
       InternalDataFlows.default = document.body.outerHTML;
       Accessories.overlay.setEnable(true);
       
-      InternalProjectSettings.dataSchema = SchemaHelper.generateDataSchema();
-      
-      console.log(InternalProjectSettings.dataSchema);
+      InternalDataFlows.schema = SchemaHelper.generateDataSchema();
       
       if (reinit) {
         EditorHelper.init(true, false);
