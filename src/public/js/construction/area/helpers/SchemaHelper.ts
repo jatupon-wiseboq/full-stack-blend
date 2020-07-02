@@ -98,12 +98,19 @@ var SchemaHelper = {
     
     if (isContainingInReactClass) {
       let reactData = HTMLHelper.getAttribute(current, 'internal-fsb-react-data');
+      let reactPagingSize = HTMLHelper.getAttribute(current, 'internal-fsb-react-paging');
+      
       if (reactData) {
         if (accumulatedNotation == null) {
           accumulatedNotation = reactData;
         } else {
           accumulatedNotation = accumulatedNotation + '.' + reactData;
         }
+        
+        if (reactPagingSize) {
+          accumulatedNotation = accumulatedNotation + '[' + reactPagingSize + ']';
+        }
+        
         notations.push(accumulatedNotation);
       }
     }
