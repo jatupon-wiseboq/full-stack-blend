@@ -153,7 +153,7 @@ class Controller extends Base {
 	  
 	  // Auto[MergingEnd]--->
 	  
-	  return [action, data];
+	  return [action, schema, data];
 	}
   // <---Auto[MergingEnd]
   
