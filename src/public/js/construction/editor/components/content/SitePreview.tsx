@@ -311,12 +311,11 @@ class SitePreview extends Base<Props, State> {
 	          name: 'load',
 	          content: false
 	        }), '*');
-	        window.internalFsbSubmit = function(guid, action, notation, dataControls, options, callback) {
+	        window.internalFsbSubmit = function(guid, notation, event, callback) {
 	          if (!window.ENDPOINT || !window.PATH) {
 	            alert('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
 	          } else {
-	            DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
-	            DataManipulationHelper.request(guid, action, notation, options, callback);
+	            DataManipulationHelper.request(guid, notation, event, callback);
 	          }
 	        };
         });

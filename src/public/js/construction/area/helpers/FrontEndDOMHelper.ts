@@ -302,7 +302,9 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${cumulatedDotNotation}', '${submitControls}', {initClass: '${reactClassForPopup}'}, ((results: any) => { this.manipulate('${submitType}', results); }).bind(this)); }).bind(this)}`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          
+        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', event, ((results: any) => { this.manipulate('${submitType}', '${cumulatedDotNotation}', results); }).bind(this)); }).bind(this)}`);
         }
         
         for (let key in bindingStyles) {
@@ -583,7 +585,9 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', null, '${submitControls}', null, null)"`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          
+        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {

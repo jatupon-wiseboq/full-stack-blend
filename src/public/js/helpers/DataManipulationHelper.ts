@@ -3,6 +3,7 @@
 
 import {RequestHelper} from './RequestHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
+import {EventHelper} from './EventHelper.js';
 
 declare let window: any;
 
@@ -38,10 +39,11 @@ const DataManipulationHelper = {
 			fieldManipulatorsInfoDict[guid] = fields;
 		}
 	},
-  request: (guid: string, action: string, notation: string, options: any, callback: any) => {
+  request: (guid: string, action: string, notation: string, options: any, event: Event, callback: any) => {
   	if (fieldManipulatorsInfoDict[guid]) {
   		const params = {};
   		const fields = fieldManipulatorsInfoDict[guid];
+  		const container = HTMLHelper.findTheParentInClassName('', EventHelper.getCurrentElement(event), false);
   		
 	  	for (const field of fields) {
 	  		let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', field) as any;
