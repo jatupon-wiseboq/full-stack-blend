@@ -3,11 +3,12 @@
 
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from "../helpers/DatabaseHelper.js";
-import {ValidationInfo, ValidationHelper} from "../helpers/ValidationHelper.js";
-import {RequestHelper} from "../helpers/RequestHelper.js";
-import {RenderHelper} from "../helpers/RenderHelper.js";
-import {Base} from "./Base.js";
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
+import {RequestHelper} from '../helpers/RequestHelper.js';
+import {RenderHelper} from '../helpers/RenderHelper.js';
+import {DataTableSchema} from '../helpers/SchemaHelper.js';
+import {Base} from './Base.js';
 
 // <---Auto[Import]
 
@@ -73,8 +74,8 @@ class Controller extends Base {
   	super(request, response, template);
   	
   	try {
-	    const [action, data] = this.initialize(request);
-	    this.perform(action, data);
+	    let [action, schema, data] = this.initialize(request);
+	    this.perform(action, schema, data);
    	} catch(error) {
 	  	RenderHelper.error(this.response, error);
 	  }
@@ -90,56 +91,62 @@ class Controller extends Base {
   }
   
   protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return [{
- 		  source: null,
- 		  group: "Custom",
- 		  rows: [{
- 		    columns: [{
- 		      name: "message",
- 		      value: "Hello World!"
- 		    }],
- 		    relations: []
- 		  }]
- 		}];
+ 		return {
+ 		  Custom: {
+   		  source: null,
+   		  group: "Custom",
+   		  rows: [{
+   		    keys: {},
+   		    columns: {
+   		      message: {
+   		        name: "message",
+   		        value: "Hello World!"
+   		      }
+   		    },
+   		    relations: {}
+   		  }]
+   		}
+ 		};
   }
   
-  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.post(data);
   }
   
-  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.put(data);
   }
   
-  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.delete(data);
   }
   
-  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.insert(data);
+  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.insert(data, schema);
   }
   
-  protected async update(data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.update(data);
+  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.update(data, schema);
   }
   
-  protected async remove(data: Input[]): Promise<boolean> {
- 		return await DatabaseHelper.delete(data);
+  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.delete(data, schema);
   }
   
-  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {
- 		return await DatabaseHelper.retrieve(data);
+  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+ 		return await DatabaseHelper.retrieve(data, schema);
   }
   
-  protected async navigate(data: Input[]): Promise<string> {
- 		return "/";
+  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
+ 		return '/';
   }
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, Input[]] {
-  	const action: ActionType = RequestHelper.getAction(request);
-  	const data: Input[] = [];
-  	const input: Input = null;
+  	let action: ActionType = RequestHelper.getAction(request);
+  	let schema: DataTableSchema = RequestHelper.getSchema(request);
+  	let data: Input[] = [];
+  	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
 	  
