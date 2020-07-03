@@ -128,13 +128,12 @@ interface Input {
 // Auto[ClassBegin]--->
 class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
-  	super(request, response, template);
-  	
   	try {
+  	  super(request, response, template);
 	    let [action, schema, data] = this.initialize(request);
 	    this.perform(action, schema, data);
    	} catch(error) {
-	  	RenderHelper.error(this.response, error);
+	  	RenderHelper.error(response, error);
 	  }
   }
   // <---Auto[ClassBegin]
