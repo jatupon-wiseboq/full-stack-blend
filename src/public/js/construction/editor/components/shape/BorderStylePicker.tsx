@@ -98,10 +98,10 @@ class BorderStylePicker extends Base<Props, State> {
         
         perform('update', {
             styles: [{
-                name: this.props.watchingStyleNames[0],
+                name: this.props.watchingStyleNames[1],
                 value: color
             }],
-            replace: this.props.watchingStyleNames[0]
+            replace: this.props.watchingStyleNames[1]
         });
     }
     
