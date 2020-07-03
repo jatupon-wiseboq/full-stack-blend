@@ -92,7 +92,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, "public"), {maxAge: 3600000}));
+app.use(express.static(path.join(__dirname, "public"), {maxAge: 0}));
 
 /**
  * CORS configuration

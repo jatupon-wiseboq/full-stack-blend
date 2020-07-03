@@ -73,7 +73,7 @@ class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
   	try {
   	  super(request, response, template);
-	    let [action, schema, data] = this.initialize(request);
+	    const [action, schema, data] = this.initialize(request);
 	    this.perform(action, schema, data);
    	} catch(error) {
 	  	RenderHelper.error(response, error);

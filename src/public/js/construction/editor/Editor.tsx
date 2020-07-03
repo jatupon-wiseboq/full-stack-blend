@@ -32,6 +32,7 @@ import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 import './components/code/BackEndScriptEditor.js';
+import './components/code/DebuggingConsole.js';
 
 import './components/content/SitePreview.js';
 import './components/content/PageManager.js';
@@ -127,6 +128,16 @@ let recentExtraPanelSelector: string = null;
     button.removeAttr('skip-perform');
     
     synchronize('click');
+    
+    // Fix console's element sizing bug.
+    // 
+    window.setTimeout(() => {
+      window.repl.output.focus();
+    }, 10);
+    window.setTimeout(() => {
+      window.repl.input.focus();
+      window.repl.resetInput();
+    }, 20);
     
     if (event) return EventHelper.cancel(event);
   };

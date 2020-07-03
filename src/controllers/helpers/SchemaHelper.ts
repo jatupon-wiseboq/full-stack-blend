@@ -175,7 +175,7 @@ const SchemaHelper = {
 	}
 };
 
-export {DataSchema, DataTableSchema, DataColumnSchema, DataRelationSchema, SchemaHelper};
+export {DataSchema, DataTableSchema, DataColumnSchema, DataRelationSchema, FieldType, SchemaHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

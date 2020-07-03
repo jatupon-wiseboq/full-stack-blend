@@ -1,0 +1,17 @@
+// Console
+// -------------------------
+#console, #console-container {
+  width: 100%;
+  height: 100%;
+}
+.jsconsole .CodeMirror-code pre {
+  padding-left: 22px !important;
+}
+.jsconsole-input {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  z-index: 100;
+}

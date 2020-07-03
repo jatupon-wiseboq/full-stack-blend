@@ -7,7 +7,7 @@
             .workspace-panel-container.sidebar
               .workspace-container
                 .workspace-vertical-container.full-relative-size
-                  .workspace-vertical-panel
+                  .workspace-vertical-panel(style="border-bottom: none;")
                     .workspace-container.siteToolset.popupsToolset.componentsToolset.toolset
                       .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
                         .workspace-vertical-panel
@@ -44,7 +44,7 @@
                         .workspace-vertical-panel
                           .workspace-panel-container
                             include ../common/empty
-                    .workspace-container.dataToolset.toolset
+                    .workspace-container.dataToolset.toolset(style="display: none;")
                       .workspace-vertical-container
                         .workspace-vertical-panel
                           .workspace-tab-container
@@ -57,7 +57,7 @@
                           .workspace-panel-container.scrollable
                             .panel.sidebar-properties-panel.active
                               include html-data/properties
-                    .workspace-container.servicesToolset.toolset
+                    .workspace-container.servicesToolset.toolset(style="display: none;")
                       .workspace-vertical-container
                         .workspace-vertical-panel
                           .workspace-tab-container
