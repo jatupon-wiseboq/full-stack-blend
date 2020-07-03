@@ -171,8 +171,6 @@ class SitePreview extends Base<Props, State> {
 		        		    this.requiredFiles[key] = this.requiredFiles[key].replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
                       return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
                     });
-                    
-                    console.log(this.requiredFiles[key]);
 		        		  
 										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
 										this.requiredFiles[key] = URL.createObjectURL(new Blob([this.requiredFiles[key]]));
@@ -217,7 +215,7 @@ class SitePreview extends Base<Props, State> {
           return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
         });
     		
-    		if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
+    		/* if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
     		if (DEBUG_SITE_PREVIEW) console.log(externalStylesheets);
     		if (DEBUG_SITE_PREVIEW) console.log('externalScripts');
     		if (DEBUG_SITE_PREVIEW) console.log(externalScripts);
@@ -228,7 +226,7 @@ class SitePreview extends Base<Props, State> {
     		if (DEBUG_SITE_PREVIEW) console.log('combinedMinimalFeatureScripts');
     		if (DEBUG_SITE_PREVIEW) console.log(combinedMinimalFeatureScripts);
     		if (DEBUG_SITE_PREVIEW) console.log('combinedExpandingFeatureScripts');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts);
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts); */
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
@@ -277,6 +275,19 @@ class SitePreview extends Base<Props, State> {
       window.ENDPOINT = '${ENDPOINT}';
       window.PATH = '${PATH}';
       
+      let timerId = null;
+      window.onerror = ((msg, url, line, col, error) => {
+        if (timerId != null) window.clearTimeout(timerId);
+        timerId = window.setTimeout(() => {
+          if (confirm('There is some error happened while rendering. Do you want to look over it?')) {
+            window.closeSitePreview();
+          }
+        }, 2000);
+        
+        parent.error(msg, url, line, col, error);
+      });
+      parent.repl.wrapLog(console);
+      
       var requiredFiles = ${JSON.stringify(this.requiredFiles)};
       require.config({
         paths: {
@@ -298,7 +309,6 @@ class SitePreview extends Base<Props, State> {
         
         var continueFn = (function(data) {
 	        for (var expandingPlaceholder of expandingPlaceholders) {
-	          console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
 	          var forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
 	        
 	          ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: data}, null), expandingPlaceholder);
@@ -346,11 +356,6 @@ class SitePreview extends Base<Props, State> {
     }
     
     private close(error) {
-    		if (error instanceof Error) {
-    			console.log(error.message);
-    			this.clear();
-    		}
-    	
     		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
     		
     		let preview = ReactDOM.findDOMNode(this.refs.preview);

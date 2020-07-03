@@ -38,13 +38,30 @@ class DebuggingConsole extends Base<Props, State> {
         this.repl = new Console(document.getElementById('console'), {mode: "javascript", theme: "eclipse"});
         this.repl.wrapLog(console);
         
+        this.repl.simpleFormatter = ((msg, ...args) => {
+          let output = [msg.toString()];
+          for (let arg of args) {
+            output.push(arg.toString());
+          }
+          return output.join(', ');
+        });
+        
+        window.error = ((msg, url, line, col, error) => {
+          window.setTimeout(() => {
+            $('#codingButton')[0].click();
+            $('#footerConsole')[0].click();
+          }, 0);
+          window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
+        });
+        window.onerror = window.error;
+        
         let output = document.createElement('div');
         output.className = 'jsconsole eclipse';
         output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
         document.body.append(output);
         
         window.repl = this.repl;
-        window.repl.on('entry', () => {
+        window.repl.on('entry', (event) => {
           window.setTimeout(() => {
             $('#codingButton')[0].click();
             $('#footerConsole')[0].click();

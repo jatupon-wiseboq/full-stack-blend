@@ -14,4 +14,15 @@
   bottom: 0;
   background-color: #ffffff;
   z-index: 100;
+  
+  &::before {
+    content: '';
+    position: relative;
+    display: block;
+    left: 0;
+    top: -2;
+    right: 0;
+    height: 2px;
+    background-color: #c8c8c8;
+  }
 }
