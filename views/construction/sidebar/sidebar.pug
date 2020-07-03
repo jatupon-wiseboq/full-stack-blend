@@ -49,31 +49,21 @@
                         .workspace-vertical-panel
                           .workspace-tab-container
                             .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-properties-panel.active(id='sidebarProperties', onclick="swap('.sidebar-properties-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-properties-panel.active(id='sidebarProperties', onclick="swap('.sidebar-properties-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
                                 input(type='radio', name='options', checked=true)
                                 | Properties
-                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-permission-panel(id='sidebarPermission', onclick="swap('.sidebar-permission-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
-                                input(type='radio', name='options', checked=false)
-                                | Permission
-                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-restoration-panel(id='sidebarRestoration', onclick="swap('.sidebar-restoration-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true")
-                                input(type='radio', name='options', checked=false)
-                                | Restoration
                       .workspace-vertical-container.full-relative-size
                         .workspace-vertical-panel
                           .workspace-panel-container.scrollable
                             .panel.sidebar-properties-panel.active
                               include html-data/properties
-                            .panel.sidebar-permission-panel
-                              include html-data/permission
-                            .panel.sidebar-restoration-panel
-                              include html-data/restoration
                     .workspace-container.servicesToolset.toolset
                       .workspace-vertical-container
                         .workspace-vertical-panel
                           .workspace-tab-container
                             .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.w-100.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
-                                input(type='radio', name='options', checked=true)
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+                                input(type='radio', name='options', checked=true, style={width: '86px'})
                                 | Properties
                       .workspace-vertical-container.full-relative-size
                         .workspace-vertical-panel
