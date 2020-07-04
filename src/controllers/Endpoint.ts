@@ -11,7 +11,7 @@ import {Request, Response} from "express";
  * Update the content of specific file in the repository.
  */
 export const updateContent = (request: Request, response: Response) => {
-
+		
 		try {
 			const json: any = request.body;
 			if (json == null) {
@@ -41,7 +41,7 @@ export const updateContent = (request: Request, response: Response) => {
 				results: null
 			});
 		}
-
+		
 };
 
 // <--- Auto[Generating:V1]
