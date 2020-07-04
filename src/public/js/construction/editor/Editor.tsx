@@ -1,5 +1,6 @@
 import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper.js';
 
 import './components/layout/GridPicker.js';
 import './components/layout/OffsetPicker.js';
@@ -248,7 +249,6 @@ let recentExtraPanelSelector: string = null;
       document.body.click();
     });
     Accessories.projectManager.current.load();
-    Accessories.preview.current.start(false);
   });
   window.save = (() => {
     Accessories.projectManager.current.save();
@@ -261,8 +261,13 @@ let recentExtraPanelSelector: string = null;
   });
   
   window.preview = (() => {
-    Accessories.endpointManager.current.save();
-  	Accessories.preview.current.start();
+    Accessories.preview.current.open();
+    
+    Accessories.endpointManager.current.save(() => {
+      window.setTimeout(() => {
+        Accessories.preview.current.start();
+      }, 2000);
+    });
  	});
  	
  	let setup = (() => {

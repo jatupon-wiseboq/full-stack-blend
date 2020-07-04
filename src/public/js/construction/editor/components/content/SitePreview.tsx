@@ -77,9 +77,16 @@ class SitePreview extends Base<Props, State> {
         if (!super.update(properties)) return;
     }
     
+    public open() {
+        this.setState({
+          loading: true
+        });
+        HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+    }
+    
     public clear() {
-    		let count = 0;
-    		for (let key in this.requiredFiles) {
+        let count = 0;
+        for (let key in this.requiredFiles) {
     				if (this.requiredFiles.hasOwnProperty(key)) {
     							this.requiredFiles[key] = false;
     							count += 1;
