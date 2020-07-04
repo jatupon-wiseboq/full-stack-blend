@@ -277,7 +277,7 @@ class SitePreview extends Base<Props, State> {
       
       let timerId = null;
       window.onerror = ((msg, url, line, col, error) => {
-        if (timerId != null) window.clearTimeout(timerId);
+        window.clearTimeout(timerId);
         timerId = window.setTimeout(() => {
           if (confirm('There is some error happened while rendering. Do you want to look over it?')) {
             window.closeSitePreview();
@@ -286,7 +286,17 @@ class SitePreview extends Base<Props, State> {
         
         parent.error(msg, url, line, col, error);
       });
-      parent.repl.wrapLog(console);
+      console.log = parent.console.log;
+      console.error = ((...args) => {
+      	window.clearTimeout(timerId);
+        timerId = window.setTimeout(() => {
+          if (confirm('There is some error happened while rendering. Do you want to look over it?')) {
+            window.closeSitePreview();
+          }
+        }, 2000);
+        
+      	parent.console.error(...args);
+     	});
       
       var requiredFiles = ${JSON.stringify(this.requiredFiles)};
       require.config({
@@ -337,6 +347,7 @@ class SitePreview extends Base<Props, State> {
         	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
         		continueFn(data.results);
         	}).catch(function(error) {
+        		console.error('Server-Side Rendering (SSR) is unable to test (' + error + ')');
         		if (confirm('Server-Side Rendering (SSR) is unable to test (' + error + '). Do you want to continue?')) {
         			continueFn(null);
         		} else {

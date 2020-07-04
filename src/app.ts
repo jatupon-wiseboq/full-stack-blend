@@ -149,4 +149,13 @@ app.get("/auth/github/callback", passport.authenticate("github", {failureRedirec
 
 });
 
+/**
+ * For StackBlend Editor (Endpoint)
+ */
+import * as endpoint from "./controllers/Endpoint";
+
+if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+	app.post("/endpoint/update/content", endpoint.updateContent);
+}
+
 export default app;

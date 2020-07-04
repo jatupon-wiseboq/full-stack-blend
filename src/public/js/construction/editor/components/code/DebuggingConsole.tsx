@@ -36,7 +36,6 @@ class DebuggingConsole extends Base<Props, State> {
     
     componentDidMount() {
         this.repl = new Console(document.getElementById('console'), {mode: "javascript", theme: "eclipse"});
-        this.repl.wrapLog(console);
         
         this.repl.simpleFormatter = ((msg, ...args) => {
           let output = [msg.toString()];
@@ -54,6 +53,17 @@ class DebuggingConsole extends Base<Props, State> {
           window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
         });
         window.onerror = window.error;
+        
+        console.log = ((...args) => {
+        	window.repl.print(window.repl.simpleFormatter(...args), 'message');
+        });
+        console.error = ((...args) => {
+          window.setTimeout(() => {
+            $('#codingButton')[0].click();
+            $('#footerConsole')[0].click();
+          }, 0);
+	        window.repl.print(window.repl.simpleFormatter(...args), 'type-error');
+        });
         
         let output = document.createElement('div');
         output.className = 'jsconsole eclipse';

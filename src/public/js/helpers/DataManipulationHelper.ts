@@ -31,7 +31,7 @@ interface HierarchicalDataColumn {
 const fieldManipulatorsInfoDict: any = {};
 const actionManipulatorsInfoDict: any = {};
 const optionsManipulatorsInfoDict: any = {};
-const isDevelopmentMachine = ['localhost:3000', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host) != -1;
+const isDevelopmentMachine = ['localhost', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host.split(':')[0]) != -1;
 const registeredEndpoint: string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
 const currentPath: string = (isDevelopmentMachine) ? window.PATH || null : null;
 
@@ -120,7 +120,7 @@ const DataManipulationHelper = {
   },
   getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}): any => {
     if (!notation) {
-      console.log('There was an error processing hierarchical data on client side (missing notation).');
+      console.error('There was an error processing hierarchical data on client side (missing notation).');
       return [];
     }
     
