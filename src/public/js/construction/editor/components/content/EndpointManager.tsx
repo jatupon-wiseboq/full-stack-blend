@@ -46,14 +46,17 @@ class EndpointManager extends Base<Props, State> {
     	else return `_${key}`;
     }
     private create(path: string, content: string) {
-    	if (window.ENDPOINT) {
-    		RequestHelper.post(`${window.ENDPOINT/endpoint/update/content}`, {
-    			path: path,
-    			content: content
-    		});
-    	}
+  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
+  			path: path,
+  			content: content
+  		});
     }
-    public save() {
+    public save(cb) {
+      if (!window.ENDPOINT) return cb();
+      
+      let construction = document.getElementById('area');
+      let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+      
   		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
   		let constructionEditorData = this.generateWorkspaceData() || {};
   		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
@@ -151,6 +154,7 @@ class EndpointManager extends Base<Props, State> {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, () => {
                 this.createSiteBundle(nextProjectData.globalSettings.pages, () => {
                   this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2), () => {
+                    cb();
                   });
                 });
               });

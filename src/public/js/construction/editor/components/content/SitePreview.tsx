@@ -92,26 +92,27 @@ class SitePreview extends Base<Props, State> {
     		this.currentKey = null;
     }
     
-    public start() {
+    public start(display: boolean=true) {
     		this.setState({
-    			loading: true	
+    			loading: true,
+    			display: display
     		});
     		
     		if (!this.state.requiredFilesLoaded) {
 		    		this.clear();
 		    		
-		    		HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+		    		if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 		    		
 		    		var request = new XMLHttpRequest();
 						request.addEventListener("load", this.unzip.bind(this, request));
 						request.addEventListener("error", this.close.bind(this));
 						request.responseType = 'blob';
-						request.open("GET", "/boilerplate.v1.zip");
+						request.open("GET", "boilerplate.v1.zip");
 						request.send();
 				} else {
-						HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+						if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 						
-						this.display();
+						if (this.state.display) this.display();
 				}
     }
     
@@ -127,7 +128,7 @@ class SitePreview extends Base<Props, State> {
 				    this.read();
 			    }).bind(this));
 			    this.zipReader = zipReader;
-			  }).bind(this), this.close.bind(this));
+			  }).bind(this), this.close.bind(this, new Error('Failed to unzip boilerplate files.')));
     }
     
     private read() {
@@ -178,7 +179,7 @@ class SitePreview extends Base<Props, State> {
 		    		}
 		    }
 		    
-		    this.display();
+		    if (this.state.display) this.display();
     }
     
     private display() {
@@ -287,16 +288,7 @@ class SitePreview extends Base<Props, State> {
         parent.error(msg, url, line, col, error);
       });
       console.log = parent.console.log;
-      console.error = ((...args) => {
-      	window.clearTimeout(timerId);
-        timerId = window.setTimeout(() => {
-          if (confirm('There is some error happened while rendering. Do you want to look over it?')) {
-            window.closeSitePreview();
-          }
-        }, 2000);
-        
-      	parent.console.error(...args);
-     	});
+      console.error = parent.console.error;
       
       var requiredFiles = ${JSON.stringify(this.requiredFiles)};
       require.config({
@@ -347,8 +339,8 @@ class SitePreview extends Base<Props, State> {
         	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
         		continueFn(data.results);
         	}).catch(function(error) {
-        		console.error('Server-Side Rendering (SSR) is unable to test (' + error + ')');
-        		if (confirm('Server-Side Rendering (SSR) is unable to test (' + error + '). Do you want to continue?')) {
+        		console.error('Server-Side Rendering (SSR) is unable to test.');
+        		if (confirm('Server-Side Rendering (SSR) is unable to test. Do you want to continue?')) {
         			continueFn(null);
         		} else {
         			window.closeSitePreview();
@@ -367,6 +359,8 @@ class SitePreview extends Base<Props, State> {
     }
     
     private close(error) {
+        if (error && error.message) console.error(error.message);
+      
     		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
     		
     		let preview = ReactDOM.findDOMNode(this.refs.preview);
@@ -376,28 +370,29 @@ class SitePreview extends Base<Props, State> {
     }
     
     render() {
+      let endpoint = (<FullStackBlend.Components.EndpointManager ref="endpoint"></FullStackBlend.Components.EndpointManager>);
       return pug `
-      	.site-preview
-      		.close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
-      			i.fa.fa-close.m-0
-      		.iframe-container
-      			.iframe-navigation-bar
-      			.iframe-body
-      				iframe(ref="preview")
-      		.loading-container(style={display: this.state.loading ? 'block' : 'none'})
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      `
+        .site-preview
+          .close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
+            i.fa.fa-close.m-0
+          .iframe-container
+            .iframe-navigation-bar
+            .iframe-body
+              iframe(ref="preview")
+          .loading-container(style={display: this.state.loading ? 'block' : 'none'})
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+        `
     }
 }
 

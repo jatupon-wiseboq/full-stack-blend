@@ -40,6 +40,7 @@ import './components/content/ProjectManager.js';
 import './components/content/ComponentMenu.js';
 import './components/content/ComponentManager.js';
 import './components/content/PopupManager.js';
+import './components/content/EndpointManager.js';
 
 //import GitHub from 'github-api';
 
@@ -247,6 +248,7 @@ let recentExtraPanelSelector: string = null;
       document.body.click();
     });
     Accessories.projectManager.current.load();
+    Accessories.preview.current.start(false);
   });
   window.save = (() => {
     Accessories.projectManager.current.save();
@@ -259,6 +261,7 @@ let recentExtraPanelSelector: string = null;
   });
   
   window.preview = (() => {
+    Accessories.endpointManager.current.save();
   	Accessories.preview.current.start();
  	});
  	
@@ -272,6 +275,11 @@ let recentExtraPanelSelector: string = null;
     Accessories.projectManager = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.ProjectManager ref={Accessories.projectManager} />, projectManagerContainer);
     document.body.appendChild(projectManagerContainer);
+    
+    let endpointManagerContainer = document.createElement('div');
+    Accessories.endpointManager = React.createRef();
+    ReactDOM.render(<FullStackBlend.Components.EndpointManager ref={Accessories.endpointManager} />, endpointManagerContainer);
+    document.body.appendChild(endpointManagerContainer);
  	});
  	setup();
 })();

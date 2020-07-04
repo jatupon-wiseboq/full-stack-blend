@@ -120,7 +120,7 @@ const DataManipulationHelper = {
   },
   getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}): any => {
     if (!notation) {
-      console.error('There was an error processing hierarchical data on client side (missing notation).');
+      console.log('There was an error processing hierarchical data on client side (missing notation).');
       return [];
     }
     
