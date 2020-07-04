@@ -598,12 +598,12 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
        	    repo.createBlob(`// Auto[Generating:V1]--->
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
-    
-    ${tokens[1]}
-    
-    // <--- Auto[Generating:V1]
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+${tokens[1]}
+
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
               if (error) {
                 alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                 return;

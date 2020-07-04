@@ -138,7 +138,7 @@ try {
 	
 	route.default(app);
 } catch (error) {
-	console.log('\x1b[31m', error, '\x1b[0m');
+	console.log("\x1b[31m", error, "\x1b[0m");
 }
 
 /**
@@ -163,14 +163,5 @@ app.get("/auth/github/callback", passport.authenticate("github", {failureRedirec
     res.redirect("/account");
 
 });
-
-/**
- * For StackBlend Editor (Endpoint)
- */
-import * as endpoint from "./controllers/Endpoint";
-
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	app.post("/endpoint/update/content", endpoint.updateContent);
-}
 
 export default app;
