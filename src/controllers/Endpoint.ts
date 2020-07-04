@@ -24,7 +24,7 @@ export const updateContent = (request: Request, response: Response) => {
 			}
 			
 			childProcess.execSync("git stash");
-			childProcess.execSync("git remote add boilerplate https://github.com/SoftenStorm/boilerplate.git");
+			childProcess.execSync("git remote add boilerplate https://github.com/SoftenStorm/boilerplate.git &");
 			childProcess.execSync("git pull boilerplate master");
 			childProcess.execSync("git stash apply");
 			fs.writeFileSync(fullPath, json.content, {encoding: "utf8", flag: "w"});
