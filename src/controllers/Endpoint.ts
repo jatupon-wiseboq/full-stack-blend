@@ -3,7 +3,6 @@
 
 import fs from "fs";
 import path from "path";
-import childProcess from "child_process";
 import {Request, Response} from "express";
 
 /**
@@ -18,15 +17,13 @@ export const updateContent = (request: Request, response: Response) => {
 				throw new Error("There was an error trying to obtain requesting parameters (missing).");
 			}
 			
-			const fullPath = path.resolve(__dirname, json.path);
-			if (fullPath.indexOf(__dirname) == -1) {
-				throw new Error(`The specified path isn't under ${__dirname}.`);
+			const dirname = __dirname.replace("/dist/", "/src/");
+			const rootPath = path.resolve(dirname, "../../");
+			const fullPath = path.resolve(dirname, json.path);
+			if (fullPath.indexOf(rootPath) == -1) {
+				throw new Error(`The specified path isn't under ${rootPath}.`);
 			}
 			
-			childProcess.execSync("git stash");
-			childProcess.execSync("git remote add boilerplate https://github.com/SoftenStorm/boilerplate.git &");
-			childProcess.execSync("git pull boilerplate master");
-			childProcess.execSync("git stash apply");
 			fs.writeFileSync(fullPath, json.content, {encoding: "utf8", flag: "w"});
 			
 			response.json({
@@ -37,7 +34,7 @@ export const updateContent = (request: Request, response: Response) => {
 		} catch(error) {
 			response.json({
 				success: false,
-				error: error,
+				error: error.message,
 				results: null
 			});
 		}
