@@ -196,7 +196,6 @@ class ProjectManager extends Base<Props, State> {
             
             Object.assign(nextProjectData, previousProjectData);
             Object.assign(nextProjectData, constructionAreaHTMLData);
-            Object.assign(nextProjectData, constructionAreaHTMLData);
             Object.assign(nextProjectData, constructionEditorData);
             
             let externalStylesheets = [];

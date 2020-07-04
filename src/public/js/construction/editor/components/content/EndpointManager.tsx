@@ -45,12 +45,24 @@ class EndpointManager extends Base<Props, State> {
     	if (key == 'index') return key;
     	else return `_${key}`;
     }
+    
+    files: any = [];
     private create(path: string, content: string) {
-  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
-  			path: path,
-  			content: content
-  		});
+      return new Promise((resolve) => {
+        this.files.push({
+          path: path,
+    			content: content
+        });
+        resolve();
+      });
     }
+    private commit() {
+  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
+  			files: this.files
+  		});
+  		this.files = [];
+    }
+    
     public save(cb) {
       if (!window.ENDPOINT) return cb();
       
@@ -64,7 +76,6 @@ class EndpointManager extends Base<Props, State> {
       let nextProjectData = {};
       
       Object.assign(nextProjectData, {});
-      Object.assign(nextProjectData, constructionAreaHTMLData);
       Object.assign(nextProjectData, constructionAreaHTMLData);
       Object.assign(nextProjectData, constructionEditorData);
       
@@ -149,12 +160,12 @@ class EndpointManager extends Base<Props, State> {
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
         this.createController(nextProjectData.globalSettings.pages, () => {
-          this.createViewBlob(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
+          this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
           	this.createBackEndController(arrayOfControllerScripts, () => {
-              this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, () => {
-                this.createSiteBundle(nextProjectData.globalSettings.pages, () => {
-                  this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2), () => {
-                    cb();
+              this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsInfo) => {
+                this.createSiteBundle(nextProjectData.globalSettings.pages, frontEndComponentsInfo, () => {
+                  this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2)).then(() => {
+                    this.commit().then(cb);
                   });
                 });
               });
@@ -218,14 +229,14 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
    	  process(0);
  	  }
    	createFrontEndComponents(arrayOfContent: string[], cb: any) {
-   	  let nextFrontEndComponentsDataSHAInfos = [];
+   	  let frontEndComponentsInfo = [];
    	  let mainprocess = ((mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
      	  if (results.length < 2) {
      	    if (mainIndex + 1 < arrayOfContent.length) {
      	      mainprocess(mainIndex + 1);
      	    } else {
-     	      cb(nextFrontEndComponentsDataSHAInfos);
+     	      cb(frontEndComponentsInfo);
      	    }
      	  } else {
        	  let subprocess = ((subIndex: number) => {
@@ -238,12 +249,14 @@ ${tokens[1]}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
+              frontEndComponentsInfo.push(tokens[0]);
+
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
               } else if (mainIndex + 1 < arrayOfContent.length) {
                 mainprocess(mainIndex + 1);
               } else {
-                cb();
+                cb(frontEndComponentsInfo);
               }
             });
        	  }).bind(this);
@@ -287,7 +300,7 @@ ${tokens[1]}
       }).bind(this);
       mainprocess(0);
    	}
-   	createSiteBundle(routes: string[], frontEndComponentsBlobSHAInfos: [[string, string]], cb: any) {
+   	createSiteBundle(routes: string[], frontEndComponentsInfo: string[], cb: any) {
  	    this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -295,7 +308,7 @@ import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
-${frontEndComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`).join('\n')}
+${frontEndComponentsInfo.map(info => `import './components/${info}.js';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
