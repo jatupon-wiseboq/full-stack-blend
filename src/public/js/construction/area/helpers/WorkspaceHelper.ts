@@ -217,11 +217,11 @@ var WorkspaceHelper = {
       
       if (reinit) {
         EditorHelper.init(true, false);
-        
-        if (!CodeHelper.equals(cloned, page)) {
-          cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
-        }
       }
+      
+      //if (!CodeHelper.equals(cloned, page)) {
+      cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      //}
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = document.body.outerHTML;
