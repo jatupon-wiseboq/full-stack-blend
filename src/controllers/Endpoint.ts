@@ -41,7 +41,7 @@ export const updateContent = (request: Request, response: Response) => {
 				results: null
 			});
 		}
-		
+
 };
 
 // <--- Auto[Generating:V1]
