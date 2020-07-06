@@ -11,7 +11,7 @@ html, body {
   overflow-y: auto;
 }
 
-.internal-fsb-guide-on {
+html.internal-fsb-guide-on {
   // Layout
   //
   .internal-fsb-table-layout {
@@ -259,11 +259,6 @@ body.internal-fsb-mode-coding {
   > .container-fluid {
   	height: 100%;
   	min-height: inherit;
-  	      
-	  > .row {
-	    height: 100%;
-  		min-height: inherit;
-	  }
 	}
 }
 
@@ -278,7 +273,7 @@ body.internal-fsb-mode-coding {
 
 // Hidden Element
 //
-.internal-fsb-guide-on {
+html.internal-fsb-guide-on {
   @include media-breakpoint-only(xs) {
     .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
     .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
@@ -426,4 +421,8 @@ input[type='radio'], input[type='checkbox'] {
   iframe {
     pointer-events: none;
   }
+}
+
+.internal-fsb-dragging-handle {
+  cursor: move;
 }

@@ -13,6 +13,8 @@ import '../controls/Resizer.js';
 import '../controls/CellFormater.js';
 import '../controls/Guide.js';
 import '../controls/LayoutInfo.js';
+import '../controls/Dragger.js';
+import '../controls/Overlay.js';
 import {LIBRARIES} from '../../Constants.js';
 
 declare let React: any;
@@ -23,7 +25,9 @@ let Accessories = {
   resizer: null,
   cellFormater: null,
   guide: null,
-  layoutInfo: null
+  layoutInfo: null,
+  dragger: null,
+  overlay: null
 };
 
 let editorCurrentMode: string = null;
@@ -97,17 +101,27 @@ var EditorHelper = {
     Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
     Accessories.layoutInfo.setDOMNode(layoutContainer.firstChild);
     
+    let draggerContainer = document.createElement('div');
+    Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger />, draggerContainer);
+    Accessories.dragger.setDOMNode(draggerContainer.firstChild);
+    draggerContainer.removeChild(Accessories.dragger.getDOMNode());
+    
+    let overlayContainer = document.createElement('div');
+    Accessories.overlay = ReactDOM.render(<FullStackBlend.Controls.Overlay />, overlayContainer);
+    Accessories.overlay.setDOMNode(overlayContainer.firstChild);
+    overlayContainer.removeChild(Accessories.overlay.getDOMNode());
+    
     EditorHelper.init(true, true);
   },
   detach: () => {
-    if (Accessories.cursor.getDOMNode().parentNode) Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
-    if (Accessories.resizer.getDOMNode().parentNode) Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
-    if (Accessories.cellFormater) {
-      Accessories.cellFormater.setTableElement(null);
-      if (Accessories.cellFormater.getDOMNode().parentNode) Accessories.cellFormater.getDOMNode().parentNode.removeChild(Accessories.cellFormater.getDOMNode());
+    Accessories.cellFormater.setTableElement(null);
+    
+    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory')];
+    for (let element of elements) {
+      if (element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
     }
-    if (Accessories.guide.getDOMNode().parentNode) Accessories.guide.getDOMNode().parentNode.removeChild(Accessories.guide.getDOMNode());
-    if (Accessories.layoutInfo.getDOMNode().parentNode) Accessories.layoutInfo.getDOMNode().parentNode.removeChild(Accessories.layoutInfo.getDOMNode());
   },
   init: (restoreAccessoryStates: boolean, updateEditorUI: boolean) => {
     CapabilityHelper.installCapabilitiesForInternalElements(document.body);

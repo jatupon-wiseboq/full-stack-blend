@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {RequestHelper} from '../../../helpers/RequestHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants.js';
@@ -77,9 +78,16 @@ class SitePreview extends Base<Props, State> {
         if (!super.update(properties)) return;
     }
     
+    public open() {
+        this.setState({
+          loading: true
+        });
+        HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+    }
+    
     public clear() {
-    		let count = 0;
-    		for (let key in this.requiredFiles) {
+        let count = 0;
+        for (let key in this.requiredFiles) {
     				if (this.requiredFiles.hasOwnProperty(key)) {
     							this.requiredFiles[key] = false;
     							count += 1;
@@ -92,32 +100,28 @@ class SitePreview extends Base<Props, State> {
     		this.currentKey = null;
     }
     
-    public start() {
+    public start(display: boolean=true) {
     		this.setState({
-    			loading: true	
+    			loading: true,
+    			display: display
     		});
     		
     		if (!this.state.requiredFilesLoaded) {
 		    		this.clear();
 		    		
-		    		HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+		    		if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 		    		
-		    		var request = new XMLHttpRequest();
-						request.addEventListener("load", this.unzip.bind(this, request));
-						request.addEventListener("error", this.close.bind(this));
-						request.responseType = 'blob';
-						request.open("GET", "/boilerplate.v1.zip");
-						request.send();
+		    		RequestHelper.get("boilerplate.v1.zip", "blob").then(this.unzip.bind(this)).catch(this.close.bind(this));
 				} else {
-						HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+						if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 						
-						this.display();
+						if (this.state.display) this.display();
 				}
     }
     
-    private unzip(request) {
+    private unzip(response) {
     		this.currentKey = null;
-			  zip.createReader(new zip.BlobReader(request.response), ((zipReader) => {
+			  zip.createReader(new zip.BlobReader(response), ((zipReader) => {
 			    zipReader.getEntries(((entries) => {
 			    	for (let entry of entries) {
 			    		if (typeof this.requiredFiles[entry.filename] === 'boolean') {
@@ -127,7 +131,7 @@ class SitePreview extends Base<Props, State> {
 				    this.read();
 			    }).bind(this));
 			    this.zipReader = zipReader;
-			  }).bind(this), this.close.bind(this));
+			  }).bind(this), this.close.bind(this, new Error('Failed to unzip boilerplate files.')));
     }
     
     private read() {
@@ -171,8 +175,6 @@ class SitePreview extends Base<Props, State> {
 		        		    this.requiredFiles[key] = this.requiredFiles[key].replace(STRIPPING_PATH_REGEX_GLOBAL, (token) => {
                       return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
                     });
-                    
-                    console.log(this.requiredFiles[key]);
 		        		  
 										this.requiredFiles[key] = ts.transpileModule(this.requiredFiles[key], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
 										this.requiredFiles[key] = URL.createObjectURL(new Blob([this.requiredFiles[key]]));
@@ -180,7 +182,7 @@ class SitePreview extends Base<Props, State> {
 		    		}
 		    }
 		    
-		    this.display();
+		    if (this.state.display) this.display();
     }
     
     private display() {
@@ -217,7 +219,7 @@ class SitePreview extends Base<Props, State> {
           return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
         });
     		
-    		if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
+    		/* if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
     		if (DEBUG_SITE_PREVIEW) console.log(externalStylesheets);
     		if (DEBUG_SITE_PREVIEW) console.log('externalScripts');
     		if (DEBUG_SITE_PREVIEW) console.log(externalScripts);
@@ -228,7 +230,7 @@ class SitePreview extends Base<Props, State> {
     		if (DEBUG_SITE_PREVIEW) console.log('combinedMinimalFeatureScripts');
     		if (DEBUG_SITE_PREVIEW) console.log(combinedMinimalFeatureScripts);
     		if (DEBUG_SITE_PREVIEW) console.log('combinedExpandingFeatureScripts');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts);
+    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts); */
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
@@ -277,6 +279,17 @@ class SitePreview extends Base<Props, State> {
       window.ENDPOINT = '${ENDPOINT}';
       window.PATH = '${PATH}';
       
+      let timerId = null;
+      window.onerror = ((msg, url, line, col, error) => {
+        window.closeSitePreview();
+        parent.error(msg, url, line, col, error);
+      });
+      console.log = parent.console.log;
+      console.error = ((...args) => {
+        window.closeSitePreview();
+        parent.console.error(...args);
+      });
+      
       var requiredFiles = ${JSON.stringify(this.requiredFiles)};
       require.config({
         paths: {
@@ -298,7 +311,6 @@ class SitePreview extends Base<Props, State> {
         
         var continueFn = (function(data) {
 	        for (var expandingPlaceholder of expandingPlaceholders) {
-	          console.log(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')));
 	          var forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
 	        
 	          ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: data}, null), expandingPlaceholder);
@@ -311,12 +323,11 @@ class SitePreview extends Base<Props, State> {
 	          name: 'load',
 	          content: false
 	        }), '*');
-	        window.internalFsbSubmit = function(guid, action, dataControls, callback) {
+	        window.internalFsbSubmit = function(guid, notation, event, callback) {
 	          if (!window.ENDPOINT || !window.PATH) {
-	            alert('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
+	            console.error('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
 	          } else {
-	            DataManipulationHelper.register(guid, dataControls && dataControls.split(' ') || []);
-	            DataManipulationHelper.request(guid, action, callback);
+	            DataManipulationHelper.request(guid, notation, event, callback);
 	          }
 	        };
         });
@@ -328,11 +339,7 @@ class SitePreview extends Base<Props, State> {
         	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
         		continueFn(data.results);
         	}).catch(function(error) {
-        		if (confirm('Server-Side Rendering (SSR) is unable to test (' + error + '). Do you want to continue?')) {
-        			continueFn(null);
-        		} else {
-        			window.closeSitePreview();
-        		}
+        		console.error('Server-Side Rendering (SSR) is unable to test because of an error at endpoint, please your debugging console.');
         	});
         }
       });
@@ -347,11 +354,8 @@ class SitePreview extends Base<Props, State> {
     }
     
     private close(error) {
-    		if (error instanceof Error) {
-    			console.log(error.message);
-    			this.clear();
-    		}
-    	
+        if (error && error.message) console.error(error.message);
+      
     		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
     		
     		let preview = ReactDOM.findDOMNode(this.refs.preview);
@@ -361,28 +365,29 @@ class SitePreview extends Base<Props, State> {
     }
     
     render() {
+      let endpoint = (<FullStackBlend.Components.EndpointManager ref="endpoint"></FullStackBlend.Components.EndpointManager>);
       return pug `
-      	.site-preview
-      		.close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
-      			i.fa.fa-close.m-0
-      		.iframe-container
-      			.iframe-navigation-bar
-      			.iframe-body
-      				iframe(ref="preview")
-      		.loading-container(style={display: this.state.loading ? 'block' : 'none'})
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      			.linear-background
-      				.inter-left
-      				.inter-right--top
-      				.inter-right--bottom
-      `
+        .site-preview
+          .close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
+            i.fa.fa-close.m-0
+          .iframe-container
+            .iframe-navigation-bar
+            .iframe-body
+              iframe(ref="preview")
+          .loading-container(style={display: this.state.loading ? 'block' : 'none'})
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+            .linear-background
+              .inter-left
+              .inter-right--top
+              .inter-right--bottom
+        `
     }
 }
 

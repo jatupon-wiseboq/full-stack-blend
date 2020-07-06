@@ -1,7 +1,7 @@
 include ../../mixin/CreateReactComponent
 .workspace-decoration-top-horizontal-line
 .workspace-container
-  .workspace-vertical-container(internal-fsb-not-for="internal-fsb-inheriting,editing:data,editing:services")
+  .workspace-vertical-container
     .workspace-vertical-panel
       .workspace-tab-container
         .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
@@ -11,14 +11,15 @@ include ../../mixin/CreateReactComponent
           a.btn.btn-secondary.btn-sm.btn-light.text-secondary.footer-back-end-panel(id='footerBackEnd', onclick="swap('.footer-back-end-panel', null, null, null, null, true)", style={width: '100px'})
             input(type='radio', name='options', checked=false)
             | Back-End
-  .workspace-vertical-container.full-relative-size(internal-fsb-not-for="internal-fsb-inheriting,editing:data,editing:services")
-    .workspace-vertical-panel
+          a.btn.btn-secondary.btn-sm.btn-light.text-secondary.footer-back-end-panel(id='footerConsole', onclick="swap('.footer-console-panel', null, null, null, null, true)", style={width: '120px'})
+            input(type='radio', name='options', checked=false)
+            | Debug Console
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel(style="border-bottom: none;")
       .workspace-panel-container.scrollable
         .panel.footer-front-end-panel.active
           +CreateReactComponent('FullStackBlend.Components.FrontEndScriptEditor')
         .panel.footer-back-end-panel
           +CreateReactComponent('FullStackBlend.Components.BackEndScriptEditor')
-  .workspace-vertical-container.full-relative-size(internal-fsb-for="internal-fsb-inheriting,editing:data,editing:services")
-    .workspace-vertical-panel
-      .workspace-panel-container
-        include ../../common/component-guide
+        .panel.footer-console-panel
+          +CreateReactComponent('FullStackBlend.Components.DebuggingConsole')

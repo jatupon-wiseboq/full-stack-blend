@@ -47,7 +47,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class TextElement_92de9e1b extends Base {
+class FlowLayout_83e416bb extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -72,38 +72,22 @@ class TextElement_92de9e1b extends Base {
   }
   
   
-  
   // Auto[Merging]--->
   // <---Auto[Merging]
   
-  // Auto[onTextElementClick_92de9e1b:Begin]--->
-  protected onTextElementClick_92de9e1b(event: Event) {
-    // <---Auto[onTextElementClick_92de9e1b:Begin]
-
-    // Handle the event of onTextElementClick (TextElement 3) here:
-    // 
-    window.open('https://staging.stackblend.com/editor');
-    
-    // Auto[onTextElementClick_92de9e1b:End]--->
-  }
-  // <---Auto[onTextElementClick_92de9e1b:End]
-
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-bb6cddae " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="92de9e1b" style={Object.assign({'FsbInheritedPresets': 'bb6cddae'}, this.props.forward && this.props.forward.styles || {})} onClick={this.onTextElementClick_92de9e1b.bind(this)}>
-        Open StackBlend Editor
-      </div>
+      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.TextElement_92de9e1b', TextElement_92de9e1b);
+DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout_83e416bb);
 // <---Auto[ClassEnd]
 
 // Export variables here:
 //
 export {IProps, IState, DefaultProps, DefaultState};
-
 
 
 // <--- Auto[Generating:V1]

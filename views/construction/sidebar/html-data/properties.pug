@@ -1,8 +1,14 @@
 include ../../mixin/CreateReactComponent
 .internal-fsb-selecting-on
-  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase")
-    .section-title
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:WorkerInstance,internal-fsb-class:VolatileMemory")
+    .section-title(internal-fsb-for="internal-fsb-class:RelationalDatabase")
       | Relational Database Options
+    .section-title(internal-fsb-for="internal-fsb-class:DocumentDatabase")
+      | Document Database Options
+    .section-title(internal-fsb-for="internal-fsb-class:WorkerInstance")
+      | Worker Instance Options
+    .section-title(internal-fsb-for="internal-fsb-class:VolatileMemory")
+      | Volatile Instance Options
     .section-subtitle
       | Name
     .section-body
@@ -11,7 +17,7 @@ include ../../mixin/CreateReactComponent
       | Database URL Enironment Variable
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-database-key'], inline: true, button: false}")
-  .section-container(internal-fsb-for="internal-fsb-class:RelationalTable")
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable")
     .section-title
       | Relational Table Options
     .section-subtitle
@@ -41,6 +47,35 @@ include ../../mixin/CreateReactComponent
       | Unique
     .section-body(internal-fsb-not-for="data-field-type:auto")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-unique']}")
+  .section-container(internal-fsb-for="internal-fsb-class:DocumentNotation")
+    .section-title
+      | Document Hierarchy Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Kind
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-field-type']}")
+    .section-subtitle(internal-fsb-not-for="data-field-type:auto")
+      | Required
+    .section-body(internal-fsb-not-for="data-field-type:auto")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-required']}")
+  .section-container(internal-fsb-for="internal-fsb-class:WorkerQueue")
+    .section-title
+      | Worker Queue Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+  .section-container(internal-fsb-for="internal-fsb-class:VolatilePrefix")
+    .section-title
+      | Volatile Prefix Options
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
   .section-container(internal-fsb-for="internal-fsb-class:Connection")
     .section-title
       | Relation Options
@@ -68,3 +103,5 @@ include ../../mixin/CreateReactComponent
       | Force Constraint
     .section-body
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-force-constraint']}")
+.internal-fsb-selecting-off
+  include ../../common/empty

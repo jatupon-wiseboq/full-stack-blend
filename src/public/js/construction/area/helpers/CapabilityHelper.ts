@@ -42,12 +42,16 @@ var CapabilityHelper = {
         allowCursorElements.push(container);
       }
       allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
+        let listenEventFromElement = (!HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout') &&
+          HTMLHelper.hasClass(allowCursorElement.parentNode, 'container-fluid')) ?
+          allowCursorElement.parentNode : allowCursorElement;
+        
         if (!allowCursorElement.internalFsbBindedClick) {
           allowCursorElement.internalFsbBindedClick = true;
           
           if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
           	if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout')) {
-	          	allowCursorElement.addEventListener('click', (event) => {
+	          	listenEventFromElement.addEventListener('click', (event) => {
 	          		if (EventHelper.checkIfDenyForHandle(event)) return;
 	          		
 	          		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
@@ -82,7 +86,7 @@ var CapabilityHelper = {
 	              return EventHelper.cancel(event);
 	            }, false);
 	          } else {
-	            allowCursorElement.addEventListener('click', (event) => {
+	            listenEventFromElement.addEventListener('click', (event) => {
 	              if (EventHelper.checkIfDenyForHandle(event)) return;
 	              
 	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
@@ -107,7 +111,7 @@ var CapabilityHelper = {
 	            }, false);
 	          }
           } else if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-absolute-layout')) {
-            allowCursorElement.addEventListener('click', (event) => {
+            listenEventFromElement.addEventListener('click', (event) => {
               if (EventHelper.checkIfDenyForHandle(event)) return;
               
               if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout')) {
@@ -143,8 +147,11 @@ var CapabilityHelper = {
               return EventHelper.cancel(event);
             }, false);
           }
-            
-          EventHelper.setDenyForEarlyHandle(allowCursorElement);
+          
+          EventHelper.setDenyForEarlyHandle(listenEventFromElement);
+          // Migrate: setDenyForEarlyHandle shouldn't be active in allowCursorElement if handle in the container.
+          //
+          if (allowCursorElement != listenEventFromElement) EventHelper.setAllowForEarlyHandle(allowCursorElement);
         }
       });
     });
@@ -152,6 +159,20 @@ var CapabilityHelper = {
   installCapabilityOfBeingPasted: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
   	  container.addEventListener('paste', EventHelper.pasteEventInTextPlain, false);
+  	});
+  },
+  installCapabilityOfBeingDragged: (_container: HTMLElement) => {
+    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-dragging-handle', _container)];
+    if (HTMLHelper.hasClass(_container, 'internal-fsb-dragging-handle')) {
+      elements.push(_container);
+    }
+    
+    elements.forEach((element) => {
+  	  if (!element.internalFsbBindedDragging) {
+        element.internalFsbBindedDragging = true;
+        
+        Accessories.dragger.bind(element);
+      }
   	});
   },
   installCapabilitiesForInternalElements: (_container: HTMLElement) => {
@@ -169,6 +190,7 @@ var CapabilityHelper = {
       	CapabilityHelper.installCapabilityOfBeingPasted(container);
       }
     });
+    CapabilityHelper.installCapabilityOfBeingDragged(_container);
   },
   installCapabilityOfForwardingStyle: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {

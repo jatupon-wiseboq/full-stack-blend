@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import bluebird from "bluebird";
 import cors from "cors";
-import route from "./route";
+import fs from "fs";
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 
 const MongoStore = mongo(session);
@@ -26,10 +26,24 @@ import * as contactController from "./controllers/contact";
 import * as passportConfig from "./config/passport";
 
 // Create Express server
-const app = express(),
+const app = express();
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  const https = require("https");
+  
+  // SSL
+  const sslkey = fs.readFileSync("localhost.key");
+  const sslcert = fs.readFileSync("localhost.crt");
+  const options = {
+      key: sslkey,
+      cert: sslcert
+  };
+  
+  https.createServer(options, app).listen(443);
+}
 
 // Connect to MongoDB
-mongoUrl = MONGODB_URI;
+const mongoUrl = MONGODB_URI;
 
 mongoose.Promise = bluebird;
 
@@ -44,17 +58,15 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true,
     });
 
 app.use(secure);
-if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
-	app.enable("trust proxy");
-}
+app.enable("trust proxy");
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 app.use(session({
     resave: true,
     saveUninitialized: true,
@@ -92,7 +104,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.static(path.join(__dirname, "public"), {maxAge: 3600000}));
+app.use(express.static(path.join(__dirname, "public"), {maxAge: 0}));
 
 /**
  * CORS configuration
@@ -124,7 +136,30 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 
-route(app);
+// For Endpoint Testing of StackBlend Editor
+// 
+import * as endpoint from "./controllers/Endpoint";
+
+if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+	endpoint.clearRecentError();
+	app.post("/endpoint/update/content", endpoint.updateContent);
+	app.get("/endpoint/recent/error?r=" + Math.floor(Math.random() * 999999), endpoint.getRecentError);
+	
+	app.use((err, req, res, next) => {
+    endpoint.addRecentError(err);
+    next();
+  });
+}
+
+// For StackBlend Routings & Controllers
+// 
+try {
+	const route = require("./route");
+	route.default(app);
+} catch (error) {
+	console.log("\x1b[31m", error, "\x1b[0m");
+	endpoint.addRecentError(error);
+}
 
 /**
  * API examples routes.

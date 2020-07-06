@@ -50,6 +50,9 @@ var EventHelper = {
   setDenyForEarlyHandle: (element: HTMLElement) => {
     HTMLHelper.setAttribute(element, 'internal-fsb-event-no-propagate', '1');
   },
+  setAllowForEarlyHandle: (element: HTMLElement) => {
+    HTMLHelper.removeAttribute(element, 'internal-fsb-event-no-propagate');
+  },
   
   pasteEventInTextPlain: (event) => {
 		let text = '';

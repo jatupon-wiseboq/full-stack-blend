@@ -1,8 +1,9 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {VolatileMemoryClient, RelationalDatabaseClient, DocumentDatabaseClient, PrioritizedWorkerClient} from "./ConnectionHelper.js";
+import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient} from "./ConnectionHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
+import {FieldType, DataTableSchema} from "./SchemaHelper.js";
 
 enum SourceType {
   Relational,
@@ -19,17 +20,33 @@ enum ActionType {
   Navigate,
   Test
 }
+enum OperationType {
+  Equal,
+  LessThan,
+  MoreThan,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  NotEqual,
+  Include,
+  Exclude
+}
 interface HierarchicalDataTable {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
-  columns: HierarchicalDataColumn[];
-  relations: HierarchicalDataTable[];
+  keys: {[Identifier: string]: HierarchicalDataColumn};
+  columns: {[Identifier: string]: HierarchicalDataColumn};
+  relations: {[Identifier: string]: HierarchicalDataTable};
 }
 interface HierarchicalDataColumn {
 	name: string;
+  value: any;
+}
+interface HierarchicalDataFilter {
+  name: string;
+  operation: OperationType;
   value: any;
 }
 
@@ -43,73 +60,187 @@ interface Input {
 }
 
 const DatabaseHelper = {
-	prepare: (data: Input[]): HierarchicalDataTable => {
-		const tables: HierarchicalDataTable[] = [];
-		for (const item of data) {
-			let table = tables.filter(table => table.group == item.group)[0];
-			if (!table) tables.push({source: item.target, group: item.group, rows: []});
-			table = tables[0];
-			
-			if (table.rows.length == 0) table.rows.push({columns: [], relations: []});
-			const row = table.rows[0];
-			
-			let column = row.columns.filter(column => column.name == item.name)[0];
-			if (!column) row.columns.push({name: null, value: null});
-			column = row.columns[0];
-			
-			column.name = item.name;
-			column.value = item.value;
+	prepareRow: (data: Input[], action: string, schema: DataTableSchema): HierarchicalDataRow => {
+	  const row: HierarchicalDataRow = {
+	    keys: {},
+	    columns: {},
+	    relations: {}
+	  };
+	  if (data) {
+	    for (const input of data) {
+	      if (schema.source != input.source || schema.group != input.group)
+	        throw new Error(`There was an error preparing data for manipulation ('${input.group}' doesn't match the schema group '${schema.group}').`);
+	      if (!schema.keys[input.name] || !schema.columns[input.name])
+	        throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn't exist in the schema group '${schema.group}').`);
+	      if (schema.keys[input.name]) {
+	        row.keys[input.name] = {
+	          name: input.name,
+	          value: input.value
+	        };
+	      } else {
+	        row.columns[input.name] = {
+	          name: input.name,
+	          value: input.value
+	        };
+	      }
+	    }
+	  }
+		for (const key in schema.keys) {
+		  if (schema.keys.hasOwnProperty(key)) {
+		    switch (action) {
+		      case "insert":
+		        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
+		          if (!row.keys[key] || row.keys[key].value === undefined || row.keys[key].value === null) {
+		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+		          } else {
+		            switch (schema.keys[key].fieldType) {
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(row.keys[key].value.toString())))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn't a number).`);
+		                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+		                break;
+		              case FieldType.Boolean:
+		                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+		                break;
+		              case FieldType.String:
+		                row.keys[key].value = row.keys[key].value.toString();
+		                break;
+		            }
+		          }
+		        }
+		        break;
+		      case "update":
+		      case "delete":
+	          if (!row.keys[key] || row.keys[key].value === undefined || row.keys[key].value === null) {
+	            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+	          } else {
+	            switch (schema.keys[key].fieldType) {
+	              case FieldType.AutoNumber:
+	              case FieldType.Number:
+	                if (isNaN(parseFloat(row.keys[key].value.toString())))
+	                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn't a number).`);
+	                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+	                break;
+	              case FieldType.Boolean:
+	                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+	                break;
+	              case FieldType.String:
+	                row.keys[key].value = row.keys[key].value.toString();
+	                break;
+	            }
+	          }
+		        break;
+		    }
+		  }
 		}
-		
-		// [TODO]: Implement Relation
-		//
-		
-		if (tables.length != 1) throw new Error("There are some dot notations that unsatisfy existing relations confined in data flow (unrelated).");
-		
-		return tables[0];
-	},
-	convertDictionaryToHierarchicalDataColumns: (dictionary: any): HierarchicalDataColumn[] => {
-		const columns: HierarchicalDataColumn[] = [];
-		for (const key in dictionary) {
-    	if (dictionary.hasOwnProperty(key)) {
-    		columns.push({
-    			name: key,
-    			value: dictionary[key]
-    		});
-    	}
-   	}
-   	return columns;
-	},
-	convertHierarchicalDataColumnsToDictionary: (columns: HierarchicalDataColumn[]): any => {
-		const dictionary = {};
-		for (const column of columns) {
-			dictionary[column.name] = column.value;
+		for (const key in schema.columns) {
+		  if (schema.columns.hasOwnProperty(key)) {
+		    switch (action) {
+		      case "insert":
+		        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
+		          if (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null) {
+		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+		          } else {
+		            switch (schema.columns[key].fieldType) {
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(row.keys[key].value.toString())))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn't a number).`);
+		                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+		                break;
+		              case FieldType.Boolean:
+		                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+		                break;
+		              case FieldType.String:
+		                row.keys[key].value = row.keys[key].value.toString();
+		                break;
+		            }
+		          }
+		        }
+		        break;
+		      case "update":
+		        if (schema.columns[key].required) {
+		          if (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null) {
+		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+		          } else {
+		            switch (schema.columns[key].fieldType) {
+		              case FieldType.AutoNumber:
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(row.keys[key].value.toString())))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn't a number).`);
+		                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+		                break;
+		              case FieldType.Boolean:
+		                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+		                break;
+		              case FieldType.String:
+		                row.keys[key].value = row.keys[key].value.toString();
+		                break;
+		            }
+		          }
+		        }
+		        break;
+		      case "delete":
+		        break;
+		    }
+		  }
 		}
-		return dictionary;
+		return row;
 	},
-	insert: async (data: Input[]): Promise<HierarchicalDataRow> => {
+	prepareFilter: (data: Input[], schema: DataTableSchema): {[Identifier: string]: HierarchicalDataFilter} => {
+		return null;
+	},
+	insert: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataTable = DatabaseHelper.prepare(data);
+			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "insert", schema);
 			
       switch (input.source) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-      		
-      		/*let dictionary = this.convertHierarchicalDataColumnsToDictionary(input.rows[0].columns);
-      		
-      		relationalDatabaseClient.query(`INSERT INTO ${input.group} SET ?`, dictionary, (error, response) => {
-					  if (response) {
-					  	let output = {
-					  		group: input.group,
-					  		rows: [
-					  			columns: this.convertDictionaryToHierarchicalDataColumns(response),
-					  			relations: []
-					  		]	
-					  	}
+					
+					let map = RelationalDatabaseORMClient.tableMap(schema.group);
+					const hash = {};
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.columns[key].fieldType == FieldType.AutoNumber});
+					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = input.columns[key] && input.columns[key].value || null;
+					    }
 					  }
-					});*/
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.keys[key].fieldType == FieldType.AutoNumber});
+					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = input.keys[key] && input.keys[key].value || null;
+					    }
+					  }
+					}
 					
-					throw new Error("NotImplementedError");
+					map.insert(hash).then((results) => {
+					  if (results.affectedRows == 0) throw new Error("There was an error executing INSERT command.");
+					  const row = {
+					    keys: {},
+					    columns: {},
+					    relations: {}
+					  };
+					  for (const key in schema.columns) {
+  					  if (schema.columns.hasOwnProperty(key)) {
+  					    row.columns[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					for (const key in schema.keys) {
+  					  if (schema.keys.hasOwnProperty(key)) {
+  					    row.keys[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					resolve([row]);
+					});
 					
       		break;
       	case SourceType.PrioritizedWorker:
@@ -133,15 +264,54 @@ const DatabaseHelper = {
       }
     });
 	},
-	update: async (data: Input[]): Promise<HierarchicalDataRow> => {
+	update: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataTable = DatabaseHelper.prepare(data);
+			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "update", schema);
 			
       switch (input.source) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
-      		throw new Error("NotImplementedError");
+      		let map = RelationalDatabaseORMClient.tableMap(schema.group);
+					const hash = {};
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.columns[key].fieldType == FieldType.AutoNumber});
+					    hash[key] = input.columns[key] && input.columns[key].value || null;
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.keys[key].fieldType == FieldType.AutoNumber});
+					    hash[key] = input.keys[key] && input.keys[key].value || null;
+					  }
+					}
+					
+					map.update(hash).then((results) => {
+					  if (results.affectedRows == 0) throw new Error("There was an error executing UPDATE command.");
+					  const row = {
+					    keys: {},
+					    columns: {},
+					    relations: {}
+					  };
+					  for (const key in schema.columns) {
+  					  if (schema.columns.hasOwnProperty(key)) {
+  					    row.columns[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					for (const key in schema.keys) {
+  					  if (schema.keys.hasOwnProperty(key)) {
+  					    row.keys[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					resolve([row]);
+					});
       		
       		break;
       	case SourceType.PrioritizedWorker:
@@ -165,15 +335,52 @@ const DatabaseHelper = {
       }
     });
 	},
-	retrieve: async (data: Input[]): Promise<HierarchicalDataTable> => {
+	retrieve: async (data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataTable = DatabaseHelper.prepare(data);
+			const input: {[Identifier: string]: HierarchicalDataFilter} = DatabaseHelper.prepareFilter(data, schema);
 			
       switch (input.source) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
-      		throw new Error("NotImplementedError");
+      		let map = RelationalDatabaseORMClient.tableMap(schema.group);
+					const hash = {};
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.columns[key].fieldType == FieldType.AutoNumber});
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.keys[key].fieldType == FieldType.AutoNumber});
+					  }
+					}
+					
+					map.select().then((results) => {
+					  if (results.affectedRows == 0) throw new Error("There was an error executing SELECT command.");
+					  const row = {
+					    keys: {},
+					    columns: {},
+					    relations: {}
+					  };
+					  for (const key in schema.columns) {
+  					  if (schema.columns.hasOwnProperty(key)) {
+  					    row.columns[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					for (const key in schema.keys) {
+  					  if (schema.keys.hasOwnProperty(key)) {
+  					    row.keys[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					resolve([row]);
+					});
       		
       		break;
       	case SourceType.PrioritizedWorker:
@@ -197,15 +404,40 @@ const DatabaseHelper = {
       }
     });
 	},
-	delete: async (data: Input[]): Promise<boolean> => {
+	delete: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataTable = DatabaseHelper.prepare(data);
+			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "delete", schema);
 			
       switch (input.source) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
-      		throw new Error("NotImplementedError");
+      		let map = RelationalDatabaseORMClient.tableMap(schema.group);
+					const hash = {};
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key)) {
+					    map = map.columnMap(key, key, {isAutoIncrement: schema.keys[key].fieldType == FieldType.AutoNumber});
+					    hash[key] = input.keys[key] && input.keys[key].value || null;
+					  }
+					}
+					
+					map.delete(hash).then((results) => {
+					  if (results.affectedRows == 0) throw new Error("There was an error executing DELETE command.");
+					  const row = {
+					    keys: {},
+					    columns: {},
+					    relations: {}
+					  };
+  					for (const key in schema.keys) {
+  					  if (schema.keys.hasOwnProperty(key)) {
+  					    row.keys[key] = {
+  					      name: key,
+  					      value: results[key]
+  					    };
+  					  }
+  					}
+  					resolve([row]);
+					});
       		
       		break;
       	case SourceType.PrioritizedWorker:

@@ -73,8 +73,8 @@
   .loading-container {
   	position: absolute;
   	top: 20vh;
-		left: 20vw;
-		width: 60vw;
+		left: 30vw;
+		width: 40vw;
 		height: 60vh;
 		overflow: hidden;
   	
@@ -93,8 +93,8 @@
 			
 			.inter-left {
 			  position: absolute;
-			  width: 10vw;
-			  height: 10vw;
+			  width: 8vw;
+			  height: 8vw;
 			  top: 0;
 			  left: 0;
 			  overflow: hidden;
@@ -124,8 +124,8 @@
 					display: block;
 					position: static;
 					top: 20vh;
-					left: 20vw;
-					width: 60vw;
+					left: 30vw;
+					width: 40vw;
 					height: 60vh;
 					animation-duration: 1s;
 					animation-fill-mode: forwards;

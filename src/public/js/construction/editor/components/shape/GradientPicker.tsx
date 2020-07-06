@@ -194,7 +194,7 @@ class GradientPicker extends Base<Props, State> {
     public generateCSSGradientBackgroundValue(radial: boolean=false, rotate: boolean=false) {
         let pickers = CodeHelper.clone(this.state.pickers);
         pickers = pickers.sort((a, b) => {
-          return a.position > b.position;
+          return (a.position > b.position) ? 1 : -1;
         });
         return `${radial ? 'radial' : 'linear'}-gradient(${radial ? '' : `${(rotate) ? this.state.degree : 90}deg, `}${pickers.map(picker => picker.color + ' ' + picker.position + '%').join(', ')})`;
     }

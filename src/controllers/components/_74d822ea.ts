@@ -7,6 +7,7 @@ import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Hier
 import {ValidationInfo, ValidationHelper} from "../helpers/ValidationHelper.js";
 import {RequestHelper} from "../helpers/RequestHelper.js";
 import {RenderHelper} from "../helpers/RenderHelper.js";
+import {DataTableSchema} from "../helpers/SchemaHelper.js";
 import {Base} from "./Base.js";
 
 // <---Auto[Import]
@@ -41,13 +42,14 @@ enum ValidationInfo {
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-  source: SourceType;
+	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
-  columns: HierarchicalDataColumn[];
-  relations: HierarchicalDataTable[];
+  keys: {[Identifier: string]: HierarchicalDataColumn};
+  columns: {[Identifier: string]: HierarchicalDataColumn};
+  relations: {[Identifier: string]: HierarchicalDataTable};
 }
 interface HierarchicalDataColumn {
 	name: string;
@@ -69,13 +71,12 @@ interface Input {
 // Auto[ClassBegin]--->
 class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
-  	super(request, response, template);
-  	
   	try {
-	    const [action, data] = this.initialize(request);
-	    this.perform(action, data);
+  	  super(request, response, template);
+	    const [action, schema, data] = this.initialize(request);
+	    this.perform(action, schema, data);
    	} catch(error) {
-	  	RenderHelper.error(this.response, error);
+	  	RenderHelper.error(response, error);
 	  }
   }
   // <---Auto[ClassBegin]
@@ -88,45 +89,46 @@ class Controller extends Base {
  		ValidationHelper.validate(data);
   }
   
-  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.get(data);
   }
   
-  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.post(data);
   }
   
-  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.put(data);
   }
   
-  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {
+  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.delete(data);
   }
   
-  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.insert(data);
+  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.insert(data, schema);
   }
   
-  protected async update(data: Input[]): Promise<HierarchicalDataRow> {
- 		return await DatabaseHelper.update(data);
+  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.update(data, schema);
   }
   
-  protected async remove(data: Input[]): Promise<boolean> {
- 		return await DatabaseHelper.delete(data);
+  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		return await DatabaseHelper.delete(data, schema);
   }
   
-  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {
- 		return await DatabaseHelper.retrieve(data);
+  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+ 		return await DatabaseHelper.retrieve(data, schema);
   }
   
-  protected async navigate(data: Input[]): Promise<string> {
+  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
  		return "/";
   }
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, Input[]] {
   	const action: ActionType = RequestHelper.getAction(request);
+  	const schema: DataTableSchema = RequestHelper.getSchema(request);
   	const data: Input[] = [];
   	const input: Input = null;
   	

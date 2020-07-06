@@ -148,7 +148,8 @@ var ManipulationHelper = {
     if (!skipAfterPromise) {
       resolve();
     }
-	  
+    
+    Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
   },
   updateComponentData: (node: any) => {
@@ -617,13 +618,15 @@ var ManipulationHelper = {
       case 8:
         {
           let selectingElement = EditorHelper.getSelectingElement();
-          if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
-            ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
-          } else if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+          if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (Accessories.cursor.getDOMNode().previousSibling &&
                 HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
               ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'));
+            } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
             }
+          } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+            ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
           }
           remember = false;
         }
@@ -1171,12 +1174,12 @@ var ManipulationHelper = {
   	
   	switch (content) {
       case 'guide':
-        if (HTMLHelper.hasClass(document.body, 'internal-fsb-guide-on')) {
-          HTMLHelper.removeClass(document.body, 'internal-fsb-guide-on');
-          HTMLHelper.addClass(document.body, 'internal-fsb-guide-off');
+        if (HTMLHelper.hasClass(document.documentElement, 'internal-fsb-guide-on')) {
+          HTMLHelper.removeClass(document.documentElement, 'internal-fsb-guide-on');
+          HTMLHelper.addClass(document.documentElement, 'internal-fsb-guide-off');
         } else {
-          HTMLHelper.removeClass(document.body, 'internal-fsb-guide-off');
-          HTMLHelper.addClass(document.body, 'internal-fsb-guide-on');
+          HTMLHelper.removeClass(document.documentElement, 'internal-fsb-guide-off');
+          HTMLHelper.addClass(document.documentElement, 'internal-fsb-guide-on');
         }
     }
     

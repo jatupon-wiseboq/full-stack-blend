@@ -1,18 +1,19 @@
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {EditorHelper} from './EditorHelper.js';
+import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
+import {SchemaHelper} from './SchemaHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
 let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 
-const DefaultProjectSettings: {string: any} = {
+const DefaultProjectSettings: {[Identifier: string]: any} = {
   currentMode: 'site',
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
@@ -29,10 +30,11 @@ let InternalComponents = {};
 let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
+let InternalStylesheets = {};
 
-const DEFAULT_FLOW_PAGE_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
-const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body class="internal-fsb-guide-on"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
-const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-guide-on internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`;
+const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
+const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
+const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`;
 const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
 const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
 
@@ -62,12 +64,12 @@ var WorkspaceHelper = {
     InternalPopups = data && data.popups || {};
     InternalDataFlows = data && data.flows || {};
     InternalServices = data && data.services || {};
+    InternalStylesheets = data && data.stylesheets || {};
+    InternalDataFlows.schema = InternalDataFlows.schema || {};
     
     InternalProjectSettings.currentMode = 'site';
     
     WorkspaceHelper.loadWorkspaceData();
-    if (data && data.stylesheets) StylesheetHelper.initializeStylesheetData(data.stylesheets);
-    
     EditorHelper.updateEditorProperties();
   },
   setMode: (mode: string) => {
@@ -95,7 +97,6 @@ var WorkspaceHelper = {
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       if (page == null) return;
       
-      FontHelper.initializeFontData(page.head.fonts)
       document.body.outerHTML = page.body;
       
       // The second head element did appear after setting content to the outerHTML of body element.
@@ -108,6 +109,12 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
       
+      FontHelper.initializeFontData(page.head.fonts);
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
+      
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
       document.body.outerHTML = InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML;
@@ -117,6 +124,9 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      Accessories.overlay.setEnable(true);
+      
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
       document.body.outerHTML = InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML;
@@ -125,6 +135,9 @@ var WorkspaceHelper = {
       // Remove the extra one.
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'components') {
@@ -143,7 +156,13 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'popups') {
@@ -162,7 +181,13 @@ var WorkspaceHelper = {
       //
       if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
       
+      WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      
+      StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
     }
@@ -188,16 +213,21 @@ var WorkspaceHelper = {
         page.extensions[key] = InternalProjectSettings[key];
       }
       
+      page.notations = SchemaHelper.generateTreeOfDotNotations();
+      
       if (reinit) {
         EditorHelper.init(true, false);
-        
-        if (!CodeHelper.equals(cloned, page)) {
-          cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
-        }
       }
+      
+      //if (!CodeHelper.equals(cloned, page)) {
+      cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      //}
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = document.body.outerHTML;
+      Accessories.overlay.setEnable(true);
+      
+      InternalDataFlows.schema = SchemaHelper.generateDataSchema();
       
       if (reinit) {
         EditorHelper.init(true, false);

@@ -1,5 +1,7 @@
 import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper.js';
+import {RequestHelper} from '../helpers/RequestHelper.js';
 
 import './components/layout/GridPicker.js';
 import './components/layout/OffsetPicker.js';
@@ -32,6 +34,7 @@ import './components/code/AttributeManager.js';
 import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 import './components/code/BackEndScriptEditor.js';
+import './components/code/DebuggingConsole.js';
 
 import './components/content/SitePreview.js';
 import './components/content/PageManager.js';
@@ -39,6 +42,7 @@ import './components/content/ProjectManager.js';
 import './components/content/ComponentMenu.js';
 import './components/content/ComponentManager.js';
 import './components/content/PopupManager.js';
+import './components/content/EndpointManager.js';
 
 //import GitHub from 'github-api';
 
@@ -128,6 +132,16 @@ let recentExtraPanelSelector: string = null;
     
     synchronize('click');
     
+    // Fix console's element sizing bug.
+    // 
+    window.setTimeout(() => {
+      window.repl.output.focus();
+    }, 10);
+    window.setTimeout(() => {
+      window.repl.input.focus();
+      window.repl.resetInput();
+    }, 20);
+    
     if (event) return EventHelper.cancel(event);
   };
   
@@ -143,7 +157,7 @@ let recentExtraPanelSelector: string = null;
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
@@ -247,8 +261,31 @@ let recentExtraPanelSelector: string = null;
     Accessories.projectManager.current.deploy();
   });
   
+  let latestRevision = 0;
+  let currentRevision = null;
+  
   window.preview = (() => {
-  	Accessories.preview.current.start();
+    latestRevision += 1;
+    currentRevision = latestRevision;
+    
+    Accessories.preview.current.open();
+    Accessories.endpointManager.current.save((success) => {
+      if (success) {
+        Accessories.preview.current.start();              
+        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error`).then((results) => {
+          if (currentRevision == latestRevision) {
+            if (!results.success) {
+              console.error(`${results.error}`);
+              Accessories.preview.current.close();
+            }
+          }
+        }).catch(() => {
+        });
+      } else {
+        console.error('There was an error trying to update content at endpoint.');
+        Accessories.preview.current.close();
+      }
+    });
  	});
  	
  	let setup = (() => {
@@ -261,6 +298,11 @@ let recentExtraPanelSelector: string = null;
     Accessories.projectManager = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.ProjectManager ref={Accessories.projectManager} />, projectManagerContainer);
     document.body.appendChild(projectManagerContainer);
+    
+    let endpointManagerContainer = document.createElement('div');
+    Accessories.endpointManager = React.createRef();
+    ReactDOM.render(<FullStackBlend.Components.EndpointManager ref={Accessories.endpointManager} />, endpointManagerContainer);
+    document.body.appendChild(endpointManagerContainer);
  	});
  	setup();
 })();

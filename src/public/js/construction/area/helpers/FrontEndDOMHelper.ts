@@ -132,6 +132,7 @@ ${rootScript}`;
         let reactData = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
+        let reactClassForPopup = null;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
@@ -269,6 +270,9 @@ ${rootScript}`;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
               break;
+            case 'internal-fsb-popup-init-class':
+              if (!!attribute.value) reactClassForPopup = attribute.value;
+              break;
             case 'internal-fsb-inheriting':
               if (!!attribute.value) inheritingID = attribute.value;
               break;
@@ -298,7 +302,9 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', ((results: any) => { this.manipulate('${submitType}', results); }).bind(this)); }).bind(this)}`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          
+        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', event, ((results: any) => { this.manipulate('${submitType}', '${cumulatedDotNotation}', results); }).bind(this)); }).bind(this)}`);
         }
         
         for (let key in bindingStyles) {
@@ -579,7 +585,9 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', '${submitType}', '${submitControls}', null)"`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          
+        	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {

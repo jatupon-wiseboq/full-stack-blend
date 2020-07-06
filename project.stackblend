@@ -1,5 +1,4 @@
 {
-  "version": 1,
   "globalSettings": {
     "currentMode": "site",
     "externalLibraries": "react@16 jquery-core@3 bootstrap@4",
@@ -44,10 +43,10 @@
         "state": "create"
       },
       {
-        "id": "829ab3c5",
-        "name": "Saving Demo",
-        "path": "/saving_demo",
-        "state": "delete"
+        "id": "74d822ea",
+        "name": "Notation Testing",
+        "path": "/notation_testing",
+        "state": "update"
       }
     ],
     "components": [
@@ -58,10 +57,10 @@
       }
     ],
     "popups": [],
-    "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\n\n",
-    "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
-    "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
-    "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn [{\n \t\t  source: null,\n \t\t  group: \"Custom\",\n \t\t  rows: [{\n \t\t    columns: [{\n \t\t      name: \"message\",\n \t\t      value: \"Hello World!\"\n \t\t    }],\n \t\t    relations: []\n \t\t  }]\n \t\t}];\n  }\n  \n  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {\n \t\treturn await DatabaseHelper.insert(data);\n  }\n  \n  protected async update(data: Input[]): Promise<HierarchicalDataRow> {\n \t\treturn await DatabaseHelper.update(data);\n  }\n  \n  protected async remove(data: Input[]): Promise<boolean> {\n \t\treturn await DatabaseHelper.delete(data);\n  }\n  \n  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {\n \t\treturn await DatabaseHelper.retrieve(data);\n  }\n  \n  protected async navigate(data: Input[]): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
+    "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n// \n\n",
+    "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n// \n\n",
+    "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n// \n\n",
+    "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn {\n \t\t  Log: {\n   \t\t  source: null,\n   \t\t  group: \"Log\",\n   \t\t  rows: [{\n   \t\t    keys: {},\n   \t\t    columns: {\n   \t\t      message: {\n   \t\t        name: \"message\",\n   \t\t        value: \"Hello World!\"\n   \t\t      }\n   \t\t    },\n   \t\t    relations: {}\n   \t\t  }]\n   \t\t}\n \t\t};\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
     "internal-fsb-data-code-footer": null
   },
   "sites": {
@@ -75,9 +74,9 @@
           "Courier Prime": true
         }
       },
-      "body": "<body class=\"internal-fsb-guide-off\" style=\"font-family: Courier Prime\"><div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\"><div class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" internal-fsb-event-no-propagate=\"1\"><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-08abd2c9\" internal-fsb-guid=\"0522150b\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9\" internal-fsb-react-mode=\"Document\" internal-fsb-react-data=\"Custom.message\">[Custom Message]</div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-08abd2c9 col-12 offset-0\" internal-fsb-guid=\"c4382c32\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9\"><div>This StackBlend platform is an editor for website development enthusiasts, not only for full-stack engineers, who want to develop a web application using the latest open source technologies based on JavaScript language. The StackBlend will help you cope with front-end, back-end, UI/UX, and content in a single one editor. You may design the user interface right from the editor, configure their properties and data dot notations, link them to fully customizable server-side scripts, and get the results back on the client-side using less than 10 lines of code, where the rests are auto-generated by the editor.<br></div><div><br></div><div>Since the platform is underdevelopment, we suggest that when you found P0-P1 errors and even technical issues which prevent you from achieving what you intend to develop, please send an email to jatupon@softenstorm.com and indicating 1.) what you want to do 2.) what are bugs and errors happened in the developer console 3.) where is it or provide any screenshot. We will promptly answer those issues about their workarounds and details of upcoming hotfixes. We will also let you know other workarounds by posting them on this page, too.</div><div><br></div><div>Last but not least, keep saving and opening a developer console to see what's going wrong in the background.</div></div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-self-bb6cddae -fsb-preset-08abd2c9\" internal-fsb-guid=\"bb6cddae\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"link\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 1) here:\n    // \n    window.open('https://github.com/SoftenStorm/boilerplate');\n    \n    \">Get Started</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"b19840c8\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 2) here:\n    // \n    window.open('https://staging.stackblend.com/signup');\n    \n    \">Open Sign Up Page</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"92de9e1b\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 3) here:\n    // \n    window.open('https://staging.stackblend.com/editor');\n    \n    \">Open StackBlend Editor</div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-08abd2c9 -fsb-self-a43dc1c9 col-12 offset-0\" internal-fsb-guid=\"a43dc1c9\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"section\">Current Investigating Issues / Underdevelopment Features:<div><br></div><div>1. Presets Priority</div><div>2. Animation</div><div>3. Data Flows</div><div>4. Services</div><div>5. Graphics</div><div>6. WebGL</div></div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-a43dc1c9 col-12 offset-0\" internal-fsb-guid=\"2135749e\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: a43dc1c9\">Workarounds:<div><br></div><div>1. Silence of Save/Merge/Deploy: solve by waiting for 5-15 seconds, if you can't wait, watch what are going on from networks tab of the developer console.</div><div>2. Undo/Redo Not Working Sometime: keep saving and reload the editor.</div><div>3. Textbox Saving Problem: solve by adjusting its style to invalidate the cache.</div><div>4. Missing Template File (.pug): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any element's style to invalidate the cache and click save button.</div><div>5. Missing Front-End Component File (.tsx): find a name of the component from project.stackblend, and navigate to that component on StackBlend, then adjust any front-end code to invalidate the cache and click save button.</div><div>6. Missing Back-End Component File (.ts): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any back-end code to invalidate the cache and click save button.</div><div>7. No Sign of Hotfixes: disable network cache in networks tab of the developer console.</div><div>8. Unable to Merge/Deploy: resolve the conflicts manually using a terminal on your operating system, or go to GitHub to perform it.</div><div>9. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.</div><div>10.Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div><div>11.Cannot Import (1): for front-end, preview of importing on a browser only works if and only if there is the file in SoftenStorm/boilerplate project, otherwise you need to test it using your local machine.</div><div>12.Cannot Import (2): for back-end, you need to install it via \"npm install MODULE_NAME\" and test it via Heroku or your local machine.</div><div>13.Cannot Preview Back-End: you must deploy the code on Heroku to test it using an endpoint configuration, otherwise you need to test it using your local machine.</div><div>14.Lost Changes After Merge: recheck your code changes on GitHub.com, or reload the editor, or click the merge button again.</div></div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"738cbdce\" internal-fsb-name=\"TextElement 4\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae; text-align: center; text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; cursor: pointer\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 4) here:\n    // \n    window.open('https://www.softenstorm.com/stackblend-policy-and-terms');\n    \n    \">Privacy Policy and Terms of Service</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-08abd2c9\" internal-fsb-guid=\"2d9c731e\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9; text-align: center\">©2020 by SoftenStorm&nbsp;</div></div></div></body>",
+      "body": "<body class=\"internal-fsb-guide-off\" style=\"font-family: Courier Prime\"><div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\"><div class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" internal-fsb-event-no-propagate=\"1\"><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-08abd2c9\" internal-fsb-guid=\"0522150b\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9\" internal-fsb-react-mode=\"Document\" internal-fsb-react-data=\"Log.message\" internal-fsb-react-code-import=\"\n\n// Import additional modules here:\n//\n\n\n\n\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \">[Custom Message]</div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-08abd2c9 col-12 offset-0\" internal-fsb-guid=\"c4382c32\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9\"><div>This StackBlend platform is an editor for website development enthusiasts, not only for full-stack engineers, who want to develop a web application using the latest open source technologies based on JavaScript language. The StackBlend will help you cope with front-end, back-end, UI/UX, and content in a single one editor. You may design the user interface right from the editor, configure their properties and data dot notations, link them to fully customizable server-side scripts, and get the results back on the client-side using less than 10 lines of code, where the rests are auto-generated by the editor.<br></div><div><br></div><div>Since the platform is underdevelopment, we suggest that when you found P0-P1 errors and even technical issues which prevent you from achieving what you intend to develop, please send an email to jatupon@softenstorm.com and indicating 1.) what you want to do 2.) what are bugs and errors happened in the developer console 3.) where is it or provide any screenshot. We will promptly answer those issues about their workarounds and details of upcoming hotfixes. We will also let you know other workarounds by posting them on this page, too.</div><div><br></div><div>Last but not least, keep saving and opening a developer console to see what's going wrong in the background.</div></div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-self-bb6cddae -fsb-preset-08abd2c9\" internal-fsb-guid=\"bb6cddae\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"link\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 1) here:\n    // \n    window.open('https://github.com/SoftenStorm/boilerplate');\n    \n    \">Get Started</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"b19840c8\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 2) here:\n    // \n    window.open('https://staging.stackblend.com/signup');\n    \n    \">Open Sign Up Page</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"92de9e1b\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 3) here:\n    // \n    window.open('https://staging.stackblend.com/editor');\n    \n    \">Open StackBlend Editor</div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-08abd2c9 -fsb-self-a43dc1c9 col-12 offset-0\" internal-fsb-guid=\"a43dc1c9\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"section\">Current Investigating Issues / Underdevelopment Features:<div><br></div><div>1. Animation<br></div><div>2. Data Flows</div><div>3. Services</div><div>4. Graphics</div><div>5. WebGL</div></div><div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-a43dc1c9 col-12 offset-0\" internal-fsb-guid=\"2135749e\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: a43dc1c9\">Workarounds:<div><br></div><div>1. Silence of Save/Merge/Deploy: solve by waiting for 5-15 seconds, if you can't wait, watch what are going on from networks tab of the developer console.</div><div>2. Undo/Redo Not Working Sometime: keep saving and reload the editor.</div><div>3. Textbox Saving Problem: solve by adjusting its style to invalidate the cache.</div><div>4. Missing Template File (.pug): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any element's style to invalidate the cache and click save button.</div><div>5. Missing Front-End Component File (.tsx): find a name of the component from project.stackblend, and navigate to that component on StackBlend, then adjust any front-end code to invalidate the cache and click save button.</div><div>6. Missing Back-End Component File (.ts): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any back-end code to invalidate the cache and click save button.</div><div>7. No Sign of Hotfixes: disable network cache in networks tab of the developer console.</div><div>8. Unable to Merge/Deploy: resolve the conflicts manually using a terminal on your operating system, or go to GitHub to perform it.</div><div>9. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.</div><div>10.Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div><div>11.Cannot Import (1): for front-end, preview of importing on a browser only works if and only if there is the file in SoftenStorm/boilerplate project, otherwise you need to test it using your local machine.</div><div>12.Cannot Import (2): for back-end, you need to install it via \"npm install MODULE_NAME\" and test it via Heroku or your local machine.</div><div>13.Cannot Preview Back-End: you must deploy the code on Heroku to test it using an endpoint configuration, otherwise you need to test it using your local machine.</div><div>14.Lost Changes After Merge: recheck your code changes on GitHub.com, or reload the editor, or click the merge button again.</div></div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"738cbdce\" internal-fsb-name=\"TextElement 4\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae; text-align: center; text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; cursor: pointer\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"\n  \n  // Declare class variables and functions here:\n  //\n  protected initialize(): void {\n  }\n  \n  // Providing data array base on dot notation:\n  // \n  protected getDataFromNotation(notation: string): any {\n    return super.getDataFromNotation(notation);\n  }\n  \n  \" internal-fsb-react-code-onfsbclick=\"\n\n    // Handle the event of onTextElementClick (TextElement 4) here:\n    // \n    window.open('https://www.softenstorm.com/stackblend-policy-and-terms');\n    \n    \">Privacy Policy and Terms of Service</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-08abd2c9\" internal-fsb-guid=\"2d9c731e\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: 08abd2c9; text-align: center\">©2020 by SoftenStorm&nbsp;</div></div></div><style type=\"text/css\" id=\"internal-fsb-stylesheet\">.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-a43dc1c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { -fsb-inherited-presets: 08abd2c9; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; border-top-width: 1px; -fsb-reusable-name: section; -fsb-reusable-id: a43dc1c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { font-family: Courier Prime; font-size: 12px; color: rgba(156, 156, 156, 1); padding-top: 10px; padding-left: 10px; padding-bottom: 10px; padding-right: 10px; -fsb-reusable-name: note; -fsb-reusable-id: 08abd2c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae { -fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer }</style><link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\"><link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\"></body>",
       "accessories": {
-        "selectingElementGUID": "a43dc1c9",
+        "selectingElementGUID": "0522150b",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -86,11 +85,16 @@
         ]
       },
       "extensions": {
-        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\n\n",
-        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
-        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
-        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn [{\n \t\t  source: null,\n \t\t  group: \"Custom\",\n \t\t  rows: [{\n \t\t    columns: [{\n \t\t      name: \"message\",\n \t\t      value: \"Hello World!\"\n \t\t    }],\n \t\t    relations: []\n \t\t  }]\n \t\t}];\n  }\n  \n  protected async post(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[]): Promise<HierarchicalDataRow> {\n \t\treturn await DatabaseHelper.insert(data);\n  }\n  \n  protected async update(data: Input[]): Promise<HierarchicalDataRow> {\n \t\treturn await DatabaseHelper.update(data);\n  }\n  \n  protected async remove(data: Input[]): Promise<boolean> {\n \t\treturn await DatabaseHelper.delete(data);\n  }\n  \n  protected async retrieve(data: Input[]): Promise<HierarchicalDataTable> {\n \t\treturn await DatabaseHelper.retrieve(data);\n  }\n  \n  protected async navigate(data: Input[]): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
+        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n// \n\n",
+        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n// \n\n",
+        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n// \n\n",
+        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn {\n \t\t  Log: {\n   \t\t  source: null,\n   \t\t  group: \"Log\",\n   \t\t  rows: [{\n   \t\t    keys: {},\n   \t\t    columns: {\n   \t\t      message: {\n   \t\t        name: \"message\",\n   \t\t        value: \"Hello World!\"\n   \t\t      }\n   \t\t    },\n   \t\t    relations: {}\n   \t\t  }]\n   \t\t}\n \t\t};\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
         "internal-fsb-data-code-footer": null
+      },
+      "notations": {
+        "Log": {
+          "message": {}
+        }
       }
     },
     "829ab3c5": {
@@ -172,6 +176,42 @@
         "internal-fsb-data-code-body": null,
         "internal-fsb-data-code-footer": null
       }
+    },
+    "74d822ea": {
+      "id": "74d822ea",
+      "name": "Notation Testing",
+      "path": "/notation_testing",
+      "state": "update",
+      "head": {
+        "fonts": {}
+      },
+      "body": "<body class=\"\"><div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\"><div class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" internal-fsb-event-no-propagate=\"1\"><div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"83e416bb\" internal-fsb-name=\"FlowLayout 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"min-height: 250px\" internal-fsb-react-mode=\"Document\" internal-fsb-react-data=\"User\" internal-fsb-react-paging=\"50\"><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"78c0270a\" internal-fsb-name=\"FlowLayout 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"min-height: 176px\" internal-fsb-react-data=\"Employee\"><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"da1ab078\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-react-data=\"Note.eid\" internal-fsb-react-paging=\"100\">ABC</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d6c0cc8e\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-react-data=\"Note.note\">ABC</div><div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"dc19521c\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\">ABC</div></div></div></div></div></div></div></div></div><style type=\"text/css\" id=\"internal-fsb-stylesheet\">.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-a43dc1c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { -fsb-inherited-presets: 08abd2c9; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; border-top-width: 1px; -fsb-reusable-name: section; -fsb-reusable-id: a43dc1c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { font-family: Courier Prime; font-size: 12px; color: rgba(156, 156, 156, 1); padding-top: 10px; padding-left: 10px; padding-bottom: 10px; padding-right: 10px; -fsb-reusable-name: note; -fsb-reusable-id: 08abd2c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae { -fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer }</style></body>",
+      "accessories": {
+        "selectingElementGUID": "83e416bb",
+        "currentCursorWalkPath": [
+          "78c0270a",
+          0,
+          3,
+          null
+        ]
+      },
+      "extensions": {
+        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n// \n\n",
+        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n// \n\n",
+        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n// \n\n",
+        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
+        "internal-fsb-data-code-footer": null
+      },
+      "notations": {
+        "User[50]": {
+          "Employee": {
+            "Note": {
+              "eid[100]": {},
+              "note": {}
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -186,50 +226,302 @@
   },
   "popups": {},
   "flows": {
-    "default": "<body class=\"internal-fsb-guide-on internal-fsb-disabled-guide\"><div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\" style=\"height: 100%;\"><div class=\"row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" style=\"height: 100%; min-height: 191px;\" internal-fsb-event-no-propagate=\"1\"><div class=\"internal-fsb-element\" internal-fsb-guid=\"89a041e8\" internal-fsb-name=\"RelationalDatabase 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalDatabase\" style=\"; left: 70px; top: 62px; width: 389px; min-height: 79px\" data-title-name=\"Data Flow is underdevelopment, and your changes here have no effect to the project.\"><div class=\"internal-fsb-title\">Data Flow is underdevelopment, and your changes here have no effect to the project.</div><div class=\"container-fluid\"><div class=\"row internal-fsb-absolute-layout internal-fsb-allow-cursor\" internal-fsb-event-no-propagate=\"1\" style=\"position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; min-height: 20px;\"></div></div></div></div></div></body>"
+    "default": "<body class=\"internal-fsb-guide-on internal-fsb-disabled-guide\"><div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\" style=\"height: 100%;\"><div class=\"row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" style=\"height: 100%; min-height: 776px;\" internal-fsb-event-no-propagate=\"1\"><div class=\"internal-fsb-element\" internal-fsb-guid=\"95570e10\" internal-fsb-name=\"WorkerInstance 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"WorkerInstance\" style=\"left: 837px; top: 422px; width: 150px;\" data-title-name=\"Sidekiq\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Sidekiq</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"5405e3c1\" internal-fsb-name=\"WorkerQueue 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"WorkerQueue\" data-title-name=\"write\"><div class=\"internal-fsb-title\">write</div></div></div></div></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"c25b1066\" internal-fsb-name=\"DocumentDatabase 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"DocumentDatabase\" style=\"left: 30px; top: 538px; width: 755px; min-height: 236px\" data-title-name=\"MongoDB\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">MongoDB</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-absolute-layout internal-fsb-allow-cursor\" style=\"position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; min-height: 204px;\"><div class=\"internal-fsb-element\" internal-fsb-guid=\"49b8ae39\" internal-fsb-name=\"DocumentTable 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"DocumentTable\" style=\"; left: 49px; top: 54px; width: 150px\" data-title-name=\"Log\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Log</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"bb9ae5e2\" internal-fsb-name=\"DocumentNotation 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"DocumentNotation\" data-title-name=\"id\" data-field-type=\"auto\"><div class=\"internal-fsb-title\">id</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"a3c71980\" internal-fsb-name=\"DocumentNotation 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"DocumentNotation\" data-title-name=\"uid\" data-field-type=\"number\" data-required=\"true\"><div class=\"internal-fsb-title\">uid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"a9a1e789\" internal-fsb-name=\"DocumentNotation 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"DocumentNotation\" data-title-name=\"message\" data-required=\"true\"><div class=\"internal-fsb-title\">message</div></div></div></div></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"8b473440\" internal-fsb-name=\"Connection 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 389px; top: -188px; width: 150px;\" data-source-group-name=\"User\" data-source-entity-name=\"uid\" data-target-group-name=\"Log\" data-target-entity-name=\"uid\"></div></div></div></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"89a041e8\" internal-fsb-name=\"RelationalDatabase 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalDatabase\" style=\"left: 29px; top: 43px; width: 1061px; min-height: 448px\" data-title-name=\"MySQL\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">MySQL</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-absolute-layout internal-fsb-allow-cursor\" style=\"position: absolute; top: 0px; right: 0px; bottom: 0px; left: 0px; min-height: 494px;\"><div class=\"internal-fsb-element\" internal-fsb-guid=\"3a8aa8e0\" internal-fsb-name=\"RelationalTable 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalTable\" style=\"; left: 52px; top: 59px; width: 225px; min-height: 265px\" data-title-name=\"User\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">User</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"0ae2920c\" internal-fsb-name=\"RelationalColumn 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"uid\" data-field-type=\"auto\" data-column-type=\"primary\"><div class=\"internal-fsb-title\">uid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"456cc264\" internal-fsb-name=\"RelationalColumn 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"bid\" data-field-type=\"number\" data-required=\"true\"><div class=\"internal-fsb-title\">bid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d3e002ad\" internal-fsb-name=\"RelationalColumn 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"email\" data-required=\"true\" data-unique=\"true\"><div class=\"internal-fsb-title\">email</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"3abb5a32\" internal-fsb-name=\"RelationalColumn 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"md5_password\" data-required=\"true\"><div class=\"internal-fsb-title\">md5_password</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"e3ecd260\" internal-fsb-name=\"RelationalColumn 4\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"name\"><div class=\"internal-fsb-title\">name</div></div></div></div></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"48a97452\" internal-fsb-name=\"Connection 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 366px; top: 67px; width: 30px; min-height: 21px;\" data-title-name=\"\" data-source-group-name=\"User\" data-source-entity-name=\"uid\" data-target-group-name=\"Employee\" data-target-entity-name=\"uid\"></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"517603ad\" internal-fsb-name=\"RelationalTable 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalTable\" style=\"left: 492px; top: 61px; width: 225px; min-height: 129px;\" data-title-name=\"Employee\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Employee</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"41c70b7c\" internal-fsb-name=\"RelationalColumn 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"uid\" data-field-type=\"number\" data-required=\"true\"><div class=\"internal-fsb-title\">uid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"867c32ab\" internal-fsb-name=\"RelationalColumn 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"eid\" data-field-type=\"auto\" data-column-type=\"primary\"><div class=\"internal-fsb-title\">eid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"c086cd1c\" internal-fsb-name=\"RelationalColumn 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"name\"><div class=\"internal-fsb-title\">name</div></div></div></div></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"3b8deba4\" internal-fsb-name=\"RelationalTable 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalTable\" style=\"left: 492px; top: 260px; width: 225px; min-height: 131px;\" data-title-name=\"Business\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Business</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"2e4450b7\" internal-fsb-name=\"RelationalColumn 5\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"bid\" data-field-type=\"auto\" data-column-type=\"primary\"><div class=\"internal-fsb-title\">bid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"41d99dce\" internal-fsb-name=\"RelationalColumn 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"name\" data-required=\"true\" data-unique=\"true\"><div class=\"internal-fsb-title\">name</div></div></div></div></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"394a7806\" internal-fsb-name=\"Connection 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 374px; top: 170px; width: 150px;\" data-title-name=\"\" data-source-group-name=\"User\" data-source-entity-name=\"bid\" data-target-group-name=\"Business\" data-target-entity-name=\"bid\" data-force-constraint=\"true\"></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"02699134\" internal-fsb-name=\"Connection 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 779px; top: 313px; width: 150px;\" data-source-group-name=\"Employee\" data-source-entity-name=\"eid\" data-target-group-name=\"Sidekiq\" data-target-entity-name=\"write\"></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"c8aebb0e\" internal-fsb-name=\"Connection 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 759px; top: 474px; width: 150px;\" data-source-group-name=\"Business\" data-source-entity-name=\"name\" data-target-group-name=\"Redis\" data-target-entity-name=\"prefix-abc-\"></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"52160ba0\" internal-fsb-name=\"RelationalTable 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalTable\" style=\"left: 802px; top: 60px; width: 150px;\" data-title-name=\"Note\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Note</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"9715a5d4\" internal-fsb-name=\"RelationalColumn 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"eid\" data-field-type=\"number\" data-required=\"true\"><div class=\"internal-fsb-title\">eid</div></div><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"9728cc26\" internal-fsb-name=\"RelationalColumn 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"RelationalColumn\" data-title-name=\"note\" data-required=\"true\"><div class=\"internal-fsb-title\">note</div></div></div></div></div><div class=\"internal-fsb-element internal-fsb-dragging-handle\" internal-fsb-guid=\"d879d69e\" internal-fsb-name=\"Connection 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Connection\" style=\"left: 744px; top: 85px; width: 150px;\" data-source-group-name=\"Employee\" data-source-entity-name=\"eid\" data-target-group-name=\"Note\" data-target-entity-name=\"eid\"></div></div></div></div><div class=\"internal-fsb-element\" internal-fsb-guid=\"41aecdb8\" internal-fsb-name=\"VolatileMemory 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"VolatileMemory\" style=\"left: 833px; top: 615px; width: 150px;\" data-title-name=\"Redis\"><div class=\"internal-fsb-title internal-fsb-dragging-handle\">Redis</div><div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\"><div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"><div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"e3184980\" internal-fsb-name=\"VolatilePrefix 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"VolatilePrefix\" data-title-name=\"prefix-abc-\"><div class=\"internal-fsb-title\">prefix-abc-</div></div></div></div></div></div></div><style type=\"text/css\" id=\"internal-fsb-stylesheet\">.internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-a43dc1c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { -fsb-inherited-presets: 08abd2c9; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; border-top-width: 1px; -fsb-reusable-name: section; -fsb-reusable-id: a43dc1c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-08abd2c9, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-a43dc1c9 { font-family: Courier Prime; font-size: 12px; color: rgba(156, 156, 156, 1); padding-top: 10px; padding-left: 10px; padding-bottom: 10px; padding-right: 10px; -fsb-reusable-name: note; -fsb-reusable-id: 08abd2c9 } .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-self-bb6cddae, .internal-fsb-allow-cursor > .internal-fsb-element.-fsb-preset-bb6cddae { -fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer }</style></body>",
+    "schema": {
+      "User": {
+        "source": "relational",
+        "group": "User",
+        "guid": "3a8aa8e0",
+        "keys": {
+          "uid": {
+            "name": "uid",
+            "guid": "0ae2920c",
+            "fieldType": "auto",
+            "required": false,
+            "unique": false
+          }
+        },
+        "columns": {
+          "bid": {
+            "name": "bid",
+            "guid": "456cc264",
+            "fieldType": "number",
+            "required": true,
+            "unique": false
+          },
+          "email": {
+            "name": "email",
+            "guid": "d3e002ad",
+            "fieldType": null,
+            "required": true,
+            "unique": true
+          },
+          "md5_password": {
+            "name": "md5_password",
+            "guid": "3abb5a32",
+            "fieldType": null,
+            "required": true,
+            "unique": false
+          },
+          "name": {
+            "name": "name",
+            "guid": "e3ecd260",
+            "fieldType": null,
+            "required": false,
+            "unique": false
+          }
+        },
+        "relations": {
+          "Log": {
+            "name": null,
+            "guid": "8b473440",
+            "sourceGroup": "User",
+            "sourceEntity": "uid",
+            "targetGroup": "Log",
+            "targetEntity": "uid"
+          },
+          "Employee": {
+            "name": "",
+            "guid": "48a97452",
+            "sourceGroup": "User",
+            "sourceEntity": "uid",
+            "targetGroup": "Employee",
+            "targetEntity": "uid"
+          },
+          "Business": {
+            "name": "",
+            "guid": "394a7806",
+            "sourceGroup": "User",
+            "sourceEntity": "bid",
+            "targetGroup": "Business",
+            "targetEntity": "bid"
+          }
+        }
+      },
+      "Employee": {
+        "source": "relational",
+        "group": "Employee",
+        "guid": "517603ad",
+        "keys": {
+          "eid": {
+            "name": "eid",
+            "guid": "867c32ab",
+            "fieldType": "auto",
+            "required": false,
+            "unique": false
+          }
+        },
+        "columns": {
+          "uid": {
+            "name": "uid",
+            "guid": "41c70b7c",
+            "fieldType": "number",
+            "required": true,
+            "unique": false
+          },
+          "name": {
+            "name": "name",
+            "guid": "c086cd1c",
+            "fieldType": null,
+            "required": false,
+            "unique": false
+          }
+        },
+        "relations": {
+          "User": {
+            "name": "",
+            "guid": "48a97452",
+            "sourceGroup": "Employee",
+            "sourceEntity": "uid",
+            "targetGroup": "User",
+            "targetEntity": "uid"
+          },
+          "Sidekiq": {
+            "name": null,
+            "guid": "02699134",
+            "sourceGroup": "Employee",
+            "sourceEntity": "eid",
+            "targetGroup": "Sidekiq",
+            "targetEntity": "write"
+          },
+          "Note": {
+            "name": null,
+            "guid": "d879d69e",
+            "sourceGroup": "Employee",
+            "sourceEntity": "eid",
+            "targetGroup": "Note",
+            "targetEntity": "eid"
+          }
+        }
+      },
+      "Business": {
+        "source": "relational",
+        "group": "Business",
+        "guid": "3b8deba4",
+        "keys": {
+          "bid": {
+            "name": "bid",
+            "guid": "2e4450b7",
+            "fieldType": "auto",
+            "required": false,
+            "unique": false
+          }
+        },
+        "columns": {
+          "name": {
+            "name": "name",
+            "guid": "41d99dce",
+            "fieldType": null,
+            "required": true,
+            "unique": true
+          }
+        },
+        "relations": {
+          "User": {
+            "name": "",
+            "guid": "394a7806",
+            "sourceGroup": "Business",
+            "sourceEntity": "bid",
+            "targetGroup": "User",
+            "targetEntity": "bid"
+          },
+          "Redis": {
+            "name": null,
+            "guid": "c8aebb0e",
+            "sourceGroup": "Business",
+            "sourceEntity": "name",
+            "targetGroup": "Redis",
+            "targetEntity": "prefix-abc-"
+          }
+        }
+      },
+      "Note": {
+        "source": "relational",
+        "group": "Note",
+        "guid": "52160ba0",
+        "keys": {},
+        "columns": {
+          "eid": {
+            "name": "eid",
+            "guid": "9715a5d4",
+            "fieldType": "number",
+            "required": true,
+            "unique": false
+          },
+          "note": {
+            "name": "note",
+            "guid": "9728cc26",
+            "fieldType": null,
+            "required": true,
+            "unique": false
+          }
+        },
+        "relations": {
+          "Employee": {
+            "name": null,
+            "guid": "d879d69e",
+            "sourceGroup": "Note",
+            "sourceEntity": "eid",
+            "targetGroup": "Employee",
+            "targetEntity": "eid"
+          }
+        }
+      },
+      "Log": {
+        "source": "worker",
+        "group": "Log",
+        "guid": "49b8ae39",
+        "keys": {},
+        "columns": {
+          "id": {
+            "name": "id",
+            "guid": "bb9ae5e2",
+            "fieldType": "auto",
+            "required": false,
+            "unique": false
+          },
+          "uid": {
+            "name": "uid",
+            "guid": "a3c71980",
+            "fieldType": "number",
+            "required": true,
+            "unique": false
+          },
+          "message": {
+            "name": "message",
+            "guid": "a9a1e789",
+            "fieldType": null,
+            "required": true,
+            "unique": false
+          }
+        },
+        "relations": {
+          "User": {
+            "name": null,
+            "guid": "8b473440",
+            "sourceGroup": "Log",
+            "sourceEntity": "uid",
+            "targetGroup": "User",
+            "targetEntity": "uid"
+          }
+        }
+      },
+      "Sidekiq": {
+        "source": "document",
+        "group": "Sidekiq",
+        "guid": "95570e10",
+        "keys": {},
+        "columns": {
+          "write": {
+            "name": "write",
+            "guid": "5405e3c1",
+            "fieldType": null,
+            "required": false,
+            "unique": false
+          }
+        },
+        "relations": {
+          "Employee": {
+            "name": null,
+            "guid": "02699134",
+            "sourceGroup": "Sidekiq",
+            "sourceEntity": "write",
+            "targetGroup": "Employee",
+            "targetEntity": "eid"
+          }
+        }
+      },
+      "Redis": {
+        "source": "volatile-memory",
+        "group": "Redis",
+        "guid": "41aecdb8",
+        "keys": {},
+        "columns": {
+          "prefix-abc-": {
+            "name": "prefix-abc-",
+            "guid": "e3184980",
+            "fieldType": null,
+            "required": false,
+            "unique": false
+          }
+        },
+        "relations": {
+          "Business": {
+            "name": null,
+            "guid": "c8aebb0e",
+            "sourceGroup": "Redis",
+            "sourceEntity": "prefix-abc-",
+            "targetGroup": "Business",
+            "targetEntity": "name"
+          }
+        }
+      }
+    }
   },
   "services": {},
   "stylesheets": {
     "08abd2c9": "font-family: Courier Prime; font-size: 12px; color: rgba(156, 156, 156, 1); padding-top: 10px; padding-left: 10px; padding-bottom: 10px; padding-right: 10px; -fsb-reusable-name: note; -fsb-reusable-id: 08abd2c9",
     "a43dc1c9": "-fsb-inherited-presets: 08abd2c9; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; border-top-width: 1px; -fsb-reusable-name: section; -fsb-reusable-id: a43dc1c9",
     "bb6cddae": "-fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer"
-  },
-  "frontEndComponentsBlobSHAInfos": [
-    [
-      "TextElement_9bab7d34",
-      "0c2054b1f286d3aa853076f5b6d306decaf2a4fa"
-    ],
-    [
-      "FlowLayout_5382c791",
-      "7028f59e53d9892107da0ef368afaaa3c4b7426f"
-    ],
-    [
-      "FlowLayout_aba587c6",
-      "2967e32dbf51a5b57d908ae699291eaf3552fdcf"
-    ],
-    [
-      "FlowLayout_106ad665",
-      "8fefb5f70d7db7ad38d7f5ced0c135ffac1b4588"
-    ],
-    [
-      "TextElement_738cbdce",
-      "2532e7f3caebbabdd91e33c8b79651d6b9bded0c"
-    ],
-    [
-      "TextElement_bb6cddae",
-      "d505cfb7f180300cfe9f226b24b3c85844f27c3f"
-    ],
-    [
-      "TextElement_b19840c8",
-      "6615f8a7ec1fddf174eca5c4edf519212a06b6bb"
-    ],
-    [
-      "TextElement_92de9e1b",
-      "2a5764ec9ec99dac21a8b5f641748c0e14cb6a55"
-    ],
-    [
-      "TextElement_0522150b",
-      "1393ce2498eb123f6bb762823307c69ed47540eb"
-    ]
-  ]
+  }
 }

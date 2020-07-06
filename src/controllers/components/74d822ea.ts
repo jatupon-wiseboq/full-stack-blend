@@ -93,23 +93,8 @@ class Controller extends Base {
  		ValidationHelper.validate(data);
   }
   
-  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return {
- 		  Log: {
-   		  source: null,
-   		  group: "Log",
-   		  rows: [{
-   		    keys: {},
-   		    columns: {
-   		      message: {
-   		        name: "message",
-   		        value: "Hello World!"
-   		      }
-   		    },
-   		    relations: {}
-   		  }]
-   		}
- 		};
+  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+ 		return super.get(data);
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
