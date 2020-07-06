@@ -143,7 +143,7 @@ import * as endpoint from "./controllers/Endpoint";
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	endpoint.clearRecentError();
 	app.post("/endpoint/update/content", endpoint.updateContent);
-	app.get("/endpoint/recent/error", endpoint.getRecentError);
+	app.get("/endpoint/recent/error?r=" + Math.floor(Math.random() * 999999), endpoint.getRecentError);
 	
 	app.use((err, req, res, next) => {
     endpoint.addRecentError(err);
