@@ -11,6 +11,7 @@ import mongoose from "mongoose";
 import passport from "passport";
 import bluebird from "bluebird";
 import cors from "cors";
+import fs from "fs";
 import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 
 const MongoStore = mongo(session);
@@ -25,10 +26,24 @@ import * as contactController from "./controllers/contact";
 import * as passportConfig from "./config/passport";
 
 // Create Express server
-const app = express(),
+const app = express();
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  const https = require("https");
+  
+  // SSL
+  const sslkey = fs.readFileSync("localhost.key");
+  const sslcert = fs.readFileSync("localhost.crt");
+  const options = {
+      key: sslkey,
+      cert: sslcert
+  };
+  
+  https.createServer(options, app).listen(443);
+}
 
 // Connect to MongoDB
-mongoUrl = MONGODB_URI;
+const mongoUrl = MONGODB_URI;
 
 mongoose.Promise = bluebird;
 
@@ -43,9 +58,7 @@ mongoose.connect(mongoUrl, {useNewUrlParser: true,
     });
 
 app.use(secure);
-if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
-	app.enable("trust proxy");
-}
+app.enable("trust proxy");
 
 // Express configuration
 app.set("port", process.env.PORT || 3000);

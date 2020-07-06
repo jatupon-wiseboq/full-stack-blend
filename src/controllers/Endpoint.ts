@@ -8,10 +8,10 @@ import {Request, Response} from "express";
 let recentError = [];
 export const clearRecentError = () => {
     recentError = [];
-}
+};
 export const addRecentError = (error: any) => {
-    recentError.push('[back-end]: ' + (error && error.message || error.toString()));
-}
+    recentError.push("[back-end]: " + (error && error.message || error.toString()));
+};
 
 /**
  * POST /endpoint/update/content
@@ -69,12 +69,12 @@ export const getRecentError = (request: Request, response: Response) => {
 		} else {
 		  response.json({
   			success: false,
-  			error: recentError.join('\n'),
+  			error: recentError.join("\n"),
   			results: null
   		});
 		}
     
-}
+};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

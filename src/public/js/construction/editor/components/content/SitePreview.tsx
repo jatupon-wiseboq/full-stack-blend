@@ -325,7 +325,7 @@ class SitePreview extends Base<Props, State> {
 	        }), '*');
 	        window.internalFsbSubmit = function(guid, notation, event, callback) {
 	          if (!window.ENDPOINT || !window.PATH) {
-	            alert('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
+	            console.error('Please test data manipulation from the localhost machine which is running the project manually, or specify endpoint in Settings to continue.');
 	          } else {
 	            DataManipulationHelper.request(guid, notation, event, callback);
 	          }
@@ -339,12 +339,7 @@ class SitePreview extends Base<Props, State> {
         	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
         		continueFn(data.results);
         	}).catch(function(error) {
-        		console.error('Server-Side Rendering (SSR) is unable to test.');
-        		if (confirm('Server-Side Rendering (SSR) is unable to test. Do you want to continue?')) {
-        			continueFn(null);
-        		} else {
-        			window.closeSitePreview();
-        		}
+        		console.error('Server-Side Rendering (SSR) is unable to test because of an error at endpoint, please your debugging console.');
         	});
         }
       });

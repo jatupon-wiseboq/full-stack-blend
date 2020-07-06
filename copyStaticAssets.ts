@@ -17,3 +17,15 @@ archive
 	.directory("boilerplate/src", false)
   .pipe(stream);
 archive.finalize();
+
+if (shell.ls('localhost.crt').length == 0) {
+  shell.exec('openssl req \
+    -new \
+    -newkey rsa:4096 \
+    -days 365 \
+    -nodes \
+    -x509 \
+    -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=localhost" \
+    -keyout localhost.key \
+    -out localhost.crt');
+}
