@@ -48,6 +48,7 @@ body * {
 //
 .internal-fsb-element[internal-fsb-class="RelationalDatabase"],
 .internal-fsb-element[internal-fsb-class="DocumentDatabase"] {
+  position: absolute !important;
   border: dashed 1px #aaaaaa !important;
   border-radius: 5px;
 }
@@ -58,6 +59,8 @@ body * {
 .internal-fsb-element[internal-fsb-class="DocumentTable"],
 .internal-fsb-element[internal-fsb-class="WorkerInstance"],
 .internal-fsb-element[internal-fsb-class="VolatileMemory"] {
+  position: absolute !important;
+  
   > .internal-fsb-title {
     position: absolute;
     bottom: 100%;
@@ -163,6 +166,7 @@ body * {
 }
 
 .internal-fsb-element[internal-fsb-class="Connection"] {
+  position: absolute !important;
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
