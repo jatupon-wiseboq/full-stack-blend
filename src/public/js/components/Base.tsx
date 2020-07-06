@@ -46,7 +46,7 @@ class Base extends React.Component {
   
   protected getDataFromNotation(notation: string): any {
     if (!notation) {
-      console.error("There was an error processing hierarchical data on client side (notation isn't a string).");\
+      console.error("There was an error processing hierarchical data on client side (notation isn't a string).");
       return [];
     }
     
