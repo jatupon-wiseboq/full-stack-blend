@@ -57,10 +57,11 @@ class EndpointManager extends Base<Props, State> {
       });
     }
     private commit() {
-  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
-  			files: this.files
-  		});
+      let _files = this.files;
   		this.files = [];
+  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
+  			files: _files
+  		})
     }
     
     public save(cb) {
@@ -165,7 +166,11 @@ class EndpointManager extends Base<Props, State> {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsInfo) => {
                 this.createSiteBundle(nextProjectData.globalSettings.pages, frontEndComponentsInfo, () => {
                   this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2)).then(() => {
-                    this.commit().then(cb);
+                    this.commit().then(() => {
+                      cb(true);
+                    }).catch(() => {
+                      cb(false);
+                    });
                   });
                 });
               });
@@ -212,7 +217,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
    	  let process = ((index: number) => {
    	    let page = pages.filter(page => page.id == keys[index]);
    	    
-   	    this.create(`../../views/home/${this.getRepresentativeName(page.id)}`, `//- Auto[Generating:V1]--->
+   	    this.create(`../../views/home/${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
@@ -242,7 +247,7 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
        	  let subprocess = ((subIndex: number) => {
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
-       	    this.create(`../public/js/components/${tokens[0]}`, `// Auto[Generating:V1]--->
+       	    this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}
@@ -279,7 +284,7 @@ ${tokens[1]}
        	  let subprocess = ((subIndex: number) => {
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
-       	    this.create(`./components/${tokens[0]}`, `// Auto[Generating:V1]--->
+       	    this.create(`./components/${tokens[0]}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}

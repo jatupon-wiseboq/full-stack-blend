@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
-    
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+
 // Auto[Import]--->
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
@@ -54,6 +55,7 @@ class FlowLayout_83e416bb extends Base {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
     
+
     this.initialize();
   }
   // <---Auto[ClassBegin]
@@ -68,6 +70,7 @@ class FlowLayout_83e416bb extends Base {
   protected getDataFromNotation(notation: string): any {
     return super.getDataFromNotation(notation);
   }
+  
   
   // Auto[Merging]--->
   // <---Auto[Merging]
@@ -86,5 +89,6 @@ DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout
 //
 export {IProps, IState, DefaultProps, DefaultState};
 
-    // <--- Auto[Generating:V1]
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

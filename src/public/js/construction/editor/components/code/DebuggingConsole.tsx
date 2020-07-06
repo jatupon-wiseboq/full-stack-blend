@@ -58,7 +58,6 @@ class DebuggingConsole extends Base<Props, State> {
         	window.repl.print(window.repl.simpleFormatter(...args), 'message');
         });
         window.console.error = ((...args) => {
-          debugger;
           window.setTimeout(() => {
             $('#codingButton')[0].click();
             $('#footerConsole')[0].click();

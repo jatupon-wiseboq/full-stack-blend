@@ -95,9 +95,9 @@ class Controller extends Base {
   
   protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
  		return {
- 		  Custom: {
+ 		  Log: {
    		  source: null,
-   		  group: "Custom",
+   		  group: "Log",
    		  rows: [{
    		    keys: {},
    		    columns: {

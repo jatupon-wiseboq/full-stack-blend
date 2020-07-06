@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {RequestHelper} from '../../../helpers/RequestHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants.js';
@@ -110,12 +111,7 @@ class SitePreview extends Base<Props, State> {
 		    		
 		    		if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 		    		
-		    		var request = new XMLHttpRequest();
-						request.addEventListener("load", this.unzip.bind(this, request));
-						request.addEventListener("error", this.close.bind(this));
-						request.responseType = 'blob';
-						request.open("GET", "boilerplate.v1.zip");
-						request.send();
+		    		RequestHelper.get("boilerplate.v1.zip", "blob").then(this.unzip.bind(this)).catch(this.close.bind(this));
 				} else {
 						if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 						
@@ -123,9 +119,9 @@ class SitePreview extends Base<Props, State> {
 				}
     }
     
-    private unzip(request) {
+    private unzip(response) {
     		this.currentKey = null;
-			  zip.createReader(new zip.BlobReader(request.response), ((zipReader) => {
+			  zip.createReader(new zip.BlobReader(response), ((zipReader) => {
 			    zipReader.getEntries(((entries) => {
 			    	for (let entry of entries) {
 			    		if (typeof this.requiredFiles[entry.filename] === 'boolean') {
@@ -285,17 +281,14 @@ class SitePreview extends Base<Props, State> {
       
       let timerId = null;
       window.onerror = ((msg, url, line, col, error) => {
-        window.clearTimeout(timerId);
-        timerId = window.setTimeout(() => {
-          if (confirm('There is some error happened while rendering. Do you want to look over it?')) {
-            window.closeSitePreview();
-          }
-        }, 2000);
-        
+        window.closeSitePreview();
         parent.error(msg, url, line, col, error);
       });
       console.log = parent.console.log;
-      console.error = parent.console.error;
+      console.error = ((...args) => {
+        window.closeSitePreview();
+        parent.console.error(...args);
+      });
       
       var requiredFiles = ${JSON.stringify(this.requiredFiles)};
       require.config({

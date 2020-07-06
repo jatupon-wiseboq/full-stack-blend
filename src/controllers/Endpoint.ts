@@ -14,19 +14,17 @@ export const updateContent = (request: Request, response: Response) => {
 		try {
 			const json: any = request.body;
 			if (json == null) {
-				throw new Error("There was an error trying to obtain requesting parameters (missing).");
+				throw new Error("There was an error trying to obtain requesting parameters (JSON object is null).");
 			}
 			
 			const dirname = __dirname.replace("/dist/", "/src/");
 			const rootPath = path.resolve(dirname, "../../");
 			
-			for (let file of json.files) {
+			for (const file of json.files) {
   			const fullPath = path.resolve(dirname, file.path);
   			if (fullPath.indexOf(rootPath) == -1) {
   				throw new Error(`The specified path isn't under ${rootPath}.`);
   			}
-  			
-  			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
   	  }
 			
 			response.json({
@@ -34,6 +32,15 @@ export const updateContent = (request: Request, response: Response) => {
 				error: null,
 				results: true
 			});
+			response.end();
+			
+			setTimeout(() => {
+  			for (const file of json.files) {
+    			const fullPath = path.resolve(dirname, file.path);
+    			
+    			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
+    	  }
+			}, 1000);
 		} catch(error) {
 			response.json({
 				success: false,

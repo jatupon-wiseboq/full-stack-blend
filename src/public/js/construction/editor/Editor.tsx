@@ -263,10 +263,13 @@ let recentExtraPanelSelector: string = null;
   window.preview = (() => {
     Accessories.preview.current.open();
     
-    Accessories.endpointManager.current.save(() => {
-      window.setTimeout(() => {
+    Accessories.endpointManager.current.save((success) => {
+      if (success) {
         Accessories.preview.current.start();
-      }, 2000);
+      } else {
+        console.error('There was an error trying to update content at endpoint.');
+        Accessories.preview.current.close();
+      }
     });
  	});
  	

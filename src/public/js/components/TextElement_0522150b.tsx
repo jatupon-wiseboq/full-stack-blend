@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
-    
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+
 // Auto[Import]--->
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
@@ -54,6 +55,7 @@ class TextElement_0522150b extends Base {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
     
+
     this.initialize();
   }
   // <---Auto[ClassBegin]
@@ -69,13 +71,14 @@ class TextElement_0522150b extends Base {
     return super.getDataFromNotation(notation);
   }
   
+  
   // Auto[Merging]--->
   // <---Auto[Merging]
   
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-08abd2c9 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="0522150b" style={Object.assign({'FsbInheritedPresets': '08abd2c9'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('Custom.message')}}></div>
+      <div className={"internal-fsb-element col-12 -fsb-preset-08abd2c9 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="0522150b" style={Object.assign({'FsbInheritedPresets': '08abd2c9'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('Log.message')}}></div>
     )
   }
 }
@@ -86,5 +89,7 @@ DeclarationHelper.declare('Document', 'Controls.TextElement_0522150b', TextEleme
 //
 export {IProps, IState, DefaultProps, DefaultState};
 
-    // <--- Auto[Generating:V1]
-    // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
