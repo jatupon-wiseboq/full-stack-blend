@@ -1,5 +1,17 @@
 include ../../mixin/CreateReactComponent
 .internal-fsb-selecting-on
+  .section-container
+    .section-title
+      | Layer
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+    .section-subtitle
+      | Note
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
+    .section-hr
   .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:WorkerInstance,internal-fsb-class:VolatileMemory")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalDatabase")
       | Relational Database Options
