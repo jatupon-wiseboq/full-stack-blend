@@ -12,6 +12,8 @@ import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from '
 // Import additional modules here:
 //
 
+
+
 // Auto[Declare]--->
 
 declare let React: any;
@@ -70,6 +72,7 @@ class TextElement_0522150b extends Base {
   protected getDataFromNotation(notation: string): any {
     return super.getDataFromNotation(notation);
   }
+  
   
   
   // Auto[Merging]--->

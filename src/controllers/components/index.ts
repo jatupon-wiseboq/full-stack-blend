@@ -15,6 +15,7 @@ import {Base} from './Base.js';
 
 // Import additional modules here:
 // 
+throw '1234';
 
 
 // Auto[Declare]--->

@@ -5,6 +5,14 @@ import fs from "fs";
 import path from "path";
 import {Request, Response} from "express";
 
+let recentError = [];
+export const clearRecentError = () => {
+    recentError = [];
+}
+export const addRecentError = (error: any) => {
+    recentError.push('[back-end]: ' + (error && error.message || error.toString()));
+}
+
 /**
  * POST /endpoint/update/content
  * Update the content of specific file in the repository.
@@ -50,6 +58,23 @@ export const updateContent = (request: Request, response: Response) => {
 		}
 
 };
+export const getRecentError = (request: Request, response: Response) => {
+    
+    if (recentError.length == 0) {
+      response.json({
+  			success: true,
+  			error: null,
+  			results: null
+  		});
+		} else {
+		  response.json({
+  			success: false,
+  			error: recentError.join('\n'),
+  			results: null
+  		});
+		}
+    
+}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

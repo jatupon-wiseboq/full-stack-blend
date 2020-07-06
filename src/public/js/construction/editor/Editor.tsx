@@ -1,6 +1,7 @@
 import {FullStackBlend} from '../helpers/DeclarationHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
+import {RequestHelper} from '../helpers/RequestHelper.js';
 
 import './components/layout/GridPicker.js';
 import './components/layout/OffsetPicker.js';
@@ -260,12 +261,26 @@ let recentExtraPanelSelector: string = null;
     Accessories.projectManager.current.deploy();
   });
   
+  let latestRevision = 0;
+  let currentRevision = null;
+  
   window.preview = (() => {
-    Accessories.preview.current.open();
+    latestRevision += 1;
+    currentRevision = latestRevision;
     
+    Accessories.preview.current.open();
     Accessories.endpointManager.current.save((success) => {
       if (success) {
-        Accessories.preview.current.start();
+        Accessories.preview.current.start();              
+        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error`).then((results) => {
+          if (currentRevision == latestRevision) {
+            if (!results.success) {
+              console.error(`${results.error}`);
+              Accessories.preview.current.close();
+            }
+          }
+        }).catch(() => {
+        });
       } else {
         console.error('There was an error trying to update content at endpoint.');
         Accessories.preview.current.close();
