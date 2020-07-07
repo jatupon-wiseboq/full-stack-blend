@@ -379,7 +379,7 @@ const DatabaseHelper = {
   					    };
   					  }
   					}
-  					resolve([row]);
+  					resolve(null);
 					});
       		
       		break;
