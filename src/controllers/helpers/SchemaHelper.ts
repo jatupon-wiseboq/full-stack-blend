@@ -135,7 +135,8 @@ const SchemaHelper = {
         } else {
           currentNotation = accumulatedNotation + "." + key.split("[")[0];
         }
-        if (Object.keys(tree[key]) == 0) {
+        let nodes: any = tree[key];
+        if (Object.keys(nodes) == 0) {
           notations.push(currentNotation);
         } else {
           SchemaHelper.findAllPossibleNotations(tree[key], currentNotation, notations);
@@ -153,7 +154,7 @@ const SchemaHelper = {
   		let current: DataTableSchema | DataColumnSchema = null;
   		
   		do {
-  		  current = SchemaHelper.getSchemaFromKey(shifted, current, data, splited.length == 0);
+  		  current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, splited.length == 0);
   		  shifted = splited.shift();
   		} while (current && shifted);
   		
@@ -168,7 +169,7 @@ const SchemaHelper = {
 		let current: DataTableSchema | DataColumnSchema = null;
 		
 		while (current && shifted) {
-			current = SchemaHelper.getSchemaFromKey(shifted, current, data, splited.length == 0);
+			current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, splited.length == 0);
 			shifted = splited.shift();
 		}
 		
