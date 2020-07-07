@@ -1,6 +1,5 @@
 import * as shell from "shelljs";
 import fs from "fs";
-<<<<<<< HEAD
 import archiver from "archiver";
 
 shell.cp("-R", "src/public/fonts", "dist/public/");
@@ -18,11 +17,6 @@ archive
 	.directory("boilerplate/src", false)
   .pipe(stream);
 archive.finalize();
-=======
-
-shell.cp("-R", "src/public/fonts", "dist/public/");
-shell.cp("-R", "src/public/images", "dist/public/");
->>>>>>> 1c0105c872efe0db8abf20a31233e0049185e73d
 
 if (shell.ls('localhost.crt').length == 0) {
   shell.exec('openssl req \
