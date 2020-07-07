@@ -271,16 +271,18 @@ let recentExtraPanelSelector: string = null;
     Accessories.preview.current.open();
     Accessories.endpointManager.current.save((success) => {
       if (success) {
-        Accessories.preview.current.start();
-        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
-          if (currentRevision == latestRevision) {
-            if (!results.success) {
-              console.error(`${results.error}`);
-              Accessories.preview.current.close();
-            }
-          }
-        }).catch(() => {
-        });
+      	window.setTimeout(() => {
+	        Accessories.preview.current.start();
+	        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
+	          if (currentRevision == latestRevision) {
+	            if (!results.success) {
+	              console.error(`${results.error}`);
+	              Accessories.preview.current.close();
+	            }
+	          }
+	        }).catch(() => {
+	        });
+      	}, 3000);
       } else {
         console.error('There was an error trying to update content at endpoint.');
         Accessories.preview.current.close();
