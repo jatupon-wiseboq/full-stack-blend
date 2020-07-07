@@ -126,7 +126,7 @@ class Controller extends Base {
   }
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, Input[]] {
+  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	const action: ActionType = RequestHelper.getAction(request);
   	const schema: DataTableSchema = RequestHelper.getSchema(request);
   	const data: Input[] = [];
