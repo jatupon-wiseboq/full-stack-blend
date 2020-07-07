@@ -272,7 +272,7 @@ let recentExtraPanelSelector: string = null;
     Accessories.endpointManager.current.save((success) => {
       if (success) {
         Accessories.preview.current.start();              
-        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error`).then((results) => {
+        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
           if (currentRevision == latestRevision) {
             if (!results.success) {
               console.error(`${results.error}`);
