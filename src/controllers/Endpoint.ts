@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import fs from "fs";
+import * as shell from "shelljs";
 import path from "path";
 import {Request, Response} from "express";
 
@@ -49,6 +50,12 @@ export const updateContent = (request: Request, response: Response) => {
     			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
     	  }
 			}, 1000);
+			
+			try {
+				shell.exec("npm run build-ts && npm run build-bundle");
+			} catch(error) {
+				addRecentError(error);
+			}
 		} catch(error) {
 			response.json({
 				success: false,
