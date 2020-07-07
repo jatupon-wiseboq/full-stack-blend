@@ -5,12 +5,14 @@ import {Request, Response} from "express";
 import {HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, ActionType, Input} from "../helpers/DatabaseHelper.js";
 import {ValidationHelper} from "../helpers/ValidationHelper.js";
 import {RenderHelper} from "../helpers/RenderHelper.js";
+import {DataTableSchema, SchemaHelper} from "../helpers/SchemaHelper.js";
 import {ProjectConfigurationHelper} from "../helpers/ProjectConfigurationHelper.js";
 
 class Base {
 	protected request: Request;
 	protected response: Response;
 	protected template: string;
+	protected pageId: string;
 	
 	constructor(request: Request, response: Response, template: string) {
   	this.request = request;
