@@ -105,8 +105,12 @@ const SchemaHelper = {
 		if (!searchForFinalResults) {
 			// Search DataTableSchema
 			// 
-			const table = (current && current.relations || data.tables || {})[key];
-			if (table) {
+			const relation = (current && current.relations || {})[key];
+			const table = (data.tables || {})[key];
+			
+			if (relation) {
+				return (data.tables || {})[relation.targetGroup] || null;
+			} else if (table) {
 				return table;
 			} else {
 				return null;
