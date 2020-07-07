@@ -29,7 +29,7 @@ import * as passportConfig from "./config/passport";
 const app = express();
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-  const https = require("https");
+  const https = require('https');
   
   // SSL
   const sslkey = fs.readFileSync("localhost.key");
@@ -92,7 +92,6 @@ app.use((req, res, next) => {
     req.path !== "/signup" &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-
         req.session.returnTo = req.path;
 
     } else if (req.user &&
