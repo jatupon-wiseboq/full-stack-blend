@@ -135,8 +135,7 @@ const SchemaHelper = {
         } else {
           currentNotation = accumulatedNotation + "." + key.split("[")[0];
         }
-        let nodes: any = tree[key];
-        if (Object.keys(nodes) == 0) {
+        if (Object.keys(tree[key]).length == 0) {
           notations.push(currentNotation);
         } else {
           SchemaHelper.findAllPossibleNotations(tree[key], currentNotation, notations);
