@@ -11,6 +11,7 @@ class Base {
 	protected request: Request;
 	protected response: Response;
 	protected template: string;
+	protected pageId: string;
 	
 	constructor(request: Request, response: Response, template: string) {
   	this.request = request;
