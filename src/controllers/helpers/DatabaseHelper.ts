@@ -184,10 +184,10 @@ const DatabaseHelper = {
 		    }
 		  }
 		}
-		return row;
+		return [row, data && data[0] && data[0].target || null];
 	},
-	prepareFilter: (data: Input[], schema: DataTableSchema): {[Identifier: string]: HierarchicalDataFilter} => {
-		return null;
+	prepareFilter: (data: Input[], schema: DataTableSchema): [{[Identifier: string]: HierarchicalDataFilter}, SourceType] => {
+		return [null, null];
 	},
 	insert: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
@@ -337,9 +337,9 @@ const DatabaseHelper = {
 	},
 	retrieve: async (data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise((resolve) => {
-			const input: {[Identifier: string]: HierarchicalDataFilter} = DatabaseHelper.prepareFilter(data, schema);
+			const [input, target] = DatabaseHelper.prepareFilter(data, schema);
 			
-      switch (input.target) {
+      switch (target) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
