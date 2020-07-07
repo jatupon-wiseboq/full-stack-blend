@@ -60,7 +60,7 @@ interface Input {
 }
 
 const DatabaseHelper = {
-	prepareRow: (data: Input[], action: string, schema: DataTableSchema): HierarchicalDataRow => {
+	prepareRow: (data: Input[], action: string, schema: DataTableSchema): [HierarchicalDataRow, SourceType] => {
 	  const row: HierarchicalDataRow = {
 	    keys: {},
 	    columns: {},
@@ -68,7 +68,7 @@ const DatabaseHelper = {
 	  };
 	  if (data) {
 	    for (const input of data) {
-	      if (schema.source != input.source || schema.group != input.group)
+	      if (schema.source != input.target || schema.group != input.group)
 	        throw new Error(`There was an error preparing data for manipulation ('${input.group}' doesn't match the schema group '${schema.group}').`);
 	      if (!schema.keys[input.name] || !schema.columns[input.name])
 	        throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn't exist in the schema group '${schema.group}').`);
@@ -191,9 +191,9 @@ const DatabaseHelper = {
 	},
 	insert: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "insert", schema);
+			const [input, target] = DatabaseHelper.prepareRow(data, "insert", schema);
 			
-      switch (input.source) {
+      switch (target) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 					
@@ -266,9 +266,9 @@ const DatabaseHelper = {
 	},
 	update: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "update", schema);
+			const [input, target] = DatabaseHelper.prepareRow(data, "update", schema);
 			
-      switch (input.source) {
+      switch (target) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
@@ -339,7 +339,7 @@ const DatabaseHelper = {
 		return new Promise((resolve) => {
 			const input: {[Identifier: string]: HierarchicalDataFilter} = DatabaseHelper.prepareFilter(data, schema);
 			
-      switch (input.source) {
+      switch (input.target) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
@@ -406,9 +406,9 @@ const DatabaseHelper = {
 	},
 	delete: async (data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise((resolve) => {
-			const input: HierarchicalDataRow = DatabaseHelper.prepareRow(data, "delete", schema);
+			const [input, target] = DatabaseHelper.prepareRow(data, "delete", schema);
 			
-      switch (input.source) {
+      switch (target) {
       	case SourceType.Relational:
       		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
       		
