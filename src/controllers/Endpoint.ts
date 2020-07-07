@@ -50,12 +50,6 @@ export const updateContent = (request: Request, response: Response) => {
     			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
     	  }
 			}, 1000);
-			
-			try {
-				shell.exec("npm run build-ts && npm run build-bundle");
-			} catch(error) {
-				addRecentError(error);
-			}
 		} catch(error) {
 			response.json({
 				success: false,

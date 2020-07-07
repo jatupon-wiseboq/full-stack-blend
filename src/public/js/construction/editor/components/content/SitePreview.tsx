@@ -339,7 +339,7 @@ class SitePreview extends Base<Props, State> {
         	RequestHelper.post(ENDPOINT + PATH, {action: 'test'}).then(function(data) {
         		continueFn(data.results);
         	}).catch(function(error) {
-        		console.error('Server-Side Rendering (SSR) is unable to test because of an error at endpoint, please your debugging console.');
+        		console.error('Server-Side Rendering (SSR) is unable to test because of an error at endpoint, please check your debugging console.');
         	});
         }
       });
