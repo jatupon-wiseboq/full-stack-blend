@@ -277,15 +277,41 @@ class ProjectManager extends Base<Props, State> {
              	}
             }
             
-            let persistingContent = '';
+            let persistingContent = document.createElement('div');
+            let persistingGUIDs = {index: true};
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state != 'delete')) {
-            	persistingContent += nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body || '';
+            	persistingGUIDs[page.id] = true;
+            	let element = document.createElement('div');
+            	element.innerHTML = nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body || '';
+            	persistingContent.appendChild(element);
             }
             for (let page of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
-            	persistingContent += nextProjectData.components[component.id] && nextProjectData.components[component.id].body || '';
+            	persistingGUIDs[component.id] = true;
+            	let element = document.createElement('div');
+            	element.innerHTML = nextProjectData.components[component.id] && nextProjectData.components[component.id].body || '';
+            	persistingContent.appendChild(element);
             }
             for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
-            	persistingContent += nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body || '';
+            	persistingGUIDs[popup.id] = true;
+            	let element = document.createElement('div');
+            	element.innerHTML = nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body || '';
+            	persistingContent.appendChild(element);
+            }
+            
+            let elements = HTMLHelper.getElementsByClassName('internal-fsb-element', persistingContent);
+            for (let element of elements) {
+            	let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
+            	let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace');
+            	let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
+            	let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
+            	let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+            	
+            	if (!reactClass && reactMode && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
+			          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
+			        }
+			        
+			        if (reactClass) persistingGUIDs[reactClass] = true;
+			        persistingGUIDs[reactClassComposingInfoGUID] = true;
             }
             
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
@@ -297,12 +323,6 @@ class ProjectManager extends Base<Props, State> {
             for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state == 'delete')) {
             	delete nextProjectData.popups[popup.id];
             }
-            
-            let persistingGUIDs = {};
-            for (let result of persistingContent.match(/internal-fsb-guid="([^"]+)"/g)) {
-            	let guid = result.match(/internal-fsb-guid="([^"]+)"/)[1];
-            	persistingGUIDs[guid] = true;
-          	}
             
             nextProjectData.globalSettings.pages = nextProjectData.globalSettings.pages.filter(page => page.state != 'delete');
             nextProjectData.globalSettings.components = nextProjectData.globalSettings.components.filter(component => component.state != 'delete');
@@ -374,7 +394,7 @@ class ProjectManager extends Base<Props, State> {
 	                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
 	                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
 		                          tree.push({
-		                            path: `src/controllers/components/${key}.ts`,
+		                            path: `src/controllers/components/${this.getRepresentativeName(key)}.ts`,
 		                            mode: "100644",
 		                            type: "blob",
 		                            sha: nextProjectData.backEndControllerBlobSHADict[key]
