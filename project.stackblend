@@ -498,5 +498,7 @@
   "backEndControllerBlobSHADict": {
     "820a2657": "4e35d17f5a583b190b323510ffddc8a8f0107da6"
   },
-  "frontEndComponentsBlobSHADict": {}
+  "frontEndComponentsBlobSHADict": {
+    "Rectangle_31be767a": "cec60c483612a4d064fac1407db0b2df7d5e5b5b"
+  }
 }
