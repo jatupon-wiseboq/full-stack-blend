@@ -8,6 +8,8 @@ const route = (app: any) => {
  app.post("/", homeController.index);
  app.get("/notation_testing", homeController._74d822ea);
  app.post("/notation_testing", homeController._74d822ea);
+ app.get("/a", homeController._37c894a2);
+ app.post("/a", homeController._37c894a2);
 }
 
 export default route;
