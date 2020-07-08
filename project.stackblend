@@ -492,7 +492,11 @@
       "f5f1c6a8d2a9aa787bb6f2e713c06da89d60cd4d"
     ]
   ],
-  "viewBlobSHADict": {},
-  "backEndControllerBlobSHADict": {},
+  "viewBlobSHADict": {
+    "820a2657": "a88af16214da611786e8f702b3746faa378a9ad0"
+  },
+  "backEndControllerBlobSHADict": {
+    "820a2657": "4e35d17f5a583b190b323510ffddc8a8f0107da6"
+  },
   "frontEndComponentsBlobSHADict": {}
 }
