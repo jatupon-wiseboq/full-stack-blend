@@ -279,23 +279,23 @@ class ProjectManager extends Base<Props, State> {
             
             let persistingContent = '';
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state != 'delete')) {
-            	persistingContent += nextProjectData.globalSettings.sites[page.id].body;
+            	persistingContent += nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body || '';
             }
             for (let page of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
-            	persistingContent += nextProjectData.globalSettings.components[component.id].body;
+            	persistingContent += nextProjectData.components[component.id] && nextProjectData.components[component.id].body || '';
             }
             for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
-            	persistingContent += nextProjectData.globalSettings.popups[popup.id].body;
+            	persistingContent += nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body || '';
             }
             
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
-            	delete nextProjectData.globalSettings.sites[page.id];
+            	delete nextProjectData.sites[page.id];
             }
             for (let page of nextProjectData.globalSettings.components.filter(component => component.state == 'delete')) {
-            	delete nextProjectData.globalSettings.components[component.id];
+            	delete nextProjectData.components[component.id];
             }
             for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state == 'delete')) {
-            	delete nextProjectData.globalSettings.popups[popup.id];
+            	delete nextProjectData.popups[popup.id];
             }
             
             let persistingGUIDs = {};
@@ -339,7 +339,7 @@ class ProjectManager extends Base<Props, State> {
 	                    	}
 	                    }
 	                    
-	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, frontEndComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
+	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, (siteBundleBlobSHA: string) => {
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
@@ -391,7 +391,7 @@ class ProjectManager extends Base<Props, State> {
 		                          });
 		                        }
 	                        }
-	                        for (let key in viewBlobSHADict) {
+	                        for (let key in nextProjectData.viewBlobSHADict) {
 	                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
 	                            tree.push({
 	                              path: `views/home/${this.getRepresentativeName(key)}.pug`,
@@ -705,7 +705,7 @@ ${tokens[1]}
       }
       mainprocess(0);
    	}
-   	createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHAInfos: [[string, string]], cb: any) {
+   	createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
  	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -713,7 +713,7 @@ import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
-${frontEndComponentsBlobSHAInfos.map(info => `import './components/${info[0]}.js';`).join('\n')}
+${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}.js';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
