@@ -279,27 +279,18 @@ class ProjectManager extends Base<Props, State> {
             
             this.createRouteBlob(repo, nextProjectData.globalSettings.pages, (routeBlobSHA: string) => {
               this.createControllerBlob(repo, nextProjectData.globalSettings.pages, (controllerBlobSHA: string) => {
-                this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: string) => {
-                	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, (backEndControllerBlobSHAInfos: [[string, string]]) => {
-	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHAInfos: [[string, string]]) => {
+                this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: any) => {
+                	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, (backEndControllerBlobSHADict: any) => {
+	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict: any) => {
 	                    
-	                    nextProjectData.frontEndComponentsBlobSHAInfos = nextProjectData.frontEndComponentsBlobSHAInfos || [];
+	                    nextProjectData.backEndControllerBlobSHADict = nextProjectData.backEndControllerBlobSHADict || {};
+	                    Object.assign(nextProjectData.backEndControllerBlobSHADict, backEndControllerBlobSHADict);
 	                    
-	                    let frontEndComponentsBlobDict = {};
-	                    for (let frontEndComponentsBlobSHAInfo of nextProjectData.frontEndComponentsBlobSHAInfos) {
-	                      frontEndComponentsBlobDict[frontEndComponentsBlobSHAInfo[0]] = frontEndComponentsBlobSHAInfo[1];
-	                    }
-	                    for (let frontEndComponentsBlobSHAInfo of frontEndComponentsBlobSHAInfos) {
-	                      frontEndComponentsBlobDict[frontEndComponentsBlobSHAInfo[0]] = frontEndComponentsBlobSHAInfo[1];
-	                    }
+	                    nextProjectData.frontEndComponentsBlobSHADict = nextProjectData.frontEndComponentsBlobSHADict || {};
+	                    Object.assign(nextProjectData.frontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
 	                    
-	                    frontEndComponentsBlobSHAInfos = [];
-	                    for (let key in frontEndComponentsBlobDict) {
-	                      if (frontEndComponentsBlobDict.hasOwnProperty(key)) {
-	                        frontEndComponentsBlobSHAInfos.push([key, frontEndComponentsBlobDict[key]]);
-	                      }
-	                    }
-	                    nextProjectData.frontEndComponentsBlobSHAInfos = frontEndComponentsBlobSHAInfos;
+	                    nextProjectData.viewBlobSHADict = nextProjectData.viewBlobSHADict || {};
+	                    Object.assign(nextProjectData.viewBlobSHADict, viewBlobSHADict);
 	                    
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, frontEndComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
@@ -333,29 +324,33 @@ class ProjectManager extends Base<Props, State> {
 	                          sha: siteBundleBlobSHA
 	                        }];
 	                        
-	                        for (let backEndControllerBlobSHAInfo of backEndControllerBlobSHAInfos) {
-	                          tree.push({
-	                            path: `src/controllers/components/${this.getRepresentativeName(backEndControllerBlobSHAInfo[0])}.ts`,
-	                            mode: "100644",
-	                            type: "blob",
-	                            sha: backEndControllerBlobSHAInfo[1]
-	                          });
+	                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
+	                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
+		                          tree.push({
+		                            path: `src/controllers/components/${key}.ts`,
+		                            mode: "100644",
+		                            type: "blob",
+		                            sha: nextProjectData.backEndControllerBlobSHADict[key]
+		                          });
+		                        }
 	                        }
-	                        for (let frontEndComponentsBlobSHAInfo of frontEndComponentsBlobSHAInfos) {
-	                          tree.push({
-	                            path: `src/public/js/components/${frontEndComponentsBlobSHAInfo[0]}.tsx`,
-	                            mode: "100644",
-	                            type: "blob",
-	                            sha: frontEndComponentsBlobSHAInfo[1]
-	                          });
+	                        for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
+	                        	if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
+		                          tree.push({
+		                            path: `src/public/js/components/${key}.tsx`,
+		                            mode: "100644",
+		                            type: "blob",
+		                            sha: nextProjectData.frontEndComponentsBlobSHADict[key]
+		                          });
+		                        }
 	                        }
 	                        for (let key in viewBlobSHADict) {
-	                          if (viewBlobSHADict.hasOwnProperty(key)) {
+	                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
 	                            tree.push({
 	                              path: `views/home/${this.getRepresentativeName(key)}.pug`,
 	                              mode: "100644",
 	                              type: "blob",
-	                              sha: viewBlobSHADict[key]
+	                              sha: nextProjectData.viewBlobSHADict[key]
 	                            });
 	                          }
 	                        }
@@ -522,7 +517,6 @@ export default route;
         }
         
         let nextRouteDataSHA = result.sha;
-        if (DEBUG_GITHUB_UPLOADER) console.log('nextRouteDataSHA', nextRouteDataSHA);
         
         cb(nextRouteDataSHA);
       });
@@ -546,7 +540,6 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
         }
         
         let nextControllerDataSHA = result.sha;
-        if (DEBUG_GITHUB_UPLOADER) console.log('nextControllerDataSHA', nextControllerDataSHA);
         
         cb(nextControllerDataSHA);
       });
@@ -571,7 +564,6 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           }
           
           nextViewDataSHADict[keys[index]] = result.sha;
-          if (DEBUG_GITHUB_UPLOADER) console.log('nextViewDataSHADict', nextViewDataSHADict);
           
           if (index + 1 < keys.length) {
             process(index + 1);
@@ -583,14 +575,14 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
    	  process(0);
  	  }
    	createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], cb: any) {
-   	  let nextFrontEndComponentsDataSHAInfos = [];
+   	  let nextFrontEndComponentsDataSHADict = {};
    	  let mainprocess = (mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
      	  if (results.length < 2) {
      	    if (mainIndex + 1 < arrayOfContent.length) {
      	      mainprocess(mainIndex + 1);
      	    } else {
-     	      cb(nextFrontEndComponentsDataSHAInfos);
+     	      cb(nextFrontEndComponentsDataSHADict);
      	    }
      	  } else {
        	  let subprocess = (subIndex: number) => {
@@ -608,15 +600,14 @@ ${tokens[1]}
                 return;
               }
               
-              nextFrontEndComponentsDataSHAInfos.push([tokens[0], result.sha]);
-              if (DEBUG_GITHUB_UPLOADER) console.log('nextFrontEndComponentsDataSHAInfos', nextFrontEndComponentsDataSHAInfos);
+              nextFrontEndComponentsDataSHADict[tokens[0]] = result.sha;
               
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
               } else if (mainIndex + 1 < arrayOfContent.length) {
                 mainprocess(mainIndex + 1);
               } else {
-                cb(nextFrontEndComponentsDataSHAInfos);
+                cb(nextFrontEndComponentsDataSHADict);
               }
             });
        	  }
@@ -626,14 +617,14 @@ ${tokens[1]}
       mainprocess(0);
    	}
    	createBackEndControllerBlob(repo: any, arrayOfContent: string[], cb: any) {
-   	  let nextBackEndControllersDataSHAInfos = [];
+   	  let nextBackEndControllersDataSHADict = {};
    	  let mainprocess = (mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
      	  if (results.length < 2) {
      	    if (mainIndex + 1 < arrayOfContent.length) {
      	      mainprocess(mainIndex + 1);
      	    } else {
-     	      cb(nextBackEndControllersDataSHAInfos);
+     	      cb(nextBackEndControllersDataSHADict);
      	    }
      	  } else {
        	  let subprocess = (subIndex: number) => {
@@ -651,15 +642,14 @@ ${tokens[1]}
                 return;
               }
               
-              nextBackEndControllersDataSHAInfos.push([tokens[0], result.sha]);
-              if (DEBUG_GITHUB_UPLOADER) console.log('nextBackEndControllersDataSHAInfos', nextBackEndControllersDataSHAInfos);
+              nextBackEndControllersDataSHADict[tokens[0]] = result.sha;
               
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
               } else if (mainIndex + 1 < arrayOfContent.length) {
                 mainprocess(mainIndex + 1);
               } else {
-                cb(nextBackEndControllersDataSHAInfos);
+                cb(nextBackEndControllersDataSHADict);
               }
             });
        	  }
