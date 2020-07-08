@@ -57,10 +57,10 @@
     ],
     "components": [],
     "popups": [],
-    "internal-fsb-data-code-import": null,
-    "internal-fsb-data-code-declare": null,
-    "internal-fsb-data-code-interface": null,
-    "internal-fsb-data-code-body": null,
+    "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\nlet y = 1;\n\n",
+    "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
+    "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
+    "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
     "internal-fsb-data-code-footer": null
   },
   "sites": {
@@ -152,10 +152,10 @@
         ]
       },
       "extensions": {
-        "internal-fsb-data-code-import": null,
-        "internal-fsb-data-code-declare": null,
-        "internal-fsb-data-code-interface": null,
-        "internal-fsb-data-code-body": null,
+        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\nlet y = 1;\n\n",
+        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
+        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
+        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
         "internal-fsb-data-code-footer": null
       },
       "notations": {}
@@ -496,7 +496,7 @@
     "820a2657": "6b7a55037aaea861bce61d1957d4f5b39c8cf9f1"
   },
   "backEndControllerBlobSHADict": {
-    "820a2657": "4e35d17f5a583b190b323510ffddc8a8f0107da6"
+    "820a2657": "d4f62b9cff9299d03848721cd8a8629fe6b09302"
   },
   "frontEndComponentsBlobSHADict": {
     "Rectangle_31be767a": "cec60c483612a4d064fac1407db0b2df7d5e5b5b"

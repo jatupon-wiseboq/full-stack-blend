@@ -14,6 +14,7 @@ import {Base} from './Base.js';
 
 // Import additional modules here:
 //
+let y = 1;
 
 // Auto[Declare]--->
 /*enum SourceType {
