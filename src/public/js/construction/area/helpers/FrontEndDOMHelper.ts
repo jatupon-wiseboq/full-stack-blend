@@ -302,7 +302,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: '${reactClassForPopup}'})`);
           
         	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', event, ((results: any) => { this.manipulate('${submitType}', '${cumulatedDotNotation}', results); }).bind(this)); }).bind(this)}`);
         }
@@ -585,7 +585,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${submitControls && submitControls.split(' ') || []}, {initClass: '${reactClassForPopup}'})`);
+          executions.push(`DataManipulationHelper.register('${reactClassComposingInfoGUID}', '${submitType}', ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: '${reactClassForPopup}'})`);
           
         	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
