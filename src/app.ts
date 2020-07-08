@@ -29,7 +29,7 @@ import * as passportConfig from "./config/passport";
 const app = express();
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-  const https = require('https');
+  const https = require("https");
   
   // SSL
   const sslkey = fs.readFileSync("localhost.key");
@@ -148,7 +148,7 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
     endpoint.addRecentError(err);
     next();
   });
-  process.on('uncaughtException', (err) => {
+  process.on("uncaughtException", (err) => {
   	endpoint.addRecentError(err);
 	});
 }

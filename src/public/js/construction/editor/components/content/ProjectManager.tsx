@@ -277,6 +277,37 @@ class ProjectManager extends Base<Props, State> {
              	}
             }
             
+            let persistingContent = '';
+            for (let page of nextProjectData.globalSettings.pages.filter(page => page.state != 'delete')) {
+            	persistingContent += nextProjectData.globalSettings.sites[page.id].body;
+            }
+            for (let page of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
+            	persistingContent += nextProjectData.globalSettings.components[component.id].body;
+            }
+            for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
+            	persistingContent += nextProjectData.globalSettings.popups[popup.id].body;
+            }
+            
+            for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
+            	delete nextProjectData.globalSettings.sites[page.id];
+            }
+            for (let page of nextProjectData.globalSettings.components.filter(component => component.state == 'delete')) {
+            	delete nextProjectData.globalSettings.components[component.id];
+            }
+            for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state == 'delete')) {
+            	delete nextProjectData.globalSettings.popups[popup.id];
+            }
+            
+            let persistingGUIDs = {};
+            for (let result of persistingContent.match(/internal-fsb-guid="([^"]+)"/g)) {
+            	let guid = result.match(/internal-fsb-guid="([^"]+)"/)[1];
+            	persistingGUIDs[guid] = true;
+          	}
+            
+            nextProjectData.globalSettings.pages = nextProjectData.globalSettings.pages.filter(page => page.state != 'delete');
+            nextProjectData.globalSettings.components = nextProjectData.globalSettings.components.filter(component => component.state != 'delete');
+            nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
+            
             this.createRouteBlob(repo, nextProjectData.globalSettings.pages, (routeBlobSHA: string) => {
               this.createControllerBlob(repo, nextProjectData.globalSettings.pages, (controllerBlobSHA: string) => {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: any) => {
@@ -291,6 +322,22 @@ class ProjectManager extends Base<Props, State> {
 	                    
 	                    nextProjectData.viewBlobSHADict = nextProjectData.viewBlobSHADict || {};
 	                    Object.assign(nextProjectData.viewBlobSHADict, viewBlobSHADict);
+	                    
+	                    for (let key in nextProjectData.backEndControllerBlobSHADict) {
+	                    	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+	                    		delete nextProjectData.backEndControllerBlobSHADict[key];
+	                    	}
+	                    }
+	                    for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
+	                    	if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+	                    		delete nextProjectData.frontEndComponentsBlobSHADict[key];
+	                    	}
+	                    }
+	                    for (let key in nextProjectData.viewBlobSHADict) {
+	                    	if (nextProjectData.viewBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+	                    		delete nextProjectData.viewBlobSHADict[key];
+	                    	}
+	                    }
 	                    
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, frontEndComponentsBlobSHAInfos, (siteBundleBlobSHA: string) => {
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {

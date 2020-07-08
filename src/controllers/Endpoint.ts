@@ -9,10 +9,10 @@ import {Request, Response} from "express";
 let recentError = [];
 export const clearRecentError = () => {
     recentError = [];
-}
+};
 export const addRecentError = (error: any) => {
-    recentError.push('[back-end]: ' + (error && error.message || error.toString()));
-}
+    recentError.push("[back-end]: " + (error && error.message || error.toString()));
+};
 
 /**
  * POST /endpoint/update/content
