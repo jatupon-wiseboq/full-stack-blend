@@ -88,8 +88,13 @@ const DataManipulationHelper = {
   	  				}
 	  				}
 	  			} else {
-	  				console.error(json.error);
-	  				alert("There is an error occured, please try again.");
+	  				if (json.error) {
+	  					console.log(json.error);
+	  					alert(json.error);
+	  				} else {
+	  					console.error(json);
+	  					alert("There is an error occured, please try again.");
+	  				}
 	  			}
 	  		})
 	  		.catch((status) => {
