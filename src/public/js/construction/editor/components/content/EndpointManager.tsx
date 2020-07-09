@@ -284,7 +284,7 @@ ${tokens[1]}
        	  let subprocess = ((subIndex: number) => {
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
-       	    this.create(`./components/${tokens[0]}.ts`, `// Auto[Generating:V1]--->
+       	    this.create(`./components/${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}
