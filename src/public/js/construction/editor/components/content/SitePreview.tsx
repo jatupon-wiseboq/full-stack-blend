@@ -309,6 +309,8 @@ class SitePreview extends Base<Props, State> {
         var RequestHelper = ExportedRequestHelper.RequestHelper;
         var expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
         
+        window.DataManipulationHelper = DataManipulationHelper;
+        
         var continueFn = (function(data) {
 	        for (var expandingPlaceholder of expandingPlaceholders) {
 	          var forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));

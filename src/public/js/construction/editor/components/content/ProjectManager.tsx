@@ -730,7 +730,6 @@ ${tokens[1]}
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
-import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
 ${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}.js';`).join('\n')}
@@ -738,6 +737,7 @@ ${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${
 declare let React: any;
 declare let ReactDOM: any;
 declare let window: any;
+declare let DataManipulationHelper: any;
 
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 for (let expandingPlaceholder of expandingPlaceholders) {
