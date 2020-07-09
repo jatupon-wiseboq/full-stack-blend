@@ -3,7 +3,6 @@
 
 import {RequestHelper} from './RequestHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
-import {EventHelper} from './EventHelper.js';
 
 declare let window: any;
 
@@ -31,7 +30,7 @@ interface HierarchicalDataColumn {
 const fieldManipulatorsInfoDict: any = {};
 const actionManipulatorsInfoDict: any = {};
 const optionsManipulatorsInfoDict: any = {};
-const isDevelopmentMachine = ['localhost', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host.split(':')[0]) != -1;
+const isDevelopmentMachine = ['localhost:3000', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host) != -1;
 const registeredEndpoint: string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
 const currentPath: string = (isDevelopmentMachine) ? window.PATH || null : null;
 
@@ -42,6 +41,13 @@ const DataManipulationHelper = {
 			actionManipulatorsInfoDict[guid] = action;
 			optionsManipulatorsInfoDict[guid] = options;
 		}
+	},
+	getInfo: (guid: string): any => {
+		return {
+			fields: fieldManipulatorsInfoDict[guid],
+  		action: actionManipulatorsInfoDict[guid],
+  		options: optionsManipulatorsInfoDict[guid]
+		};
 	},
   request: (guid: string, notation: string, event: Event, callback: any) => {
   	if (fieldManipulatorsInfoDict[guid]) {

@@ -1,3 +1,5 @@
+import {DataManipulationHelper} from '../helpers/DataManipulationHelper.js';
+
 (() => {
 	// Auto Height Layout
 	// 
@@ -26,4 +28,5 @@
     }
   });
   window.addEventListener('update', update);
+  window.DataManipulationHelper = DataManipulationHelper;
 })();
