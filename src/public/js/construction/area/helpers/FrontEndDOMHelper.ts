@@ -589,7 +589,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID}), ${JSON.stringify(submitType}), ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}})`);
+          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}})`);
           
         	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
