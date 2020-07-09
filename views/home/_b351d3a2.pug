@@ -15,9 +15,14 @@
       
       <div internal-fsb-guid="0" class="container-fluid internal-fsb-begin">
         <div class="row internal-fsb-strict-layout internal-fsb-begin-layout">
-          <div internal-fsb-guid="6573eed8" class="internal-fsb-element col-12">
-            ABC
+          <div internal-fsb-guid="94c147a5" class="internal-fsb-element">
+            <input style="display: block; width: 100%;" type="text" required="true" />
           </div>
+          <button internal-fsb-guid="4c382603" class="internal-fsb-element" type="button" onClick="internalFsbSubmit('4c382603', null, event, null)">
+            <div internal-fsb-guid="4c382603-text" class="internal-fsb-element">
+              Button
+            </div>
+          </button>
         </div>
       </div>
       <script type="text/javascript" src="//staging.stackblend.com/js/Embed.bundle.js"></script>
@@ -49,6 +54,7 @@
           return Controller;
       }());
       var controller = new Controller();
+      DataManipulationHelper.register('4c382603', 'null', ["94c147a5"], { initClass: 'null' });
       
       </script>
       <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />

@@ -136,6 +136,14 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
+		RequestHelper.registerInput('94c147a5', "relational", "User", "email");
+		ValidationHelper.registerInput('94c147a5', "Textbox 1", true, "Your email address is required.");
+    input = RequestHelper.getInput(request, '94c147a5');
+    
+    // Override data parsing and manipulation of Textbox 1 here:
+    // 
+    
+    if (input != null) data.push(input);
 	  // <---Auto[Merging]
 	  
 	  // Auto[MergingEnd]--->
