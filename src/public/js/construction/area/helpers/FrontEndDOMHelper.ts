@@ -474,6 +474,7 @@ ${rootScript}`;
         let reactClass = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
+        let reactClassForPopup = null;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
@@ -555,6 +556,9 @@ ${rootScript}`;
               break;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
+              break;
+            case 'internal-fsb-popup-init-class':
+              if (!!attribute.value) reactClassForPopup = attribute.value;
               break;
             case 'internal-fsb-inheriting':
               if (!!attribute.value) inheritingID = attribute.value;
