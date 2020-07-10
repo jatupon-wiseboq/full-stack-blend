@@ -59,6 +59,7 @@ var HTMLHelper = {
   	while (element.nextSibling) {
   		element = element.nextSibling;
   		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+  		if (!element.tagName) continue;
   		return element;
   	}
   	return null;
@@ -68,6 +69,7 @@ var HTMLHelper = {
   	while (element.previousSibling) {
   		element = element.previousSibling;
   		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+  		if (!element.tagName) continue;
   		return element;
   	}
   	return null;

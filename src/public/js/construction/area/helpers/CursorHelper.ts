@@ -40,11 +40,11 @@ var CursorHelper = {
     
     if (walkPath[2] == 0) {
       if (Accessories.cursor.getDOMNode().parentNode.tagName == 'TD' &&
-        Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling &&
-        Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling.tagName == 'TR') {
+        HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode().parentNode.parentNode) &&
+        HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode().parentNode.parentNode).tagName == 'TR') {
         
         let colIndex = [...Accessories.cursor.getDOMNode().parentNode.parentNode.children].indexOf(Accessories.cursor.getDOMNode().parentNode);
-        let nextContainer = Accessories.cursor.getDOMNode().parentNode.parentNode.previousSibling.children[colIndex];
+        let nextContainer = HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode().parentNode.parentNode).children[colIndex];
         
         walkPath[1] -= Accessories.cursor.getDOMNode().parentNode.parentNode.children.length;
         walkPath[2] = nextContainer.children.length;
@@ -98,11 +98,11 @@ var CursorHelper = {
     
     if (walkPath[2] == Accessories.cursor.getDOMNode().parentNode.children.length - 1) {
       if (Accessories.cursor.getDOMNode().parentNode.tagName == 'TD' &&
-        Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling &&
-        Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling.tagName == 'TR') {
+        HTMLHelper.getNextSibling(Accessories.cursor.getDOMNode().parentNode.parentNode) &&
+        HTMLHelper.getNextSibling(Accessories.cursor.getDOMNode().parentNode.parentNode).tagName == 'TR') {
         
         let colIndex = [...Accessories.cursor.getDOMNode().parentNode.parentNode.children].indexOf(Accessories.cursor.getDOMNode().parentNode);
-        let nextContainer = Accessories.cursor.getDOMNode().parentNode.parentNode.nextSibling.children[colIndex];
+        let nextContainer = HTMLHelper.getNextSibling(Accessories.cursor.getDOMNode().parentNode.parentNode).children[colIndex];
         
         walkPath[1] += Accessories.cursor.getDOMNode().parentNode.parentNode.children.length;
         walkPath[2] = 0;
