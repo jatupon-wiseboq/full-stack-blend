@@ -132,7 +132,7 @@ var WorkspaceHelper = {
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
-      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       Object.assign(InternalProjectSettings, page.extensions);
       
@@ -152,7 +152,7 @@ var WorkspaceHelper = {
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
-      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       Accessories.overlay.setEnable(true);
@@ -164,7 +164,7 @@ var WorkspaceHelper = {
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
-      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       Accessories.overlay.setEnable(false);
@@ -184,7 +184,7 @@ var WorkspaceHelper = {
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
-      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
@@ -209,7 +209,7 @@ var WorkspaceHelper = {
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
-      if (document.head.nextSibling.tagName == 'HEAD') document.head.nextSibling.remove();
+      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();

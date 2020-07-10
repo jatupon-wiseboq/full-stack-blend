@@ -617,11 +617,12 @@ var ManipulationHelper = {
         break;
       case 8:
         {
+        	debugger;
           let selectingElement = EditorHelper.getSelectingElement();
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-            if (Accessories.cursor.getDOMNode().previousSibling &&
-                HTMLHelper.hasClass(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-element')) {
-              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(Accessories.cursor.getDOMNode().previousSibling, 'internal-fsb-guid'));
+            if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
+                HTMLHelper.hasClass(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-element')) {
+              ManipulationHelper.perform('delete', HTMLHelper.getAttribute(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-guid'));
             } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
               ManipulationHelper.perform('delete', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
             }
@@ -772,9 +773,9 @@ var ManipulationHelper = {
     if (selectingElement && cursorContainer.tagName == 'TD') {
       switch (content.action) {
         case 'delete-row':
-          if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
+          if (HTMLHelper.getNextSibling(cursorContainer.parentNode) && HTMLHelper.getNextSibling(cursorContainer.parentNode).tagName == 'TR') {
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
-            let td = cursorContainer.parentNode.nextSibling.children[colIndex];
+            let td = HTMLHelper.getNextSibling(cursorContainer.parentNode).children[colIndex];
             let rowIndex = [...cursorContainer.parentNode.parentNode.children].indexOf(cursorContainer.parentNode);
             
             link = Math.random();
@@ -808,9 +809,9 @@ var ManipulationHelper = {
             });
             
             content.action = 'delete-row-above';
-          } else if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+          } else if (HTMLHelper.getPreviousSibling(cursorContainer.parentNode.previousSibling && cursorContainer.parentNode).tagName == 'TR') {
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
-            let td = cursorContainer.parentNode.previousSibling.children[colIndex];
+            let td = HTMLHelper.getPreviousSibling(cursorContainer.parentNode).children[colIndex];
             let rowIndex = [...cursorContainer.parentNode.parentNode.children].indexOf(cursorContainer.parentNode);
             
             link = Math.random();
@@ -847,8 +848,8 @@ var ManipulationHelper = {
           }
           break;
         case 'delete-column':
-          if (cursorContainer.nextSibling && cursorContainer.nextSibling.tagName == 'TD') {
-            let td = cursorContainer.nextSibling;
+          if (HTMLHelper.getNextSibling(cursorContainer) && HTMLHelper.getNextSibling(cursorContainer).tagName == 'TD') {
+            let td = HTMLHelper.getNextSibling(cursorContainer);
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
              
             link = Math.random();
@@ -882,8 +883,8 @@ var ManipulationHelper = {
             });
             
             content.action = 'delete-column-before';
-          } else if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
-            let td = cursorContainer.previousSibling;
+          } else if (HTMLHelper.getPreviousSibling(cursorContainer) && HTMLHelper.getPreviousSibling(cursorContainer).tagName == 'TD') {
+            let td = HTMLHelper.getPreviousSibling(cursorContainer.previousSibling);
             let colIndex = [...cursorContainer.parentNode.children].indexOf(cursorContainer);
             
             link = Math.random();
@@ -946,27 +947,27 @@ var ManipulationHelper = {
     	      accessory = {
       	      action: 'delete-row-below'
       	    };
-    	      cursorContainer.parentNode.parentNode.insertBefore(content.elements[0], cursorContainer.parentNode.nextSibling);
+    	      cursorContainer.parentNode.parentNode.insertBefore(content.elements[0], HTMLHelper.getNextSibling(cursorContainer.parentNode));
     	    }
     	    break;
     	  case 'delete-row-above': // Internal Use
-    	    if (cursorContainer.parentNode.previousSibling && cursorContainer.parentNode.previousSibling.tagName == 'TR') {
+    	    if (HTMLHelper.getPreviousSibling(cursorContainer.parentNode) && HTMLHelper.getPreviousSibling(cursorContainer.parentNode).tagName == 'TR') {
       	    accessory = {
       	      action: 'add-row-above',
-      	      elements: [cursorContainer.parentNode.previousSibling]
+      	      elements: [HTMLHelper.getPreviousSibling(cursorContainer.parentNode)]
       	    };
-      	    cursorContainer.parentNode.parentNode.removeChild(cursorContainer.parentNode.previousSibling);
+      	    cursorContainer.parentNode.parentNode.removeChild(HTMLHelper.getPreviousSibling(cursorContainer.parentNode));
       	  } else {
       	    remember = false;
       	  }
     	    break;
     	  case 'delete-row-below': // Internal Use
-    	    if (cursorContainer.parentNode.nextSibling && cursorContainer.parentNode.nextSibling.tagName == 'TR') {
+    	    if (HTMLHelper.getNextSibling(cursorContainer.parentNode) && HTMLHelper.getNextSibling(cursorContainer.parentNode).tagName == 'TR') {
       	    accessory = {
       	      action: 'add-row-below',
-      	      elements: [cursorContainer.parentNode.nextSibling]
+      	      elements: [HTMLHelper.getNextSibling(cursorContainer.parentNode)]
       	    };
-      	    cursorContainer.parentNode.parentNode.removeChild(cursorContainer.parentNode.nextSibling);
+      	    cursorContainer.parentNode.parentNode.removeChild(HTMLHelper.getNextSibling(cursorContainer.parentNode));
       	  } else {
       	    remember = false;
       	  }
@@ -998,7 +999,7 @@ var ManipulationHelper = {
     	          content.elements[count++],
     	          (content.action == 'add-column-before') ?
     	            cursorContainer.parentNode.parentNode.children[i].children[colIndex] :
-    	            cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling
+    	            HTMLHelper.getNextSibling(cursorContainer.parentNode.parentNode.children[i].children[colIndex])
     	        );
     	      }
     	    }
@@ -1014,7 +1015,7 @@ var ManipulationHelper = {
     	    }
     	    break;
     	  case 'delete-column-before': // Internal Use
-    	    if (cursorContainer.previousSibling && cursorContainer.previousSibling.tagName == 'TD') {
+    	    if (HTMLHelper.getPreviousSibling(cursorContainer) && HTMLHelper.getPreviousSibling(cursorContainer).tagName == 'TD') {
       	    accessory = {
       	      action: 'add-column-before',
       	      elements: []
@@ -1024,14 +1025,14 @@ var ManipulationHelper = {
       	    
       	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
       	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
-      	        accessory.elements.push(cursorContainer.parentNode.parentNode.children[i].children[colIndex].previousSibling);
-      	        cursorContainer.parentNode.parentNode.children[i].removeChild(cursorContainer.parentNode.parentNode.children[i].children[colIndex].previousSibling);
+      	        accessory.elements.push(HTMLHelper.getPreviousSibling(cursorContainer.parentNode.parentNode.children[i].children[colIndex]));
+      	        cursorContainer.parentNode.parentNode.children[i].removeChild(HTMLHelper.getPreviousSibling(cursorContainer.parentNode.parentNode.children[i].children[colIndex]));
       	      }
       	    }
       	  }
     	    break;
     	  case 'delete-column-after': // Internal Use
-    	    if (cursorContainer.nextSibling && cursorContainer.nextSibling.tagName == 'TD') {
+    	    if (HTMLHelper.getNextSibling(cursorContainer) && HTMLHelper.getNextSibling(cursorContainer).tagName == 'TD') {
       	    accessory = {
       	      action: 'add-column-before',
       	      elements: []
@@ -1041,8 +1042,8 @@ var ManipulationHelper = {
       	    
       	    for (let i=0; i<cursorContainer.parentNode.parentNode.children.length; i++) {
       	      if (cursorContainer.parentNode.parentNode.children[i].tagName == 'TR') {
-      	        accessory.elements.push(cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling);
-      	        cursorContainer.parentNode.parentNode.children[i].removeChild(cursorContainer.parentNode.parentNode.children[i].children[colIndex].nextSibling);
+      	        accessory.elements.push(HTMLHelper.getNextSibling(cursorContainer.parentNode.parentNode.children[i].children[colIndex]));
+      	        cursorContainer.parentNode.parentNode.children[i].removeChild(HTMLHelper.getNextSibling(cursorContainer.parentNode.parentNode.children[i].children[colIndex]));
       	      }
       	    }
       	  }
