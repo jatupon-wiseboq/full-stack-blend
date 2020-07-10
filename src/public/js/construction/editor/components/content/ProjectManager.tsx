@@ -285,13 +285,13 @@ class ProjectManager extends Base<Props, State> {
             	element.innerHTML = nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body.join('\n') || '';
             	persistingContent.appendChild(element);
             }
-            for (let page of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
+            for (let component of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
             	persistingGUIDs[component.id] = true;
             	let element = document.createElement('div');
             	element.innerHTML = nextProjectData.components[component.id] && nextProjectData.components[component.id].body.join('\n') || '';
             	persistingContent.appendChild(element);
             }
-            for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
+            for (let popup of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
             	persistingGUIDs[popup.id] = true;
             	let element = document.createElement('div');
             	element.innerHTML = nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body.join('\n') || '';
@@ -317,10 +317,10 @@ class ProjectManager extends Base<Props, State> {
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
             	delete nextProjectData.sites[page.id];
             }
-            for (let page of nextProjectData.globalSettings.components.filter(component => component.state == 'delete')) {
+            for (let component of nextProjectData.globalSettings.components.filter(component => component.state == 'delete')) {
             	delete nextProjectData.components[component.id];
             }
-            for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state == 'delete')) {
+            for (let popup of nextProjectData.globalSettings.popups.filter(popup => popup.state == 'delete')) {
             	delete nextProjectData.popups[popup.id];
             }
             
