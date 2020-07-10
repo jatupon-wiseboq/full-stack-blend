@@ -318,7 +318,7 @@ var EditorHelper = {
   			destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstChild);
     		break;
     	case 'insertAfter':
-    		destination.parentNode.insertBefore(target, destination.nextSibling);
+    		destination.parentNode.insertBefore(target, HTMLHelper.getNextSibling(destination));
   			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
     		break;
   	}
