@@ -291,7 +291,7 @@ var WorkspaceHelper = {
   	InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
-      html: WorkspaceHelper.cleanupComponentHTMLData(html)
+      html: WorkspaceHelper.cleanupComponentHTMLData(html || '').split('\n')
     };
     
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
