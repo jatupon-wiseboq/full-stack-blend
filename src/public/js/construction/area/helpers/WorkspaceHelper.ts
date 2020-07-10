@@ -10,6 +10,10 @@ import {BackEndDOMHelper} from './BackEndDOMHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
+declare let js_beautify;
+declare let css_beautify;
+declare let html_beautify;
+
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
 let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 
@@ -32,11 +36,11 @@ let InternalDataFlows = {};
 let InternalServices = {};
 let InternalStylesheets = {};
 
-const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`;
-const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`;
-const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`;
-const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
-const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`;
+const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
+const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
+const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
+const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
+const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
 
 const DEFAULT_PAGE_EXTENSIONS = {};
 for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -97,7 +101,7 @@ var WorkspaceHelper = {
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       if (page == null) return;
       
-      document.body.outerHTML = page.body;
+      document.body.outerHTML = page.body.join('\n');
       
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -117,7 +121,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
-      document.body.outerHTML = InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML;
+      document.body.outerHTML = (InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n');
             
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -129,7 +133,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
-      document.body.outerHTML = InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML;
+      document.body.outerHTML = (InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n');
             
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -146,8 +150,8 @@ var WorkspaceHelper = {
       let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
       if (component == null) return;
       
-      document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-      document.body.firstChild.firstChild.innerHTML = component.html || DEFAULT_COMPONENT_HTML;
+      document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
+      document.body.firstChild.firstChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
       
       HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
       
@@ -171,8 +175,8 @@ var WorkspaceHelper = {
       let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
       if (popup == null) return;
       
-      document.body.outerHTML = DEFAULT_SINGLE_ITEM_EDITING_HTML;
-      document.body.firstChild.firstChild.innerHTML = popup.html || DEFAULT_COMPONENT_HTML;
+      document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
+      document.body.firstChild.firstChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
       
       HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID)
       
@@ -206,7 +210,7 @@ var WorkspaceHelper = {
       page.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       EditorHelper.detach();
-      page.body = document.body.outerHTML;
+      page.body = html_beautify(document.body.outerHTML).split('\n');
       
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -224,7 +228,7 @@ var WorkspaceHelper = {
       //}
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
-      InternalDataFlows.default = document.body.outerHTML;
+      InternalDataFlows.default = html_beautify(document.body.outerHTML).split('\n');
       Accessories.overlay.setEnable(true);
       
       InternalDataFlows.schema = SchemaHelper.generateDataSchema();
@@ -234,7 +238,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'services') {
       EditorHelper.detach();
-      InternalServices.default = document.body.outerHTML;
+      InternalServices.default = html_beautify(document.body.outerHTML).split('\n');
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -244,13 +248,13 @@ var WorkspaceHelper = {
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
     	
-      component.html = WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML);
+      component.html = html_beautify(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)).split('\n');
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
     	
-      popup.html = WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML);
+      popup.html = html_beautify(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)).split('\n');
     }
   },
   removeComponentData: (id: string) => {
@@ -319,7 +323,7 @@ var WorkspaceHelper = {
 	      if (componentInfo) {
 		      let element = document.createElement('div');
 		      let parentNode = component.parentNode;
-		      element.innerHTML = componentInfo.html;
+		      element.innerHTML = componentInfo.html.join('\n');
 		      let firstChild = element.firstChild;
 		      parentNode.insertBefore(firstChild, component);
 		      parentNode.removeChild(component);
@@ -344,7 +348,7 @@ var WorkspaceHelper = {
       
       let element = document.createElement('div');
       let parentNode = component.parentNode;
-      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
+      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
       let firstChild = element.firstChild;
       parentNode.insertBefore(firstChild, component);
       parentNode.removeChild(component);
@@ -458,7 +462,7 @@ var WorkspaceHelper = {
   	for (let key in InternalComponents) {
   		if (InternalComponents.hasOwnProperty(key)) {
   			let element = document.createElement('div');
-  			element.innerHTML = InternalComponents[key].html;
+  			element.innerHTML = InternalComponents[key].html.join('\n');
   			
   			container.appendChild(element);
   		}
@@ -466,7 +470,7 @@ var WorkspaceHelper = {
   	for (let key in InternalPopups) {
   		if (InternalPopups.hasOwnProperty(key)) {
   			let element = document.createElement('div');
-  			element.innerHTML = InternalPopups[key].html;
+  			element.innerHTML = InternalPopups[key].html.join('\n');
   			
   			container.appendChild(element);
   		}

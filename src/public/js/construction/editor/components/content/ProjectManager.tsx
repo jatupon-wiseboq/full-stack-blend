@@ -282,19 +282,19 @@ class ProjectManager extends Base<Props, State> {
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state != 'delete')) {
             	persistingGUIDs[page.id] = true;
             	let element = document.createElement('div');
-            	element.innerHTML = nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body || '';
+            	element.innerHTML = nextProjectData.sites[page.id] && nextProjectData.sites[page.id].body.join('\n') || '';
             	persistingContent.appendChild(element);
             }
             for (let page of nextProjectData.globalSettings.components.filter(component => component.state != 'delete')) {
             	persistingGUIDs[component.id] = true;
             	let element = document.createElement('div');
-            	element.innerHTML = nextProjectData.components[component.id] && nextProjectData.components[component.id].body || '';
+            	element.innerHTML = nextProjectData.components[component.id] && nextProjectData.components[component.id].body.join('\n') || '';
             	persistingContent.appendChild(element);
             }
             for (let page of nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete')) {
             	persistingGUIDs[popup.id] = true;
             	let element = document.createElement('div');
-            	element.innerHTML = nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body || '';
+            	element.innerHTML = nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].body.join('\n') || '';
             	persistingContent.appendChild(element);
             }
             
