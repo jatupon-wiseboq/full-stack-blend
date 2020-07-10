@@ -405,11 +405,6 @@
         ]
       },
       "extensions": {
-        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n// \n\n\n",
-        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n// \n\n",
-        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n// \n\n",
-        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
-        "internal-fsb-data-code-footer": null
       },
       "notations": {
         "User[50]": {
