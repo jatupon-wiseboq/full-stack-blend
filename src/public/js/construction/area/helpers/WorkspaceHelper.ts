@@ -35,6 +35,7 @@ let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
 let InternalStylesheets = {};
+let version = 1.0;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
@@ -52,6 +53,7 @@ var WorkspaceHelper = {
     WorkspaceHelper.saveWorkspaceData();
     
     return {
+    	version: version,
       globalSettings: InternalProjectSettings,
       sites: InternalSites,
       components: InternalComponents,
@@ -72,6 +74,26 @@ var WorkspaceHelper = {
     InternalDataFlows.schema = InternalDataFlows.schema || {};
     
     InternalProjectSettings.currentMode = 'site';
+    
+    if (data && !data.version) {
+    	for (let key in InternalSites) {
+    		if (InternalSites.hasOwnProperty(key)) {
+    			InternalSites[key].body = html_beautify(InternalSites[key].body || '').split('\n');
+    		}
+    	}
+    	for (let key in InternalComponents) {
+    		if (InternalComponents.hasOwnProperty(key)) {
+    			InternalComponents[key].html = html_beautify(InternalComponents[key].html || '').split('\n');
+    		}
+    	}
+    	for (let key in InternalPopups) {
+    		if (InternalPopups.hasOwnProperty(key)) {
+    			InternalPopups[key].html = html_beautify(InternalPopups[key].html || '').split('\n');
+    		}
+    	}
+    	InternalDataFlows.default = html_beautify(InternalDataFlows.default || '').split('\n');
+    	InternalServices.default = html_beautify(InternalServices.default || '').split('\n');
+    }
     
     WorkspaceHelper.loadWorkspaceData();
     EditorHelper.updateEditorProperties();
