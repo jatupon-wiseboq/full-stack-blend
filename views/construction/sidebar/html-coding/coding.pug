@@ -1,4 +1,16 @@
 include ../../mixin/CreateReactComponent
+.section-container.internal-fsb-selecting-on
+  .section-title
+    | Layer
+  .section-subtitle
+    | Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+  .section-subtitle
+    | Note
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
+  .section-hr
 include ./partials/html
 div(internal-fsb-not-for="internal-fsb-inheriting")
   .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
