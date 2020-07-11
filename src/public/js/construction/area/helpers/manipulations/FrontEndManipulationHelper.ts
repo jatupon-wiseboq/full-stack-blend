@@ -88,6 +88,14 @@ var FrontEndManipulationHelper = {
             | ABC
         `, element);
         break;
+      case 'Link':
+      	element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          a.internal-fsb-element.internal-fsb-allow-cursor
+            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
+              | Link
+        `, element);
+        break;
       case 'Rectangle':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `

@@ -71,6 +71,9 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='perform("insert", "AbsoluteLayout")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Freestyle Area</b></p><p>This will create an auto-height area for placing any elements in absolute, or independent position.</p>")
             i.fa.fa-object-ungroup
             | Absolute
+          a.dropdown-item(onclick='perform("insert", "Rectangle")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Simple Rectangle</b></p><p>Create a single division, or DIV, whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it using either a cursor or the layer manager.</p>")
+            i.fa.fa-square-o
+            | Rectangle
       a.btn.btn-sm.btn-light.mr-1(onclick='perform("insert", "TextElement")', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Insert A Rich Textarea</b></p><p>Create a rich textarea in which you can type any text, insert inline multimedia, hyperlinks, and others.</p>")
         i.fa.fa-paragraph.m-0
         .title
@@ -81,9 +84,9 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Element
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "Rectangle")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Rectangle Shape</b></p><p>Create a rectangle whose size, border, and colour can be adjusted. It does also allow you to place any layouts and items in it, too.</p>")
-            i.fa.fa-square-o
-            | Rectangle
+          a.dropdown-item(onclick='perform("insert", "Link")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Link</b></p><p>Create a link so that user can navigate to another page by clicking on it.</p>")
+            i.fa.fa-external-link
+            | Link
           a.dropdown-item(data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Scalable Vector Graphics (SVG)</b></p><p>Create a SVG region and draw any shapes using a set of tools. You can upload a SVG file or edit its source right from the editor, too.</p>")
             i.fa.fa-pencil
             | Graphics
