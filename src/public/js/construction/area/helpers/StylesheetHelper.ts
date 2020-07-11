@@ -114,7 +114,10 @@ var StylesheetHelper = {
     let lines = [];
     let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
     let inversedReferenceHash = {};
-    let wysiwygCSSSelectorPrefix = (production) ? '' : '.internal-fsb-allow-cursor > .internal-fsb-element';
+    let wysiwygCSSSelectorPrefixes = (production) ? [] : ['.internal-fsb-strict-layout > .internal-fsb-element',
+    	'.internal-fsb-absolute-layout > .internal-fsb-element',
+    	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
+    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element'];
     
   	for (let info of prioritizedKeys) {
   		let references = info.inheritances.filter(token => token != '');
@@ -136,8 +139,10 @@ var StylesheetHelper = {
       let isForChildren = (stylesheetDefinitions[info.id].indexOf('-fsb-for-children: true') != -1);
       let suffix = (isForChildren) ? ' > :first-child' : '';
       
-      prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-self-' + info.id + suffix);
-      prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-preset-' + info.id + suffix);
+      for (let prefix of wysiwygCSSSelectorPrefixes) {
+	      prefixes.push(prefix + '.-fsb-self-' + info.id + suffix);
+	      prefixes.push(prefix + '.-fsb-preset-' + info.id + suffix);
+	    }
       
       // Inheritance
       //
@@ -153,7 +158,9 @@ var StylesheetHelper = {
       });
       
       for (let inheritingKey of inversedReferences) {
-      	prefixes.push(wysiwygCSSSelectorPrefix + '.-fsb-preset-' + inheritingKey + suffix);
+      	for (let prefix of wysiwygCSSSelectorPrefixes) {
+		      prefixes.push(prefix + '.-fsb-preset-' + inheritingKey + suffix);
+		    }
       }
       
       lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
