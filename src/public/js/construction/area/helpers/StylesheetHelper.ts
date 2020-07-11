@@ -114,7 +114,7 @@ var StylesheetHelper = {
     let lines = [];
     let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
     let inversedReferenceHash = {};
-    let wysiwygCSSSelectorPrefixes = (production) ? [] : ['.internal-fsb-strict-layout > .internal-fsb-element',
+    let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
     	'.internal-fsb-absolute-layout > .internal-fsb-element',
     	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
     	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element'];
