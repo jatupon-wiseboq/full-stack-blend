@@ -526,9 +526,9 @@ class ProjectManager extends Base<Props, State> {
               }
               
               window.setTimeout(() => {
-                this.load(() => {
-                  alert(`Your changes have been merged with other colleagues and have been reloaded.`);
-                });
+                if (confirm(`Your changes have been merged with other colleagues. Do you want to reload the project?`)) {
+                	window.location.reload();
+                }
               }, 5000);
             });
           });
