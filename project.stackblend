@@ -307,12 +307,20 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,400;1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "c4382c32",
+        "selectingElementGUID": "738cbdce",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -447,7 +455,7 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "78c0270a",
+        "selectingElementGUID": "da1ab078",
         "currentCursorWalkPath": [
           "78c0270a",
           0,
