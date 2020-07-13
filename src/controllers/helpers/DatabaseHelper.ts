@@ -548,7 +548,7 @@ const DatabaseHelper = {
   					}
   					
   					await map.update(data, {where: hash});
-  					let record = await map.findOne({where: hash});
+  					const record = await map.findOne({where: hash});
   				  
   				  const row = {
   				    keys: {},

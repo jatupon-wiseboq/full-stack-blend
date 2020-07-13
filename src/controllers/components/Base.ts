@@ -18,7 +18,7 @@ class Base {
   	this.request = request;
   	this.response = response;
   	this.template = template;
-  	this.pageId = template.split('/').splice(-1, 1)[0].replace(/_/g, '');
+  	this.pageId = template.split("/").splice(-1, 1)[0].replace(/_/g, "");
   }
 	
 	protected perform(action: ActionType, schema: DataTableSchema, data: Input[]) {
