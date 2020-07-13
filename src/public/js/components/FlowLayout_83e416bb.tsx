@@ -23,8 +23,7 @@ declare let DataManipulationHelper: any;
 // <---Auto[Declare]
 
 // Declare private static variables here:
-// 
-
+//
 
 // Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {
@@ -50,7 +49,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 });
 
 // Auto[ClassBegin]--->
-class TextElement_0522150b extends Base {
+class FlowLayout_83e416bb extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
   
@@ -82,17 +81,38 @@ class TextElement_0522150b extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 -fsb-preset-08abd2c9 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="0522150b" style={Object.assign({'FsbInheritedPresets': '08abd2c9'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('Log.message')}}></div>
+      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})}>
+        
+                
+        <div className="container-fluid">
+          
+                    
+          <div className="row internal-fsb-strict-layout internal-fsb-allow-cursor">
+            
+                        
+            {this.getDataFromNotation("User").forEach((data, i) => {
+              return (
+                <div className="internal-fsb-element col-12 offset-0" internal-fsb-guid="78c0270a" style={{'minHeight': '176px'}} key={"item_" + i} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
+              )
+            })()}
+            
+                    
+          </div>
+          
+                
+        </div>
+        
+            
+      </div>
     )
   }
 }
-DeclarationHelper.declare('Document', 'Controls.TextElement_0522150b', TextElement_0522150b);
+DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout_83e416bb);
 // <---Auto[ClassEnd]
 
 // Export variables here:
 //
 export {IProps, IState, DefaultProps, DefaultState};
-
 
 
 // <--- Auto[Generating:V1]
