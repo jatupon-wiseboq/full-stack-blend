@@ -312,7 +312,7 @@ const DatabaseHelper = {
     	  }
     	  
     	  if (baseSchema == null) {
-    	    throw new Error("There was an error preparing data for manipulation (a list of inputs cann't satisfy the data schema).");
+    	    throw new Error("There was an error preparing data for manipulation (a list of inputs can't satisfy the data schema).");
     	  }
     	  
   	    current = {
@@ -334,7 +334,7 @@ const DatabaseHelper = {
   	    }
   	    
   	    if (!found) {
-    	    throw new Error("There was an error preparing data for manipulation (a list of inputs cann't satisfy any relation of the data schema).");
+    	    throw new Error("There was an error preparing data for manipulation (a list of inputs can't satisfy any relation of the data schema).");
     	  }
     	  
     	  const next = {
@@ -603,7 +603,7 @@ const DatabaseHelper = {
 	retrieve: async (data: Input[], baseSchema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
-  			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema);
+  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
   			if (list.length > 1) throw new Error("There was an error preparing data for manipulation (related tables isn't supported for now)");
   			
   			const input = list[0][0];
@@ -614,9 +614,25 @@ const DatabaseHelper = {
         		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
         		
         		const map = DatabaseHelper.ormMap(schema);
+        		const hash = {};
+  					
+  					for (const key in schema.columns) {
+  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
+  					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
+  					      hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
+  					    }
+  					  }
+  					}
+  					for (const key in schema.keys) {
+  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
+  					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
+  					      hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+  					    }
+  					  }
+  					}
   					
   					const rows = [];
-  					const records = await map.findAll();
+  					const records = await map.findAll({where: hash}) || [];
   					
   					for (const record of records) {
   					  const row = {
