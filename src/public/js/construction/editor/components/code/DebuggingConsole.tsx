@@ -38,9 +38,9 @@ class DebuggingConsole extends Base<Props, State> {
         this.repl = new Console(document.getElementById('console'), {mode: "javascript", theme: "eclipse"});
         
         this.repl.simpleFormatter = ((msg, ...args) => {
-          let output = [msg.toString()];
+          let output = [msg && msg.toString() || ''];
           for (let arg of args) {
-            output.push(arg.toString());
+            output.push(arg && arg.toString() || '');
           }
           return output.join(', ');
         });
