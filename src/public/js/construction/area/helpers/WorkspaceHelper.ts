@@ -35,7 +35,7 @@ let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
 let InternalStylesheets = {};
-let version = null;
+let version = 1.1;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
@@ -77,8 +77,6 @@ var WorkspaceHelper = {
     
     if (data) {
     	if (!data.version || data.version == 1) {
-	    	version = 1.1;
-	    	
 	    	for (let key in InternalSites) {
 	    		if (InternalSites.hasOwnProperty(key)) {
 	    			InternalSites[key].body = html_beautify(InternalSites[key].body || '').split('\n');
@@ -291,7 +289,7 @@ var WorkspaceHelper = {
   	InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
-      html: WorkspaceHelper.cleanupComponentHTMLData(html)
+      html: WorkspaceHelper.cleanupComponentHTMLData(html || '').split('\n')
     };
     
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];

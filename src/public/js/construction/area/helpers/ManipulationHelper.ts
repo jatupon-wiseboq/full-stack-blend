@@ -617,7 +617,6 @@ var ManipulationHelper = {
         break;
       case 8:
         {
-        	debugger;
           let selectingElement = EditorHelper.getSelectingElement();
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
