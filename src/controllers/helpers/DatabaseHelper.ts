@@ -119,6 +119,8 @@ const DatabaseHelper = {
           }
         }
         break;
+      case ActionType.Retrieve:
+        return (inputs.length != 0);
       default:
         return false;
     }
@@ -352,9 +354,6 @@ const DatabaseHelper = {
 	  
 	  return results;
 	},
-	prepareFilter: (data: Input[], schema: DataTableSchema): {[Identifier: string]: HierarchicalDataFilter} => {
-		return null;
-	},
 	ormMap: (schema: DataTableSchema): any => {
 	  if (!RelationalDatabaseORMClient.models[schema.group]) {
 	    const columns = {};
@@ -548,8 +547,6 @@ const DatabaseHelper = {
   					  }
   					}
   					
-  					console.log(hash, data);
-  					
   					await map.update(data, {where: hash});
   					let record = await map.findOne({where: hash});
   				  
@@ -606,7 +603,11 @@ const DatabaseHelper = {
 	retrieve: async (data: Input[], baseSchema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
-  			const input: {[Identifier: string]: HierarchicalDataFilter} = DatabaseHelper.prepareFilter(data, schema);
+  			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema);
+  			if (list.length > 1) throw new Error("There was an error preparing data for manipulation (related tables isn't supported for now)");
+  			
+  			const input = list[0][0];
+  			const schema = list[0][1];
   			
         switch (input.source) {
         	case SourceType.Relational:

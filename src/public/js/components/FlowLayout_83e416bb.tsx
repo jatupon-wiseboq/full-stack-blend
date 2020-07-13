@@ -81,7 +81,29 @@ class FlowLayout_83e416bb extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return (
-      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
+      <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})}>
+        
+                
+        <div className="container-fluid">
+          
+                    
+          <div className="row internal-fsb-strict-layout internal-fsb-allow-cursor">
+            
+                        
+            {this.getDataFromNotation("User").forEach((data, i) => {
+              return (
+                <div className="internal-fsb-element col-12 offset-0" internal-fsb-guid="78c0270a" style={{'minHeight': '176px'}} key={"item_" + i} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
+              )
+            })()}
+            
+                    
+          </div>
+          
+                
+        </div>
+        
+            
+      </div>
     )
   }
 }
