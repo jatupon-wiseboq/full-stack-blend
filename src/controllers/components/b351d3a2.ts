@@ -4,18 +4,18 @@
 
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
-import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
-import {RequestHelper} from '../helpers/RequestHelper.js';
-import {RenderHelper} from '../helpers/RenderHelper.js';
-import {DataTableSchema} from '../helpers/SchemaHelper.js';
-import {Base} from './Base.js';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper} from "../helpers/DatabaseHelper.js";
+import {ValidationInfo, ValidationHelper} from "../helpers/ValidationHelper.js";
+import {RequestHelper} from "../helpers/RequestHelper.js";
+import {RenderHelper} from "../helpers/RenderHelper.js";
+import {DataTableSchema} from "../helpers/SchemaHelper.js";
+import {Base} from "./Base.js";
 
 // <---Auto[Import]
 
 // Import additional modules here:
 //
-let x = 1;
+const x = 1;
 
 
 // Auto[Declare]--->
@@ -78,7 +78,7 @@ class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
   	super(request, response, template);
   	try {
-	    let [action, schema, data] = this.initialize(request);
+	    const [action, schema, data] = this.initialize(request);
 	    this.perform(action, schema, data);
    	} catch(error) {
 	  	RenderHelper.error(response, error);
@@ -127,24 +127,24 @@ class Controller extends Base {
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
- 		return '/';
+ 		return "/";
   }
  	
   
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	let action: ActionType = RequestHelper.getAction(request);
-  	let schema: DataTableSchema = RequestHelper.getSchema(request);
-  	let data: Input[] = [];
+  	const action: ActionType = RequestHelper.getAction(request);
+  	const schema: DataTableSchema = RequestHelper.getSchema(request);
+  	const data: Input[] = [];
   	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-		RequestHelper.registerInput('94c147a5', "relational", "User", "email");
-		ValidationHelper.registerInput('94c147a5', "Textbox 1", true, "Your email address is required.");
-    input = RequestHelper.getInput(request, '94c147a5');
+		RequestHelper.registerInput("94c147a5", "relational", "User", "email");
+		ValidationHelper.registerInput("94c147a5", "Textbox 1", true, "Your email address is required.");
+    input = RequestHelper.getInput(request, "94c147a5");
     
     // Override data parsing and manipulation of Textbox 1 here:
     // 
