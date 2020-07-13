@@ -418,8 +418,8 @@ input[type='radio'], input[type='checkbox'] {
 .internal-fsb-element[internal-fsb-class="Iframe"],
 .internal-fsb-element[internal-fsb-class="HTML"],
 .internal-fsb-element[internal-fsb-class="Video"] {
-  iframe {
-    pointer-events: none;
+ 	iframe, video, a {
+  	pointer-events: none;
   }
 }
 

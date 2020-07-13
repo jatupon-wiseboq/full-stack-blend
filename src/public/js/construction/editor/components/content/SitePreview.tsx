@@ -242,7 +242,7 @@ class SitePreview extends Base<Props, State> {
           if (!splitedCombinedExpandingFeatureScript) continue;
           
           let tokens = splitedCombinedExpandingFeatureScript.split("\n// <---Auto[File]");
-          let compiled = ts.transpileModule(tokens[1], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText;
+          let compiled = tokens[1] && ts.transpileModule(tokens[1], {compilerOptions: {module: ts.ModuleKind.AMD, jsx: "react"}}).outputText || '';
           
           let combinedExpandingFeatureScriptsURI = window.URL.createObjectURL(new Blob([compiled]));
           requiredURLs.push(combinedExpandingFeatureScriptsURI);

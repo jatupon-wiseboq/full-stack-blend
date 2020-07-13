@@ -175,6 +175,18 @@ var CapabilityHelper = {
       }
   	});
   },
+  installCapabilityOfBeingClickWithoutRedirection: (_container: HTMLElement) => {
+    let elements = [...HTMLHelper.getElementsByTagName('a', _container)];
+    if (_container.tagName == 'A') {
+      elements.push(_container);
+    }
+    
+    elements.forEach((element) => {
+  	  element.addEventListener('click', (event) => {
+  	 		event.preventDefault();
+  	 	}, true);
+  	});
+  },
   installCapabilitiesForInternalElements: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
@@ -191,6 +203,7 @@ var CapabilityHelper = {
       }
     });
     CapabilityHelper.installCapabilityOfBeingDragged(_container);
+    CapabilityHelper.installCapabilityOfBeingClickWithoutRedirection(_container);
   },
   installCapabilityOfForwardingStyle: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {

@@ -88,6 +88,14 @@ var FrontEndManipulationHelper = {
             | ABC
         `, element);
         break;
+      case 'Link':
+      	element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          a.internal-fsb-element.internal-fsb-allow-cursor
+            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
+              | Link
+        `, element);
+        break;
       case 'Rectangle':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
@@ -192,7 +200,7 @@ var FrontEndManipulationHelper = {
     	  content.name = componentName + ' ' + composedUntitledNameCount[componentName];
         
         element = document.createElement('div');
-        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html, true);
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
         element = element.firstChild;
         
         HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);

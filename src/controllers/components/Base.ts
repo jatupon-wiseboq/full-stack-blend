@@ -30,7 +30,9 @@ class Base {
 	}
   
   private async call(action: ActionType, schema: DataTableSchema, data: Input[]) {
-    this.validate(data);
+    if (action != ActionType.Retrieve) {
+      this.validate(data);
+    }
   	
     switch (action) {
       case ActionType.Insert:
