@@ -71,7 +71,7 @@ const DatabaseHelper = {
 			case "worker":
 				return SourceType.Document;
 			case "volatile-memory":
-				return FieldType.VolatileMemory;
+				return SourceType.VolatileMemory;
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
@@ -166,7 +166,7 @@ const DatabaseHelper = {
       }
     }
   },
-  getRows: (data: Input[], action: ActionType, schema: HierarchicalDataTable): HierarchicalDataRow[] => {
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema): HierarchicalDataRow[] => {
     const row: HierarchicalDataRow = {
 	    keys: {},
 	    columns: {},
@@ -294,10 +294,10 @@ const DatabaseHelper = {
 		
 		return [row];
   },
-	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema): HierarchicalDataTable[] => {
+	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema): [HierarchicalDataTable, DataTableSchema][] => {
 		data = DatabaseHelper.distinct(data);
 	  
-	  const results: HierarchicalDataTable[] = [];
+	  const results: [HierarchicalDataTable, DataTableSchema][] = [];
 	  let current: HierarchicalDataTable = null;
 	  
 	  while (data.length != 0) {
@@ -548,7 +548,7 @@ const DatabaseHelper = {
   					}
   					
   					await map.update(data, {where: hash});
-  					let record = await map.findOne({where: hash});
+  					const record = await map.findOne({where: hash});
   				  
   				  const row = {
   				    keys: {},
