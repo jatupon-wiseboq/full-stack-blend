@@ -11,7 +11,7 @@
     },
     "author": "SoftenStorm.com",
     "scripts": {
-        "start": "if [ $NODE_ENV == staging ] || [ $NODE_ENV == production ] || [ $NODE_ENV == development ]; then npm run serve; else npm install concurrently & npm run watch; fi",
+        "start": "npm run serve",
         "build": "npm run build-sass && npm run build-ts && npm run build-bundle && npm run lint && npm run copy-static-assets",
         "serve": "node dist/server.js",
         "watch-node": "nodemon dist/server.js",
