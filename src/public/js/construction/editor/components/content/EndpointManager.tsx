@@ -70,8 +70,8 @@ class EndpointManager extends Base<Props, State> {
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
-  		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
-  		let constructionEditorData = this.generateWorkspaceData() || {};
+  		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData(true) || {};
+  		let constructionEditorData = this.generateWorkspaceData(true) || {};
   		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
   		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
       let nextProjectData = {};

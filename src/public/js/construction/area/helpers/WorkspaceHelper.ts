@@ -35,6 +35,9 @@ let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
 let InternalStylesheets = {};
+let backEndControllerBlobSHADict = {};
+let frontEndComponentsBlobSHADict = {};
+let viewBlobSHADict = {};
 let version = 1.1;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
@@ -49,19 +52,25 @@ for (let key of BACKEND_DATA_EXTENSIONS) {
 }
 
 var WorkspaceHelper = {
-  generateWorkspaceData: () => {
+  generateWorkspaceData: (removeSHADict: boolean=false) => {
     WorkspaceHelper.saveWorkspaceData();
     
-    return {
-    	version: version,
-      globalSettings: InternalProjectSettings,
-      sites: InternalSites,
-      components: InternalComponents,
-      popups: InternalPopups,
-      flows: InternalDataFlows,
-      services: InternalServices,
-      stylesheets: StylesheetHelper.generateStylesheetData()
-    };
+    return Object.assign(
+    	{
+	    	version: version,
+	      globalSettings: InternalProjectSettings,
+	      sites: InternalSites,
+	      components: InternalComponents,
+	      popups: InternalPopups,
+	      flows: InternalDataFlows,
+	      services: InternalServices,
+	      stylesheets: StylesheetHelper.generateStylesheetData()
+	    }, removeSHADict ? {} : {
+	      backEndControllerBlobSHADict: backEndControllerBlobSHADict,
+	      frontEndComponentsBlobSHADict: frontEndComponentsBlobSHADict,
+	      viewBlobSHADict: viewBlobSHADict
+	    }
+   	);
   },
   initializeWorkspaceData: (data: any) => {
     InternalProjectSettings = data && data.globalSettings || DefaultProjectSettings;
@@ -72,6 +81,10 @@ var WorkspaceHelper = {
     InternalServices = data && data.services || {};
     InternalStylesheets = data && data.stylesheets || {};
     InternalDataFlows.schema = InternalDataFlows.schema || {};
+    
+    backEndControllerBlobSHADict = data.backEndControllerBlobSHADict || {};
+    frontEndComponentsBlobSHADict = data.frontEndComponentsBlobSHADict || {};
+    viewBlobSHADict = data.viewBlobSHADict || {};
     
     InternalProjectSettings.currentMode = 'site';
     

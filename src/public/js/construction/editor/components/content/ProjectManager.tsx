@@ -188,8 +188,8 @@ class ProjectManager extends Base<Props, State> {
           if (DEBUG_GITHUB_UPLOADER) console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
-        		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
-        		let constructionEditorData = this.generateWorkspaceData() || {};
+        		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData(false) || {};
+        		let constructionEditorData = this.generateWorkspaceData(false) || {};
         		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
         		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
             let nextProjectData = {};
@@ -764,7 +764,7 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
         cb(nextSiteBundleDataSHA);
       });
    	}
-   	generateWorkspaceData() {
+   	generateWorkspaceData(removeSHADict: boolean=false) {
     	return {};
     }
    	initializeWorkspaceData(data) {
