@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-const Project = {};
+const Project: any = {};
 
 const DeclarationHelper = {
   declareNamespace: (path: string) => {
