@@ -163,8 +163,12 @@ class EndpointManager extends Base<Props, State> {
         this.createController(nextProjectData.globalSettings.pages, () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
           	this.createBackEndController(arrayOfControllerScripts, () => {
-              this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsInfo) => {
-                this.createSiteBundle(nextProjectData.globalSettings.pages, frontEndComponentsInfo, () => {
+              this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
+              	
+              	let nextFrontEndComponentsBlobSHADict = nextProjectData.frontEndComponentsBlobSHADict || {};
+              	Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
+              	
+                this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
                   this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2)).then(() => {
                     this.commit().then(() => {
                       cb(true);
@@ -234,14 +238,14 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
    	  process(0);
  	  }
    	createFrontEndComponents(arrayOfContent: string[], cb: any) {
-   	  let frontEndComponentsInfo = [];
+   	  let nextFrontEndComponentsDataSHADict = {};
    	  let mainprocess = ((mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
      	  if (results.length < 2) {
      	    if (mainIndex + 1 < arrayOfContent.length) {
      	      mainprocess(mainIndex + 1);
      	    } else {
-     	      cb(frontEndComponentsInfo);
+     	      cb(nextFrontEndComponentsDataSHADict);
      	    }
      	  } else {
        	  let subprocess = ((subIndex: number) => {
@@ -254,14 +258,14 @@ ${tokens[1]}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
-              frontEndComponentsInfo.push(tokens[0]);
+							nextFrontEndComponentsDataSHADict[tokens[0]] = '';
 
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
               } else if (mainIndex + 1 < arrayOfContent.length) {
                 mainprocess(mainIndex + 1);
               } else {
-                cb(frontEndComponentsInfo);
+                cb(nextFrontEndComponentsDataSHADict);
               }
             });
        	  }).bind(this);
@@ -305,14 +309,14 @@ ${tokens[1]}
       }).bind(this);
       mainprocess(0);
    	}
-   	createSiteBundle(routes: string[], frontEndComponentsInfo: string[], cb: any) {
+   	createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
  	    this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
-${frontEndComponentsInfo.map(info => `import './components/${info}.js';`).join('\n')}
+${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}.js';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
