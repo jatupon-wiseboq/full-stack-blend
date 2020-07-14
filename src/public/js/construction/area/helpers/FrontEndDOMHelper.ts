@@ -291,7 +291,11 @@ ${rootScript}`;
 	                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 	              }
               } else {
-                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+              	if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
+              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+              	} else {
+              		attributes.push(attribute.name + '={' + attribute.value + '}');
+              	}
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
                 	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
