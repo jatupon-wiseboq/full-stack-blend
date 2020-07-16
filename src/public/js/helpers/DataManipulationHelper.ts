@@ -131,7 +131,7 @@ const DataManipulationHelper = {
 			}
 		}
   },
-  getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}): any => {
+  getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}, inArray: boolean=false): any => {
     if (!notation) {
       console.error("The notation is null, undefined or empty.");
 	  	alert("There is an error occured, please try again.");
@@ -158,12 +158,21 @@ const DataManipulationHelper = {
 			shifted = splited.shift();
 		}
 		
-		if (Array.isArray(current)) {
-			return current;
-		} else if (current !== null && current !== undefined) {
-			return [current];
+		if (inArray) {
+			if (Array.isArray(current)) {
+				return current;
+			} else if (current !== null && current !== undefined) {
+				return [current];
+			} else {
+				return [];
+			}
 		} else {
-			return [];
+			if (Array.isArray(current)) {
+				alert("There is an error occured (dot notation's result for none-layout-containers must not be an array).");
+				return current;
+			} else {
+				return current;
+			}
 		}
   }
 };
