@@ -1,7 +1,6 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-
 // Auto[Import]--->
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
@@ -11,7 +10,6 @@ import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from '
 
 // Import additional modules here:
 //
-
 
 // Auto[Declare]--->
 
@@ -57,7 +55,6 @@ class FlowLayout_83e416bb extends Base {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
     
-
     this.initialize();
   }
   // <---Auto[ClassBegin]
@@ -73,8 +70,6 @@ class FlowLayout_83e416bb extends Base {
     return super.getDataFromNotation(notation);
   }
   
-  
-  
   // Auto[Merging]--->
   // <---Auto[Merging]
   
@@ -83,26 +78,20 @@ class FlowLayout_83e416bb extends Base {
     return (
       <div className={"internal-fsb-element col-12 offset-0 " + (this.props.forward && this.props.forward.classes || '')} internal-fsb-guid="83e416bb" style={Object.assign({'minHeight': '250px'}, this.props.forward && this.props.forward.styles || {})}>
         
-                
         <div className="container-fluid">
           
-                    
           <div className="row internal-fsb-strict-layout internal-fsb-allow-cursor">
             
-                        
             {this.getDataFromNotation("User").forEach((data, i) => {
               return (
                 <div className="internal-fsb-element col-12 offset-0" internal-fsb-guid="78c0270a" style={{'minHeight': '176px'}} key={"item_" + i} dangerouslySetInnerHTML={{__html: this.getDataFromNotation('User')}}></div>
               )
             })()}
             
-                    
           </div>
           
-                
         </div>
         
-            
       </div>
     )
   }
@@ -113,7 +102,6 @@ DeclarationHelper.declare('Document', 'Controls.FlowLayout_83e416bb', FlowLayout
 // Export variables here:
 //
 export {IProps, IState, DefaultProps, DefaultState};
-
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
