@@ -308,7 +308,7 @@ ${rootScript}`;
         if (submitControls) {
           executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}})`);
           
-        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', event, ((results: any) => { this.manipulate('${submitType}', '${cumulatedDotNotation}', results); }).bind(this)); }).bind(this)}`);
+        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', event, ((results: any) => { this.manipulate('${reactClassComposingInfoGUID}', '${cumulatedDotNotation}', results); }).bind(this)); }).bind(this)}`);
         }
         
         for (let key in bindingStyles) {
