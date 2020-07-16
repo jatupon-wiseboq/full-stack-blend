@@ -151,11 +151,11 @@ ${rootScript}`;
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
-	        		_attributes[index].value = consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3];
+	        		_attributes[index].value = consumableTagItem[2] + `data` + consumableTagItem[3];
 	        	} else {
 	        		_attributes.push({
 	        			name: consumableTagItem[1],
-	        			value: consumableTagItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableTagItem[3]
+	        			value: consumableTagItem[2] + `data` + consumableTagItem[3]
 	        		});
 	        	}
 	        }
@@ -165,11 +165,11 @@ ${rootScript}`;
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
 	        	if (index != -1) {
-	        		_attributes[index].value = consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3];
+	        		_attributes[index].value = consumableClassItem[2] + `data` + consumableClassItem[3];
 	        	} else {
 	        		_attributes.push({
 	        			name: consumableClassItem[1],
-	        			value: consumableClassItem[2] + `this.getDataFromNotation('${dotNotation}')` + consumableClassItem[3]
+	        			value: consumableClassItem[2] + `data` + consumableClassItem[3]
 	        		});
 	        	}
 	        }
