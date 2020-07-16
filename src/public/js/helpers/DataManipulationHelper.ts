@@ -81,7 +81,7 @@ const DataManipulationHelper = {
 	  				  window.location = json.redirect;
 	  				} else {
 	  				  if (callback) {
-  	  				  callback(action, notation, json.results, options);
+  	  				  callback(json.results);
   	  				} else {
   	  				  alert("The submit button should be containing in a react control, so that it can be fetched by using data notations.");
   	  				}
@@ -167,12 +167,7 @@ const DataManipulationHelper = {
 				return [];
 			}
 		} else {
-			if (Array.isArray(current)) {
-				alert("There is an error occured (dot notation's result for none-layout-containers must not be an array).");
-				return current;
-			} else {
-				return current;
-			}
+			return current;
 		}
   }
 };
