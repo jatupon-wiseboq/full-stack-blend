@@ -12,6 +12,7 @@ interface Props extends IProps {
     failedValidationMessage: String;
     multiline: String;
     placeholder: String;
+    maxLength: Number;
 }
 
 interface State extends IState {
@@ -113,11 +114,11 @@ class Textbox extends React.Component<Props, State> {
         pug `
           div(style={width: '100%'})
             if !this.props.multiline
-              input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder)
+              input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder, maxLength=this.props.maxLength)
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
             else
-              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows="10", ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString())
+              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows="5", ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), maxLength=this.props.maxLength)
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
         `

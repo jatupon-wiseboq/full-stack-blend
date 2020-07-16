@@ -17,7 +17,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ["externalLibraries"]
+  watchingExtensionNames: ["externalLibraries", "pages"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -240,13 +240,34 @@ class ProjectManager extends Base<Props, State> {
     		        let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
     		        compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
     		        
+				        let pages = this.state.extensionValues['pages'];
+				        let editingPageID = key;
+				        pages = pages.filter(page => page.id == editingPageID);
+				        
+				        let title = escape(pages && pages[0] && pages[0].title || '');
+				        let description = escape(pages && pages[0] && pages[0].description || '');
+				        let keywords = escape(pages && pages[0] && pages[0].keywords || '');
+				        let image = escape(pages && pages[0] && pages[0].image || '');
+				        let path = escape(pages && pages[0] && pages[0].path || '');
+    		        
                 let combinedHTMLPage = `.
   <!DOCTYPE html>
   <html>
     <head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>#{title}</title>
-      <meta name="description" content="" />
+      <title>\#{headers && headers.title || '${title}'}</title>
+      <meta name="description" content="\#{headers && headers.description || '${description}'}" />
+      <meta name="keywords" content="\#{headers && headers.keywords || '${keywords}'}" />
+      <meta http-equiv="content-language" content="\#{headers && headers.language || 'en'}" />
+      <meta http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}" />
+      <meta name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}" />
+      <meta name="robots" content="\#{headers && headers.robots || 'index, follow'}" />
+      <meta property="og:title" content="\#{headers && headers.title || '${title}'}" />
+      <meta property="og:url" content="\#{headers && headers.linkUrl || '${path}'}" />
+      <meta property="og:image" content="\#{headers && headers.imageUrl || '${image}'}" />
+      <meta property="og:type" content="\#{headers && headers.itemType || 'website'}" />
+      <meta property="og:description" content="\#{headers && headers.description || '${description}'}" />
+      <meta property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}" />
       <link rel="stylesheet" href="//staging.stackblend.com/css/embed.css">
       <style type="text/css">${combinedStylesheet}</style>
     </head>

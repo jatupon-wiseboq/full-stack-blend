@@ -262,8 +262,6 @@ class SitePreview extends Base<Props, State> {
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Untitled - Construction Area</title>
-    <meta name="description" content="" />
     <link rel="stylesheet" href="/css/embed.css">
     ${combinedFontTags.join('\n')}
     <style type="text/css">${combinedStylesheet}</style>

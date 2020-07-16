@@ -91,6 +91,9 @@ class HTMLManager extends Base<Props, State> {
             this.setState({
                 id: RandomHelper.generateGUID(),
                 name: null,
+                description: null,
+                keywords: null,
+                image: null,
                 path: null
             });
         }
@@ -105,6 +108,9 @@ class HTMLManager extends Base<Props, State> {
             this.setState({
                 id: node.tag.id,
                 name: node.tag.name,
+                description: node.tag.description,
+                keywords: node.tag.keywords,
+                image: node.tag.image,
                 path: node.tag.path
             });
         
@@ -121,6 +127,18 @@ class HTMLManager extends Base<Props, State> {
         this.state.name = value;
     }
     
+    protected descriptionOnUpdate(value: any) {
+        this.state.description = value;
+    }
+    
+    protected keywordsOnUpdate(value: any) {
+        this.state.keywords = value;
+    }
+    
+    protected imageOnUpdate(value: any) {
+        this.state.image = value;
+    }
+    
     protected pathOnUpdate(value: any) {
         this.state.path = value;
     }
@@ -130,6 +148,9 @@ class HTMLManager extends Base<Props, State> {
             let item = {
                 id: this.state.id,
                 name: this.state.name,
+                description: this.state.description,
+                keywords: this.state.keywords,
+                image: this.state.image,
                 path: this.state.path,
                 state: 'update'
             };
@@ -163,6 +184,9 @@ class HTMLManager extends Base<Props, State> {
         if (this.state.name && (!this.props.path || this.state.path)) {
             let item = this.state.extensionValues[this.props.watchingExtensionNames[0]].filter(p => p.id == this.state.id)[0];
             item.name = this.state.name;
+            item.description = this.state.description;
+            item.keywords = this.state.keywords;
+            item.image = this.state.image;
             item.path = this.state.path;
             item.state = 'update';
           
@@ -244,11 +268,23 @@ class HTMLManager extends Base<Props, State> {
                     <div className="section-title">{(this.state.isAdding) ? `New ${this.getCategoryName()}` : `Update ${this.getCategoryName()}`}</div>
                     <div className="section-subtitle">Title</div>
                     <div className="section-body">
-                        <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='.*' postRegExp='.*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='.*' postRegExp='.*' onUpdate={this.nameOnUpdate.bind(this)} maxLength={50}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>Path</div>
                     <div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
                         <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    </div>
+                    <div className="section-subtitle">Description</div>
+                    <div className="section-body">
+                        <FullStackBlend.Controls.Textbox ref="description" value={this.state.description} preRegExp='.*' postRegExp='.*' onUpdate={this.descriptionOnUpdate.bind(this)} maxLength={165}></FullStackBlend.Controls.Textbox>
+                    </div>
+                    <div className="section-subtitle">Keywords</div>
+                    <div className="section-body">
+                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    </div>
+                    <div className="section-subtitle">Image</div>
+                    <div className="section-body">
+                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
