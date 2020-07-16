@@ -22,10 +22,11 @@ const RenderHelper = {
 			redirect: data
 		});
 	},
-	page: (response: Response, path: string, data: any) => {
+	page: (response: Response, path: string, data: any, headers: any={}) => {
 	  if (response.headersSent) return;
 	  response.render(path, {
-	    data: JSON.stringify(data)
+	    data: JSON.stringify(data),
+	    headers: headers || {}
 	  });
 	},
 	error: (response: Response, error: Error) => {

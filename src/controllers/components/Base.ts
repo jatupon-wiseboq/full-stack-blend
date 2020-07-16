@@ -59,16 +59,16 @@ class Base {
       default:
         switch (this.request.method) {
           case "GET":
-            RenderHelper.page(this.response, this.template, await this.get(data));
+            RenderHelper.page(this.response, this.template, await this.get(data), await this.accessories(data));
             break;
           case "POST":
-            RenderHelper.page(this.response, this.template, await this.post(data));
+            RenderHelper.page(this.response, this.template, await this.post(data), await this.accessories(data));
             break;
           case "PUT":
-            RenderHelper.page(this.response, this.template, await this.put(data));
+            RenderHelper.page(this.response, this.template, await this.put(data), await this.accessories(data));
             break;
           case "DELETE":
-            RenderHelper.page(this.response, this.template, await this.delete(data));
+            RenderHelper.page(this.response, this.template, await this.delete(data), await this.accessories(data));
             break;
         }
         break;
@@ -77,6 +77,12 @@ class Base {
   
   protected validate(data: Input[]): void {
  		ValidationHelper.validate(data);
+  }
+  
+  protected async accessories(data: Input[]): Promise<any> {
+ 	  return new Promise((resolve) => {
+ 	    resolve({});
+ 	  });
   }
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
