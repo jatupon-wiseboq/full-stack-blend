@@ -248,7 +248,7 @@ class HTMLManager extends Base<Props, State> {
                     </div>
                     <div className="section-subtitle" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>Path</div>
                     <div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
-                        <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} preRegExp="(/|/([a-zA-Z]|[a-zA-Z][a-zA-Z0-9_]+|[a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>

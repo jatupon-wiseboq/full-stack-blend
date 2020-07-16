@@ -26,7 +26,7 @@ export const updateContent = (request: Request, response: Response) => {
 				throw new Error("There was an error trying to obtain requesting parameters (JSON object is null).");
 			}
 			
-			const dirname = __dirname.replace("/dist/", "/src/");
+			const dirname = __dirname.replace("/src/", "/dist/");
 			const rootPath = path.resolve(dirname, "../../");
 			
 			for (const file of json.files) {
@@ -48,6 +48,7 @@ export const updateContent = (request: Request, response: Response) => {
     			const fullPath = path.resolve(dirname, file.path);
     			
     			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
+    			
     	  }
 			}, 1000);
 		} catch(error) {
