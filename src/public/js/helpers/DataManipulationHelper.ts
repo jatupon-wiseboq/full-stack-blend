@@ -81,7 +81,7 @@ const DataManipulationHelper = {
 	  				  window.location = json.redirect;
 	  				} else {
 	  				  if (callback) {
-  	  				  callback(action, notation, json.results, options);
+  	  				  callback(json.results);
   	  				} else {
   	  				  alert("The submit button should be containing in a react control, so that it can be fetched by using data notations.");
   	  				}
