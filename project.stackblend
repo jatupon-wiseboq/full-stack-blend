@@ -315,12 +315,16 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,400;1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "738cbdce",
+        "selectingElementGUID": "2d9c731e",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -501,6 +505,7 @@
         "            <div class=\"internal-fsb-element\" internal-fsb-guid=\"bb1daceb\" internal-fsb-name=\"Textbox 5\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Textbox\"><input type=\"text\" style=\"display: block; width: 100%; -fsb-for-children: true\" internal-fsb-data-source-type=\"relational\" internal-fsb-data-source-name=\"User\" internal-fsb-data-source-column=\"uid\" placeholder=\"uid\"></div><button type=\"button\" class=\"internal-fsb-element internal-fsb-allow-cursor col-2 offset-0\" internal-fsb-guid=\"269a91ed\" internal-fsb-name=\"Button 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"Button\" style=\"\" internal-fsb-data-wizard-type=\"update\" internal-fsb-data-controls=\" 94c147a5 36aa7547 bb1daceb\">",
         "                <div contenteditable=\"true\" internal-fsb-class=\"TextElement\" internal-fsb-guid=\"269a91ed-text\" internal-fsb-name=\"TextElement\" class=\"internal-fsb-element\" internal-fsb-event-no-propagate=\"1\">Button</div>",
         "            </button>",
+        "            <div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"5e52e06d\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\">ABC</div>",
         "        </div>",
         "    </div>",
         "    <style type=\"text/css\" id=\"internal-fsb-stylesheet\">",
@@ -569,11 +574,11 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "4c382603",
+        "selectingElementGUID": "5e52e06d",
         "currentCursorWalkPath": [
           "0",
           0,
-          9,
+          10,
           null
         ]
       },
@@ -1061,5 +1066,22 @@
     "08abd2c9": "font-family: Courier Prime; font-size: 12px; color: rgba(156, 156, 156, 1); padding-top: 10px; padding-left: 10px; padding-bottom: 10px; padding-right: 10px; -fsb-reusable-name: note; -fsb-reusable-id: 08abd2c9",
     "a43dc1c9": "-fsb-inherited-presets: 08abd2c9; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; border-top-width: 1px; -fsb-reusable-name: section; -fsb-reusable-id: a43dc1c9",
     "bb6cddae": "-fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer"
+  },
+  "backEndControllerBlobSHADict": {
+    "index": "f5f1c6a8d2a9aa787bb6f2e713c06da89d60cd4d",
+    "b351d3a2": "e8980c709c8043f5da5924033a5d349df1cd4606"
+  },
+  "frontEndComponentsBlobSHADict": {
+    "TextElement_0522150b": "0bff19de486f06ee2051c5fdbd6dce6ca8f8776f",
+    "TextElement_bb6cddae": "85a25e7bc3ac4fcf6645911f5d021b0ff8a253a4",
+    "TextElement_b19840c8": "9661dd37fd12ca5ed43ab774aee3ebafffeaf533",
+    "TextElement_92de9e1b": "2019dbb4eb5d8d96a0a0545bd5edf61d8c67d2b0",
+    "TextElement_738cbdce": "949bfdc6aec641603a91e8e72934b21a2212158a",
+    "FlowLayout_83e416bb": "69f1153a3e42f2783a2076810b08d3b4885937e4"
+  },
+  "viewBlobSHADict": {
+    "b351d3a2": "4021fcdb186dc2f82b231cb0fb03469ec6f86f30",
+    "index": "6e2f6e69e690f0f55faec70cbe7d8ea22c6c118b",
+    "74d822ea": "52b783b0ffee245552bf82f89a7676935767d290"
   }
 }
