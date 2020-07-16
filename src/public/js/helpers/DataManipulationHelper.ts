@@ -158,7 +158,13 @@ const DataManipulationHelper = {
 			shifted = splited.shift();
 		}
 		
-		return current || [];
+		if (Array.isArray(current)) {
+			return current;
+		} else if (current !== null && current !== undefined) {
+			return [current];
+		} else {
+			return [];
+		}
   }
 };
 
