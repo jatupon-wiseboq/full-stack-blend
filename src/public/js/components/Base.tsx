@@ -73,15 +73,15 @@ class Base extends React.Component {
         break;
       case 'update':
         for (let result of results) {
-          data.rows = data.rows.map((row) => {
+          data.rows = [...data.rows].map((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
                 if (row.keys[key].value != result.keys[key].value) {
-                  return result;
+                  return row;
                 }
               }
             }
-            return row;
+            return result;
           });
         }
         break;
@@ -109,7 +109,6 @@ class Base extends React.Component {
         /* handled */
         break;
     }
-    update(data);
   }
   
   protected render() { }
