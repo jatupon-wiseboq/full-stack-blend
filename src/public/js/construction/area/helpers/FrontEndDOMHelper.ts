@@ -370,7 +370,7 @@ ${rootScript}`;
         // 
         let _indent = indent;
         if (reactData !== null) {
-          lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '").map((data, ' + dotNotationChar + ') => {');
+          lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true).map((data, ' + dotNotationChar + ') => {');
           lines.push(_indent + '  return (');
           
           indent += '    ';
