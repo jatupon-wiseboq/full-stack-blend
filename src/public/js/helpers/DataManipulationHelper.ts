@@ -167,12 +167,7 @@ const DataManipulationHelper = {
 				return [];
 			}
 		} else {
-			if (Array.isArray(current)) {
-				alert("There is an error occured (dot notation's result for none-layout-containers must not be an array).");
-				return current;
-			} else {
-				return current;
-			}
+			return current;
 		}
   }
 };

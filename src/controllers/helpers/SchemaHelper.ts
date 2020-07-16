@@ -101,8 +101,8 @@ const SchemaHelper = {
   	  }
 	  }
 	},
-	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema, searchForFinalResults: boolean=false): DataTableSchema | DataColumnSchema => {
-		if (!searchForFinalResults) {
+	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema, searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
+		if (!searchForDataTableSchema) {
 			// Search DataTableSchema
 			// 
 			const relation = (current && current.relations || {})[key];
@@ -167,10 +167,10 @@ const SchemaHelper = {
 		let shifted: string = splited.shift();
 		let current: DataTableSchema | DataColumnSchema = null;
 		
-		while (current && shifted) {
-			current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, splited.length == 0);
-			shifted = splited.shift();
-		}
+		do {
+		  current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, current !== null && splited.length == 0);
+		  shifted = splited.shift();
+		} while (current && shifted);
 		
 		if (current == null) throw new Error("There was an error retreiving data schema (invalid of dot notation).");
 		if ("fieldType" in current) throw new Error("There was an error retreiving data schema (dot notation gave a column instead of a table).");
