@@ -434,7 +434,7 @@ ${rootScript}`;
   	          if (CONTAIN_TEXT_CONTENT_TAGS.indexOf(tag) == -1) {
   	            composed = indent;
   	          } else {
-  	            composed = '';
+  	            composed = indent;
   	          }
   	          composed += '</' + tag + '>';
   	          lines.push(composed);
@@ -672,7 +672,7 @@ ${rootScript}`;
 	          if (CONTAIN_TEXT_CONTENT_TAGS.indexOf(tag) == -1) {
 	            composed = indent;
 	          } else {
-	            composed = '';
+	            composed = indent;
 	          }
 	          composed += '</' + tag + '>';
 	          lines.push(composed);
