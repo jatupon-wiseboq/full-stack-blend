@@ -451,7 +451,7 @@ ${rootScript}`;
         // 
         if (reactData !== null) {
         	lines.push(_indent + '  )');
-        	lines.push(_indent + '})()}');
+        	lines.push(_indent + '})}');
         }
       }
 	  }
