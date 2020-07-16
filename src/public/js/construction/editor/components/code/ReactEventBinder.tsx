@@ -125,7 +125,7 @@ class ReactEventBinder extends Base<Props, State> {
             <div className="btn-group btn-group-sm">
                 <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
                     <FullStackBlend.Controls.DropDownControl representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7}>
-                        <div className="section-container" style={{width: '175px'}}>
+                        <div className="section-container" style={{width: '225px'}}>
 		                        <div className="section-title">Customize Binding</div>
 		                        <div className="section-subtitle">Binding</div>
 		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>

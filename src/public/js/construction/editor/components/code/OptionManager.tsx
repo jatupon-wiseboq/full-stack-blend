@@ -200,7 +200,7 @@ class OptionManager extends Base<Props, State> {
     render() {
         return (
             <FullStackBlend.Components.ListManager nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-                <div className="section-container" style={{width: '175px'}}>
+                <div className="section-container" style={{width: '225px'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Option" : "Update Option"}</div>
                     <div className="section-subtitle">Name</div>
                     <div className="section-body">
@@ -210,7 +210,7 @@ class OptionManager extends Base<Props, State> {
                     <div className="section-body">
                         <FullStackBlend.Controls.Textbox ref="value" value={this.state.value} preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
-                    <div className="section-body" style={{display: (this.state.isAdding) ? 'inline-block' : 'none'}}>
+                    <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
                     </div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>

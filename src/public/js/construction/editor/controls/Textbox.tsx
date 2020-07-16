@@ -10,9 +10,10 @@ interface Props extends IProps {
     onUpdate(value: any);
     spellCheck: boolean;
     failedValidationMessage: String;
-    multiline: String;
+    multiline: Boolean;
     placeholder: String;
     maxLength: Number;
+    rows: Number;
 }
 
 interface State extends IState {
@@ -118,7 +119,7 @@ class Textbox extends React.Component<Props, State> {
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
             else
-              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows="5", ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), maxLength=this.props.maxLength)
+              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows=(this.props.rows || 5), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), maxLength=this.props.maxLength)
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
         `
