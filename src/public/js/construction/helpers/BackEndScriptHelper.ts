@@ -26,6 +26,25 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
+  protected async accessories(data: Input[]): Promise<any> {
+ 	  return new Promise((resolve) => {
+ 	    resolve({
+ 		    title: null,
+ 		    description: null,
+ 		    keywords: null,
+ 		    language: null,
+ 		    contentType: null,
+ 		    revisitAfter: null,
+ 		    robots: null,
+ 		    title: null,
+ 		    linkUrl: null,
+ 		    imageUrl: null,
+ 		    itemType: null,
+ 		    contentLocale: null
+ 		  });
+ 	  });
+  }
+  
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
  		return super.get(data);
   }
