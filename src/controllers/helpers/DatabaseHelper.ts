@@ -618,16 +618,12 @@ const DatabaseHelper = {
   					
   					for (const key in schema.columns) {
   					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
-  					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-  					      hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
-  					    }
+  					    hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
   					  }
   					}
   					for (const key in schema.keys) {
   					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
-  					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-  					      hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
-  					    }
+  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
   					  }
   					}
   					
