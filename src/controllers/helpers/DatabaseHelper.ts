@@ -603,89 +603,158 @@ const DatabaseHelper = {
 	retrieve: async (data: Input[], baseSchema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
-  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
-  			if (list.length > 1) throw new Error("There was an error preparing data for manipulation (related tables isn't supported for now)");
-  			
-  			const input = list[0][0];
-  			const schema = list[0][1];
-  			
-        switch (input.source) {
-        	case SourceType.Relational:
-        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-        		
-        		const map = DatabaseHelper.ormMap(schema);
-        		const hash = {};
-  					
-  					for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
-  					    hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
-  					  }
-  					}
-  					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
-  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
-  					  }
-  					}
-  					
-  					const rows = [];
-  					const records = await map.findAll({where: hash}) || [];
-  					
-  					for (const record of records) {
-  					  const row = {
-    				    keys: {},
-    				    columns: {},
-    				    relations: {}
-    				  };
-  				  
-  					  for (const key in schema.columns) {
-    					  if (schema.columns.hasOwnProperty(key)) {
-    					    row.columns[key] = {
-    					      name: key,
-    					      value: record[key]
-    					    };
-    					  }
-    					}
-    					for (const key in schema.keys) {
-    					  if (schema.keys.hasOwnProperty(key)) {
-    					    row.keys[key] = {
-    					      name: key,
-    					      value: record[key]
-    					    };
-    					  }
-    					}
-    					
-    					rows.push(row);
-  					}
-  					
-  					const results = {};
-  					results[schema.group] = {
-  					  source: schema.source,
-  					  group: schema.group,
-  					  rows: rows
-  					};
-  					
-  					resolve(results);
-        		
-        		break;
-        	case SourceType.PrioritizedWorker:
-        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-        		
-        		throw new Error("NotImplementedError");
-        		
-        		break;
-        	case SourceType.Document:
-        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-        		
-        		throw new Error("NotImplementedError");
-        		
-        		break;
-        	case SourceType.VolatileMemory:
-        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
-        		
-        		throw new Error("NotImplementedError");
-        		
-        		break;
-        }
+		  	if (data != null) {
+	  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
+	  			if (list.length > 1) throw new Error("There was an error preparing data for manipulation (related tables isn't supported for now)");
+	  			
+	  			const input = list[0][0];
+	  			const schema = list[0][1];
+	  			
+	        switch (input.source) {
+	        	case SourceType.Relational:
+	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		const map = DatabaseHelper.ormMap(schema);
+	        		const hash = {};
+	  					
+	  					for (const key in schema.columns) {
+	  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
+	  					    hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
+	  					  }
+	  					}
+	  					for (const key in schema.keys) {
+	  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
+	  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+	  					  }
+	  					}
+	  					
+	  					const rows = [];
+	  					const records = await map.findAll({where: hash}) || [];
+	  					
+	  					for (const record of records) {
+	  					  const row = {
+	    				    keys: {},
+	    				    columns: {},
+	    				    relations: {}
+	    				  };
+	  				  
+	  					  for (const key in schema.columns) {
+	    					  if (schema.columns.hasOwnProperty(key)) {
+	    					    row.columns[key] = {
+	    					      name: key,
+	    					      value: record[key]
+	    					    };
+	    					  }
+	    					}
+	    					for (const key in schema.keys) {
+	    					  if (schema.keys.hasOwnProperty(key)) {
+	    					    row.keys[key] = {
+	    					      name: key,
+	    					      value: record[key]
+	    					    };
+	    					  }
+	    					}
+	    					
+	    					rows.push(row);
+	  					}
+	  					
+	  					const results = {};
+	  					results[schema.group] = {
+	  					  source: schema.source,
+	  					  group: schema.group,
+	  					  rows: rows
+	  					};
+	  					
+	  					resolve(results);
+	        		
+	        		break;
+	        	case SourceType.PrioritizedWorker:
+	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        	case SourceType.Document:
+	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        	case SourceType.VolatileMemory:
+	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        }
+	      } else {
+	      	switch (baseSchema.source) {
+	        	case SourceType.Relational:
+	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		const map = DatabaseHelper.ormMap(baseSchema);
+	        		const hash = {};
+	  					
+	  					const rows = [];
+	  					const records = await map.findAll() || [];
+	  					
+	  					for (const record of records) {
+	  					  const row = {
+	    				    keys: {},
+	    				    columns: {},
+	    				    relations: {}
+	    				  };
+	  				  
+	  					  for (const key in baseSchema.columns) {
+	    					  if (baseSchema.columns.hasOwnProperty(key)) {
+	    					    row.columns[key] = {
+	    					      name: key,
+	    					      value: record[key]
+	    					    };
+	    					  }
+	    					}
+	    					for (const key in baseSchema.keys) {
+	    					  if (baseSchema.keys.hasOwnProperty(key)) {
+	    					    row.keys[key] = {
+	    					      name: key,
+	    					      value: record[key]
+	    					    };
+	    					  }
+	    					}
+	    					
+	    					rows.push(row);
+	  					}
+	  					
+	  					const results = {};
+	  					results[baseSchema.group] = {
+	  					  source: baseSchema.source,
+	  					  group: baseSchema.group,
+	  					  rows: rows
+	  					};
+	  					
+	  					resolve(results);
+	        		
+	        		break;
+	        	case SourceType.PrioritizedWorker:
+	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        	case SourceType.Document:
+	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        	case SourceType.VolatileMemory:
+	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		
+	        		throw new Error("NotImplementedError");
+	        		
+	        		break;
+	        }
+	      }
       } catch(error) {
         reject(error);
       }
