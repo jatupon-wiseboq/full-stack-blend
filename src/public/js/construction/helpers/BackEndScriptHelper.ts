@@ -36,7 +36,6 @@ const DEFAULTS = {
  		    contentType: null,
  		    revisitAfter: null,
  		    robots: null,
- 		    title: null,
  		    linkUrl: null,
  		    imageUrl: null,
  		    itemType: null,
