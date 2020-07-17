@@ -9,7 +9,7 @@ const DataManipulationHelper = {
 	setData: (data: {[Identifier: string]: HierarchicalDataTable}) => {
 		dataset = data
 	},
-  getDataFromKey: (key: string, current: HierarchicalDataRow | HierarchicalDataRow[], index: number=-1): any => {
+  getDataFromKey: (key: string, current: any, index: number=-1): any => {
 		if (Array.isArray(current)) {
 			current = current[0] || {};
 		}
