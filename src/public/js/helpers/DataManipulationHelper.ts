@@ -105,19 +105,19 @@ const DataManipulationHelper = {
 	  		});
   	}
   },
-  getDataFromKey: (key: string, current: HierarchicalDataRow | HierarchicalDataRow[] | HierarchicalDataTable, index: number=-1): any => {
+  getDataFromKey: (key: string, current: HierarchicalDataRow | HierarchicalDataRow[], index: number=-1): any => {
 		if (Array.isArray(current)) {
 			current = current[0] || {};
 		}
 		
-  	// Search HierarchicalDataTable
+  	// Search HierarchicalDataRow
 		// 		
 		let table = (current.relations || {})[key];
 		if (table) {
 			if (index != -1) {
 				return table.rows[index];
 			} else {
-				return table;
+				return table.rows;
 			}
 		} else {
 			// Search HierarchicalDataColumn
