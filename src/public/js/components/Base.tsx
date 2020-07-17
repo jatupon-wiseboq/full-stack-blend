@@ -56,8 +56,7 @@ class Base extends React.Component {
     } else if (this.props.data) {
     	return DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
     } else {
-      console.error('There was an error processing hierarchical data on client side (there is no data available, please check the get method on back-end).');
-      return [];
+      return [''];
     }
   }
   
