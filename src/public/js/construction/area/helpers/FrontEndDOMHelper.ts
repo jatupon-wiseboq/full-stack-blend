@@ -161,7 +161,7 @@ ${rootScript}`;
 	        }
 	        
 	        if (consumableClassItem) {
-	          dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
+	          dangerouslySetInnerHTML = consumableClassItem[1] == 'dangerouslySetInnerHTML';
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
 	        	if (index != -1) {
