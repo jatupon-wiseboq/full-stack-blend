@@ -25,8 +25,8 @@ const RenderHelper = {
 	page: (response: Response, path: string, data: any, headers: any={}) => {
 	  if (response.headersSent) return;
 	  response.render(path, {
-	    data: JSON.stringify(data),
-	    headers: headers || {}
+	    data: data || null,
+	    headers: headers || null
 	  });
 	},
 	error: (response: Response, error: Error) => {
