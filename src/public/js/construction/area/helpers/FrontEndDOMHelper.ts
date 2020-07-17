@@ -140,7 +140,7 @@ ${rootScript}`;
         let submitType = null;        
         
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
-        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == reactClass))[0];
+        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
         let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
         		element : element.parentNode, 'internal-fsb-react-data');
         let dangerouslySetInnerHTML = false
