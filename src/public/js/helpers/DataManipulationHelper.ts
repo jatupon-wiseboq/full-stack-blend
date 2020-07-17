@@ -105,9 +105,13 @@ const DataManipulationHelper = {
 	  		});
   	}
   },
-  getDataFromKey: (key: string, current: HierarchicalDataRow, index: number=-1): any => {
+  getDataFromKey: (key: string, current: HierarchicalDataRow | HierarchicalDataRow[] | HierarchicalDataTable, index: number=-1): any => {
+		if (Array.isArray(current)) {
+			current = current[0] || {};
+		}
+		
   	// Search HierarchicalDataTable
-		// 
+		// 		
 		let table = (current.relations || {})[key];
 		if (table) {
 			if (index != -1) {
