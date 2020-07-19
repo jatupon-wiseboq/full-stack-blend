@@ -45,11 +45,7 @@ const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid inte
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
 const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
 const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
-
 const DEFAULT_PAGE_EXTENSIONS = {};
-for (let key of BACKEND_DATA_EXTENSIONS) {
-  DEFAULT_PAGE_EXTENSIONS[key] = null;
-}
 
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
@@ -238,7 +234,7 @@ var WorkspaceHelper = {
       if (InternalProjectSettings.editingPageID == null) return;
       
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
-      let cloned = CodeHelper.clone(page);
+      let clonedPage = CodeHelper.clone(page);
       
       page.head.fonts = FontHelper.generateFontData();
       
@@ -252,6 +248,7 @@ var WorkspaceHelper = {
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
         page.extensions[key] = InternalProjectSettings[key];
+        delete InternalProjectSettings[key];
       }
       
       page.notations = SchemaHelper.generateTreeOfDotNotations();
@@ -260,9 +257,10 @@ var WorkspaceHelper = {
         EditorHelper.init(true, false);
       }
       
-      //if (!CodeHelper.equals(cloned, page)) {
-      cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
-      //}
+      if (!CodeHelper.equals(clonedPage, page)) {
+      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+      }
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = html_beautify(document.body.outerHTML).split('\n');
