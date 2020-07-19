@@ -80,7 +80,16 @@ let options = {
     "text-align": CONSTANTS._TEXT_ALIGN_OPTIONS,
     "text-decoration-color": CONSTANTS._TEXT_DECORATION_COLOR_OPTIONS,
     "-fsb-cell-border-size": CONSTANTS.CELL_BORDER_OPTIONS,
-    "background-color": CONSTANTS.BACKGROUND_COLOR_OPTIONS
+    "order": CONSTANTS.FLEX_ORDER_OPTIONS,
+    "flex-direction": CONSTANTS.FLEX_DIRECTION_OPTIONS,
+    "flex-grow": CONSTANTS.FLEX_GROW_OPTIONS,
+    "flex-wrap": CONSTANTS.FLEX_WRAP_OPTIONS,
+    "flex-shrink": CONSTANTS.FLEX_SHRINK_OPTIONS,
+    "flex-basis": CONSTANTS.FLEX_BASIS_OPTIONS,
+    "justify-content": CONSTANTS.FLEX_JUSTIFY_CONTENT_OPTIONS,
+    "align-self": CONSTANTS.FLEX_JUSTIFY_ALIGN_SELF_OPTIONS,
+    "align-items": CONSTANTS.FLEX_JUSTIFY_ALIGN_ITEMS_OPTIONS,
+    "align-content": CONSTANTS.FLEX_JUSTIFY_ALIGN_CONTENT_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -281,7 +290,7 @@ class DropDownPicker extends Base<Props, State> {
                         return (
                             <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-not-for="editorCurrentMode:coding">
                                 <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width}>
-                                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
                         )
