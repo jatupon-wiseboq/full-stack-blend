@@ -238,7 +238,7 @@ var FrontEndManipulationHelper = {
     		remember = false;
     	} else {
 	      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-	        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+	        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button', 'Rectangle'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
 	        Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
 	      } else {
 	        StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
