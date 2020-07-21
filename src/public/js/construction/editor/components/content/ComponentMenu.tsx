@@ -34,6 +34,14 @@ class ComponentMenu extends Base<Props, State> {
     
     public update(properties: any) {
         if (!super.update(properties)) return;
+        
+        if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
+    				this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
+    					return (a['name'] < b['name']) ? -1 : 1;
+    				});
+    				
+    				this.forceUpdate();
+    		}
     }
     
     render() {

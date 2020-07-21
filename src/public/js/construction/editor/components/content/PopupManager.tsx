@@ -6,7 +6,8 @@ declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
-    watchingExtensionNames: ['popups', 'editingPopupID']
+    watchingExtensionNames: ['popups', 'editingPopupID'],
+    sortFieldName: 'name'
 });
 
 class PopupManager extends HTMLManager {

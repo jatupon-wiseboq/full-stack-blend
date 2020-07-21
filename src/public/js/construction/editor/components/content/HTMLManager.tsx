@@ -14,6 +14,7 @@ declare let perform: any;
 
 interface Props extends IProps {
   path: boolean;
+  sortFieldName: string;
 }
 
 interface State extends IState {
@@ -35,7 +36,8 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  path: false
+  path: false,
+  sortFieldName: 'name'
 });
 
 class HTMLManager extends Base<Props, State> {
@@ -60,8 +62,8 @@ class HTMLManager extends Base<Props, State> {
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (reference.id == 'delete') {
     		    if (element.tag.id == 'index') {
-    		    	alert('You cannot delete home page.');
-    		    	return;
+	    		    	alert('You cannot delete home page.');
+	    		    	return;
     		    }
     		    
     		    element.tag.state = 'delete';
@@ -214,6 +216,12 @@ class HTMLManager extends Base<Props, State> {
             customClassName: 'delete',
             nodes: []
         }];
+        
+    		if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
+    				this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
+    					return (a[this.props.sortFieldName] < b[this.props.sortFieldName]) ? -1 : 1;
+    				});
+    		}
         
         let items = this.state.extensionValues[this.props.watchingExtensionNames[0]];
         let editingID = this.state.extensionValues[this.props.watchingExtensionNames[1]];
