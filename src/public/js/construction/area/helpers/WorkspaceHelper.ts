@@ -141,6 +141,13 @@ var WorkspaceHelper = {
       
       document.body.outerHTML = page.body.join('\n');
       
+      for (let key of BACKEND_DATA_EXTENSIONS) {
+      	delete InternalProjectSettings[key];
+      	if (page.extensions[key]) {
+      		InternalProjectSettings[key] = page.extensions[key];
+      	}
+      }
+      
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
       //
@@ -253,7 +260,6 @@ var WorkspaceHelper = {
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
         page.extensions[key] = InternalProjectSettings[key];
-        delete InternalProjectSettings[key];
       }
       
       page.notations = SchemaHelper.generateTreeOfDotNotations();
