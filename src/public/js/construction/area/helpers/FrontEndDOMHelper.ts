@@ -326,16 +326,16 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}})`);
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}})`);
           
         	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation.split('[')[0]}', event, ((results: any) => { this.manipulate('${reactClassComposingInfoGUID}', '${cumulatedDotNotation.split('[')[0]}', results); }).bind(this)); }).bind(this)}`);
         }
         
         if (reactClassComposingInfoGUID) {
         	for (let customEvent of customEvents) {
-        		executions.push(`if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}')) {
-  HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}').addEventListener('${customEvent[0]}', '${customEvent[1]}');
-}
+        		executions.push(`    if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}')) {
+      HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}').addEventListener('${customEvent[0]}', '${customEvent[1]}');
+    }
 `);
         	}
         }
