@@ -306,7 +306,7 @@ ${rootScript}`;
             			if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
 		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              } else {
-		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'custom-event-').toLowerCase() + '={this.' + FUNCTION_NAME + '.bind(this)}');
+		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'data-event-').toLowerCase() + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              }
 	              }
               } else {
