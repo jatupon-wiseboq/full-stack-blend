@@ -176,7 +176,7 @@ ${rootScript}`;
 	      }
 	      
 	      let innerHTML = HTMLHelper.getAttribute(element, 'internal-fsb-inner-html') || '';
-        if (innerHTML.trim() != '')
+        if (innerHTML.trim() != '') {
           dangerouslySetInnerHTML = true; 
           
         	let index = _attributes.findIndex(attribute => (attribute.name == 'dangerouslySetInnerHTML'));
