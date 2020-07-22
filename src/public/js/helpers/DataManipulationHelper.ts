@@ -93,36 +93,30 @@ const DataManipulationHelper = {
 						params: params
 					}
 				});
-	  		if (button.getAttribute('data-event-submitting')(event) === false) {
-	  			return;
-	  		}
+				button.dispatchEvent(event);
 	  	}
 	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
 	  		.then((json) => {
-	  			if (button && button.getAttribute('data-event-submitted')) {
+	  			if (button) {
 						const event = new CustomEvent('submitted', {
 							detail: {
 								params: params,
 								results: json
 							}
 						});
-						if (button.getAttribute('data-event-submitted')(event) === false) {
-							return;
-						}
+						button.dispatchEvent(event);
 					}
 	  			
 	  			if (json.success) {
-	  				if (button && button.getAttribute('data-event-success')) {
+	  				if (button) {
 							const event = new CustomEvent('success', {
 								detail: {
 									params: params,
 									results: json
 								}
 							});
-							if (button.getAttribute('data-event-success')(event) === false) {
-								return;
-							}
+							button.dispatchEvent(event);
 						}
 	  				
 	  				if (json.redirect) {
@@ -135,16 +129,14 @@ const DataManipulationHelper = {
   	  				}
 	  				}
 	  			} else {
-	  				if (button && button.getAttribute('data-event-failed')) {
+	  				if (button) {
 							const event = new CustomEvent('failed', {
 								detail: {
 									params: params,
 									results: json
 								}
 							});
-							if (button.getAttribute('data-event-failed')(event) === false) {
-								return;
-							}
+							button.dispatchEvent(event);
 						}
 	  				
 	  				if (json.error) {
