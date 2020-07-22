@@ -51,10 +51,15 @@ var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
     WorkspaceHelper.saveWorkspaceData();
     
+    let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
+    for (let key of BACKEND_DATA_EXTENSIONS) {
+      delete clonedInternalProjectSettings[key];
+    }
+    
     return Object.assign(
     	{
 	    	version: version,
-	      globalSettings: InternalProjectSettings,
+	      globalSettings: clonedInternalProjectSettings,
 	      sites: InternalSites,
 	      components: InternalComponents,
 	      popups: InternalPopups,
