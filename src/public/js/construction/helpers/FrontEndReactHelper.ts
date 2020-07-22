@@ -64,6 +64,7 @@ const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper.js';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
 // <---Auto[Import]// Auto[Declare]--->
 
