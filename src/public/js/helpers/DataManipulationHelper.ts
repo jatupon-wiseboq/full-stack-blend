@@ -93,9 +93,8 @@ const DataManipulationHelper = {
 						params: params
 					}
 				});
-				if (button.dispatchEvent(event) === false) {
-					return;
-				}
+				button.dispatchEvent(event);
+				if (event.isDefaultPrevented()) return;
 	  	}
 	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
@@ -107,9 +106,8 @@ const DataManipulationHelper = {
 								results: json
 							}
 						});
-						if (button.dispatchEvent(event) === false) {
-							return;
-						}
+						button.dispatchEvent(event);
+						if (event.isDefaultPrevented()) return;
 					}
 	  			
 	  			if (json.success) {
@@ -120,9 +118,8 @@ const DataManipulationHelper = {
 									results: json
 								}
 							});
-							if (button.dispatchEvent(event) === false) {
-								return;
-							}
+							button.dispatchEvent(event);
+							if (event.isDefaultPrevented()) return;
 						}
 	  				
 	  				if (json.redirect) {
@@ -142,9 +139,8 @@ const DataManipulationHelper = {
 									results: json
 								}
 							});
-							if (button.dispatchEvent(event) === false) {
-								return;
-							}
+							button.dispatchEvent(event);
+							if (event.isDefaultPrevented()) return;
 						}
 	  				
 	  				if (json.error) {
