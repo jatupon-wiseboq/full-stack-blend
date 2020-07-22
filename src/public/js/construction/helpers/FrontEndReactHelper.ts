@@ -38,6 +38,13 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   protected initialize(): void {
   }
   
+  protected componentDidMount(): void {
+  	this.register();
+  }
+  
+  protected componentWillUnmount(): void {
+  }
+  
   // Providing data array base on dot notation:
   // 
   protected getDataFromNotation(notation: string, inArray: boolean=false): any {
@@ -82,6 +89,9 @@ class KlassA extends Base {
     
     this.initialize();
   }
+  
+  register() {
+  }
   // <---Auto[ClassBegin]
   
   // Auto[Merging]--->
@@ -116,7 +126,6 @@ const LOAD_BEGIN = `super(props);
     this.state = CodeHelper.clone(DefaultState);
     `;
 const LOAD_END = `
-    this.initialize();
   }
   // <---Auto[ClassBegin]`;
 
