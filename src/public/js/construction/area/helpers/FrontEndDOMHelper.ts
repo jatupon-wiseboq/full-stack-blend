@@ -185,7 +185,7 @@ ${rootScript}`;
         	} else {
         		_attributes.push({
         			name: 'dangerouslySetInnerHTML',
-        			value: `{{__html: ${JSON.stringify(innerHTML)}}}`;
+        			value: `{{__html: ${JSON.stringify(innerHTML)}}}`
         		});
         	}
         }
