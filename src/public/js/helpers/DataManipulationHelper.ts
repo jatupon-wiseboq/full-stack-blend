@@ -87,40 +87,40 @@ const DataManipulationHelper = {
 	  	params['notation'] = notation;
 	  	
 	  	const button = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', guid);
-	  	if (button && button.getAttribute('custom-event-submitting')) {
-	  		const event = new CustomEvent('success', {
+	  	if (button && button.getAttribute('data-event-submitting')) {
+	  		const event = new CustomEvent('submitting', {
 					detail: {
 						params: params
 					}
 				});
-	  		if (button.getAttribute('custom-event-submitting')(event) === false) {
+	  		if (button.getAttribute('data-event-submitting')(event) === false) {
 	  			return;
 	  		}
 	  	}
 	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
 	  		.then((json) => {
-	  			if (button && button.getAttribute('custom-event-submitted')) {
-						const event = new CustomEvent('success', {
+	  			if (button && button.getAttribute('data-event-submitted')) {
+						const event = new CustomEvent('submitted', {
 							detail: {
 								params: params,
 								results: json
 							}
 						});
-						if (button.getAttribute('custom-event-submitted')(event) === false) {
+						if (button.getAttribute('data-event-submitted')(event) === false) {
 							return;
 						}
 					}
 	  			
 	  			if (json.success) {
-	  				if (button && button.getAttribute('custom-event-success')) {
+	  				if (button && button.getAttribute('data-event-success')) {
 							const event = new CustomEvent('success', {
 								detail: {
 									params: params,
 									results: json
 								}
 							});
-							if (button.getAttribute('custom-event-success')(event) === false) {
+							if (button.getAttribute('data-event-success')(event) === false) {
 								return;
 							}
 						}
@@ -135,14 +135,14 @@ const DataManipulationHelper = {
   	  				}
 	  				}
 	  			} else {
-	  				if (button && button.getAttribute('custom-event-failed')) {
-							const event = new CustomEvent('success', {
+	  				if (button && button.getAttribute('data-event-failed')) {
+							const event = new CustomEvent('failed', {
 								detail: {
 									params: params,
 									results: json
 								}
 							});
-							if (button.getAttribute('custom-event-failed')(event) === false) {
+							if (button.getAttribute('data-event-failed')(event) === false) {
 								return;
 							}
 						}
