@@ -174,6 +174,21 @@ ${rootScript}`;
 	        	}
 	        }
 	      }
+	      
+	      let innerHTML = HTMLHelper.getAttribute(element, 'internal-fsb-inner-html') || '';
+        if (innerHTML.trim() != '')
+          dangerouslySetInnerHTML = true; 
+          
+        	let index = _attributes.findIndex(attribute => (attribute.name == 'dangerouslySetInnerHTML'));
+        	if (index != -1) {
+        		_attributes[index].value = `{{__html: ${JSON.stringify(innerHTML)}}}`;
+        	} else {
+        		_attributes.push({
+        			name: 'dangerouslySetInnerHTML',
+        			value: `{{__html: ${JSON.stringify(innerHTML)}}}`;
+        		});
+        	}
+        }
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
