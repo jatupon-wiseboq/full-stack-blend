@@ -332,7 +332,7 @@ ${rootScript}`;
         }
         
         if (reactClassComposingInfoGUID) {
-        	for (let customEvent in customEvents) {
+        	for (let customEvent of customEvents) {
         		executions.push(`if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}')) {
   HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}').addEventListener('${customEvent[0]}', '${customEvent[1]}');
 }
