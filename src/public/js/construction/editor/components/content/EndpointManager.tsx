@@ -155,7 +155,7 @@ class EndpointManager extends Base<Props, State> {
     </head>
     <body${combinedInlineBodyStyle}>
       ${combinedHTMLTags}
-      <script type="text/javascript" src="//staging.stackblend.com/js/Embed.bundle.js"></script>
+      <script type="text/javascript" src="/js/Embed.bundle.js"></script>
       <script type="text/javascript">
       ${compiledCombinedMinimalFeatureScripts}
       </script>
