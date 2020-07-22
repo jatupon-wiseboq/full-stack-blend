@@ -5,6 +5,10 @@ import '../generic/RadioButtonPicker.js';
 import * as CONSTANTS from '../../../Constants.js';
 
 let options = {
+		"onfsbsubmitting": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+		"onfsbsubmitted": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+		"onfsbfailed": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+		"onfsbsuccess": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
 		"onfsbclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
     "onfsbdblclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
     "onfsbmousedown": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,

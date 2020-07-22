@@ -127,6 +127,14 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
   .section-container
     .section-title
       | Front-End Events Binding
+    div(internal-fsb-for="hasParentReactComponent")
+      .section-subtitle(internal-fsb-for="internal-fsb-class:Button")
+        | Action
+      .section-body(internal-fsb-for="internal-fsb-class:Button")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmitting']}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmitted']}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfailed']}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsuccess']}")
     .section-subtitle
       | Mouse
     .section-body
