@@ -115,7 +115,7 @@ const MERGING_BOILERPLATE = `// Auto[Merging:Begin]--->
 
 const CLASS_END_BEGIN = `\n  // Auto[ClassEnd]--->`;
 const MERGE_END_BEGIN = `\n// Auto[Merging:End]--->`;
-const NO_PROPAGATION = `\n    return EventHelper.stopPropagation(event);`;
+const NO_PROPAGATION = `\n    return EventHelper.cancel(event);`;
 
 const DECLARATION_BEGIN = `DeclarationHelper.declare(`;
 const DECLARATION_END = `);\n// <---Auto[ClassEnd]`;
