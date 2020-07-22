@@ -87,13 +87,15 @@ const DataManipulationHelper = {
 	  	params['notation'] = notation;
 	  	
 	  	const button = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', guid);
-	  	if (button && button.getAttribute('data-event-submitting')) {
+	  	if (button) {
 	  		const event = new CustomEvent('submitting', {
 					detail: {
 						params: params
 					}
 				});
-				button.dispatchEvent(event);
+				if (button.dispatchEvent(event) === false) {
+					return;
+				}
 	  	}
 	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
@@ -105,7 +107,9 @@ const DataManipulationHelper = {
 								results: json
 							}
 						});
-						button.dispatchEvent(event);
+						if (button.dispatchEvent(event) === false) {
+							return;
+						}
 					}
 	  			
 	  			if (json.success) {
@@ -116,7 +120,9 @@ const DataManipulationHelper = {
 									results: json
 								}
 							});
-							button.dispatchEvent(event);
+							if (button.dispatchEvent(event) === false) {
+								return;
+							}
 						}
 	  				
 	  				if (json.redirect) {
@@ -136,7 +142,9 @@ const DataManipulationHelper = {
 									results: json
 								}
 							});
-							button.dispatchEvent(event);
+							if (button.dispatchEvent(event) === false) {
+								return;
+							}
 						}
 	  				
 	  				if (json.error) {
