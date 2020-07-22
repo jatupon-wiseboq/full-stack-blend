@@ -74,9 +74,45 @@ const DataManipulationHelper = {
 	  	params['action'] = action;
 	  	params['notation'] = notation;
 	  	
+	  	const button = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', guid);
+	  	if (button && button.getAttribute('custom-event-submitting')) {
+	  		const event = new CustomEvent('success', {
+					detail: {
+						params: params
+					}
+				});
+	  		if (button.getAttribute('custom-event-submitting')(event) === false) {
+	  			return;
+	  		}
+	  	}
+	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
 	  		.then((json) => {
+	  			if (button && button.getAttribute('custom-event-submitted')) {
+						const event = new CustomEvent('success', {
+							detail: {
+								params: params,
+								results: json
+							}
+						});
+						if (button.getAttribute('custom-event-submitted')(event) === false) {
+							return;
+						}
+					}
+	  			
 	  			if (json.success) {
+	  				if (button && button.getAttribute('custom-event-success')) {
+							const event = new CustomEvent('success', {
+								detail: {
+									params: params,
+									results: json
+								}
+							});
+							if (button.getAttribute('custom-event-success')(event) === false) {
+								return;
+							}
+						}
+	  				
 	  				if (json.redirect) {
 	  				  window.location = json.redirect;
 	  				} else {
@@ -87,6 +123,18 @@ const DataManipulationHelper = {
   	  				}
 	  				}
 	  			} else {
+	  				if (button && button.getAttribute('custom-event-failed')) {
+							const event = new CustomEvent('success', {
+								detail: {
+									params: params,
+									results: json
+								}
+							});
+							if (button.getAttribute('custom-event-failed')(event) === false) {
+								return;
+							}
+						}
+	  				
 	  				if (json.error) {
 	  					console.log(json.error);
 	  					alert(json.error);
