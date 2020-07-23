@@ -79,10 +79,11 @@ const DataManipulationHelper = {
 	  		const event = new CustomEvent('submitting', {
 					detail: {
 						params: params
-					}
+					},
+					cancelable: true
 				});
 				button.dispatchEvent(event);
-				if (event.isDefaultPrevented()) return;
+				if (event.defaultPrevented) return;
 	  	}
 	  	
 	  	RequestHelper.post((registeredEndpoint || `${location.protocol}//${location.host}`) + (currentPath || `${location.pathname}`), params)
@@ -92,10 +93,11 @@ const DataManipulationHelper = {
 							detail: {
 								params: params,
 								results: json
-							}
+							},
+							cancelable: true
 						});
 						button.dispatchEvent(event);
-						if (event.isDefaultPrevented()) return;
+						if (event.defaultPrevented) return;
 					}
 	  			
 	  			if (json.success) {
@@ -104,10 +106,11 @@ const DataManipulationHelper = {
 								detail: {
 									params: params,
 									results: json
-								}
+								},
+								cancelable: true
 							});
 							button.dispatchEvent(event);
-							if (event.isDefaultPrevented()) return;
+							if (event.defaultPrevented) return;
 						}
 	  				
 	  				if (json.redirect) {
@@ -125,10 +128,11 @@ const DataManipulationHelper = {
 								detail: {
 									params: params,
 									results: json
-								}
+								},
+								cancelable: true
 							});
 							button.dispatchEvent(event);
-							if (event.isDefaultPrevented()) return;
+							if (event.defaultPrevented) return;
 						}
 	  				
 	  				if (json.error) {
