@@ -232,7 +232,11 @@ var ManipulationHelper = {
                 if (nextReusablePresetName != null) {
                   found = true;
                   StylesheetHelper.setStylesheetDefinition(presetId, nextReusablePresetName, HTMLHelper.getAttribute(selectingElement, 'style') || '');
-                  HTMLHelper.removeAttribute(selectingElement, 'style');
+                  if (HTMLHelper.hasAttribute(selectingElement, 'internal-fsb-reusable-preset-name')) {
+                  	selectingElement.setAttribute('style', '-fsb-empty');
+                  } else {
+                  	HTMLHelper.removeAttribute(selectingElement, 'style');
+                  }
                 }
               } else {
                 if (nextReusablePresetName == null) {
