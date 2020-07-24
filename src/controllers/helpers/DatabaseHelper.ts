@@ -248,19 +248,21 @@ const DatabaseHelper = {
 		          if (schema.columns[key].required && (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null)) {
 		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
 		          } else {
-		            switch (schema.columns[key].fieldType) {
-		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.columns[key].value.toString())))
-		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.columns[key].value = parseFloat(row.columns[key].value.toString());
-		                break;
-		              case FieldType.Boolean:
-		                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
-		                break;
-		              case FieldType.String:
-		                row.columns[key].value = row.columns[key].value.toString();
-		                break;
-		            }
+		          	if (row.columns[key]) {
+			            switch (schema.columns[key].fieldType) {
+			              case FieldType.Number:
+			                if (isNaN(parseFloat(row.columns[key].value.toString())))
+			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+			                row.columns[key].value = parseFloat(row.columns[key].value.toString());
+			                break;
+			              case FieldType.Boolean:
+			                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
+			                break;
+			              case FieldType.String:
+			                row.columns[key].value = row.columns[key].value.toString();
+			                break;
+			            }
+			          }
 		          }
 		        }
 		        break;
@@ -269,20 +271,22 @@ const DatabaseHelper = {
 		          if (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null) {
 		            /* void */
 		          } else {
-		            switch (schema.columns[key].fieldType) {
-		              case FieldType.AutoNumber:
-		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.columns[key].value.toString())))
-		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.columns[key].value = parseFloat(row.columns[key].value.toString());
-		                break;
-		              case FieldType.Boolean:
-		                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
-		                break;
-		              case FieldType.String:
-		                row.columns[key].value = row.columns[key].value.toString();
-		                break;
-		            }
+		          	if (row.columns[key]) {
+			            switch (schema.columns[key].fieldType) {
+			              case FieldType.AutoNumber:
+			              case FieldType.Number:
+			                if (isNaN(parseFloat(row.columns[key].value.toString())))
+			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+			                row.columns[key].value = parseFloat(row.columns[key].value.toString());
+			                break;
+			              case FieldType.Boolean:
+			                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
+			                break;
+			              case FieldType.String:
+			                row.columns[key].value = row.columns[key].value.toString();
+			                break;
+			            }
+			          }
 		          }
 		        }
 		        break;
