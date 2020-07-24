@@ -67,12 +67,12 @@ class Base extends React.Component {
     switch (action) {
       case 'insert':
         for (let result of results) {
-          data.rows.push(result);
+          data.push(result);
         }
         break;
       case 'update':
         for (let result of results) {
-          data.rows = [...data.rows].map((row) => {
+          data = [...data].map((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
                 if (row.keys[key].value != result.keys[key].value) {
@@ -86,7 +86,7 @@ class Base extends React.Component {
         break;
       case 'delete':
         for (let result of results) {
-          data.rows = data.rows.filter((row) => {
+          data = data.filter((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
                 if (row.keys[key].value != result.keys[key].value) return true;
