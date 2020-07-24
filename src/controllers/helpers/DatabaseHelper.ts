@@ -245,7 +245,7 @@ const DatabaseHelper = {
 		    switch (action) {
 		      case ActionType.Insert:
 		        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
-		          if (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null) {
+		          if (schema.columns[key].required && (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null)) {
 		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
 		          } else {
 		            switch (schema.columns[key].fieldType) {
@@ -452,7 +452,7 @@ const DatabaseHelper = {
   					const hash = {};
   					
   					for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key)) {
+  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
   					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
   					      hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
   					    }
@@ -460,7 +460,7 @@ const DatabaseHelper = {
   					}
   					
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
+  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
   					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
   					      hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
   					    }
