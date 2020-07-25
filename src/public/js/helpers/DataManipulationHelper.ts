@@ -67,7 +67,19 @@ const DataManipulationHelper = {
 	  		}
 	  		
 	  		if (element) {
-	  			params[field] = element.value;
+	  			switch (HTMLHelper.getAttribute(element, 'type')) {
+	  				case 'radio':
+	  					if (element.checked) {
+	  						params[field] = element.value;
+	  					}
+	  					break;
+	  				case 'checkbox':
+	  					params[field] = element.checked ? '1' : '0';
+	  					break;
+  					default:
+  						params[field] = element.value;
+  						break;
+  				}
 	  		}
 	  	}
 	  	
