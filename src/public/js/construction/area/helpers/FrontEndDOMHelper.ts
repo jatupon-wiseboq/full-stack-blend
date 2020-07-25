@@ -330,7 +330,7 @@ ${rootScript}`;
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
-          	for (let submitControl of submitControls) {
+          	for (let submitControl of submitControls.split(' ')) {
           		let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
           		if (control) {
           			let splited = (HTMLHelper.getAttribute(control, 'internal-fsb-react-data') || '').split('.');
