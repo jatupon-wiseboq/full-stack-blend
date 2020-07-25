@@ -328,7 +328,24 @@ ${rootScript}`;
         if (submitControls) {
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}});`);
           
-        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${cumulatedDotNotation.split('[')[0]}', event, ((results: any) => { this.manipulate('${reactClassComposingInfoGUID}', '${cumulatedDotNotation.split('[')[0]}', results); }).bind(this)); }).bind(this)}`);
+          let notation = cumulatedDotNotation.split('[')[0];
+          if (!notation) {
+          	let parentReactElements = HTMLHelper.findAllParentsInClassName("internal-fsb-element", element);
+          	for (let parentReactElement of parentReactElements) {
+          		let elements = HTMLHelper.getElementsByAttribute('internal-fsb-react-data', parentReactElement);
+          		for (let element of elements) {
+          			let splited = HTMLHelper.getAttribute(element, 'internal-fsb-react-data').split('.');
+          			if (splited.length > 1) {
+          				splited.pop();
+          				notation = splited.join('.');
+          				break;
+          			}
+          		}
+          		if (notation) break;z
+          	}
+          }
+          
+        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results: any) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)}`);
         }
         
         if (reactClassComposingInfoGUID) {
