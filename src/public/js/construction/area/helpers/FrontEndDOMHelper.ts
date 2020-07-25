@@ -341,7 +341,7 @@ ${rootScript}`;
           				break;
           			}
           		}
-          		if (notation) break;z
+          		if (notation) break;
           	}
           }
           
