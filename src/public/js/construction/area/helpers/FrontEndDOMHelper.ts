@@ -330,11 +330,10 @@ ${rootScript}`;
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
-          	let parentReactElements = HTMLHelper.findAllParentsInClassName("internal-fsb-element", element);
-          	for (let parentReactElement of parentReactElements) {
-          		let elements = HTMLHelper.getElementsByAttribute('internal-fsb-react-data', parentReactElement);
-          		for (let element of elements) {
-          			let splited = HTMLHelper.getAttribute(element, 'internal-fsb-react-data').split('.');
+          	for (let submitControl of submitControls) {
+          		let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
+          		if (control) {
+          			let splited = (HTMLHelper.getAttribute(control, 'internal-fsb-react-data') || '').split('.');
           			if (splited.length > 1) {
           				splited.pop();
           				notation = splited.join('.');
