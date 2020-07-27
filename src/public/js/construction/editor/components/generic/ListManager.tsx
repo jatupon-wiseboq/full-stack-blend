@@ -11,6 +11,7 @@ declare let perform: any;
 
 interface Props extends IProps {
   onUpdate(node: ITreeNode);
+  onStartDragging(node: ITreeNode);
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   onInsertOptionVisibleChanged(value: boolean);
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
@@ -51,6 +52,12 @@ class ListManager extends Base<Props, State> {
         }
     }
     
+    private onStartDragging(node: ITreeNode) {
+    	if (this.props.onStartDragging != null) {
+				this.props.onStartDragging(node);
+			}
+    }
+    
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (this.props.onDragged) {
             this.props.onDragged(element, reference, direction);
@@ -72,7 +79,7 @@ class ListManager extends Base<Props, State> {
     render() {
       return (
       	<div className={"list-manager-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')}>
-      	  <FullStackBlend.Controls.Tree customDraggerClassName={this.props.customDraggerClassName} enableDragging={true} draggableAfterSelected={false} nodes={this.props.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+      	  <FullStackBlend.Controls.Tree customDraggerClassName={this.props.customDraggerClassName} enableDragging={true} draggableAfterSelected={false} nodes={this.props.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
             <div internal-fsb-event-no-propagate="mousedown">
             	{this.props.children}
             </div>

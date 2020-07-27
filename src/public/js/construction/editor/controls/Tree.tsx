@@ -9,6 +9,7 @@ declare let ReactDOM: any;
 interface IProps {
   nodes: [ITreeNode];
   onUpdate(node: ITreeNode);
+  onStartDragging(node: ITreeNode);
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
   enableDragging: boolean;
@@ -46,6 +47,10 @@ class Tree extends React.Component<IProps, IState> {
     private onStartDragging(node: ITreeNode) {
     	this.state.currentDraggingNode = node;
     	this.setDragging(true, [node]);
+    	
+    	if (this.props.onStartDragging != null) {
+				this.props.onStartDragging(node);
+			}
     	
     	this.setState({
     	  isDragging: true

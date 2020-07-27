@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {EventHelper} from '../../../helpers/EventHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
@@ -56,7 +57,13 @@ class HTMLManager extends Base<Props, State> {
     }
     
     private onUpdate(node: ITreeNode) {
-      
+    }
+    
+    private onStartDragging(node: ITreeNode) {
+    		let container = ReactDOM.findDOMNode(this.refs.listManager);
+    		let deleteElement = HTMLHelper.getElementByClassName('delete', container);
+    		
+    		deleteElement.style.top = (container.firstChild.scrollTop + 3) + 'px';
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
@@ -271,7 +278,7 @@ class HTMLManager extends Base<Props, State> {
     
     render() {
         return (
-            <FullStackBlend.Components.ListManager customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+            <FullStackBlend.Components.ListManager ref="listManager" customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
                     <div className="section-title">{(this.state.isAdding) ? `New ${this.getCategoryName()}` : `Update ${this.getCategoryName()}`}</div>
                     <div className="section-subtitle">Title</div>
