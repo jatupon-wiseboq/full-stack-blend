@@ -138,7 +138,7 @@ var HTMLHelper = {
     }
   },
   isForChildren: (element: HTMLElement, styleAttributeValue: string=null) => {
-    return (element && element.getAttribute && (element.getAttribute('style') == '-fsb-empty' || HTMLHelper.getInlineStyle(element.getAttribute('style'), '-fsb-for-children') == 'true') && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
+    return (element && element.getAttribute && element.getAttribute('style') == '-fsb-empty' && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
   },
   getAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute) return null;
@@ -154,7 +154,7 @@ var HTMLHelper = {
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {    
   	if (!element || !element.getAttribute || !element.setAttribute) return;
-  	if (name == 'style' && HTMLHelper.isForChildren(element)) {
+  	if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
   		element.setAttribute(name, '-fsb-empty');
   		return element.firstChild.setAttribute(name, value);
   	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
