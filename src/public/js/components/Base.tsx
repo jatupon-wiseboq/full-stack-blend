@@ -108,6 +108,8 @@ class Base extends React.Component {
         /* handled */
         break;
     }
+    
+    this.forceUpdate();
   }
   
   protected render() { }
