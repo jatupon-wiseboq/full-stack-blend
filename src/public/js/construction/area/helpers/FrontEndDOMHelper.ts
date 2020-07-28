@@ -150,6 +150,11 @@ ${rootScript}`;
 	        if (consumableTagItem) {
 	          dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
 	          
+	          if (tag == 'input' && ['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+	          	consumableTagItem = CodeHelper.clone(consumableTagItem);
+	          	consumableTagItem[1] = 'value';
+	          }
+	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
 	        		_attributes[index].value = consumableTagItem[2] + `data` + consumableTagItem[3];
