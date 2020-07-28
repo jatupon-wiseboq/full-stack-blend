@@ -186,7 +186,7 @@ class EndpointManager extends Base<Props, State> {
           	this.createBackEndController(arrayOfControllerScripts, () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
               	
-              	let nextFrontEndComponentsBlobSHADict = nextProjectData.frontEndComponentsBlobSHADict || {};
+              	let nextFrontEndComponentsBlobSHADict = Object.assign({}, nextProjectData.frontEndComponentsBlobSHADict || {});
               	Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
               	
                 this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
