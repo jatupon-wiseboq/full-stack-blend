@@ -369,7 +369,6 @@ ${rootScript}`;
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
-          styles = null;
           classes = CodeHelper.getInternalClasses(classes);
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
