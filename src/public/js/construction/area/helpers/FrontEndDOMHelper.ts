@@ -338,14 +338,12 @@ ${rootScript}`;
           	for (let submitControl of submitControls.split(' ')) {
           		let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
           		if (control) {
-          			let splited = (HTMLHelper.getAttribute(control, 'internal-fsb-react-data') || '').split('.');
-          			if (splited.length > 1) {
-          				splited.pop();
-          				notation = splited.join('.');
+          			let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
+          			if (dataSourceName) {
+          				notation = dataSourceName;
           				break;
           			}
           		}
-          		if (notation) break;
           	}
           }
           
