@@ -3,6 +3,7 @@
 
 import {RequestHelper} from './RequestHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
+import {EventHelper} from './EventHelper.js';
 
 declare let window: any;
 
@@ -56,32 +57,44 @@ const DataManipulationHelper = {
   		const action = actionManipulatorsInfoDict[guid];
   		const options = optionsManipulatorsInfoDict[guid];
   		
-	  	for (const field of fields) {
-	  		let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', field) as any;
-	  		
-	  		if (element.tagName != 'INPUT') {
-	  			element = element.firstChild;
-	  			while (element && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) == -1) {
-	  				element = element.nextSibling;
-	  			}
-	  		}
-	  		
-	  		if (element) {
-	  			switch (HTMLHelper.getAttribute(element, 'type')) {
-	  				case 'radio':
-	  					if (element.checked) {
+  		let current = EventHelper.getOriginalElement(event);
+  		let foundAll = false;
+  		
+  		while (!foundAll && current != null && current != document) {
+  			foundAll = true;
+  			
+  			for (const field of fields) {
+		  		let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
+		  		
+		  		if (element) {
+		  			if (element.tagName != 'INPUT') {
+			  			element = element.firstChild;
+			  			while (element && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) == -1) {
+			  				element = element.nextSibling;
+			  			}
+			  		}
+		  		
+		  			switch (HTMLHelper.getAttribute(element, 'type')) {
+		  				case 'radio':
+		  					if (element.checked) {
+		  						params[field] = element.value;
+		  					}
+		  					break;
+		  				case 'checkbox':
+		  					params[field] = element.checked ? '1' : '0';
+		  					break;
+	  					default:
 	  						params[field] = element.value;
-	  					}
-	  					break;
-	  				case 'checkbox':
-	  					params[field] = element.checked ? '1' : '0';
-	  					break;
-  					default:
-  						params[field] = element.value;
-  						break;
-  				}
-	  		}
-	  	}
+	  						break;
+	  				}
+		  		} else {
+		  			foundAll = false;
+		  			break;
+		  		}
+		  	}
+  			
+  			current = current.parentNode;
+  		}
 	  	
 	  	params['action'] = action;
 	  	params['notation'] = notation;
