@@ -158,7 +158,7 @@ ${rootScript}`;
 		          	consumableTagItem = CodeHelper.clone(consumableTagItem);
 		          	consumableTagItem[1] = 'checked';
 		          	consumableTagItem[2] = '{';
-		          	consumableTagItem[3] = ' === \'' + HTMLHelper.getAttribute(element, 'value') + '\'}';
+		          	consumableTagItem[3] = ' == \'' + HTMLHelper.getAttribute(element, 'value') + '\'}';
 		          } else if (['checkbox'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
 		          	consumableTagItem = CodeHelper.clone(consumableTagItem);
 		          	consumableTagItem[1] = 'checked';
