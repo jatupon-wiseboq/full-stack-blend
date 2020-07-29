@@ -86,14 +86,18 @@ class Base extends React.Component {
         break;
       case 'delete':
         for (let result of results) {
-          data = data.filter((row) => {
+          let collection = data.filter((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
-                if (row.keys[key].value != result.keys[key].value) return true;
+                if (row.keys[key].value != result.keys[key].value) return false;
               }
             }
-            return false;
+            return true;
           });
+          for (let item of collection) {
+          	let index = data.indexOf(item);
+          	data.splice(index, 1);
+          }
         }
         break;
       case 'retrieve':
