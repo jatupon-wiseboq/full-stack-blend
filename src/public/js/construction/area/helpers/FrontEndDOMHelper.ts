@@ -150,10 +150,22 @@ ${rootScript}`;
 	        if (consumableTagItem) {
 	          dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
 	          
-	          if (tag == 'input' && ['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
-	          	consumableTagItem = CodeHelper.clone(consumableTagItem);
-	          	consumableTagItem[1] = 'value';
-	          }
+	          if (tag == 'input') {
+		          if (['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+		          	consumableTagItem = CodeHelper.clone(consumableTagItem);
+		          	consumableTagItem[1] = 'value';
+		          } else if (['radio'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+		          	consumableTagItem = CodeHelper.clone(consumableTagItem);
+		          	consumableTagItem[1] = 'checked';
+		          	consumableTagItem[2] = '{';
+		          	consumableTagItem[3] = ' === \'' + HTMLHelper.getAttribute(element, 'value') + '\'}';
+		          } else if (['checkbox'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+		          	consumableTagItem = CodeHelper.clone(consumableTagItem);
+		          	consumableTagItem[1] = 'checked';
+		          	consumableTagItem[2] = '{';
+		          	consumableTagItem[3] = ' === true}';
+		          }
+		        }
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
