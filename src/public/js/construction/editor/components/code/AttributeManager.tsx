@@ -61,7 +61,7 @@ class AttributeManager extends Base<Props, State> {
         
         let hash = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         for (let name in hash) {
-            if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name.toLowerCase().trim()) != -1) continue;
+            // if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name.toLowerCase().trim()) != -1) continue;
             if (hash.hasOwnProperty(name)) {
                 if (CAMEL_OF_EVENTS_DICTIONARY[name]) continue;
                 
@@ -147,11 +147,11 @@ class AttributeManager extends Base<Props, State> {
                 this.forceUpdate();
                 return EventHelper.cancel(event);
             }
-            if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(this.state.name.toLowerCase().trim()) != -1) {
+            /* if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(this.state.name.toLowerCase().trim()) != -1) {
                 this.state.nameInputFailedValidationMessage = "Please configure this attribute via user interface.";
                 this.forceUpdate();
                 return EventHelper.cancel(event);
-            }
+            } */
             if (CAMEL_OF_EVENTS_DICTIONARY[this.state.name.toLowerCase().trim()]) {
                 this.state.nameInputFailedValidationMessage = "This is reserved for internal use.";
                 this.forceUpdate();
