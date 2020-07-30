@@ -34,6 +34,8 @@ export const updateContent = (request: Request, response: Response) => {
   				throw new Error(`The specified path isn't under ${rootPath}.`);
   			}
   	  }
+  	  
+  	  clearRecentError();
 			
 			response.json({
 				success: true,
