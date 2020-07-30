@@ -81,7 +81,7 @@ app.use(passport.session());
 app.use(flash());
 app.use(lusca.xframe("SAMEORIGIN"));
 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
 	app.use(lusca.xframe("SAMEORIGIN"));
 }
 
