@@ -67,15 +67,15 @@ class Base extends React.Component {
     switch (action) {
       case 'insert':
         for (let result of results) {
-          data.rows.push(result);
+          data.push(result);
         }
         break;
       case 'update':
         for (let result of results) {
-          data.rows = [...data.rows].map((row) => {
+          data = [...data].map((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
-                if (row.keys[key].value != result.keys[key].value) {
+                if (row.keys[key] != result.keys[key]) {
                   return row;
                 }
               }
@@ -86,14 +86,18 @@ class Base extends React.Component {
         break;
       case 'delete':
         for (let result of results) {
-          data.rows = data.rows.filter((row) => {
+          let collection = data.filter((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
-                if (row.keys[key].value != result.keys[key].value) return true;
+                if (row.keys[key] != result.keys[key]) return false;
               }
             }
-            return false;
+            return true;
           });
+          for (let item of collection) {
+          	let index = data.indexOf(item);
+          	data.splice(index, 1);
+          }
         }
         break;
       case 'retrieve':
@@ -108,6 +112,8 @@ class Base extends React.Component {
         /* handled */
         break;
     }
+    
+    this.forceUpdate();
   }
   
   protected render() { }
