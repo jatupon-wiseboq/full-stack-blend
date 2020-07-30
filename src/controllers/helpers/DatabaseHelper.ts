@@ -470,19 +470,13 @@ const DatabaseHelper = {
   				  };
   				  
   				  for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key)) {
-  					    row.columns[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.columns[key] = record[key];
   					  }
   					}
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    row.keys[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.keys[key] = record[key];
   					  }
   					}
   					
@@ -633,19 +627,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in schema.columns) {
-	    					  if (schema.columns.hasOwnProperty(key)) {
-	    					    row.columns[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.columns[key] = record[key];
 	    					  }
 	    					}
 	    					for (const key in schema.keys) {
-	    					  if (schema.keys.hasOwnProperty(key)) {
-	    					    row.keys[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.keys[key] = record[key];
 	    					  }
 	    					}
 	    					
@@ -700,19 +688,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in baseSchema.columns) {
-	    					  if (baseSchema.columns.hasOwnProperty(key)) {
-	    					    row.columns[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.columns[key] = record[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
-	    					  if (baseSchema.keys.hasOwnProperty(key)) {
-	    					    row.keys[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.keys[key] = record[key];
 	    					  }
 	    					}
 	    					
@@ -786,20 +768,14 @@ const DatabaseHelper = {
   				  };
   				  
   				  for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key)) {
-  					    row.columns[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.columns[key] = record[key];
   					  }
   					}
   				  
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    row.keys[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.keys[key] = record[key];
   					  }
   					}
   					
