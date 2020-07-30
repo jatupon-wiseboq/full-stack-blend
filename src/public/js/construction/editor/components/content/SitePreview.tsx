@@ -111,7 +111,15 @@ class SitePreview extends Base<Props, State> {
 		    		
 		    		if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 		    		
-		    		RequestHelper.get("boilerplate.v1.zip", "blob").then(this.unzip.bind(this)).catch(this.close.bind(this));
+		    		let preview = ReactDOM.findDOMNode(this.refs.preview);
+        		let pages = this.state.extensionValues['pages'];
+		        let editingPageID = this.state.extensionValues['editingPageID'];
+		        pages = pages.filter(page => page.id == editingPageID);
+		        let PATH = pages && pages[0] && pages[0].path || null;
+		       	
+        		preview.setAttribute('url', `${ENDPOINT}${PATH}`);
+		    		
+		    		// RequestHelper.get("boilerplate.v1.zip", "blob").then(this.unzip.bind(this)).catch(this.close.bind(this));
 				} else {
 						if (this.state.display) HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 						
@@ -119,7 +127,7 @@ class SitePreview extends Base<Props, State> {
 				}
     }
     
-    private unzip(response) {
+    /* private unzip(response) {
     		this.currentKey = null;
 			  zip.createReader(new zip.BlobReader(response), ((zipReader) => {
 			    zipReader.getEntries(((entries) => {
@@ -219,18 +227,18 @@ class SitePreview extends Base<Props, State> {
           return `from '${token.match(STRIPPING_PATH_REGEX_LOCAL)[2]}'`;
         });
     		
-    		/* if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
-    		if (DEBUG_SITE_PREVIEW) console.log(externalStylesheets);
-    		if (DEBUG_SITE_PREVIEW) console.log('externalScripts');
-    		if (DEBUG_SITE_PREVIEW) console.log(externalScripts);
-    		if (DEBUG_SITE_PREVIEW) console.log('combinedStylesheet');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedStylesheet);
-    		if (DEBUG_SITE_PREVIEW) console.log('combinedHTMLTags');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedHTMLTags);
-    		if (DEBUG_SITE_PREVIEW) console.log('combinedMinimalFeatureScripts');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedMinimalFeatureScripts);
-    		if (DEBUG_SITE_PREVIEW) console.log('combinedExpandingFeatureScripts');
-    		if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts); */
+    		// if (DEBUG_SITE_PREVIEW) console.log('externalStylesheets');
+    		// if (DEBUG_SITE_PREVIEW) console.log(externalStylesheets);
+    		// if (DEBUG_SITE_PREVIEW) console.log('externalScripts');
+    		// if (DEBUG_SITE_PREVIEW) console.log(externalScripts);
+    		// if (DEBUG_SITE_PREVIEW) console.log('combinedStylesheet');
+    		// if (DEBUG_SITE_PREVIEW) console.log(combinedStylesheet);
+    		// if (DEBUG_SITE_PREVIEW) console.log('combinedHTMLTags');
+    		// if (DEBUG_SITE_PREVIEW) console.log(combinedHTMLTags);
+    		// if (DEBUG_SITE_PREVIEW) console.log('combinedMinimalFeatureScripts');
+    		// if (DEBUG_SITE_PREVIEW) console.log(combinedMinimalFeatureScripts);
+    		// if (DEBUG_SITE_PREVIEW) console.log('combinedExpandingFeatureScripts');
+    		// if (DEBUG_SITE_PREVIEW) console.log(combinedExpandingFeatureScripts);
         
         combinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
         let combinedMinimalFeatureScriptsURI = window.URL.createObjectURL(new Blob([combinedMinimalFeatureScripts]));
@@ -351,7 +359,7 @@ class SitePreview extends Base<Props, State> {
 				previewWindow.closeSitePreview = (() => {
 					this.close();
 				}).bind(this);
-    }
+    } */
     
     private close(error) {
         if (error && error.message) console.error(error.message);
