@@ -35,7 +35,7 @@ app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
-app.use(lusca.xframe("SAMEORIGIN"));
+app.use(lusca.xframe("ALLOW-FROM stackblend.com"));
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
     res.locals.user = req.user;
