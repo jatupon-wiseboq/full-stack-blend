@@ -486,21 +486,19 @@ var WorkspaceHelper = {
   	
   	return results;
   },
-  generateFrontEndCodeForAllPages: (clean: boolean=true) => {
+  generateFrontEndCodeForAllPages: () => {
     cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
     
-    let result = cacheOfGeneratedFrontEndCodeForAllPages;
-    if (clean) cacheOfGeneratedFrontEndCodeForAllPages = {};
-    
-    return result;
+    return cacheOfGeneratedFrontEndCodeForAllPages;
   },
-  generateBackEndCodeForAllPages: (clean: boolean=true) => {
+  generateBackEndCodeForAllPages: () => {
   	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
     
-    let result = cacheOfGeneratedBackEndCodeForAllPages;
-    if (clean) cacheOfGeneratedBackEndCodeForAllPages = {};
-    
-    return result;
+    return cacheOfGeneratedBackEndCodeForAllPages;
+ 	},
+ 	clearFullStackCodeForAllPages: () => {
+ 		cacheOfGeneratedFrontEndCodeForAllPages = {};
+ 		cacheOfGeneratedBackEndCodeForAllPages = {};
  	},
   getCommonExpandingFeatureScripts: () => {
   	let container = document.createElement('div');

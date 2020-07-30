@@ -188,8 +188,8 @@ class ProjectManager extends Base<Props, State> {
           if (DEBUG_GITHUB_UPLOADER) console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
-        		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData(false) || {};
-        		let constructionEditorData = this.generateWorkspaceData(false) || {};
+        		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
+        		let constructionEditorData = this.generateWorkspaceData() || {};
         		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
         		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
             let nextProjectData = {};
@@ -468,6 +468,8 @@ class ProjectManager extends Base<Props, State> {
   	                                alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
   	                                return;
   	                              }
+            
+            											constructionWindow.clearFullStackCodeForAllPages();
   	                              
   	                              alert('Your changes have been saved successfully.');
   	                            });

@@ -100,6 +100,9 @@ import {EditorHelper} from './helpers/EditorHelper.js';
   window.generateWorkspaceData = (() => {
   	return WorkspaceHelper.generateWorkspaceData();
   });
+  window.clearFullStackCodeForAllPages = (() => {
+  	return WorkspaceHelper.clearFullStackCodeForAllPages();
+  });
  	window.initializeWorkspaceData = ((data) => {
   	return WorkspaceHelper.initializeWorkspaceData(data);
   });
