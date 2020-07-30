@@ -32,6 +32,7 @@ var LayoutHelper = {
   		let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
   		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
   		let guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+  		let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -40,6 +41,7 @@ var LayoutHelper = {
   			nodes.push({
   				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
+  				customClassName: (reactMode) ? 'is-react-component' : '',
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
   				dropable: (isTableLayoutCell ||
