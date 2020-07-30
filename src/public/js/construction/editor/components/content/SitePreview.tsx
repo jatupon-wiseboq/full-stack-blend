@@ -128,7 +128,9 @@ class SitePreview extends Base<Props, State> {
     }
     
     public load() {
-        HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
+        this.setState({
+          loading: false
+        });
     }
     
     /* private unzip(response) {
