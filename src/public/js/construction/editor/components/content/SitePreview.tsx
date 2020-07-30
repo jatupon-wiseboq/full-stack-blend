@@ -117,7 +117,7 @@ class SitePreview extends Base<Props, State> {
 		        pages = pages.filter(page => page.id == editingPageID);
 		        let PATH = pages && pages[0] && pages[0].path || null;
 		       	
-        		preview.setAttribute('url', `${ENDPOINT}${PATH}`);
+        		preview.setAttribute('src', `${ENDPOINT}${PATH}`);
 		    		
 		    		// RequestHelper.get("boilerplate.v1.zip", "blob").then(this.unzip.bind(this)).catch(this.close.bind(this));
 				} else {
