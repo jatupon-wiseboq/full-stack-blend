@@ -75,7 +75,7 @@ class Base extends React.Component {
           data = [...data].map((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
-                if (row.keys[key].value != result.keys[key].value) {
+                if (row.keys[key] != result.keys[key]) {
                   return row;
                 }
               }
@@ -89,7 +89,7 @@ class Base extends React.Component {
           let collection = data.filter((row) => {
             for (let key in row.keys) {
               if (row.keys.hasOwnProperty(key)) {
-                if (row.keys[key].value != result.keys[key].value) return false;
+                if (row.keys[key] != result.keys[key]) return false;
               }
             }
             return true;
