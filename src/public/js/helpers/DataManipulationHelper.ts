@@ -77,7 +77,7 @@ const DataManipulationHelper = {
 		  					}
 		  					break;
 		  				case 'checkbox':
-		  					params[field] = element.checked ? '1' : '0';
+		  					params[field] = element.checked ? 'true' : 'false';
 		  					break;
 	  					default:
 	  						params[field] = element.value;
