@@ -27,8 +27,8 @@ const DataManipulationHelper = {
 			// Search HierarchicalDataColumn
 			// 
 			let column = (current.keys || {})[key] || (current.columns || {})[key];
-			if (column) {
-				return column.value;
+			if (column != undefined) {
+				return column;
 			} else {
 				return null;
 			}
