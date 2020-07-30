@@ -127,6 +127,10 @@ class SitePreview extends Base<Props, State> {
 				}
     }
     
+    public load() {
+        HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
+    }
+    
     /* private unzip(response) {
     		this.currentKey = null;
 			  zip.createReader(new zip.BlobReader(response), ((zipReader) => {
@@ -381,7 +385,7 @@ class SitePreview extends Base<Props, State> {
           .iframe-container
             .iframe-navigation-bar
             .iframe-body
-              iframe(ref="preview")
+              iframe(ref="preview", onLoad=this.load.bind(this))
           .loading-container(style={display: this.state.loading ? 'block' : 'none'})
             .linear-background
               .inter-left
