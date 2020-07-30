@@ -38,13 +38,9 @@ interface HierarchicalDataTable {
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
-  keys: {[Identifier: string]: HierarchicalDataColumn};
-  columns: {[Identifier: string]: HierarchicalDataColumn};
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
-}
-interface HierarchicalDataColumn {
-	name: string;
-  value: any;
 }
 interface HierarchicalDataFilter {
   name: string;
@@ -179,15 +175,9 @@ const DatabaseHelper = {
       if (!schema.keys[input.name] && !schema.columns[input.name])
         throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn\'t exist in the schema group '${schema.group}').`);
       if (schema.keys[input.name]) {
-        row.keys[input.name] = {
-          name: input.name,
-          value: input.value
-        };
+        row.keys[input.name] = input.value;
       } else {
-        row.columns[input.name] = {
-          name: input.name,
-          value: input.value
-        };
+        row.columns[input.name] = input.value;
       }
     }
     
@@ -196,20 +186,20 @@ const DatabaseHelper = {
 		    switch (action) {
 		      case ActionType.Insert:
 		        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
-		          if (!row.keys[key] || row.keys[key].value === undefined || row.keys[key].value === null) {
+		          if (row.keys[key] === undefined || row.keys[key] === null) {
 		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.keys[key].value.toString())))
+		                if (isNaN(parseFloat(row.keys[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+		                row.keys[key] = parseFloat(row.keys[key].toString());
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+		                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
 		                break;
 		              case FieldType.String:
-		                row.keys[key].value = row.keys[key].value.toString();
+		                row.keys[key] = row.keys[key].toString();
 		                break;
 		            }
 		          }
@@ -217,21 +207,21 @@ const DatabaseHelper = {
 		        break;
 		      case ActionType.Update:
 		      case ActionType.Delete:
-	          if (!row.keys[key] || row.keys[key].value === undefined || row.keys[key].value === null) {
+	          if (row.keys[key] === undefined || row.keys[key] === null) {
 	            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
 	          } else {
 	            switch (schema.keys[key].fieldType) {
 	              case FieldType.AutoNumber:
 	              case FieldType.Number:
-	                if (isNaN(parseFloat(row.keys[key].value.toString())))
+	                if (isNaN(parseFloat(row.keys[key].toString())))
 	                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-	                row.keys[key].value = parseFloat(row.keys[key].value.toString());
+	                row.keys[key] = parseFloat(row.keys[key].toString());
 	                break;
 	              case FieldType.Boolean:
-	                row.keys[key].value = (row.keys[key].value.toString() === "true" || row.keys[key].value.toString() === "1");
+	                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
 	                break;
 	              case FieldType.String:
-	                row.keys[key].value = row.keys[key].value.toString();
+	                row.keys[key] = row.keys[key].toString();
 	                break;
 	            }
 	          }
@@ -245,21 +235,21 @@ const DatabaseHelper = {
 		    switch (action) {
 		      case ActionType.Insert:
 		        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
-		          if (schema.columns[key].required && (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null)) {
+		          if (schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
 		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
 		          } else {
 		          	if (row.columns[key]) {
 			            switch (schema.columns[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.columns[key].value.toString())))
+			                if (isNaN(parseFloat(row.columns[key].toString())))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key].value = parseFloat(row.columns[key].value.toString());
+			                row.columns[key] = parseFloat(row.columns[key].toString());
 			                break;
 			              case FieldType.Boolean:
-			                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
+			                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
 			                break;
 			              case FieldType.String:
-			                row.columns[key].value = row.columns[key].value.toString();
+			                row.columns[key] = row.columns[key].toString();
 			                break;
 			            }
 			          }
@@ -268,22 +258,22 @@ const DatabaseHelper = {
 		        break;
 		      case ActionType.Update:
 		        if (schema.columns[key].required) {
-		          if (!row.columns[key] || row.columns[key].value === undefined || row.columns[key].value === null) {
+		          if (row.columns[key] === undefined || row.columns[key] === null) {
 		            /* void */
 		          } else {
 		          	if (row.columns[key]) {
 			            switch (schema.columns[key].fieldType) {
 			              case FieldType.AutoNumber:
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.columns[key].value.toString())))
+			                if (isNaN(parseFloat(row.columns[key].toString())))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key].value = parseFloat(row.columns[key].value.toString());
+			                row.columns[key] = parseFloat(row.columns[key].toString());
 			                break;
 			              case FieldType.Boolean:
-			                row.columns[key].value = (row.columns[key].value.toString() === "true" || row.columns[key].value.toString() === "1");
+			                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
 			                break;
 			              case FieldType.String:
-			                row.columns[key].value = row.columns[key].value.toString();
+			                row.columns[key] = row.columns[key].toString();
 			                break;
 			            }
 			          }
@@ -456,17 +446,17 @@ const DatabaseHelper = {
   					const hash = {};
   					
   					for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
+  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key] != undefined) {
   					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-  					      hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
+  					      hash[key] = input.rows[0].columns[key];
   					    }
   					  }
   					}
   					
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
+  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
   					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-  					      hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+  					      hash[key] = input.rows[0].keys[key];
   					    }
   					  }
   					}
@@ -480,19 +470,13 @@ const DatabaseHelper = {
   				  };
   				  
   				  for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key)) {
-  					    row.columns[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.columns[key] = record[key];
   					  }
   					}
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    row.keys[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.keys[key] = record[key];
   					  }
   					}
   					
@@ -541,13 +525,13 @@ const DatabaseHelper = {
   					const data = {};
   					
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
+  					    hash[key] = input.rows[0].keys[key];
   					  }
   					}
   					for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
-  					    data[key] = input.rows[0].columns[key].value;
+  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key] != undefined) {
+  					    data[key] = input.rows[0].columns[key];
   					  }
   					}
   					
@@ -622,13 +606,13 @@ const DatabaseHelper = {
 	        		const hash = {};
 	  					
 	  					for (const key in schema.columns) {
-	  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key]) {
-	  					    hash[key] = input.rows[0].columns[key] && input.rows[0].columns[key].value;
+	  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key] != undefined) {
+	  					    hash[key] = input.rows[0].columns[key];
 	  					  }
 	  					}
 	  					for (const key in schema.keys) {
-	  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key]) {
-	  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+	  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
+	  					    hash[key] = input.rows[0].keys[key];
 	  					  }
 	  					}
 	  					
@@ -643,19 +627,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in schema.columns) {
-	    					  if (schema.columns.hasOwnProperty(key)) {
-	    					    row.columns[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.columns[key] = record[key];
 	    					  }
 	    					}
 	    					for (const key in schema.keys) {
-	    					  if (schema.keys.hasOwnProperty(key)) {
-	    					    row.keys[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.keys[key] = record[key];
 	    					  }
 	    					}
 	    					
@@ -710,19 +688,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in baseSchema.columns) {
-	    					  if (baseSchema.columns.hasOwnProperty(key)) {
-	    					    row.columns[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.columns[key] = record[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
-	    					  if (baseSchema.keys.hasOwnProperty(key)) {
-	    					    row.keys[key] = {
-	    					      name: key,
-	    					      value: record[key]
-	    					    };
+	    					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+	    					    row.keys[key] = record[key];
 	    					  }
 	    					}
 	    					
@@ -781,8 +753,8 @@ const DatabaseHelper = {
   					const hash = {};
   					
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    hash[key] = input.rows[0].keys[key] && input.rows[0].keys[key].value;
+  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
+  					    hash[key] = input.rows[0].keys[key];
   					  }
   					}
   					
@@ -796,20 +768,14 @@ const DatabaseHelper = {
   				  };
   				  
   				  for (const key in schema.columns) {
-  					  if (schema.columns.hasOwnProperty(key)) {
-  					    row.columns[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.columns[key] = record[key];
   					  }
   					}
   				  
   					for (const key in schema.keys) {
-  					  if (schema.keys.hasOwnProperty(key)) {
-  					    row.keys[key] = {
-  					      name: key,
-  					      value: record[key]
-  					    };
+  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.keys[key] = record[key];
   					  }
   					}
   					
@@ -842,7 +808,7 @@ const DatabaseHelper = {
 	}
 };
 
-export {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, Input, DatabaseHelper};
+export {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

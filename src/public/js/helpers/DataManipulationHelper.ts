@@ -19,13 +19,9 @@ interface HierarchicalDataTable {
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
-  keys: {[Identifier: string]: HierarchicalDataColumn};
-  columns: {[Identifier: string]: HierarchicalDataColumn};
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
-}
-interface HierarchicalDataColumn {
-	name: string;
-  value: any;
 }
 
 const fieldManipulatorsInfoDict: any = {};
@@ -81,7 +77,7 @@ const DataManipulationHelper = {
 		  					}
 		  					break;
 		  				case 'checkbox':
-		  					params[field] = element.checked ? '1' : '0';
+		  					params[field] = element.checked ? 'true' : 'false';
 		  					break;
 	  					default:
 	  						params[field] = element.value;
@@ -196,8 +192,8 @@ const DataManipulationHelper = {
 			// Search HierarchicalDataColumn
 			// 
 			let column = (current.keys || {})[key] || (current.columns || {})[key];
-			if (column) {
-				return column.value;
+			if (column !== undefined) {
+				return column;
 			} else {
 				return null;
 			}
@@ -244,7 +240,7 @@ const DataManipulationHelper = {
   }
 };
 
-export {HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, DataManipulationHelper};
+export {HierarchicalDataTable, HierarchicalDataRow, DataManipulationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

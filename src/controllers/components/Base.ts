@@ -2,7 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-import {HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn, ActionType, Input} from "../helpers/DatabaseHelper.js";
+import {HierarchicalDataTable, HierarchicalDataRow, ActionType, Input} from "../helpers/DatabaseHelper.js";
 import {ValidationHelper} from "../helpers/ValidationHelper.js";
 import {RenderHelper} from "../helpers/RenderHelper.js";
 import {DataTableSchema, SchemaHelper} from "../helpers/SchemaHelper.js";

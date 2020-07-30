@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataTable, HierarchicalDataRow, HierarchicalDataColumn} from "./DatabaseHelper.js";
+import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper.js";
 
 let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
@@ -27,8 +27,8 @@ const DataManipulationHelper = {
 			// Search HierarchicalDataColumn
 			// 
 			let column = (current.keys || {})[key] || (current.columns || {})[key];
-			if (column) {
-				return column.value;
+			if (column != undefined) {
+				return column;
 			} else {
 				return null;
 			}
