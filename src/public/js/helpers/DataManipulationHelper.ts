@@ -55,6 +55,7 @@ const DataManipulationHelper = {
   		
   		let current = EventHelper.getOriginalElement(event);
   		let foundAll = false;
+  		let foundRadio = {};
   		
   		while (!foundAll && current != null && current != document) {
   			foundAll = true;
@@ -72,7 +73,11 @@ const DataManipulationHelper = {
 		  		
 		  			switch (HTMLHelper.getAttribute(element, 'type')) {
 		  				case 'radio':
+		  					if (foundRadio[element.name] === undefined) {
+		  						foundRadio[element.name] = field;
+		  					}
 		  					if (element.checked) {
+		  						foundRadio[element.name] = true;
 		  						params[field] = element.value;
 		  					}
 		  					break;
@@ -90,6 +95,12 @@ const DataManipulationHelper = {
 		  	}
   			
   			current = current.parentNode;
+  		}
+  		
+  		for (let name in foundRadio) {
+  			if (foundRadio.hasOwnProperty(name)) {
+  				params[foundRadio[name]] = null;
+  			}
   		}
 	  	
 	  	params['action'] = action;
