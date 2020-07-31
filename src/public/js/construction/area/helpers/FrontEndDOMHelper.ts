@@ -331,7 +331,7 @@ ${rootScript}`;
               	if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
               		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
               	} else {
-              		attributes.push(attribute.name + '={' + attribute.value + '}');
+              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '{' + attribute.value + '}'));
               	}
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
