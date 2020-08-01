@@ -474,7 +474,7 @@ ${rootScript}`;
           let composed = indent;
           let children = [...element.childNodes];
           
-          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1 && (!element.tagName || element.innerText.trim() != '');
+          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1 && (!!element.tagName || element.textContent.trim() != ''));
           
           composed += '<' + tag;
           if (classes != '') {
@@ -803,7 +803,9 @@ ${rootScript}`;
 		}
   },
   isNotationLeafNode: (notation: string): boolean => {
-  	const data = WorkspaceHelper.getDataFlows();
+  	const data = {
+  		tables: WorkspaceHelper.getDataFlows()
+  	}
   	
   	const splited = notation.split(".");
 		let shifted: string = splited.shift();
