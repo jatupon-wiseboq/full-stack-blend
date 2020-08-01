@@ -475,6 +475,9 @@ var WorkspaceHelper = {
     
     return InternalSites[id];
   },
+  getDataFlows: () => {
+  	return InternalDataFlows.schema;
+ 	},
   generateFrontEndCodeForCurrentPage: () => {
     let results = FrontEndDOMHelper.generateFrontEndCode();
   	results.push(StylesheetHelper.renderStylesheet(true));

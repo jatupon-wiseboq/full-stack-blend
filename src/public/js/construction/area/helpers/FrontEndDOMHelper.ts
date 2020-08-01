@@ -3,6 +3,7 @@ import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
+import {SchemaHelper} from './SchemaHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants.js';
 
@@ -169,11 +170,11 @@ ${rootScript}`;
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
 	        	if (index != -1) {
-	        		_attributes[index].value = consumableTagItem[2] + `data` + consumableTagItem[3];
+	        		_attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
 	        	} else {
 	        		_attributes.push({
 	        			name: consumableTagItem[1],
-	        			value: consumableTagItem[2] + `data` + consumableTagItem[3]
+	        			value: consumableTagItem[2] + `___DATA___` + consumableTagItem[3]
 	        		});
 	        	}
 	        }
@@ -183,11 +184,11 @@ ${rootScript}`;
 	          
 	        	let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
 	        	if (index != -1) {
-	        		_attributes[index].value = consumableClassItem[2] + `data` + consumableClassItem[3];
+	        		_attributes[index].value = consumableClassItem[2] + `___DATA___` + consumableClassItem[3];
 	        	} else {
 	        		_attributes.push({
 	        			name: consumableClassItem[1],
-	        			value: consumableClassItem[2] + `data` + consumableClassItem[3]
+	        			value: consumableClassItem[2] + `___DATA___` + consumableClassItem[3]
 	        		});
 	        	}
 	        }
@@ -427,13 +428,21 @@ ${rootScript}`;
         // Dot Notation Feature
         // 
         let _indent = indent;
+        let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
+        let _nodeData = 'data';
         if (reactData !== null) {
-          lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true).map((data, ' + dotNotationChar + ') => {');
-          lines.push(_indent + '  return (');
-          
-          indent += '    ';
-          
-          cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
+        	if (!_leafNode) {
+	      		lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true).map((data, ' + dotNotationChar + ') => {');
+	          lines.push(_indent + '  return (');
+	          
+	          indent += '    ';
+	          
+	          cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
+	        } else {
+	        	_nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
+	        	
+	        	cumulatedDotNotation += reactData + '.';
+	        }
         }
         
         // Include Another React Class Feature
@@ -441,20 +450,22 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={data} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '') + '/>';
+          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={' + _nodeData + '} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '') + '/>';
           
           lines.push(composed);
         }
         
         // Dot Notation Feature (Continue 1/2)
         // 
-        if (reactData) {
+        if (reactData && !_leafNode) {
           attributes.splice(0, 0, 'key={"item_" + ' + dotNotationChar + '}');
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {
-          let charcode = dotNotationChar.charCodeAt() + 1;
-          dotNotationChar = String.fromCharCode(charcode);
+        	if (!_leafNode) {
+	          let charcode = dotNotationChar.charCodeAt() + 1;
+	          dotNotationChar = String.fromCharCode(charcode);
+	        }
         }
         
         // Recursive Children Feature
@@ -463,7 +474,7 @@ ${rootScript}`;
           let composed = indent;
           let children = [...element.childNodes];
           
-          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
+          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1 && (!element.tagName || element.innerText.trim() != '');
           
           composed += '<' + tag;
           if (classes != '') {
@@ -477,7 +488,7 @@ ${rootScript}`;
           } else if (isFirstElement) {
             attributes.splice(0, 0, 'style={Object.assign({}, this.props.forward && this.props.forward.styles || {})}');
           }
-          if (attributes.length != 0) composed += ' ' + attributes.join(' ');
+          if (attributes.length != 0) composed += ' ' + attributes.join(' ').replace(/___DATA___/g, _nodeData);
           
           if (!dangerouslySetInnerHTML) {
             composed += (children.length == 0 && REQUIRE_FULL_CLOSING_TAGS.indexOf(tag) == -1) ? ' />' : '>';
@@ -507,7 +518,7 @@ ${rootScript}`;
         
         // Dot Notation Feature (Continue 2/2)
         // 
-        if (reactData !== null) {
+        if (reactData !== null && !_leafNode) {
         	lines.push(_indent + '  )');
         	lines.push(_indent + '})}');
         }
@@ -778,6 +789,32 @@ ${rootScript}`;
         FrontEndDOMHelper.recursiveGenerateCodeForMergingSection(child, executions, lines, false, hasParentReactComponent);
       }
     }
+  },
+	getDataTableSchemaFromKey: (key: string, current: any, data: any): any => {
+		const relation = (current && current.relations || {})[key];
+		const table = (data.tables || {})[key];
+		
+		if (relation) {
+			return (data.tables || {})[relation.targetGroup] || null;
+		} else if (table) {
+			return table;
+		} else {
+			return null;
+		}
+  },
+  isNotationLeafNode: (notation: string): boolean => {
+  	const data = WorkspaceHelper.getDataFlows();
+  	
+  	const splited = notation.split(".");
+		let shifted: string = splited.shift();
+		let current: any = null;
+		
+		do {
+		  current = FrontEndDOMHelper.getDataTableSchemaFromKey(shifted, current, data);
+		  shifted = splited.shift();
+		} while (current && shifted);
+		
+		return (current == null);
   }
 };
 
