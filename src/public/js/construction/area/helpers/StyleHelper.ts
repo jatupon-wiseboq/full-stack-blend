@@ -1,10 +1,21 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 
+let defaultElement = document.createElement('div');
+
 var StyleHelper = {
   getElementComputedStyleNodes: function(element: HTMLElement) {
   	let nodes = [];
+  	let isGuideOn = HTMLHelper.hasClass(document.documentElement, 'internal-fsb-guide-on');
+  	
+  	if (isGuideOn) {
+	  	HTMLHelper.removeClass(document.documentElement, 'internal-fsb-guide-on');
+	    HTMLHelper.addClass(document.documentElement, 'internal-fsb-guide-off');
+  	}
+  	
+  	document.body.appendChild(defaultElement);
+  	
   	let computedStyle = StyleHelper.getComputedStyle(element);
-  	let defaultStyle = StyleHelper.getComputedStyle(document.body);
+  	let defaultStyle = StyleHelper.getComputedStyle(defaultElement);
   	
   	for (let name in computedStyle) {
   		if (computedStyle.hasOwnProperty(name)) {
@@ -25,6 +36,13 @@ var StyleHelper = {
 					tag: null
 				});
 			}
+  	}
+  	
+  	document.body.removeChild(defaultElement);
+  	
+  	if (isGuideOn) {
+	  	HTMLHelper.removeClass(document.documentElement, 'internal-fsb-guide-off');
+	    HTMLHelper.addClass(document.documentElement, 'internal-fsb-guide-on');
   	}
 		
   	return nodes;
