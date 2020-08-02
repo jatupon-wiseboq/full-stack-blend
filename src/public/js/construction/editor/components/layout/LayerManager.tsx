@@ -38,7 +38,11 @@ class LayerManager extends Base<Props, State> {
     }
     
     private onUpdate(node: ITreeNode) {
-        perform('select', node.selected ? node.id : null);
+    		if (node.selected) {
+    			perform('select[cursor]', node.id);
+    		} else {
+    			perform('select', null);
+    		}
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {

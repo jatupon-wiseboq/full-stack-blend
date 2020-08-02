@@ -71,6 +71,40 @@ var ManipulationHelper = {
       case 'select':
       	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
         break;
+      case 'select[cursor]':
+      	name = 'select';
+      	link = Math.random();
+      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	
+      	promise.then(() => {
+	      	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
+	      	if (element) {
+	      		let allowCursorElement = element.parentNode;
+	      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
+		      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+		      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+		          let theAllowCursorElement = allowCursorElement;
+		          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
+		      		
+		      		if (indexOfAllowCursorElement != -1) {
+		            let children = [...theAllowCursorElement.children];
+		            let index = [...theAllowCursorElement.children].indexOf(element);
+		            let cursorIndex = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
+		            
+		            if (cursorIndex == -1 || cursorIndex >= index) {
+		            	index += 1;
+		            }
+		            
+		            let walkPath = CursorHelper.createWalkPathForCursor(
+		            	HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
+		            	indexOfAllowCursorElement,
+		            	index);
+		            ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
+		          }
+	      		}
+	      	}
+	      });
+      	break;
       case 'insert':
         if (InternalProjectSettings.currentMode != 'data') {
       	  [accessory, remember, link] = FrontEndManipulationHelper.handleInsert(name, content, remember, promise, link);
