@@ -4,6 +4,7 @@ var StyleHelper = {
   getElementComputedStyleNodes: function(element: HTMLElement) {
   	let nodes = [];
   	let computedStyle = StyleHelper.getComputedStyle(element);
+  	let defaultStyle = StyleHelper.getComputedStyle(document.body);
   	
   	for (let name in computedStyle) {
   		if (computedStyle.hasOwnProperty(name)) {
@@ -14,7 +15,7 @@ var StyleHelper = {
   			
 		  	nodes.push({
 					id: 'id',
-					customClassName: '',
+					customClassName: (style === defaultStyle[name]) ? 'original' : 'different',
 					name: `${name}: ${style}`,
 					selectable: false,
 					dropable: false,
