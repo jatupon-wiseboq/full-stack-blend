@@ -16,7 +16,7 @@ const DataManipulationHelper = {
 		
   	// Search HierarchicalDataRow
 		// 		
-		let table = (current.relations || {})[key];
+		const table = (current.relations || {})[key];
 		if (table) {
 			if (index != -1) {
 				return table.rows[index];
@@ -26,7 +26,7 @@ const DataManipulationHelper = {
 		} else {
 			// Search HierarchicalDataColumn
 			// 
-			let column = (current.keys || {})[key] || (current.columns || {})[key];
+			const column = (current.keys || {})[key] || (current.columns || {})[key];
 			if (column != undefined) {
 				return column;
 			} else {

@@ -76,13 +76,19 @@
           .workspace-vertical-panel
             .workspace-tab-container
               .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '100px'})
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(id='layers', onclick="swap('.sidebar-layers-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '85px'})
                   input(type='radio', name='options', checked=true)
                   | Layers
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(id='computedStyle', onclick="swap('.sidebar-computed-style-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '130px'})
+                  input(type='radio', name='options', checked=true)
+                  | Computed Style
         .workspace-vertical-container.full-relative-size(internal-fsb-for="editing", style="display: none;")
           .workspace-vertical-panel
             .workspace-panel-container.scrollable
-              include html-common/layers/layers
+              .panel.sidebar-layers-panel.active
+                include html-common/layers/layers
+              .panel.sidebar-computed-style-panel
+                include html-common/style/computed
         .workspace-vertical-container.full-relative-size(internal-fsb-not-for="editing")
           .workspace-vertical-panel
             .workspace-panel-container

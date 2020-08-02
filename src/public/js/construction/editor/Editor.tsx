@@ -13,6 +13,7 @@ import './components/css/CSSPresets.js';
 import './components/css/CSSStyles.js';
 import './components/css/CSSPresetName.js';
 import './components/css/CSSCustomClasses.js';
+import './components/css/ComputedStyleManager.js';
 
 import './components/shape/DimensionPicker.js';
 import './components/shape/AppearancePicker.js';
