@@ -33,7 +33,7 @@
       null,
       null
     ],
-    "editingPageID": "b351d3a2",
+    "editingPageID": "index",
     "editingComponentID": null,
     "editingPopupID": null,
     "pages": [
@@ -42,30 +42,10 @@
         "name": "Home",
         "path": "/",
         "state": "create"
-      },
-      {
-        "id": "74d822ea",
-        "name": "Notation Testing",
-        "path": "/notation_testing",
-        "state": "update"
-      },
-      {
-        "id": "b351d3a2",
-        "name": "b",
-        "path": "/b",
-        "state": "update",
-        "description": "description",
-        "keywords": "keywords",
-        "image": "image"
       }
     ],
     "components": [],
-    "popups": [],
-    "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\nlet x = 1;\n\n",
-    "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
-    "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
-    "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
-    "internal-fsb-data-code-footer": null
+    "popups": []
   },
   "sites": {
     "index": {
@@ -201,18 +181,9 @@
         "            <div contenteditable=\"true\" class=\"internal-fsb-element -fsb-preset-a43dc1c9 col-12 offset-0\" internal-fsb-guid=\"2135749e\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: a43dc1c9\">Workarounds:<div><br></div>",
         "                <div>1. Silence of Save/Merge/Deploy: solve by waiting for 5-15 seconds, if you can't wait, watch what are going on from networks tab of the developer console.</div>",
         "                <div>2. Undo/Redo Not Working Sometime: keep saving and reload the editor.</div>",
-        "                <div>3. Textbox Saving Problem: solve by adjusting its style to invalidate the cache.</div>",
-        "                <div>4. Missing Template File (.pug): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any element's style to invalidate the cache and click save button.</div>",
-        "                <div>5. Missing Front-End Component File (.tsx): find a name of the component from project.stackblend, and navigate to that component on StackBlend, then adjust any front-end code to invalidate the cache and click save button.</div>",
-        "                <div>6. Missing Back-End Component File (.ts): find a name of the page from project.stackblend, and navigate to that page on StackBlend, then adjust any back-end code to invalidate the cache and click save button.</div>",
-        "                <div>7. No Sign of Hotfixes: disable network cache in networks tab of the developer console.</div>",
-        "                <div>8. Unable to Merge/Deploy: resolve the conflicts manually using a terminal on your operating system, or go to GitHub to perform it.</div>",
-        "                <div>9. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.</div>",
-        "                <div>10.Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div>",
-        "                <div>11.Cannot Import (1): for front-end, preview of importing on a browser only works if and only if there is the file in SoftenStorm/boilerplate project, otherwise you need to test it using your local machine.</div>",
-        "                <div>12.Cannot Import (2): for back-end, you need to install it via \"npm install MODULE_NAME\" and test it via Heroku or your local machine.</div>",
-        "                <div>13.Cannot Preview Back-End: you must deploy the code on Heroku to test it using an endpoint configuration, otherwise you need to test it using your local machine.</div>",
-        "                <div>14.Lost Changes After Merge: recheck your code changes on GitHub.com, or reload the editor, or click the merge button again.</div>",
+        "                <div>3. Unable to Merge/Deploy: resolve the conflicts manually using a terminal on your operating system, or go to GitHub to perform it.</div>",
+        "                <div>4. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.</div>",
+        "                <div>5.Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div>",
         "            </div>",
         "            <div contenteditable=\"true\" class=\"internal-fsb-element col-12 -fsb-preset-bb6cddae\" internal-fsb-guid=\"738cbdce\" internal-fsb-name=\"TextElement 4\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"-fsb-inherited-presets: bb6cddae; text-align: center; text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; cursor: pointer\" internal-fsb-react-mode=\"Document\" onfsbclick=\"{&quot;event&quot;:true}\" internal-fsb-react-code-body=\"",
         "  ",
@@ -328,12 +299,16 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,400;1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "2d9c731e",
+        "selectingElementGUID": "2135749e",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -354,147 +329,11 @@
         }
       }
     },
-    "74d822ea": {
-      "id": "74d822ea",
-      "name": "Notation Testing",
-      "path": "/notation_testing",
-      "state": "update",
-      "head": {
-        "fonts": {}
-      },
-      "body": [
-        "<body class=\"\">",
-        "    <div class=\"container-fluid internal-fsb-begin\" internal-fsb-guid=\"0\">",
-        "        <div class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\" internal-fsb-event-no-propagate=\"1\">",
-        "            <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"83e416bb\" internal-fsb-name=\"FlowLayout 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"min-height: 250px\" internal-fsb-react-mode=\"Document\" internal-fsb-react-data=\"\" internal-fsb-react-code-import=\"",
-        "",
-        "// Import additional modules here:",
-        "//",
-        "",
-        "",
-        "\" internal-fsb-react-code-body=\"",
-        "  ",
-        "  // Declare class variables and functions here:",
-        "  //",
-        "  protected initialize(): void {",
-        "  }",
-        "  ",
-        "  // Providing data array base on dot notation:",
-        "  // ",
-        "  protected getDataFromNotation(notation: string): any {",
-        "    return super.getDataFromNotation(notation);",
-        "  }",
-        "  ",
-        "  \">",
-        "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
-        "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"78c0270a\" internal-fsb-name=\"FlowLayout 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"min-height: 176px\" internal-fsb-react-data=\"User\">",
-        "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
-        "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"da1ab078\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-react-data=\"name\">ABC</div>",
-        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d6c0cc8e\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-react-data=\"email\">ABC</div>",
-        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"dc19521c\" internal-fsb-name=\"TextElement 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\">ABC</div>",
-        "                                </div>",
-        "                            </div>",
-        "                        </div>",
-        "                    </div>",
-        "                </div>",
-        "            </div>",
-        "        </div>",
-        "    </div>",
-        "    <style type=\"text/css\" id=\"internal-fsb-stylesheet\">",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-self-a43dc1c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-self-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-self-a43dc1c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-self-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-preset-a43dc1c9 {",
-        "            -fsb-inherited-presets: 08abd2c9;",
-        "            border-top-color: rgba(3, 115, 252, 1);",
-        "            border-top-style: solid;",
-        "            border-top-width: 1px;",
-        "            -fsb-reusable-name: section;",
-        "            -fsb-reusable-id: a43dc1c9",
-        "        }",
-        "",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-self-08abd2c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-preset-08abd2c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-self-08abd2c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-preset-08abd2c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-self-08abd2c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-preset-08abd2c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-self-08abd2c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-preset-08abd2c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-preset-a43dc1c9,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-preset-a43dc1c9 {",
-        "            font-family: Courier Prime;",
-        "            font-size: 12px;",
-        "            color: rgba(156, 156, 156, 1);",
-        "            padding-top: 10px;",
-        "            padding-left: 10px;",
-        "            padding-bottom: 10px;",
-        "            padding-right: 10px;",
-        "            -fsb-reusable-name: note;",
-        "            -fsb-reusable-id: 08abd2c9",
-        "        }",
-        "",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-self-bb6cddae,",
-        "        .internal-fsb-strict-layout>.internal-fsb-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-self-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-self-bb6cddae,",
-        "        .internal-fsb-strict-layout>.internal-fsb-inheriting-element.-fsb-preset-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-self-bb6cddae,",
-        "        .internal-fsb-absolute-layout>.internal-fsb-inheriting-element.-fsb-preset-bb6cddae {",
-        "            -fsb-inherited-presets: 08abd2c9;",
-        "            text-align: center;",
-        "            color: rgba(3, 115, 252, 1);",
-        "            text-decoration-line: underline;",
-        "            -webkit-text-decoration-line: underline;",
-        "            -moz-text-decoration-line: underline;",
-        "            -fsb-reusable-name: link;",
-        "            -fsb-reusable-id: bb6cddae;",
-        "            cursor: pointer",
-        "        }",
-        "    </style>",
-        "</body>"
-      ],
-      "accessories": {
-        "selectingElementGUID": "da1ab078",
-        "currentCursorWalkPath": [
-          "78c0270a",
-          0,
-          3,
-          null
-        ]
-      },
-      "extensions": {
-        "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n//\nlet x = 1;\n\n",
-        "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n//\n\n",
-        "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n//\n\n",
-        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.get(data);\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
-        "internal-fsb-data-code-footer": null
-      },
-      "notations": {
-        "User": {
-          "name": {},
-          "email": {}
-        }
-      }
-    },
     "b351d3a2": {
       "id": "b351d3a2",
       "name": "b",
       "path": "/b",
-      "state": "update",
+      "state": "delete",
       "head": {
         "fonts": {}
       },
@@ -1080,20 +919,16 @@
     "bb6cddae": "-fsb-inherited-presets: 08abd2c9; text-align: center; color: rgba(3, 115, 252, 1); text-decoration-line: underline; -webkit-text-decoration-line: underline; -moz-text-decoration-line: underline; -fsb-reusable-name: link; -fsb-reusable-id: bb6cddae; cursor: pointer"
   },
   "backEndControllerBlobSHADict": {
-    "index": "f5f1c6a8d2a9aa787bb6f2e713c06da89d60cd4d",
-    "b351d3a2": "e8980c709c8043f5da5924033a5d349df1cd4606"
+    "index": "d0286e211f88fb3493ced6d63290230f19f789e9"
   },
   "frontEndComponentsBlobSHADict": {
-    "TextElement_0522150b": "0bff19de486f06ee2051c5fdbd6dce6ca8f8776f",
-    "TextElement_bb6cddae": "85a25e7bc3ac4fcf6645911f5d021b0ff8a253a4",
-    "TextElement_b19840c8": "9661dd37fd12ca5ed43ab774aee3ebafffeaf533",
-    "TextElement_92de9e1b": "2019dbb4eb5d8d96a0a0545bd5edf61d8c67d2b0",
-    "TextElement_738cbdce": "949bfdc6aec641603a91e8e72934b21a2212158a",
-    "FlowLayout_83e416bb": "69f1153a3e42f2783a2076810b08d3b4885937e4"
+    "TextElement_0522150b": "30624a6ef07ef967e3822f8d0b9e58ae6a823bf3",
+    "TextElement_bb6cddae": "159cdccfdec91e7c80eb21b61ca8ffa21399bb52",
+    "TextElement_b19840c8": "bcc879ec6dc9a2ebbfefa8eec2abae7fc418dc0b",
+    "TextElement_92de9e1b": "71ce4a1dec8133d659136b34ff80853ff749fed9",
+    "TextElement_738cbdce": "2aa5505a014a5effe61f1127784260c655ecb702"
   },
   "viewBlobSHADict": {
-    "b351d3a2": "d091866993b701eabbd3cf55e71db225d814ebce",
-    "index": "2303626ed0ecbca0f6dc8a83a4a8f3b59418fde7",
-    "74d822ea": "2198b054e678a1fde37bcc47a8ccd104f769ce48"
+    "index": "e5f60451bf5c8c1773989f356574eb47d7dac7c6"
   }
 }
