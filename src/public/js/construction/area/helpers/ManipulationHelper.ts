@@ -709,6 +709,8 @@ var ManipulationHelper = {
           }
           
           EditorHelper.selectNextElement();
+          
+          LayoutHelper.invalidate();
         }
         break;
       case 16:
