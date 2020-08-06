@@ -5,6 +5,7 @@
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper.js';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
 // <---Auto[Import]
 
@@ -56,6 +57,10 @@ class TextElement_738cbdce extends Base {
     this.state = CodeHelper.clone(DefaultState);
     
     this.initialize();
+  }
+  
+  register() {
+
   }
   // <---Auto[ClassBegin]
   
