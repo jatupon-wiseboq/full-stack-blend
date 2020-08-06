@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -32,6 +33,7 @@ let Accessories = {
 };
 
 let editorCurrentMode: string = null;
+let cachedUpdateEditorProperties = {};
 
 var EditorHelper = {
   setup: () => {
@@ -155,6 +157,29 @@ var EditorHelper = {
   	ManipulationHelper.perform(name, content);
   },
   synchronize: (name: string, content: any) => {
+  	if (name == 'updateEditorProperties') {
+  		let recent = cachedUpdateEditorProperties;
+  		cachedUpdateEditorProperties = Object.assign({}, content);
+  		
+  		for (let key in content) {
+  			if (content.hasOwnProperty(key)) {
+  				if (CodeHelper.equals(recent[key], content[key])) {
+  					content[key] = '~';
+  				} else if (key === 'extensions') {
+  					let extensions = content[key] || {};
+	  				let recentExtensions = recent[key] || {};
+	  				for (let extensionKey in extensions) {
+			  			if (extensions.hasOwnProperty(extensionKey)) {
+			  				if (CodeHelper.equals(recentExtensions[extensionKey], extensions[extensionKey])) {
+			  					extensions[extensionKey] = '~';
+			  				}
+			  			}
+			  		}
+	  			}
+  			}
+  		}
+  	}
+  	
     window.top.postMessage(JSON.stringify({
     	target: 'editor',
       name: name,

@@ -55,6 +55,7 @@ let Accessories = {
 };
 
 let recentExtraPanelSelector: string = null;
+let cachedUpdateEditorProperties = {};
 
 (function() {
   window.perform = (name: string, content: any) => {
@@ -155,6 +156,26 @@ let recentExtraPanelSelector: string = null;
       case 'select':
         break;
       case 'updateEditorProperties':
+      	let recent = cachedUpdateEditorProperties;
+      	for (let key in content) {
+	  			if (content.hasOwnProperty(key)) {
+	  				if (content[key] === '~') {
+	  					content[key] = recent[key];
+	  				} else if (key === 'extensions') {
+	  					let extensions = content[key] || {};
+	  					let recentExtensions = recent[key] || {};
+	  					for (let extensionKey in extensions) {
+				  			if (extensions.hasOwnProperty(extensionKey)) {
+				  				if (extensions[extensionKey] === '~') {
+				  					extensions[extensionKey] = recentExtensions[extensionKey];
+				  				}
+				  			}
+				  		}
+	  				}
+	  			}
+	  		}
+  			cachedUpdateEditorProperties = Object.assign({}, content);
+      
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
