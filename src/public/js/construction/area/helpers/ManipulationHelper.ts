@@ -22,6 +22,7 @@ let previousInfo: any = {};
 let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
+let invalidateTimer = null;
 
 function removeAllPresetReferences(presetId: string, link: string) {
 	// TODO: should iterate in all documents.
@@ -213,6 +214,13 @@ var ManipulationHelper = {
 	    	}
 	    }
 	  }
+	},
+	invalidateCached: (interval) => {
+		window.clearTimeout(invalidateTimer);
+		invalidateTimer = window.setTimeout(() => {
+    	FrontEndDOMHelper.invalidate();
+    	StyleHelper.invalidate();
+		}, interval);
 	},
   
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -524,9 +532,9 @@ var ManipulationHelper = {
       remember = false;
     }
     
-    ManipulationHelper.updateComponentData(selectingElement);
-    FrontEndDOMHelper.invalidate();
-    StyleHelper.invalidate();
+    if (found) ManipulationHelper.updateComponentData(selectingElement);
+    if (found) FrontEndDOMHelper.invalidate();
+    if (found) StyleHelper.invalidate();
     
     return [accessory, remember, link];
   },
@@ -555,8 +563,7 @@ var ManipulationHelper = {
     }
   	
   	ManipulationHelper.updateComponentData(selectingElement);
-    FrontEndDOMHelper.invalidate();
-    StyleHelper.invalidate();
+  	ManipulationHelper.invalidate(500);
     
   	return [accessory, remember, link];
   },
@@ -636,8 +643,7 @@ var ManipulationHelper = {
     remember = false;
   	
   	ManipulationHelper.updateComponentData(selectingElement);
-    FrontEndDOMHelper.invalidate();
-    StyleHelper.invalidate();
+  	ManipulationHelper.invalidate(500);
     
   	return [accessory, remember, link];
   },
