@@ -215,7 +215,7 @@ var ManipulationHelper = {
 	    }
 	  }
 	},
-	invalidateCached: (interval) => {
+	invalidate: (interval) => {
 		window.clearTimeout(invalidateTimer);
 		invalidateTimer = window.setTimeout(() => {
     	FrontEndDOMHelper.invalidate();
@@ -525,6 +525,9 @@ var ManipulationHelper = {
         }
       }
       
+	    if (found) FrontEndDOMHelper.invalidate();
+	    if (found) StyleHelper.invalidate();
+      
       if (remember && !found) {
         remember = false;
       }
@@ -532,9 +535,7 @@ var ManipulationHelper = {
       remember = false;
     }
     
-    if (found) ManipulationHelper.updateComponentData(selectingElement);
-    if (found) FrontEndDOMHelper.invalidate();
-    if (found) StyleHelper.invalidate();
+    ManipulationHelper.updateComponentData(selectingElement);
     
     return [accessory, remember, link];
   },

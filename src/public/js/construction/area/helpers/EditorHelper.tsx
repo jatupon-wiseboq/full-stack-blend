@@ -163,14 +163,14 @@ var EditorHelper = {
   		
   		for (let key in content) {
   			if (content.hasOwnProperty(key)) {
-  				if (CodeHelper.equals(recent[key], content[key])) {
+  				if (recent[key] == content[key]) {
   					content[key] = '~';
   				} else if (key === 'extensions') {
   					let extensions = content[key] || {};
 	  				let recentExtensions = recent[key] || {};
 	  				for (let extensionKey in extensions) {
 			  			if (extensions.hasOwnProperty(extensionKey)) {
-			  				if (CodeHelper.equals(recentExtensions[extensionKey], extensions[extensionKey])) {
+			  				if (recentExtensions[extensionKey] == extensions[extensionKey]) {
 			  					extensions[extensionKey] = '~';
 			  				}
 			  			}
