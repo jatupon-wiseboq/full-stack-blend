@@ -6,6 +6,7 @@ import {LayoutHelper} from '../LayoutHelper.js';
 import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
 
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};
@@ -233,6 +234,9 @@ var BackEndManipulationHelper = {
     }
     
     ManipulationHelper.updateComponentData(element);
+    LayoutHelper.invalidate();
+    FrontEndDOMHelper.invalidate();
+    
     return [accessory, remember, link];
   }
 }

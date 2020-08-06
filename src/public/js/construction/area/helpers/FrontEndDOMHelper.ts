@@ -7,9 +7,16 @@ import {SchemaHelper} from './SchemaHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
 import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants.js';
 
+let cachedGenerateCodeForReactRenderMethodElement = null;
+let cachedGenerateCodeForReactRenderMethodResults = null;
+
 // This code generator relies on elements in construction area.
 // 
 var FrontEndDOMHelper = {
+	invalidate: function() {
+		cachedGenerateCodeForReactRenderMethodElement = null;
+		cachedGenerateCodeForReactRenderMethodResults = null;
+	},
 	generateFrontEndCode: function(root: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
     // Document Level
     // 
@@ -99,6 +106,9 @@ ${rootScript}`;
     }
 	},
   generateCodeForReactRenderMethod: function(element: HTMLElement) {
+  	if (cachedGenerateCodeForReactRenderMethodElement == element && cachedGenerateCodeForReactRenderMethodResults)
+  		return cachedGenerateCodeForReactRenderMethodResults;
+  	
     let executions: string[] = [];
     let lines: string[] = [];
     
@@ -108,7 +118,10 @@ ${rootScript}`;
     	FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(element, '      ', executions, lines);
     }
     
-    return ['\n' + executions.join('\n'), '\n' + lines.join('\n')];
+    cachedGenerateCodeForReactRenderMethodElement = element;
+    cachedGenerateCodeForReactRenderMethodResults = ['\n' + executions.join('\n'), '\n' + lines.join('\n')];
+    
+    return cachedGenerateCodeForReactRenderMethodResults;
   },
   recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;

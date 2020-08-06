@@ -10,6 +10,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
+import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {FrontEndManipulationHelper} from './manipulations/FrontEndManipulationHelper.js';
 import {BackEndManipulationHelper} from './manipulations/BackEndManipulationHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER} from '../../Constants.js';
@@ -344,11 +345,15 @@ var ManipulationHelper = {
 	              		return [accessory, false, link];
 	              	}
               	}
+              	
+    						LayoutHelper.invalidate();
               } else if (attribute.name == 'data-title-name') {
               	let titleElement = HTMLHelper.getElementsByClassName('internal-fsb-title', selectingElement, false)[0];
               	if (titleElement) {
               		titleElement.innerText = attribute.value;
               	}
+              } else if (attribute.name == 'internal-fsb-name') {
+    						LayoutHelper.invalidate();
               }
               
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
@@ -519,6 +524,8 @@ var ManipulationHelper = {
     }
     
     ManipulationHelper.updateComponentData(selectingElement);
+    FrontEndDOMHelper.invalidate();
+    
     return [accessory, remember, link];
   },
   handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -546,6 +553,8 @@ var ManipulationHelper = {
     }
   	
   	ManipulationHelper.updateComponentData(selectingElement);
+    FrontEndDOMHelper.invalidate();
+    
   	return [accessory, remember, link];
   },
   handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -624,6 +633,8 @@ var ManipulationHelper = {
     remember = false;
   	
   	ManipulationHelper.updateComponentData(selectingElement);
+    FrontEndDOMHelper.invalidate();
+    
   	return [accessory, remember, link];
   },
   handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -752,6 +763,8 @@ var ManipulationHelper = {
     } else {
       EditorHelper.deselect();
     }
+    
+    LayoutHelper.invalidate();
   	
   	return [accessory, remember, link];
   },
@@ -786,6 +799,9 @@ var ManipulationHelper = {
     } else {
     	remember = false;
     }
+    
+    LayoutHelper.invalidate();
+    FrontEndDOMHelper.invalidate();
   	
   	return [accessory, remember, link];
   },
@@ -1092,6 +1108,9 @@ var ManipulationHelper = {
     }
   	
   	ManipulationHelper.updateComponentData(selectingElement);
+  	LayoutHelper.invalidate();
+    FrontEndDOMHelper.invalidate();
+  	
   	return [accessory, remember, link, content.action];
   },
   handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
@@ -1192,6 +1211,9 @@ var ManipulationHelper = {
   	
   	ManipulationHelper.updateComponentData(destination);
   	ManipulationHelper.updateComponentData(origin);
+  	LayoutHelper.invalidate();
+    FrontEndDOMHelper.invalidate();
+  	
   	return [accessory, remember, link];
   },
   handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {

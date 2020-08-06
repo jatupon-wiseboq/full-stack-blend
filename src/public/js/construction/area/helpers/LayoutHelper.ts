@@ -1,7 +1,12 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 
+let cachedElementTreeNodes = null;
+
 var LayoutHelper = {
+	invalidate: function() {
+		cachedElementTreeNodes = null;
+	},
   calculateColumnSize: function(width: number) {
     let selectingElement = EditorHelper.getSelectingElement();
     if (selectingElement) {
@@ -23,6 +28,7 @@ var LayoutHelper = {
     }
   },
   getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
+  	if (container == document.body && cachedElementTreeNodes) return cachedElementTreeNodes;
   	if (!container.childNodes) return nodes;
   	if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
   	
@@ -60,6 +66,7 @@ var LayoutHelper = {
   			this.getElementTreeNodes(nodes, element);
   		}
   	}
+  	if (container == document.body) cachedElementTreeNodes = nodes;
   	return nodes;
   },
   getElementOptions: function(element: HTMLElement) {
