@@ -45,39 +45,94 @@ const DEFAULTS = {
   }
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.get(data);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await super.get(data));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.post(data);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await super.post(data));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.put(data);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await super.put(data));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.delete(data);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await super.delete(data));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.insert(data, schema);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await DatabaseHelper.insert(data, schema));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.update(data, schema);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await DatabaseHelper.update(data, schema));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
+    return ;
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.delete(data, schema);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await DatabaseHelper.delete(data, schema));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return await DatabaseHelper.retrieve(data, schema);
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await DatabaseHelper.retrieve(data, schema));
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
- 		return '/';
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve('/');
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }`,
   ClassEnd: `
 
