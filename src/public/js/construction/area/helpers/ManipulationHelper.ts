@@ -8,6 +8,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {StyleHelper} from './StyleHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
@@ -525,6 +526,7 @@ var ManipulationHelper = {
     
     ManipulationHelper.updateComponentData(selectingElement);
     FrontEndDOMHelper.invalidate();
+    StyleHelper.invalidate();
     
     return [accessory, remember, link];
   },
@@ -554,6 +556,7 @@ var ManipulationHelper = {
   	
   	ManipulationHelper.updateComponentData(selectingElement);
     FrontEndDOMHelper.invalidate();
+    StyleHelper.invalidate();
     
   	return [accessory, remember, link];
   },
@@ -634,6 +637,7 @@ var ManipulationHelper = {
   	
   	ManipulationHelper.updateComponentData(selectingElement);
     FrontEndDOMHelper.invalidate();
+    StyleHelper.invalidate();
     
   	return [accessory, remember, link];
   },
@@ -765,6 +769,7 @@ var ManipulationHelper = {
     }
     
     LayoutHelper.invalidate();
+    StyleHelper.invalidate();
   	
   	return [accessory, remember, link];
   },
@@ -1110,6 +1115,7 @@ var ManipulationHelper = {
   	ManipulationHelper.updateComponentData(selectingElement);
   	LayoutHelper.invalidate();
     FrontEndDOMHelper.invalidate();
+    StyleHelper.invalidate();
   	
   	return [accessory, remember, link, content.action];
   },
