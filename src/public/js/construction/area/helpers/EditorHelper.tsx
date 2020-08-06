@@ -34,6 +34,7 @@ let Accessories = {
 
 let editorCurrentMode: string = null;
 let cachedUpdateEditorProperties = {};
+let updateEditorPropertiesTimer = null;
 
 var EditorHelper = {
   setup: () => {
@@ -158,33 +159,42 @@ var EditorHelper = {
   },
   synchronize: (name: string, content: any) => {
   	if (name == 'updateEditorProperties') {
-  		let recent = cachedUpdateEditorProperties;
-  		cachedUpdateEditorProperties = Object.assign({}, content);
-  		
-  		for (let key in content) {
-  			if (content.hasOwnProperty(key)) {
-  				if (recent[key] == content[key]) {
-  					content[key] = '~';
-  				} else if (key === 'extensions') {
-  					let extensions = content[key] || {};
-	  				let recentExtensions = recent[key] || {};
-	  				for (let extensionKey in extensions) {
-			  			if (extensions.hasOwnProperty(extensionKey)) {
-			  				if (recentExtensions[extensionKey] == extensions[extensionKey]) {
-			  					extensions[extensionKey] = '~';
-			  				}
-			  			}
-			  		}
+  		window.clearTimeout(updateEditorPropertiesTimer);
+  		updateEditorPropertiesTimer = window.setTimeout(() => {
+  			let recent = cachedUpdateEditorProperties;
+	  		cachedUpdateEditorProperties = Object.assign({}, content);
+	  		
+	  		for (let key in content) {
+	  			if (content.hasOwnProperty(key)) {
+	  				if (recent[key] == content[key]) {
+	  					content[key] = '~';
+	  				} else if (key === 'extensions') {
+	  					let extensions = content[key] || {};
+		  				let recentExtensions = recent[key] || {};
+		  				for (let extensionKey in extensions) {
+				  			if (extensions.hasOwnProperty(extensionKey)) {
+				  				if (recentExtensions[extensionKey] == extensions[extensionKey]) {
+				  					extensions[extensionKey] = '~';
+				  				}
+				  			}
+				  		}
+		  			}
 	  			}
-  			}
-  		}
+	  		}
+	  		
+		    window.top.postMessage(JSON.stringify({
+		    	target: 'editor',
+		      name: name,
+		      content: content
+		    }), '*');
+  		}, 200);
+  	} else {
+	    window.top.postMessage(JSON.stringify({
+	    	target: 'editor',
+	      name: name,
+	      content: content
+	    }), '*');
   	}
-  	
-    window.top.postMessage(JSON.stringify({
-    	target: 'editor',
-      name: name,
-      content: content
-    }), '*');
   },
   update: (tag: string=null) => {
     var event = document.createEvent("Event");
