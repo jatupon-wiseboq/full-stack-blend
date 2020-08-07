@@ -87,6 +87,7 @@ class Textbox extends React.Component<Props, State> {
                     
                     if (typeof result === 'string') {
                         input.value = result;
+                        input.selectionStart = input.selectionEnd = input.value.length;
                     }
                 }
             } else if (!completingValue) {
@@ -95,6 +96,7 @@ class Textbox extends React.Component<Props, State> {
                     
                     if (typeof result === 'string') {
                         input.value = result;
+                        input.selectionStart = input.selectionEnd = input.value.length;
                     }
                 }
             }
@@ -105,6 +107,7 @@ class Textbox extends React.Component<Props, State> {
                 
                 if (typeof result === 'string') {
                     input.value = result;
+                    input.selectionStart = input.selectionEnd = input.value.length;
                 }
             }
         }
