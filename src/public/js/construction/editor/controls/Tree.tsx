@@ -63,6 +63,12 @@ class Tree extends React.Component<IProps, IState> {
     private onDragging(point: Point) {
   		let changed = this.resetInsertDirection(this.props.nodes);
   		
+  		if (this.state.currentInsertingReferenceNode) {
+  			this.state.currentInsertingReferenceNode.insert = InsertDirection.NONE;
+  			
+  			changed = true;
+  		}
+  		
   		this.state.currentInsertingReferenceNode = null;
     	this.state.currentInsertingDirection = InsertDirection.NONE;
   		
