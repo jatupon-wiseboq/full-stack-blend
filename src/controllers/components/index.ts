@@ -101,7 +101,7 @@ class Controller extends Base {
        		  }]
        		}
      		});
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
