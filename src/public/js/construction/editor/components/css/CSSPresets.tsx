@@ -76,7 +76,7 @@ class CSSPresets extends Base<Props, State> {
 		        				
 		        				childNodes.push({
 		        					id: null,
-		        					name: childInfo.name + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
+		        					name: childInfo.name.replace(/_/g, ' ') + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
 		        					selectable: true,
 		                	disabled: true,
 		                	selected: chosen,

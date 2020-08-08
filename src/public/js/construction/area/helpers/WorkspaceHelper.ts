@@ -8,6 +8,7 @@ import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
+import {LayoutHelper} from './LayoutHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
 declare let js_beautify;
@@ -240,6 +241,8 @@ var WorkspaceHelper = {
       
       EditorHelper.init(false, updateUI);
     }
+    
+    LayoutHelper.invalidate();
   },
   saveWorkspaceData: (reinit: boolean=true) => {
     if (InternalProjectSettings.currentMode == 'site') {

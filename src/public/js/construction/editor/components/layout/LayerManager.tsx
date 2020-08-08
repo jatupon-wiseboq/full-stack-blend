@@ -1,4 +1,5 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode, InsertDirection} from '../../controls/TreeNode.js';
@@ -12,10 +13,12 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
+	height: any;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
+	height: 'auto'
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -45,6 +48,18 @@ class LayerManager extends Base<Props, State> {
     		}
     }
     
+    private onStartDragging(node: ITreeNode) {
+    		let container = ReactDOM.findDOMNode(this.refs.container);
+    	
+    		this.state.height = HTMLHelper.getSize(container)[1] + 'px';
+    		this.forceUpdate();
+    }
+    
+    private onEndDragging() {
+    		this.state.height = 'auto';
+    		this.forceUpdate();
+    }
+    
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		let value = null;
     	
@@ -71,8 +86,8 @@ class LayerManager extends Base<Props, State> {
     
     render() {
       return (
-      	<div className="layer-manager-container">
-      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged} />
+      	<div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
+      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
       	</div>
       );
     }

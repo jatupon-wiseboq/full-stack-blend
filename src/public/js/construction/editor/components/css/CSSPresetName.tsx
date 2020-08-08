@@ -37,23 +37,26 @@ class CSSPresetName extends Base<Props, State> {
     }
     
     protected textboxOnUpdate(value: any) {
-    		value = value.replace(/ /g, '_');
-    		
-    		if (!value && !confirm('Remove inheriting from the preset "' + this.state.value + '"?')) {
-    				return this.state.value;
-    		} else if (stylesheetDefinitionKeys.indexOf(value) != -1) {
+        value = value.replace(/ /g, '_');
+        
+        if (!value && this.state.value && !confirm('Remove inheriting from the preset "' + this.state.value + '"?')) {
             return this.state.value;
         } else {
+        		let shouldReturn = false;
+            if (stylesheetDefinitionKeys.indexOf(value) != -1) {
+              value = value + ' ';
+              shouldReturn = true;
+            }
             this.state.value = value;
             
             perform('update', {
-            		attributes: [{
-        						name: 'class',
-        						value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-self-', [this.state.attributeValues['internal-fsb-guid']])
-        				},{
-            				name: 'internal-fsb-reusable-preset-name',
-            				value: value
-            		}],
+                attributes: [{
+                    name: 'class',
+                    value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-self-', [this.state.attributeValues['internal-fsb-guid']])
+                },{
+                    name: 'internal-fsb-reusable-preset-name',
+                    value: value
+                }],
                 styles: [{
                     name: '-fsb-reusable-name',
                     value: value
@@ -63,6 +66,10 @@ class CSSPresetName extends Base<Props, State> {
                 }],
                 replace: this.props.watchingAttributeNames[0]
             });
+            
+            if (shouldReturn) {
+            	return value.replace(/_/g, ' ');
+            }
         }
     }
     

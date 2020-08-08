@@ -1,9 +1,17 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 
 let defaultElement = document.createElement('div');
+let cachedElementComputedStyleNodesElement = null;
+let cachedElementComputedStyleNodesResults = null;
 
 var StyleHelper = {
+	invalidate: function() {
+		cachedElementComputedStyleNodesElement = null;
+		cachedElementComputedStyleNodesResults = null;
+	},
   getElementComputedStyleNodes: function(element: HTMLElement) {
+  	if (cachedElementComputedStyleNodesElement == element && cachedElementComputedStyleNodesResults)
+  		return cachedElementComputedStyleNodesResults;
   	let nodes = [];
   	let isGuideOn = HTMLHelper.hasClass(document.documentElement, 'internal-fsb-guide-on');
   	
@@ -45,7 +53,8 @@ var StyleHelper = {
 	    HTMLHelper.addClass(document.documentElement, 'internal-fsb-guide-on');
   	}
 		
-  	return nodes;
+		cachedElementComputedStyleNodesResults = nodes;
+  	return cachedElementComputedStyleNodesResults;
   },
   getComputedStyle(element: HTMLElement) {
     var computedStyle;

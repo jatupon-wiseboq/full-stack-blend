@@ -27,21 +27,25 @@ const DEFAULTS = {
   }
   
   protected async accessories(data: Input[]): Promise<any> {
- 	  return new Promise((resolve) => {
- 	    resolve({
- 		    title: null,
- 		    description: null,
- 		    keywords: null,
- 		    language: null,
- 		    contentType: null,
- 		    revisitAfter: null,
- 		    robots: null,
- 		    linkUrl: null,
- 		    imageUrl: null,
- 		    itemType: null,
- 		    contentLocale: null
- 		  });
- 	  });
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve({
+          title: null,
+          description: null,
+          keywords: null,
+          language: null,
+          contentType: null,
+          revisitAfter: null,
+          robots: null,
+          linkUrl: null,
+          imageUrl: null,
+          itemType: null,
+          contentLocale: null
+        });
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {

@@ -10,6 +10,7 @@ interface IProps {
   nodes: [ITreeNode];
   onUpdate(node: ITreeNode);
   onStartDragging(node: ITreeNode);
+  onEndDragging();
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
   enableDragging: boolean;
@@ -61,6 +62,12 @@ class Tree extends React.Component<IProps, IState> {
     
     private onDragging(point: Point) {
   		let changed = this.resetInsertDirection(this.props.nodes);
+  		
+  		if (this.state.currentInsertingReferenceNode) {
+  			this.state.currentInsertingReferenceNode.insert = InsertDirection.NONE;
+  			
+  			changed = true;
+  		}
   		
   		this.state.currentInsertingReferenceNode = null;
     	this.state.currentInsertingDirection = InsertDirection.NONE;
@@ -119,6 +126,10 @@ class Tree extends React.Component<IProps, IState> {
     private onEndDragging() {
     	this.resetInsertDirection(this.props.nodes);
     	this.setDragging(false);
+    	
+    	if (this.props.onEndDragging) {
+    		this.props.onEndDragging();
+    	}
     	
     	if (this.props.onDragged && this.state.currentDraggingNode && this.state.currentInsertingReferenceNode && this.state.currentInsertingDirection) {
     		this.props.onDragged(this.state.currentDraggingNode, this.state.currentInsertingReferenceNode, this.state.currentInsertingDirection);

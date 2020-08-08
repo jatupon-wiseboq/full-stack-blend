@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
@@ -32,6 +33,8 @@ let Accessories = {
 };
 
 let editorCurrentMode: string = null;
+let cachedUpdateEditorProperties = {};
+let updateEditorPropertiesTimer = null;
 
 var EditorHelper = {
   setup: () => {
@@ -155,11 +158,43 @@ var EditorHelper = {
   	ManipulationHelper.perform(name, content);
   },
   synchronize: (name: string, content: any) => {
-    window.top.postMessage(JSON.stringify({
-    	target: 'editor',
-      name: name,
-      content: content
-    }), '*');
+  	if (name == 'updateEditorProperties') {
+  		window.clearTimeout(updateEditorPropertiesTimer);
+  		updateEditorPropertiesTimer = window.setTimeout(() => {
+  			let recent = cachedUpdateEditorProperties;
+	  		cachedUpdateEditorProperties = Object.assign({}, content);
+	  		
+	  		for (let key in content) {
+	  			if (content.hasOwnProperty(key)) {
+	  				if (recent[key] == content[key]) {
+	  					content[key] = '~';
+	  				} else if (key === 'extensions') {
+	  					let extensions = content[key] || {};
+		  				let recentExtensions = recent[key] || {};
+		  				for (let extensionKey in extensions) {
+				  			if (extensions.hasOwnProperty(extensionKey)) {
+				  				if (recentExtensions[extensionKey] == extensions[extensionKey]) {
+				  					extensions[extensionKey] = '~';
+				  				}
+				  			}
+				  		}
+		  			}
+	  			}
+	  		}
+	  		
+		    window.top.postMessage(JSON.stringify({
+		    	target: 'editor',
+		      name: name,
+		      content: content
+		    }), '*');
+  		}, 200);
+  	} else {
+	    window.top.postMessage(JSON.stringify({
+	    	target: 'editor',
+	      name: name,
+	      content: content
+	    }), '*');
+  	}
   },
   update: (tag: string=null) => {
     var event = document.createEvent("Event");

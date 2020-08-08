@@ -6,6 +6,7 @@ import {LayoutHelper} from '../LayoutHelper.js';
 import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
 import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
 
 let composedUntitledNameCount: any = {};
@@ -253,6 +254,9 @@ var FrontEndManipulationHelper = {
     }
     
     ManipulationHelper.updateComponentData(element);
+    LayoutHelper.invalidate();
+    FrontEndDOMHelper.invalidate();
+    
     return [accessory, remember, link];
   }
 }
