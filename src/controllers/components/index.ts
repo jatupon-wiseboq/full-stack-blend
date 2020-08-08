@@ -86,22 +86,25 @@ class Controller extends Base {
   }
   
   protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return {
- 		  Log: {
-   		  source: null,
-   		  group: "Log",
-   		  rows: [{
-   		    keys: {},
-   		    columns: {
-   		      message: {
-   		        name: "message",
-   		        value: "Hello World!"
-   		      }
-   		    },
-   		    relations: {}
-   		  }]
-   		}
- 		};
+ 		return new Promise(async (resolve, reject) => {
+      try {
+        resolve({
+     		  Log: {
+       		  source: null,
+       		  group: "Log",
+       		  rows: [{
+       		    keys: {},
+       		    columns: {
+       		      message: "Hello World!"
+       		    },
+       		    relations: {}
+       		  }]
+       		}
+     		});
+      } catch(error: Error) {
+        reject(error);
+      }
+    });
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
