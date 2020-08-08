@@ -42,7 +42,7 @@ const DEFAULTS = {
           itemType: null,
           contentLocale: null
         });
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -52,7 +52,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await super.get(data));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -62,7 +62,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await super.post(data));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -72,7 +72,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await super.put(data));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -82,7 +82,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await super.delete(data));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -92,7 +92,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await DatabaseHelper.insert(data, schema));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -102,7 +102,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await DatabaseHelper.update(data, schema));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -113,7 +113,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await DatabaseHelper.delete(data, schema));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -123,7 +123,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await DatabaseHelper.retrieve(data, schema));
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
@@ -133,7 +133,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
         resolve('/');
-      } catch(error: Error) {
+      } catch(error) {
         reject(error);
       }
     });
