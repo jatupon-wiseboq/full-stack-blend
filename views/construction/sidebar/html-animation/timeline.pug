@@ -1,6 +1,43 @@
 .internal-fsb-selecting-on(internal-fsb-not-for="internal-fsb-inheriting")
-	| Timeline
+  .section-container
+    .section-title
+      | Element Keyframes
+    .section-body
+      | Element Keyframes
+    .section-hr
+    .section-title
+      | Timing
+    .section-subtitle
+      | Animation Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-mode', 'internal-fsb-animation-timing-mode']}")
+    .section-subtitle
+      | Easing Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-mode', 'internal-fsb-animation-easing-mode']}")
+    .section-subtitle
+      | Easing Function
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-fn-1', 'internal-fsb-animation-easing-fn']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-fn-2', 'internal-fsb-animation-easing-fn']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-fn-3', 'internal-fsb-animation-easing-fn']}")
+    .section-subtitle
+      | Repeating Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-repeating-mode', 'internal-fsb-animation-repeating-mode']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-animation-repeating-mode:time")
+      | Repeating Time
+    .section-body(internal-fsb-for="internal-fsb-animation-repeating-mode:time")
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-animation-repeating-time'], inline: true, button: false}")
+    .section-hr(internal-fsb-for="internal-fsb-animation-timing-mode:scrolling")
+  .section-container(internal-fsb-for="internal-fsb-animation-timing-mode:scrolling")
+    .section-title
+      | Scrolling Animation
+    .section-subtitle
+      | Triggering Edge
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-scrolling-triggering', 'internal-fsb-animation-scrolling-triggering']}")
 div(internal-fsb-for="internal-fsb-inheriting")
-	include ../../common/component-guide
+  include ../../common/component-guide
 .internal-fsb-selecting-off
-	include ../../common/empty
+  include ../../common/empty

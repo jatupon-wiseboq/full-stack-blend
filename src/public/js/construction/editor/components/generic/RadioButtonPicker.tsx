@@ -31,7 +31,15 @@ let options = {
 		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
-		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT
+		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
+		
+		"animation-mode": CONSTANTS.ANIMATION_TIMING_MODE,
+		"animation-scrolling-triggering": CONSTANTS.ANIMATION_SCROLLING_TRIGGERING,
+		"animation-easing-mode": CONSTANTS.ANIMATION_EASING_MODE,
+		"animation-easing-fn-1": CONSTANTS.ANIMATION_EASING_FN_1,
+		"animation-easing-fn-2": CONSTANTS.ANIMATION_EASING_FN_2,
+		"animation-easing-fn-3": CONSTANTS.ANIMATION_EASING_FN_3,
+		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
