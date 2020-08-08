@@ -90,6 +90,7 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
+		mode: string;
 }
 
 interface State extends IState {
@@ -97,6 +98,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
+		mode: 'coding'
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -128,15 +130,41 @@ class ReactEventBinder extends Base<Props, State> {
         return (
             <div className="btn-group btn-group-sm">
                 <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
-                    <FullStackBlend.Controls.DropDownControl representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7}>
-                        <div className="section-container" style={{width: '225px'}}>
-		                        <div className="section-title">Customize Binding</div>
-		                        <div className="section-subtitle">Binding</div>
-		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
-		                        <div className="section-subtitle">No Propagation</div>
-		                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
-		                    </div>
-                    </FullStackBlend.Controls.DropDownControl>
+                	{(() => {
+                		if (this.props.mode == 'coding') {
+                			return (
+		                		<FullStackBlend.Controls.DropDownControl representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7}>
+	                        <div className="section-container" style={{width: '225px'}}>
+			                        <div className="section-title">Customize Binding</div>
+			                        <div className="section-subtitle">Binding</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
+			                        <div className="section-subtitle">Custom Code</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"disabled-custom-code": true}', ["fa-power-off", "disable"]]]}/></div>
+			                        <div className="section-subtitle">No Propagation</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
+			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
+			                    </div>
+		                    </FullStackBlend.Controls.DropDownControl>
+                			)
+                		} else {
+                			return (
+		                		<FullStackBlend.Controls.DropDownControl representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7}>
+	                        <div className="section-container" style={{width: '225px'}}>
+			                        <div className="section-title">Customize Binding</div>
+			                        <div className="section-subtitle">Binding</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
+			                        <div className="section-subtitle">Add Tracks</div>
+			                        <div className="section-body"><FullStackBlend.Components.Animations/></div>
+			                        <div className="section-subtitle">Remove Tracks</div>
+			                        <div className="section-body"><FullStackBlend.Components.Animations/></div>
+			                        <div className="section-subtitle">Remove Animation When Finish</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-reset": true}', ["fa-power-off", "enable"]]]}/></div>
+			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
+			                    </div>
+		                    </FullStackBlend.Controls.DropDownControl>
+                			)
+                		}
+                	})()}
                 </a>
             </div>
         )

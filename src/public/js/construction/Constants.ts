@@ -360,14 +360,8 @@ export const BACKEND_DATA_EXTENSIONS = ["internal-fsb-data-code-import", "intern
 export const ANIMATION_TIMING_MODE = [["internal-fsb-animation-timing-mode", null, ["fa-hourglass-2", "Time"]], ["internal-fsb-animation-timing-mode", "scrolling", ["fa-arrows-v", "Scrolling"]]];
 export const ANIMATION_SCROLLING_TRIGGERING = [["internal-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["internal-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["internal-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];
 export const ANIMATION_EASING_MODE = [["internal-fsb-animation-easing-mode", "in", ["fa-sign-out", "In"]], ["internal-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["internal-fsb-animation-easing-mode", "out", ["fa-sign-in", "Out"]]];
-export const ANIMATION_EASING_FN_1 = [["internal-fsb-animation-easing-fn", null, ["fa-bolt", "Linear"]],
-["internal-fsb-animation-easing-fn", "back", ["fa-bolt", "Back"]],
-["internal-fsb-animation-easing-fn", "circ", ["fa-bolt", "Circ"]],
-["internal-fsb-animation-easing-fn", "cubic", ["fa-bolt", "Cubic"]]];
-export const ANIMATION_EASING_FN_2 = [["internal-fsb-animation-easing-fn", "ease", ["fa-bolt", "Ease"]],
-["internal-fsb-animation-easing-fn", "expo", ["fa-bolt", "Expo"]],
-["internal-fsb-animation-easing-fn", "quad", ["fa-bolt", "Quad"]],
-["internal-fsb-animation-easing-fn", "quart", ["fa-bolt", "Quart"]]];
-export const ANIMATION_EASING_FN_3 = [["internal-fsb-animation-easing-fn", "quint", ["fa-bolt", "Quint"]],
-["internal-fsb-animation-easing-fn", "sine", ["fa-bolt", "Sine"]]];
+export const ANIMATION_EASING_FN_1 = [["internal-fsb-animation-easing-fn", null, ["fa-bolt", "Linear"]], ["internal-fsb-animation-easing-fn", "back", ["fa-bolt", "Back"]], ["internal-fsb-animation-easing-fn", "circ", ["fa-bolt", "Circ"]], ["internal-fsb-animation-easing-fn", "cubic", ["fa-bolt", "Cubic"]]];
+export const ANIMATION_EASING_FN_2 = [["internal-fsb-animation-easing-fn", "ease", ["fa-bolt", "Ease"]], ["internal-fsb-animation-easing-fn", "expo", ["fa-bolt", "Expo"]], ["internal-fsb-animation-easing-fn", "quad", ["fa-bolt", "Quad"]], ["internal-fsb-animation-easing-fn", "quart", ["fa-bolt", "Quart"]]];
+export const ANIMATION_EASING_FN_3 = [["internal-fsb-animation-easing-fn", "quint", ["fa-bolt", "Quint"]], ["internal-fsb-animation-easing-fn", "sine", ["fa-bolt", "Sine"]]];
 export const ANIMATION_REPEATING_MODE = [["internal-fsb-animation-repeating-mode", null, ["fa-hourglass", "Infinite"]], ["internal-fsb-animation-repeating-mode", "time", ["fa-hourglass-1", "Time"]], ["internal-fsb-animation-repeating-mode", "disabled", ["fa-hourglass-o", "Disabled"]]];
+export const ANIMATION_DEFAULT_STATE = [["internal-fsb-animation-state", null, ["fa-circle", "Add"]], ["internal-fsb-animation-state", "off", ["fa-circle-o", "Remove"]]];

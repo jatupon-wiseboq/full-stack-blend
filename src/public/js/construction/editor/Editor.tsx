@@ -45,6 +45,8 @@ import './components/content/ComponentManager.js';
 import './components/content/PopupManager.js';
 import './components/content/EndpointManager.js';
 
+import './components/animation/Animations.js';
+
 //import GitHub from 'github-api';
 
 declare let React: any;

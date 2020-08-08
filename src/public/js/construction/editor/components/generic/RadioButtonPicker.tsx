@@ -39,7 +39,8 @@ let options = {
 		"animation-easing-fn-1": CONSTANTS.ANIMATION_EASING_FN_1,
 		"animation-easing-fn-2": CONSTANTS.ANIMATION_EASING_FN_2,
 		"animation-easing-fn-3": CONSTANTS.ANIMATION_EASING_FN_3,
-		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE
+		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE,
+		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE,
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
