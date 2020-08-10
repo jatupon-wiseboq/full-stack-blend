@@ -356,6 +356,10 @@ ${rootScript}`;
           }
         }
         
+        if (element.parentNode.getAttribute('style') == '-fsb-empty') {
+        	isForChildren = true;
+        }
+        
         if (submitControls) {
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}});`);
           
@@ -604,6 +608,10 @@ ${rootScript}`;
               break;
             case 'style':
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
+              if (attribute.value == '-fsb-empty') {
+              	isForChildren = true;
+                continue;
+              }
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
