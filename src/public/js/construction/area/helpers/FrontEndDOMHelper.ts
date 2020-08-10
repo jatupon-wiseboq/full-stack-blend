@@ -394,8 +394,10 @@ ${rootScript}`;
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
+          reactData = null;
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
+          reactData = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-data') || null;
         }
         
         if (!reactNamespace) {
@@ -454,7 +456,7 @@ ${rootScript}`;
 	        } else {
 	        	_nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
 	        	
-	        	cumulatedDotNotation += reactData + '.';
+	        	cumulatedDotNotation += reactData;
 	        }
         }
         
