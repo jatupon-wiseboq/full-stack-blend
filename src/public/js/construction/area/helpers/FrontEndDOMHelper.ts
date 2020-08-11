@@ -256,7 +256,11 @@ ${rootScript}`;
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
-              let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
+              if (attribute.value == '-fsb-empty') {
+              	isForChildren = true;
+                continue;
+              }
+              let hashMap = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(element, 'style'));
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
@@ -607,11 +611,11 @@ ${rootScript}`;
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
-              let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
               if (attribute.value == '-fsb-empty') {
               	isForChildren = true;
                 continue;
               }
+              let hashMap = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(element, 'style'));
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
