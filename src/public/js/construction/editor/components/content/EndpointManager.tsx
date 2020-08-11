@@ -151,6 +151,7 @@ class EndpointManager extends Base<Props, State> {
       <meta property="og:description" content="\#{headers && headers.description || '${description}'}" />
       <meta property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}" />
       <link rel="stylesheet" href="//staging.stackblend.com/css/embed.css">
+      ${externalStylesheets.join('\n      ')}
       <style type="text/css">${combinedStylesheet}</style>
     </head>
     <body${combinedInlineBodyStyle}>
@@ -159,7 +160,6 @@ class EndpointManager extends Base<Props, State> {
       <script type="text/javascript">
       ${compiledCombinedMinimalFeatureScripts}
       </script>
-      ${externalStylesheets.join('\n      ')}
       ${combinedFontTags.join('\n      ')}
       <script type="text/javascript">
       window.data = !{JSON.stringify(data)};
