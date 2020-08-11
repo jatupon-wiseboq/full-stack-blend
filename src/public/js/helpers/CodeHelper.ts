@@ -31,6 +31,7 @@ const CodeHelper = {
         p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
   },
   escape: (unsafe: string) => {
+  	unsafe = unsafe || '';
   	return unsafe
 			.replace(/&/g, "&amp;")
 			.replace(/</g, "&lt;")
