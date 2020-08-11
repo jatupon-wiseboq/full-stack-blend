@@ -41,7 +41,7 @@ class Base extends React.Component {
   
   public update(data: any) {
     this.setState({
-      data: data
+      data: Object.assign({}, this.state.data || this.props.data || {}, data || {})
     });
   }
   
