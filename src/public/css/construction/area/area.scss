@@ -439,3 +439,22 @@ input[type='radio'], input[type='checkbox'] {
 .internal-fsb-dragging-handle {
   cursor: move;
 }
+
+.internal-fsb-inheriting-element[internal-fsb-class="Iframe"],
+.internal-fsb-inheriting-element[internal-fsb-class="Textbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="Select"],
+.internal-fsb-inheriting-element[internal-fsb-class="Radio"],
+.internal-fsb-inheriting-element[internal-fsb-class="Checkbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="File"],
+.internal-fsb-inheriting-element[internal-fsb-class="Image"],
+.internal-fsb-inheriting-element[internal-fsb-class="Video"],
+.internal-fsb-element[internal-fsb-class="Iframe"],
+.internal-fsb-element[internal-fsb-class="Textbox"],
+.internal-fsb-element[internal-fsb-class="Select"],
+.internal-fsb-element[internal-fsb-class="Radio"],
+.internal-fsb-element[internal-fsb-class="Checkbox"],
+.internal-fsb-element[internal-fsb-class="File"],
+.internal-fsb-element[internal-fsb-class="Image"],
+.internal-fsb-element[internal-fsb-class="Video"] {
+ 	padding: 0px;
+}
