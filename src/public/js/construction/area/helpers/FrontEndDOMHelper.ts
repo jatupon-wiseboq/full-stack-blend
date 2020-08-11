@@ -5,7 +5,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -245,6 +245,10 @@ ${rootScript}`;
           }
         }
         
+        if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
+        	bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
+        }
+        
         for (let attribute of _attributes) {
           switch (attribute.name) {
             case 'class':
@@ -256,11 +260,12 @@ ${rootScript}`;
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
+            	attribute.value = element.getAttribute('style');
               if (attribute.value == '-fsb-empty') {
               	isForChildren = true;
                 continue;
               }
-              let hashMap = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(element, 'style'));
+              let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
@@ -358,10 +363,6 @@ ${rootScript}`;
               }
               break;
           }
-        }
-        
-        if (element.parentNode.getAttribute('style') == '-fsb-empty') {
-        	isForChildren = true;
         }
         
         if (submitControls) {
@@ -600,6 +601,10 @@ ${rootScript}`;
           }
         }
         
+        if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
+        	bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
+        }
+        
         for (let attribute of _attributes) {
           switch (attribute.name) {
             case 'class':
@@ -611,11 +616,12 @@ ${rootScript}`;
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
+            	attribute.value = element.getAttribute('style');
               if (attribute.value == '-fsb-empty') {
               	isForChildren = true;
                 continue;
               }
-              let hashMap = HTMLHelper.getHashMapFromInlineStyle(HTMLHelper.getAttribute(element, 'style'));
+              let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
@@ -697,7 +703,6 @@ ${rootScript}`;
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
-          styles = null;
           classes = CodeHelper.getInternalClasses(classes);
         }
         

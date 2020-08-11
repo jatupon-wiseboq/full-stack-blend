@@ -58,12 +58,6 @@ html.internal-fsb-guide-on {
     }
   }
   
-  [internal-fsb-class="FlowLayout"],
-  [internal-fsb-class="AbsoluteLayout"],
-  [internal-fsb-class="Rectangle"] {
-    padding: 1px;
-  }
-  
   [internal-fsb-inheriting] {
     > :first-child {
       pointer-events: none;
