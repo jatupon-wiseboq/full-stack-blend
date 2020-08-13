@@ -365,6 +365,12 @@ ${rootScript}`;
           }
         }
         
+        // In case of no attribute "style":
+        //
+        if (element.parentNode.getAttribute('style') === '-fsb-empty') {
+        	isForChildren = true;
+        }
+        
         if (submitControls) {
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}});`);
           
@@ -694,6 +700,12 @@ ${rootScript}`;
               }
               break;
           }
+        }
+        
+        // In case of no attribute "style":
+        //
+        if (element.parentNode.getAttribute('style') === '-fsb-empty') {
+        	isForChildren = true;
         }
         
         if (submitControls) {
