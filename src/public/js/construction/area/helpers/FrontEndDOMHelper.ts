@@ -228,6 +228,11 @@ ${rootScript}`;
             let bindingType = attribute.value.split('[')[0];
             let bindingValue = attribute.value.match(/^[A-Z]+\[(.+)\]$/)[1];
             
+            if (bindingName === 'background-color') {
+            	attribute.name = 'internal-fsb-react-style-background-color';
+            	bindingName = 'background';
+            }
+            
             switch (bindingType) {
               case 'SETTING':
                 bindingStyles[bindingName] = 'Project.Settings.' + bindingValue;
@@ -589,6 +594,11 @@ ${rootScript}`;
             let bindingName = attribute.name.replace('internal-fsb-react-style-', '');
             let bindingType = attribute.value.split('[')[0];
             let bindingValue = attribute.value.match(/^[A-Z]+\[(.+)\]$/)[1];
+            
+            if (bindingName === 'background-color') {
+            	attribute.name = 'internal-fsb-react-style-background-color';
+            	bindingName = 'background';
+            }
             
             switch (bindingType) {
               case 'SETTING':
