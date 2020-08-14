@@ -257,20 +257,20 @@ class ProjectManager extends Base<Props, State> {
 html
   head
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
-    title
+    title.
       \#{headers && headers.title || '${title}'}
-    meta(name="description" content="\#{headers && headers.description || '${description}'}")
-    meta(name="keywords" content="\#{headers && headers.keywords || '${keywords}'}")
-    meta(http-equiv="content-language" content="\#{headers && headers.language || 'en'}")
-    meta(http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}")
-    meta(name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}")
-    meta(name="robots" content="\#{headers && headers.robots || 'index, follow'}")
-    meta(property="og:title" content="\#{headers && headers.title || '${title}'}")
-    meta(property="og:url" content="\#{headers && headers.linkUrl || '${path}'}")
-    meta(property="og:image" content="\#{headers && headers.imageUrl || '${image}'}")
-    meta(property="og:type" content="\#{headers && headers.itemType || 'website'}")
-    meta(property="og:description" content="\#{headers && headers.description || '${description}'}")
-    meta(property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}")
+    meta(name="description" content=\#{headers && headers.description || '${description}'})
+    meta(name="keywords" content=\#{headers && headers.keywords || '${keywords}'})
+    meta(http-equiv="content-language" content=\#{headers && headers.language || 'en'})
+    meta(http-equiv="content-type" content=\#{headers && headers.contentType || 'UTF-8'})
+    meta(name="revisit-after" content=\#{headers && headers.revisitAfter || '7 days'})
+    meta(name="robots" content=\#{headers && headers.robots || 'index, follow'})
+    meta(property="og:title" content=\#{headers && headers.title || '${title}'})
+    meta(property="og:url" content=\#{headers && headers.linkUrl || '${path}'})
+    meta(property="og:image" content=\#{headers && headers.imageUrl || '${image}'})
+    meta(property="og:type" content=\#{headers && headers.itemType || 'website'})
+    meta(property="og:description" content=\#{headers && headers.description || '${description}'})
+    meta(property="og:locale" content=\#{headers && headers.contentLocale || 'en_US'})
     link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
     ${externalStylesheets.join('\n      ')}
     style(type="text/css").
