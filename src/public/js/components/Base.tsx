@@ -121,7 +121,36 @@ class Base extends React.Component {
 
 DeclarationHelper.declare('Site', 'Components.Base', Base);
 
-export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base};
+class Button extends React.Component {
+	constructor(props) {
+    super(props);
+  }
+  
+  componentDidMount() {
+  	let button = ReactDOM.findDOMNode(this.refs.button);
+  	
+  	if (this.props.onSubmitting) {
+  		button.addEventListener('submitting', this.props.onSubmitting, false);
+  	}
+  	if (this.props.onSubmitted) {
+  		button.addEventListener('submitted', this.props.onSubmitted, false);
+  	}
+  	if (this.props.onFailed) {
+  		button.addEventListener('failed', this.props.onFailed, false);
+  	}
+  	if (this.props.onSuccess) {
+  		button.addEventListener('success', this.props.onSuccess, false);
+  	}
+  }
+  
+  protected render(): any {
+    return (
+      <button ref="button" {...this.props}></button>
+    )
+  }
+}
+
+export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
