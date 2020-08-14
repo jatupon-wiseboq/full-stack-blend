@@ -100,8 +100,8 @@ class KlassA extends Base {
   
   // Auto[ClassEnd]--->
   protected render(): any {
-    return (
-    )
+    return pug \`
+    \`
   }
 }
 DeclarationHelper.declare();
@@ -131,9 +131,9 @@ const LOAD_END = `
   // <---Auto[ClassBegin]`;
 
 const RENDER_BEGIN = `protected render(): any {
-    return (`;
+    return pug \``;
 const RENDER_END = `
-    )
+    \`
   }
 }
 DeclarationHelper.declare(`;

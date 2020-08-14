@@ -352,21 +352,32 @@ ${rootScript}`;
 	                let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
 	                
             			if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
-		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
+		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+		                
+		                //attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              } else {
 		              	//customEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), 'this.' + FUNCTION_NAME + '.bind(this)']);
-		              	attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
+		              	
+		              	attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+		              	
+		              	//attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              }
 	              }
               } else {
               	if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
-              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+              		
+              		//attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
               	} else {
-              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '{' + attribute.value + '}'));
+              		attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
+              		
+              		//attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '{' + attribute.value + '}'));
               	}
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
-                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                	
+                	//inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
                 }
               }
               break;
@@ -470,8 +481,7 @@ ${rootScript}`;
         let _nodeData = 'data';
         if (reactData !== null) {
         	if (!_leafNode) {
-	      		lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true).map((data, ' + dotNotationChar + ') => {');
-	          lines.push(_indent + '  return (');
+	      		lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true)');
 	          
 	          indent += '    ';
 	          
@@ -483,15 +493,41 @@ ${rootScript}`;
 	        }
         }
         
+        /*let _indent = indent;
+        let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
+        let _nodeData = 'data';
+        if (reactData !== null) {
+        	if (!_leafNode) {
+	      		lines.push(indent + '{this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true).map((data, ' + dotNotationChar + ') => {');
+	          lines.push(_indent + '  return (');
+	          
+	          indent += '    ';
+	          
+	          cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
+	        } else {
+	        	_nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
+	        	
+	        	cumulatedDotNotation += reactData;
+	        }
+        }*/
+        
         // Include Another React Class Feature
         // 
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={' + _nodeData + '} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '') + '/>';
+          composed += '=' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={' + _nodeData + '} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '');
           
           lines.push(composed);
         }
+        
+        /*if (reactMode && !isFirstElement) {
+          let composed = indent;
+          
+          composed += '<' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={' + _nodeData + '} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '') + '/>';
+          
+          lines.push(composed);
+        }*/
         
         // Dot Notation Feature (Continue 1/2)
         // 
@@ -509,6 +545,50 @@ ${rootScript}`;
         // Recursive Children Feature
         //
         if (!reactMode || isFirstElement) {
+          let composed = indent;
+          let children = [...element.childNodes];
+          
+          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1 && (!!element.tagName || element.textContent.trim() != ''));
+          
+          if (tag === 'div') {
+          	if (classes == '') composed += tag;
+          } else {
+          	composed += tag;
+          }
+          
+          if (classes != '') {
+          	if (!isFirstElement) composed += '.' + classes.split(' ').join('.');
+          	else {
+          		attributes.push('className="' + classes + ' " + (this.props.forward && this.props.forward.classes || \'\')');
+          	}
+          }
+          if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
+          if (styles != null) {
+            if (!isFirstElement) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
+            else attributes.splice(0, 0, 'style=Object.assign({' + styles.join(', ') + '}, this.props.forward && this.props.forward.styles || {})');
+          } else if (isFirstElement) {
+            attributes.splice(0, 0, 'style=Object.assign({}, this.props.forward && this.props.forward.styles || {})');
+          }
+          if (composed == indent) composed += 'div';
+          if (attributes.length != 0) composed += '(' + attributes.join(' ').replace(/___DATA___/g, _nodeData) + ')';
+          
+          if (!dangerouslySetInnerHTML) {
+            lines.push(composed);
+            
+            for (let child of children) {
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+            }
+  	      } else {
+  	        lines.push(composed);
+  	      }
+        }
+        
+        // Dot Notation Feature (Continue 2/2)
+        // 
+        
+        // Recursive Children Feature
+        //
+        /*if (!reactMode || isFirstElement) {
           let composed = indent;
           let children = [...element.childNodes];
           
@@ -559,7 +639,7 @@ ${rootScript}`;
         if (reactData !== null && !_leafNode) {
         	lines.push(_indent + '  )');
         	lines.push(_indent + '})}');
-        }
+        }*/
       }
 	  }
 	},
@@ -705,10 +785,14 @@ ${rootScript}`;
 		              }
 	              }
               } else {
-                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                
+                //attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
-                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                	inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
+                	
+                	//inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value : "'" + attribute.value.split('"').join('&quot;') + "'"));
                 }
               }
               break;
@@ -768,12 +852,45 @@ ${rootScript}`;
       	// Include Another React Class Feature
         // 
       	if (reactMode && !isFirstElement) {
-      		lines.push(indent + '<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ?' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + '></span>');
+      		lines.push(indent + 'span(internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ?' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + ')');
       	}
+      	
+      	/*if (reactMode && !isFirstElement) {
+      		lines.push(indent + '<span internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ?' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + '></span>');
+      	}*/
       	
       	// Recursive Children Feature
         //
-      	if (!reactMode || isFirstElement) {
+        if (!reactMode || isFirstElement) {
+      		let composed = indent;
+          let children = [...element.childNodes];
+          
+          children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
+          
+          if (tag === 'div') {
+          	if (classes == '') composed += tag;
+          } else {
+          	composed += tag;
+          }
+          
+          if (classes != '') composed += '.' + classes.split(' ').join('.');
+          if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
+          if (styles != null) attributes.push('style="' + styles.join('; ') + ';"');
+          if (composed == indent) composed += 'div';
+          if (attributes.length != 0) composed += '(' + attributes.join(' ') + ')';
+          
+          lines.push(composed);
+          
+          for (let eventInfo of events) {
+          	executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
+          }
+          
+          for (let child of children) {
+            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(child, indent + '  ', executions, lines, false);
+          }
+      	}
+      	
+      	/*if (!reactMode || isFirstElement) {
       		let composed = indent;
           let children = [...element.childNodes];
           
@@ -805,7 +922,7 @@ ${rootScript}`;
 	          composed += '</' + tag + '>';
 	          lines.push(composed);
 	        }
-      	}
+      	}*/
       }
     }
   },
