@@ -395,7 +395,7 @@ ${rootScript}`;
           	}
           }
           
-        	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)}`);
+        	attributes.push(`onClick=((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)`);
         }
         
         for (let key in bindingStyles) {
