@@ -106,7 +106,7 @@ const DataManipulationHelper = {
 	  	params['action'] = action;
 	  	params['notation'] = notation;
 	  	
-	  	const button = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', guid);
+	  	const button = EventHelper.getCurrentElement(event);
 	  	if (button) {
 	  		const event = new CustomEvent('submitting', {
 					detail: {
