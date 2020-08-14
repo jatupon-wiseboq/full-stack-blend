@@ -128,7 +128,9 @@ ${rootScript}`;
     
     if (element) {
       if (!element.tagName) {
-        lines.push(indent + '| ' + element.textContent);
+      	if (element.textContent.trim() != '') {
+        	lines.push(indent + '| ' + element.textContent);
+        }
       } else {
         let tag = element.tagName.toLowerCase();
         if (tag === 'button') tag = 'Button';
@@ -544,7 +546,9 @@ ${rootScript}`;
     
     if (element) {
       if (!element.tagName) {
-        lines.push(indent + '| ' + element.textContent);
+      	if (element.textContent.trim() != '') {
+        	lines.push(indent + '| ' + element.textContent);
+        }
       } else {
         let tag = element.tagName.toLowerCase();
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
