@@ -463,7 +463,7 @@ ${rootScript}`;
         	if (!_leafNode) {
 	      		lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true)');
 	          
-	          indent += '    ';
+	          indent += '  ';
 	          
 	          cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
 	        } else {
