@@ -205,12 +205,12 @@ class ProjectManager extends Base<Props, State> {
                 if (selectedLibraries.indexOf(library.id) != -1) {
                     if (library.production.stylesheets) {
                         for (let stylesheet of library.production.stylesheets) {
-                            externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
+                            externalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + stylesheet + '")');
                         }
                     }
                     if (library.production.scripts) {
                         for (let script of library.production.scripts) {
-                            externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
+                            externalScripts.push('script(type="text/javascript" src="' + script + '")');
                         }
                     }
                 }
@@ -252,40 +252,41 @@ class ProjectManager extends Base<Props, State> {
     		        
                 let combinedHTMLPage = `.
   <!DOCTYPE html>
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>\#{headers && headers.title || '${title}'}</title>
-      <meta name="description" content="\#{headers && headers.description || '${description}'}" />
-      <meta name="keywords" content="\#{headers && headers.keywords || '${keywords}'}" />
-      <meta http-equiv="content-language" content="\#{headers && headers.language || 'en'}" />
-      <meta http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}" />
-      <meta name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}" />
-      <meta name="robots" content="\#{headers && headers.robots || 'index, follow'}" />
-      <meta property="og:title" content="\#{headers && headers.title || '${title}'}" />
-      <meta property="og:url" content="\#{headers && headers.linkUrl || '${path}'}" />
-      <meta property="og:image" content="\#{headers && headers.imageUrl || '${image}'}" />
-      <meta property="og:type" content="\#{headers && headers.itemType || 'website'}" />
-      <meta property="og:description" content="\#{headers && headers.description || '${description}'}" />
-      <meta property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}" />
-      <link rel="stylesheet" href="//staging.stackblend.com/css/embed.css">
-      ${externalStylesheets.join('\n      ')}
-      <style type="text/css">${combinedStylesheet}</style>
-    </head>
-    <body${combinedInlineBodyStyle}>
-      ${combinedHTMLTags}
-      <script type="text/javascript" src="/js/Embed.bundle.js"></script>
-      <script type="text/javascript">
-      ${compiledCombinedMinimalFeatureScripts}
-      </script>
-      ${combinedFontTags.join('\n      ')}
-      <script type="text/javascript">
-      window.data = !{JSON.stringify(data)};
-      </script>
-      ${externalScripts.join('\n      ')}
-      <script type="text/javascript" src="/js/Site.bundle.js"></script>
-    </body>
-  </html>`
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title
+      \#{headers && headers.title || '${title}'}
+    meta(name="description" content="\#{headers && headers.description || '${description}'}")
+    meta(name="keywords" content="\#{headers && headers.keywords || '${keywords}'}")
+    meta(http-equiv="content-language" content="\#{headers && headers.language || 'en'}")
+    meta(http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}")
+    meta(name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}")
+    meta(name="robots" content="\#{headers && headers.robots || 'index, follow'}")
+    meta(property="og:title" content="\#{headers && headers.title || '${title}'}")
+    meta(property="og:url" content="\#{headers && headers.linkUrl || '${path}'}")
+    meta(property="og:image" content="\#{headers && headers.imageUrl || '${image}'}")
+    meta(property="og:type" content="\#{headers && headers.itemType || 'website'}")
+    meta(property="og:description" content="\#{headers && headers.description || '${description}'}")
+    meta(property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}")
+    link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
+    ${externalStylesheets.join('\n      ')}
+    style(type="text/css")
+      .
+        ${combinedStylesheet}
+  body${combinedInlineBodyStyle}
+    ${combinedHTMLTags}
+    script(type="text/javascript" src="/js/Embed.bundle.js")
+    script(type="text/javascript")
+      .
+        ${compiledCombinedMinimalFeatureScripts}
+    ${combinedFontTags.join('\n      ')}
+    script(type="text/javascript")
+      .
+        window.data = !{JSON.stringify(data)};
+    ${externalScripts.join('\n      ')}
+    script(type="text/javascript" src="/js/Site.bundle.js")
+`
                 combinedHTMLPageDict[key] = combinedHTMLPage;
                 arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
               }
