@@ -113,7 +113,7 @@ ${rootScript}`;
     let lines: string[] = [];
     
     if (EditorHelper.hasParentReactComponent(element)) {
-    	FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(element, '    ', executions, lines);
+    	FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', executions, lines);
     } else {
     	FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(element, '    ', executions, lines);
     }
@@ -128,7 +128,7 @@ ${rootScript}`;
     
     if (element) {
       if (!element.tagName) {
-        lines.push(indent + element.textContent);
+        lines.push(indent + '| ' + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
         if (tag === 'button') tag = 'Button';
@@ -544,7 +544,7 @@ ${rootScript}`;
     
     if (element) {
       if (!element.tagName) {
-        lines.push(indent + element.textContent);
+        lines.push(indent + '| ' + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
