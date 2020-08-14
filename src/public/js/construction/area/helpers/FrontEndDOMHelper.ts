@@ -131,6 +131,8 @@ ${rootScript}`;
         lines.push(indent + element.textContent);
       } else {
         let tag = element.tagName.toLowerCase();
+        if (tag === 'button') tag = 'Button';
+        
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let classes = '';
         let styles = null;
@@ -352,7 +354,8 @@ ${rootScript}`;
             			if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
 		                attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              } else {
-		              	customEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), 'this.' + FUNCTION_NAME + '.bind(this)']);
+		              	//customEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), 'this.' + FUNCTION_NAME + '.bind(this)']);
+		              	attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '={this.' + FUNCTION_NAME + '.bind(this)}');
 		              }
 	              }
               } else {
@@ -396,13 +399,13 @@ ${rootScript}`;
         	attributes.push(`onClick={((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results: any) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)}`);
         }
         
-        if (reactClassComposingInfoGUID) {
+        /*if (reactClassComposingInfoGUID) {
         	for (let customEvent of customEvents) {
         		executions.push(`    if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}')) {
       HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${reactClassComposingInfoGUID}').addEventListener('${customEvent[0]}', ${customEvent[1]});
     }`);
         	}
-        }
+        }*/
         
         for (let key in bindingStyles) {
           if (bindingStyles.hasOwnProperty(key)) {
