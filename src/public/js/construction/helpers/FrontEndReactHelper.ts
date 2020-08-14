@@ -65,13 +65,15 @@ import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base} from './Base.js';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base.js';
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;
 declare let ReactDOM: any;
 declare let window: any;
 declare let DataManipulationHelper: any;
+
+let Button = $Button;
 
 // <---Auto[Declare]// Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {
