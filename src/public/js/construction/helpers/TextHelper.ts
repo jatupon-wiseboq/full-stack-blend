@@ -44,6 +44,14 @@ var TextHelper = {
  		return code.replace(MULTIPLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
  			return `${blankLines.match(MULTIPLE_BLANK_LINES_REGEX_LOCAL)[1]}\n`;
  		});
+ 	},
+ 	removeBlankLines: function(code: string): string {
+ 		const SINGLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)+(\n)/g;
+ 		const SINGLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)+(\n)/;
+ 		
+ 		return code.replace(SINGLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
+ 			return `\n`;
+ 		});
  	}
 };
 

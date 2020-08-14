@@ -132,7 +132,7 @@ class EndpointManager extends Base<Props, State> {
 	        let image = escape(pages && pages[0] && pages[0].image || '');
 	        let path = escape(pages && pages[0] && pages[0].path || '');
 	        
-	        combinedHTMLTags = TextHelper.removeMultipleBlankLines(combinedHTMLTags);
+	        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
 	        
           let combinedHTMLPage = `.
   <!DOCTYPE html>
