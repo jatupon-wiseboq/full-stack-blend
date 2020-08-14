@@ -273,19 +273,16 @@ html
     meta(property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}")
     link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
     ${externalStylesheets.join('\n      ')}
-    style(type="text/css")
-      .
-        ${combinedStylesheet}
+    style(type="text/css") = .
+      ${combinedStylesheet}
   body${combinedInlineBodyStyle}
     ${combinedHTMLTags}
     script(type="text/javascript" src="/js/Embed.bundle.js")
-    script(type="text/javascript")
-      .
-        ${compiledCombinedMinimalFeatureScripts}
+    script(type="text/javascript") = .
+      ${compiledCombinedMinimalFeatureScripts}
     ${combinedFontTags.join('\n      ')}
-    script(type="text/javascript")
-      .
-        window.data = !{JSON.stringify(data)};
+    script(type="text/javascript") = .
+      window.data = !{JSON.stringify(data)};
     ${externalScripts.join('\n      ')}
     script(type="text/javascript" src="/js/Site.bundle.js")
 `
