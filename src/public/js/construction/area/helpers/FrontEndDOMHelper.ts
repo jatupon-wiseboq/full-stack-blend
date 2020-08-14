@@ -478,7 +478,7 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += '=' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key={"item_" + ' + dotNotationChar + '} ' : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref={"' + reactID + '[" + ' + dotNotationChar + ' + "]" ' : '') + (reactData ? 'data={' + _nodeData + '} ' : '') + (inheritingID ? `forward={{${inheritingAttributes.join(', ')}}} ` : '');
+          composed += '=' + reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? 'data=' + _nodeData : '') + (inheritingID ? `forward={${inheritingAttributes.join(', ')}} ` : '');
           
           lines.push(composed);
         }
@@ -486,7 +486,7 @@ ${rootScript}`;
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
-          attributes.splice(0, 0, 'key={"item_" + ' + dotNotationChar + '}');
+          attributes.splice(0, 0, 'key="item_" + ' + dotNotationChar);
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {
