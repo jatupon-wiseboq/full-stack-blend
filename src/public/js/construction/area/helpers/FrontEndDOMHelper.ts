@@ -385,7 +385,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
+          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
@@ -484,9 +484,12 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += reactNamespace + '.' + reactClass + '(' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? 'data=' + _nodeData : '') + (inheritingID ? `forward={${inheritingAttributes.join(', ')}}` : '') + ')';
+          composed += (reactNamespace + '.' + reactClass).split('.').join('_') + '(' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? 'data=' + _nodeData : '') + (inheritingID ? `forward={${inheritingAttributes.join(', ')}}` : '') + ')';
           
           lines.push(composed);
+          
+          let declaration = `const ${(reactNamespace + '.' + reactClass).split('.').join('_')} = ${reactNamespace + '.' + reactClass};`;
+          if (executions.indexOf(declaration) == -1) executions.push(declaration);
         }
         
         // Dot Notation Feature (Continue 1/2)

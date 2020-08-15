@@ -75,7 +75,6 @@ declare let DataManipulationHelper: any;
 declare let pug: any;
 
 let Button = $Button;
-let Project = $Project;
 
 // <---Auto[Declare]// Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {
