@@ -91,7 +91,8 @@ const DEFAULTS = {
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await DatabaseHelper.insert(data, schema));
+      	let options = RequestHelper.getOptions(this.request);
+        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert));
       } catch(error) {
         reject(error);
       }
@@ -101,7 +102,8 @@ const DEFAULTS = {
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await DatabaseHelper.update(data, schema));
+      	let options = RequestHelper.getOptions(this.request);
+        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert));
       } catch(error) {
         reject(error);
       }

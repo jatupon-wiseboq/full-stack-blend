@@ -37,11 +37,11 @@ var BackEndDOMHelper = {
     		let submitType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-type');
     		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls');
     		let reactClassForPopup = HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class');
-    		let submitCrossType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-cross-operation');
+    		let submitCrossType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-cross-operation') == 'upsert';
     		
     		if (submitControls) submitControls = submitControls.trim();
     		
-    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
+    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}});`);
     	}
     	
     	let children = [...element.childNodes];
