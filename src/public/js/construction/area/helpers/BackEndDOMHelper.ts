@@ -35,9 +35,11 @@ var BackEndDOMHelper = {
     	if (HTMLHelper.hasClass(element, 'internal-fsb-element') && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button') {
     		let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     		let submitType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-type');
-    		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls').trim();
+    		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls');
     		let reactClassForPopup = HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class');
     		let submitCrossType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-cross-operation');
+    		
+    		if (submitControls) submitControls = submitControls.trim();
     		
     		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
     	}
