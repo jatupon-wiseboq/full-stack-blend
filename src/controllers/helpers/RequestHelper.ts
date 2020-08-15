@@ -14,6 +14,7 @@ interface RequestParamInfo {
 }
 
 const requestParamInfoDict: any = {};
+const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
 	registerInput: (guid: string, target: string, group: string, name: string): void => {
@@ -43,6 +44,13 @@ const RequestHelper = {
 			name: name
 		};
 	},
+	registerSubmit: (guid: string, action: string, fields: string[], options: any): void => {
+		requestSubmitInfoDict[guid] = {
+			action: action,
+			fields: fields,
+			options: options
+		}
+	},
 	getAction: (request: Request): ActionType => {
 		const json: any = request.body;
 		
@@ -50,7 +58,9 @@ const RequestHelper = {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		switch (json.action) {
+		let action = requestSubmitInfoDict[json.guid] && requestSubmitInfoDict[json.guid].action || null;
+		
+		switch (action) {
 			case "insert":
 				return ActionType.Insert;
 			case "update":
@@ -68,6 +78,15 @@ const RequestHelper = {
 			default:
 				return null;
 		}
+	},
+	getOptions: (request: Request): ActionType => {
+		const json: any = request.body;
+		
+		if (json == null) {
+			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
+		}
+		
+		return requestSubmitInfoDict[json.guid].options;
 	},
 	getSchema: (request: Request): DataTableSchema => {
 		const json: any = request.body;
@@ -90,6 +109,11 @@ const RequestHelper = {
 		}
 		
 		const paramInfo = requestParamInfoDict[guid];
+		const submitInfo = requestSubmitInfoDict[json.guid];
+		
+		if (submitInfo.fields.indexOf(guid) == -1) {
+			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
+		}
 		
 		const input: Input = {
 		  target: paramInfo.target,

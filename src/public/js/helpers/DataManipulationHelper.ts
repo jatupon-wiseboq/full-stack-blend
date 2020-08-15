@@ -50,7 +50,6 @@ const DataManipulationHelper = {
   	if (fieldManipulatorsInfoDict[guid]) {
   		const params = {};
   		const fields = fieldManipulatorsInfoDict[guid];
-  		const action = actionManipulatorsInfoDict[guid];
   		const options = optionsManipulatorsInfoDict[guid];
   		
   		let current = EventHelper.getOriginalElement(event);
@@ -61,34 +60,45 @@ const DataManipulationHelper = {
   			foundAll = true;
   			
   			for (const field of fields) {
-		  		let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
+		  		let elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
 		  		
-		  		if (element) {
+		  		for (let index=0; index < elements.length; index++) {
+		  			let element = elements[index];
+		  			
+		  			// All of inputs are a forwarding element. To get the actual input,
+		  			// we must look into their children.
+		  			// 
 		  			if (element.tagName != 'INPUT') {
 			  			element = element.firstChild;
+			  			
+			  			// Also skip text node.
+			  			// 
 			  			while (element && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) == -1) {
 			  				element = element.nextSibling;
 			  			}
 			  		}
+			  		
+			  		let name = (elements.length > 1) ? `${field}[${index}]` : field;
 		  		
 		  			switch (HTMLHelper.getAttribute(element, 'type')) {
 		  				case 'radio':
 		  					if (foundRadio[element.name] === undefined) {
-		  						foundRadio[element.name] = field;
+		  						foundRadio[element.name] = name;
 		  					}
 		  					if (element.checked) {
 		  						foundRadio[element.name] = true;
-		  						params[field] = element.value;
+		  						params[name] = element.value;
 		  					}
 		  					break;
 		  				case 'checkbox':
-		  					params[field] = element.checked ? 'true' : 'false';
+		  					params[name] = element.checked ? 'true' : 'false';
 		  					break;
 	  					default:
-	  						params[field] = element.value;
+	  						params[name] = element.value;
 	  						break;
 	  				}
-		  		} else {
+		  		}
+		  		if (elements.length == 0) {
 		  			foundAll = false;
 		  			break;
 		  		}
@@ -99,11 +109,13 @@ const DataManipulationHelper = {
   		
   		for (let name in foundRadio) {
   			if (foundRadio.hasOwnProperty(name)) {
-  				params[foundRadio[name]] = null;
+  				if (foundRadio[name] !== true) {
+  					params[foundRadio[name]] = null;
+  				}
   			}
   		}
 	  	
-	  	params['action'] = action;
+	  	params['guid'] = guid;
 	  	params['notation'] = notation;
 	  	
 	  	const button = EventHelper.getCurrentElement(event);
