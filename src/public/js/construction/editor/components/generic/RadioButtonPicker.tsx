@@ -24,6 +24,7 @@ let options = {
     "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
     "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
     "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
+    "data-wizard-cross-operation": CONSTANTS.CROSS_OPERATION_OPTIONS,
     
     // Back-End Options
 		// 

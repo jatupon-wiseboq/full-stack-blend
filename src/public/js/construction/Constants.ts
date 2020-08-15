@@ -356,3 +356,4 @@ export const BACKEND_DATA_REQUIRED = [["data-required", "true", ["fa-circle", "N
 export const BACKEND_DATA_UNIQUE = [["data-unique", "true", ["fa-circle", "Unique"]], ["data-unique", null, ["fa-circle-o", "Common"]]];
 export const BACKEND_DATA_FORCE_CONSTRAINT = [["data-force-constraint", "true", ["fa-circle", "Always Have"]], ["data-force-constraint", null, ["fa-circle-o", "None"]]];
 export const BACKEND_DATA_EXTENSIONS = ["internal-fsb-data-code-import", "internal-fsb-data-code-declare", "internal-fsb-data-code-interface", "internal-fsb-data-code-body", "internal-fsb-data-code-footer"];
+export const CROSS_OPERATION_OPTIONS = [["internal-fsb-data-wizard-cross-operation", null, ["fa-save", "Same as Action"]], ["internal-fsb-data-wizard-cross-operation", "upsert", ["fa-save", "Upsert"]]];

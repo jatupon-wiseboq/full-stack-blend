@@ -57,6 +57,10 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Inputs
     .section-body
       +CreateReactComponent('FullStackBlend.Components.WizardInputManager', "{}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:insert,internal-fsb-data-wizard-type:update")
+      | Cross Relation Action
+    .section-body(internal-fsb-for="internal-fsb-data-wizard-type:insert,internal-fsb-data-wizard-type:update")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-cross-operation', 'internal-fsb-data-wizard-cross-operation']}")
     .section-hr
   div(internal-fsb-not-for="internal-fsb-react-mode")
     .section-container(internal-fsb-for="hasParentReactComponent")

@@ -156,6 +156,7 @@ ${rootScript}`;
         let inheritingStyles = [];
         let submitControls = null;
         let submitType = null;
+        let submitCrossType = null;
         let customEvents = [];
         
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
@@ -329,6 +330,9 @@ ${rootScript}`;
             case 'internal-fsb-data-wizard-type':
             	if (!!attribute.value) submitType = attribute.value;
               break;
+            case 'internal-fsb-data-wizard-cross-operation':
+            	if (!!attribute.value) submitCrossType = attribute.value;
+            	break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -381,7 +385,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}});`);
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
@@ -571,6 +575,7 @@ ${rootScript}`;
         let inheritingStyles = [];
         let submitControls = null;
         let submitType = null;
+        let submitCrossType = null;
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -656,6 +661,9 @@ ${rootScript}`;
             case 'internal-fsb-data-wizard-type':
             	if (!!attribute.value) submitType = attribute.value;
               break;
+            case 'internal-fsb-data-wizard-cross-operation':
+            	if (!!attribute.value) submitCrossType = attribute.value;
+            	break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -702,7 +710,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}});`);
+          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}});`);
           
         	attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
