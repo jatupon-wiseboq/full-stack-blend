@@ -484,7 +484,7 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           
-          composed += reactNamespace + '.' + reactClass + ' ' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? 'data=' + _nodeData : '') + (inheritingID ? `forward={${inheritingAttributes.join(', ')}} ` : '');
+          composed += reactNamespace + '.' + reactClass + '(' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? 'ref="' + reactID + '" ' : '') + (reactID && reactData ? 'ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? 'data=' + _nodeData : '') + (inheritingID ? `forward={${inheritingAttributes.join(', ')}}` : '') + ')';
           
           lines.push(composed);
         }
