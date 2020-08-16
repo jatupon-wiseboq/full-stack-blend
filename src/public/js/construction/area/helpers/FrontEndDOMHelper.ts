@@ -395,13 +395,17 @@ ${rootScript}`;
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
+          	let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
             for (let submitControl of submitControls.split(' ')) {
               let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
               if (control) {
                 let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
                 if (dataSourceName) {
-                  notation = dataSourceName;
-                  break;
+                	let numberOfDots = dataSourceName.split('.').length - 1;
+                	if (numberOfDots < minimumNumberOfDots) {
+                		minimumNumberOfDots = numberOfDots;
+                  	notation = dataSourceName;
+                	}
                 }
               }
             }
