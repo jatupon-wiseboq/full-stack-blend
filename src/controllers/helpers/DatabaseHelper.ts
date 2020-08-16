@@ -173,7 +173,7 @@ const DatabaseHelper = {
     for (const input of data) {
     	if (input.group != schema.group) continue;
     	
-    	const splited = (input.guid || '').split("[");
+    	const splited = (input.guid || "").split("[");
     	let index = 0;
     	
     	if (splited.length > 1) {
@@ -326,7 +326,7 @@ const DatabaseHelper = {
     	  }
     	  
     	  if (baseSchema == null) {
-    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + '.' + item.name))].join(', ')} can't satisfy any data schema).`);
+    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + "." + item.name))].join(", ")} can't satisfy any data schema).`);
     	  }
     	  
   	    current = {
@@ -342,15 +342,15 @@ const DatabaseHelper = {
   	    
   	    for (const key in baseSchema.relations) {
   	    	if (baseSchema.relations.hasOwnProperty(key)) {
-  	      	let _data = [...data];
-  	      	let _hash = {};
+  	      	const _data = [...data];
+  	      	const _hash = {};
   	      	
   	      	for (const input of data) {
               if (input.group == baseSchema.relations[key].targetGroup) {
-              	let splited = input.guid.split('[');
+              	const splited = input.guid.split("[");
               	let index = -1;
               	if (splited.length > 1) {
-              		index = parseInt(splited[1].split(']')[0]);
+              		index = parseInt(splited[1].split("]")[0]);
               	}
               	
               	if (_hash[index]) continue;
@@ -361,7 +361,7 @@ const DatabaseHelper = {
                   group: baseSchema.relations[key].targetGroup,
                   name: baseSchema.relations[key].targetEntity,
                   value: "123",
-                  guid: (index == -1) ? '' : '[' + index + ']',
+                  guid: (index == -1) ? "" : "[" + index + "]",
                   validation: null
                 });
               }
@@ -370,7 +370,7 @@ const DatabaseHelper = {
 	  	      if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
 	  	        found = true;
 	  	        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-	  	        data = _data
+	  	        data = _data;
 	  	        
 	  	        break;
 	  	      }
@@ -378,10 +378,8 @@ const DatabaseHelper = {
   	    }
   	    
   	    if (!found) {
-    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + '.' + item.name))].join(', ')} can't satisfy any relation of the data schema: ${Object.keys(baseSchema.relations).join(', ')}).`);
+    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + "." + item.name))].join(", ")} can't satisfy any relation of the data schema: ${Object.keys(baseSchema.relations).join(", ")}).`);
     	  }
-        
-        console.log('data', JSON.stringify(data, null, 2));
     	  
     	  const next = {
   	      source: baseSchema.source,
@@ -483,120 +481,18 @@ const DatabaseHelper = {
 	},
 	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		let transaction = null;
+  		const transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema);
 	  		const results = [];
-  		  let _results = results;
   		  
   		  for (let index=0; index < list.length; index++) {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
-  		  	const [nextInput, nextSchema] = list[index + 1] || [null, null];
   		  	
-	        switch (input.source) {
-	        	case SourceType.Relational:
-	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	  					if (!transaction) transaction = await CreateTransaction();
-	  					
-	  					const map = DatabaseHelper.ormMap(schema);
-	  					const hash = {};
-	  					
-	  					for (const row of input.rows) {
-		  					for (const key in schema.columns) {
-		  					  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-		  					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-		  					      hash[key] = row.columns[key];
-		  					    }
-		  					  }
-		  					}
-		  					for (const key in schema.keys) {
-		  					  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-		  					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-		  					      hash[key] = row.keys[key];
-		  					    }
-		  					  }
-		  					}
-		  					
-		  					let record;
-		  					if (index != 0 && crossRelationUpsert) {
-		  						record = await map.upsert(hash, {transaction: transaction});
-		  					} else {
-		  						record = await map.create(hash, {transaction: transaction});
-		  					}
-		  					
-		  				  const result = {
-		  				    keys: {},
-		  				    columns: {},
-		  				    relations: {}
-		  				  };
-		  				  
-		  				  for (const key in schema.columns) {
-		  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    result.columns[key] = record[key];
-		  					  }
-		  					}
-		  					for (const key in schema.keys) {
-		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    result.keys[key] = record[key];
-		  					  }
-		  					}
-		  					
-		  					_results.push(result);
-		  					
-	  					  if (nextInput && nextSchema) {
-		  					  for (const relationKey in schema.relations) {
-		  					  	const relation = schema.relations[relationKey];
-		  					  	if (schema.relations.hasOwnProperty(relationKey) && relation.targetGroup == nextSchema.group) {
-		  					  		for (const nextRow of nextInput.rows) {
-		  					  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-		  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-			  					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-			  					  			} else {
-			  					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-			  					  			}
-		  					  			} else {
-		  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-		  					  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-			  					  			} else {
-			  					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-			  					  			}
-		  					  			}
-		  					  		}
-		  					  	}
-		  					  }
-		  					  
-		  					  result.relations[nextSchema.group] = {
-			  					  source: SourceType.Relational,
-										group: nextSchema.group,
-									  rows: []
-		  					  };
-		  					}
-		  				}
-	        		break;
-	        	case SourceType.PrioritizedWorker:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.Document:
-	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.VolatileMemory:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        }
-	        
-	        _results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
-	      }
+  		  	await DatabaseHelper.performRecursiveInsert(input, schema, results, transaction, crossRelationUpsert);
+  		  }
 	      
       	if (transaction) await transaction.commit();
 		  	
@@ -608,123 +504,217 @@ const DatabaseHelper = {
       }
     });
 	},
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+    switch (input.source) {
+    	case SourceType.Relational:
+    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				const map = DatabaseHelper.ormMap(schema);
+				
+				for (const row of input.rows) {
+					const hash = {};
+					
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = row.columns[key];
+					    }
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = row.keys[key];
+					    }
+					  }
+					}
+					
+					const record = await map.create(hash, {transaction: transaction});
+					
+				  const result = {
+				    keys: {},
+				    columns: {},
+				    relations: {}
+				  };
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.columns[key] = record[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.keys[key] = record[key];
+					  }
+					}
+					
+					results.push(result);
+					
+					for (const key in row.relations) {
+						if (row.relations.hasOwnProperty(key)) {
+							const relation = schema.relations[key];
+							const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+							
+				  		for (const nextRow of row.relations[key].rows) {
+				  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			}
+				  			} else {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+				  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			}
+				  			}
+				  		}
+				  		
+				  		result.relations[nextSchema.group] = {
+	  					  source: SourceType.Relational,
+								group: nextSchema.group,
+							  rows: []
+						  };
+						
+							if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+							else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+						}
+					}
+				}
+    		break;
+    	case SourceType.PrioritizedWorker:
+    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.Document:
+    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.VolatileMemory:
+    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    }
+	},
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+    switch (input.source) {
+    	case SourceType.Relational:
+    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				const map = DatabaseHelper.ormMap(schema);
+				
+				for (const row of input.rows) {
+					const hash = {};
+				
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+					    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = row.columns[key];
+					    }
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+					    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
+					      hash[key] = row.keys[key];
+					    }
+					  }
+					}
+					
+					const record = await map.upsert(hash, {transaction: transaction});
+					
+				  const result = {
+				    keys: {},
+				    columns: {},
+				    relations: {}
+				  };
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.columns[key] = record[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.keys[key] = record[key];
+					  }
+					}
+					
+					results.push(result);
+					
+					for (const key in row.relations) {
+						if (row.relations.hasOwnProperty(key)) {
+							const relation = schema.relations[key];
+							const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+							
+				  		for (const nextRow of row.relations[key].rows) {
+				  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			}
+				  			} else {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+				  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			}
+				  			}
+				  		}
+				  		
+				  		result.relations[nextSchema.group] = {
+	  					  source: SourceType.Relational,
+								group: nextSchema.group,
+							  rows: []
+						  };
+						
+							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+						}
+					}
+				}
+    		break;
+    	case SourceType.PrioritizedWorker:
+    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.Document:
+    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.VolatileMemory:
+    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    }
+	},
 	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		let transaction = null;
+  		const transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema);
 	  		const results = [];
-  		  let _results = results;
-  		  
-  			for (let index=0; index < list.length; index++) {
+	  		
+	  		for (let index=0; index < list.length; index++) {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
-  		  	const [nextInput, nextSchema] = list[index + 1] || [null, null];
   		  	
-	        switch (input.source) {
-	        	case SourceType.Relational:
-	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	  					if (!transaction) transaction = await CreateTransaction();
-	        		
-	        		const map = DatabaseHelper.ormMap(schema);
-	  					const hash = {};
-	  					const data = {};
-	  					
-	  					for (const key in schema.keys) {
-	  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
-	  					    hash[key] = input.rows[0].keys[key];
-	  					  }
-	  					}
-	  					for (const key in schema.columns) {
-	  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key] != undefined) {
-	  					    data[key] = input.rows[0].columns[key];
-	  					  }
-	  					}
-	  					
-	  					if (index != 0 && crossRelationUpsert) {
-	  						await map.upsert(data, {where: hash, transaction: transaction});
-	  					} else {
-	  						await map.update(data, {where: hash, transaction: transaction});
-	  					}
-	  					
-	  					const record = await map.findOne({where: hash});
-	  				  const result = {
-	  				    keys: {},
-	  				    columns: {},
-	  				    relations: {}
-	  				  };
-	  				  
-	  				  for (const key in schema.columns) {
-	  					  if (schema.columns.hasOwnProperty(key)) {
-	  					    result.columns[key] = {
-	  					      name: key,
-	  					      value: record[key]
-	  					    };
-	  					  }
-	  					}
-	  					for (const key in schema.keys) {
-	  					  if (schema.keys.hasOwnProperty(key)) {
-	  					    result.keys[key] = {
-	  					      name: key,
-	  					      value: record[key]
-	  					    };
-	  					  }
-	  					}
-	  					
-	  					_results.push(result);
-		  				
-  					  if (nextInput && nextSchema) {
-	  					  for (const relationKey in schema.relations) {
-	  					  	const relation = schema.relations[relationKey];
-	  					  	if (schema.relations.hasOwnProperty(relationKey) && relation.targetGroup == nextSchema.group) {
-	  					  		for (const nextRow of nextInput.rows) {
-	  					  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-	  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-		  					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-		  					  			} else {
-		  					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-		  					  			}
-	  					  			} else {
-	  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-	  					  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-		  					  			} else {
-		  					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-		  					  			}
-	  					  			}
-	  					  		}
-	  					  	}
-	  					  }
-		  					  
-	  					  result.relations[nextSchema.group] = {
-		  					  source: SourceType.Relational,
-									group: nextSchema.group,
-								  rows: []
-	  					  };
-	  					}
-	        		break;
-	        	case SourceType.PrioritizedWorker:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.Document:
-	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.VolatileMemory:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        }
-	        
-	        _results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
-	      }
+  		  	await DatabaseHelper.performRecursiveUpdate(input, schema, results, transaction, crossRelationUpsert);
+  		  }
 	      
       	if (transaction) await transaction.commit();
 		  	
@@ -736,89 +726,128 @@ const DatabaseHelper = {
       }
     });
 	},
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+    switch (input.source) {
+    	case SourceType.Relational:
+    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				const map = DatabaseHelper.ormMap(schema);
+				
+				for (const row of input.rows) {
+					const hash = {};
+					const data = {};
+				
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+					    hash[key] = row.keys[key];
+					  }
+					}
+					for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+					    data[key] = row.columns[key];
+					  }
+					}
+					
+					await map.update(data, {where: hash, transaction: transaction});
+					
+					const record = await map.findOne({where: hash});
+				  const result = {
+				    keys: {},
+				    columns: {},
+				    relations: {}
+				  };
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key)) {
+					    result.columns[key] = {
+					      name: key,
+					      value: record[key]
+					    };
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key)) {
+					    result.keys[key] = {
+					      name: key,
+					      value: record[key]
+					    };
+					  }
+					}
+				
+					results.push(result);
+					
+					for (const key in row.relations) {
+						if (row.relations.hasOwnProperty(key)) {
+							const relation = schema.relations[key];
+							const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+							
+				  		for (const nextRow of row.relations[key].rows) {
+				  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			}
+				  			} else {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+				  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			}
+				  			}
+				  		}
+				  		
+				  		result.relations[nextSchema.group] = {
+	  					  source: SourceType.Relational,
+								group: nextSchema.group,
+							  rows: []
+						  };
+						
+							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+						}
+					}
+				}
+				
+				break;
+    	case SourceType.PrioritizedWorker:
+    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.Document:
+    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.VolatileMemory:
+    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    }
+  },
 	retrieve: async (data: Input[], baseSchema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
-	  		const results = {};
-	  		
 		  	if (data != null) {
 	  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
-	  			
-	  			for (let index=0; index < list.length; index++) {
+		  		const results = {};
+		  		
+		  		for (let index=0; index < list.length; index++) {
 	  		  	const input = list[index][0];
 	  		  	const schema = list[index][1];
-  		  		
-		        switch (input.source) {
-		        	case SourceType.Relational:
-		        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		        		
-		        		const map = DatabaseHelper.ormMap(schema);
-		        		const hash = {};
-		  					
-		  					for (const key in schema.columns) {
-		  					  if (schema.columns.hasOwnProperty(key) && input.rows[0].columns[key] != undefined) {
-		  					    hash[key] = input.rows[0].columns[key];
-		  					  }
-		  					}
-		  					for (const key in schema.keys) {
-		  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
-		  					    hash[key] = input.rows[0].keys[key];
-		  					  }
-		  					}
-		  					
-		  					const rows = [];
-		  					const records = await map.findAll({where: hash}) || [];
-		  					
-		  					for (const record of records) {
-		  					  const row = {
-		    				    keys: {},
-		    				    columns: {},
-		    				    relations: {}
-		    				  };
-		  				  
-		  					  for (const key in schema.columns) {
-		    					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		    					    row.columns[key] = record[key];
-		    					  }
-		    					}
-		    					for (const key in schema.keys) {
-		    					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		    					    row.keys[key] = record[key];
-		    					  }
-		    					}
-		    					
-		    					rows.push(row);
-		  					}
-		  					
-		  					results[schema.group] = {
-		  					  source: schema.source,
-		  					  group: schema.group,
-		  					  rows: rows
-		  					};
-		        		
-		        		break;
-		        	case SourceType.PrioritizedWorker:
-		        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		        		
-		        		throw new Error("NotImplementedError");
-		        		
-		        		break;
-		        	case SourceType.Document:
-		        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		        		
-		        		throw new Error("NotImplementedError");
-		        		
-		        		break;
-		        	case SourceType.VolatileMemory:
-		        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		        		
-		        		throw new Error("NotImplementedError");
-		        		
-		        		break;
-		        }
-		      }
-	      } else {
-	      	switch (baseSchema.source) {
+	  		  	
+	  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results);
+	  		  }
+			  	
+		  		resolve(results);
+		  	} else {
+		  		const results = {};
+		  		
+		  		switch (baseSchema.source) {
 	        	case SourceType.Relational:
 	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
@@ -875,116 +904,127 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        }
+	        
+	        resolve(results);
 	      }
-	      
-	      resolve(results);
       } catch(error) {
         reject(error);
       }
-    });
+		});
 	},
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}) => {
+    switch (input.source) {
+    	case SourceType.Relational:
+    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				const map = DatabaseHelper.ormMap(baseSchema);
+				
+				for (const row of input.rows) {
+      		const hash = {};
+					
+					for (const key in baseSchema.columns) {
+					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+					    hash[key] = row.columns[key];
+					  }
+					}
+					for (const key in baseSchema.keys) {
+					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+					    hash[key] = row.keys[key];
+					  }
+					}
+					
+					const rows = [];
+					const records = await map.findAll({where: hash}) || [];
+					
+					for (const record of records) {
+					  const row = {
+  				    keys: {},
+  				    columns: {},
+  				    relations: {}
+  				  };
+				  	
+					  for (const key in baseSchema.columns) {
+  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.columns[key] = record[key];
+  					  }
+  					}
+  					for (const key in baseSchema.keys) {
+  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+  					    row.keys[key] = record[key];
+  					  }
+  					}
+  					
+  					rows.push(row);
+					}
+				
+					results[baseSchema.group] = {
+					  source: baseSchema.source,
+					  group: baseSchema.group,
+					  rows: rows
+					};
+					
+					for (const _row of rows) {
+						for (const key in row.relations) {
+							if (row.relations.hasOwnProperty(key)) {
+								const relation = baseSchema.relations[key];
+								const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+								
+					  		for (const nextRow of row.relations[key].rows) {
+					  			if (baseSchema.columns.hasOwnProperty(relation.sourceEntity)) {
+					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+						  				nextRow.columns[relation.targetEntity] = _row.columns[relation.sourceEntity];
+						  			} else {
+						  				nextRow.keys[relation.targetEntity] = _row.columns[relation.sourceEntity];
+						  			}
+					  			} else {
+					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+					  					nextRow.columns[relation.targetEntity] = _row.keys[relation.sourceEntity];
+						  			} else {
+						  				nextRow.keys[relation.targetEntity] = _row.keys[relation.sourceEntity];
+						  			}
+					  			}
+					  		}
+							  
+							  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations);
+					  	}
+					  }
+					}
+				}
+				break;
+    	case SourceType.PrioritizedWorker:
+    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.Document:
+    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    	case SourceType.VolatileMemory:
+    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+    		
+    		throw new Error("NotImplementedError");
+    		
+    		break;
+    }
+  },
 	delete: async (data: Input[], baseSchema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		let transaction = null;
+  		const transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);
   		  const results = [];
-  		  let _results = results;
   		  
   		  for (let index=0; index < list.length; index++) {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
-	        const [nextInput, nextSchema] = list[index + 1] || [null, null];
   		  	
-	        switch (input.source) {
-	        	case SourceType.Relational:
-	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		  				if (!transaction) transaction = await CreateTransaction();
-	        		
-	        		const map = DatabaseHelper.ormMap(schema);
-	  					const hash = {};
-	  					
-	  					for (const key in schema.keys) {
-	  					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
-	  					    hash[key] = input.rows[0].keys[key];
-	  					  }
-	  					}
-	  					
-	  					const record = await map.findOne({where: hash});
-	  					await record.destroy({force: true, transaction: transaction});
-	  				  
-	  				  const result = {
-	  				    keys: {},
-	  				    columns: {},
-	  				    relations: {}
-	  				  };
-	  				  
-	  				  for (const key in schema.columns) {
-	  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-	  					    result.columns[key] = record[key];
-	  					  }
-	  					}
-	  				  
-	  					for (const key in schema.keys) {
-	  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-	  					    result.keys[key] = record[key];
-	  					  }
-	  					}
-	  					
-	  					_results.push(result);
-		  				
-  					  if (nextInput && nextSchema) {
-	  					  for (const relationKey in schema.relations) {
-	  					  	const relation = schema.relations[relationKey];
-	  					  	if (schema.relations.hasOwnProperty(relationKey) && relation.targetGroup == nextSchema.group) {
-	  					  		for (const nextRow of nextInput.rows) {
-	  					  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-	  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-		  					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-		  					  			} else {
-		  					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-		  					  			}
-	  					  			} else {
-	  					  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-	  					  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-		  					  			} else {
-		  					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-		  					  			}
-	  					  			}
-	  					  		}
-	  					  	}
-	  					  }
-		  					  
-	  					  result.relations[nextSchema.group] = {
-		  					  source: SourceType.Relational,
-									group: nextSchema.group,
-								  rows: []
-	  					  };
-	  					}
-	        		break;
-	        	case SourceType.PrioritizedWorker:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.Document:
-	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        	case SourceType.VolatileMemory:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	        		
-	        		throw new Error("NotImplementedError");
-	        		
-	        		break;
-	        }
-	  			
-	  			_results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
-	      }
+  		  	await DatabaseHelper.performRecursiveDelete(input, schema, results, transaction);
+  		  }
 	      
       	if (transaction) await transaction.commit();
 	      
@@ -995,7 +1035,99 @@ const DatabaseHelper = {
         reject(error);
       }
     });
-	}
+	},
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+    switch (input.source) {
+    	case SourceType.Relational:
+    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				const map = DatabaseHelper.ormMap(schema);
+				
+				for (const row of input.rows) {
+					const hash = {};
+				
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
+					    hash[key] = input.rows[0].keys[key];
+					  }
+					}
+					
+					const record = await map.findOne({where: hash});
+					await record.destroy({force: true, transaction: transaction});
+				  
+				  const result = {
+				    keys: {},
+				    columns: {},
+				    relations: {}
+				  };
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.columns[key] = record[key];
+					  }
+					}
+				  
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+					    result.keys[key] = record[key];
+					  }
+					}
+				
+					results.push(result);
+					
+					for (const key in row.relations) {
+						if (row.relations.hasOwnProperty(key)) {
+							const relation = schema.relations[key];
+							const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+							
+				  		for (const nextRow of row.relations[key].rows) {
+				  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+					  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+					  			}
+				  			} else {
+				  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+				  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			} else {
+					  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+					  			}
+				  			}
+				  		}
+				  		
+				  		result.relations[nextSchema.group] = {
+	  					  source: SourceType.Relational,
+								group: nextSchema.group,
+							  rows: []
+						  };
+						
+							await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+						}
+					}
+				}
+				
+				break;
+			case SourceType.PrioritizedWorker:
+				if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				throw new Error("NotImplementedError");
+				
+				break;
+			case SourceType.Document:
+				if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				throw new Error("NotImplementedError");
+				
+				break;
+			case SourceType.VolatileMemory:
+				if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+				
+				throw new Error("NotImplementedError");
+				
+				break;
+		}
+	}     
 };
 
 export {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper};
