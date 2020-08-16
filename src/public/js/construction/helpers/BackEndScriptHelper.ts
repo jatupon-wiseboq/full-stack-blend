@@ -312,8 +312,11 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
-    input = RequestHelper.getInput(request, '${SECTION_GUID}');${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
-    if (input != null) data.push(input);
+    for (let i=-1; i<1024; i++) {
+      input = RequestHelper.getInput(request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      if (input != null) data.push(input);
+      else if (i > -1) break;
+    }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
         } else {
