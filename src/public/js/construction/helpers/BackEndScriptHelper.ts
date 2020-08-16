@@ -266,9 +266,9 @@ var BackEndScriptHelper = {
     		
     		mergingCode = mergingCode.replace(/(\n)+/g, '\n');
 				
-				code = code.replace(MAIN_MERGE_END_BEGIN, `${mergingCode}
-    
-${prerequisiteCode}${MAIN_MERGE_END_BEGIN}`);
+				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}
+${mergingCode}
+${MAIN_MERGE_END_BEGIN}`);
 				
 				code = `${code.split(FILE_END)[0]}
 ${info['editingPageID']}
