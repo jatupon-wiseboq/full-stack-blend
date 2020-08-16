@@ -632,14 +632,12 @@ ${rootScript}`;
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
-                  let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
-                  if (!camelKey) continue;
-                  if (camelKey.indexOf('FsbCell') == 0) continue;
-                  if (camelKey.indexOf('FsbForChildren') == 0 && hashMap[key] == 'true') {
+                  if (key.indexOf('-fsb-cell') == 0) continue;
+                  if (key.indexOf('-fsb-for-children') == 0 && hashMap[key] == 'true') {
                     isForChildren = true;
                     continue;
                   }
-                  let token = "'" + camelKey + "': '" + hashMap[key] + "'";
+                  let token = "'" + key + "': '" + hashMap[key] + "'";
                   styles.push(token);
                 
                   if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
