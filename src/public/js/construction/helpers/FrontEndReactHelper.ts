@@ -61,7 +61,7 @@ export {IProps, IState, DefaultProps, DefaultState};
 
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
+import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
