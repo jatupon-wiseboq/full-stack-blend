@@ -108,16 +108,18 @@ const RequestHelper = {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[guid];
+		const paramInfo = requestParamInfoDict[guid.split('[')[0]];
 		const submitInfo = requestSubmitInfoDict[json.guid];
 		
-		if (submitInfo.fields.indexOf(guid) == -1) {
+		if (submitInfo.fields.indexOf(guid.split('[')[0]) == -1) {
 			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
 		}
 		
+		let splited = paramInfo.group.split('.');
+		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: paramInfo.group,
+  		group: splited[splited.length - 1],
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,

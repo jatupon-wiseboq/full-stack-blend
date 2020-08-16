@@ -22,7 +22,7 @@ const ValidationHelper = {
 		};
 	},
 	attachInfo: (input: Input) => {
-		input.validation = validationDict[input.guid];
+		input.validation = validationDict[input.guid.split('[')[0]];
 	},
 	validate: (data: Input[]) => {
 	  if (!data) return;

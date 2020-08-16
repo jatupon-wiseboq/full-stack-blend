@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient} from "./ConnectionHelper.js";
+import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 import {FieldType, DataTableSchema} from "./SchemaHelper.js";
@@ -84,7 +84,8 @@ const DatabaseHelper = {
     return results;
   },
   satisfy: (data: Input[], action: ActionType, schema: DataTableSchema): boolean => {
-    data = [...data];
+    data = [...DatabaseHelper.distinct(data)];
+    
     let inputs = data.filter(item => item.target == schema.source && item.group == schema.group);
     const requiredKeys = {};
     
@@ -121,10 +122,10 @@ const DatabaseHelper = {
         return false;
     }
     
-    inputs = inputs.filter(input => !!requiredKeys[input.name.split("[")[0]]);
+    inputs = inputs.filter(input => !!requiredKeys[input.name]);
     const existingKeys = {};
     for (const input of inputs) {
-    	existingKeys[input.name.split("[")[0]] = true;
+    	existingKeys[input.name] = true;
     }
     
     if (Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
@@ -138,7 +139,7 @@ const DatabaseHelper = {
         for (const key in schema.relations) {
           if (schema.relations.hasOwnProperty(key)) {
             for (const input of data) {
-              if (input.group == schema.relations[key].sourceGroup && input.name.split("[")[0] == schema.relations[key].sourceEntity) {
+              if (input.group == schema.relations[key].targetGroup) {
                 data.push({
                   target: ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup].source,
                   group: schema.relations[key].targetGroup,
@@ -170,8 +171,9 @@ const DatabaseHelper = {
   	const results: HierarchicalDataRow[] = [];
 	  
     for (const input of data) {
-    	const splited = input.name.split("[");
-    	const name = splited[0];
+    	if (input.group != schema.group) continue;
+    	
+    	const splited = (input.guid || '').split("[");
     	let index = 0;
     	
     	if (splited.length > 1) {
@@ -187,13 +189,13 @@ const DatabaseHelper = {
     	const row: HierarchicalDataRow = results[index];
     	
       if (schema.source != input.target || schema.group != input.group)
-        throw new Error(`There was an error preparing data for manipulation ('${input.group}' doesn\'t match the schema group '${schema.group}').`);
-      if (!schema.keys[name] && !schema.columns[name])
-        throw new Error(`There was an error preparing data for manipulation ('${name}' column doesn\'t exist in the schema group '${schema.group}').`);
-      if (schema.keys[name]) {
-        row.keys[name] = input.value;
+        continue;
+      if (!schema.keys[input.name] && !schema.columns[input.name])
+        throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn\'t exist in the schema group '${schema.group}').`);
+      if (schema.keys[input.name]) {
+        row.keys[input.name] = input.value;
       } else {
-        row.columns[name] = input.value;
+        row.columns[input.name] = input.value;
       }
     }
     
@@ -204,7 +206,7 @@ const DatabaseHelper = {
 			      case ActionType.Insert:
 			        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
 			          if (row.keys[key] === undefined || row.keys[key] === null) {
-			            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+			            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			            switch (schema.keys[key].fieldType) {
 			              case FieldType.Number:
@@ -225,7 +227,7 @@ const DatabaseHelper = {
 			      case ActionType.Update:
 			      case ActionType.Delete:
 		          if (row.keys[key] === undefined || row.keys[key] === null) {
-		            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.AutoNumber:
@@ -253,7 +255,7 @@ const DatabaseHelper = {
 			      case ActionType.Insert:
 			        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
 			          if (schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
-			            throw new Error(`There was an error preparing data for manipulation (required ${schema.group}.${key}).`);
+			            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			          	if (row.columns[key]) {
 				            switch (schema.columns[key].fieldType) {
@@ -307,8 +309,6 @@ const DatabaseHelper = {
 		return results;
   },
 	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema): [HierarchicalDataTable, DataTableSchema][] => {
-		data = DatabaseHelper.distinct(data);
-	  
 	  const results: [HierarchicalDataTable, DataTableSchema][] = [];
 	  let current: HierarchicalDataTable = null;
 	  
@@ -316,15 +316,17 @@ const DatabaseHelper = {
 	    if (current == null) {
   	    if (baseSchema == null) {
     	    for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
-    	      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
-    	        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-    	        break;
-    	      }
+    	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
+	    	      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
+	    	        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+	    	        break;
+	    	      }
+	    	    }
     	    }
     	  }
     	  
     	  if (baseSchema == null) {
-    	    throw new Error("There was an error preparing data for manipulation (a list of inputs can't satisfy the data schema).");
+    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + '.' + item.name))].join(', ')} can't satisfy any data schema).`);
     	  }
     	  
   	    current = {
@@ -337,17 +339,49 @@ const DatabaseHelper = {
   	    data = data.filter(item => item.group != baseSchema.group);
   	  } else {
   	    let found = false;
+  	    
   	    for (const key in baseSchema.relations) {
-  	      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
-  	        found = true;
-  	        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-  	        break;
-  	      }
+  	    	if (baseSchema.relations.hasOwnProperty(key)) {
+  	      	let _data = [...data];
+  	      	let _hash = {};
+  	      	
+  	      	for (const input of data) {
+              if (input.group == baseSchema.relations[key].targetGroup) {
+              	let splited = input.guid.split('[');
+              	let index = -1;
+              	if (splited.length > 1) {
+              		index = parseInt(splited[1].split(']')[0]);
+              	}
+              	
+              	if (_hash[index]) continue;
+              	_hash[index] = true;
+              
+                _data.push({
+                  target: ProjectConfigurationHelper.getDataSchema().tables[baseSchema.relations[key].targetGroup].source,
+                  group: baseSchema.relations[key].targetGroup,
+                  name: baseSchema.relations[key].targetEntity,
+                  value: "123",
+                  guid: (index == -1) ? '' : '[' + index + ']',
+                  validation: null
+                });
+              }
+            }
+	  	      
+	  	      if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
+	  	        found = true;
+	  	        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+	  	        data = _data
+	  	        
+	  	        break;
+	  	      }
+	  	    }
   	    }
   	    
   	    if (!found) {
-    	    throw new Error("There was an error preparing data for manipulation (a list of inputs can't satisfy any relation of the data schema).");
+    	    throw new Error(`There was an error preparing data for manipulation (${[...new Set(data.map(item => item.group + '.' + item.name))].join(', ')} can't satisfy any relation of the data schema: ${Object.keys(baseSchema.relations).join(', ')}).`);
     	  }
+        
+        console.log('data', JSON.stringify(data, null, 2));
     	  
     	  const next = {
   	      source: baseSchema.source,
@@ -464,7 +498,7 @@ const DatabaseHelper = {
 	        switch (input.source) {
 	        	case SourceType.Relational:
 	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	  					if (!transaction) transaction = await RelationalDatabaseClient.transaction();
+	  					if (!transaction) transaction = await CreateTransaction();
 	  					
 	  					const map = DatabaseHelper.ormMap(schema);
 	  					const hash = {};
@@ -561,7 +595,7 @@ const DatabaseHelper = {
 	        		break;
 	        }
 	        
-	        _results = _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
+	        _results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
 	      }
 	      
       	if (transaction) await transaction.commit();
@@ -591,7 +625,7 @@ const DatabaseHelper = {
 	        switch (input.source) {
 	        	case SourceType.Relational:
 	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-	  					if (!transaction) transaction = await RelationalDatabaseClient.transaction();
+	  					if (!transaction) transaction = await CreateTransaction();
 	        		
 	        		const map = DatabaseHelper.ormMap(schema);
 	  					const hash = {};
@@ -689,7 +723,7 @@ const DatabaseHelper = {
 	        		break;
 	        }
 	        
-	        _results = _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
+	        _results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
 	      }
 	      
       	if (transaction) await transaction.commit();
@@ -866,7 +900,7 @@ const DatabaseHelper = {
 	        switch (input.source) {
 	        	case SourceType.Relational:
 	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		  				if (!transaction) transaction = await RelationalDatabaseClient.transaction();
+		  				if (!transaction) transaction = await CreateTransaction();
 	        		
 	        		const map = DatabaseHelper.ormMap(schema);
 	  					const hash = {};
@@ -949,7 +983,7 @@ const DatabaseHelper = {
 	        		break;
 	        }
 	  			
-	  			_results = _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
+	  			_results = nextSchema && _results[0] && _results[0].relations[nextSchema.group] && _results[0].relations[nextSchema.group].rows;
 	      }
 	      
       	if (transaction) await transaction.commit();
