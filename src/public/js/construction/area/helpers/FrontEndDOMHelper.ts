@@ -130,7 +130,12 @@ ${rootScript}`;
     if (element) {
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
-          lines.push(indent + '| ' + element.textContent);
+          if (['style', 'script'].indexOf(element.parentNode.tagName && element.parentNode.tagName.toLowerCase() || null) != -1) {
+        		lines[lines.length - 1] += '.';
+        		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
+        	} else {
+          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+          }
         }
       } else {
         let tag = element.tagName.toLowerCase();
@@ -554,7 +559,12 @@ ${rootScript}`;
     if (element) {
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
-          lines.push(indent + '| ' + element.textContent);
+        	if (['style', 'script'].indexOf(element.parentNode.tagName && element.parentNode.tagName.toLowerCase() || null) != -1) {
+        		lines[lines.length - 1] += '.';
+        		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
+        	} else {
+          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+          }
         }
       } else {
         let tag = element.tagName.toLowerCase();
