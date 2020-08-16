@@ -780,7 +780,7 @@ ${rootScript}`;
           
           if (classes != '') composed += '.' + TextHelper.removeExtraWhitespaces(classes).split(' ').join('.');
           if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
-          if (styles != null) attributes.push('style="' + styles.join('; ') + ';"');
+          if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
           if (attributes.length != 0) composed += '(' + attributes.join(' ') + ')';
           
