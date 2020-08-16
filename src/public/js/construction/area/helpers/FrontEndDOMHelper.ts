@@ -1,5 +1,6 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 import {CodeHelper} from '../../helpers/CodeHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
