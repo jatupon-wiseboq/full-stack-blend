@@ -294,9 +294,9 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
         
         let SECTION_BODY = `
     
-    // Override data parsing and manipulation of ${SECTION_NAME} here:
-    // 
-    
+      // Override data parsing and manipulation of ${SECTION_NAME} here:
+      // 
+      
     `;
     
     		if (SECTION_NAME != null) SECTION_NAME = JSON.stringify(SECTION_NAME);
