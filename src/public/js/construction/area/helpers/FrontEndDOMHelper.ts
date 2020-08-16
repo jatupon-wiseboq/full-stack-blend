@@ -519,7 +519,7 @@ ${rootScript}`;
           }
           
           if (classes != '') {
-            if (!isFirstElement) composed += '.' + classes.split(' ').join('.');
+            if (!isFirstElement) composed += '.' + TextHelper.removeExtraWhitespaces(classes).split(' ').join('.');
             else {
               attributes.push('className="' + classes + ' " + (this.props.forward && this.props.forward.classes || \'\')');
             }
@@ -775,7 +775,7 @@ ${rootScript}`;
             composed += tag;
           }
           
-          if (classes != '') composed += '.' + classes.split(' ').join('.');
+          if (classes != '') composed += '.' + TextHelper.removeExtraWhitespaces(classes).split(' ').join('.');
           if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
           if (styles != null) attributes.push('style="' + styles.join('; ') + ';"');
           if (composed == indent) composed += 'div';
