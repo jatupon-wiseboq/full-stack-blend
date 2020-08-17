@@ -33,7 +33,11 @@ let options = {
 		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
-		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT
+		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
+		"data-lock-mode": CONSTANTS.BACKEND_DATA_LOCK_MODE,
+		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
+		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
+		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",

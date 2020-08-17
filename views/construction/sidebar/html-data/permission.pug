@@ -1,0 +1,79 @@
+include ../../mixin/CreateReactComponent
+.internal-fsb-selecting-on
+  .section-container
+    .section-title
+      | Modification
+    .section-subtitle
+      | Lock Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-lock-mode']}")
+    .section-subtitle(internal-fsb-for="data-lock-mode:relation")
+      | Source Group
+    .section-body(internal-fsb-for="data-lock-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-group'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-lock-mode:relation")
+      | Source Entity
+    .section-body(internal-fsb-for="data-lock-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-entity'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-lock-mode:relation")
+      | Matching Mode
+    .section-body(internal-fsb-for="data-lock-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-lock-matching-mode']}")
+    div(internal-fsb-for="data-lock-mode:relation")
+      .section-subtitle(internal-fsb-not-for="data-lock-matching-mode")
+        | Matching Constant Value
+      .section-body(internal-fsb-not-for="data-lock-matching-mode")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-relation-matching-constant-value'], inline: true, button: false}")
+      .section-subtitle(internal-fsb-for="data-lock-matching-mode:session")
+        | Session Name
+      .section-body(internal-fsb-for="data-lock-matching-mode:session")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-relation-matching-session-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-lock-mode:session")
+      | Session Name
+    .section-body(internal-fsb-for="data-lock-mode:session")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-session-matching-session-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-lock-mode:session")
+      | Matching Value
+    .section-body(internal-fsb-for="data-lock-mode:session")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-session-matching-constant-value'], inline: true, button: false}")
+    .section-note
+      | This options will prevent sensitive data from being modified from other users which may harm the business logic.
+    .section-hr
+  .section-container
+    .section-title
+      | Retrieval 
+    .section-subtitle
+      | Rendering Condition
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-mode']}")
+    .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
+      | Source Group
+    .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-group'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
+      | Source Entity
+    .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-entity'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
+      | Matching Mode
+    .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-matching-mode']}")
+    div(internal-fsb-for="data-rendering-condition-mode:relation")
+      .section-subtitle(internal-fsb-not-for="data-rendering-condition-matching-mode")
+        | Matching Constant Value
+      .section-body(internal-fsb-not-for="data-rendering-condition-matching-mode")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-relation-matching-constant-value'], inline: true, button: false}")
+      .section-subtitle(internal-fsb-for="data-rendering-condition-matching-mode:session")
+        | Session Name
+      .section-body(internal-fsb-for="data-rendering-condition-matching-mode:session")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-relation-matching-session-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-rendering-condition-mode:session")
+      | Session Name
+    .section-body(internal-fsb-for="data-rendering-condition-mode:session")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-session-matching-session-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="data-rendering-condition-mode:session")
+      | Matching Value
+    .section-body(internal-fsb-for="data-rendering-condition-mode:session")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-session-matching-constant-value'], inline: true, button: false}")
+    .section-note
+      | This options will prevent sensitive data from being leaked into client-side which may harm the business logic.
