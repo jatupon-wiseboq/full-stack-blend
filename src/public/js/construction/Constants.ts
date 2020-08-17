@@ -326,6 +326,7 @@ export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "re
 export const DATA_SOURCE_TYPE_OPTIONS_2 = [["internal-fsb-data-source-type", "document", ["fa-file-o", "Document"]], ["internal-fsb-data-source-type", "volatile-memory", ["fa-thumb-tack", "Volatile Memory"]]];
 export const DATA_WIZARD_TYPE_OPTIONS_1 = [["internal-fsb-data-wizard-type", "insert", ["fa-save", "Insert"]], ["internal-fsb-data-wizard-type", "update", ["fa-save", "Update"]], ["internal-fsb-data-wizard-type", "delete", ["fa-save", "Delete"]]];
 export const DATA_WIZARD_TYPE_OPTIONS_2 = [["internal-fsb-data-wizard-type", "retrieve", ["fa-database", "Retrieve"]], ["internal-fsb-data-wizard-type", "popup", ["fa-list-alt", "Popup"]], ["internal-fsb-data-wizard-type", "navigate", ["fa-link", "Navigate"]]];
+export const DATA_VALUE_SOURCE_OPTIONS = [["internal-fsb-data-value-source", null, ["fa-pencil-square-o", "Front-End"]], ["internal-fsb-data-value-source", "session", ["fa-cog", "Back-End"]]];
 export const TEXTBOX_MODE_OPTIONS = [["internal-fsb-textbox-mode", null, ["fa-minus", "Single"]], ["internal-fsb-textbox-mode", "multiple", ["fa-reorder", "Multiple"]]];
 export const REQUIRE_FULL_CLOSING_TAGS = ["select", "textarea", "div"];
 export const CONTAIN_TEXT_CONTENT_TAGS = ["textarea"];

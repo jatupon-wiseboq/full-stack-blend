@@ -106,9 +106,18 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
     .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
-      | Default Value
+      | Value Source
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-value-source', 'internal-fsb-data-value-source']}")
+    div(internal-fsb-for="internal-fsb-data-source-type")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-value-source")
+        | Session Variable Name
+      .section-body(internal-fsb-for="internal-fsb-data-value-source")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-session-name'], inline: true, button: false}")
+      .section-subtitle(internal-fsb-not-for="internal-fsb-data-value-source")
+        | Default Value
+      .section-body(internal-fsb-not-for="internal-fsb-data-value-source")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
     .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
       | Required
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
