@@ -34,7 +34,9 @@ var SchemaHelper = {
             	guid: columnGUID,
             	fieldType: fieldType,
             	required: (required == 'true'),
-            	unique: (unique == 'true')
+            	unique: (unique == 'true'),
+              modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
+              retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
             }
           } else {
             columns[columnName] = {
@@ -42,7 +44,9 @@ var SchemaHelper = {
             	guid: columnGUID,
             	fieldType: fieldType,
             	required: (required == 'true'),
-            	unique: (unique == 'true')
+            	unique: (unique == 'true'),
+              modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
+              retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
             }
           }
         }
@@ -84,12 +88,26 @@ var SchemaHelper = {
           guid: tableGUID,
           keys: keys,
           columns: columns,
-          relations: relations
+          relations: relations,
+          modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
+          retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
         };
       }
     }
     
     return tables;
+  },
+  generatePermission: (element: HTMLElement, prefix: string): any => {
+  	return {
+  		mode: HTMLHelper.getAttribute(element, prefix + '-mode'),
+		  relationModeSourceGroup: HTMLHelper.getAttribute(element, prefix + '-source-group'),
+		  relationModeSourceEntity: HTMLHelper.getAttribute(element, prefix + '-source-entity'),
+		  relationMatchingMode: HTMLHelper.getAttribute(element, prefix + '-matching-mode'),
+		  relationMatchingConstantValue: HTMLHelper.getAttribute(element, prefix + '-relation-matching-constant-value'),
+		  relationMatchingSessionName: HTMLHelper.getAttribute(element, prefix + '-relation-matching-session-name'),
+		  sessionMatchingSessionName: HTMLHelper.getAttribute(element, prefix + '-session-matching-session-name'),
+		  sessionMatchingConstantValue: HTMLHelper.getAttribute(element, prefix + '-session-matching-constant-value')
+  	}
   },
   recursiveAccumulateDotNotations: (notations: string[]=[], current: HTMLElement=document.body, accumulatedNotation: string=null, isContainingInReactClass: boolean=false): any => {
     if (HTMLHelper.hasAttribute(current, 'internal-fsb-react-mode')) {
