@@ -44,6 +44,7 @@ import './components/content/ComponentMenu.js';
 import './components/content/ComponentManager.js';
 import './components/content/PopupManager.js';
 import './components/content/EndpointManager.js';
+import './components/content/SchemaManager.js';
 
 //import GitHub from 'github-api';
 

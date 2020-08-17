@@ -1,6 +1,11 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
 
+let cachedElementTreeNodes = null;
+
 var SchemaHelper = {
+	invalidate: function() {
+		cachedElementTreeNodes = null;
+	},
   generateDataSchema: (): any => {
     let tables = {};
     
@@ -163,6 +168,126 @@ var SchemaHelper = {
     }
     
     return tree;
+  },
+  getElementTreeNodes: function() {
+  	if (cachedElementTreeNodes) return cachedElementTreeNodes;
+  	
+  	let tables = SchemaHelper.generateDataSchema();
+  	let nodes = [];
+  	
+  	for (let tableName in tables) {
+  		if (tables.hasOwnProperty(tableName)) {
+	  		let table = tables[tableName];
+	  		let keys = [];
+	  		let columns = [];
+	  		let relations = [];
+	  		
+	  		nodes.push({
+					id: null,
+					customClassName: 'title',
+					name: table.group,
+					selectable: false,
+					dropable: false,
+					disabled: false,
+					selected: false,
+					nodes: [{
+						id: null,
+						customClassName: 'subtitle',
+						name: 'keys',
+						selectable: false,
+						dropable: false,
+						disabled: false,
+						selected: false,
+						nodes: keys,
+						tag: null
+					}, {
+						id: null,
+						customClassName: 'subtitle',
+						name: 'columns',
+						selectable: false,
+						dropable: false,
+						disabled: false,
+						selected: false,
+						nodes: columns,
+						tag: null
+					}, {
+						id: null,
+						customClassName: 'subtitle',
+						name: 'relations',
+						selectable: false,
+						dropable: false,
+						disabled: false,
+						selected: false,
+						nodes: relations,
+						tag: null
+					}],
+					tag: null
+				});
+				
+				nodes.sort((a, b) => {
+				  return (a.name < b.name) ? -1 : 1;
+				});
+				
+				for (let key in table.keys) {
+					if (table.keys.hasOwnProperty(key)) {
+						keys.push({
+							id: null,
+							customClassName: 'item',
+							name: table.keys[key].name,
+							selectable: false,
+							dropable: false,
+							disabled: false,
+							selected: false,
+							nodes: [],
+							tag: null
+						});
+					}
+				}
+				for (let key in table.columns) {
+					if (table.columns.hasOwnProperty(key)) {
+						columns.push({
+							id: null,
+							customClassName: 'item',
+							name: table.columns[key].name,
+							selectable: false,
+							dropable: false,
+							disabled: false,
+							selected: false,
+							nodes: [],
+							tag: null
+						});
+					}
+				}
+				for (let key in table.relations) {
+					if (table.relations.hasOwnProperty(key)) {
+						relations.push({
+							id: null,
+							customClassName: 'item',
+							name: `${table.relations[key].targetGroup}.${table.relations[key].targetEntity}`,
+							selectable: false,
+							dropable: false,
+							disabled: false,
+							selected: false,
+							nodes: [],
+							tag: null
+						});
+					}
+				}
+				
+				keys.sort((a, b) => {
+				  return (a.name < b.name) ? -1 : 1;
+				});
+				columns.sort((a, b) => {
+				  return (a.name < b.name) ? -1 : 1;
+				});
+				relations.sort((a, b) => {
+				  return (a.name < b.name) ? -1 : 1;
+				});
+			}
+  	}
+  	
+  	cachedElementTreeNodes = nodes;
+  	return nodes;
   }
 };
 

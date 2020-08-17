@@ -8,6 +8,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {SchemaHelper} from './SchemaHelper.js';
 import {StyleHelper} from './StyleHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
@@ -527,6 +528,7 @@ var ManipulationHelper = {
       
 	    if (found) FrontEndDOMHelper.invalidate();
 	    if (found) StyleHelper.invalidate();
+    	if (found) SchemaHelper.invalidate();
       
       if (remember && !found) {
         remember = false;
@@ -815,6 +817,7 @@ var ManipulationHelper = {
     }
     
     LayoutHelper.invalidate();
+    SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	
   	return [accessory, remember, link];

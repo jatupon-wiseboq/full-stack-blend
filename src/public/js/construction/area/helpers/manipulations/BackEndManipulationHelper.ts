@@ -2,6 +2,7 @@ import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {Accessories, EditorHelper} from '../EditorHelper.js';
 import {WorkspaceHelper} from '../WorkspaceHelper.js';
+import {SchemaHelper} from '../SchemaHelper.js';
 import {LayoutHelper} from '../LayoutHelper.js';
 import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
@@ -235,6 +236,7 @@ var BackEndManipulationHelper = {
     
     ManipulationHelper.updateComponentData(element);
     LayoutHelper.invalidate();
+    SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
     
     return [accessory, remember, link];

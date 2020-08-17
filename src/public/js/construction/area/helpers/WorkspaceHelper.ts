@@ -243,6 +243,7 @@ var WorkspaceHelper = {
     }
     
     LayoutHelper.invalidate();
+    SchemaHelper.invalidate();
   },
   saveWorkspaceData: (reinit: boolean=true) => {
     if (InternalProjectSettings.currentMode == 'site') {
