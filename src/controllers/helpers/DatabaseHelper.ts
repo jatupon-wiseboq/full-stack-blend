@@ -3,6 +3,7 @@
 
 import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
+import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 import {FieldType, DataTableSchema} from "./SchemaHelper.js";
 import {DataTypes} from "sequelize";
@@ -54,6 +55,7 @@ interface Input {
   name: string;
   value: any;
   guid: string;
+  premise: string;
   validation: ValidationInfo;
 }
 
@@ -146,6 +148,7 @@ const DatabaseHelper = {
                   name: schema.relations[key].targetEntity,
                   value: null,
                   guid: null,
+  								premise: null,
                   validation: null
                 });
               }
@@ -192,11 +195,15 @@ const DatabaseHelper = {
         continue;
       if (!schema.keys[input.name] && !schema.columns[input.name])
         throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn\'t exist in the schema group '${schema.group}').`);
-      if (schema.keys[input.name]) {
-        row.keys[input.name] = input.value;
-      } else {
-        row.columns[input.name] = input.value;
-      }
+      if (input.premise && !schema.relations[input.premise])
+      	throw new Error(`There was an error preparing data for manipulation ('${input.premise}' couldn\'t be a predecessor of '${schema.group}'; choices are ${Object.keys(schema.relations).join(", ")}).`);
+      if (!input.premise || schema.relations[input.premise].sourceEntity != input.name) {
+	      if (schema.keys[input.name]) {
+	        row.keys[input.name] = input.value;
+	      } else {
+	        row.columns[input.name] = input.value;
+	      }
+	    }
     }
     
     for (const row of results) {
@@ -308,7 +315,7 @@ const DatabaseHelper = {
 		
 		return results;
   },
-	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema): [HierarchicalDataTable, DataTableSchema][] => {
+	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): [HierarchicalDataTable, DataTableSchema][] => {
 	  const results: [HierarchicalDataTable, DataTableSchema][] = [];
 	  let current: HierarchicalDataTable = null;
 	  
@@ -362,6 +369,7 @@ const DatabaseHelper = {
                   name: baseSchema.relations[key].targetEntity,
                   value: "123",
                   guid: (index == -1) ? "" : "[" + index + "]",
+  								premise: null,
                   validation: null
                 });
               }
@@ -384,7 +392,7 @@ const DatabaseHelper = {
     	  const next = {
   	      source: baseSchema.source,
   	      group: baseSchema.group,
-  	      rows: DatabaseHelper.getRows(data, action, baseSchema)
+  	      rows: DatabaseHelper.getRows(data, (action == ActionType.Update && crossRelationUpsert) ? ActionType.Insert : action, baseSchema)
   	    };
     	  
     	  current.rows[0].relations[baseSchema.group] = next;
@@ -479,32 +487,34 @@ const DatabaseHelper = {
 	  
 	  return RelationalDatabaseORMClient.models[schema.group];
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, session: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
 		  try {
-  			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema);
+  			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema, crossRelationUpsert);
 	  		const results = [];
   		  
   		  for (let index=0; index < list.length; index++) {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
   		  	
-  		  	await DatabaseHelper.performRecursiveInsert(input, schema, results, transaction, crossRelationUpsert);
+  		  	await DatabaseHelper.performRecursiveInsert(input, schema, results, transaction, crossRelationUpsert, session);
   		  }
 	      
       	if (transaction) await transaction.commit();
 		  	
 	  		resolve(results);
       } catch(error) {
+      	console.log(error);
+      	
       	if (transaction) await transaction.rollback();
       	
         reject(error);
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null) => {
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -528,6 +538,8 @@ const DatabaseHelper = {
 					    }
 					  }
 					}
+					
+					if (await !PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 					
 					const record = await map.create(hash, {transaction: transaction});
 					
@@ -577,9 +589,20 @@ const DatabaseHelper = {
 							  rows: []
 						  };
 						
-							if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
-							else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+							if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
+							else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 						}
+					}
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+					  }
 					}
 				}
     		break;
@@ -603,7 +626,7 @@ const DatabaseHelper = {
     		break;
     }
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null) => {
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -629,6 +652,14 @@ const DatabaseHelper = {
 					}
 					
 					const record = await map.upsert(hash, {transaction: transaction});
+					
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+					    hash[key] = record[key];
+					  }
+					}
+					
+					if (await !PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 					
 				  const result = {
 				    keys: {},
@@ -676,8 +707,19 @@ const DatabaseHelper = {
 							  rows: []
 						  };
 						
-							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 						}
+					}
+				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+					  }
 					}
 				}
     		break;
@@ -701,32 +743,34 @@ const DatabaseHelper = {
     		break;
     }
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, session: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
 		  try {
-  			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema);
+  			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema, crossRelationUpsert);
 	  		const results = [];
 	  		
 	  		for (let index=0; index < list.length; index++) {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
   		  	
-  		  	await DatabaseHelper.performRecursiveUpdate(input, schema, results, transaction, crossRelationUpsert);
+  		  	await DatabaseHelper.performRecursiveUpdate(input, schema, results, transaction, crossRelationUpsert, session);
   		  }
 	      
       	if (transaction) await transaction.commit();
 		  	
 	  		resolve(results);
       } catch(error) {
+      	console.log(error);
+      	
       	if (transaction) await transaction.rollback();
       	
         reject(error);
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null) => {
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -748,6 +792,8 @@ const DatabaseHelper = {
 					  }
 					}
 					
+					if (await !PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+					
 					await map.update(data, {where: hash, transaction: transaction});
 					
 					const record = await map.findOne({where: hash});
@@ -759,18 +805,12 @@ const DatabaseHelper = {
 				  
 				  for (const key in schema.columns) {
 					  if (schema.columns.hasOwnProperty(key)) {
-					    result.columns[key] = {
-					      name: key,
-					      value: record[key]
-					    };
+					    result.columns[key] = record[key];
 					  }
 					}
 					for (const key in schema.keys) {
 					  if (schema.keys.hasOwnProperty(key)) {
-					    result.keys[key] = {
-					      name: key,
-					      value: record[key]
-					    };
+					    result.keys[key] = record[key];
 					  }
 					}
 				
@@ -803,11 +843,21 @@ const DatabaseHelper = {
 							  rows: []
 						  };
 						
-							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 						}
 					}
-				}
 				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+					  }
+					}
+				}
 				break;
     	case SourceType.PrioritizedWorker:
     		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -829,7 +879,7 @@ const DatabaseHelper = {
     		break;
     }
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		  	if (data != null) {
@@ -840,11 +890,13 @@ const DatabaseHelper = {
 	  		  	const input = list[index][0];
 	  		  	const schema = list[index][1];
 	  		  	
-	  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results);
+	  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session);
 	  		  }
 			  	
 		  		resolve(results);
 		  	} else {
+		  		if (await !PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, {}, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+		  		
 		  		const results = {};
 		  		
 		  		switch (baseSchema.source) {
@@ -865,13 +917,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in baseSchema.columns) {
-	    					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-	    					    row.columns[key] = record[key];
+	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
+	    					    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
-	    					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-	    					    row.keys[key] = record[key];
+	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
+	    					    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -908,11 +960,13 @@ const DatabaseHelper = {
 	        resolve(results);
 	      }
       } catch(error) {
+      	console.log(error);
+      	
         reject(error);
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}) => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null) => {
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -932,6 +986,8 @@ const DatabaseHelper = {
 					    hash[key] = row.keys[key];
 					  }
 					}
+					
+					if (await !PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 					
 					const rows = [];
 					const records = await map.findAll({where: hash}) || [];
@@ -985,9 +1041,22 @@ const DatabaseHelper = {
 					  			}
 					  		}
 							  
-							  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations);
+							  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session);
 					  	}
 					  }
+					}
+				
+					for (const row of rows) {
+					  for (const key in baseSchema.columns) {
+						  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
+						    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
+						  }
+						}
+						for (const key in baseSchema.keys) {
+						  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
+						    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
+						  }
+						}
 					}
 				}
 				break;
@@ -1011,7 +1080,7 @@ const DatabaseHelper = {
     		break;
     }
   },
-	delete: async (data: Input[], baseSchema: DataTableSchema): Promise<HierarchicalDataRow[]> => {
+	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1023,20 +1092,22 @@ const DatabaseHelper = {
   		  	const input = list[index][0];
   		  	const schema = list[index][1];
   		  	
-  		  	await DatabaseHelper.performRecursiveDelete(input, schema, results, transaction);
+  		  	await DatabaseHelper.performRecursiveDelete(input, schema, results, transaction, session);
   		  }
 	      
       	if (transaction) await transaction.commit();
 	      
 	      resolve(results);
       } catch(error) {
+      	console.log(error);
+      	
       	if (transaction) await transaction.rollback();
       	
         reject(error);
       }
     });
 	},
-	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null) => {
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -1047,10 +1118,12 @@ const DatabaseHelper = {
 					const hash = {};
 				
 					for (const key in schema.keys) {
-					  if (schema.keys.hasOwnProperty(key) && input.rows[0].keys[key] != undefined) {
-					    hash[key] = input.rows[0].keys[key];
+					  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+					    hash[key] = row.keys[key];
 					  }
 					}
+					
+					if (await !PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 					
 					const record = await map.findOne({where: hash});
 					await record.destroy({force: true, transaction: transaction});
@@ -1102,11 +1175,21 @@ const DatabaseHelper = {
 							  rows: []
 						  };
 						
-							await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
+							await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 						}
 					}
-				}
 				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+					  }
+					}
+				}
 				break;
 			case SourceType.PrioritizedWorker:
 				if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");

@@ -49,7 +49,7 @@ const RequestHelper = {
 			action: action,
 			fields: fields,
 			options: options
-		}
+		};
 	},
 	getAction: (request: Request): ActionType => {
 		const json: any = request.body;
@@ -58,7 +58,7 @@ const RequestHelper = {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		let action = requestSubmitInfoDict[json.guid] && requestSubmitInfoDict[json.guid].action || null;
+		const action = requestSubmitInfoDict[json.guid] && requestSubmitInfoDict[json.guid].action || null;
 		
 		switch (action) {
 			case "insert":
@@ -79,7 +79,7 @@ const RequestHelper = {
 				return null;
 		}
 	},
-	getOptions: (request: Request): ActionType => {
+	getOptions: (request: Request): any => {
 		const json: any = request.body;
 		
 		if (json == null) {
@@ -108,21 +108,22 @@ const RequestHelper = {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[guid.split('[')[0]];
+		const paramInfo = requestParamInfoDict[guid.split("[")[0]];
 		const submitInfo = requestSubmitInfoDict[json.guid];
 		
-		if (submitInfo.fields.indexOf(guid.split('[')[0]) == -1) {
+		if (submitInfo.fields.indexOf(guid.split("[")[0]) == -1) {
 			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
 		}
 		
-		let splited = paramInfo.group.split('.');
+		const splited = paramInfo.group.split(".");
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: splited[splited.length - 1],
+  		group: splited.pop(),
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
+  		premise: splited.pop() || null,
   		validation: null
 		};
 		
