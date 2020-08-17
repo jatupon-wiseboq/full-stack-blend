@@ -1230,6 +1230,7 @@ var ManipulationHelper = {
   	ManipulationHelper.updateComponentData(destination);
   	ManipulationHelper.updateComponentData(origin);
   	LayoutHelper.invalidate();
+    SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	
   	return [accessory, remember, link];
