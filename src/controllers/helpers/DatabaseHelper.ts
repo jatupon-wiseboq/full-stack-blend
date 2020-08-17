@@ -3,6 +3,7 @@
 
 import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
+import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 import {FieldType, DataTableSchema} from "./SchemaHelper.js";
 import {DataTypes} from "sequelize";
@@ -505,6 +506,8 @@ const DatabaseHelper = {
     });
 	},
 	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+    if (!PermissionHelper.validate(ActionType.Insert, schema)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+    
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -581,6 +584,17 @@ const DatabaseHelper = {
 							else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
 						}
 					}
+				  
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.columns[key])) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.keys[key])) delete result.keys[key];
+					  }
+					}
 				}
     		break;
     	case SourceType.PrioritizedWorker:
@@ -604,6 +618,8 @@ const DatabaseHelper = {
     }
 	},
 	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+		if (!PermissionHelper.validate(ActionType.Insert, schema)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+		
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -679,6 +695,17 @@ const DatabaseHelper = {
 							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
 						}
 					}
+				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.columns[key])) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.keys[key])) delete result.keys[key];
+					  }
+					}
 				}
     		break;
     	case SourceType.PrioritizedWorker:
@@ -727,6 +754,8 @@ const DatabaseHelper = {
     });
 	},
 	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false) => {
+		if (!PermissionHelper.validate(ActionType.Update, schema)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+		
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -759,18 +788,12 @@ const DatabaseHelper = {
 				  
 				  for (const key in schema.columns) {
 					  if (schema.columns.hasOwnProperty(key)) {
-					    result.columns[key] = {
-					      name: key,
-					      value: record[key]
-					    };
+					    result.columns[key] = record[key];
 					  }
 					}
 					for (const key in schema.keys) {
 					  if (schema.keys.hasOwnProperty(key)) {
-					    result.keys[key] = {
-					      name: key,
-					      value: record[key]
-					    };
+					    result.keys[key] = record[key];
 					  }
 					}
 				
@@ -806,8 +829,18 @@ const DatabaseHelper = {
 							await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
 						}
 					}
-				}
 				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.columns[key])) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.keys[key])) delete result.keys[key];
+					  }
+					}
+				}
 				break;
     	case SourceType.PrioritizedWorker:
     		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -845,6 +878,8 @@ const DatabaseHelper = {
 			  	
 		  		resolve(results);
 		  	} else {
+		  		if (!PermissionHelper.validate(ActionType.Retrieve, baseSchema)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+		  		
 		  		const results = {};
 		  		
 		  		switch (baseSchema.source) {
@@ -865,13 +900,13 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in baseSchema.columns) {
-	    					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-	    					    row.columns[key] = record[key];
+	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
+	    					    if (!PermissionHelper.allow(baseSchema.columns[key])) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
-	    					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-	    					    row.keys[key] = record[key];
+	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
+	    					    if (!PermissionHelper.allow(baseSchema.keys[key])) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -913,6 +948,8 @@ const DatabaseHelper = {
 		});
 	},
 	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}) => {
+		if (!PermissionHelper.validate(ActionType.Retrieve, baseSchema)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+		
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -989,6 +1026,19 @@ const DatabaseHelper = {
 					  	}
 					  }
 					}
+				
+					for (const row of rows) {
+					  for (const key in baseSchema.columns) {
+						  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
+						    if (!PermissionHelper.allow(baseSchema.columns[key])) delete row.columns[key];
+						  }
+						}
+						for (const key in baseSchema.keys) {
+						  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
+						    if (!PermissionHelper.allow(baseSchema.keys[key])) delete row.keys[key];
+						  }
+						}
+					}
 				}
 				break;
     	case SourceType.PrioritizedWorker:
@@ -1037,6 +1087,8 @@ const DatabaseHelper = {
     });
 	},
 	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
+		if (!PermissionHelper.validate(ActionType.Delete, schema)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+		
     switch (input.source) {
     	case SourceType.Relational:
     		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
@@ -1105,8 +1157,18 @@ const DatabaseHelper = {
 							await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction);
 						}
 					}
-				}
 				
+				  for (const key in schema.columns) {
+					  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.columns[key])) delete result.columns[key];
+					  }
+					}
+					for (const key in schema.keys) {
+					  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+					    if (!PermissionHelper.allow(schema.keys[key])) delete result.keys[key];
+					  }
+					}
+				}
 				break;
 			case SourceType.PrioritizedWorker:
 				if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
