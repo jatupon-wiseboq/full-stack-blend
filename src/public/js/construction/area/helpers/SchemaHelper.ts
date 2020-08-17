@@ -89,8 +89,8 @@ var SchemaHelper = {
           keys: keys,
           columns: columns,
           relations: relations,
-          modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
-          retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
+          modifyingPermission: SchemaHelper.generatePermission(tableElement, 'data-lock'),
+          retrievingPermission: SchemaHelper.generatePermission(tableElement, 'data-rendering-condition')
         };
       }
     }
