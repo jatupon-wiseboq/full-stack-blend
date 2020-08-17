@@ -92,7 +92,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
       	let options = RequestHelper.getOptions(this.request);
-        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert));
+        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -103,7 +103,7 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       try {
       	let options = RequestHelper.getOptions(this.request);
-        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert));
+        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -114,7 +114,7 @@ const DEFAULTS = {
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await DatabaseHelper.delete(data, schema));
+        resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -124,7 +124,7 @@ const DEFAULTS = {
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await DatabaseHelper.retrieve(data, schema));
+        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session));
       } catch(error) {
         reject(error);
       }
