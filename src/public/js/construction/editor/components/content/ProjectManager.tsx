@@ -108,18 +108,19 @@ class ProjectManager extends Base<Props, State> {
 				};
 				return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, cb);
 			};
-   	  repo.deleteFile = (content, cb) => {
-   	  	repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
+   	  repo.deleteFile = (path, cb) => {
+   	  	repo._request('GET', `/repos/${repo.__fullname}/contents/${path}?ref=${'heads/' + GITHUB_FEATURE_BRANCH}`, null, (error, result, request) => {
    	  		if (error) {
    	  			cb();
    	  		} else {
-		   	  	const deleteBody = {
-		       		message: `Delete the file at ${content}`,
-		       		sha: result.sha
+	   	  		const deleteBody = {
+		       		message: `Delete the file at ${path}`,
+		       		sha: result.sha,
+		       		branch: GITHUB_FEATURE_BRANCH
 		      	}
-						return repo._request('DELETE', `/repos/${repo.__fullname}/git/blobs`, deleteBody, cb);
+						repo._request('DELETE', `/repos/${repo.__fullname}/contents/${path}`, deleteBody, cb);
 					}
-				});
+   	  	});
 			};
    	  
    	  return repo;
@@ -835,18 +836,21 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
       });
    	}
    	deleteFiles(repo: any, files: any, cb: any) {
-   	  let process = (index: number) => {
-   	    let file = files[index];
-   	    
-   	    repo.deleteFile(file, (error, result, request) => {
-          if (index + 1 < files.length) {
-            process(index + 1);
-          } else {
-            cb();
-          }
-        });
-   	  }
-   	  process(0);
+   		if (files.length == 0) cb();
+   		else {
+	   	  let process = (index: number) => {
+	   	    let file = files[index];
+	   	    
+	   	    repo.deleteFile(file, (error, result, request) => {
+	          if (index + 1 < files.length) {
+	            process(index + 1);
+	          } else {
+	            cb();
+	          }
+	        });
+	   	  }
+	   	  process(0);
+	   	}
  	  }
    	generateWorkspaceData(removeSHADict: boolean=false) {
     	return {};
