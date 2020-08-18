@@ -7,7 +7,7 @@ let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
 const DataManipulationHelper = {
 	setData: (data: {[Identifier: string]: HierarchicalDataTable}) => {
-		dataset = data
+		dataset = data;
 	},
   getDataFromKey: (key: string, current: any, index: number=-1): any => {
 		if (Array.isArray(current)) {
@@ -16,7 +16,7 @@ const DataManipulationHelper = {
 		
   	// Search HierarchicalDataRow
 		// 		
-		let table = (current.relations || {})[key];
+		const table = (current.relations || {})[key];
 		if (table) {
 			if (index != -1) {
 				return table.rows[index];
@@ -26,7 +26,7 @@ const DataManipulationHelper = {
 		} else {
 			// Search HierarchicalDataColumn
 			// 
-			let column = (current.keys || {})[key] || (current.columns || {})[key];
+			const column = (current.keys || {})[key] || (current.columns || {})[key];
 			if (column != undefined) {
 				return column;
 			} else {
@@ -41,7 +41,7 @@ const DataManipulationHelper = {
       return [];
     }
     
-    let splited = notation.split('.');
+    const splited = notation.split(".");
     let current = {
 			keys: null,
 			columns: null,
@@ -50,11 +50,11 @@ const DataManipulationHelper = {
 		
 		let shifted = splited.shift();
 		while (current && shifted) {
-		  let tokens = shifted.split('[');
+		  const tokens = shifted.split("[");
 		  if (tokens.length == 1) {
 			  current = DataManipulationHelper.getDataFromKey(tokens[0], current);
 			} else if (tokens.length == 2) {
-			  current = DataManipulationHelper.getDataFromKey(tokens[0], current, parseInt(tokens[1].split(']')[0]));
+			  current = DataManipulationHelper.getDataFromKey(tokens[0], current, parseInt(tokens[1].split("]")[0]));
 			} else {
 			  current = null;
 			}

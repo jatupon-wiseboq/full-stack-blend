@@ -116,6 +116,8 @@ const SchemaHelper = {
 	  }
 	},
 	verifyPermission: (permission: Permission, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
+		if (permission == null) return true;
+		
 		switch (permission.mode) {
 			case "relation":
 				if (permission.relationModeSourceGroup === undefined || permission.relationModeSourceGroup === null || permission.relationModeSourceGroup.trim() === "")
@@ -226,6 +228,51 @@ const SchemaHelper = {
 		if ("fieldType" in current) throw new Error("There was an error retreiving data schema (dot notation gave a column instead of a table).");
 		
 		return current;
+	},
+	findShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): DataTableSchema[] => {
+		const results = [];
+		
+		SchemaHelper.recursiveFindShortestPathOfRelations(from, to, results);
+		
+		return results.reverse();
+	},
+	recursiveFindShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, results: DataTableSchema[], walked: any={}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): boolean => {
+		if (walked[from.group]) return false;
+		walked[from.group] = true;
+		
+		if (to == from) {
+			results.push(to);
+			return true;
+		}
+		
+		let minimum = Number.MAX_SAFE_INTEGER;
+		let shortestResults = null;
+		
+		for (const key in from.relations) {
+			if (from.relations.hasOwnProperty(key)) {
+				const table = data.tables[key];
+				const _walked = Object.assign({}, walked);
+				const _results = [];
+				
+				const found = SchemaHelper.recursiveFindShortestPathOfRelations(table, to, _results, _walked, data);
+				
+				if (found && _results.length < minimum) {
+					minimum = _results.length;
+					shortestResults = _results;
+				}
+			}
+		}
+		
+		if (shortestResults) {
+			for (const item of shortestResults) {
+				results.push(item);
+			}
+			results.push(from);
+			
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 
