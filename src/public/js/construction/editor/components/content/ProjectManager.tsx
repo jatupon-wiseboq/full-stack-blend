@@ -346,7 +346,7 @@ html
             let elements = HTMLHelper.getElementsByClassName('internal-fsb-element', persistingContent);
             for (let element of elements) {
             	let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
-            	let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace');
+            	let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
             	let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
             	let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
             	let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -355,8 +355,8 @@ html
 			          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
 			        }
 			        
-			        if (reactClass) persistingGUIDs[reactClass] = true;
-			        persistingGUIDs[reactClassComposingInfoGUID] = true;
+			        if (reactClass) persistingGUIDs[reactNamespace + '.' + reactClass] = true;
+			        else persistingGUIDs[reactClassComposingInfoGUID] = true;
             }
             
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
