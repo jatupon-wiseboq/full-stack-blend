@@ -49,7 +49,7 @@ class ProjectManager extends Base<Props, State> {
       let editingPageID = key;
       pages = pages.filter(page => page.id == editingPageID);
       
-      let path = escape(pages && pages[0] && pages[0].path || '');
+      let path = pages && pages[0] && pages[0].path || '';
       path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
       
       return (path) ? path + '/' : '';

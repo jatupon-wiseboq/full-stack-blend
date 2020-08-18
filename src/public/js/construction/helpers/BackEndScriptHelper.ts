@@ -151,12 +151,12 @@ export default Controller;
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
-import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
-import {RequestHelper} from '../helpers/RequestHelper.js';
-import {RenderHelper} from '../helpers/RenderHelper.js';
-import {DataTableSchema} from '../helpers/SchemaHelper.js';
-import {Base} from './Base.js';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ValidationHelper.js';
+import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper.js';
+import {RenderHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RenderHelper.js';
+import {DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper.js';
+import {Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base.js';
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -273,6 +273,8 @@ ${MAIN_MERGE_END_BEGIN}`);
 				code = `${code.split(FILE_END)[0]}
 ${info['editingPageID']}
 ${FILE_END}${code.split(FILE_END)[1]}`;
+
+				code = code.split('{__IMPORT_DIRECTORY_PREFIX__}').join('../'.repeat(info['editingPagePath'].split('/').length - 1));
 				
 				return [code, functionNameMapping];
 		},
