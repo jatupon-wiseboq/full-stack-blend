@@ -45,6 +45,16 @@ class EndpointManager extends Base<Props, State> {
     	if (key == 'index') return key;
     	else return `_${key}`;
     }
+    getFeatureDirectoryPrefix(key: string) {
+    	let pages = this.state.extensionValues['pages'];
+      let editingPageID = key;
+      pages = pages.filter(page => page.id == editingPageID);
+      
+      let path = escape(pages && pages[0] && pages[0].path || '');
+      path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
+      
+      return (path) ? path + '/' : '';
+    }
     
     files: any = [];
     private create(path: string, content: string) {
@@ -226,10 +236,10 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
+${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	new Component${route.id}(req, res, "home/${this.getRepresentativeName(route.id)}");
+	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
@@ -242,7 +252,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
    	  let process = ((index: number) => {
    	    let page = pages.filter(page => page.id == keys[index]);
    	    
-   	    this.create(`../../views/home/${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
+   	    this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
@@ -309,7 +319,7 @@ ${tokens[1]}
        	  let subprocess = ((subIndex: number) => {
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
-       	    this.create(`./components/${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
+       	    this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}

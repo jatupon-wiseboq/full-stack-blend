@@ -44,6 +44,16 @@ class ProjectManager extends Base<Props, State> {
     	if (key == 'index') return key;
     	else return `_${key}`;
     }
+    getFeatureDirectoryPrefix(key: string) {
+    	let pages = this.state.extensionValues['pages'];
+      let editingPageID = key;
+      pages = pages.filter(page => page.id == editingPageID);
+      
+      let path = escape(pages && pages[0] && pages[0].path || '');
+      path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
+      
+      return (path) ? path + '/' : '';
+    }
     extractErrorMessage(error) {
    	  if (error && error.response && error.response.data && error.response.data.errors) {
    	    return error.response.data.errors.map(error => error.message).join('; ')
@@ -415,7 +425,7 @@ html
 	                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
 	                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
 		                          tree.push({
-		                            path: `src/controllers/components/${this.getRepresentativeName(key)}.ts`,
+		                            path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
 		                            mode: "100644",
 		                            type: "blob",
 		                            sha: nextProjectData.backEndControllerBlobSHADict[key]
@@ -435,7 +445,7 @@ html
 	                        for (let key in nextProjectData.viewBlobSHADict) {
 	                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
 	                            tree.push({
-	                              path: `views/home/${this.getRepresentativeName(key)}.pug`,
+	                              path: `views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`,
 	                              mode: "100644",
 	                              type: "blob",
 	                              sha: nextProjectData.viewBlobSHADict[key]
@@ -616,10 +626,10 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
+${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	new Component${route.id}(req, res, "home/${this.getRepresentativeName(route.id)}");
+	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
