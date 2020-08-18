@@ -230,7 +230,7 @@ export {${previewReactClassName}};
         }
         
         code = `${code.split(FILE_END)[0]}
-${klass}
+${fullnamespace}
 ${FILE_END}${code.split(FILE_END)[1]}`;
         
         return [code, functionNameMapping];
