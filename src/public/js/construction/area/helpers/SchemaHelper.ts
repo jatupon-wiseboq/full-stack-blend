@@ -103,8 +103,11 @@ var SchemaHelper = {
     return tables;
   },
   generatePermission: (element: HTMLElement, prefix: string): any => {
+  	let mode = HTMLHelper.getAttribute(element, prefix + '-mode');
+  	if (mode == null) return null;
+  	
   	return {
-  		mode: HTMLHelper.getAttribute(element, prefix + '-mode'),
+  		mode: mode,
 		  relationModeSourceGroup: HTMLHelper.getAttribute(element, prefix + '-source-group'),
 		  relationModeSourceEntity: HTMLHelper.getAttribute(element, prefix + '-source-entity'),
 		  relationMatchingMode: HTMLHelper.getAttribute(element, prefix + '-matching-mode'),
