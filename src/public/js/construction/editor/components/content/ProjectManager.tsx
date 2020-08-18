@@ -108,6 +108,19 @@ class ProjectManager extends Base<Props, State> {
 				};
 				return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, cb);
 			};
+   	  repo.deleteFile = (content, cb) => {
+   	  	repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
+   	  		if (error) {
+   	  			cb();
+   	  		} else {
+		   	  	const deleteBody = {
+		       		message: `Delete the file at ${content}`,
+		       		sha: result.sha
+		      	}
+						return repo._request('DELETE', `/repos/${repo.__fullname}/git/blobs`, deleteBody, cb);
+					}
+				});
+			};
    	  
    	  return repo;
    	}
@@ -391,6 +404,28 @@ html
 	                    }
 	                    
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, (siteBundleBlobSHA: string) => {
+	                    	let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
+	                    	let nextPersistingFiles = [];
+                        
+                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
+                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+	                        }
+                        }
+                        for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
+                        	if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`src/public/js/components/${key}.tsx`);
+	                        }
+                        }
+                        for (let key in nextProjectData.viewBlobSHADict) {
+                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`);
+                          }
+                        }
+                        
+                        let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
+                        nextProjectData.currentPersistingFiles = nextPersistingFiles;
+	                    	
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
@@ -480,8 +515,10 @@ html
   	                              }
             
             											constructionWindow.clearFullStackCodeForAllPages();
-  	                              
-  	                              alert('Your changes have been saved successfully.');
+            											
+            											this.deleteFiles(repo, deletingPersistingFiles, () => {
+	  	                            	alert('Your changes have been saved successfully.');
+	  	                            });
   	                            });
   	                          });
   	                        }
@@ -797,6 +834,20 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
         cb(nextSiteBundleDataSHA);
       });
    	}
+   	deleteFiles(repo: any, files: any, cb: any) {
+   	  let process = (index: number) => {
+   	    let file = files[index];
+   	    
+   	    repo.deleteFile(file, (error, result, request) => {
+          if (index + 1 < files.length) {
+            process(index + 1);
+          } else {
+            cb();
+          }
+        });
+   	  }
+   	  process(0);
+ 	  }
    	generateWorkspaceData(removeSHADict: boolean=false) {
     	return {};
     }
