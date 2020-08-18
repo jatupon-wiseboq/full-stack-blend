@@ -149,7 +149,7 @@ const FILE_END = `// <---Auto[File]`;
 var FrontEndReactHelper = {
     generateReactCode: (info: any, previewReactClassName: string=null) => {
         let klass = previewReactClassName || info['internal-fsb-react-class'] || info['internal-fsb-class'] + '_' + info['internal-fsb-guid'];
-        let namespace = info['internal-fsb-react-namespace'] || 'Project.Controls';
+        let namespace = 'Project.' + (info['internal-fsb-react-namespace'] || 'Controls');
         let fullnamespace = namespace + '.' + klass;
         let dotNotation = info['internal-fsb-react-data'] || null;
         let mode = info['internal-fsb-react-mode'];
