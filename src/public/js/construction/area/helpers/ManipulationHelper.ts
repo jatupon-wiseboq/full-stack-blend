@@ -196,7 +196,7 @@ var ManipulationHelper = {
 	    
 	    for (let element of elements) {
 	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
-	    		let reactNamespace = 'Project.' + (HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Controls');
+	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
 	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
 	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
 	        let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
