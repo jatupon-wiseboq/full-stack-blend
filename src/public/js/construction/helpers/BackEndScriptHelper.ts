@@ -274,7 +274,7 @@ ${MAIN_MERGE_END_BEGIN}`);
 ${info['editingPageID']}
 ${FILE_END}${code.split(FILE_END)[1]}`;
 
-				code = code.split('{__IMPORT_DIRECTORY_PREFIX__}').join('../'.repeat(info['editingPagePath'].split('/').length - 1));
+				code = code.split('{__IMPORT_DIRECTORY_PREFIX__}').join('../'.repeat(info['editingPagePath'].split('/').length - 1) || './');
 				
 				return [code, functionNameMapping];
 		},
