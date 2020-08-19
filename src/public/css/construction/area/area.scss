@@ -178,6 +178,9 @@ body.internal-fsb-mode-coding {
     display: none;
   }
 }
+.internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
+	height: 20px;
+}
 
 @include keyframe(animation-blink) {
   0% {
