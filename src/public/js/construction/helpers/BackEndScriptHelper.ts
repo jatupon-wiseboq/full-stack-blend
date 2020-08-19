@@ -17,7 +17,6 @@ const DEFAULTS = {
 //
 `,
   ClassBegin: `
-  
   // Declare class variables and functions here:
   //
   protected validate(data: Input[]): void {
@@ -50,94 +49,108 @@ const DEFAULTS = {
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.get(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      resolve({});
     });
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.post(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.put(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.delete(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
-      	let options = RequestHelper.getOptions(this.request);
+    	/* Uncomment to allow insert action of any button on the page. */
+      /* try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
-      	let options = RequestHelper.getOptions(this.request);
+    	/* Uncomment to allow update action of any button on the page. */
+      /* try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
     return ;
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
+    	/* Uncomment to allow delete action of any button on the page. */
+      /* try {
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+    	/* Uncomment to allow retrieve action of any button on the page. */
+      /* try {
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      try {
+    	/* Uncomment to allow navigate action of any button on the page. */
+      /* try {
         resolve('/');
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }`,
   ClassEnd: `
@@ -215,8 +228,8 @@ class Controller extends Base {
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	let action: ActionType = RequestHelper.getAction(request);
-  	let schema: DataTableSchema = RequestHelper.getSchema(request);
+  	let action: ActionType = RequestHelper.getAction(this.pageId, request);
+  	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;
   	
@@ -317,12 +330,11 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
         if (code.indexOf(SECTION_BEGIN_BEGIN) == -1) {
             code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
-		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
+		RequestHelper.registerInput('${info['editingPageID']}', '${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
-    for (let i=-1; i<1024; i++) {
-      input = RequestHelper.getInput(request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+    for (let i=-1; i<128; i++) {
+      input = RequestHelper.getInput('${info['editingPageID']}', request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
       if (input != null) data.push(input);
-      else if (i > -1) break;
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);

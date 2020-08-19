@@ -51,7 +51,7 @@ var BackEndDOMHelper = {
     		
     		if (submitControls) submitControls = submitControls.trim();
     		
-    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}});`);
+    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(InternalProjectSettings.editingPageID)}, ${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}});`);
     	}
     	
     	let children = [...element.childNodes];
