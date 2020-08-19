@@ -333,7 +333,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
     for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput('${info['editingPageID']}', request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      input = RequestHelper.getInput(this.pageId, request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
       if (input != null) data.push(input);
     }
 ${SECTION_END_END}
