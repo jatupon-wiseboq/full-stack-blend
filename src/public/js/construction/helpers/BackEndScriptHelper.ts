@@ -50,92 +50,101 @@ const DEFAULTS = {
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.get(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      resolve({});
     });
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.post(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.put(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.delete(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await DatabaseHelper.insert(data, schema));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await DatabaseHelper.update(data, schema));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
     return ;
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await DatabaseHelper.delete(data, schema));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await DatabaseHelper.retrieve(data, schema));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve('/');
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("NotImplementedError"));
     });
   }`,
   ClassEnd: `
