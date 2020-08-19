@@ -17,7 +17,7 @@ const requestParamInfoDict: any = {};
 const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
-	registerInput: (guid: string, target: string, group: string, name: string): void => {
+	registerInput: (pageId: string, guid: string, target: string, group: string, name: string): void => {
 		if (!guid || !target || !group || !name) throw new Error("There was an error trying to retrieve input info (guid, target, group, or name is empty).");
 		
 		let _target: SourceType;
@@ -38,27 +38,27 @@ const RequestHelper = {
 				throw new Error("There was an error trying to retrieve input info (target value isn't in the predefined set).");
 		}
 		
-		requestParamInfoDict[guid] = {
+		requestParamInfoDict[pageId + guid] = {
 			target: _target,
 			group: group,
 			name: name
 		};
 	},
-	registerSubmit: (guid: string, action: string, fields: string[], options: any): void => {
-		requestSubmitInfoDict[guid] = {
+	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
+		requestSubmitInfoDict[pageId + guid] = {
 			action: action,
 			fields: fields,
 			options: options
 		};
 	},
-	getAction: (request: Request): ActionType => {
+	getAction: (pageId: string, request: Request): ActionType => {
 		const json: any = request.body;
 		
 		if (json == null) {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		const action = requestSubmitInfoDict[json.guid] && requestSubmitInfoDict[json.guid].action || null;
+		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
 		
 		switch (action) {
 			case "insert":
@@ -79,16 +79,16 @@ const RequestHelper = {
 				return null;
 		}
 	},
-	getOptions: (request: Request): any => {
+	getOptions: (pageId: string, request: Request): any => {
 		const json: any = request.body;
 		
 		if (json == null) {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		return requestSubmitInfoDict[json.guid].options;
+		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
-	getSchema: (request: Request): DataTableSchema => {
+	getSchema: (pageId: string, request: Request): DataTableSchema => {
 		const json: any = request.body;
 		
 		if (json == null) {
@@ -97,7 +97,7 @@ const RequestHelper = {
 		
 		return SchemaHelper.getDataTableSchemaFromNotation(json.notation, ProjectConfigurationHelper.getDataSchema());
 	},
-	getInput: (request: Request, guid: string): Input => {
+	getInput: (pageId: string, request: Request, guid: string): Input => {
 		const json: any = request.body;
 		
 		if (json == null) {
@@ -108,8 +108,8 @@ const RequestHelper = {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[guid.split("[")[0]];
-		const submitInfo = requestSubmitInfoDict[json.guid];
+		const paramInfo = requestParamInfoDict[pageId + guid.split("[")[0]];
+		const submitInfo = requestSubmitInfoDict[pageId + json.guid];
 		
 		if (submitInfo.fields.indexOf(guid.split("[")[0]) == -1) {
 			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
