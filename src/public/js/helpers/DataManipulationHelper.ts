@@ -222,7 +222,7 @@ const DataManipulationHelper = {
 			}
 		}
   },
-  getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}=window.data, inArray: boolean=false): any => {
+  getDataFromNotation: (notation: string, data: any=window.data, inArray: boolean=false): any => {
     if (!notation) {
       console.error("The notation is null, undefined or empty.");
 	  	alert("There is an error occured, please try again.");
@@ -230,11 +230,17 @@ const DataManipulationHelper = {
     }
     
     let splited = notation.split('.');
-    let current = {
-			keys: null,
-			columns: null,
-			relations: data
-		};
+    let current;
+		
+		if (data.keys && data.columns) {
+    	current = data;
+    } else {
+	    current = {
+				keys: null,
+				columns: null,
+				relations: data
+			};
+		}
 		
 		let shifted = splited.shift();
 		while (current && shifted) {

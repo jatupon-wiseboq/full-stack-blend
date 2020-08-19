@@ -3,13 +3,14 @@
 
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
-import {HierarchicalDataTable} from '../helpers/DataManipulationHelper.js';
+import {HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 declare let DataManipulationHelper: any;
 
 interface IBaseProps {
+	row: HierarchicalDataRow;
 	data: {[Identifier: string]: HierarchicalDataTable};
 }
 
@@ -18,6 +19,7 @@ interface IBaseState {
 }
 
 let DefaultBaseProps: any = {
+	row: null,
 	data: null
 };
 let DefaultBaseState: any = {
@@ -51,7 +53,9 @@ class Base extends React.Component {
       return [];
     }
     
-    if (this.state.data) {
+    if (this.props.row) {
+    	return DataManipulationHelper.getDataFromNotation(notation, this.props.row, inArray);
+    } else if (this.state.data) {
     	return DataManipulationHelper.getDataFromNotation(notation, this.state.data, inArray);
     } else if (this.props.data) {
     	return DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
