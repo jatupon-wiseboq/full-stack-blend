@@ -496,8 +496,15 @@ ${rootScript}`;
           composed += `- const ${(reactNamespace + '.' + reactClass).split('.').join('_')}_ = ${reactNamespace + '.' + reactClass};`
           lines.push(composed);
           
+          let _attributes = [];
+          if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
+          if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
+          if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
+          if (reactData) _attributes.push('data=' + _nodeData);
+          if (inheritingID) _attributes.push(`forward={${inheritingAttributes.join(', ')}}`);
+          
           composed = indent;
-          composed += '_' + (reactNamespace + '.' + reactClass).split('.').join('_') + '_(' + (reactData ? 'key="item_" + ' + dotNotationChar : '') + (reactID && !reactData ? ' ref="' + reactID + '" ' : '') + (reactID && reactData ? ' ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"' : '') + (reactData ? ' data=' + _nodeData : '') + (inheritingID ? ` forward={${inheritingAttributes.join(', ')}}` : '') + ')';
+          composed += '_' + (reactNamespace + '.' + reactClass).split('.').join('_') + '_(' + _attributes.join(', ') + ')';
           lines.push(composed);
         }
         
@@ -542,7 +549,7 @@ ${rootScript}`;
             attributes.splice(0, 0, 'style=Object.assign({}, this.props.forward && this.props.forward.styles || {})');
           }
           if (composed == indent) composed += 'div';
-          if (attributes.length != 0) composed += '(' + attributes.join(' ').replace(/___DATA___/g, _nodeData) + ')';
+          if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (!dangerouslySetInnerHTML) {
             lines.push(composed);
@@ -794,7 +801,7 @@ ${rootScript}`;
           if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
           if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
-          if (attributes.length != 0) composed += '(' + attributes.join(' ') + ')';
+          if (attributes.length != 0) composed += '(' + attributes.join(', ') + ')';
           
           lines.push(composed);
           
