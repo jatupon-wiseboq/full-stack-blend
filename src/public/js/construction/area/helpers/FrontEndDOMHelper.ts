@@ -500,7 +500,7 @@ ${rootScript}`;
           if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
-          if (reactData) _attributes.push('data=' + _nodeData);
+          if (reactData) _attributes.push('row=' + _nodeData);
           if (inheritingID) _attributes.push(`forward={${inheritingAttributes.join(', ')}}`);
           
           composed = indent;
