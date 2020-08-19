@@ -44,21 +44,21 @@ const RequestHelper = {
 			name: name
 		};
 	},
-	registerSubmit: (guid: string, action: string, fields: string[], options: any): void => {
-		requestSubmitInfoDict[guid] = {
+	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
+		requestSubmitInfoDict[pageId + guid] = {
 			action: action,
 			fields: fields,
 			options: options
 		};
 	},
-	getAction: (request: Request): ActionType => {
+	getAction: (pageId: string, request: Request): ActionType => {
 		const json: any = request.body;
 		
 		if (json == null) {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		const action = requestSubmitInfoDict[json.guid] && requestSubmitInfoDict[json.guid].action || null;
+		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
 		
 		switch (action) {
 			case "insert":
@@ -79,16 +79,16 @@ const RequestHelper = {
 				return null;
 		}
 	},
-	getOptions: (request: Request): any => {
+	getOptions: (pageId: string, request: Request): any => {
 		const json: any = request.body;
 		
 		if (json == null) {
 			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
 		}
 		
-		return requestSubmitInfoDict[json.guid].options;
+		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
-	getSchema: (request: Request): DataTableSchema => {
+	getSchema: (pageId: string, request: Request): DataTableSchema => {
 		const json: any = request.body;
 		
 		if (json == null) {
@@ -97,7 +97,7 @@ const RequestHelper = {
 		
 		return SchemaHelper.getDataTableSchemaFromNotation(json.notation, ProjectConfigurationHelper.getDataSchema());
 	},
-	getInput: (request: Request, guid: string): Input => {
+	getInput: (pageId: string, request: Request, guid: string): Input => {
 		const json: any = request.body;
 		
 		if (json == null) {
@@ -109,7 +109,7 @@ const RequestHelper = {
 		}
 		
 		const paramInfo = requestParamInfoDict[guid.split("[")[0]];
-		const submitInfo = requestSubmitInfoDict[json.guid];
+		const submitInfo = requestSubmitInfoDict[pageId + json.guid];
 		
 		if (submitInfo.fields.indexOf(guid.split("[")[0]) == -1) {
 			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
