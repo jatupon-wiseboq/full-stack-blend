@@ -17,7 +17,7 @@ const requestParamInfoDict: any = {};
 const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
-	registerInput: (pageId: string, guid: string, target: string, group: string, name: string): void => {
+	registerInput: (guid: string, target: string, group: string, name: string): void => {
 		if (!guid || !target || !group || !name) throw new Error("There was an error trying to retrieve input info (guid, target, group, or name is empty).");
 		
 		let _target: SourceType;
@@ -38,7 +38,7 @@ const RequestHelper = {
 				throw new Error("There was an error trying to retrieve input info (target value isn't in the predefined set).");
 		}
 		
-		requestParamInfoDict[pageId + guid] = {
+		requestParamInfoDict[guid] = {
 			target: _target,
 			group: group,
 			name: name
@@ -108,7 +108,7 @@ const RequestHelper = {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[pageId + guid.split("[")[0]];
+		const paramInfo = requestParamInfoDict[guid.split("[")[0]];
 		const submitInfo = requestSubmitInfoDict[pageId + json.guid];
 		
 		if (submitInfo.fields.indexOf(guid.split("[")[0]) == -1) {
