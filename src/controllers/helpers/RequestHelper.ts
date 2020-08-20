@@ -3,7 +3,7 @@
 
 import {Request} from "express";
 import {SourceType, ActionType, Input} from "./DatabaseHelper.js";
-import {DataTableSchema, SchemaHelper} from "./SchemaHelper.js";
+import {DataTableSchema, DataSchema, SchemaHelper} from "./SchemaHelper.js";
 import {ValidationHelper} from "./ValidationHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 
@@ -132,6 +132,38 @@ const RequestHelper = {
 		}
 		
 		return input;
+	},
+	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
+		let results = [];
+		
+		for (let key in values) {
+			if (values.hasOwnProperty(key)) {
+				let splited = key.split('[')[0].split('.');
+				let name = splited.pop() || null;
+				let group = splited.pop() || null;
+				let premise = splited.pop() || null;
+				
+				if (name == null || group == null) throw new Error("There was an error trying to create a list of inputs (${key}).");
+				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
+				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
+				
+				const input: Input = {
+				  target: data.tables[group].source,
+		  		group: group,
+		  		name: name,
+		  		value: values[key],
+		  		guid: key,
+		  		premise: premise,
+		  		validation: null
+				};
+				
+				if (input != null) {
+					results.push(input);
+				}
+			}
+		}
+		
+		return results;
 	}
 };
 
