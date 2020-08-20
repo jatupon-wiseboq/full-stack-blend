@@ -873,11 +873,13 @@ ${rootScript}`;
     
     const splited = notation.split(".");
     let shifted: string = splited.shift();
+    if (shifted) shifted = shifted.split("[")[0];
     let current: any = null;
     
     do {
       current = FrontEndDOMHelper.getDataTableSchemaFromKey(shifted, current, data);
       shifted = splited.shift();
+      if (shifted) shifted = shifted.split("[")[0];
     } while (current && shifted);
     
     return (current == null);
