@@ -116,14 +116,17 @@ const RequestHelper = {
 		}
 		
 		const splited = paramInfo.group.split(".");
+		splited.pop();
+		splited.pop();
+		const premise = splited.join(".") || null;
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: splited.pop(),
+  		group: paramInfo.group,
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
-  		premise: splited.pop() || null,
+  		premise: premise || null,
   		validation: null
 		};
 		
@@ -134,18 +137,18 @@ const RequestHelper = {
 		return input;
 	},
 	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
-		let results = [];
+		const results = [];
 		
-		for (let key in values) {
+		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
-				let splited = key.split('[')[0].split('.');
-				let name = splited.pop() || null;
-				let group = splited.pop() || null;
-				let premise = splited.pop() || null;
+				const splited = key.split("[")[0].split(".");
+				const name = splited.pop() || null;
+				const group = splited.pop() || null;
+				const premise = splited.join(".") || null;
 				
 				if (name == null || group == null) throw new Error("There was an error trying to create a list of inputs (${key}).");
 				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
-				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
+				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(", ")}).`);
 				
 				const input: Input = {
 				  target: data.tables[group].source,
