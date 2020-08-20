@@ -796,7 +796,7 @@ const DatabaseHelper = {
 					
 					await map.update(data, {where: hash, transaction: transaction});
 					
-					const record = await map.findOne({where: hash});
+					const record = await map.findOne({where: hash, transaction: transaction});
 				  const result = {
 				    keys: {},
 				    columns: {},
@@ -1125,7 +1125,7 @@ const DatabaseHelper = {
 					
 					if (await !PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 					
-					const record = await map.findOne({where: hash});
+					const record = await map.findOne({where: hash, transaction: transaction});
 					await record.destroy({force: true, transaction: transaction});
 				  
 				  const result = {
