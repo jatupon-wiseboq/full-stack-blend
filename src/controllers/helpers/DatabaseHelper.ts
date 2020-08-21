@@ -150,9 +150,14 @@ const DatabaseHelper = {
       if (data.length == 0) {
         return true;
       } else {
+      	const schemata = [];
+      	
         for (const key in schema.relations) {
           if (schema.relations.hasOwnProperty(key)) {
-            for (const input of data) {
+            const length = data.length;
+            for (let i=0; i<length; i++) {
+            	const input = data[i];
+            	
               if (input.group == schema.relations[key].targetGroup) {
                 data.push({
                   target: ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup].source,
@@ -163,6 +168,7 @@ const DatabaseHelper = {
   								premise: null,
                   validation: null
                 });
+                schemata.push(ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup]);
               }
             }
           }
@@ -170,11 +176,9 @@ const DatabaseHelper = {
         
         data = DatabaseHelper.distinct(data);
         
-        for (const key in schema.relations) {
-          if (schema.relations.hasOwnProperty(key)) {
-           	if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup])) {
-            	return true;
-            }
+        for (const schema of schemata) {
+         	if (DatabaseHelper.satisfy(data, action, schema)) {
+          	return true;
           }
         }
         
