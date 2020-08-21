@@ -115,7 +115,6 @@ const DEFAULTS = {
       } */
       reject(new Error("Not Implemented Error"));
     });
-    return ;
   }
   
   protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
@@ -128,7 +127,6 @@ const DEFAULTS = {
       } */
       reject(new Error("Not Implemented Error"));
     });
-    return ;
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
