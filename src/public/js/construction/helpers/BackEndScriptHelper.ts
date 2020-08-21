@@ -65,7 +65,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -76,7 +76,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -87,7 +87,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -100,7 +100,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -113,7 +113,20 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
+    });
+    return ;
+  }
+  
+  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+    return new Promise(async (resolve, reject) => {
+    	/* Uncomment to allow update action of any button on the page. */
+      /* try {
+        resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
+      } catch(error) {
+        reject(error);
+      } */
+      reject(new Error("Not Implemented Error"));
     });
     return ;
   }
@@ -126,7 +139,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -138,7 +151,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }
   
@@ -150,7 +163,7 @@ const DEFAULTS = {
       } catch(error) {
         reject(error);
       } */
-      reject(new Error("NotImplementedError"));
+      reject(new Error("Not Implemented Error"));
     });
   }`,
   ClassEnd: `

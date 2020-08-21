@@ -21,6 +21,7 @@ let options = {
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
     "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
     "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
+    "data-wizard-type-3": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_3,
     "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
     "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
     "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
@@ -43,7 +44,8 @@ let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
     "data-source-type-2": "internal-fsb-data-source-type",
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
-    "data-wizard-type-2": "internal-fsb-data-wizard-type"
+    "data-wizard-type-2": "internal-fsb-data-wizard-type",
+    "data-wizard-type-3": "internal-fsb-data-wizard-type"
 }
 
 const Mode = Object.freeze({
