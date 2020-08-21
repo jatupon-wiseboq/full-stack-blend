@@ -193,6 +193,7 @@ import {Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base.js';
 enum ActionType {
   Insert,
   Update,
+  Upsert,
   Delete,
   Retrieve,
   Popup,
