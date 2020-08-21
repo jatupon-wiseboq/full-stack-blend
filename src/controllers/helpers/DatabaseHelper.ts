@@ -445,11 +445,15 @@ const DatabaseHelper = {
 			for (const key in baseSchema.relations) {
 	    	if (baseSchema.relations.hasOwnProperty(key)) {
 	      	const _data = [...data];
+	      	const _appended = [];
 	      	const _hash = {};
+	      	const _currentGroup = baseSchema.relations[key].targetGroup;
+	      	const _currentName = baseSchema.relations[key].targetEntity;
+	      	const _schema = ProjectConfigurationHelper.getDataSchema().tables[_currentGroup];
 	      	
 	      	for (const input of data) {
 	      		if (input.premise) continue;
-            if (input.group == baseSchema.relations[key].targetGroup) {
+            if (input.group == _currentGroup) {
             	const splited = input.guid.split("[");
             	let index = -1;
             	if (splited.length > 1) {
@@ -459,19 +463,26 @@ const DatabaseHelper = {
             	if (_hash[index]) continue;
             	_hash[index] = true;
             
-              _data.push({
-                target: ProjectConfigurationHelper.getDataSchema().tables[baseSchema.relations[key].targetGroup].source,
-                group: baseSchema.relations[key].targetGroup,
-                name: baseSchema.relations[key].targetEntity,
+            	let forwarding = {
+                target: _schema.source,
+                group: _currentGroup,
+                name: _currentName,
                 value: "123",
                 guid: (index == -1) ? "" : "[" + index + "]",
 								premise: null,
                 validation: null
-              });
+              };
+            
+              _data.push(forwarding);
+              _appended.push(forwarding);
             }
           }
   	      
-  	      if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
+  	      if (DatabaseHelper.satisfy(_data, action, _schema)) {
+  	      	for (const item of _appended) {
+  	      		data.push(item);
+  	      	}
+  	      	
   	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table);
   	      }
   	    }
@@ -764,7 +775,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							const record = await map.upsert(hash, {transaction: transaction});
+							const record = (await map.upsert(hash, {transaction: transaction}))[0];
 							
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
