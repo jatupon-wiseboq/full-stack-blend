@@ -116,13 +116,12 @@ const RequestHelper = {
 		}
 		
 		const splited = paramInfo.group.split(".");
-		splited.pop();
-		splited.pop();
+		const group = splited.pop();
 		const premise = splited.join(".") || null;
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: paramInfo.group,
+  		group: group,
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
