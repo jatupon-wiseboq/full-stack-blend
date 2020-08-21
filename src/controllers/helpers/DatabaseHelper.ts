@@ -87,6 +87,8 @@ const DatabaseHelper = {
     return results;
   },
   satisfy: (data: Input[], action: ActionType, schema: DataTableSchema): boolean => {
+  	if (data.length == 0) return false;
+  	
   	data = CodeHelper.clone(data);
     data = [...DatabaseHelper.distinct(data)];
     
@@ -181,8 +183,6 @@ const DatabaseHelper = {
     }
   },
   getRows: (data: Input[], action: ActionType, schema: DataTableSchema): HierarchicalDataRow[] => {
-  	console.log("getRows", data, action, schema);
-  	
   	const results: HierarchicalDataRow[] = [];
 	  let found: boolean = false;
 	  
@@ -367,11 +367,10 @@ const DatabaseHelper = {
 				    for (const item of items) {
 				   		data.splice(data.indexOf(item), 1);
 				    }
-		        break;
 		      }
 		    }
 	    }
-	  } else {
+	  } else if (DatabaseHelper.satisfy(data, action, baseSchema)) {
 	  	const current = {
 	      source: baseSchema.source,
 	      group: baseSchema.group,
@@ -392,7 +391,7 @@ const DatabaseHelper = {
 	   		data.splice(data.indexOf(item), 1);
 	    }
 	  }
-	    
+	  
     for (const table of tables) {
 			results[table.group] = table;
 			baseSchema = ProjectConfigurationHelper.getDataSchema().tables[table.group];
