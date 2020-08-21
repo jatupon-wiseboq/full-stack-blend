@@ -483,7 +483,7 @@ const DatabaseHelper = {
   	      		data.push(item);
   	      	}
   	      	
-  	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table);
+  	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table);
   	      }
   	    }
 	    }
@@ -676,7 +676,7 @@ const DatabaseHelper = {
 									  rows: []
 								  };
 								
-									if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
+									if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session);
 									else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 								}
 							}
@@ -976,8 +976,9 @@ const DatabaseHelper = {
 										group: nextSchema.group,
 									  rows: []
 								  };
-								
-									await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
+									
+									if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session);
+									else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session);
 								}
 							}
 						
