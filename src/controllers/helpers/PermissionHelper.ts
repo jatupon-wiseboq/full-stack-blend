@@ -19,7 +19,7 @@ interface Permission {
 
 const PermissionHelper = {
 	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		if (action == ActionType.Insert) {
+		if (action == ActionType.Insert || action == ActionType.Upsert) {
 			if (schema.modifyingPermission && schema.modifyingPermission.mode == "relation" && schema.modifyingPermission.relationModeSourceGroup != schema.group) {
 				if (await !PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) return false;
 			}

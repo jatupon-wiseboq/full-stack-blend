@@ -65,6 +65,8 @@ const RequestHelper = {
 				return ActionType.Insert;
 			case "update":
 				return ActionType.Update;
+			case "upsert":
+				return ActionType.Upsert;
 			case "delete":
 				return ActionType.Delete;
 			case "retrieve":
