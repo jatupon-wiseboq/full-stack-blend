@@ -3,16 +3,13 @@
 
 import {CodeHelper} from "./CodeHelper.js";
 import {DataTableSchema} from "./SchemaHelper.js";
-import {ActionType, HierarchicalDataRow} from "./DatabaseHelper";
+import {ActionType, HierarchicalDataRow} from "./DatabaseHelper.js";
+import {socket} from "../../app.js";
 import {Md5} from "md5-typescript";
 
 const notificationInfos = {};
-let socket: any = null;
 
 const NotificationHelper = {
-	init: (_socket: any) => {
-		socket = _socket;
-	},
   getTableUpdatingIdentity: (schema: DataTableSchema, query: any): string => {
   	notificationInfos[schema.group] = notificationInfos[schema.group] || {};
   	

@@ -1,6 +1,6 @@
 import errorHandler from "errorhandler";
 
-import {app, socket} from "./app";
+import {app} from "./app";
 import {NotificationHelper} from "./controllers/helpers/NotificationHelper.js";
 
 /**
@@ -18,8 +18,6 @@ const server = app.listen(app.get("port"), () => {
     app.get("env")
   );
   console.log("  Press CTRL-C to stop\n");
-
-	NotificationHelper.init(socket);
 }); 
 
 export default server;
