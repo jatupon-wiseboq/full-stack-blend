@@ -49,12 +49,11 @@ const DEFAULTS = {
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      /* try {
+      try {
         resolve(await super.get(data));
       } catch(error) {
         reject(error);
-      } */
-      resolve({});
+      }
     });
   }
   
@@ -93,75 +92,64 @@ const DEFAULTS = {
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow insert action of any button on the page. */
-      /* try {
+      try {
       	let options = RequestHelper.getOptions(this.pageId, this.request);
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow update action of any button on the page. */
-      /* try {
+    	try {
       	let options = RequestHelper.getOptions(this.pageId, this.request);
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }
   
   protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow update action of any button on the page. */
-      /* try {
+    	try {
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow delete action of any button on the page. */
-      /* try {
+    	try {
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow retrieve action of any button on the page. */
-      /* try {
+    	try {
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session));
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-    	/* Uncomment to allow navigate action of any button on the page. */
-      /* try {
-        resolve('/');
+    	try {
+      	throw new Error("Not Implemented Error");
+        // resolve('/');
       } catch(error) {
         reject(error);
-      } */
-      reject(new Error("Not Implemented Error"));
+      }
     });
   }`,
   ClassEnd: `
