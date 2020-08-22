@@ -254,10 +254,8 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Upsert:
-		          if (schema.keys[key].fieldType != FieldType.AutoNumber && (row.keys[key] === undefined || row.keys[key] === null)) {
-		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
-		          } else {
-		            switch (schema.keys[key].fieldType) {
+			      	if (row.keys[key]) {
+			          switch (schema.keys[key].fieldType) {
 		              case FieldType.Number:
 		                if (isNaN(parseFloat(row.keys[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
@@ -324,24 +322,20 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Upsert:
-		          if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
-		            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
-		          } else {
-		          	if (row.columns[key]) {
-			            switch (schema.columns[key].fieldType) {
-			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.columns[key].toString())))
-			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key] = parseFloat(row.columns[key].toString());
-			                break;
-			              case FieldType.Boolean:
-			                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
-			                break;
-			              case FieldType.String:
-			                row.columns[key] = row.columns[key].toString();
-			                break;
-			            }
-			          }
+		          if (row.columns[key]) {
+		            switch (schema.columns[key].fieldType) {
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(row.columns[key].toString())))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+		                row.columns[key] = parseFloat(row.columns[key].toString());
+		                break;
+		              case FieldType.Boolean:
+		                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+		                break;
+		              case FieldType.String:
+		                row.columns[key] = row.columns[key].toString();
+		                break;
+		            }
 		          }
 			        break;
 			      case ActionType.Update:
