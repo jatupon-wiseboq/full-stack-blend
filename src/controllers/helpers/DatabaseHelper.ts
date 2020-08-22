@@ -108,7 +108,6 @@ const DatabaseHelper = {
     
     switch (action) {
       case ActionType.Insert:
-      case ActionType.Upsert:
         for (const key in schema.columns) {
           if (schema.columns.hasOwnProperty(key)) {
             if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required) {
@@ -124,6 +123,7 @@ const DatabaseHelper = {
           }
         }
         break;
+      case ActionType.Upsert:
       case ActionType.Update:
       case ActionType.Delete:
         for (const key in schema.keys) {
