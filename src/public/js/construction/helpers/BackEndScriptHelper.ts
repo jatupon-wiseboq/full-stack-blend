@@ -135,7 +135,8 @@ const DEFAULTS = {
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
     	try {
-        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session));
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
       }
@@ -198,6 +199,7 @@ enum ValidationInfo {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};

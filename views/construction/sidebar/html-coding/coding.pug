@@ -62,6 +62,11 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Cross Relation Action
     .section-body(internal-fsb-for="internal-fsb-data-wizard-type:insert,internal-fsb-data-wizard-type:update")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-cross-operation', 'internal-fsb-data-wizard-cross-operation']}")
+    div(internal-fsb-for="hasParentReactComponent")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        | Real-time Update
+      .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-real-time-update', 'internal-fsb-data-wizard-real-time-update']}")
     .section-hr
   div
     .section-container(internal-fsb-for="hasParentReactComponent")

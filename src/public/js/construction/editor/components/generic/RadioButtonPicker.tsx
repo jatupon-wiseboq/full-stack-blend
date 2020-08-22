@@ -26,6 +26,7 @@ let options = {
     "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
     "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
     "data-wizard-cross-operation": CONSTANTS.CROSS_OPERATION_OPTIONS,
+    "data-wizard-real-time-update": DATA_WIZARD_REAL_TIME_UPDATE,
     "data-value-source": CONSTANTS.DATA_VALUE_SOURCE_OPTIONS,
     
     // Back-End Options
