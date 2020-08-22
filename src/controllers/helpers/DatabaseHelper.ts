@@ -3,6 +3,7 @@
 
 import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {CodeHelper} from "./CodeHelper.js";
+import {NotificationHelper} from "./NotificationHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
 import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
@@ -39,6 +40,7 @@ interface HierarchicalDataTable {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -463,7 +465,7 @@ const DatabaseHelper = {
             	if (_hash[index]) continue;
             	_hash[index] = true;
             
-            	let forwarding = {
+            	const forwarding = {
                 target: _schema.source,
                 group: _currentGroup,
                 name: _currentName,
@@ -649,6 +651,8 @@ const DatabaseHelper = {
 							
 							results.push(result);
 							
+							NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
+							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -804,6 +808,8 @@ const DatabaseHelper = {
 							
 							results.push(result);
 							
+							NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
+							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -950,6 +956,8 @@ const DatabaseHelper = {
 						
 							results.push(result);
 							
+							NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
+							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -1020,7 +1028,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates: boolean=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		  	if (data != null) {
@@ -1032,7 +1040,7 @@ const DatabaseHelper = {
 		  		  	const input = list[key];
 		  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		  		  	
-		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session);
+		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session, notifyUpdates);
 		  		  }
 	  		  }
 			  	
@@ -1109,7 +1117,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null) => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false) => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1161,7 +1169,8 @@ const DatabaseHelper = {
 							results[baseSchema.group] = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
-							  rows: rows
+							  rows: rows,
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, hash) : null
 							};
 							
 							for (const _row of rows) {
@@ -1186,7 +1195,7 @@ const DatabaseHelper = {
 							  			}
 							  		}
 									  
-									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session);
+									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates);
 							  	}
 							  }
 							}
@@ -1302,6 +1311,8 @@ const DatabaseHelper = {
 							}
 						
 							results.push(result);
+							
+							NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {

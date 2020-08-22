@@ -27,6 +27,7 @@
         "watch-debug": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"npm run watch-ts\" \"npm run serve-debug\""
     },
     "dependencies": {
+        "@types/socket.io": "^2.1.11",
         "async": "^3.1.0",
         "bcrypt-nodejs": "^0.0.3",
         "bluebird": "^3.5.5",
@@ -43,6 +44,7 @@
         "fbgraph": "^1.4.4",
         "lodash": "^4.17.15",
         "lusca": "^1.6.1",
+        "md5-typescript": "^1.0.5",
         "mongodb": "^3.5.9",
         "mongoose": "^5.7.5",
         "mysql2": "^2.1.0",
@@ -54,6 +56,7 @@
         "redis": "^3.0.2",
         "sequelize": "^6.3.3",
         "sidekiq": "^1.1.1",
+        "socket.io": "^2.3.0",
         "winston": "^3.2.1"
     },
     "devDependencies": {

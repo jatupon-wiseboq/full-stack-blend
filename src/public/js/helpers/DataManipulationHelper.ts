@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {RequestHelper} from './RequestHelper.js';
+import {NotificationHelper} from './NotificationHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
 import {EventHelper} from './EventHelper.js';
 
@@ -17,6 +18,7 @@ interface HierarchicalDataTable {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -50,6 +52,7 @@ const DataManipulationHelper = {
   	if (fieldManipulatorsInfoDict[guid]) {
   		const params = {};
   		const fields = fieldManipulatorsInfoDict[guid];
+  		const action = actionManipulatorsInfoDict[guid];
   		const options = optionsManipulatorsInfoDict[guid];
   		
   		let current = EventHelper.getOriginalElement(event);

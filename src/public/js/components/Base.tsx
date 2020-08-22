@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {CodeHelper} from '../helpers/CodeHelper.js';
+import {NotificationHelper} from '../helpers/NotificationHelper.js';
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper.js';
 
@@ -39,11 +40,34 @@ class Base extends React.Component {
   constructor(props) {
     super(props);
     controls.push(this);
+    
+    if (props.data) {
+    	NotificationHelper.registerTableUpdates(props.data);
+    }
+    
+    window.addEventListener('tableUpdated', (() => {
+    	this.forceUpdate();
+    }).bind(this));
   }
   
   public update(data: any) {
+  	const previous = this.state.data || this.props.data || {};
+  	const next = Object.assign({}, previous, data || {})
+  	
+  	const deregistering = {};
+  	for (let key in previous) {
+  		if (next.hasOwnProperty(key)) {
+  			deregistering[key] = previous[key];
+  		}
+  	}
+  	
+  	NotificationHelper.unregisterTableUpdates(deregistering);
+  	if (data) {
+  		NotificationHelper.registerTableUpdates(data);
+  	}
+  	
     this.setState({
-      data: Object.assign({}, this.state.data || this.props.data || {}, data || {})
+      data: next
     });
   }
   
@@ -68,6 +92,8 @@ class Base extends React.Component {
     let data = this.getDataFromNotation(notation);
     let {action, options} = DataManipulationHelper.getInfo(guid);
     
+    if (data == null) return;
+    
     switch (action) {
       case 'insert':
         for (let result of results) {
@@ -76,16 +102,62 @@ class Base extends React.Component {
         break;
       case 'update':
         for (let result of results) {
-          data = [...data].map((row) => {
-            for (let key in row.keys) {
-              if (row.keys.hasOwnProperty(key)) {
+        	for (let row of data) {
+        		let found = true;
+        		
+        		for (let key in result.keys) {
+              if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                  return row;
+                  found = false;
+                  break;
                 }
               }
             }
-            return result;
-          });
+            
+            if (found) {
+            	for (let key in result.keys) {
+	              if (result.keys.hasOwnProperty(key)) {
+	                row.keys[key] = result.keys[key];
+	              }
+	            }
+            	for (let key in result.columns) {
+	              if (result.columns.hasOwnProperty(key)) {
+	                row.columns[key] = result.columns[key];
+	              }
+	            }
+            }
+        	}
+        }
+        break;
+      case 'upsert':
+        for (let result of results) {
+        	for (let row of data) {
+        		let found = true;
+        		
+        		for (let key in result.keys) {
+              if (result.keys.hasOwnProperty(key)) {
+                if (row.keys[key] != result.keys[key]) {
+                  found = false;
+                  break;
+                }
+              }
+            }
+            
+            if (found) {
+            	for (let key in result.keys) {
+	              if (result.keys.hasOwnProperty(key)) {
+	                row.keys[key] = result.keys[key];
+	              }
+	            }
+            	for (let key in result.columns) {
+	              if (result.columns.hasOwnProperty(key)) {
+	                row.columns[key] = result.columns[key];
+	              }
+	            }
+            } else {
+            	data.push(result);
+            }
+        	}
         }
         break;
       case 'delete':
@@ -105,7 +177,7 @@ class Base extends React.Component {
         }
         break;
       case 'retrieve':
-        update(results);
+        this.update(results);
         break;
       case 'popup':
         let container = document.createElement('div');

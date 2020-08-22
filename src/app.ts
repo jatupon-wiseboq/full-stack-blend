@@ -1,4 +1,5 @@
 import express from "express";
+import secure from "express-force-https";
 import compression from "compression";  // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
@@ -9,12 +10,14 @@ import passport from "passport";
 import bluebird from "bluebird";
 import cors from "cors";
 import fs from "fs";
+import * as SocketIO from "socket.io";
 
 // Create Express server
 const app = express();
+let socket = null;
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-  const https = require('https');
+  const https = require("https");
   
   // SSL
   const sslkey = fs.readFileSync("localhost.key");
@@ -24,17 +27,49 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
       cert: sslcert
   };
   
-  https.createServer(options, app).listen(443);
+  const server = https.createServer(options, app).listen(443);
+	
+	socket = SocketIO.listen(server);
+} else {
+	const http = require("http");
+	
+  const server = http.createServer(app).listen(process.env.PORT || 8000);
+	
+	socket = SocketIO.listen(server);
+}
+
+if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
+	// Use Flexible SSL on Cloudflare instead.
+	//
+	// app.use(secure);
+	// app.enable("trust proxy");
 }
 
 // Express configuration
 //
+if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
+  app.set("trust proxy", 1);
+  app.use(session({
+    secret: "&E7gLUZYMFJzzDNmXMXZWyiXDaqN7igA",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true }
+  }));
+} else {
+  app.use(session({
+    secret: "&E7gLUZYMFJzzDNmXMXZWyiXDaqN7igA",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {}
+  }));
+}
+
 app.set("port", process.env.PORT || 8000);
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json({limit: '50mb'}));
-app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
 	app.use(lusca.xframe("SAMEORIGIN"));
@@ -55,7 +90,7 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 // Cache configuration
 // 
 app.use(
-    express.static(path.join(__dirname, "public"), { maxAge: 3600000 })
+    express.static(path.join(__dirname, "public"), { maxAge: 0 })
 );
 
 // For Endpoint Testing of StackBlend Editor
@@ -71,7 +106,7 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
     endpoint.addRecentError(err);
     next();
   });
-  process.on('uncaughtException', (err) => {
+  process.on("uncaughtException", (err) => {
   	endpoint.addRecentError(err);
 	});
 }
@@ -86,4 +121,4 @@ try {
 	endpoint.addRecentError(error);
 }
 
-export default app;
+export {app, socket};
