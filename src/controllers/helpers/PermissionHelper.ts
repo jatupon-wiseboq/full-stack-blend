@@ -5,6 +5,9 @@ import {ActionType} from "./DatabaseHelper.js";
 import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from "./SchemaHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 import {RelationalDatabaseClient} from "./ConnectionHelper.js";
+import {Md5} from "md5-typescript";
+
+const cachedPermissions = {};
 
 interface Permission {
   mode: string;
@@ -48,12 +51,13 @@ const PermissionHelper = {
 		
 		switch (permission.mode) {
 			case "relation":
+				if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
+				
 				const shortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
 				let value;
 				
 				switch (permission.relationMatchingMode) {
 					case "session":
-						if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
 						value = session[permission.relationMatchingSessionName];
 						break;
 					default:
@@ -88,13 +92,18 @@ const PermissionHelper = {
 					
 					const COMMAND = `SELECT * FROM ${permission.relationModeSourceGroup} ${INNER_JOIN.join(" ")} WHERE ${WHERE_CLAUSE.join(" AND ")} LIMIT 1`;
       		console.log(COMMAND);
+      		
+      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);
+      		if (cachedPermissions[cachedPermissionMD5Key]) return cachedPermissions[cachedPermissionMD5Key];
 					
 					RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
             if (error) {
               reject(error);
       			} else if (results.length > 0) {
+      				cachedPermissions[cachedPermissionMD5Key] = true;
       			  resolve(true);
       			} else {
+      				cachedPermissions[cachedPermissionMD5Key] = false;
       			  resolve(false);
       			}
       		}).bind(this));
