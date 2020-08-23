@@ -701,6 +701,8 @@ var ManipulationHelper = {
           }
       
           EditorHelper.deselect();
+          
+    			LayoutHelper.invalidate();
         }
         break;
       case 9:

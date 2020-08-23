@@ -46,7 +46,8 @@ import './components/content/PopupManager.js';
 import './components/content/EndpointManager.js';
 import './components/content/SchemaManager.js';
 
-import './components/animation/Animations.js';
+import './components/animation/AnimationPicker.js';
+import './components/animation/TimelineManager.js';
 
 //import GitHub from 'github-api';
 

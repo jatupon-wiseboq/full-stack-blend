@@ -28,7 +28,7 @@ Object.assign(ExtendedDefaultProps, {
     watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
-class Animations extends Base<Props, State> {
+class AnimationPicker extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
 
@@ -131,6 +131,6 @@ class Animations extends Base<Props, State> {
     }
 }
 
-DeclarationHelper.declare('Components.Animations', Animations);
+DeclarationHelper.declare('Components.AnimationPicker', AnimationPicker);
 
-export {Props, State, Animations};
+export {Props, State, AnimationPicker};

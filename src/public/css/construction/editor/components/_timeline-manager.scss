@@ -1,0 +1,97 @@
+// Timeline Manager
+// -------------------------
+.timeline-manager-container {
+  display: block;
+  width: 100%;
+  height: 100%;
+  
+	.tree-container {
+    height: 100%;
+		border: none;
+		height: auto;
+		padding: 2px 0 2px 2px;
+		overflow: hidden;
+	}
+		
+	.treenode-container {
+		cursor: pointer;
+		
+		.treenode-body {
+			padding: 0 3px;
+			background-color: #fbfbfb;
+			border: solid 1px #cccccc;
+			position: relative;
+		
+			.form-check {
+				padding: 0;
+				
+				input[type="checkbox"] {
+					display: none;
+				}
+			}
+			
+			.treenode-title {
+				padding-left: 5px;
+				font-size: 12.5px;
+			}
+		}
+		
+		&.selected {
+			cursor: move;
+			
+			.treenode-body {
+				background-color: rgba(0, 144, 255, 0.75);
+				border-color: rgba(0, 144, 255, 1.0);
+				color: #ffffff;
+			}
+		}
+		
+		&.dragging {
+			pointer-events: none;
+			
+			.treenode-body {
+				background-color: transparent;
+				color: transparent;
+				border: dashed 1px #999999;
+			}
+		}
+		
+		&.insert-top {
+			.treenode-body::before {
+				content: '';
+				display: block;
+				position: absolute;
+				top: -3.5px;
+				left: -4px;
+				right: 0;
+				z-index: 100;
+				height: 5px;
+				background-color: rgba(0, 200, 255, 1.0);
+				flex: 0 0 100%;
+			}
+		}
+		
+		&.insert-bottom {
+			.treenode-body::after {
+				content: '';
+				display: block;
+				position: absolute;
+				bottom: -3.5px;
+				left: -4px;
+				right: 0;
+				z-index: 100;
+				height: 5px;
+				background-color: rgba(0, 200, 255, 1.0);
+				flex: 0 0 100%;
+			}
+		}
+	}
+	
+	&.dragger {
+		position: absolute;
+		left: 0;
+		top: 0;
+		z-index: #{$maximum-z-index - 100};
+		opacity: 0.5;
+	}
+}

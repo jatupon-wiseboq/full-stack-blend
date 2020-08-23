@@ -154,9 +154,9 @@ class ReactEventBinder extends Base<Props, State> {
 			                        <div className="section-subtitle">Binding</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-subtitle">Add Tracks</div>
-			                        <div className="section-body"><FullStackBlend.Components.Animations/></div>
+			                        <div className="section-body"><FullStackBlend.Components.AnimationPicker/></div>
 			                        <div className="section-subtitle">Remove Tracks</div>
-			                        <div className="section-body"><FullStackBlend.Components.Animations/></div>
+			                        <div className="section-body"><FullStackBlend.Components.AnimationPicker/></div>
 			                        <div className="section-subtitle">Remove Tracks When Finish</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-reset": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
