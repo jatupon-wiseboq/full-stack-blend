@@ -67,6 +67,10 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
         | Real-time Update
       .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-real-time-update', 'internal-fsb-data-wizard-real-time-update']}")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        | Retrieve Into
+      .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-retrieve-into'], inline: true, button: false}")
     .section-hr
   div
     .section-container(internal-fsb-for="hasParentReactComponent")

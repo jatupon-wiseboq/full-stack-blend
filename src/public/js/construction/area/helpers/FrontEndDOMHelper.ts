@@ -164,6 +164,7 @@ ${rootScript}`;
         let submitType = null;
         let submitCrossType = null;
         let realTimeUpdate = null;
+        let retrieveInto = null;
         let customEvents = [];
         
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
@@ -343,6 +344,9 @@ ${rootScript}`;
             case 'internal-fsb-data-wizard-real-time-update':
             	if (!!attribute.value) realTimeUpdate = attribute.value;
             	break;
+            case 'internal-fsb-data-wizard-retrieve-into':
+            	if (!!attribute.value) retrieveInto = attribute.value;
+            	break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               break;
@@ -395,7 +399,7 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}});`);
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
