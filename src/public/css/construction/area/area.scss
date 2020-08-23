@@ -58,12 +58,6 @@ html.internal-fsb-guide-on {
     }
   }
   
-  [internal-fsb-class="FlowLayout"],
-  [internal-fsb-class="AbsoluteLayout"],
-  [internal-fsb-class="Rectangle"] {
-    padding: 1px;
-  }
-  
   [internal-fsb-inheriting] {
     > :first-child {
       pointer-events: none;
@@ -183,6 +177,9 @@ body.internal-fsb-mode-coding {
   .internal-fsb-cursor {
     display: none;
   }
+}
+.internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
+	height: 20px;
 }
 
 @include keyframe(animation-blink) {
@@ -438,4 +435,23 @@ input[type='radio'], input[type='checkbox'] {
 
 .internal-fsb-dragging-handle {
   cursor: move;
+}
+
+.internal-fsb-inheriting-element[internal-fsb-class="Iframe"],
+.internal-fsb-inheriting-element[internal-fsb-class="Textbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="Select"],
+.internal-fsb-inheriting-element[internal-fsb-class="Radio"],
+.internal-fsb-inheriting-element[internal-fsb-class="Checkbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="File"],
+.internal-fsb-inheriting-element[internal-fsb-class="Image"],
+.internal-fsb-inheriting-element[internal-fsb-class="Video"],
+.internal-fsb-element[internal-fsb-class="Iframe"],
+.internal-fsb-element[internal-fsb-class="Textbox"],
+.internal-fsb-element[internal-fsb-class="Select"],
+.internal-fsb-element[internal-fsb-class="Radio"],
+.internal-fsb-element[internal-fsb-class="Checkbox"],
+.internal-fsb-element[internal-fsb-class="File"],
+.internal-fsb-element[internal-fsb-class="Image"],
+.internal-fsb-element[internal-fsb-class="Video"] {
+ 	padding: 0px;
 }

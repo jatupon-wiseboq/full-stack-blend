@@ -17,7 +17,6 @@ const DEFAULTS = {
 //
 `,
   ClassBegin: `
-  
   // Declare class variables and functions here:
   //
   protected validate(data: Input[]): void {
@@ -60,38 +59,42 @@ const DEFAULTS = {
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.post(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("Not Implemented Error"));
     });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.put(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("Not Implemented Error"));
     });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
+      /* try {
         resolve(await super.delete(data));
       } catch(error) {
         reject(error);
-      }
+      } */
+      reject(new Error("Not Implemented Error"));
     });
   }
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await DatabaseHelper.insert(data, schema));
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -100,19 +103,29 @@ const DEFAULTS = {
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
-        resolve(await DatabaseHelper.update(data, schema));
+    	try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
       }
     });
-    return ;
+  }
+  
+  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+    return new Promise(async (resolve, reject) => {
+    	try {
+        resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-      try {
-        resolve(await DatabaseHelper.delete(data, schema));
+    	try {
+        resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -121,8 +134,9 @@ const DEFAULTS = {
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      try {
-        resolve(await DatabaseHelper.retrieve(data, schema));
+    	try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
       }
@@ -131,8 +145,9 @@ const DEFAULTS = {
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-      try {
-        resolve('/');
+    	try {
+      	throw new Error("Not Implemented Error");
+        // resolve('/');
       } catch(error) {
         reject(error);
       }
@@ -149,12 +164,12 @@ export default Controller;
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../helpers/DatabaseHelper.js';
-import {ValidationInfo, ValidationHelper} from '../helpers/ValidationHelper.js';
-import {RequestHelper} from '../helpers/RequestHelper.js';
-import {RenderHelper} from '../helpers/RenderHelper.js';
-import {DataTableSchema} from '../helpers/SchemaHelper.js';
-import {Base} from './Base.js';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ValidationHelper.js';
+import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper.js';
+import {RenderHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RenderHelper.js';
+import {DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper.js';
+import {Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base.js';
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -167,6 +182,7 @@ import {Base} from './Base.js';
 enum ActionType {
   Insert,
   Update,
+  Upsert,
   Delete,
   Retrieve,
   Popup,
@@ -183,6 +199,7 @@ enum ValidationInfo {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -213,8 +230,7 @@ class Controller extends Base {
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	let action: ActionType = RequestHelper.getAction(request);
-  	let schema: DataTableSchema = RequestHelper.getSchema(request);
+  	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;
   	
@@ -225,6 +241,7 @@ class Controller extends Base {
 	  
 	  // Auto[MergingEnd]--->
 	  
+  	let action: ActionType = RequestHelper.getAction(this.pageId, request);
 	  return [action, schema, data];
 	}
   // <---Auto[MergingEnd]
@@ -255,6 +272,7 @@ var BackEndScriptHelper = {
 		        
 				let functionNameMapping = {};
 				
+				let prerequisiteCode = info['autoGeneratedCodeForMergingBackEndScript'][0];
 				let mergingCode = info['autoGeneratedCodeForMergingBackEndScript'][1];
 				mergingCode = mergingCode.replace(SYSTEM_CODE_REGEX_BEGIN_GLOBAL, '');
     		mergingCode = mergingCode.replace(SYSTEM_CODE_REGEX_END_GLOBAL, '');
@@ -263,11 +281,15 @@ var BackEndScriptHelper = {
     		
     		mergingCode = mergingCode.replace(/(\n)+/g, '\n');
 				
-				code = code.replace(MAIN_MERGE_END_BEGIN, `${mergingCode}${MAIN_MERGE_END_BEGIN}`);
+				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}
+${mergingCode}
+${MAIN_MERGE_END_BEGIN}`);
 				
 				code = `${code.split(FILE_END)[0]}
 ${info['editingPageID']}
 ${FILE_END}${code.split(FILE_END)[1]}`;
+
+				code = code.split('{__IMPORT_DIRECTORY_PREFIX__}').join('../'.repeat(info['editingPagePath'].split('/').length - 1) || './');
 				
 				return [code, functionNameMapping];
 		},
@@ -281,24 +303,29 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 	      let SECTION_TABLE_NAME= info['internal-fsb-data-source-name'];
 	      let SECTION_COLUMN_NAME = info['internal-fsb-data-source-column'];
 	      let SECTION_REQUIRED = info['required'];
+	      let SECTION_VALUE_SOURCE = info['internal-fsb-data-value-source'];
+	      let SECTION_VALUE_SOURCE_SESSION_NAME = info['internal-fsb-data-session-name'];
 	      let SECTION_VALIDATION_MESSAGE = info['internal-fsb-data-validation-message'];
         let SECTION_BEGIN_BEGIN = `    // Auto[${SECTION_GUID}:Begin]--->`;
-        let SECTION_BEGIN_END = `\n    // <---Auto[${SECTION_GUID}:Begin]`;
+        let SECTION_BEGIN_END = `\n      // <---Auto[${SECTION_GUID}:Begin]`;
         let SECTION_END_BEGIN = `// Auto[${SECTION_GUID}:End]--->`;
         let SECTION_END_END = `    // <---Auto[${SECTION_GUID}:End]`;
         
         let SECTION_BODY = `
     
-    // Override data parsing and manipulation of ${SECTION_NAME} here:
-    // 
-    
-    `;
+      // Override data parsing and manipulation of ${SECTION_NAME} here:
+      // 
+      
+      `;
     
     		if (SECTION_NAME != null) SECTION_NAME = JSON.stringify(SECTION_NAME);
     		if (SECTION_VALIDATION_MESSAGE != null) SECTION_VALIDATION_MESSAGE = JSON.stringify(SECTION_VALIDATION_MESSAGE);
     		if (SECTION_TARGET != null) SECTION_TARGET = JSON.stringify(SECTION_TARGET);
     		if (SECTION_TABLE_NAME != null) SECTION_TABLE_NAME = JSON.stringify(SECTION_TABLE_NAME);
     		if (SECTION_COLUMN_NAME != null) SECTION_COLUMN_NAME = JSON.stringify(SECTION_COLUMN_NAME);
+    		if (SECTION_VALUE_SOURCE != null) SECTION_VALUE_SOURCE = `
+      if (input) input.value = request.session['${SECTION_VALUE_SOURCE_SESSION_NAME}'];
+`;
 
     		if (code == '') code = MERGING_BOILERPLATE;
     		
@@ -307,8 +334,10 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
-    input = RequestHelper.getInput(request, '${SECTION_GUID}');${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
-    if (input != null) data.push(input);
+    for (let i=-1; i<128; i++) {
+      input = RequestHelper.getInput(this.pageId, request, '${SECTION_GUID}' + ((i == -1) ? '' : '[' + i + ']'));${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      if (input != null) data.push(input);
+    }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
         } else {

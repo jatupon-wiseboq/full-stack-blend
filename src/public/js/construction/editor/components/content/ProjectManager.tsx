@@ -44,6 +44,16 @@ class ProjectManager extends Base<Props, State> {
     	if (key == 'index') return key;
     	else return `_${key}`;
     }
+    getFeatureDirectoryPrefix(key: string) {
+    	let pages = this.state.extensionValues['pages'];
+      let editingPageID = key;
+      pages = pages.filter(page => page.id == editingPageID);
+      
+      let path = pages && pages[0] && pages[0].path || '';
+      path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
+      
+      return (path) ? path + '/' : '';
+    }
     extractErrorMessage(error) {
    	  if (error && error.response && error.response.data && error.response.data.errors) {
    	    return error.response.data.errors.map(error => error.message).join('; ')
@@ -97,6 +107,20 @@ class ProjectManager extends Base<Props, State> {
 					encoding: 'base64'
 				};
 				return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, cb);
+			};
+   	  repo.deleteFile = (path, cb) => {
+   	  	repo._request('GET', `/repos/${repo.__fullname}/contents/${path}?ref=${'heads/' + GITHUB_FEATURE_BRANCH}`, null, (error, result, request) => {
+   	  		if (error) {
+   	  			cb();
+   	  		} else {
+	   	  		const deleteBody = {
+		       		message: `Delete the file at ${path}`,
+		       		sha: result.sha,
+		       		branch: GITHUB_FEATURE_BRANCH
+		      	}
+						repo._request('DELETE', `/repos/${repo.__fullname}/contents/${path}`, deleteBody, cb);
+					}
+   	  	});
 			};
    	  
    	  return repo;
@@ -205,12 +229,12 @@ class ProjectManager extends Base<Props, State> {
                 if (selectedLibraries.indexOf(library.id) != -1) {
                     if (library.production.stylesheets) {
                         for (let stylesheet of library.production.stylesheets) {
-                            externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
+                            externalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + stylesheet + '")');
                         }
                     }
                     if (library.production.scripts) {
                         for (let script of library.production.scripts) {
-                            externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
+                            externalScripts.push('script(type="text/javascript" src="' + script + '")');
                         }
                     }
                 }
@@ -234,7 +258,7 @@ class ProjectManager extends Base<Props, State> {
       		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
       		      if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
       		      
-      		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
+      		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle}")`;
       		      else combinedInlineBodyStyle = '';
     		        
     		        let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
@@ -250,42 +274,43 @@ class ProjectManager extends Base<Props, State> {
 				        let image = escape(pages && pages[0] && pages[0].image || '');
 				        let path = escape(pages && pages[0] && pages[0].path || '');
     		        
+    		        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+    		        
                 let combinedHTMLPage = `.
   <!DOCTYPE html>
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>\#{headers && headers.title || '${title}'}</title>
-      <meta name="description" content="\#{headers && headers.description || '${description}'}" />
-      <meta name="keywords" content="\#{headers && headers.keywords || '${keywords}'}" />
-      <meta http-equiv="content-language" content="\#{headers && headers.language || 'en'}" />
-      <meta http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}" />
-      <meta name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}" />
-      <meta name="robots" content="\#{headers && headers.robots || 'index, follow'}" />
-      <meta property="og:title" content="\#{headers && headers.title || '${title}'}" />
-      <meta property="og:url" content="\#{headers && headers.linkUrl || '${path}'}" />
-      <meta property="og:image" content="\#{headers && headers.imageUrl || '${image}'}" />
-      <meta property="og:type" content="\#{headers && headers.itemType || 'website'}" />
-      <meta property="og:description" content="\#{headers && headers.description || '${description}'}" />
-      <meta property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}" />
-      <link rel="stylesheet" href="//staging.stackblend.com/css/embed.css">
-      <style type="text/css">${combinedStylesheet}</style>
-    </head>
-    <body${combinedInlineBodyStyle}>
-      ${combinedHTMLTags}
-      <script type="text/javascript" src="/js/Embed.bundle.js"></script>
-      <script type="text/javascript">
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title.
+      \#{headers && headers.title || '${title}'}
+    meta(name="description" content=headers && headers.description || '${description}')
+    meta(name="keywords" content=headers && headers.keywords || '${keywords}')
+    meta(http-equiv="content-language" content=headers && headers.language || 'en')
+    meta(http-equiv="content-type" content=headers && headers.contentType || 'UTF-8')
+    meta(name="revisit-after" content=headers && headers.revisitAfter || '7 days')
+    meta(name="robots" content=headers && headers.robots || 'index, follow')
+    meta(property="og:title" content=headers && headers.title || '${title}')
+    meta(property="og:url" content=headers && headers.linkUrl || '${path}')
+    meta(property="og:image" content=headers && headers.imageUrl || '${image}')
+    meta(property="og:type" content=headers && headers.itemType || 'website')
+    meta(property="og:description" content=headers && headers.description || '${description}')
+    meta(property="og:locale" content=headers && headers.contentLocale || 'en_US')
+    link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
+    ${externalStylesheets.join('\n    ')}
+    style(type="text/css").
+      ${combinedStylesheet}
+  body${combinedInlineBodyStyle}
+    ${combinedHTMLTags}
+    script(type="text/javascript" src="/js/Embed.bundle.js")
+    script(type="text/javascript").
       ${compiledCombinedMinimalFeatureScripts}
-      </script>
-      ${externalStylesheets.join('\n      ')}
-      ${combinedFontTags.join('\n      ')}
-      <script type="text/javascript">
+    ${combinedFontTags.join('\n    ')}
+    script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
-      </script>
-      ${externalScripts.join('\n      ')}
-      <script type="text/javascript" src="/js/Site.bundle.js"></script>
-    </body>
-  </html>`
+    ${externalScripts.join('\n    ')}
+    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
+    script(type="text/javascript" src="/js/Site.bundle.js")
+`
                 combinedHTMLPageDict[key] = combinedHTMLPage;
                 arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
               }
@@ -322,7 +347,7 @@ class ProjectManager extends Base<Props, State> {
             let elements = HTMLHelper.getElementsByClassName('internal-fsb-element', persistingContent);
             for (let element of elements) {
             	let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
-            	let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace');
+            	let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
             	let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
             	let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
             	let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -331,8 +356,8 @@ class ProjectManager extends Base<Props, State> {
 			          reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
 			        }
 			        
-			        if (reactClass) persistingGUIDs[reactClass] = true;
-			        persistingGUIDs[reactClassComposingInfoGUID] = true;
+			        if (reactClass) persistingGUIDs[reactNamespace + '.' + reactClass] = true;
+			        else persistingGUIDs[reactClassComposingInfoGUID] = true;
             }
             
             for (let page of nextProjectData.globalSettings.pages.filter(page => page.state == 'delete')) {
@@ -381,6 +406,28 @@ class ProjectManager extends Base<Props, State> {
 	                    }
 	                    
 	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, (siteBundleBlobSHA: string) => {
+	                    	let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
+	                    	let nextPersistingFiles = [];
+                        
+                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
+                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+	                        }
+                        }
+                        for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
+                        	if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`src/public/js/components/${key}.tsx`);
+	                        }
+                        }
+                        for (let key in nextProjectData.viewBlobSHADict) {
+                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
+                        		nextPersistingFiles.push(`views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`);
+                          }
+                        }
+                        
+                        let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
+                        nextProjectData.currentPersistingFiles = nextPersistingFiles;
+	                    	
 	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
@@ -415,7 +462,7 @@ class ProjectManager extends Base<Props, State> {
 	                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
 	                        	if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
 		                          tree.push({
-		                            path: `src/controllers/components/${this.getRepresentativeName(key)}.ts`,
+		                            path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
 		                            mode: "100644",
 		                            type: "blob",
 		                            sha: nextProjectData.backEndControllerBlobSHADict[key]
@@ -435,7 +482,7 @@ class ProjectManager extends Base<Props, State> {
 	                        for (let key in nextProjectData.viewBlobSHADict) {
 	                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
 	                            tree.push({
-	                              path: `views/home/${this.getRepresentativeName(key)}.pug`,
+	                              path: `views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`,
 	                              mode: "100644",
 	                              type: "blob",
 	                              sha: nextProjectData.viewBlobSHADict[key]
@@ -470,8 +517,10 @@ class ProjectManager extends Base<Props, State> {
   	                              }
             
             											constructionWindow.clearFullStackCodeForAllPages();
-  	                              
-  	                              alert('Your changes have been saved successfully.');
+            											
+            											this.deleteFiles(repo, deletingPersistingFiles, () => {
+	  	                            	alert('Your changes have been saved successfully.');
+	  	                            });
   	                            });
   	                          });
   	                        }
@@ -616,10 +665,10 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
+${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	new Component${route.id}(req, res, "home/${this.getRepresentativeName(route.id)}");
+	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
@@ -787,6 +836,23 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
         cb(nextSiteBundleDataSHA);
       });
    	}
+   	deleteFiles(repo: any, files: any, cb: any) {
+   		if (files.length == 0) cb();
+   		else {
+	   	  let process = (index: number) => {
+	   	    let file = files[index];
+	   	    
+	   	    repo.deleteFile(file, (error, result, request) => {
+	          if (index + 1 < files.length) {
+	            process(index + 1);
+	          } else {
+	            cb();
+	          }
+	        });
+	   	  }
+	   	  process(0);
+	   	}
+ 	  }
    	generateWorkspaceData(removeSHADict: boolean=false) {
     	return {};
     }

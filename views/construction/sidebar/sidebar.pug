@@ -52,11 +52,16 @@
                               a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-properties-panel.active(id='sidebarProperties', onclick="swap('.sidebar-properties-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
                                 input(type='radio', name='options', checked=true)
                                 | Properties
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-permission-panel(id='sidebarPermission', onclick="swap('.sidebar-permission-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=true)
+                                | Permission
                       .workspace-vertical-container.full-relative-size
                         .workspace-vertical-panel
                           .workspace-panel-container.scrollable
                             .panel.sidebar-properties-panel.active
                               include html-data/properties
+                            .panel.sidebar-permission-panel
+                              include html-data/permission
                     .workspace-container.servicesToolset.toolset(style="display: none;")
                       .workspace-vertical-container
                         .workspace-vertical-panel

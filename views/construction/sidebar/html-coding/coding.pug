@@ -49,6 +49,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-1', 'internal-fsb-data-wizard-type']}")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-2', 'internal-fsb-data-wizard-type']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-type-3', 'internal-fsb-data-wizard-type']}")
     .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:popup")
       | Popup React Class
     .section-body(internal-fsb-for="internal-fsb-data-wizard-type:popup")
@@ -57,8 +58,21 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Inputs
     .section-body
       +CreateReactComponent('FullStackBlend.Components.WizardInputManager', "{}")
+    .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:insert,internal-fsb-data-wizard-type:update")
+      | Cross Relation Action
+    .section-body(internal-fsb-for="internal-fsb-data-wizard-type:insert,internal-fsb-data-wizard-type:update")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-cross-operation', 'internal-fsb-data-wizard-cross-operation']}")
+    div(internal-fsb-for="hasParentReactComponent")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        | Real-time Update
+      .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-real-time-update', 'internal-fsb-data-wizard-real-time-update']}")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        | Retrieve Into
+      .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-retrieve-into'], inline: true, button: false}")
     .section-hr
-  div(internal-fsb-not-for="internal-fsb-react-mode")
+  div
     .section-container(internal-fsb-for="hasParentReactComponent")
       .section-title
         | Front-End Data Binding
@@ -102,9 +116,18 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
     .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
-      | Default Value
+      | Value Source
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-value-source', 'internal-fsb-data-value-source']}")
+    div(internal-fsb-for="internal-fsb-data-source-type")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-value-source")
+        | Session Variable Name
+      .section-body(internal-fsb-for="internal-fsb-data-value-source")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-session-name'], inline: true, button: false}")
+      .section-subtitle(internal-fsb-not-for="internal-fsb-data-value-source")
+        | Default Value
+      .section-body(internal-fsb-not-for="internal-fsb-data-value-source")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
     .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
       | Required
     .section-body(internal-fsb-for="internal-fsb-data-source-type")
@@ -251,7 +274,7 @@ div(internal-fsb-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
     .section-hr
-  div(internal-fsb-not-for="internal-fsb-react-mode")
+  div
     .section-container(internal-fsb-for="hasParentReactComponent")
       .section-title
         | Front-End Data Binding

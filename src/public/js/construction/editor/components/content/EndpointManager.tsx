@@ -45,6 +45,16 @@ class EndpointManager extends Base<Props, State> {
     	if (key == 'index') return key;
     	else return `_${key}`;
     }
+    getFeatureDirectoryPrefix(key: string) {
+    	let pages = this.state.extensionValues['pages'];
+      let editingPageID = key;
+      pages = pages.filter(page => page.id == editingPageID);
+      
+      let path = pages && pages[0] && pages[0].path || '';
+      path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
+      
+      return (path) ? path + '/' : '';
+    }
     
     files: any = [];
     private create(path: string, content: string) {
@@ -87,12 +97,12 @@ class EndpointManager extends Base<Props, State> {
           if (selectedLibraries.indexOf(library.id) != -1) {
               if (library.production.stylesheets) {
                   for (let stylesheet of library.production.stylesheets) {
-                      externalStylesheets.push('<link rel="stylesheet" type="text/css" href="' + stylesheet + '" />');
+                      externalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + stylesheet + '")');
                   }
               }
               if (library.production.scripts) {
                   for (let script of library.production.scripts) {
-                      externalScripts.push('<script type="text/javascript" src="' + script + '"></script>');
+                      externalScripts.push('script(type="text/javascript" src="' + script + '")');
                   }
               }
           }
@@ -116,7 +126,7 @@ class EndpointManager extends Base<Props, State> {
 		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
 		      if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
 		      
-		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = ` style="${combinedInlineBodyStyle}"`;
+		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle}")`;
 		      else combinedInlineBodyStyle = '';
 	        
 	        let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
@@ -132,42 +142,43 @@ class EndpointManager extends Base<Props, State> {
 	        let image = escape(pages && pages[0] && pages[0].image || '');
 	        let path = escape(pages && pages[0] && pages[0].path || '');
 	        
+	        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+	        
           let combinedHTMLPage = `.
   <!DOCTYPE html>
-  <html>
-    <head>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>\#{headers && headers.title || '${title}'}</title>
-      <meta name="description" content="\#{headers && headers.description || '${description}'}" />
-      <meta name="keywords" content="\#{headers && headers.keywords || '${keywords}'}" />
-      <meta http-equiv="content-language" content="\#{headers && headers.language || 'en'}" />
-      <meta http-equiv="content-type" content="\#{headers && headers.contentType || 'UTF-8'}" />
-      <meta name="revisit-after" content="\#{headers && headers.revisitAfter || '7 days'}" />
-      <meta name="robots" content="\#{headers && headers.robots || 'index, follow'}" />
-      <meta property="og:title" content="\#{headers && headers.title || '${title}'}" />
-      <meta property="og:url" content="\#{headers && headers.linkUrl || '${path}'}" />
-      <meta property="og:image" content="\#{headers && headers.imageUrl || '${image}'}" />
-      <meta property="og:type" content="\#{headers && headers.itemType || 'website'}" />
-      <meta property="og:description" content="\#{headers && headers.description || '${description}'}" />
-      <meta property="og:locale" content="\#{headers && headers.contentLocale || 'en_US'}" />
-      <link rel="stylesheet" href="//staging.stackblend.com/css/embed.css">
-      <style type="text/css">${combinedStylesheet}</style>
-    </head>
-    <body${combinedInlineBodyStyle}>
-      ${combinedHTMLTags}
-      <script type="text/javascript" src="/js/Embed.bundle.js"></script>
-      <script type="text/javascript">
+html
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    title.
+      \#{headers && headers.title || '${title}'}
+    meta(name="description" content=headers && headers.description || '${description}')
+    meta(name="keywords" content=headers && headers.keywords || '${keywords}')
+    meta(http-equiv="content-language" content=headers && headers.language || 'en')
+    meta(http-equiv="content-type" content=headers && headers.contentType || 'UTF-8')
+    meta(name="revisit-after" content=headers && headers.revisitAfter || '7 days')
+    meta(name="robots" content=headers && headers.robots || 'index, follow')
+    meta(property="og:title" content=headers && headers.title || '${title}')
+    meta(property="og:url" content=headers && headers.linkUrl || '${path}')
+    meta(property="og:image" content=headers && headers.imageUrl || '${image}')
+    meta(property="og:type" content=headers && headers.itemType || 'website')
+    meta(property="og:description" content=headers && headers.description || '${description}')
+    meta(property="og:locale" content=headers && headers.contentLocale || 'en_US')
+    link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
+    ${externalStylesheets.join('\n    ')}
+    style(type="text/css").
+      ${combinedStylesheet}
+  body${combinedInlineBodyStyle}
+    ${combinedHTMLTags}
+    script(type="text/javascript" src="/js/Embed.bundle.js")
+    script(type="text/javascript").
       ${compiledCombinedMinimalFeatureScripts}
-      </script>
-      ${externalStylesheets.join('\n      ')}
-      ${combinedFontTags.join('\n      ')}
-      <script type="text/javascript">
+    ${combinedFontTags.join('\n    ')}
+    script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
-      </script>
-      ${externalScripts.join('\n      ')}
-      <script type="text/javascript" src="/js/Site.bundle.js"></script>
-    </body>
-  </html>`
+    ${externalScripts.join('\n    ')}
+    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
+    script(type="text/javascript" src="/js/Site.bundle.js")
+`
           combinedHTMLPageDict[key] = combinedHTMLPage;
           arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
         }
@@ -226,10 +237,10 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-${routes.map(route => `import Component${route.id} from "./components/${this.getRepresentativeName(route.id)}.js";`).join('\n')}
+${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}.js";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	new Component${route.id}(req, res, "home/${this.getRepresentativeName(route.id)}");
+	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
@@ -242,7 +253,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
    	  let process = ((index: number) => {
    	    let page = pages.filter(page => page.id == keys[index]);
    	    
-   	    this.create(`../../views/home/${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
+   	    this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
@@ -309,7 +320,7 @@ ${tokens[1]}
        	  let subprocess = ((subIndex: number) => {
        	    let tokens = results[subIndex].split("\n// <---Auto[File]");
        	    
-       	    this.create(`./components/${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
+       	    this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}

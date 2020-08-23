@@ -61,17 +61,21 @@ export {IProps, IState, DefaultProps, DefaultState};
 
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
+import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base.js';
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;
 declare let ReactDOM: any;
 declare let window: any;
 declare let DataManipulationHelper: any;
+declare let pug: any;
+
+let Button = $Button;
+let Project = $Project;
 
 // <---Auto[Declare]// Auto[Interface]--->
 interface IAutoBaseProps extends IBaseProps {
@@ -100,8 +104,8 @@ class KlassA extends Base {
   
   // Auto[ClassEnd]--->
   protected render(): any {
-    return (
-    )
+    return pug \`
+    \`
   }
 }
 DeclarationHelper.declare();
@@ -131,9 +135,9 @@ const LOAD_END = `
   // <---Auto[ClassBegin]`;
 
 const RENDER_BEGIN = `protected render(): any {
-    return (`;
+    return pug \``;
 const RENDER_END = `
-    )
+    \`
   }
 }
 DeclarationHelper.declare(`;
@@ -227,7 +231,7 @@ export {${previewReactClassName}};
         }
         
         code = `${code.split(FILE_END)[0]}
-${klass}
+${fullnamespace}
 ${FILE_END}${code.split(FILE_END)[1]}`;
         
         return [code, functionNameMapping];

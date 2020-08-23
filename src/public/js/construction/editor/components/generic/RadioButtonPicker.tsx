@@ -21,9 +21,13 @@ let options = {
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
     "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
     "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
+    "data-wizard-type-3": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_3,
     "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
     "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
     "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
+    "data-wizard-cross-operation": CONSTANTS.CROSS_OPERATION_OPTIONS,
+    "data-wizard-real-time-update": CONSTANTS.DATA_WIZARD_REAL_TIME_UPDATE,
+    "data-value-source": CONSTANTS.DATA_VALUE_SOURCE_OPTIONS,
     
     // Back-End Options
 		// 
@@ -32,7 +36,13 @@ let options = {
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
 		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
-		
+		"data-lock-mode": CONSTANTS.BACKEND_DATA_LOCK_MODE,
+		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
+		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
+		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
+
+		// Animations
+		// 
 		"animation-mode": CONSTANTS.ANIMATION_TIMING_MODE,
 		"animation-scrolling-triggering": CONSTANTS.ANIMATION_SCROLLING_TRIGGERING,
 		"animation-easing-mode": CONSTANTS.ANIMATION_EASING_MODE,
@@ -40,13 +50,14 @@ let options = {
 		"animation-easing-fn-2": CONSTANTS.ANIMATION_EASING_FN_2,
 		"animation-easing-fn-3": CONSTANTS.ANIMATION_EASING_FN_3,
 		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE,
-		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE,
+		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
     "data-source-type-2": "internal-fsb-data-source-type",
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
-    "data-wizard-type-2": "internal-fsb-data-wizard-type"
+    "data-wizard-type-2": "internal-fsb-data-wizard-type",
+    "data-wizard-type-3": "internal-fsb-data-wizard-type"
 }
 
 const Mode = Object.freeze({
