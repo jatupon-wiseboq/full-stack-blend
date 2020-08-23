@@ -50,25 +50,45 @@ class Base extends React.Component {
     }).bind(this));
   }
   
-  public update(data: any) {
-  	const previous = this.state.data || this.props.data || {};
-  	const next = Object.assign({}, previous, data || {})
-  	
-  	const deregistering = {};
-  	for (let key in previous) {
-  		if (next.hasOwnProperty(key)) {
-  			deregistering[key] = previous[key];
-  		}
-  	}
-  	
-  	NotificationHelper.unregisterTableUpdates(deregistering);
-  	if (data) {
-  		NotificationHelper.registerTableUpdates(data);
-  	}
-  	
-    this.setState({
-      data: next
-    });
+  public update(data: any, retrieveInto: string) {
+  	if (!retrieveInto) {
+	  	const previous = this.state.data || this.props.data || {};
+	  	const next = Object.assign({}, previous, data || {})
+	  	
+	  	const deregistering = {};
+	  	for (let key in previous) {
+	  		if (next.hasOwnProperty(key)) {
+	  			deregistering[key] = previous[key];
+	  		}
+	  	}
+	  	
+	  	NotificationHelper.unregisterTableUpdates(deregistering);
+	  	if (data) {
+	  		NotificationHelper.registerTableUpdates(data);
+	  	}
+	  	
+	    this.setState({
+	      data: next
+	    });
+	  } else {
+	  	const premise = this.getDataFromNotation(retrieveInto);
+	  	const previous = premise.relations || {};
+	  	const next = Object.assign({}, previous, data || {})
+	  	
+	  	const deregistering = {};
+	  	for (let key in previous) {
+	  		if (next.hasOwnProperty(key)) {
+	  			deregistering[key] = previous[key];
+	  		}
+	  	}
+	  	
+	  	NotificationHelper.unregisterTableUpdates(deregistering);
+	  	if (data) {
+	  		NotificationHelper.registerTableUpdates(data);
+	  	}
+	  	
+	    premise.relations = next;
+	  }
   }
   
   protected getDataFromNotation(notation: string, inArray: boolean=false): any {
@@ -89,18 +109,22 @@ class Base extends React.Component {
   }
   
   public manipulate(guid: string, notation: string, results: any) {
-    let data = this.getDataFromNotation(notation);
     let {action, options} = DataManipulationHelper.getInfo(guid);
-    
-    if (data == null) return;
+    let data = null;
     
     switch (action) {
       case 'insert':
+	    	data = this.getDataFromNotation(notation);
+	    	if (data == null) return;
+	    	
         for (let result of results) {
           data.push(result);
         }
         break;
       case 'update':
+	    	data = this.getDataFromNotation(notation);
+	    	if (data == null) return;
+	    	
         for (let result of results) {
         	let found = null;
         		
@@ -131,6 +155,9 @@ class Base extends React.Component {
       	}
         break;
       case 'upsert':
+	    	data = this.getDataFromNotation(notation);
+	    	if (data == null) return;
+	    	
         for (let result of results) {
         	let found = null;
         	
@@ -163,6 +190,9 @@ class Base extends React.Component {
         }
         break;
       case 'delete':
+	    	data = this.getDataFromNotation(notation);
+	    	if (data == null) return;
+	    	
         for (let result of results) {
           let collection = data.filter((row) => {
             for (let key in row.keys) {
@@ -179,7 +209,7 @@ class Base extends React.Component {
         }
         break;
       case 'retrieve':
-        this.update(results);
+        this.update(results, options.retrieveInto);
         break;
       case 'popup':
         let container = document.createElement('div');

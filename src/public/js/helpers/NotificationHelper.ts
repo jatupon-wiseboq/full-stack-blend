@@ -155,7 +155,7 @@ const NotificationHelper = {
   	
   	const notificationURI = `${socketUrl}\#${identity}`;
   	
-  	if (hooked[notificationURI] && hooked[notificationURI].indexOf(table) == -1) return;
+  	if (!hooked[notificationURI] || hooked[notificationURI].indexOf(table) == -1) return;
   	if (!sockets[socketUrl]) return;
   	
   	const index = hooked[notificationURI].indexOf(table);
