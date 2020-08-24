@@ -123,6 +123,7 @@ const NotificationHelper = {
                 }
               }
             }
+            if (found) break;
           }
           
           if (found) {
@@ -156,6 +157,7 @@ const NotificationHelper = {
                 }
               }
             }
+            if (found) break;
           }
           
           if (found) {

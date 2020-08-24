@@ -138,6 +138,7 @@ class Base extends React.Component {
                 }
               }
             }
+            if (found) break;
           }
             
           if (found) {
@@ -171,6 +172,7 @@ class Base extends React.Component {
                 }
               }
             }
+            if (found) break;
           }
           
           if (found) {
