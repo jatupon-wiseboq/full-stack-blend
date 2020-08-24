@@ -67,6 +67,13 @@ const NotificationHelper = {
 				
 				await RequestHelper.get(window.location.href);
 			});
+			sockets[socketUrl].on('command', (command: string) => {
+				switch (command) {
+					case 'refresh':
+						window.location.reload();
+						break;
+				}
+			});
   	}
   	
   	notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];

@@ -22,7 +22,7 @@ socket.sockets.on("connection", (socket) => {
 	
 	parser(req, {}, () => {});
 	
-  const sessionId = req.signedCookies['connect.sid'];
+  const sessionId = req.signedCookies["connect.sid"];
 	if (!sessionId) return;
   
   const setSocket = (socket: any) => {
@@ -39,7 +39,46 @@ socket.sockets.on("connection", (socket) => {
 			  				const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
 			  				
 			  				if (combinationInfo.hasOwnProperty(sessionId)) {
-						  		combinationInfo[sessionId] = socket;
+			  					if (socket != null) {
+				  					if (combinationInfo[sessionId] === false) {
+				  						socket.emit("command", "refresh");
+				  						
+				  						setSocket(null);
+				  						
+				  						return;
+				  					} else if (Array.isArray(combinationInfo[sessionId])) {
+				  						for (const item of combinationInfo[sessionId]) {
+				  							switch (item.action) {
+										  		case ActionType.Insert:
+										  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
+										  				id: md5OfClientTableUpdatingIdentity,
+										  				results: item.results
+										  			});
+										  			break;
+										  		case ActionType.Update:
+										  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
+										  				id: md5OfClientTableUpdatingIdentity,
+										  				results: item.results
+										  			});
+										  			break;
+										  		case ActionType.Upsert:
+										  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
+										  				id: md5OfClientTableUpdatingIdentity,
+										  				results: item.results
+										  			});
+										  			break;
+										  		case ActionType.Delete:
+										  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
+										  				id: md5OfClientTableUpdatingIdentity,
+										  				results: item.results
+										  			});
+										  			break;
+										  	}
+				  						}
+				  					}
+				  					
+							  		combinationInfo[sessionId] = socket;
+				  				}
 						  	}
 					  	}
 					  }
@@ -47,7 +86,7 @@ socket.sockets.on("connection", (socket) => {
 			  }
 	  	}
 	  }
-  }
+  };
   
   setSocket(socket);
 	sessionLookupTable[sessionId] = socket;
@@ -100,7 +139,7 @@ const NotificationHelper = {
   	
   	return md5OfClientTableUpdatingIdentity;
   },
-  getUniqueListOfIdentities: (schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {listeners: any; results: HierarchicalDataRow[]}} => {
+  getUniqueListOfIdentities: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {listeners: any; results: HierarchicalDataRow[]}} => {
   	const notificationInfo = notificationInfos[schema.group] || {};
   	const identities = {};
   	
@@ -153,10 +192,24 @@ const NotificationHelper = {
   					
   					for (const sessionId in combinationInfo) {
   						if (combinationInfo.hasOwnProperty(sessionId)) {
-  							if (combinationInfo[sessionId] != null) {
+  							if (combinationInfo[sessionId] === false) {
+  								// Force refresh
+  								//
+  							}
+  							else if (combinationInfo[sessionId] != null && !Array.isArray(combinationInfo[sessionId])) {
   								identitiesInfo.listeners.push(combinationInfo[sessionId]);
   							} else {
-  								// [TODO]: delayed transmits (delay / race condition)
+  								// For socket initializing delay
+  								//
+  								if (combinationInfo[sessionId] == null) combinationInfo[sessionId] = [];
+  								if (combinationInfo[sessionId].length < 128) {
+	  								combinationInfo[sessionId].push({
+	  									action: action,
+	  									results: clonedResult
+	  								});
+	  							} else {
+	  								combinationInfo[sessionId] = false;
+	  							}
   							}
   						}
   					}
@@ -171,7 +224,7 @@ const NotificationHelper = {
   notifyUpdates: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): string => {
   	if (socket == null) return;
   	
-  	const identities = NotificationHelper.getUniqueListOfIdentities(schema, results);
+  	const identities = NotificationHelper.getUniqueListOfIdentities(action, schema, results);
   	
   	switch (action) {
   		case ActionType.Insert:
