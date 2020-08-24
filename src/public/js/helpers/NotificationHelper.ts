@@ -54,13 +54,7 @@ const NotificationHelper = {
   	if (!sockets[socketUrl]) {
   		sockets[socketUrl] = window.io(socketUrl);
   		
-			let firstTime = true;
-			sockets[socketUrl].on('connection', (message: any) => {
-				if (firstTime) {
-					firstTime = false;
-					return;
-				}
-				
+			sockets[socketUrl].on('reconnect', (message: any) => {
 				for (const key in retrieveButtons) {
 					if (retrieveButtons.hasOwnProperty(key)) {
 						const button = retrieveButtons[key];
@@ -81,7 +75,7 @@ const NotificationHelper = {
   	
   	const socket = sockets[socketUrl];
   	
-  	socket.on('insert', bindedFunctions[notificationURI]['insert'] = (message: any) => {
+  	socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
   		if (message.id == identity) {
   			for (let result of message.results) {
           table.rows.push(result);
@@ -89,7 +83,7 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('delete', bindedFunctions[notificationURI]['delete'] = (message: any) => {
+  	socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
   		if (message.id == identity) {
   			for (let result of message.results) {
           let collection = table.rows.filter((row) => {
@@ -108,7 +102,7 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('update', bindedFunctions[notificationURI]['update'] = (message: any) => {
+  	socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
   		if (message.id == identity) {
         for (let result of message.results) {
         	let found = null;
@@ -142,7 +136,7 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('upsert', bindedFunctions[notificationURI]['upsert'] = (message: any) => {
+  	socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message: any) => {
   		if (message.id == identity) {
         for (let result of message.results) {
         	let found = null;
@@ -193,9 +187,10 @@ const NotificationHelper = {
   	if (notificationInfos[notificationURI].length == 0) {
 	  	const socket = sockets[socketUrl];
 	  	
-	  	socket.off('insert', bindedFunctions[notificationURI]['insert']);
-	  	socket.off('delete', bindedFunctions[notificationURI]['delete']);
-	  	socket.off('update', bindedFunctions[notificationURI]['update']);
+	  	socket.off('insert_' + identity, bindedFunctions[notificationURI]['insert']);
+	  	socket.off('delete_' + identity, bindedFunctions[notificationURI]['delete']);
+	  	socket.off('update_' + identity, bindedFunctions[notificationURI]['update']);
+	  	socket.off('upsert_' + identity, bindedFunctions[notificationURI]['upsert']);
 	    
 	  	delete notificationInfos[notificationURI];
 	  	delete bindedFunctions[notificationURI];

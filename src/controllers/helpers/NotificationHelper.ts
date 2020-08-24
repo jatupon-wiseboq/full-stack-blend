@@ -102,7 +102,7 @@ const NotificationHelper = {
   		case ActionType.Insert:
   			for (const identity in identities) {
   				if (identities.hasOwnProperty(identity)) {
-		  			socket.emit("insert", {
+		  			socket.emit("insert_" + identity, {
 		  				id: identity,
 		  				results: identities[identity]
 		  			});
@@ -112,7 +112,7 @@ const NotificationHelper = {
   		case ActionType.Update:
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
-		  			socket.emit("update", {
+		  			socket.emit("update_" + identity, {
 		  				id: identity,
 		  				results: identities[identity]
 		  			});
@@ -122,7 +122,7 @@ const NotificationHelper = {
   		case ActionType.Upsert:
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
-		  			socket.emit("upsert", {
+		  			socket.emit("upsert_" + identity, {
 		  				id: identity,
 		  				results: identities[identity]
 		  			});
@@ -132,7 +132,7 @@ const NotificationHelper = {
   		case ActionType.Delete:
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
-		  			socket.emit("delete", {
+		  			socket.emit("delete_" + identity, {
 		  				id: identity,
 		  				results: identities[identity]
 		  			});
