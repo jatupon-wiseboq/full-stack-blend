@@ -4,6 +4,7 @@ import compression from "compression";  // compresses requests
 import session from "express-session";
 import bodyParser from "body-parser";
 import lusca from "lusca";
+import mongo from "connect-mongo";
 import flash from "express-flash";
 import path from "path";
 import passport from "passport";
@@ -11,6 +12,13 @@ import bluebird from "bluebird";
 import cors from "cors";
 import fs from "fs";
 import * as SocketIO from "socket.io";
+import dotenv from "dotenv";
+
+const MongoStore = mongo(session);
+
+if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+}
 
 // Create Express server
 const app = express();
@@ -50,16 +58,24 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
 if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
   app.set("trust proxy", 1);
   app.use(session({
-    secret: "&E7gLUZYMFJzzDNmXMXZWyiXDaqN7igA",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+        autoReconnect: true
+    }),
     cookie: { secure: true }
   }));
 } else {
   app.use(session({
-    secret: "&E7gLUZYMFJzzDNmXMXZWyiXDaqN7igA",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+				url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+				autoReconnect: true
+    }),
     cookie: {}
   }));
 }
