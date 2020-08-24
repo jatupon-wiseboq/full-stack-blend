@@ -54,9 +54,6 @@ const NotificationHelper = {
   	if (!sockets[socketUrl]) {
   		sockets[socketUrl] = window.io(socketUrl);
   		
-  		sockets[socketUrl].on('connect', (message: any) => {
-				sockets[socketUrl].emit('authenticate', );
-			});
 			sockets[socketUrl].on('reconnect', async (message: any) => {
 				for (const key in retrieveButtons) {
 					if (retrieveButtons.hasOwnProperty(key)) {
@@ -69,8 +66,6 @@ const NotificationHelper = {
 				}
 				
 				await RequestHelper.get(window.location.href);
-				
-				sockets[socketUrl].emit('authenticate', );
 			});
   	}
   	

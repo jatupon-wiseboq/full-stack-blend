@@ -6,16 +6,35 @@ import {DataTableSchema} from "./SchemaHelper.js";
 import {ActionType, HierarchicalDataRow} from "./DatabaseHelper.js";
 import {socket} from "../../app.js";
 import {Md5} from "md5-typescript";
+import cookieParser from "cookie-parser";
+import dotenv from "dotenv";
 
 const notificationInfos = {};
 const reverseLookupTable = {};
 
+if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+}
+
 socket.sockets.on("connection", (socket) => {
-	if (reverseLookupTable.hasOwnProperty(socket.id)) {
-		for (const combinationInfo of reverseLookupTable[socket.id]) {
-			combinationInfo[socket.id] = socket.id;
+	const req = {headers: socket.handshake.headers};
+	const parser = cookieParser(process.env.SESSION_SECRET);
+	
+	parser(req, {}, () => {});
+	
+  const sessionId = req.signedCookies['connect.sid'];
+  
+	if (reverseLookupTable.hasOwnProperty(sessionId)) {
+		for (const combinationInfo of reverseLookupTable[sessionId]) {
+			combinationInfo[sessionId] = socket.id;
 		}
-		delete reverseLookupTable[socket.id];
+		
+		socket.on("disconnect", (socket) => {
+			for (const combinationInfo of reverseLookupTable[sessionId]) {
+				delete combinationInfo[sessionId];
+			}
+			delete reverseLookupTable[sessionId];
+		});
 	}
 });
 
@@ -64,7 +83,7 @@ const NotificationHelper = {
   	
   	return md5OfClientTableUpdatingIdentity;
   },
-  getUniqueListOfIdentities: (schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: HierarchicalDataRow[]} => {
+  getUniqueListOfIdentities: (schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {listeners: string; results: HierarchicalDataRow[]}} => {
   	const notificationInfo = notificationInfos[schema.group] || {};
   	const identities = {};
   	
@@ -140,7 +159,8 @@ const NotificationHelper = {
   			for (const identity in identities) {
   				if (identities.hasOwnProperty(identity)) {
   					for (const socketId of identities[identity].listeners) {
-  						socket.sockets.socket(socketId).emit("insert_" + identity, {
+  						socket.sockets.sockets[socketId] && socket.sockets.sockets[socketId]
+  							.emit("insert_" + identity, {
 			  				id: identity,
 			  				results: identities[identity].results
 			  			});
@@ -152,7 +172,8 @@ const NotificationHelper = {
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
 	  				for (const socketId of identities[identity].listeners) {
-  						socket.sockets.socket(socketId).emit("update_" + identity, {
+  						socket.sockets.sockets[socketId] && socket.sockets.sockets[socketId]
+  							.emit("update_" + identity, {
 			  				id: identity,
 			  				results: identities[identity].results
 			  			});
@@ -164,11 +185,12 @@ const NotificationHelper = {
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
 		  			for (const socketId of identities[identity].listeners) {
-  						socket.sockets.socket(socketId).emit("upsert_" + identity, {
+  						socket.sockets.sockets[socketId] && socket.sockets.sockets[socketId]
+  							.emit("upsert_" + identity, {
 			  				id: identity,
 			  				results: identities[identity].results
-			  			}
-		  			});
+		  				});
+		  			}
 		  		}
 	  		}
   			break;
@@ -176,11 +198,12 @@ const NotificationHelper = {
   			for (const identity in identities) {
 	  			if (identities.hasOwnProperty(identity)) {
 		  			for (const socketId of identities[identity].listeners) {
-  						socket.sockets.socket(socketId).emit("delete_" + identity, {
+  						socket.sockets.sockets[socketId] && socket.sockets.sockets[socketId]
+  							.emit("delete_" + identity, {
 			  				id: identity,
 			  				results: identities[identity].results
-			  			}
-		  			});
+		  				});
+		  			}
 		  		}
 	  		}
   			break;
