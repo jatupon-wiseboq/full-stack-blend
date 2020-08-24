@@ -141,42 +141,7 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('upsert', bindedFunctions[notificationURI]['update'] = (message: any) => {
-  		if (message.id == identity) {
-        for (let result of message.results) {
-        	let found = null;
-        	
-        	for (let row of table.rows) {
-        		found = row;
-        		for (let key in result.keys) {
-              if (result.keys.hasOwnProperty(key)) {
-                if (row.keys[key] != result.keys[key]) {
-                  found = null;
-                  break;
-                }
-              }
-            }
-          }
-          
-          if (found) {
-          	for (let key in result.keys) {
-              if (result.keys.hasOwnProperty(key)) {
-                found.keys[key] = result.keys[key];
-              }
-            }
-          	for (let key in result.columns) {
-              if (result.columns.hasOwnProperty(key)) {
-                found.columns[key] = result.columns[key];
-              }
-            }
-          } else {
-          	table.rows.push(result);
-          }
-        }
-        NotificationHelper.notifyTableUpdates(message);
-  		}
-    });
-  	socket.on('upsert', bindedFunctions[notificationURI]['update'] = (message: any) => {
+  	socket.on('upsert', bindedFunctions[notificationURI]['upsert'] = (message: any) => {
   		if (message.id == identity) {
         for (let result of message.results) {
         	let found = null;
