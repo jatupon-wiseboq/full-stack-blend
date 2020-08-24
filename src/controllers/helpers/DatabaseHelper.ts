@@ -1170,7 +1170,7 @@ const DatabaseHelper = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: rows,
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, hash) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, hash, session) : null
 							};
 							
 							for (const _row of rows) {
