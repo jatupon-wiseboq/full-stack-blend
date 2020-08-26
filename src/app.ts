@@ -22,7 +22,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 // Create Express server
 const app = express();
 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.use(secure);
 	app.enable("trust proxy");
 } else {
@@ -32,7 +32,7 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 
 // Express configuration
 //
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   app.set("trust proxy", 1);
   app.use(session({
     resave: true,
@@ -63,13 +63,14 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   }));
 }
 
+app.set("port", process.env.PORT || 8000);
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	// app.use(lusca.xframe("SAMEORIGIN"));
 } else {
 	app.use(lusca.xframe("SAMEORIGIN"));
@@ -83,7 +84,7 @@ app.use((req, res, next) => {
 
 // CORS configuration
 // 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.use(cors());
 } else {
 	// app.use(cors());
@@ -104,7 +105,7 @@ if (["production"].indexOf(process.env.NODE_ENV) == -1) {
 // 
 import * as endpoint from "./controllers/Endpoint";
 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	endpoint.clearRecentError();
 	app.post("/endpoint/update/content", endpoint.updateContent);
 	app.get("/endpoint/recent/error", endpoint.getRecentError);
