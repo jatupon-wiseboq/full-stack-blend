@@ -1068,6 +1068,17 @@ const DatabaseHelper = {
 	    				  };
 	  				  
 	  					  for (const key in baseSchema.columns) {
+								  if (baseSchema.columns.hasOwnProperty(key) && record[key] != undefined) {
+								    row.columns[key] = record[key];
+								  }
+								}
+								for (const key in baseSchema.keys) {
+								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
+								    row.keys[key] = record[key];
+								  }
+								}
+	  				  
+	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
 	    					    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
 	    					  }
