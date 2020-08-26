@@ -142,6 +142,7 @@ ${rootScript}`;
         if (tag === 'button') tag = 'Button';
         
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
+        let _props = [];
         let classes = '';
         let styles = null;
         let bindingStyles = {};
@@ -380,6 +381,7 @@ ${rootScript}`;
               } else {
                 if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
                   attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 } else {
                   attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
@@ -504,7 +506,7 @@ ${rootScript}`;
           composed += `- const ${(reactNamespace + '.' + reactClass).split('.').join('_')}_ = ${reactNamespace + '.' + reactClass};`
           lines.push(composed);
           
-          let _attributes = [];
+          let _attributes = _props || [];
           if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
