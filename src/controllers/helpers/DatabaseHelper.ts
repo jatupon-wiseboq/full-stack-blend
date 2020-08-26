@@ -1095,7 +1095,8 @@ const DatabaseHelper = {
 	  					results[baseSchema.group] = {
 	  					  source: baseSchema.source,
 	  					  group: baseSchema.group,
-	  					  rows: rows
+	  					  rows: rows,
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, {}, session) : null
 	  					};
 	        		
 	        		break;
