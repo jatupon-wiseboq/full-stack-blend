@@ -4,7 +4,7 @@
 import {CodeHelper} from "./CodeHelper.js";
 import {DataTableSchema} from "./SchemaHelper.js";
 import {ActionType, HierarchicalDataRow} from "./DatabaseHelper.js";
-import {socket} from "../../app.js";
+import {socket} from "../../server.js";
 import {Md5} from "md5-typescript";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
