@@ -472,6 +472,7 @@ ${rootScript}`;
         
         if (isFirstElement) {
           reactData = null;
+          attributes = [];
         }
         
         // For react rendering method:
