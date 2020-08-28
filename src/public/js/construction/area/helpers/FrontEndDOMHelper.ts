@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -124,7 +124,7 @@ ${rootScript}`;
     
     return cachedGenerateCodeForReactRenderMethodResults;
   },
-  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
+  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
@@ -143,10 +143,12 @@ ${rootScript}`;
         
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let _props = [];
+        let _events = [];
         let classes = '';
         let styles = null;
         let bindingStyles = {};
-        let attributes = [];
+        let attributes = forwardAttributes && CodeHelper.clone(forwardAttributes) || [];
+        let _forwardAttributes = [];
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
@@ -373,17 +375,16 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
-                    attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   } else {
-                    attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   }
                 }
               } else {
                 if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
-                  attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 } else {
-                  attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
@@ -438,6 +439,13 @@ ${rootScript}`;
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
           reactData = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-data') || null;
+        }
+        
+        if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
+        	_forwardAttributes = [..._props, ..._events];
+        } else {
+        	attributes = [...attributes, ..._props, ..._events];
+        	_forwardAttributes = [];
         }
         
         if (!reactNamespace) {
@@ -566,7 +574,7 @@ ${rootScript}`;
             lines.push(composed);
             
             for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
             }
           } else {
             lines.push(composed);
