@@ -46,8 +46,18 @@ class Textbox extends React.Component<Props, State> {
         let input = ReactDOM.findDOMNode(this.refs.input);
         if (document.activeElement == input) return;
         
-        if (this.props.value != input.value) {
-            input.value = this.props.value || '';
+        if (this.props.value !== input.value) {
+        		switch (typeof this.props.value) {
+        			case 'string':
+        				input.value = this.props.value || '';
+        				break;
+        			case 'number':
+        				input.value = this.props.value.toString();
+        				break;
+        			default:
+        				input.value = '';
+        				break;
+        		}
         }
     }
     
