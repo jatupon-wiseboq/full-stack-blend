@@ -165,8 +165,8 @@ class SizePicker extends Base<Props, State> {
                         if (this.props.watchingAttributeNames.length != 0) {
                             return (
                                 <div className={"size-picker " + this.props.additionalClassName} internal-fsb-for="editorCurrentMode:coding">
-                                    <FullStackBlend.Controls.DropDownControl representing={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]]}>
-                                        <div style={{width: '243px'}}>
+                                  <FullStackBlend.Controls.DropDownControl representing={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]]} width={500}>
+                                        <div>
                                             <FullStackBlend.Components.SettingPicker ref="setting" watchingAttributeNames={this.props.watchingAttributeNames} />
                                             <FullStackBlend.Components.PropertyPicker ref="property" watchingAttributeNames={this.props.watchingAttributeNames} />
                                             <FullStackBlend.Components.StatePicker ref="state" watchingAttributeNames={this.props.watchingAttributeNames} />
