@@ -61,10 +61,10 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, data);
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			try {
 				if (permission == null) {
