@@ -628,7 +628,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (await !PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+							if (!await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
 							const record = await map.create(hash, {transaction: transaction});
 							
@@ -687,12 +687,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
@@ -787,7 +787,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (await !PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, hash, session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+							if (!await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, hash, session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 							
 						  const result = {
 						    keys: {},
@@ -843,12 +843,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
@@ -932,7 +932,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (await !PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+							if (!await PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
 							await map.update(data, {where: hash, transaction: transaction});
 							
@@ -992,12 +992,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
@@ -1046,7 +1046,7 @@ const DatabaseHelper = {
 			  	
 		  		resolve(results);
 		  	} else {
-		  		if (await !PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, {}, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+		  		if (!await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, {}, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 		  		
 		  		const results = {};
 		  		
@@ -1080,12 +1080,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
+	    					    if (!await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
+	    					    if (!await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1152,7 +1152,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (await !PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+							if (!await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 							
 							const rows = [];
 							const records = await map.findAll({where: hash}) || [];
@@ -1211,16 +1211,16 @@ const DatabaseHelper = {
 							  	}
 							  }
 							}
-						
-							for (const row of rows) {
+							
+							for (const _row of rows) {
 							  for (const key in baseSchema.columns) {
-								  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-								    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
+								  if (baseSchema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
+								    if (!await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete _row.columns[key];
 								  }
 								}
 								for (const key in baseSchema.keys) {
-								  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-								    if (await !PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
+								  if (baseSchema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
+								    if (!await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete _row.keys[key];
 								  }
 								}
 							}
@@ -1299,7 +1299,7 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (await !PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+							if (!await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
 							const record = await map.findOne({where: hash, transaction: transaction});
 							await record.destroy({force: true, transaction: transaction});
@@ -1359,12 +1359,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (await !PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}

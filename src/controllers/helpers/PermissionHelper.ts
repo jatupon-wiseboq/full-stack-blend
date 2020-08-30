@@ -24,19 +24,19 @@ const PermissionHelper = {
 	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		if (action == ActionType.Insert || action == ActionType.Upsert) {
 			if (schema.modifyingPermission && schema.modifyingPermission.mode == "relation" && schema.modifyingPermission.relationModeSourceGroup != schema.group) {
-				if (await !PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) return false;
+				if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) return false;
 			}
 		} else {
-			if (await !PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.retrievingPermission : schema.modifyingPermission, schema, modifyingColumns, session, data)) return false;
+			if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.retrievingPermission : schema.modifyingPermission, schema, modifyingColumns, session, data)) return false;
 			
 			for (const key in schema.keys) {
 				if (schema.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-					if (await !PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.keys[key].retrievingPermission : schema.keys[key].modifyingPermission, schema, modifyingColumns, session, data)) return false;
+					if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.keys[key].retrievingPermission : schema.keys[key].modifyingPermission, schema, modifyingColumns, session, data)) return false;
 				}
 			}
 			for (const key in schema.columns) {
 				if (schema.columns.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-					if (await !PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.columns[key].retrievingPermission : schema.columns[key].modifyingPermission, schema, modifyingColumns, session, data)) return false;
+					if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.columns[key].retrievingPermission : schema.columns[key].modifyingPermission, schema, modifyingColumns, session, data)) return false;
 				}
 			}
 		}
@@ -47,25 +47,32 @@ const PermissionHelper = {
 		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, data);
 	},
 	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		if (permission == null) return true;
-		
-		switch (permission.mode) {
-			case "relation":
-				if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
-				
-				const shortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
-				let value;
-				
-				switch (permission.relationMatchingMode) {
-					case "session":
-						value = session[permission.relationMatchingSessionName];
-						break;
-					default:
-						value = permission.relationMatchingConstantValue;
-						break;
-				}
-				
-				return await new Promise((resolve, reject) => {
+		return new Promise((resolve, reject) => {
+			if (permission == null) {
+				resolve(true);
+				return;
+			}
+			
+			switch (permission.mode) {
+				case "block":
+				case "always":
+					resolve(false);
+					break;
+				case "relation":
+					if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
+					
+					const shortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
+					let value;
+					
+					switch (permission.relationMatchingMode) {
+						case "session":
+							value = session[permission.relationMatchingSessionName];
+							break;
+						default:
+							value = permission.relationMatchingConstantValue;
+							break;
+					}
+					
 					const INNER_JOIN = [];
 					const WHERE_CLAUSE = [];
 					const VALUES = [];
@@ -107,15 +114,16 @@ const PermissionHelper = {
       			  resolve(false);
       			}
       		}).bind(this));
-				});
-				
-				break;
-			case "session":
-				if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
-				return (session[permission.sessionMatchingSessionName] == permission.sessionMatchingConstantValue);
-			default:
-				return true;
-		}
+					break;
+				case "session":
+					if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
+					resolve(session[permission.sessionMatchingSessionName] == permission.sessionMatchingConstantValue);
+					break;
+				default:
+					resolve(true);
+					break;
+			}
+		});
 	},
 };
 
