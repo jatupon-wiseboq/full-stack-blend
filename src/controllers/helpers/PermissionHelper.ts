@@ -38,7 +38,7 @@ const PermissionHelper = {
 					} else if (action != ActionType.Retrieve) {
 						for (const key in schema.keys) {
 							if (schema.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.keys[key].retrievingPermission : schema.keys[key].modifyingPermission, schema, modifyingColumns, session, data)) {
+								if (!await PermissionHelper.allowPermission(schema.keys[key].modifyingPermission, schema, modifyingColumns, session, data)) {
 									resolve(false);
 									return;
 								}
@@ -46,7 +46,7 @@ const PermissionHelper = {
 						}
 						for (const key in schema.columns) {
 							if (schema.columns.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.columns[key].retrievingPermission : schema.columns[key].modifyingPermission, schema, modifyingColumns, session, data)) {
+								if (!await PermissionHelper.allowPermission(schema.columns[key].modifyingPermission, schema, modifyingColumns, session, data)) {
 									resolve(false);
 									return;
 								}
