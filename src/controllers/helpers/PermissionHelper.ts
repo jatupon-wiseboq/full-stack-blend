@@ -120,7 +120,10 @@ const PermissionHelper = {
 	      		console.log(COMMAND);
 	      		
 	      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);
-	      		if (cachedPermissions[cachedPermissionMD5Key]) return cachedPermissions[cachedPermissionMD5Key];
+	      		if (cachedPermissions[cachedPermissionMD5Key]) {
+	      			resolve(true);
+	      			return;
+	      		}
 						
 						RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
 	            if (error) {
