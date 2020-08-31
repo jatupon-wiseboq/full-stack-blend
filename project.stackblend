@@ -230,7 +230,7 @@
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d5846c7b\" internal-fsb-name=\"FlowLayout 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background: rgba(3, 115, 252, 1); padding-top: 40px; padding-bottom: 40px\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12\" internal-fsb-guid=\"34a6153c\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"font-family: Roboto; font-size: 18px; font-weight: 300; color: rgba(255, 255, 255, 1); text-align: center\">StackBlend is free while it's still under development. If you are interested to use StackBlend as a web application development studio but don't have any full-stack engineer in your business, please contact me directly at jatupon@softenstorm.com to consult for freelance and partnership.</div>",
+        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-6 offset-3\" internal-fsb-guid=\"34a6153c\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"font-family: Roboto; font-size: 18px; font-weight: 300; color: rgba(255, 255, 255, 1); text-align: center\">StackBlend is free while it's still under development. If you are interested to use StackBlend as a web application development studio but don't have any full-stack engineer in your business, please contact me directly at jatupon@softenstorm.com to consult for freelance and partnership.</div>",
         "                                </div>",
         "                            </div>",
         "                        </div>",
@@ -481,9 +481,9 @@
       "accessories": {
         "selectingElementGUID": "be5edae1",
         "currentCursorWalkPath": [
-          "0",
+          "d5846c7b",
           0,
-          9,
+          1,
           null
         ]
       },
@@ -1317,7 +1317,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "8bc66153e5fc1eefecb80d3c83c9e379afde0dd7",
+    "index": "564b81ddb5f7e327cb7864f5d118bd57cf8a8aa5",
     "b160aa0e": "b11c25e5ba3946352c1b0e638d8aede363cab9f4"
   },
   "currentPersistingFiles": [
