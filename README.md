@@ -15,11 +15,11 @@ You might clone the repository and run it on your local machine for advanced deb
 5. run "git remote rename origin boilerplate".
 6. run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
 7. run "git checkout -b staging".
-8. run "git push --set-upstream origin staging".
+8. run "git push --set-upstream origin staging --force".
 7. run "git checkout -b develop".
-8. run "git push --set-upstream origin develop".
+8. run "git push --set-upstream origin develop --force".
 9. run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
-10. run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME".
+10. run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
 11. run "npm install".
 12. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
 13. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
@@ -53,7 +53,7 @@ To get started:
 6. From Feature Branch, enter "feature/YOUR_NEW_FEATURE_NAME".
 7. From Develop Branch, enter "develop".
 8. From Staging Branch, enter "staging".
-9. From Endpoint, enter "https://YOUR_HEROKU_PROJECT_NAME.herokuapp.com".
+9. From Endpoint, enter "https://localhost".
 
 ## Questions?
 
