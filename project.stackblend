@@ -223,7 +223,7 @@
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"></div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-10 offset-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; min-height: 100px; -fsb-for-children: true\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/data-modeling.png\"></div>",
+        "            <div class=\"internal-fsb-element col-10 offset-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; min-height: 100px; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/data-modeling.png\"></div>",
         "            <div class=\"internal-fsb-element col-10 offset-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px; position: relative\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
@@ -466,11 +466,11 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "6ec629ac",
+        "selectingElementGUID": "98d2830a",
         "currentCursorWalkPath": [
           "0",
           0,
-          1,
+          8,
           null
         ]
       },
@@ -1304,7 +1304,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "17dd8947dd6b0d0c9dd3d3751aba89a82e7827e2",
+    "index": "ac47c2e502d1e2f15f7d1916294087815e36207e",
     "b160aa0e": "b11c25e5ba3946352c1b0e638d8aede363cab9f4"
   },
   "currentPersistingFiles": [
