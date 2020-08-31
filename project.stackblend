@@ -218,7 +218,7 @@
         "                    </div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d2c926ad\" internal-fsb-name=\"FlowLayout 25\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"border-top-width: 3px; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; margin-top: 1px\">",
+        "            <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d2c926ad\" internal-fsb-name=\"FlowLayout 25\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"border-top-width: 15px; border-top-color: rgba(3, 115, 252, 1); border-top-style: solid; margin-top: 1px\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"></div>",
         "                </div>",
@@ -466,11 +466,11 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "98d2830a",
+        "selectingElementGUID": "d2c926ad",
         "currentCursorWalkPath": [
           "0",
           0,
-          8,
+          7,
           null
         ]
       },
@@ -1304,7 +1304,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "ac47c2e502d1e2f15f7d1916294087815e36207e",
+    "index": "7a990cf3a73ffd3394608e0aa4029581445c6966",
     "b160aa0e": "b11c25e5ba3946352c1b0e638d8aede363cab9f4"
   },
   "currentPersistingFiles": [
