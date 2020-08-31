@@ -150,6 +150,9 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
+    RequestHelper.registerSubmit("index", "651393e4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("index", "d85b2bd4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("index", "57bd398a", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 
 	  // <---Auto[Merging]
 	  
