@@ -116,7 +116,7 @@ const PermissionHelper = {
 							}
 						}
 						
-						const COMMAND = `SELECT * FROM ${permission.relationModeSourceGroup} ${INNER_JOIN.join(" ")} WHERE ${WHERE_CLAUSE.join(" AND ")} LIMIT 1`;
+						const COMMAND = `SELECT * FROM ${target.group} ${INNER_JOIN.join(" ")} WHERE ${WHERE_CLAUSE.join(" AND ")} LIMIT 1`;
 	      		console.log(COMMAND);
 	      		
 	      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);

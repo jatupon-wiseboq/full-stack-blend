@@ -198,6 +198,8 @@ const SchemaHelper = {
     return notations;
   },
 	verifyNotations: (tree: any, data: DataSchema) => {
+		return;
+		
 	  const notations = SchemaHelper.findAllPossibleNotations(tree || {});
 	  for (const notation of notations) {
 	    const splited = notation.split(".");
@@ -234,14 +236,15 @@ const SchemaHelper = {
 		
 		SchemaHelper.recursiveFindShortestPathOfRelations(from, to, results);
 		
-		return results.reverse();
+		return results;
 	},
 	recursiveFindShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, results: DataTableSchema[], walked: any={}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): boolean => {
 		if (walked[from.group]) return false;
 		walked[from.group] = true;
 		
-		if (to == from) {
-			results.push(to);
+		if (from == to) {
+			results.push(from);
+			
 			return true;
 		}
 		
@@ -264,10 +267,11 @@ const SchemaHelper = {
 		}
 		
 		if (shortestResults) {
+			results.push(from);
+			
 			for (const item of shortestResults) {
 				results.push(item);
 			}
-			results.push(from);
 			
 			return true;
 		} else {
