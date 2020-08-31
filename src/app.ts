@@ -14,7 +14,6 @@ import cors from "cors";
 import fs from "fs";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
-import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
 
 const MongoStore = mongo(session);
 
@@ -49,10 +48,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 }
 
 // Connect to MongoDB
-const mongoUrl = MONGODB_URI;
-
+const mongoUrl = process.env[process.env.DOCUMENT_DATABASE_KEY];
 mongoose.Promise = bluebird;
-
 mongoose.connect(mongoUrl, {useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */ }).
