@@ -4,11 +4,6 @@
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
-import './components/TextElement_bb6cddae.js';
-import './components/TextElement_b19840c8.js';
-import './components/TextElement_92de9e1b.js';
-import './components/TextElement_738cbdce.js';
-import './components/FlowLayout_0a9730e3.js';
 
 declare let React: any;
 declare let ReactDOM: any;

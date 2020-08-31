@@ -3,12 +3,12 @@
 
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from "../helpers/DatabaseHelper.js";
-import {ValidationInfo, ValidationHelper} from "../helpers/ValidationHelper.js";
-import {RequestHelper} from "../helpers/RequestHelper.js";
-import {RenderHelper} from "../helpers/RenderHelper.js";
-import {DataTableSchema} from "../helpers/SchemaHelper.js";
-import {Base} from "./Base.js";
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from './../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from './../helpers/ValidationHelper.js';
+import {RequestHelper} from './../helpers/RequestHelper.js';
+import {RenderHelper} from './../helpers/RenderHelper.js';
+import {DataTableSchema} from './../helpers/SchemaHelper.js';
+import {Base} from './Base.js';
 
 // <---Auto[Import]
 
@@ -25,6 +25,7 @@ import {Base} from "./Base.js";
 enum ActionType {
   Insert,
   Update,
+  Upsert,
   Delete,
   Retrieve,
   Popup,
@@ -45,6 +46,7 @@ enum ValidationInfo {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -69,7 +71,7 @@ class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
   	super(request, response, template);
   	try {
-	    const [action, schema, data] = this.initialize(request);
+	    let [action, schema, data] = this.initialize(request);
 	    this.perform(action, schema, data);
    	} catch(error) {
 	  	RenderHelper.error(response, error);
@@ -136,23 +138,27 @@ class Controller extends Base {
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
- 		return "/";
+ 		return '/';
   }
  	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	const action: ActionType = RequestHelper.getAction(request);
-  	const schema: DataTableSchema = RequestHelper.getSchema(request);
-  	const data: Input[] = [];
-  	const input: Input = null;
+  	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
+  	let data: Input[] = [];
+  	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
+    RequestHelper.registerSubmit("index", "651393e4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("index", "d85b2bd4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("index", "57bd398a", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+
 	  // <---Auto[Merging]
 	  
 	  // Auto[MergingEnd]--->
 	  
+  	let action: ActionType = RequestHelper.getAction(this.pageId, request);
 	  return [action, schema, data];
 	}
   // <---Auto[MergingEnd]

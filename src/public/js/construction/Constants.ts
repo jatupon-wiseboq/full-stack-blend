@@ -338,6 +338,7 @@ export const TEXT_INPUT_TYPE_OPTIONS = [["type", "text", ["fa-font", "Text"]], [
 export const CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g;
 export const CELL_STYLE_ATTRIBUTE_REGEX_LOCAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/;
 export const FORWARD_STYLE_TO_CHILDREN_CLASS_LIST = ['Iframe', 'Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Image', 'Video'];
+export const FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST = ['Iframe', 'Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Image', 'Video'];
 export const FORM_CONTROL_CLASS_LIST = ['Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Hidden'];
 export const DOT_NOTATION_CONSUMABLE_TAG_LIST = [['iframe', 'src', '{', '}'], ['a', 'dangerouslySetInnerHTML', '{{__html: ', '}}'], ['svg', 'dangerouslySetInnerHTML', '{{__html: ', '}}'], ['input', 'defaultValue', '{', '}'], ['textarea', 'defaultValue', '{', '}'], ['select', 'defaultValue', '{', '}'], ['img', 'src', '{', '}'], ['video', 'src', '{', '}']];
 export const DOT_NOTATION_CONSUMABLE_CLASS_LIST = [['HTML', 'dangerouslySetInnerHTML', '{{__html: ', '}}'], ['TextElement', 'dangerouslySetInnerHTML', '{{__html: CodeHelper.escape(', ')}}']];
