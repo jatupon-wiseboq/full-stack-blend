@@ -37,6 +37,7 @@ let options = {
     "background-repeat": CONSTANTS.BACKGROUND_REPEAT_OPTIONS,
     "background-size[0,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
     "background-size[1,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
+    "background-size": CONSTANTS.BACKGROUND_CONTAINING_SIZE_OPTIONS,
     "background-position[0,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "background-position[1,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS,
