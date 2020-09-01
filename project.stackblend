@@ -39,7 +39,7 @@
     "pages": [
       {
         "id": "index",
-        "name": "StackBlend",
+        "name": "StackBlend - Full-Stack Application Editor",
         "path": "/",
         "state": "update",
         "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
@@ -62,7 +62,7 @@
   "sites": {
     "index": {
       "id": "index",
-      "name": "StackBlend",
+      "name": "StackBlend - Full-Stack Application Editor",
       "path": "/",
       "state": "update",
       "head": {
@@ -1361,7 +1361,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "4ea43094cfa5fe78a6565e0c982c14d17735228b",
+    "index": "51bb66fc80d70fb6795697e6d61e26c0f757c1ad",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
