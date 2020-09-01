@@ -111,7 +111,7 @@
         "                                </div>",
         "                            </div>",
         "                        </div>",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-top: 0px; padding-bottom: 0px; position: relative; padding-left: 0px; padding-right: 0px; overflow-y: hidden; -ms-overflow-y: hidden; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px top\">",
+        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-top: 0px; padding-bottom: 0px; position: relative; padding-left: 0px; padding-right: 0px; overflow-y: hidden; -ms-overflow-y: hidden; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px top;background-size: cover;\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "",
@@ -236,7 +236,7 @@
         "                    </div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px; position: relative; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px bottom\">",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px; position: relative; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px bottom;background-size: cover;\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"04c0a4a8\" internal-fsb-name=\"FlowLayout 24\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"position: relative; padding-top: 200px; padding-bottom: 200px\">",
@@ -1355,7 +1355,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "fa3c0f625102e84aef2dd91afb06528f5605fb30",
+    "index": "c1aec395f93021c7295dd4951d08dd53a8fe791e",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
