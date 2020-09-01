@@ -6,7 +6,7 @@ const CodeHelper = {
     return JSON.parse(JSON.stringify(obj));
   },
   equals: (x: any, y: any) => {
-    'use strict';
+    "use strict";
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
     // after this just checking type of one would be enough
@@ -26,12 +26,12 @@ const CodeHelper = {
     if (!(y instanceof Object)) { return false; }
 
     // recursive object equality check
-    var p = Object.keys(x);
+    const p = Object.keys(x);
     return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
         p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
   },
   escape: (unsafe: string) => {
-  	unsafe = unsafe || '';
+  	unsafe = unsafe || "";
   	return unsafe
 			.replace(/&/g, "&amp;")
 			.replace(/</g, "&lt;")

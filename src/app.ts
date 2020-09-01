@@ -12,7 +12,8 @@ import passport from "passport";
 import bluebird from "bluebird";
 import cors from "cors";
 import fs from "fs";
-import {MONGODB_URI, SESSION_SECRET} from "./util/secrets";
+import errorHandler from "errorhandler";
+import dotenv from "dotenv";
 
 const MongoStore = mongo(session);
 
@@ -24,6 +25,10 @@ import * as contactController from "./controllers/contact";
 
 // API keys and Passport configuration
 import * as passportConfig from "./config/passport";
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+}
 
 // Create Express server
 const app = express();
@@ -43,10 +48,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 }
 
 // Connect to MongoDB
-const mongoUrl = MONGODB_URI;
-
+const mongoUrl = process.env[process.env.DOCUMENT_DATABASE_KEY];
 mongoose.Promise = bluebird;
-
 mongoose.connect(mongoUrl, {useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */ }).
@@ -61,27 +64,48 @@ app.use(secure);
 app.enable("trust proxy");
 
 // Express configuration
-app.set("port", process.env.PORT || 3000);
+//
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  app.set("trust proxy", 1);
+  app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+        autoReconnect: true,
+        mongoOptions: {
+        	useUnifiedTopology: true
+        }
+    }),
+    cookie: { secure: true }
+  }));
+} else {
+  app.use(session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+				url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+				autoReconnect: true,
+        mongoOptions: {
+        	useUnifiedTopology: true
+        }
+    }),
+    cookie: {}
+  }));
+}
+
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
 app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
-app.use(session({
-    resave: true,
-    saveUninitialized: true,
-    secret: SESSION_SECRET,
-    store: new MongoStore({
-        url: mongoUrl,
-        autoReconnect: true
-    })
-}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
-app.use(lusca.xframe("SAMEORIGIN"));
 
-if (["staging", "production"].indexOf(process.env.NODE_ENV) != -1) {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.use(lusca.xframe("SAMEORIGIN"));
 }
 
@@ -101,20 +125,17 @@ app.use((req, res, next) => {
     
     } else if (req.user &&
     req.path == "/account") {
-
         req.session.returnTo = req.path;
-
     }
     next();
 });
 
-app.use(express.static(path.join(__dirname, "public"), {maxAge: 0}));
-
-/**
- * CORS configuration
- */
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+// CORS configuration
+// 
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.use(cors());
+} else {
+	// app.use(cors());
 }
 
 /**
@@ -140,34 +161,6 @@ app.post("/account/password", passportConfig.isAuthenticated, userController.pos
 app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 
-// For Endpoint Testing of StackBlend Editor
-// 
-import * as endpoint from "./controllers/Endpoint";
-
-if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	endpoint.clearRecentError();
-	app.post("/endpoint/update/content", endpoint.updateContent);
-	app.get("/endpoint/recent/error", endpoint.getRecentError);
-	
-	app.use((err, req, res, next) => {
-    endpoint.addRecentError(err);
-    next();
-  });
-  process.on("uncaughtException", (err) => {
-  	endpoint.addRecentError(err);
-	});
-}
-
-// For StackBlend Routings & Controllers
-// 
-try {
-	const route = require("./route");
-	route.default(app);
-} catch (error) {
-	console.log("\x1b[31m", error, "\x1b[0m");
-	endpoint.addRecentError(error);
-}
-
 /**
  * API examples routes.
  */
@@ -180,15 +173,40 @@ app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthor
 app.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email",
     "public_profile"]}));
 app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/login"}), (req, res) => {
-
     res.redirect("/editor");
-
 });
 app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
 app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/login"}), (req, res) => {
-
     res.redirect("/account");
-
 });
+
+// Cache configuration
+// 
+app.use(
+    express.static(path.join(__dirname, "public"), { maxAge: 0 })
+);
+
+// Error handler
+if (["production"].indexOf(process.env.NODE_ENV) == -1) {
+  app.use(errorHandler());
+}
+
+// StackBlend code editor's endpoint
+// 
+import * as endpoint from "./controllers/Endpoint";
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+	endpoint.clearRecentError();
+	app.post("/endpoint/update/content", endpoint.updateContent);
+	app.get("/endpoint/recent/error", endpoint.getRecentError);
+	
+	app.use((err, req, res, next) => {
+    endpoint.addRecentError(err);
+    next();
+  });
+  process.on("uncaughtException", (err) => {
+  	endpoint.addRecentError(err);
+	});
+}
 
 export default app;

@@ -41,6 +41,9 @@ class Base {
       case ActionType.Update:
         RenderHelper.json(this.response, await this.update(data, schema));
         break;
+      case ActionType.Upsert:
+        RenderHelper.json(this.response, await this.upsert(data, schema));
+        break;
       case ActionType.Delete:
         RenderHelper.json(this.response, await this.remove(data, schema));
         break;
@@ -114,6 +117,10 @@ class Base {
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+ 		throw new Error("Not Implemented Error");
+  }
+  
+  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
  		throw new Error("Not Implemented Error");
   }
   
