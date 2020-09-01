@@ -36,6 +36,7 @@ export const BACKGROUND_CLIP_OPTIONS = [null, "padding-box", "border-box", "cont
 export const BACKGROUND_ORIGIN_OPTIONS = [null, "padding-box", "border-box", "content-box"];
 export const BACKGROUND_REPEAT_OPTIONS = [null, "repeat", "repeat-x", "repeat-y", "no-repeat", "space", "round"];
 export const BACKGROUND_SIZE_OPTIONS = [null, "{SIZE}"];
+export const BACKGROUND_CONTAINING_SIZE_OPTIONS = [null, "auto", "cover", "contain"];
 export const BACKGROUND_POSITION_OPTIONS = [null, "{SIZE}", "top", "right", "bottom", "left", "center"];
 export const MIX_BLEND_MODE_OPTIONS = [null, "normal", "multiply", "screen", "overlay", "darken", "lighten", "color-dodge", "color-burn", "difference", "exclusion", "hue", "saturation", "color", "luminosity"];
 export const OPACITY_OPTIONS = [null, "{FLOAT}"];
