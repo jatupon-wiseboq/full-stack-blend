@@ -6,7 +6,7 @@ import redis from "redis";
 import mysql from "mysql2";
 import {MongoClient} from "mongodb";
 import sidekiq from "sidekiq";
-import {Sequelize} from "sequelize";
+import {Sequelize, Transaction} from "sequelize";
 import dotenv from "dotenv";
 
 let VolatileMemoryClient = null;
@@ -66,7 +66,15 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 	PrioritizedWorkerClient = new sidekiq(PrioritizedWorkerVolatileMemoryClient, process.env.NODE_ENV);
 }
 
-export {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient};
+const CreateTransaction = (options) => {
+	if (RelationalDatabaseORMClient) {
+		return RelationalDatabaseORMClient.transaction(options);
+	}
+	
+	return null;
+};
+
+export {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient, CreateTransaction};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

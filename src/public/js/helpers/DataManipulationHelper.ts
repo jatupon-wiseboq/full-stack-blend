@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {RequestHelper} from './RequestHelper.js';
+import {NotificationHelper} from './NotificationHelper.js';
 import {HTMLHelper} from './HTMLHelper.js';
 import {EventHelper} from './EventHelper.js';
 
@@ -17,6 +18,7 @@ interface HierarchicalDataTable {
 	source: SourceType;
 	group: string;
   rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -55,35 +57,51 @@ const DataManipulationHelper = {
   		
   		let current = EventHelper.getOriginalElement(event);
   		let foundAll = false;
+  		let foundRadio = {};
   		
   		while (!foundAll && current != null && current != document) {
   			foundAll = true;
   			
   			for (const field of fields) {
-		  		let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
+		  		let elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
 		  		
-		  		if (element) {
+		  		for (let index=0; index < elements.length; index++) {
+		  			let element = elements[index];
+		  			
+		  			// All of inputs are a forwarding element. To get the actual input,
+		  			// we must look into their children.
+		  			// 
 		  			if (element.tagName != 'INPUT') {
 			  			element = element.firstChild;
+			  			
+			  			// Also skip text node.
+			  			// 
 			  			while (element && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) == -1) {
 			  				element = element.nextSibling;
 			  			}
 			  		}
+			  		
+			  		let name = (elements.length > 1) ? `${field}[${index}]` : field;
 		  		
 		  			switch (HTMLHelper.getAttribute(element, 'type')) {
 		  				case 'radio':
+		  					if (foundRadio[element.name] === undefined) {
+		  						foundRadio[element.name] = name;
+		  					}
 		  					if (element.checked) {
-		  						params[field] = element.value;
+		  						foundRadio[element.name] = true;
+		  						params[name] = element.value;
 		  					}
 		  					break;
 		  				case 'checkbox':
-		  					params[field] = element.checked ? 'true' : 'false';
+		  					params[name] = element.checked ? 'true' : 'false';
 		  					break;
 	  					default:
-	  						params[field] = element.value;
+	  						params[name] = element.value;
 	  						break;
 	  				}
-		  		} else {
+		  		}
+		  		if (elements.length == 0) {
 		  			foundAll = false;
 		  			break;
 		  		}
@@ -91,11 +109,24 @@ const DataManipulationHelper = {
   			
   			current = current.parentNode;
   		}
+  		
+  		for (let name in foundRadio) {
+  			if (foundRadio.hasOwnProperty(name)) {
+  				if (foundRadio[name] !== true) {
+  					params[foundRadio[name]] = null;
+  				}
+  			}
+  		}
 	  	
-	  	params['action'] = action;
+	  	params['guid'] = guid;
 	  	params['notation'] = notation;
 	  	
-	  	const button = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', guid);
+	  	const button = EventHelper.getCurrentElement(event);
+	  	
+	  	if (button && action == 'retrieve') {
+	  		NotificationHelper.replaceRetrieveButtonForAutoRefresh(button, notation, options.retrieveInto);
+	  	}
+	  	
 	  	if (button) {
 	  		const event = new CustomEvent('submitting', {
 					detail: {
@@ -199,7 +230,7 @@ const DataManipulationHelper = {
 			}
 		}
   },
-  getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}=window.data, inArray: boolean=false): any => {
+  getDataFromNotation: (notation: string, data: any=window.data, inArray: boolean=false): any => {
     if (!notation) {
       console.error("The notation is null, undefined or empty.");
 	  	alert("There is an error occured, please try again.");
@@ -207,11 +238,17 @@ const DataManipulationHelper = {
     }
     
     let splited = notation.split('.');
-    let current = {
-			keys: null,
-			columns: null,
-			relations: data
-		};
+    let current;
+		
+		if (data.keys && data.columns) {
+    	current = data;
+    } else {
+	    current = {
+				keys: null,
+				columns: null,
+				relations: data
+			};
+		}
 		
 		let shifted = splited.shift();
 		while (current && shifted) {
