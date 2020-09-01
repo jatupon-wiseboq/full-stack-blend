@@ -39,9 +39,12 @@
     "pages": [
       {
         "id": "index",
-        "name": "Home",
+        "name": "StackBlend",
         "path": "/",
-        "state": "create"
+        "state": "update",
+        "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
+        "keywords": "full-stack, front-end, back-end, editor, wysiwyg, heroku, cloudflare, drag&drop, drag and drop, automatic generate, auto-generate, auto-generated, boilerplate, node.js, react.js, typescript, ready to deploy, easy to deploy, cheap, cheapest, inexpensive, free",
+        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png"
       },
       {
         "id": "b160aa0e",
@@ -59,9 +62,9 @@
   "sites": {
     "index": {
       "id": "index",
-      "name": "Home",
+      "name": "StackBlend",
       "path": "/",
-      "state": "create",
+      "state": "update",
       "head": {
         "fonts": {
           "Courier Prime": true,
@@ -223,7 +226,9 @@
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"></div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-md-10 offset-md-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; min-height: 100px; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/data-modeling.png\"></div>",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-md-10 offset-md-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png\"></div>",
+        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"474b3846\" internal-fsb-name=\"Image 1\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/code.png\"></div>",
+        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"d055083e\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png\"></div>",
         "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"be5edae1\" internal-fsb-name=\"FlowLayout 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
@@ -476,18 +481,30 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,1,400;1,1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,1,100;1,1,1,1,1,300;1,1,1,1,1,400;1,1,1,1,1,500;1,1,1,1,1,700;1,1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": null,
+        "selectingElementGUID": "6ec629ac",
         "currentCursorWalkPath": [
-          "8080e753",
+          "0",
           0,
-          1,
+          10,
           null
         ]
       },
@@ -495,10 +512,13 @@
         "internal-fsb-data-code-import": "\n\n// Import additional modules here:\n// \n\n",
         "internal-fsb-data-code-declare": "\n\n// Declare private static variables here:\n// \n\n",
         "internal-fsb-data-code-interface": "\n\n// Declare or extend interfaces here:\n// \n\n",
-        "internal-fsb-data-code-body": "\n  \n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {\n \t\treturn new Promise(async (resolve, reject) => {\n      try {\n        resolve({\n     \t\t  Log: {\n       \t\t  source: null,\n       \t\t  group: \"Log\",\n       \t\t  rows: [{\n       \t\t    keys: {},\n       \t\t    columns: {\n       \t\t      message: \"Hello World!\"\n       \t\t    },\n       \t\t    relations: {}\n       \t\t  }]\n       \t\t}\n     \t\t});\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.post(data);\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.put(data);\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn super.delete(data);\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.insert(data, schema);\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.update(data, schema);\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n \t\treturn await DatabaseHelper.delete(data, schema);\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n \t\treturn await DatabaseHelper.retrieve(data, schema);\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n \t\treturn '/';\n  }\n \t\n  ",
+        "internal-fsb-data-code-body": "\n  // Declare class variables and functions here:\n  //\n  protected validate(data: Input[]): void {\n  \t// The message of thrown error will be the validation message.\n  \t//\n \t\tValidationHelper.validate(data);\n  }\n  \n  protected async accessories(data: Input[]): Promise<any> {\n    return new Promise(async (resolve, reject) => {\n      try {\n        resolve({\n          title: null,\n          description: null,\n          keywords: null,\n          language: null,\n          contentType: null,\n          revisitAfter: null,\n          robots: null,\n          linkUrl: null,\n          imageUrl: null,\n          itemType: null,\n          contentLocale: null\n        });\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n    return new Promise(async (resolve, reject) => {\n      try {\n        resolve(await super.get(data));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n    return new Promise(async (resolve, reject) => {\n      /* try {\n        resolve(await super.post(data));\n      } catch(error) {\n        reject(error);\n      } */\n      reject(new Error(\"Not Implemented Error\"));\n    });\n  }\n  \n  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n    return new Promise(async (resolve, reject) => {\n      /* try {\n        resolve(await super.put(data));\n      } catch(error) {\n        reject(error);\n      } */\n      reject(new Error(\"Not Implemented Error\"));\n    });\n  }\n  \n  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n    return new Promise(async (resolve, reject) => {\n      /* try {\n        resolve(await super.delete(data));\n      } catch(error) {\n        reject(error);\n      } */\n      reject(new Error(\"Not Implemented Error\"));\n    });\n  }\n  \n  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n    return new Promise(async (resolve, reject) => {\n      try {\n      \tlet options = RequestHelper.getOptions(this.pageId, this.request);\n        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n    return new Promise(async (resolve, reject) => {\n    \ttry {\n      \tlet options = RequestHelper.getOptions(this.pageId, this.request);\n        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n    return new Promise(async (resolve, reject) => {\n    \ttry {\n        resolve(await DatabaseHelper.upsert(data, schema, this.request.session));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {\n    return new Promise(async (resolve, reject) => {\n    \ttry {\n        resolve(await DatabaseHelper.delete(data, schema, this.request.session));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {\n    return new Promise(async (resolve, reject) => {\n    \ttry {\n      \tlet options = RequestHelper.getOptions(this.pageId, this.request);\n        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n  \n  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {\n    return new Promise(async (resolve, reject) => {\n    \ttry {\n      \tthrow new Error(\"Not Implemented Error\");\n        // resolve('/');\n      } catch(error) {\n        reject(error);\n      }\n    });\n  }\n \t\n  ",
         "internal-fsb-data-code-footer": null
       },
-      "notations": {}
+      "notations": {},
+      "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
+      "keywords": "full-stack, front-end, back-end, editor, wysiwyg, heroku, cloudflare, drag&drop, drag and drop, automatic generate, auto-generate, auto-generated, boilerplate, node.js, react.js, typescript, ready to deploy, easy to deploy, cheap, cheapest, inexpensive, free",
+      "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png"
     },
     "b351d3a2": {
       "id": "b351d3a2",
@@ -816,10 +836,18 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,1,100;1,1,1,1,1,300;1,1,1,1,1,400;1,1,1,1,1,500;1,1,1,1,1,700;1,1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,100;1,1,1,1,300;1,1,1,1,400;1,1,1,1,500;1,1,1,1,700;1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,1,400;1,1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,400;1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
@@ -1316,13 +1344,13 @@
     "12662a17": "-fsb-inherited-presets: ; font-family: Roboto; text-align: center; color: rgba(255, 255, 255, 1.0); font-weight: 400; font-size: 20px; -fsb-reusable-name: feature_title_smaller; -fsb-reusable-id: 12662a17"
   },
   "backEndControllerBlobSHADict": {
-    "index": "41a5a9236a46badcb2ff2ee3e1f7f9db2376cee3",
+    "index": "969f1546eecd97a427931690073eb1ebf4c29cec",
     "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9"
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "ae5791d0e64229fe4e4ae3bf68d51e9e64c76096",
-    "b160aa0e": "b11c25e5ba3946352c1b0e638d8aede363cab9f4"
+    "index": "73ea3a9112fe8734721f68cbe7972d1c934b0ac7",
+    "b160aa0e": "4699abb23cec991ff212fae156d2db418f32d48b"
   },
   "currentPersistingFiles": [
     "src/controllers/components/index.ts",
