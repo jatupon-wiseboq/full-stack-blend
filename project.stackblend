@@ -87,14 +87,14 @@
         "            <div class=\"internal-fsb-element col-lg-10 offset-lg-1 col-12 offset-0\" internal-fsb-guid=\"e90dbe28\" internal-fsb-name=\"FlowLayout 4\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"19615762\" internal-fsb-name=\"FlowLayout 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"border-bottom-width: 1px; padding-bottom: 5px; margin-bottom: 5px; padding-left: 0px; padding-right: 0px; margin-top: 10px; border-bottom-style: solid; border-bottom-color: rgba(122, 122, 122, 1)\">",
+        "                        <div class=\"internal-fsb-element col-10 offset-1 col-lg-12 offset-lg-0\" internal-fsb-guid=\"19615762\" internal-fsb-name=\"FlowLayout 3\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"border-bottom-width: 1px; padding-bottom: 5px; margin-bottom: 5px; padding-left: 0px; padding-right: 0px; margin-top: 10px; border-bottom-style: solid; border-bottom-color: rgba(122, 122, 122, 1)\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"1ddd959b\" internal-fsb-name=\"TextElement 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"padding-left: 0px; padding-right: 0px; font-family: Roboto; font-size: 14px; font-weight: 300\">jatupon@softenstorm.com</div>",
         "                                </div>",
         "                            </div>",
         "                        </div>",
-        "                        <div contenteditable=\"true\" class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"2ec1682b\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"padding-left: 0px; font-size: 20px; font-family: Roboto; font-weight: 300\">StackBlend – Full Stack Application Editor</div>",
+        "                        <div contenteditable=\"true\" class=\"internal-fsb-element col-10 offset-1 col-lg-12 offset-lg-0\" internal-fsb-guid=\"2ec1682b\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"padding-left: 0px; font-size: 20px; font-family: Roboto; font-weight: 300\">StackBlend – Full Stack Application Editor</div>",
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"6ec629ac\" internal-fsb-name=\"FlowLayout 5\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"margin-top: 20px; background: rgba(3, 115, 252, 1); padding-top: 60px; padding-bottom: 20px\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
@@ -255,10 +255,10 @@
         "                    </div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"8080e753\" internal-fsb-name=\"FlowLayout 22\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px\">",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"8080e753\" internal-fsb-name=\"FlowLayout 22\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px; margin-top: 30px\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"74791030\" internal-fsb-name=\"FlowLayout 21\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"margin-bottom: 30px; border-top-width: 1px; border-top-color: rgba(122, 122, 122, 1); border-top-style: solid; min-height: 0px; text-align: center; padding-top: 5px; padding-left: 0px; padding-right: 0px\">",
+        "                        <div class=\"internal-fsb-element col-10 offset-1 col-lg-12 offset-lg-0\" internal-fsb-guid=\"74791030\" internal-fsb-name=\"FlowLayout 21\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"margin-bottom: 30px; border-top-width: 1px; border-top-color: rgba(122, 122, 122, 1); border-top-style: solid; min-height: 0px; text-align: center; padding-top: 5px; padding-left: 0px; padding-right: 0px\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"c1ec7cb3\" internal-fsb-name=\"TextElement 15\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"font-family: Roboto; font-size: 14px; font-weight: 300\">Copyright @2020 SoftenStorm (Jatupon S.)</div>",
@@ -503,6 +503,10 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
@@ -510,11 +514,11 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "722b0448",
+        "selectingElementGUID": "651393e4",
         "currentCursorWalkPath": [
-          "e90dbe28",
+          "6ac85eab",
           0,
-          4,
+          1,
           null
         ]
       },
@@ -1363,7 +1367,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "c0c0d8f23238ed80f0353240cd8b701719d93653",
+    "index": "d19ffd0d67d218b170aec23288f2942de79b9259",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
