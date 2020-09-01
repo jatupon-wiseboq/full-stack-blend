@@ -111,7 +111,7 @@
         "                                </div>",
         "                            </div>",
         "                        </div>",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-top: 0px; padding-bottom: 0px; position: relative; padding-left: 0px; padding-right: 0px; overflow-y: hidden; -ms-overflow-y: hidden; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px top;background-size: cover;\">",
+        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-top: 0px;padding-bottom: 0px;position: relative;padding-left: 0px;padding-right: 0px;overflow-y: hidden;-ms-overflow-y: hidden;background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-position: 0px top;background-size: cover;\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "",
@@ -236,7 +236,7 @@
         "                    </div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px; padding-right: 0px; position: relative; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-size; background-position: 0px bottom;background-size: cover;\">",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"padding-left: 0px;padding-right: 0px;position: relative;background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;);background-position: 0px bottom;background-size: cover;\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"04c0a4a8\" internal-fsb-name=\"FlowLayout 24\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"position: relative; padding-top: 200px; padding-bottom: 200px\">",
@@ -495,10 +495,14 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,400;1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,100;1,1,1,300;1,1,1,400;1,1,1,500;1,1,1,700;1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
@@ -1355,7 +1359,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "c1aec395f93021c7295dd4951d08dd53a8fe791e",
+    "index": "545d66f41141b0077d849e6de9f930ed4aadbfe9",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
