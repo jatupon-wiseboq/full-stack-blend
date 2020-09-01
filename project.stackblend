@@ -493,14 +493,22 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,1,400;1,1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,400;1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,1,100;1,1,1,1,1,300;1,1,1,1,1,400;1,1,1,1,1,500;1,1,1,1,1,700;1,1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,100;1,1,1,300;1,1,1,400;1,1,1,500;1,1,1,700;1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "6ec629ac",
+        "selectingElementGUID": "d3615ea5",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -844,14 +852,18 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,100;1,1,1,1,300;1,1,1,1,400;1,1,1,1,500;1,1,1,1,700;1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,100;1,1,300;1,1,400;1,1,500;1,1,700;1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,400;1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,400;1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": null,
+        "selectingElementGUID": "416d7600",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -1349,8 +1361,8 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "73ea3a9112fe8734721f68cbe7972d1c934b0ac7",
-    "b160aa0e": "4699abb23cec991ff212fae156d2db418f32d48b"
+    "index": "4ea43094cfa5fe78a6565e0c982c14d17735228b",
+    "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
     "src/controllers/components/index.ts",
