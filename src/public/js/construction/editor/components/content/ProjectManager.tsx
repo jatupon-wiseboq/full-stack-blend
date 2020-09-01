@@ -268,11 +268,11 @@ class ProjectManager extends Base<Props, State> {
 				        let editingPageID = key;
 				        pages = pages.filter(page => page.id == editingPageID);
 				        
-				        let title = escape(pages && pages[0] && pages[0].title || '');
-				        let description = escape(pages && pages[0] && pages[0].description || '');
-				        let keywords = escape(pages && pages[0] && pages[0].keywords || '');
-				        let image = escape(pages && pages[0] && pages[0].image || '');
-				        let path = escape(pages && pages[0] && pages[0].path || '');
+				        let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
     		        
     		        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
     		        
