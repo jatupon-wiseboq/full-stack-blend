@@ -78,7 +78,6 @@ class Controller extends Base {
 	  }
   }
   // <---Auto[ClassBegin]
-  
   // Declare class variables and functions here:
   //
   protected validate(data: Input[]): void {
@@ -87,22 +86,32 @@ class Controller extends Base {
  		ValidationHelper.validate(data);
   }
   
-  protected async get(data: Input[]): Promise<HierarchicalDataTable[]> {
- 		return new Promise(async (resolve, reject) => {
+  protected async accessories(data: Input[]): Promise<any> {
+    return new Promise(async (resolve, reject) => {
       try {
         resolve({
-     		  Log: {
-       		  source: null,
-       		  group: "Log",
-       		  rows: [{
-       		    keys: {},
-       		    columns: {
-       		      message: "Hello World!"
-       		    },
-       		    relations: {}
-       		  }]
-       		}
-     		});
+          title: null,
+          description: null,
+          keywords: null,
+          language: null,
+          contentType: null,
+          revisitAfter: null,
+          robots: null,
+          linkUrl: null,
+          imageUrl: null,
+          itemType: null,
+          contentLocale: null
+        });
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+  
+  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        resolve(await super.get(data));
       } catch(error) {
         reject(error);
       }
@@ -110,35 +119,100 @@ class Controller extends Base {
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.post(data);
+    return new Promise(async (resolve, reject) => {
+      /* try {
+        resolve(await super.post(data));
+      } catch(error) {
+        reject(error);
+      } */
+      reject(new Error("Not Implemented Error"));
+    });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.put(data);
+    return new Promise(async (resolve, reject) => {
+      /* try {
+        resolve(await super.put(data));
+      } catch(error) {
+        reject(error);
+      } */
+      reject(new Error("Not Implemented Error"));
+    });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return super.delete(data);
+    return new Promise(async (resolve, reject) => {
+      /* try {
+        resolve(await super.delete(data));
+      } catch(error) {
+        reject(error);
+      } */
+      reject(new Error("Not Implemented Error"));
+    });
   }
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.insert(data, schema);
+    return new Promise(async (resolve, reject) => {
+      try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.update(data, schema);
+    return new Promise(async (resolve, reject) => {
+    	try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
+      } catch(error) {
+        reject(error);
+      }
+    });
+  }
+  
+  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
+    return new Promise(async (resolve, reject) => {
+    	try {
+        resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
- 		return await DatabaseHelper.delete(data, schema);
+    return new Promise(async (resolve, reject) => {
+    	try {
+        resolve(await DatabaseHelper.delete(data, schema, this.request.session));
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
- 		return await DatabaseHelper.retrieve(data, schema);
+    return new Promise(async (resolve, reject) => {
+    	try {
+      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
- 		return "/";
+    return new Promise(async (resolve, reject) => {
+    	try {
+      	throw new Error("Not Implemented Error");
+        // resolve('/');
+      } catch(error) {
+        reject(error);
+      }
+    });
   }
  	
   // Auto[MergingBegin]--->  
