@@ -226,16 +226,16 @@
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"></div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-md-10 offset-md-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png\"></div>",
-        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"474b3846\" internal-fsb-name=\"Image 1\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/code.png\"></div>",
-        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"d055083e\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png\"></div>",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-md-10 offset-md-1\" internal-fsb-guid=\"98d2830a\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 45px; margin-bottom: 30px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png\"></div>",
+        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"474b3846\" internal-fsb-name=\"Image 1\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-bottom: 30px; margin-top: 30px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/code.png\"></div>",
+        "            <div class=\"internal-fsb-element col-md-10 offset-md-1 col-12 offset-0\" internal-fsb-guid=\"d055083e\" internal-fsb-name=\"Image 2\" internal-fsb-event-no-propagate=\"1\" style=\"-fsb-empty\" internal-fsb-class=\"Image\"><img style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 30px; margin-bottom: 45px\" class=\"\" src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png\"></div>",
         "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"be5edae1\" internal-fsb-name=\"FlowLayout 1\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"d5846c7b\" internal-fsb-name=\"FlowLayout 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background: rgba(3, 115, 252, 1); padding-top: 40px; padding-bottom: 40px\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
-        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-lg-6 offset-lg-3 col-12 offset-0 col-md-8 offset-md-2\" internal-fsb-guid=\"34a6153c\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"font-family: Roboto; font-size: 18px; font-weight: 300; color: rgba(255, 255, 255, 1); text-align: center\">StackBlend is free while it's still under development. If you are interested to use StackBlend as a web application development studio but don't have any full-stack engineer in your business, please contact me directly at jatupon@softenstorm.com to consult for freelance and partnership.</div>",
+        "                                    <div contenteditable=\"true\" class=\"internal-fsb-element col-lg-6 offset-lg-3 col-12 offset-0 col-md-8 offset-md-2\" internal-fsb-guid=\"34a6153c\" internal-fsb-name=\"TextElement 2\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" style=\"font-family: Roboto; font-size: 18px; font-weight: 300; color: rgba(255, 255, 255, 1); text-align: center\">StackBlend is free while it's still underdevelopment. If you are interested to use StackBlend as a web application development studio but don't have any full-stack engineer in your business, please contact me directly at jatupon@softenstorm.com to consult for freelance and partnership.</div>",
         "                                </div>",
         "                            </div>",
         "                        </div>",
@@ -508,7 +508,7 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "d3615ea5",
+        "selectingElementGUID": "98d2830a",
         "currentCursorWalkPath": [
           "0",
           0,
@@ -1361,7 +1361,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "51bb66fc80d70fb6795697e6d61e26c0f757c1ad",
+    "index": "5cc6ad5840e8e3f3bd4e1411700582222aca72bd",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
