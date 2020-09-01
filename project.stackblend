@@ -111,7 +111,7 @@
         "                                </div>",
         "                            </div>",
         "                        </div>",
-        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px top\">",
+        "                        <div class=\"internal-fsb-element col-12 offset-0\" internal-fsb-guid=\"722b0448\" internal-fsb-name=\"FlowLayout 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px top; background-size: cover; -webkit-background-size: cover\">",
         "                            <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "",
@@ -236,7 +236,7 @@
         "                    </div>",
         "                </div>",
         "            </div>",
-        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px bottom\">",
+        "            <div class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\" internal-fsb-guid=\"1daa10d1\" internal-fsb-name=\"FlowLayout 23\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px bottom; background-size: cover; -webkit-background-size: cover\">",
         "                <div class=\"container-fluid\" internal-fsb-event-no-propagate=\"1\">",
         "                    <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\">",
         "                        <div class=\"internal-fsb-element col-12\" internal-fsb-guid=\"04c0a4a8\" internal-fsb-name=\"FlowLayout 24\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"FlowLayout\" style=\"position: relative; padding-top: 200px; padding-bottom: 200px\">",
@@ -421,6 +421,10 @@
         "            border-bottom-color: rgba(255, 255, 255, 1)",
         "        }",
         "    </style>",
+        "",
+        "",
+        "",
+        "",
         "",
         "",
         "",
@@ -1359,7 +1363,7 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "26e903a1973b1fb3380c51d39425e39089e16e4a",
+    "index": "c0c0d8f23238ed80f0353240cd8b701719d93653",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
   },
   "currentPersistingFiles": [
