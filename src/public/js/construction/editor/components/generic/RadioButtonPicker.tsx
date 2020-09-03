@@ -32,7 +32,8 @@ let options = {
     // Back-End Options
 		// 
 		"data-column-type": CONSTANTS.BACKEND_DATA_COLUMN_TYPE,
-		"data-field-type": CONSTANTS.BACKEND_DATA_FIELD_TYPE,
+		"data-field-type-1": CONSTANTS.BACKEND_DATA_FIELD_TYPE_1,
+		"data-field-type-2": CONSTANTS.BACKEND_DATA_FIELD_TYPE_2,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
 		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
@@ -46,7 +47,9 @@ let map = {
     "data-source-type-2": "internal-fsb-data-source-type",
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
     "data-wizard-type-2": "internal-fsb-data-wizard-type",
-    "data-wizard-type-3": "internal-fsb-data-wizard-type"
+    "data-wizard-type-3": "internal-fsb-data-wizard-type",
+    "data-field-type-1": "internal-fsb-data-field-type",
+    "data-field-type-2": "internal-fsb-data-field-type"
 }
 
 const Mode = Object.freeze({
