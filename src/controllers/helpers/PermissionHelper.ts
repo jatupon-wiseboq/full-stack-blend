@@ -25,7 +25,7 @@ const PermissionHelper = {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (action == ActionType.Insert || action == ActionType.Upsert) {
-					if (schema.modifyingPermission && schema.modifyingPermission.mode == "relation" && schema.modifyingPermission.relationModeSourceGroup != schema.group) {
+					if (schema.modifyingPermission && schema.modifyingPermission.mode == "relation" && schema.modifyingPermission.relationModeSourceGroup == schema.group) {
 						if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) {
 							resolve(false);
 							return;
