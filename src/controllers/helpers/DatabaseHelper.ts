@@ -249,6 +249,9 @@ const DatabaseHelper = {
 			              case FieldType.String:
 			                row.keys[key] = row.keys[key].toString();
 			                break;
+			              case FieldType.DateTime:
+			                row.keys[key] = new Date(row.keys[key].toString());
+			                break;
 			            }
 			          }
 			        }
@@ -268,6 +271,9 @@ const DatabaseHelper = {
 		                break;
 		              case FieldType.String:
 		                row.keys[key] = row.keys[key].toString();
+		                break;
+		              case FieldType.DateTime:
+		                row.keys[key] = new Date(row.keys[key].toString());
 		                break;
 		            }
 		          }
@@ -289,6 +295,9 @@ const DatabaseHelper = {
 		                break;
 		              case FieldType.String:
 		                row.keys[key] = row.keys[key].toString();
+		                break;
+		              case FieldType.DateTime:
+		                row.keys[key] = new Date(row.keys[key].toString());
 		                break;
 		            }
 		          }
@@ -318,6 +327,9 @@ const DatabaseHelper = {
 				              case FieldType.String:
 				                row.columns[key] = row.columns[key].toString();
 				                break;
+				              case FieldType.DateTime:
+				                row.columns[key] = new Date(row.columns[key].toString());
+				                break;
 				            }
 				          }
 			          }
@@ -339,6 +351,9 @@ const DatabaseHelper = {
 			                break;
 			              case FieldType.String:
 			                row.columns[key] = row.columns[key].toString();
+			                break;
+			              case FieldType.DateTime:
+			                row.columns[key] = new Date(row.columns[key].toString());
 			                break;
 			            }
 			          }
@@ -362,6 +377,9 @@ const DatabaseHelper = {
 				                break;
 				              case FieldType.String:
 				                row.columns[key] = row.columns[key].toString();
+				                break;
+				              case FieldType.DateTime:
+				                row.columns[key] = new Date(row.columns[key].toString());
 				                break;
 				            }
 				          }
@@ -518,6 +536,9 @@ const DatabaseHelper = {
             case FieldType.Boolean:
               type = DataTypes.BOOLEAN;
               break;
+            case FieldType.DateTime:
+              type = DataTypes.DATE;
+              break;
             default:
               throw new Error("There was an error preparing data for manipulation (unsupported field type).");
 			    }
@@ -552,6 +573,9 @@ const DatabaseHelper = {
               break;
             case FieldType.Boolean:
               type = DataTypes.BOOLEAN;
+              break;
+            case FieldType.DateTime:
+              type = DataTypes.DATE;
               break;
             default:
               throw new Error("There was an error preparing data for manipulation (unsupported field type).");
