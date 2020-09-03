@@ -48,8 +48,8 @@ let map = {
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
     "data-wizard-type-2": "internal-fsb-data-wizard-type",
     "data-wizard-type-3": "internal-fsb-data-wizard-type",
-    "data-field-type-1": "internal-fsb-data-field-type",
-    "data-field-type-2": "internal-fsb-data-field-type"
+    "data-field-type-1": "data-field-type",
+    "data-field-type-2": "data-field-type"
 }
 
 const Mode = Object.freeze({
