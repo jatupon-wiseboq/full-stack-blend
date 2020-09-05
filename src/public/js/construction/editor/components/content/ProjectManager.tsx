@@ -280,7 +280,7 @@ class ProjectManager extends Base<Props, State> {
   <!DOCTYPE html>
 html
   head
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
       \#{headers && headers.title || '${title}'}
     meta(name="description" content=headers && headers.description || '${description}')
