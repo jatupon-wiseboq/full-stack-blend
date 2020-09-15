@@ -91,7 +91,7 @@ socket.sockets.on("connection", (socket) => {
 	  	}
 	  }
 	  
-	  return true;
+	  return hasState;
   };
   
   if (!setSocket(socket)) {
