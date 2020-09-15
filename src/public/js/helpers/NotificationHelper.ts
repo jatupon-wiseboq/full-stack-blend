@@ -7,14 +7,10 @@ import {RequestHelper} from './RequestHelper.js';
 const sockets = {};
 const notificationInfos = {};
 const bindedFunctions = {};
-const retrieveButtons = {};
 
 declare let window: any;
 
 const NotificationHelper = {
-	replaceRetrieveButtonForAutoRefresh: (button: HTMLElement, notation: string, retrieveInto: string) => {
-		retrieveButtons[(notation || '') + (retrieveInto || '')] = button;
-	},
   registerTableUpdates: (tables: {[Identifier: string]: HierarchicalDataTable}) => {
   	for (const tableName in tables) {
   		if (tables.hasOwnProperty(tableName)) {
@@ -55,17 +51,8 @@ const NotificationHelper = {
   		sockets[socketUrl] = window.io(socketUrl);
   		
 			sockets[socketUrl].on('reconnect', async (message: any) => {
-				for (const key in retrieveButtons) {
-					if (retrieveButtons.hasOwnProperty(key)) {
-						const button = retrieveButtons[key];
-						
-						if (document.body.contains(button)) {
-							button.click();
-						}
-					}
-				}
-				
-				await RequestHelper.get(window.location.href);
+				// Server will send back a refresh command if it has restarted.
+				// 
 			});
 			sockets[socketUrl].on('command', (command: string) => {
 				switch (command) {
