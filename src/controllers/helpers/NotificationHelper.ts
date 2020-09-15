@@ -25,7 +25,9 @@ socket.sockets.on("connection", (socket) => {
   const sessionId = req.signedCookies["connect.sid"];
 	if (!sessionId) return;
   
-  const setSocket = (socket: any) => {
+  const setSocket = (socket: any): boolean => {
+  	let hasState: boolean = false;
+  	
   	for (const group in notificationInfos) {
 	  	if (notificationInfos.hasOwnProperty(group)) {
 	  		const notificationInfo = notificationInfos[group];
@@ -41,43 +43,45 @@ socket.sockets.on("connection", (socket) => {
 			  				if (combinationInfo.hasOwnProperty(sessionId)) {
 			  					if (socket != null) {
 				  					if (combinationInfo[sessionId] === false) {
-				  						socket.emit("command", "refresh");
-				  						
 				  						setSocket(null);
-				  						
-				  						return;
-				  					} else if (Array.isArray(combinationInfo[sessionId])) {
-				  						for (const item of combinationInfo[sessionId]) {
-				  							switch (item.action) {
-										  		case ActionType.Insert:
-										  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
-										  				id: md5OfClientTableUpdatingIdentity,
-										  				results: item.results
-										  			});
-										  			break;
-										  		case ActionType.Update:
-										  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
-										  				id: md5OfClientTableUpdatingIdentity,
-										  				results: item.results
-										  			});
-										  			break;
-										  		case ActionType.Upsert:
-										  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
-										  				id: md5OfClientTableUpdatingIdentity,
-										  				results: item.results
-										  			});
-										  			break;
-										  		case ActionType.Delete:
-										  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
-										  				id: md5OfClientTableUpdatingIdentity,
-										  				results: item.results
-										  			});
-										  			break;
-										  	}
-				  						}
+				  						return false;
+				  					} else {
+				  						if (Array.isArray(combinationInfo[sessionId])) {
+					  						for (const item of combinationInfo[sessionId]) {
+					  							switch (item.action) {
+											  		case ActionType.Insert:
+											  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
+											  				id: md5OfClientTableUpdatingIdentity,
+											  				results: item.results
+											  			});
+											  			break;
+											  		case ActionType.Update:
+											  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
+											  				id: md5OfClientTableUpdatingIdentity,
+											  				results: item.results
+											  			});
+											  			break;
+											  		case ActionType.Upsert:
+											  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
+											  				id: md5OfClientTableUpdatingIdentity,
+											  				results: item.results
+											  			});
+											  			break;
+											  		case ActionType.Delete:
+											  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
+											  				id: md5OfClientTableUpdatingIdentity,
+											  				results: item.results
+											  			});
+											  			break;
+											  	}
+					  						}
+					  					}
+					  					
+				  						hasState = true;
+							  			combinationInfo[sessionId] = socket;
 				  					}
-				  					
-							  		combinationInfo[sessionId] = socket;
+				  				} else {
+				  					combinationInfo[sessionId] = null;
 				  				}
 						  	}
 					  	}
@@ -86,9 +90,13 @@ socket.sockets.on("connection", (socket) => {
 			  }
 	  	}
 	  }
+	  
+	  return true;
   };
   
-  setSocket(socket);
+  if (!setSocket(socket)) {
+  	socket.emit("command", "refresh");
+  }
 	sessionLookupTable[sessionId] = socket;
   
   socket.on("disconnect", (socket) => {
