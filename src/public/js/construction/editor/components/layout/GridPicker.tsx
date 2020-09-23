@@ -67,7 +67,7 @@ class GridPicker extends Base<Props, State> {
                 case 3:
                     elementClassName += ` ${this.props.prefix}-lg-${value}`;
                     break;
-                case 3:
+                case 4:
                     elementClassName += ` ${this.props.prefix}-xl-${value}`;
                     break;
             }
