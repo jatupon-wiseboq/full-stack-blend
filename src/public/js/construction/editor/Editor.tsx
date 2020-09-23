@@ -242,6 +242,8 @@ let cachedUpdateEditorProperties = {};
     
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+    	
       perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
@@ -252,6 +254,8 @@ let cachedUpdateEditorProperties = {};
     
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+    	
       perform('keyup', event.keyCode);
       
       return EventHelper.cancel(event);
