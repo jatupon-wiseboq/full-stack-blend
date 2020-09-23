@@ -50,7 +50,7 @@ const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
-    WorkspaceHelper.saveWorkspaceData();
+    WorkspaceHelper.saveWorkspaceData(true, true);
     
     let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
     for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -245,7 +245,7 @@ var WorkspaceHelper = {
     LayoutHelper.invalidate();
     SchemaHelper.invalidate();
   },
-  saveWorkspaceData: (reinit: boolean=true) => {
+  saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
       
@@ -272,7 +272,7 @@ var WorkspaceHelper = {
         EditorHelper.init(true, false);
       }
       
-      if (!CodeHelper.equals(clonedPage, page)) {
+      if (force || !CodeHelper.equals(clonedPage, page)) {
       	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
       }

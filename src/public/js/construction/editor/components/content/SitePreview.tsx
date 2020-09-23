@@ -40,6 +40,12 @@ class SitePreview extends Base<Props, State> {
     
     public open() {
         this.setState({loading: true});
+        
+        let preview = ReactDOM.findDOMNode(this.refs.preview);
+        let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
+    		
+    		previewWindow.location = 'about:blank';
+    		
         HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
     }
     
@@ -60,6 +66,11 @@ class SitePreview extends Base<Props, State> {
     }
     
     public load() {
+    		let preview = ReactDOM.findDOMNode(this.refs.preview);
+        let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
+    		
+    		if (previewWindow.location == 'about:blank') return;
+    		
         this.setState({loading: false});
     }
     
@@ -73,6 +84,10 @@ class SitePreview extends Base<Props, State> {
         let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
     		
     		previewWindow.location = 'about:blank';
+    }
+    
+    public isOpening() {
+    		return this.state.loading;
     }
     
     render() {

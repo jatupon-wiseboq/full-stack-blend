@@ -287,7 +287,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           i.fa.fa-code.font-weight-bold.m-0
           .title
             | Coding
-      a.btn.btn-sm.btn-light(onclick='preview()', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Play</b></p><p>Preview your pages and their animations right from the workspace area without leaving the editor.</p>", style='width: 50px;')
+      a.btn.btn-sm.btn-light(onclick="$('#siteButton')[0].click(); preview();", role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Play</b></p><p>Preview your pages and their animations right from the workspace area without leaving the editor.</p>", style='width: 50px;')
         i.fa.fa-play.m-0
         .title
           | Preview
