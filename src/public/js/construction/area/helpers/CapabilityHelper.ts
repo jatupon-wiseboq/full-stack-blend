@@ -25,7 +25,7 @@ var CapabilityHelper = {
         EditorHelper.synchronize("click", null);
         
         if (selecting != willSelected) {
-          ManipulationHelper.perform('select', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
+          ManipulationHelper.perform('select[cursor]', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
 	        EventHelper.setDenyForHandle("click", true);
 	        EventHelper.setDenyForHandle("click", false, 100);
         }

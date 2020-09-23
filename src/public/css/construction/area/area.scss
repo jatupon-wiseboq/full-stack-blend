@@ -180,16 +180,17 @@ body.internal-fsb-mode-coding {
 }
 .internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
 	height: 20px;
+	width: 1px;
 }
 
 @include keyframe(animation-blink) {
   0% {
-    background-color: transparent;
+    background-color: white;
   }
-  50% {
-    background-color: transparent;
+  45% {
+    background-color: white;
   }
-  50.00001% {
+  55% {
     background-color: black;
   }
   100% {
