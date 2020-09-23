@@ -12,7 +12,8 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-   loading: boolean
+   loading: boolean;
+   location: string;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -22,7 +23,8 @@ Object.assign(ExtendedDefaultProps, {
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
-    loading: false
+    loading: false,
+    location: null
 });
 
 class SitePreview extends Base<Props, State> {
@@ -39,13 +41,7 @@ class SitePreview extends Base<Props, State> {
     }
     
     public open() {
-        this.setState({loading: true});
-        
-        let preview = ReactDOM.findDOMNode(this.refs.preview);
-        let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
-    		
-    		previewWindow.location = 'about:blank';
-    		
+        this.setState({loading: true, location: 'about:blank'});
         HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
     }
     
@@ -60,30 +56,21 @@ class SitePreview extends Base<Props, State> {
         pages = pages.filter(page => page.id == editingPageID);
         let PATH = pages && pages[0] && pages[0].path || null;
        	
-       	RequestHelper.get(`${ENDPOINT}${PATH}`).then(() => {
-       		preview.setAttribute('src', `${ENDPOINT}${PATH}`);
-       	});
+       	RequestHelper.get(`${ENDPOINT}${PATH}`).then((() => {
+       		this.setState({location: `${ENDPOINT}${PATH}`});
+       	}).bind(this));
     }
     
     public load() {
-    		let preview = ReactDOM.findDOMNode(this.refs.preview);
-        let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
-    		
-    		if (previewWindow.location == 'about:blank') return;
-    		
+    		if (this.state.location == 'about:blank') return;
         this.setState({loading: false});
     }
     
     private close(error) {
         if (error && error.message) console.error(error.message);
       	
-        this.setState({loading: false});
+        this.setState({loading: false, location: 'about:blank'});
     		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
-    		
-    		let preview = ReactDOM.findDOMNode(this.refs.preview);
-        let previewWindow = preview.contentWindow || preview.contentDocument.document || preview.contentDocument;
-    		
-    		previewWindow.location = 'about:blank';
     }
     
     public isOpening() {
@@ -99,7 +86,7 @@ class SitePreview extends Base<Props, State> {
           .iframe-container
             .iframe-navigation-bar
             .iframe-body
-              iframe(ref="preview", onLoad=this.load.bind(this))
+              iframe(ref="preview", onLoad=this.load.bind(this), src=this.state.location)
           .loading-container(style={display: this.state.loading ? 'block' : 'none'})
             .linear-background
               .inter-left
