@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import fs from "fs";
+import * as shell from "shelljs";
 import path from "path";
 import * as child from "child_process";
 import {Request, Response} from "express";
@@ -59,38 +60,40 @@ export const updateContent = (request: Request, response: Response) => {
 			});
 		}
 };
-export const resetContent = (request: Request, response: Response) => {
+export const resetContent = async (request: Request, response: Response) => {
 		try {
+			const {stdout, stderr} = await child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
+			if (stderr && stderr._hadError) throw stderr;
+			
 			response.json({
 				success: true,
 				error: null,
 				results: true
 			});
 			response.end();
-			
-			child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
 		} catch(error) {
 			response.json({
 				success: false,
-				error: error.message,
+				error: error,
 				results: null
 			});
 		}
 };
-export const pullContent = (request: Request, response: Response) => {
+export const pullContent = async (request: Request, response: Response) => {
 		try {
+			const {stdout, stderr} = await child.exec("git pull");
+			if (stderr && stderr._hadError) throw stderr;
+			
 			response.json({
 				success: true,
 				error: null,
 				results: true
 			});
 			response.end();
-			
-			child.exec("git pull");
 		} catch(error) {
 			response.json({
 				success: false,
-				error: error.message,
+				error: error,
 				results: null
 			});
 		}
