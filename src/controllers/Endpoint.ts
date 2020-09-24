@@ -60,16 +60,17 @@ export const updateContent = (request: Request, response: Response) => {
 			});
 		}
 };
-export const resetContent = (request: Request, response: Response) => {
+export const resetContent = async (request: Request, response: Response) => {
 		try {
+			const {stdout, stderr} = await child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
+			if (stderr) throw new Error(stderr);
+			
 			response.json({
 				success: true,
 				error: null,
 				results: true
 			});
 			response.end();
-			
-			child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
 		} catch(error) {
 			response.json({
 				success: false,
@@ -78,16 +79,17 @@ export const resetContent = (request: Request, response: Response) => {
 			});
 		}
 };
-export const pullContent = (request: Request, response: Response) => {
+export const pullContent = async (request: Request, response: Response) => {
 		try {
+			const {stdout, stderr} = await child.exec("git pull");
+			if (stderr) throw new Error(stderr);
+			
 			response.json({
 				success: true,
 				error: null,
 				results: true
 			});
 			response.end();
-			
-			child.exec("git pull");
 		} catch(error) {
 			response.json({
 				success: false,
