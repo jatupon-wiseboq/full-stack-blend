@@ -519,18 +519,30 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,1,400;1,1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,100;1,300;1,400;1,500;1,700;1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,1,100;1,1,1,1,1,300;1,1,1,1,1,400;1,1,1,1,1,500;1,1,1,1,1,700;1,1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
         "selectingElementGUID": "e90dbe28",
         "currentCursorWalkPath": [
-          "0",
+          "e90dbe28",
           0,
-          1,
+          4,
           null
         ]
       },
@@ -701,7 +713,7 @@
         "                            <div>2. Undo/Redo Not Working Sometime: keep saving and reload the editor.</div>",
         "                            <div>3. Unable to Merge/Deploy: resolve the conflicts manually using a terminal on your operating system, or go to GitHub to perform it.</div>",
         "                            <div>4. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.</div>",
-        "                            <div>5.Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div>",
+        "                            <div>5. Failed of Automatic Deploy: clone the project into your local machine and debug it using \"npm run build\", then try to change the code on StackBlend based on the errors, re-save, run \"git reset --hard &amp;&amp; git pull\", and run \"npm run build\" to see if it fixed.</div>",
         "                        </div>",
         "                    </div>",
         "                </div>",
@@ -874,18 +886,26 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,100;1,1,300;1,1,400;1,1,500;1,1,700;1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,1,1,1,100;1,1,1,1,300;1,1,1,1,400;1,1,1,1,500;1,1,1,1,700;1,1,1,1,900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
-        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,400;1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
+        "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,1,1,1,400;1,1,1,1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "416d7600",
+        "selectingElementGUID": "42c5b093",
         "currentCursorWalkPath": [
-          "0",
+          "13187992",
           0,
-          3,
+          1,
           null
         ]
       },
@@ -1379,8 +1399,8 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "7c260e927e8296366a07bb015200d0278daa1143",
-    "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
+    "index": "e7458914e1aa8ca8bd5d4e82cb1ec8f2ffd3a34b",
+    "b160aa0e": "87fc798e45f4e04e522289970de9ee1786de15ce"
   },
   "currentPersistingFiles": [
     "src/controllers/components/index.ts",
