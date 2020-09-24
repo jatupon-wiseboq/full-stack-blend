@@ -69,6 +69,12 @@ export const resetContent = (request: Request, response: Response) => {
 			response.end();
 			
 			child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
+		} catch(error) {
+			response.json({
+				success: false,
+				error: error.message,
+				results: null
+			});
 		}
 };
 export const pullContent = (request: Request, response: Response) => {
@@ -81,6 +87,12 @@ export const pullContent = (request: Request, response: Response) => {
 			response.end();
 			
 			child.exec("git pull");
+		} catch(error) {
+			response.json({
+				success: false,
+				error: error.message,
+				results: null
+			});
 		}
 };
 export const getRecentError = (request: Request, response: Response) => {
