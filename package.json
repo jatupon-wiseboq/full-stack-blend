@@ -107,6 +107,7 @@
         "babel-plugin-transform-react-pug": "^7.0.1",
         "browserify": "^16.5.1",
         "chai": "^4.2.0",
+        "child_process": "^1.0.2",
         "concurrently": "^5.2.0",
         "eslint": "^6.4.0",
         "jest": "^26.0.1",
