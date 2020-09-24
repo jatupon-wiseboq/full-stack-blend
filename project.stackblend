@@ -515,6 +515,10 @@
         "",
         "",
         "",
+        "",
+        "",
+        "",
+        "",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
         "    <link internal-fsb-link=\"true\" href=\"https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap\" rel=\"stylesheet\" class=\"internal-fsb-font\">",
@@ -522,9 +526,9 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "999a17e1",
+        "selectingElementGUID": "e90dbe28",
         "currentCursorWalkPath": [
-          "6ac85eab",
+          "0",
           0,
           1,
           null
@@ -1375,7 +1379,13 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "ed062b37c6b69224b12879a472202a02d6b33f06",
+    "index": "7c260e927e8296366a07bb015200d0278daa1143",
     "b160aa0e": "f8a9d05fd209712f701dcb1de48f755afe72cfda"
-  }
+  },
+  "currentPersistingFiles": [
+    "src/controllers/components/index.ts",
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "views/home/index.pug",
+    "views/home/developer/_b160aa0e.pug"
+  ]
 }
