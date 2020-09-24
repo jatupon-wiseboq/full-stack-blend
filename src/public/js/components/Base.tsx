@@ -55,17 +55,8 @@ class Base extends React.Component {
 	  	const previous = this.state.data || this.props.data || {};
 	  	const next = Object.assign({}, previous, data || {})
 	  	
-	  	const deregistering = {};
-	  	for (let key in previous) {
-	  		if (next.hasOwnProperty(key)) {
-	  			deregistering[key] = previous[key];
-	  		}
-	  	}
-	  	
-	  	NotificationHelper.unregisterTableUpdates(deregistering);
-	  	if (data) {
-	  		NotificationHelper.registerTableUpdates(data);
-	  	}
+	  	NotificationHelper.unregisterTableUpdates(previous);
+	  	NotificationHelper.registerTableUpdates(next);
 	  	
 	    this.setState({
 	      data: next
@@ -75,17 +66,8 @@ class Base extends React.Component {
 	  	const previous = premise.relations || {};
 	  	const next = Object.assign({}, previous, data || {})
 	  	
-	  	const deregistering = {};
-	  	for (let key in previous) {
-	  		if (next.hasOwnProperty(key)) {
-	  			deregistering[key] = previous[key];
-	  		}
-	  	}
-	  	
-	  	NotificationHelper.unregisterTableUpdates(deregistering);
-	  	if (data) {
-	  		NotificationHelper.registerTableUpdates(data);
-	  	}
+	  	NotificationHelper.unregisterTableUpdates(previous);
+	  	NotificationHelper.registerTableUpdates(next);
 	  	
 	    premise.relations = next;
 	  }

@@ -4,6 +4,7 @@
 import fs from "fs";
 import * as shell from "shelljs";
 import path from "path";
+import * as child from "child_process";
 import {Request, Response} from "express";
 
 let recentError = [];
@@ -19,7 +20,6 @@ export const addRecentError = (error: any) => {
  * Update the content of specific file in the repository.
  */
 export const updateContent = (request: Request, response: Response) => {
-		
 		try {
 			const json: any = request.body;
 			if (json == null) {
@@ -59,10 +59,32 @@ export const updateContent = (request: Request, response: Response) => {
 				results: null
 			});
 		}
-
+};
+export const resetContent = (request: Request, response: Response) => {
+		try {
+			response.json({
+				success: true,
+				error: null,
+				results: true
+			});
+			response.end();
+			
+			child.exec("git restore -s@ -SW -- './components' && git restore -s@ -SW -- '../public/js/components' && git restore -s@ -SW -- '../../views/home' && git clean -f -d");
+		}
+};
+export const pullContent = (request: Request, response: Response) => {
+		try {
+			response.json({
+				success: true,
+				error: null,
+				results: true
+			});
+			response.end();
+			
+			child.exec("git pull");
+		}
 };
 export const getRecentError = (request: Request, response: Response) => {
-    
     if (recentError.length == 0) {
       response.json({
   			success: true,
@@ -78,7 +100,6 @@ export const getRecentError = (request: Request, response: Response) => {
 		}
     
     clearRecentError();
-    
 };
 
 // <--- Auto[Generating:V1]

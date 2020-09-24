@@ -38,6 +38,18 @@ const CodeHelper = {
 			.replace(/>/g, "&gt;")
 			.replace(/"/g, "&quot;")
 			.replace(/'/g, "&#039;");
+  },
+  toSecuredDataString: (data: any): string => {
+  	switch (typeof data) {
+  		case 'string':
+  			return data;
+  		case 'number':
+  		case 'boolean':
+  			return data.toString();
+  		case 'object':
+  		case 'undefined':
+  			return '';
+  	}
   }
 };
 

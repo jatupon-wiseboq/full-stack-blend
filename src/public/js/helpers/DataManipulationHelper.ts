@@ -123,10 +123,6 @@ const DataManipulationHelper = {
 	  	
 	  	const button = EventHelper.getCurrentElement(event);
 	  	
-	  	if (button && action == 'retrieve') {
-	  		NotificationHelper.replaceRetrieveButtonForAutoRefresh(button, notation, options.retrieveInto);
-	  	}
-	  	
 	  	if (button) {
 	  		const event = new CustomEvent('submitting', {
 					detail: {

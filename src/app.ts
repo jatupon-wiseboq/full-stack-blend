@@ -186,6 +186,8 @@ import * as endpoint from "./controllers/Endpoint";
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
 	endpoint.clearRecentError();
 	app.post("/endpoint/update/content", endpoint.updateContent);
+	app.post("/endpoint/reset/content", endpoint.resetContent);
+	app.post("/endpoint/pull/content", endpoint.pullContent);
 	app.get("/endpoint/recent/error", endpoint.getRecentError);
 	
 	app.use((err, req, res, next) => {

@@ -9,7 +9,8 @@ enum FieldType {
   AutoNumber,
   String,
   Number,
-  Boolean
+  Boolean,
+  DateTime
 }
 
 interface DataSchema {
@@ -52,6 +53,8 @@ const SchemaHelper = {
 				return FieldType.Number;
 			case "boolean":
 				return FieldType.Boolean;
+			case "datetime":
+				return FieldType.DateTime;
 			default:
 				return FieldType.String;
 		}
