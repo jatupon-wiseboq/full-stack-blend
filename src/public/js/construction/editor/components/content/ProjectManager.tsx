@@ -1,6 +1,7 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
+import {RequestHelper} from '../../../helpers/RequestHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants.js';
@@ -519,7 +520,15 @@ html
             											constructionWindow.clearFullStackCodeForAllPages();
             											
             											this.deleteFiles(repo, deletingPersistingFiles, () => {
-	  	                            	alert('Your changes have been saved successfully.');
+            												RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
+	            												RequestHelper.post(`${window.ENDPOINT}/endpoint/pull/content`, {}).then(() => {
+	            													alert('Your changes have been saved successfully.');
+	            												}).catch(() => {
+	            													alert('Your changes have been saved successfully.');
+	            												});
+            												}).catch(() => {
+            													alert('Your changes have been saved successfully.');
+            												});
 	  	                            });
   	                            });
   	                          });
