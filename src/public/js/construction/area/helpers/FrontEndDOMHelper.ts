@@ -402,12 +402,15 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
+        	let splited = submitControls && submitControls.split(' ') || [];
+        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
+        	
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
           	let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
-            for (let submitControl of submitControls.split(' ')) {
+            for (let submitControl of splited) {
               let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
               if (control) {
                 let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
@@ -753,7 +756,10 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
+        	let splited = submitControls && submitControls.split(' ') || [];
+        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
+        	
+          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
           
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }
