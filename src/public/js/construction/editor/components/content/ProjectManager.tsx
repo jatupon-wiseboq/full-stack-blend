@@ -371,16 +371,6 @@ html
             	delete nextProjectData.popups[popup.id];
             }
             
-            for (let page of nextProjectData.sites.filter(page => page.state == 'delete')) {
-            	delete nextProjectData.sites[page.id];
-            }
-            for (let component of nextProjectData.components.filter(component => component.state == 'delete')) {
-            	delete nextProjectData.components[component.id];
-            }
-            for (let popup of nextProjectData.popups.filter(popup => popup.state == 'delete')) {
-            	delete nextProjectData.popups[popup.id];
-            }
-            
             nextProjectData.globalSettings.pages = nextProjectData.globalSettings.pages.filter(page => page.state != 'delete');
             nextProjectData.globalSettings.components = nextProjectData.globalSettings.components.filter(component => component.state != 'delete');
             nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
