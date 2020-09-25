@@ -51,7 +51,7 @@ const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
-    WorkspaceHelper.saveWorkspaceData(true, true);
+    WorkspaceHelper.saveWorkspaceData(false, true);
     
     let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
     for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -294,7 +294,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'services') {
       EditorHelper.detach();
-      InternalServices.default = html_beautify(TextHelper.removeMultipleBlankLines(document.body.outerHTML)).split('\n');
+      InternalServices.default = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
       
       if (reinit) {
         EditorHelper.init(true, false);
