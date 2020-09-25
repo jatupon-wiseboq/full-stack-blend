@@ -1,6 +1,7 @@
 import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {FontHelper} from '../../helpers/FontHelper.js';
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {TextHelper} from '../../helpers/TextHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -242,6 +243,8 @@ var WorkspaceHelper = {
       EditorHelper.init(false, updateUI);
     }
     
+    WorkspaceHelper.migrateCode();
+    
     LayoutHelper.invalidate();
     SchemaHelper.invalidate();
   },
@@ -259,7 +262,7 @@ var WorkspaceHelper = {
       page.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       EditorHelper.detach();
-      page.body = html_beautify(document.body.outerHTML).split('\n');
+      page.body = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
       
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -270,6 +273,9 @@ var WorkspaceHelper = {
       
       if (reinit) {
         EditorHelper.init(true, false);
+        
+        FontHelper.initializeFontData(page.head.fonts);
+      	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       }
       
       if (force || !CodeHelper.equals(clonedPage, page)) {
@@ -278,7 +284,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
-      InternalDataFlows.default = html_beautify(document.body.outerHTML).split('\n');
+      InternalDataFlows.default = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
       Accessories.overlay.setEnable(true);
       
       InternalDataFlows.schema = SchemaHelper.generateDataSchema();
@@ -288,7 +294,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'services') {
       EditorHelper.detach();
-      InternalServices.default = html_beautify(document.body.outerHTML).split('\n');
+      InternalServices.default = html_beautify(TextHelper.removeMultipleBlankLines(document.body.outerHTML)).split('\n');
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -298,13 +304,13 @@ var WorkspaceHelper = {
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
     	
-      component.html = html_beautify(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)).split('\n');
+      component.html = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML))).split('\n');
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
     	
-      popup.html = html_beautify(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)).split('\n');
+      popup.html = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML))).split('\n');
     }
   },
   removeComponentData: (id: string) => {
@@ -341,6 +347,27 @@ var WorkspaceHelper = {
     }
     
     return holder.innerHTML;
+  },
+  cleanupPageHTMLData: (html: string, preview: boolean=false) => {
+  	let holder = document.createElement('iframe');
+  	document.body.appendChild(holder);
+  	
+  	let holderWindow = holder.contentWindow || holder.contentDocument.document || holder.contentDocument;
+  	
+    holderWindow.document.open('text/htmlreplace');
+    holderWindow.document.write(`<html><head></head>${html}</html>`);
+    holderWindow.document.close();
+    
+    let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holderWindow.document)];
+    accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
+    
+    document.body.removeChild(holder);
+    
+    return holderWindow.document.body.outerHTML;
+  },
+  migrateCode: () => {
+  	let element = document.getElementById('internal-fsb-stylesheet');
+  	if (element) element.className = 'internal-fsb-accessory';
   },
   recursiveCleanupComponentPreviewDOM: (element: HTMLElement, first: boolean=false) => {
   	if (!first) {

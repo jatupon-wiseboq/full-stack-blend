@@ -297,6 +297,8 @@ let cachedUpdateEditorProperties = {};
     
     Accessories.preview.current.open();
     
+    $('#siteButton')[0].click();
+    
     window.setTimeout(() => {
 	    Accessories.endpointManager.current.save((success) => {
 	    	if (!Accessories.preview.current.isOpening()) return;
