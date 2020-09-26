@@ -134,7 +134,12 @@ ${rootScript}`;
         		lines[lines.length - 1] += '.';
         		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
         	} else {
-          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+        		let textContent = element.textContent;
+        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
+        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+        		});
+        		
+          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           }
         }
       } else {
@@ -503,11 +508,11 @@ ${rootScript}`;
             
             indent += '  ';
             
-            cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '[" + ' + dotNotationChar + ' + "].';
           } else {
             _nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
             
-            cumulatedDotNotation += reactData;
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '.';
           }
         }
         
@@ -596,7 +601,12 @@ ${rootScript}`;
         		lines[lines.length - 1] += '.';
         		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
         	} else {
-          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+        		let textContent = element.textContent;
+        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
+        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+        		});
+        		
+          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           }
         }
       } else {
