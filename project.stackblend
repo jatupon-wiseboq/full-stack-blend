@@ -143,7 +143,7 @@
         "                                <div class=\"row internal-fsb-strict-layout internal-fsb-allow-cursor\"></div>",
         "                            </div>",
         "                        </div>",
-        "                        <div contenteditable=\"true\" class=\"internal-fsb-element col-10 offset-1 -fsb-self-d2a8edc9\" internal-fsb-guid=\"d2a8edc9\" internal-fsb-name=\"TextElement 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"feature_subtitle\">It’s zero-dollar for starting new projects on Heroku and Cloudflare. With good documentation and a ton of features on the server and network stuff, they can handle a massive of concurrent traffic and gigabytes of bandwidth which can be achieved by StackBlend in less than $50 per month.</div>",
+        "                        <div contenteditable=\"true\" class=\"internal-fsb-element col-10 offset-1 -fsb-self-d2a8edc9\" internal-fsb-guid=\"d2a8edc9\" internal-fsb-name=\"TextElement 6\" internal-fsb-event-no-propagate=\"1\" internal-fsb-class=\"TextElement\" internal-fsb-reusable-preset-name=\"feature_subtitle\">It’s zero-dollar for starting new projects on Heroku and Cloudflare. With good documentation and a ton of features on the server and network stuff, they can handle a massive of concurrent traffic and gigabytes of bandwidth which can be achieved by StackBlend in less than $99 per month.</div>",
         "                    </div>",
         "                </div>",
         "            </div>",
@@ -267,11 +267,11 @@
         "</body>"
       ],
       "accessories": {
-        "selectingElementGUID": "e90dbe28",
+        "selectingElementGUID": "d2a8edc9",
         "currentCursorWalkPath": [
-          "e90dbe28",
+          "4d8aded9",
           0,
-          4,
+          3,
           null
         ]
       },
@@ -961,7 +961,13 @@
   },
   "frontEndComponentsBlobSHADict": {},
   "viewBlobSHADict": {
-    "index": "7c260e927e8296366a07bb015200d0278daa1143",
+    "index": "c7d26e7bf6866495f77292ce74c7c042c36a0749",
     "b160aa0e": "d303b8792f57ed283a73ec0ceacc947282c22c19"
-  }
+  },
+  "currentPersistingFiles": [
+    "src/controllers/components/index.ts",
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "views/home/index.pug",
+    "views/home/developer/_b160aa0e.pug"
+  ]
 }

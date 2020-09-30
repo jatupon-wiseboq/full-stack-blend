@@ -1,7 +1,6 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../../helpers/DatabaseHelper.js';
@@ -226,7 +225,6 @@ class Controller extends Base {
 	  
 	  // Auto[Merging]--->
 
-
 	  // <---Auto[Merging]
 	  
 	  // Auto[MergingEnd]--->
@@ -243,7 +241,6 @@ class Controller extends Base {
 // Export variables here:
 //
 export default Controller;
-
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
