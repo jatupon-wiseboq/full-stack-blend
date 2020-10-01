@@ -124,7 +124,7 @@ ${rootScript}`;
     
     return cachedGenerateCodeForReactRenderMethodResults;
   },
-  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null) {
+  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null, context: any={}) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
@@ -521,7 +521,11 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           composed += `- const ${(reactNamespace + '.' + reactClass).split('.').join('_')}_ = ${reactNamespace + '.' + reactClass};`
-          lines.push(composed);
+          
+          if (!context[composed]) {
+          	context[composed] = true;
+          	lines.push(composed);
+          }
           
           let _attributes = _props || [];
           if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
@@ -582,7 +586,7 @@ ${rootScript}`;
             lines.push(composed);
             
             for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, context);
             }
           } else {
             lines.push(composed);
