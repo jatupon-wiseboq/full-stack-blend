@@ -586,7 +586,7 @@ ${rootScript}`;
             lines.push(composed);
             
             for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, context);
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactData !== null && !_leafNode) ? {} : context);
             }
           } else {
             lines.push(composed);
