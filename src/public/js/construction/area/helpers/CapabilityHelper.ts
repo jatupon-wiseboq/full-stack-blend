@@ -93,7 +93,7 @@ var CapabilityHelper = {
 	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
 	              let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-class')) != -1);
 	              
-	              if (referenceElement == null && isReferenceElementASingleDomElement) {
+	              if (isReferenceElementASingleDomElement) {
 	              	referenceElement = allowCursorElement;
 	              }
 	              
