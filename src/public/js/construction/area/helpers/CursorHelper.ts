@@ -199,7 +199,8 @@ var CursorHelper = {
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+    	let isSingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
+      let allowCursorElements = isSingleDomElement ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];
       
@@ -209,7 +210,7 @@ var CursorHelper = {
             Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
           }
           Accessories.cursor.getDOMNode().style.left = 'inherit';
-          Accessories.cursor.getDOMNode().style.top = 'inherit';
+          Accessories.cursor.getDOMNode().style.top = isSingleDomElement ? '20px' : 'inherit';
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'relative');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);
         } else {
