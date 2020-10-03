@@ -12,6 +12,7 @@ html, body {
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
   padding: 0;
+  flex-wrap: wrap;
   
 	> .container,
   > .container-fluid {
