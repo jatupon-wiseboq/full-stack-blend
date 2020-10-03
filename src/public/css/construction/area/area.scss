@@ -270,6 +270,20 @@ body.internal-fsb-mode-coding {
   > .container-fluid {
   	height: 100%;
   	min-height: inherit;
+  	
+  	flex-direction: inherit;
+    flex-wrap: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    align-content: inherit;
+  	
+  	> .row {
+  		flex-direction: inherit;
+	    flex-wrap: inherit;
+	    justify-content: inherit;
+	    align-items: inherit;
+	    align-content: inherit;
+  	}
 	}
 }
 
