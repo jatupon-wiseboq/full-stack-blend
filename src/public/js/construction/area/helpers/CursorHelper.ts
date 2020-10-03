@@ -212,8 +212,8 @@ var CursorHelper = {
           
           let isTheAllowCursorElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(theAllowCursorElement, 'internal-fsb-class')) != -1);
           
-          Accessories.cursor.getDOMNode().style.left = 'inherit';
-          Accessories.cursor.getDOMNode().style.top = isTheAllowCursorElementASingleDomElement ? '20px' : 'inherit';
+          Accessories.cursor.getDOMNode().style.left = '-0.5px';
+          Accessories.cursor.getDOMNode().style.top = isTheAllowCursorElementASingleDomElement ? '20px' : '-0.5px';
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'relative');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);
         } else {
