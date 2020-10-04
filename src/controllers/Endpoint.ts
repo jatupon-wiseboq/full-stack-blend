@@ -66,7 +66,7 @@ export const resetContent = async (request: Request, response: Response) => {
 			const rootPath = path.resolve(dirname, "../../");
 			
 			const {stdout, stderr} = await child.exec(`git restore -s@ -SW -- '${rootPath}/src/controllers/components'; git restore -s@ -SW -- '${rootPath}/src/public/js/components'; git restore -s@ -SW -- '${rootPath}/views/home'; git restore -s@ -SW -- '${rootPath}/project.stackblend'; git clean -f -d`);
-			if (stderr && stderr['_hadError']) throw stderr;
+			if (stderr && stderr["_hadError"]) throw stderr;
 			
 			response.json({
 				success: true,
@@ -85,7 +85,7 @@ export const resetContent = async (request: Request, response: Response) => {
 export const pullContent = async (request: Request, response: Response) => {
 		try {
 			const {stdout, stderr} = await child.exec("git pull");
-			if (stderr && stderr['_hadError']) throw stderr;
+			if (stderr && stderr["_hadError"]) throw stderr;
 			
 			response.json({
 				success: true,
