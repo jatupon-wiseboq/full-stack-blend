@@ -141,8 +141,14 @@ var CursorHelper = {
   },
 	findWalkPathForElement: function(allowCursorElement: HTMLElement) {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByClassName('internal-fsb-begin');
+    let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
+    
+    if (isReferenceElementASingleDomElement) {
+    	referenceElement = allowCursorElement;
+    }
+    
     if (referenceElement) {
-      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+      let allowCursorElements = isReferenceElementASingleDomElement ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElement;
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
