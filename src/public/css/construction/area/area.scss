@@ -25,6 +25,10 @@ html.internal-fsb-guide-on {
           &.internal-fsb-selected {
             background-color: rgba(0, 144, 255, 0.5) !important;
           }
+          
+          > .internal-fsb-cursor {
+				  	height: 20px !important;
+				  }
         }
       }
     }
