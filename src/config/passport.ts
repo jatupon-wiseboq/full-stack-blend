@@ -3,6 +3,7 @@ import passportLocal from "passport-local";
 import passportFacebook from "passport-facebook";
 import passportGitHub from "passport-github";
 import _ from "lodash";
+import dotenv from "dotenv";
 
 // Import { User, UserType } from '../models/User';
 import {User, UserDocument} from "../models/User";
@@ -11,6 +12,12 @@ import {Request, Response, NextFunction} from "express";
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
 const GitHubStrategy = passportGitHub.Strategy;
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+} else {
+	dotenv.config();
+}
 
 passport.serializeUser<any, any>((user, done) => {
 

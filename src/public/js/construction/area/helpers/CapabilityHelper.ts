@@ -25,7 +25,7 @@ var CapabilityHelper = {
         EditorHelper.synchronize("click", null);
         
         if (selecting != willSelected) {
-          ManipulationHelper.perform('select', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
+          ManipulationHelper.perform('select[cursor]', HTMLHelper.getAttribute(willSelected, 'internal-fsb-guid'));
 	        EventHelper.setDenyForHandle("click", true);
 	        EventHelper.setDenyForHandle("click", false, 100);
         }
@@ -49,7 +49,8 @@ var CapabilityHelper = {
         if (!allowCursorElement.internalFsbBindedClick) {
           allowCursorElement.internalFsbBindedClick = true;
           
-          if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
+          if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout') ||
+          	!HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-absolute-layout')) {
           	if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout')) {
 	          	listenEventFromElement.addEventListener('click', (event) => {
 	          		if (EventHelper.checkIfDenyForHandle(event)) return;
@@ -90,8 +91,15 @@ var CapabilityHelper = {
 	              if (EventHelper.checkIfDenyForHandle(event)) return;
 	              
 	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
+	              let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-class')) != -1);
+	              
+	              if (isReferenceElementASingleDomElement) {
+	              	referenceElement = allowCursorElement;
+	              }
+	              
 	              if (referenceElement != null) {
-	                let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+	                let allowCursorElements = (isReferenceElementASingleDomElement) ? [allowCursorElement] :
+	                	[...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
 	                let theAllowCursorElement = allowCursorElement;
 	                let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
 	                

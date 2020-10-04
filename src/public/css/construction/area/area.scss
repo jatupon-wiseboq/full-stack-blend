@@ -25,6 +25,10 @@ html.internal-fsb-guide-on {
           &.internal-fsb-selected {
             background-color: rgba(0, 144, 255, 0.5) !important;
           }
+          
+          > .internal-fsb-cursor {
+				  	height: 20px !important;
+				  }
         }
       }
     }
@@ -153,6 +157,7 @@ html.internal-fsb-guide-on {
   left: inherit;
   top: inherit;
   min-height: 20px;
+  width: 0px;
   
   .col-1 {
   	width: 100%;
@@ -180,16 +185,17 @@ body.internal-fsb-mode-coding {
 }
 .internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
 	height: 20px;
+	width: 1px;
 }
 
 @include keyframe(animation-blink) {
   0% {
-    background-color: transparent;
+    background-color: white;
   }
-  50% {
-    background-color: transparent;
+  45% {
+    background-color: white;
   }
-  50.00001% {
+  55% {
     background-color: black;
   }
   100% {
@@ -206,6 +212,8 @@ body.internal-fsb-mode-coding {
     -moz-user-select: auto !important;
     -ms-user-select: auto !important;
     user-select: auto !important;
+    
+    outline: none !important;
   }
 
   > .internal-fsb-resizer {
@@ -265,10 +273,26 @@ body.internal-fsb-mode-coding {
 
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
+  flex-wrap: wrap;
+  
 	> .container,
   > .container-fluid {
   	height: 100%;
   	min-height: inherit;
+  	
+  	flex-direction: inherit;
+    flex-wrap: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    align-content: inherit;
+  	
+  	> .row.internal-fsb-strict-layout {
+  		flex-direction: inherit;
+	    flex-wrap: inherit;
+	    justify-content: inherit;
+	    align-items: inherit;
+	    align-content: inherit;
+  	}
 	}
 }
 

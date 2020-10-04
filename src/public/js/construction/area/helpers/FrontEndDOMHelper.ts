@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {WorkspaceHelper} from './WorkspaceHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORM_CONTROL_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -124,7 +124,7 @@ ${rootScript}`;
     
     return cachedGenerateCodeForReactRenderMethodResults;
   },
-  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
+  recursiveGenerateCodeForReactRenderMethod: function(element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null, context: any={}) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element) {
@@ -134,7 +134,12 @@ ${rootScript}`;
         		lines[lines.length - 1] += '.';
         		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
         	} else {
-          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+        		let textContent = element.textContent;
+        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
+        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+        		});
+        		
+          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           }
         }
       } else {
@@ -142,10 +147,13 @@ ${rootScript}`;
         if (tag === 'button') tag = 'Button';
         
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
+        let _props = [];
+        let _events = [];
         let classes = '';
         let styles = null;
         let bindingStyles = {};
-        let attributes = [];
+        let attributes = forwardAttributes && CodeHelper.clone(forwardAttributes) || [];
+        let _forwardAttributes = [];
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
@@ -372,16 +380,16 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
-                    attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   } else {
-                    attributes.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   }
                 }
               } else {
                 if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
-                  attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 } else {
-                  attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
@@ -399,12 +407,15 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
+        	let splited = submitControls && submitControls.split(' ') || [];
+        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
+        	
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
           	let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
-            for (let submitControl of submitControls.split(' ')) {
+            for (let submitControl of splited) {
               let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
               if (control) {
                 let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
@@ -436,6 +447,13 @@ ${rootScript}`;
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
           reactData = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-data') || null;
+        }
+        
+        if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
+        	_forwardAttributes = [..._props, ..._events];
+        } else {
+        	attributes = [...attributes, ..._props, ..._events];
+        	_forwardAttributes = [];
         }
         
         if (!reactNamespace) {
@@ -470,6 +488,7 @@ ${rootScript}`;
         
         if (isFirstElement) {
           reactData = null;
+          attributes = [];
         }
         
         // For react rendering method:
@@ -489,11 +508,11 @@ ${rootScript}`;
             
             indent += '  ';
             
-            cumulatedDotNotation += reactData + '[" + ' + dotNotationChar + ' + "].';
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '[" + ' + dotNotationChar + ' + "].';
           } else {
             _nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
             
-            cumulatedDotNotation += reactData;
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '.';
           }
         }
         
@@ -502,9 +521,13 @@ ${rootScript}`;
         if (reactMode && !isFirstElement) {
           let composed = indent;
           composed += `- const ${(reactNamespace + '.' + reactClass).split('.').join('_')}_ = ${reactNamespace + '.' + reactClass};`
-          lines.push(composed);
           
-          let _attributes = [];
+          if (!context[composed]) {
+          	context[composed] = true;
+          	lines.push(composed);
+          }
+          
+          let _attributes = _props || [];
           if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
@@ -563,7 +586,7 @@ ${rootScript}`;
             lines.push(composed);
             
             for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactData !== null && !_leafNode) ? {} : context);
             }
           } else {
             lines.push(composed);
@@ -582,7 +605,12 @@ ${rootScript}`;
         		lines[lines.length - 1] += '.';
         		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
         	} else {
-          	lines.push(indent + '| ' + element.textContent.split('\n').join('\n' + indent + '| '));
+        		let textContent = element.textContent;
+        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
+        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+        		});
+        		
+          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           }
         }
       } else {
@@ -742,7 +770,10 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
+        	let splited = submitControls && submitControls.split(' ') || [];
+        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
+        	
+          executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
           
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         }

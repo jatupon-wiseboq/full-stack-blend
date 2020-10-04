@@ -1,6 +1,7 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
 import {TextHelper} from '../../../helpers/TextHelper.js';
+import {RequestHelper} from '../../../helpers/RequestHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants.js';
@@ -268,11 +269,11 @@ class ProjectManager extends Base<Props, State> {
 				        let editingPageID = key;
 				        pages = pages.filter(page => page.id == editingPageID);
 				        
-				        let title = escape(pages && pages[0] && pages[0].title || '');
-				        let description = escape(pages && pages[0] && pages[0].description || '');
-				        let keywords = escape(pages && pages[0] && pages[0].keywords || '');
-				        let image = escape(pages && pages[0] && pages[0].image || '');
-				        let path = escape(pages && pages[0] && pages[0].path || '');
+				        let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+				        let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
     		        
     		        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
     		        
@@ -280,7 +281,7 @@ class ProjectManager extends Base<Props, State> {
   <!DOCTYPE html>
 html
   head
-    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
       \#{headers && headers.title || '${title}'}
     meta(name="description" content=headers && headers.description || '${description}')
@@ -519,7 +520,15 @@ html
             											constructionWindow.clearFullStackCodeForAllPages();
             											
             											this.deleteFiles(repo, deletingPersistingFiles, () => {
-	  	                            	alert('Your changes have been saved successfully.');
+            												RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
+	            												RequestHelper.post(`${window.ENDPOINT}/endpoint/pull/content`, {}).then(() => {
+	            													alert('Your changes have been saved successfully.');
+	            												}).catch(() => {
+	            													alert('Your changes have been saved successfully.');
+	            												});
+            												}).catch(() => {
+            													alert('Your changes have been saved successfully.');
+            												});
 	  	                            });
   	                            });
   	                          });

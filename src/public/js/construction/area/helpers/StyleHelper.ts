@@ -31,6 +31,7 @@ var StyleHelper = {
   			
   			if (name.match(/^[0-9]+$/)) continue;
   			if (!style) continue;
+  			if (style === defaultStyle[name]) continue;
   			
 		  	nodes.push({
 					id: 'id',

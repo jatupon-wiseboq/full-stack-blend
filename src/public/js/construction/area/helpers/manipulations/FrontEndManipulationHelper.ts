@@ -100,7 +100,7 @@ var FrontEndManipulationHelper = {
       case 'Rectangle':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.internal-fsb-allow-cursor
+          .internal-fsb-element.internal-fsb-allow-cursor.col-2
         `, element);
         break;
       case 'Iframe':
@@ -169,9 +169,7 @@ var FrontEndManipulationHelper = {
       case 'Button':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-          button.internal-fsb-element.internal-fsb-allow-cursor(type='button')
-            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
-              | Button
+          button.internal-fsb-element.internal-fsb-allow-cursor.col-2(type='button')
         `, element);
         break;
       case 'Image':

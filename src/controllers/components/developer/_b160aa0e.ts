@@ -3,17 +3,17 @@
 
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from './../helpers/DatabaseHelper.js';
-import {ValidationInfo, ValidationHelper} from './../helpers/ValidationHelper.js';
-import {RequestHelper} from './../helpers/RequestHelper.js';
-import {RenderHelper} from './../helpers/RenderHelper.js';
-import {DataTableSchema} from './../helpers/SchemaHelper.js';
-import {Base} from './Base.js';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../../helpers/DatabaseHelper.js';
+import {ValidationInfo, ValidationHelper} from '../../helpers/ValidationHelper.js';
+import {RequestHelper} from '../../helpers/RequestHelper.js';
+import {RenderHelper} from '../../helpers/RenderHelper.js';
+import {DataTableSchema} from '../../helpers/SchemaHelper.js';
+import {Base} from '../Base.js';
 
 // <---Auto[Import]
 
 // Import additional modules here:
-// 
+//
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -39,7 +39,7 @@ enum ValidationInfo {
 // <---Auto[Declare]
 
 // Declare private static variables here:
-// 
+//
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
@@ -64,7 +64,7 @@ interface Input {
 // <---Auto[Interface]
 
 // Declare or extend interfaces here:
-// 
+//
 
 // Auto[ClassBegin]--->
 class Controller extends Base {
@@ -224,9 +224,6 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("index", "651393e4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("index", "d85b2bd4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("index", "57bd398a", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 
 	  // <---Auto[Merging]
 	  

@@ -121,13 +121,6 @@ var EditorHelper = {
   },
   detach: () => {
     Accessories.cellFormater.setTableElement(null);
-    
-    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory')];
-    for (let element of elements) {
-      if (element.parentNode) {
-        element.parentNode.removeChild(element);
-      }
-    }
   },
   init: (restoreAccessoryStates: boolean, updateEditorUI: boolean) => {
     CapabilityHelper.installCapabilitiesForInternalElements(document.body);

@@ -2,10 +2,11 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HierarchicalDataTable} from './DataManipulationHelper.js';
+import {RequestHelper} from './RequestHelper.js';
 
-let sockets = {};
-let hooked = {};
-let binded = {};
+const sockets = {};
+const notificationInfos = {};
+const bindedFunctions = {};
 
 declare let window: any;
 
@@ -45,16 +46,30 @@ const NotificationHelper = {
   	
   	const notificationURI = `${socketUrl}\#${identity}`;
   	
-  	if (hooked[notificationURI] && hooked[notificationURI].indexOf(table) != -1) return;
-  	if (!sockets[socketUrl]) sockets[socketUrl] = window.io(socketUrl);
+  	if (notificationInfos[notificationURI] && notificationInfos[notificationURI].indexOf(table) != -1) return;
+  	if (!sockets[socketUrl]) {
+  		sockets[socketUrl] = window.io(socketUrl);
+  		
+			sockets[socketUrl].on('reconnect', async (message: any) => {
+				// Server will send back a refresh command if it has restarted.
+				// 
+			});
+			sockets[socketUrl].on('command', (command: string) => {
+				switch (command) {
+					case 'refresh':
+						window.location.reload();
+						break;
+				}
+			});
+  	}
   	
-  	hooked[notificationURI] = hooked[notificationURI] || [];
-  	hooked[notificationURI].push(table);
-  	binded[notificationURI] = {};
+  	notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];
+  	notificationInfos[notificationURI].push(table);
+  	bindedFunctions[notificationURI] = {};
   	
   	const socket = sockets[socketUrl];
   	
-  	socket.on('insert', binded[notificationURI]['insert'] = (message: any) => {
+  	socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
   		if (message.id == identity) {
   			for (let result of message.results) {
           table.rows.push(result);
@@ -62,7 +77,7 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('delete', binded[notificationURI]['delete'] = (message: any) => {
+  	socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
   		if (message.id == identity) {
   			for (let result of message.results) {
           let collection = table.rows.filter((row) => {
@@ -81,68 +96,72 @@ const NotificationHelper = {
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('update', binded[notificationURI]['update'] = (message: any) => {
+  	socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
   		if (message.id == identity) {
         for (let result of message.results) {
+        	let found = null;
+        	
         	for (let row of table.rows) {
-        		let found = true;
-        		
+        		found = row;
         		for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                  found = false;
+                  found = null;
                   break;
                 }
               }
             }
-            
-            if (found) {
-            	for (let key in result.keys) {
-	              if (result.keys.hasOwnProperty(key)) {
-	                row.keys[key] = result.keys[key];
-	              }
-	            }
-            	for (let key in result.columns) {
-	              if (result.columns.hasOwnProperty(key)) {
-	                row.columns[key] = result.columns[key];
-	              }
-	            }
+            if (found) break;
+          }
+          
+          if (found) {
+          	for (let key in result.keys) {
+              if (result.keys.hasOwnProperty(key)) {
+                found.keys[key] = result.keys[key];
+              }
             }
-        	}
+          	for (let key in result.columns) {
+              if (result.columns.hasOwnProperty(key)) {
+                found.columns[key] = result.columns[key];
+              }
+            }
+          }
         }
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
-  	socket.on('upsert', binded[notificationURI]['update'] = (message: any) => {
+  	socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message: any) => {
   		if (message.id == identity) {
         for (let result of message.results) {
+        	let found = null;
+        	
         	for (let row of table.rows) {
-        		let found = true;
-        		
+        		found = row;
         		for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                  found = false;
+                  found = null;
                   break;
                 }
               }
             }
-            
-            if (found) {
-            	for (let key in result.keys) {
-	              if (result.keys.hasOwnProperty(key)) {
-	                row.keys[key] = result.keys[key];
-	              }
-	            }
-            	for (let key in result.columns) {
-	              if (result.columns.hasOwnProperty(key)) {
-	                row.columns[key] = result.columns[key];
-	              }
-	            }
-            } else {
-            	table.rows.push(result);
+            if (found) break;
+          }
+          
+          if (found) {
+          	for (let key in result.keys) {
+              if (result.keys.hasOwnProperty(key)) {
+                found.keys[key] = result.keys[key];
+              }
             }
-        	}
+          	for (let key in result.columns) {
+              if (result.columns.hasOwnProperty(key)) {
+                found.columns[key] = result.columns[key];
+              }
+            }
+          } else {
+          	table.rows.push(result);
+          }
         }
         NotificationHelper.notifyTableUpdates(message);
   		}
@@ -153,21 +172,22 @@ const NotificationHelper = {
   	
   	const notificationURI = `${socketUrl}\#${identity}`;
   	
-  	if (hooked[notificationURI] && hooked[notificationURI].indexOf(table) == -1) return;
+  	if (!notificationInfos[notificationURI] || notificationInfos[notificationURI].indexOf(table) == -1) return;
   	if (!sockets[socketUrl]) return;
   	
-  	const index = hooked[notificationURI].indexOf(table);
-  	hooked[notificationURI].splice(index, 1);
+  	const index = notificationInfos[notificationURI].indexOf(table);
+  	notificationInfos[notificationURI].splice(index, 1);
   	
-  	if (hooked[notificationURI].length == 0) {
+  	if (notificationInfos[notificationURI].length == 0) {
 	  	const socket = sockets[socketUrl];
 	  	
-	  	socket.off('insert', binded[notificationURI]['insert']);
-	  	socket.off('delete', binded[notificationURI]['delete']);
-	  	socket.off('update', binded[notificationURI]['update']);
+	  	socket.off('insert_' + identity, bindedFunctions[notificationURI]['insert']);
+	  	socket.off('delete_' + identity, bindedFunctions[notificationURI]['delete']);
+	  	socket.off('update_' + identity, bindedFunctions[notificationURI]['update']);
+	  	socket.off('upsert_' + identity, bindedFunctions[notificationURI]['upsert']);
 	    
-	  	delete hooked[notificationURI];
-	  	delete binded[notificationURI];
+	  	delete notificationInfos[notificationURI];
+	  	delete bindedFunctions[notificationURI];
 	  }
   },
   notifyTableUpdates: (message) => {

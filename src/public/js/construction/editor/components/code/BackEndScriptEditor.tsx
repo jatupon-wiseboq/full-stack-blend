@@ -117,44 +117,39 @@ class BackEndScriptEditor extends Base<Props, State> {
         let beginRegEx = /Auto\[[0-9a-zA-Z\:_]+\]--->/;
         let endRegEx = /<---Auto\[[0-9a-zA-Z\:_]+\]/;
         
-        editor.commands.on("exec", (function(e) {
-            let lines = this.state.value.split('\n');
-        
-            if (e.command && (e.command.name == 'backspace' || e.command.name == 'insertstring' || e.command.name == 'indent' || e.command.name == 'outdent')) {
-                function checkAndPreventedFromEditing(rowCol) {
-                    let isPreventedFromEditing = false;
-                    
-                    for (let i = rowCol.row; i >= 0; i--) {
-                      if (lines[i].match(endRegEx) != null) break;
-                      if (lines[i].match(beginRegEx) != null) {
-                        isPreventedFromEditing = true;
-                        break;
-                      }
-                    }
-                    for (let i = rowCol.row; i < editor.session.getLength(); i++) {
-                      if (lines[i].match(beginRegEx) != null) break;
-                      if (lines[i].match(endRegEx) != null) {
-                        isPreventedFromEditing = true;
-                        break;
-                      }
-                    }
-                    
-                    if (rowCol.column == 0 && rowCol.row-1 >= 0 && e.command.name == 'backspace') {
-                      if (lines[rowCol.row-1].match(endRegEx) != null) {
-                         isPreventedFromEditing = true;
-                      }
-                    }
-                    
-                    if (isPreventedFromEditing) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                    }
+        editor.on("changeSelection", (function(e) {
+        		let lines = this.state.value.split('\n');
+        	
+        		function checkAndPreventedFromEditing(rowCol) {
+                let isPreventedFromEditing = false;
+                
+                for (let i = rowCol.row; i >= 0; i--) {
+                	if (!lines[i]) break;
+                	
+                  if (lines[i].match(endRegEx) != null) break;
+                  if (lines[i].match(beginRegEx) != null) {
+                    isPreventedFromEditing = true;
+                    break;
+                  }
+                }
+                for (let i = rowCol.row; i < editor.session.getLength(); i++) {
+                	if (!lines[i]) break;
+                	
+                  if (lines[i].match(beginRegEx) != null) break;
+                  if (lines[i].match(endRegEx) != null) {
+                    isPreventedFromEditing = true;
+                    break;
+                  }
                 }
                 
-                let getRange = editor.selection.getRange();
-                checkAndPreventedFromEditing(getRange.start);
-                checkAndPreventedFromEditing(getRange.end);
+                return isPreventedFromEditing;
             }
+                
+        		let getRange = editor.selection.getRange();
+            editor.setReadOnly(
+            	checkAndPreventedFromEditing(getRange.start) ||
+            	checkAndPreventedFromEditing(getRange.end)
+            );
         }).bind(this));
         
         editor.renderer.on('afterRender', (function() {
@@ -166,6 +161,8 @@ class BackEndScriptEditor extends Base<Props, State> {
                 let readonly = false;
               
                 for (let i = offset + j; i >= 0; i--) {
+                		if (!lines[i]) break;
+                		
                     if (lines[i].match(endRegEx) != null) break;
                     if (lines[i].match(beginRegEx) != null) {
                         readonly = true;
@@ -173,6 +170,8 @@ class BackEndScriptEditor extends Base<Props, State> {
                     }
                 }
                 for (let i = offset + j; i < offset + aceLines.length; i++) {
+                		if (!lines[i]) break;
+                		
                     if (lines[i].match(beginRegEx) != null) break;
                     if (lines[i].match(endRegEx) != null) {
                         readonly = true;

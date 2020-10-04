@@ -2,13 +2,15 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {SourceType} from "./DatabaseHelper.js";
+import {Permission} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
 
 enum FieldType {
   AutoNumber,
   String,
   Number,
-  Boolean
+  Boolean,
+  DateTime
 }
 
 interface DataSchema {
@@ -21,6 +23,8 @@ interface DataTableSchema {
   keys: {[Identifier: string]: DataColumnSchema};
   columns: {[Identifier: string]: DataColumnSchema};
   relations: {[Identifier: string]: DataRelationSchema};
+  modifyingPermission: Permission;
+  retrievingPermission: Permission;
 }
 interface DataColumnSchema {
 	name: string;
@@ -28,6 +32,8 @@ interface DataColumnSchema {
 	fieldType: FieldType;
 	required: boolean;
 	unique: boolean;
+  modifyingPermission: Permission;
+  retrievingPermission: Permission;
 }
 interface DataRelationSchema {
   name: string;
@@ -47,6 +53,8 @@ const SchemaHelper = {
 				return FieldType.Number;
 			case "boolean":
 				return FieldType.Boolean;
+			case "datetime":
+				return FieldType.DateTime;
 			default:
 				return FieldType.String;
 		}
@@ -56,22 +64,31 @@ const SchemaHelper = {
 	    if (data.tables.hasOwnProperty(tableKey)) {
   	    const table = data.tables[tableKey];
   	    if (table.group === undefined || table.group === null || table.group.trim() === "")
-  	      throw new Error("There was an error verifying data schema (missing a group name).");
+  	      throw new Error(`There was an error verifying data schema (missing a group name: ${JSON.stringify(table)}).`);
   	    if (Object.keys(table.keys).length == 0)
-  	      throw new Error("There was an error verifying data schema (missing a primary key).");
+  	      throw new Error(`There was an error verifying data schema (missing a primary key: ${JSON.stringify(table)}).`);
+  	    
+  	    if (table.modifyingPermission) SchemaHelper.verifyPermission(table.modifyingPermission);
+  	    if (table.retrievingPermission) SchemaHelper.verifyPermission(table.retrievingPermission);
   	    
   	    for (const primaryKey in table.keys) {
 	        if (table.keys.hasOwnProperty(primaryKey)) {
 	          const column = table.keys[primaryKey];
 	          if (column.name === undefined || column.name === null || column.name.trim() === "")
-  	          throw new Error("There was an error verifying data schema (missing a column name).");
+  	          throw new Error(`There was an error verifying data schema (missing a column name: ${JSON.stringify(column)}).`);
+	        
+		        if (column.modifyingPermission) SchemaHelper.verifyPermission(column.modifyingPermission);
+	  	    	if (column.retrievingPermission) SchemaHelper.verifyPermission(column.retrievingPermission);
 	        }
 	      }
   	    for (const columnKey in table.columns) {
 	        if (table.columns.hasOwnProperty(columnKey)) {
 	          const column = table.columns[columnKey];
 	          if (column.name === undefined || column.name === null || column.name.trim() === "")
-  	          throw new Error("There was an error verifying data schema (missing a column name).");
+  	          throw new Error(`There was an error verifying data schema (missing a column name: ${JSON.stringify(column)}).`);
+	        
+		        if (column.modifyingPermission) SchemaHelper.verifyPermission(column.modifyingPermission);
+	  	    	if (column.retrievingPermission) SchemaHelper.verifyPermission(column.retrievingPermission);
 	        }
 	      }
   	    
@@ -80,26 +97,64 @@ const SchemaHelper = {
             const relation = table.relations[relationTableKey];
             
             if (relation.sourceGroup === undefined || relation.sourceGroup === null || relation.sourceGroup.trim() === "")
-        	    throw new Error("There was an error verifying data schema (missing a source group name).");
+        	    throw new Error(`There was an error verifying data schema (missing a source group name: ${JSON.stringify(relation)}).`);
             if (relation.sourceEntity === undefined || relation.sourceEntity === null || relation.sourceEntity.trim() === "")
-        	    throw new Error("There was an error verifying data schema (missing a source entity name).");
+        	    throw new Error(`There was an error verifying data schema (missing a source entity name: ${JSON.stringify(relation)}).`);
             if (relation.targetGroup === undefined || relation.targetGroup === null || relation.targetGroup.trim() === "")
-        	    throw new Error("There was an error verifying data schema (missing a target group name).");
+        	    throw new Error(`There was an error verifying data schema (missing a target group name: ${JSON.stringify(relation)}).`);
             if (relation.targetEntity === undefined || relation.targetEntity === null || relation.targetEntity.trim() === "")
-        	    throw new Error("There was an error verifying data schema (missing a target entity name).");
+        	    throw new Error(`There was an error verifying data schema (missing a target entity name: ${JSON.stringify(relation)}).`);
         	  
         	  if (!data.tables[relation.sourceGroup])
-        	    throw new Error("There was an error verifying data schema (source group unavailable).");
+        	    throw new Error(`There was an error verifying data schema (source group unavailable: ${JSON.stringify(relation.sourceGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
         	  if (!data.tables[relation.sourceGroup].keys[relation.sourceEntity] && !data.tables[relation.sourceGroup].columns[relation.sourceEntity])
-        	    throw new Error("There was an error verifying data schema (source entity unavailable).");
+        	    throw new Error(`There was an error verifying data schema (source entity unavailable: ${JSON.stringify(relation.sourceEntity)}; choices are ${[...Object.keys(data.tables[relation.sourceGroup].keys), ...Object.keys(data.tables[relation.sourceGroup].columns)].join(", ")}).`);
         	  if (!data.tables[relation.targetGroup])
-        	    throw new Error("There was an error verifying data schema (target group unavailable).");
+        	    throw new Error(`There was an error verifying data schema (target group unavailable: ${JSON.stringify(relation.targetGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
         	  if (!data.tables[relation.targetGroup].keys[relation.targetEntity] && !data.tables[relation.targetGroup].columns[relation.targetEntity])
-        	    throw new Error("There was an error verifying data schema (target entity unavailable).");
+        	    throw new Error(`There was an error verifying data schema (target entity unavailable: ${JSON.stringify(relation.targetEntity)}; choices are ${[...Object.keys(data.tables[relation.targetGroup].keys), ...Object.keys(data.tables[relation.targetGroup].columns)].join(", ")}).`);
           }
         }
   	  }
 	  }
+	},
+	verifyPermission: (permission: Permission, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
+		if (permission == null) return true;
+		
+		switch (permission.mode) {
+			case "relation":
+				if (permission.relationModeSourceGroup === undefined || permission.relationModeSourceGroup === null || permission.relationModeSourceGroup.trim() === "")
+					throw new Error(`There was an error verifying permission settings (missing a source group name: ${JSON.stringify(data)}).`);
+				if (permission.relationModeSourceEntity === undefined || permission.relationModeSourceEntity === null || permission.relationModeSourceEntity.trim() === "")
+					throw new Error(`There was an error verifying permission settings (missing a source entity name: ${JSON.stringify(data)}).`);
+				
+				if (!data.tables[permission.relationModeSourceGroup])
+    	    throw new Error(`There was an error verifying data schema (source group unavailable: ${JSON.stringify(permission.relationModeSourceGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
+    	  if (!data.tables[permission.relationModeSourceGroup].keys[permission.relationModeSourceEntity] && !data.tables[permission.relationModeSourceGroup].columns[permission.relationModeSourceEntity])
+    	    throw new Error(`There was an error verifying data schema (source entity unavailable: ${JSON.stringify(permission.relationModeSourceEntity)}; choices are ${[...Object.keys(data.tables[permission.relationModeSourceGroup].keys), ...Object.keys(data.tables[permission.relationModeSourceGroup].columns)].join(", ")}).`);
+				
+				switch (permission.relationMatchingMode) {
+					case "session":
+						if (permission.relationMatchingSessionName === undefined || permission.relationMatchingSessionName === null || permission.relationMatchingSessionName.trim() === "")
+							throw new Error(`There was an error verifying permission settings (missing a session name: ${JSON.stringify(data)}).`);
+						break;
+					default:
+						if (permission.relationMatchingConstantValue === undefined || permission.relationMatchingConstantValue === null || permission.relationMatchingConstantValue.trim() === "")
+							throw new Error(`There was an error verifying permission settings (missing a constant value: ${JSON.stringify(data)}).`);
+						break;
+				}
+				break;
+			case "session":
+				if (permission.sessionMatchingSessionName === undefined || permission.sessionMatchingSessionName === null || permission.sessionMatchingSessionName.trim() === "")
+					throw new Error(`There was an error verifying permission settings (missing a session name: ${JSON.stringify(data)}).`);
+				if (permission.sessionMatchingConstantValue === undefined || permission.sessionMatchingConstantValue === null || permission.sessionMatchingConstantValue.trim() === "")
+					throw new Error(`There was an error verifying permission settings (missing a constant value: ${JSON.stringify(data)}).`);
+				break;
+			default:
+				break;
+		}
+		
+		return true;
 	},
 	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema, searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
 		if (!searchForDataTableSchema) {
@@ -146,6 +201,8 @@ const SchemaHelper = {
     return notations;
   },
 	verifyNotations: (tree: any, data: DataSchema) => {
+		return;
+		
 	  const notations = SchemaHelper.findAllPossibleNotations(tree || {});
 	  for (const notation of notations) {
 	    const splited = notation.split(".");
@@ -176,6 +233,53 @@ const SchemaHelper = {
 		if ("fieldType" in current) throw new Error("There was an error retreiving data schema (dot notation gave a column instead of a table).");
 		
 		return current;
+	},
+	findShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): DataTableSchema[] => {
+		const results = [];
+		
+		SchemaHelper.recursiveFindShortestPathOfRelations(from, to, results);
+		
+		return results;
+	},
+	recursiveFindShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, results: DataTableSchema[], walked: any={}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): boolean => {
+		if (walked[from.group]) return false;
+		walked[from.group] = true;
+		
+		if (from == to) {
+			results.push(from);
+			
+			return true;
+		}
+		
+		let minimum = Number.MAX_SAFE_INTEGER;
+		let shortestResults = null;
+		
+		for (const key in from.relations) {
+			if (from.relations.hasOwnProperty(key)) {
+				const table = data.tables[key];
+				const _walked = Object.assign({}, walked);
+				const _results = [];
+				
+				const found = SchemaHelper.recursiveFindShortestPathOfRelations(table, to, _results, _walked, data);
+				
+				if (found && _results.length < minimum) {
+					minimum = _results.length;
+					shortestResults = _results;
+				}
+			}
+		}
+		
+		if (shortestResults) {
+			results.push(from);
+			
+			for (const item of shortestResults) {
+				results.push(item);
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
 	}
 };
 

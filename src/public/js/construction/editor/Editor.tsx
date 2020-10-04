@@ -245,6 +245,8 @@ let cachedUpdateEditorProperties = {};
     
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+    	
       perform('keydown', event.keyCode);
     
       return EventHelper.cancel(event);
@@ -255,6 +257,8 @@ let cachedUpdateEditorProperties = {};
     
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+    	
       perform('keyup', event.keyCode);
       
       return EventHelper.cancel(event);
@@ -295,25 +299,31 @@ let cachedUpdateEditorProperties = {};
     currentRevision = latestRevision;
     
     Accessories.preview.current.open();
-    Accessories.endpointManager.current.save((success) => {
-      if (success) {
-      	window.setTimeout(() => {
-	        Accessories.preview.current.start();
-	        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
-	          if (currentRevision == latestRevision) {
-	            if (!results.success) {
-	              console.error(`${results.error}`);
-	              Accessories.preview.current.close();
-	            }
-	          }
-	        }).catch(() => {
-	        });
-      	}, 3000);
-      } else {
-        console.error('There was an error trying to update content at endpoint.');
-        Accessories.preview.current.close();
-      }
-    });
+    
+    $('#siteButton')[0].click();
+    
+    window.setTimeout(() => {
+	    Accessories.endpointManager.current.save((success) => {
+	    	if (!Accessories.preview.current.isOpening()) return;
+	      if (success) {
+	      	window.setTimeout(() => {
+		        Accessories.preview.current.start();
+		        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
+		          if (currentRevision == latestRevision) {
+		            if (!results.success) {
+		              console.error(`${results.error}`);
+		              Accessories.preview.current.close();
+		            }
+		          }
+		        }).catch(() => {
+		        });
+	      	}, 3000);
+	      } else {
+	        console.error('There was an error trying to update content at endpoint.');
+	        Accessories.preview.current.close();
+	      }
+	    });
+    }, 1000);
  	});
  	
  	let setup = (() => {

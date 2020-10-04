@@ -37,6 +37,7 @@ let options = {
     "background-repeat": CONSTANTS.BACKGROUND_REPEAT_OPTIONS,
     "background-size[0,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
     "background-size[1,2]": CONSTANTS.BACKGROUND_SIZE_OPTIONS,
+    "background-size": CONSTANTS.BACKGROUND_CONTAINING_SIZE_OPTIONS,
     "background-position[0,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "background-position[1,2]": CONSTANTS.BACKGROUND_POSITION_OPTIONS,
     "mix-blend-mode": CONSTANTS.MIX_BLEND_MODE_OPTIONS,
@@ -300,7 +301,7 @@ class DropDownPicker extends Base<Props, State> {
                     if (this.props.watchingAttributeNames.length != 0) {
                         return (
                             <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-for="editorCurrentMode:coding">
-                                <FullStackBlend.Controls.DropDownList customClassName={this.state.attributeValues[this.props.watchingAttributeNames[0]] ? 'btn-primary' : ''} options={["{SETTING}", "{PROPERTY}", "{STATE}", "{CODE}"]} controls={this.state.controls} width={Math.max(250, this.props.width)} optionPadding={0}>
+                                <FullStackBlend.Controls.DropDownList customClassName={this.state.attributeValues[this.props.watchingAttributeNames[0]] ? 'btn-primary' : ''} options={["{SETTING}", "{PROPERTY}", "{STATE}", "{CODE}"]} controls={this.state.controls} width={Math.max(500, this.props.width)} optionPadding={0}>
                                     <span>{(map[this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')] || this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')).replace(/(border|background|object|text|list)\-/, '')}: </span><span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
