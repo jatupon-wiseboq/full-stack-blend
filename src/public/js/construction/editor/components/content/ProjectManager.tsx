@@ -296,7 +296,7 @@ html
     meta(property="og:type" content=headers && headers.itemType || 'website')
     meta(property="og:description" content=headers && headers.description || '${description}')
     meta(property="og:locale" content=headers && headers.contentLocale || 'en_US')
-    link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
+    link(rel="stylesheet" href="/css/embed.css")
     ${externalStylesheets.join('\n    ')}
     style(type="text/css").
       ${combinedStylesheet}
