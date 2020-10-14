@@ -283,6 +283,26 @@ var EditorHelper = {
             }
         }
     }
+    
+    const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-stylesheet-element', 'custom');
+    for (let element of elements) {
+    		element.parentNode.removeChild(element);
+    }
+    
+		let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+    for (let externalLibrary of externalLibraries) {
+			  if (!externalLibrary) continue;
+			  
+	    	let splited = externalLibrary.split('#');
+	    	if (splited[0].toLowerCase().indexOf('.css') != -1) {
+	    			let element = document.createElement('link');
+            element.setAttribute('rel', 'stylesheet');
+            element.setAttribute('type', 'text/css');
+            element.setAttribute('href', splited[0]);
+            element.setAttribute('internal-stylesheet-element', 'custom');
+            document.head.appendChild(element);
+		    }
+    }
   },
   
   select: (element: HTMLElement) => {
