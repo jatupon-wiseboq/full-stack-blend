@@ -124,14 +124,16 @@ export const LIBRARIES = [{
     stylesheets: null,
     scripts: [
       "https://unpkg.com/react@16/umd/react.production.min.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
+      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
       "https://unpkg.com/react@16/umd/react.development.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
     ]
   }
 },{

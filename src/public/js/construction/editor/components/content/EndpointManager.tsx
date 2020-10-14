@@ -176,7 +176,6 @@ html
     script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
     ${externalScripts.join('\n    ')}
-    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
     script(type="text/javascript" src="/js/Site.bundle.js")
 `
           combinedHTMLPageDict[key] = combinedHTMLPage;
