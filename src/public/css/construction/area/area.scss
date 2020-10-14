@@ -25,6 +25,10 @@ html.internal-fsb-guide-on {
           &.internal-fsb-selected {
             background-color: rgba(0, 144, 255, 0.5) !important;
           }
+          
+          > .internal-fsb-cursor {
+				  	height: 20px !important;
+				  }
         }
       }
     }
@@ -153,6 +157,7 @@ html.internal-fsb-guide-on {
   left: inherit;
   top: inherit;
   min-height: 20px;
+  width: 0px;
   
   .col-1 {
   	width: 100%;
@@ -268,10 +273,26 @@ body.internal-fsb-mode-coding {
 
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
+  flex-wrap: wrap;
+  
 	> .container,
   > .container-fluid {
   	height: 100%;
   	min-height: inherit;
+  	
+  	flex-direction: inherit;
+    flex-wrap: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    align-content: inherit;
+  	
+  	> .row.internal-fsb-strict-layout {
+  		flex-direction: inherit;
+	    flex-wrap: inherit;
+	    justify-content: inherit;
+	    align-items: inherit;
+	    align-content: inherit;
+  	}
 	}
 }
 
