@@ -18,7 +18,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ["externalLibraries", "pages"]
+  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
