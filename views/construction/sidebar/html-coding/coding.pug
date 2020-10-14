@@ -263,8 +263,14 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
   .section-container
     .section-title
       | Front-End External Libraries
+    .section-subtitle
+      | Presets
     .section-body
       +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
+    .section-subtitle
+      | Custom URLs
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
 div(internal-fsb-for="internal-fsb-inheriting")
   .section-container.internal-fsb-selecting-on(internal-fsb-for="hasParentReactComponent")
     .section-title

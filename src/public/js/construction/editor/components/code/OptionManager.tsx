@@ -201,7 +201,7 @@ class OptionManager extends Base<Props, State> {
         return (
             <FullStackBlend.Components.ListManager nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
-                    <div className="section-title">{(this.state.isAdding) ? "New Option" : "Update Option"}</div>
+                    <div className="section-title">{(this.state.isAdding) ? "New Option" : "Update an Option"}</div>
                     <div className="section-subtitle">Name</div>
                     <div className="section-body">
                         <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='[^"]*' postRegExp='[^"]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>

@@ -15,9 +15,9 @@ export const addRecentError = (error: any) => {
     recentError.push("[back-end]: " + (error && error.message || error.toString()));
 };
 
-let convertUnixIntoWindowPathIfNeed = (path: any) => {
-		if (__dirname.indexOf('\\') != -1) {
-			path = path.replace(/\//g, '\\');
+const convertUnixIntoWindowPathIfNeed = (path: any) => {
+		if (__dirname.indexOf("\\") != -1) {
+			path = path.replace(/\//g, "\\");
 		}
 		
 		return path;
