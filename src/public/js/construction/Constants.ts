@@ -369,3 +369,4 @@ export const BACKEND_DATA_LOCK_MODE = [["data-lock-mode", "always", ["fa-circle"
 export const BACKEND_DATA_LOCK_MATCHING_MODE = [["data-lock-matching-mode", null, ["fa-circle", "Static Value"]], ["data-lock-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MODE = [["data-rendering-condition-mode", "block", ["fa-circle", "Block"]], ["data-rendering-condition-mode", "relation", ["fa-circle-o", "Relation"]], ["data-rendering-condition-mode", "session", ["fa-circle-o", "Session"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE = [["data-rendering-condition-matching-mode", null, ["fa-circle", "Static Value"]], ["data-rendering-condition-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
+export const SINGLE_DOM_CONTAINER_ELEMENTS = ['Rectangle', 'Button', 'Link'];

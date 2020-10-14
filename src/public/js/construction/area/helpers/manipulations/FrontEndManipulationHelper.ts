@@ -7,7 +7,7 @@ import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
 import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
-import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants.js';
 
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};
@@ -92,7 +92,7 @@ var FrontEndManipulationHelper = {
       case 'Link':
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
-          a.internal-fsb-element.internal-fsb-allow-cursor
+          a.internal-fsb-element.internal-fsb-allow-cursor.col-2
             .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
               | Link
         `, element);
@@ -163,13 +163,15 @@ var FrontEndManipulationHelper = {
       	element = document.createElement('div');
         element = ReactDOM.render(pug `
         	.internal-fsb-element(style={display: 'block', width: '100%'})
-        		input(type='file')
+            input(type='file')
         `, element);
         break;
       case 'Button':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
           button.internal-fsb-element.internal-fsb-allow-cursor.col-2(type='button')
+            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
+              | Link
         `, element);
         break;
       case 'Image':
@@ -237,7 +239,7 @@ var FrontEndManipulationHelper = {
     		remember = false;
     	} else {
 	      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-	        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button', 'Rectangle'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+	        if (!isComponentInsertion && !isForwardingStyleToChildren && SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
 	        Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
 	      } else {
 	        StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
