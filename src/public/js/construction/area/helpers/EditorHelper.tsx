@@ -289,7 +289,7 @@ var EditorHelper = {
     		element.parentNode.removeChild(element);
     }
     
-		let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+		let externalLibraries: string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
     for (let externalLibrary of externalLibraries) {
 			  if (!externalLibrary) continue;
 			  
