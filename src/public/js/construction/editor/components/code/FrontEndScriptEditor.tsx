@@ -109,6 +109,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
                 let isPreventedFromEditing = false;
                 
                 for (let i = rowCol.row; i >= 0; i--) {
+                	if (i >= lines.length) break;
                   if (lines[i].match(endRegEx) != null) break;
                   if (lines[i].match(beginRegEx) != null) {
                     isPreventedFromEditing = true;
@@ -116,6 +117,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
                   }
                 }
                 for (let i = rowCol.row; i < editor.session.getLength(); i++) {
+                	if (i >= lines.length) break;
                   if (lines[i].match(beginRegEx) != null) break;
                   if (lines[i].match(endRegEx) != null) {
                     isPreventedFromEditing = true;
@@ -142,6 +144,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
                 let readonly = false;
               
                 for (let i = offset + j; i >= 0; i--) {
+                		if (i >= lines.length) break;
                     if (lines[i].match(endRegEx) != null) break;
                     if (lines[i].match(beginRegEx) != null) {
                         readonly = true;
@@ -149,6 +152,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
                     }
                 }
                 for (let i = offset + j; i < offset + aceLines.length; i++) {
+                		if (i >= lines.length) break;
                     if (lines[i].match(beginRegEx) != null) break;
                     if (lines[i].match(endRegEx) != null) {
                         readonly = true;
