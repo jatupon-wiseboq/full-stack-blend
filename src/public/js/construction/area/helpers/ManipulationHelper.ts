@@ -8,6 +8,7 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {TimelineHelper} from './TimelineHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {StyleHelper} from './StyleHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
@@ -364,6 +365,7 @@ var ManipulationHelper = {
               	}
               } else if (attribute.name == 'internal-fsb-name') {
     						LayoutHelper.invalidate();
+    						TimelineHelper.invalidate();
               }
               
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
@@ -703,6 +705,7 @@ var ManipulationHelper = {
           EditorHelper.deselect();
           
     			LayoutHelper.invalidate();
+    			TimelineHelper.invalidate();
         }
         break;
       case 9:
@@ -715,6 +718,7 @@ var ManipulationHelper = {
           EditorHelper.selectNextElement();
           
           LayoutHelper.invalidate();
+    			TimelineHelper.invalidate();
         }
         break;
       case 16:
@@ -782,6 +786,7 @@ var ManipulationHelper = {
     }
     
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     StyleHelper.invalidate();
   	
   	return [accessory, remember, link];
@@ -819,6 +824,7 @@ var ManipulationHelper = {
     }
     
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	
@@ -1128,6 +1134,7 @@ var ManipulationHelper = {
   	
   	ManipulationHelper.updateComponentData(selectingElement);
   	LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     FrontEndDOMHelper.invalidate();
     StyleHelper.invalidate();
   	
@@ -1232,6 +1239,7 @@ var ManipulationHelper = {
   	ManipulationHelper.updateComponentData(destination);
   	ManipulationHelper.updateComponentData(origin);
   	LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	

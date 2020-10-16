@@ -33,10 +33,15 @@ class TimelineManager extends Base<Props, State> {
         Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
+    public update(properties: any) {
+        if (!super.update(properties)) return;
+    }
+    
     render() {
       return (
       	<div className={"timeline-manager-container"}>
         	<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
+      		<span className="btn btn-light add">+</span>
         </div>
       )
     }
