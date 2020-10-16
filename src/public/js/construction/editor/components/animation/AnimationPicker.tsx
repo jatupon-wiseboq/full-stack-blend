@@ -23,9 +23,8 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingAttributeNames: ['internal-fsb-guid', 'class'],
-    watchingStyleNames: ['-fsb-inherited-presets', '-fsb-reusable-name', '-fsb-reusable-id'],
-    watchingExtensionNames: ['stylesheetDefinitionRevision']
+    watchingStyleNames: ['-fsb-reusable-name', '-fsb-reusable-id'],
+    watchingExtensionNames: ['animationDefinitionRevision']
 });
 
 class AnimationPicker extends Base<Props, State> {
@@ -42,15 +41,15 @@ class AnimationPicker extends Base<Props, State> {
         
         let nodes: [ITreeNode] = [];
         
-        if (properties.extensions && properties.extensions.stylesheetDefinitionKeys) {
+        if (properties.extensions && properties.extensions.animationDefinitionKeys) {
         		let allInheritanceHash = {};
         		let prioritizedKeys = [];
         		let stylesheetDefinitionHash = {};
-        		for (let info of properties.extensions.stylesheetDefinitionKeys) {
+        		for (let info of properties.extensions.animationDefinitionKeys) {
         			prioritizedKeys.push(info.name);
         			stylesheetDefinitionHash[info.id] = info;
         		}
-        		for (let info of properties.extensions.stylesheetDefinitionKeys) {
+        		for (let info of properties.extensions.animationDefinitionKeys) {
         			allInheritanceHash[info.id] = info.inheritances.filter(token => token != '').sort((a, b) => {
         				
         				let pa = prioritizedKeys.indexOf(stylesheetDefinitionHash[a] && stylesheetDefinitionHash[a].name || null);
@@ -63,7 +62,7 @@ class AnimationPicker extends Base<Props, State> {
         			});
         		}
         		
-		        for (let info of properties.extensions.stylesheetDefinitionKeys) {
+		        for (let info of properties.extensions.animationDefinitionKeys) {
 		            let isItself = (info.id == this.state.styleValues['-fsb-reusable-id']);
 		        		let chosen = (isItself) ? false : (this.state.styleValues['-fsb-inherited-presets'] &&
 		                         this.state.styleValues['-fsb-inherited-presets'].indexOf(info.id) != -1) || false;

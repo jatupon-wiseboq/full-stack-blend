@@ -6,7 +6,7 @@ let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
 
-var StylesheetHelper = {
+var AnimationHelper = {
   generateStylesheetData: () => {
     return stylesheetDefinitions;
   },
@@ -16,35 +16,7 @@ var StylesheetHelper = {
     cachedPrioritizedKeys = null;
     cachedPrioritizedKeysRevision = -1;
     
-    StylesheetHelper.renderStylesheetElement();
-  },
-	setStyle: function(element: HTMLElement, style: string) {
-    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
-    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-    
-    if (reusablePresetName) {
-      StylesheetHelper.setStylesheetDefinition(presetId, reusablePresetName, style);
-    } else {
-      HTMLHelper.setAttribute(element, 'style', style);
-    }
-  },
-  getStyle: function(element: HTMLElement) {
-  	let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
-    let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-    let style = (reusablePresetName) ? StylesheetHelper.getStylesheetDefinition(presetId) : HTMLHelper.getAttribute(element, 'style');
-    
-    return style;
-  },
-  setStyleAttribute: function(element: HTMLElement, styleName: string, styleValue: string) {
-    let style = StylesheetHelper.getStyle(element);
-    style = HTMLHelper.setInlineStyle(style, styleName, styleValue);
-    
-    StylesheetHelper.setStyle(element, style);
-  },
-  getStyleAttribute: function(element: HTMLElement, styleName: string) {
-    let style = StylesheetHelper.getStyle(element);
-    
-    return HTMLHelper.getInlineStyle(style, styleName);
+    AnimationHelper.renderStylesheetElement();
   },
   getStylesheetDefinition: function(presetId: string) {
     return stylesheetDefinitions[presetId] || null;
@@ -54,14 +26,14 @@ var StylesheetHelper = {
     
     stylesheetDefinitionRevision++;
     
-    StylesheetHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetElement();
   },
   setStylesheetDefinition: function(presetId: string, presetName: string, content: string) {
     stylesheetDefinitions[presetId] = content;
     
     stylesheetDefinitionRevision++;
     
-    StylesheetHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetElement();
   },
   getStylesheetDefinitionKeys: function() {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
@@ -82,12 +54,9 @@ var StylesheetHelper = {
       
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
       	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
-      	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
-      	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
       	return {
       		id: presetId,
-	      	name: presetName,
-	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
+	      	name: presetName
 	      }
       });
     }
@@ -98,20 +67,20 @@ var StylesheetHelper = {
     return stylesheetDefinitionRevision;
   },
   renderStylesheetElement: function() {
-    let element = document.getElementById('internal-fsb-stylesheet');
+    let element = document.getElementById('internal-fsb-animation');
     if (!element) {
       element = document.createElement('style');
       HTMLHelper.setAttribute(element, 'type', 'text/css');
-      HTMLHelper.setAttribute(element, 'id', 'internal-fsb-stylesheet');
+      HTMLHelper.setAttribute(element, 'id', 'internal-fsb-animation');
       element.className = 'internal-fsb-accessory';
       document.body.appendChild(element);
     }
     
-    element.innerText = StylesheetHelper.renderStylesheet();
+    element.innerText = AnimationHelper.renderStylesheet();
   },
   renderStylesheet: function(production: boolean=false) {
     let lines = [];
-    let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
+    let prioritizedKeys = AnimationHelper.getStylesheetDefinitionKeys();
     let inversedReferenceHash = {};
     let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
     	'.internal-fsb-absolute-layout > .internal-fsb-element',
@@ -143,25 +112,6 @@ var StylesheetHelper = {
 	      prefixes.push(prefix + '.-fsb-preset-' + info.id + suffix);
 	    }
       
-      // Inheritance
-      //
-      let inversedReferences = inversedReferenceHash[info.id] || [];
-      inversedReferences.sort((a, b) => {
-      	let pa = prioritizedKeys.indexOf(a);
-      	let pb = prioritizedKeys.indexOf(b);
-      	
-      	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
-      	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
-      	
-      	return (pa > pb) ? 1 : -1;
-      });
-      
-      for (let inheritingKey of inversedReferences) {
-      	for (let prefix of wysiwygCSSSelectorPrefixes) {
-		      prefixes.push(prefix + '.-fsb-preset-' + inheritingKey + suffix);
-		    }
-      }
-      
       lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
       
       // Table Cell Property (With Reusable Stylesheet)
@@ -184,4 +134,4 @@ var StylesheetHelper = {
   }
 };
 
-export {StylesheetHelper};
+export {AnimationHelper};

@@ -5,6 +5,7 @@ import {TextHelper} from '../../helpers/TextHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
+import {AnimationHelper} from './AnimationHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {BackEndDOMHelper} from './BackEndDOMHelper.js';
@@ -26,6 +27,7 @@ const DefaultProjectSettings: {[Identifier: string]: any} = {
   editingPageID: 'index',
   editingComponentID: null,
   editingPopupID: null,
+  editingAnimationID: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
   popups: []
@@ -37,6 +39,7 @@ let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
 let InternalStylesheets = {};
+let InternalAnimations = {};
 let backEndControllerBlobSHADict = {};
 let frontEndComponentsBlobSHADict = {};
 let viewBlobSHADict = {};
@@ -67,7 +70,8 @@ var WorkspaceHelper = {
 	      popups: InternalPopups,
 	      flows: InternalDataFlows,
 	      services: InternalServices,
-	      stylesheets: StylesheetHelper.generateStylesheetData()
+	      stylesheets: StylesheetHelper.generateStylesheetData(),
+	      animations: AnimationHelper.generateStylesheetData()
 	    }, removeSHADict ? {} : {
 	      backEndControllerBlobSHADict: backEndControllerBlobSHADict,
 	      frontEndComponentsBlobSHADict: frontEndComponentsBlobSHADict,
@@ -83,6 +87,7 @@ var WorkspaceHelper = {
     InternalDataFlows = data && data.flows || {};
     InternalServices = data && data.services || {};
     InternalStylesheets = data && data.stylesheets || {};
+    InternalAnimations = data && data.animations || {};
     InternalDataFlows.schema = InternalDataFlows.schema || {};
     
     backEndControllerBlobSHADict = data.backEndControllerBlobSHADict || {};
@@ -162,6 +167,7 @@ var WorkspaceHelper = {
       
       FontHelper.initializeFontData(page.head.fonts);
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -211,6 +217,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -236,6 +243,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
       Accessories.overlay.setEnable(false);
@@ -276,6 +284,7 @@ var WorkspaceHelper = {
         
         FontHelper.initializeFontData(page.head.fonts);
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      	AnimationHelper.initializeStylesheetData(InternalAnimationss);
       }
       
       if (force || !CodeHelper.equals(clonedPage, page)) {
@@ -512,6 +521,7 @@ var WorkspaceHelper = {
   generateFrontEndCodeForCurrentPage: () => {
     let results = FrontEndDOMHelper.generateFrontEndCode();
   	results.push(StylesheetHelper.renderStylesheet(true));
+  	results.push(AnimationHelper.renderStylesheet(true));
   	
   	return results;
   },

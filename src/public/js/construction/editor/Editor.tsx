@@ -200,7 +200,9 @@ let cachedUpdateEditorProperties = {};
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
 	      	}
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing']) {
+	      }
+	      if (content && content['extensions']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'areFormatAndStyleOptionsAvailable']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
