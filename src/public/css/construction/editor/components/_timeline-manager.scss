@@ -1,21 +1,15 @@
 // Timeline Manager
 // -------------------------
 .timeline-manager-container {
-  display: block;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-	
-	&::before {
-		content: '';
-		display: block;
-		position: absolute;
-		left: 0;
-		right: 0;
-		top: 0;
-		height: 11px;
-		border-bottom: solid 1px #ddd;
-		background-color: #eee;
-	}
+  overflow: hidden;
+  background: rgb(240, 240, 240);
 	
 	&::after {
 		content: '';
@@ -26,18 +20,8 @@
     left: 0;
     top: 0;
     bottom: 0;
-		background-color: rgba(0, 0, 0, 0.025);
+		background-color: rgba(255, 255, 255, 0.6);
 		border-right: solid 1px #ccc;
-	}
-	
-	> .tree-container:last-child {
-		> .container-fluid {
-			> div {
-				> .treenode-outer-container {
-					border-bottom: none;
-				}
-			}
-		}
 	}
   
 	.tree-container {
@@ -114,12 +98,12 @@
 		&.selected {
 			.treenode-body {
 				font-weight: bold;
-				color: rgba(0, 144, 255, 0.75);
+				color: rgba(255, 0, 0, 0.75);
 				
 				.treenode-title {
 					&::before {
 						content: '\25CF';
-						color: rgba(0, 144, 255, 0.75);
+						color: rgba(255, 0, 0, 0.75);
 						top: 0px;
 					}
 				}
@@ -192,9 +176,18 @@
 							}
 						}
 					}
+					
+					&:last-child {
+						border-bottom: none;
+					}
     
 					&.contained {
-						background-color: rgba(0, 144, 255, 0.05);
+						background: rgb(0,144,255);
+						background: -moz-linear-gradient(0deg, rgba(0,144,255,0.2) 0%, rgba(0,144,255,0) 100%);
+						background: -webkit-linear-gradient(0deg, rgba(0,144,255,0.2) 0%, rgba(0,144,255,0) 100%);
+						background: linear-gradient(0deg, rgba(0,144,255,0.2) 0%, rgba(0,144,255,0) 100%);
+						filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0090ff",endColorstr="#0090ff",GradientType=1);
+						border-bottom-color: rgb(0, 144, 255);
 						
 						> .treenode-container {
 							> .treenode-body {
@@ -230,5 +223,69 @@
 		left: 0;
 		bottom: 0;
 		border: 1px solid #ced4da;
+	}
+	
+	.slider-outer-container {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 11px;
+		border-bottom: solid 1px #ddd;
+		background-color: #eee;
+		
+		.slider-inner-container {
+			position: absolute;
+			left: 251px;
+			top: 1px;
+			bottom: 1px;
+			right: 1px;
+			height: 8px;
+			
+			.slider {
+				position: absolute;
+				background-color: #007bff;
+				border-radius: 8px;
+				top: 0px;
+				left: 0%;
+				width: 30%;
+				height: 8px;
+				cursor: move;
+			}
+		}
+	}
+	
+	.timeline-outer-container {
+		.timeline-inner-container {
+			.timeline {
+				position: relative;
+				margin-left: 251px;
+				
+				.time {
+					position: absolute;
+					z-index: 0;
+			    font-size: 10px;
+			    color: rgba(0, 0, 0, 0.2);
+			    top: 11px;
+			    width: 0;
+			    
+			    .text {
+			    	position: absolute;
+			    	left: -15px;
+			    	width: 30px;
+			    	top: 0;
+			    	text-align: center;
+			    }
+				}
+				
+				.bar {
+					position: absolute;
+					z-index: 0;
+					top: 25px;
+					height: 239px;
+					border-left: solid 1px rgba(0, 0, 0, 0.043);
+				}
+			}
+		}
 	}
 }

@@ -59,6 +59,31 @@ class TimelineManager extends Base<Props, State> {
       	<div className={"timeline-manager-container"}>
         	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} />
       		<span className="btn btn-light add">+</span>
+      		<div className={"slider-outer-container"}>
+      			<div className={"slider-inner-container"}>
+      				<div className={"slider"}></div>
+      			</div>
+      		</div>
+      		<div className={"timeline-outer-container"}>
+      			<div className={"timeline-inner-container"}>
+      				<div className={"timeline"}>
+	      				{Array.from(Array(500).keys()).map((value, index) => {
+	      					if (index % 2 == 0) {
+		      					return (
+		      						<div className={"bar"} key={"bar-" + index} style={{left: (index * 40) + 'px'}}></div>
+		      					)
+		      				}
+					      })}
+					      {Array.from(Array(500).keys()).map((value, index) => {
+	      					return (
+	      						<div className={"time"} key={"time-" + index} style={{left: (index * 40) + 'px'}}>
+                    	<div className={"text"}>{index + 's'}</div>
+                    </div>
+	      					)
+	      				})}
+      				</div>
+      			</div>
+      		</div>
         </div>
       )
     }
