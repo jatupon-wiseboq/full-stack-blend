@@ -37,10 +37,27 @@ class TimelineManager extends Base<Props, State> {
         if (!super.update(properties)) return;
     }
     
+    private onUpdate(node: ITreeNode) {
+    		if (node.selected) {
+    			this.recursiveUnselectAllOfNodes(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
+    			node.selected = true;
+    			this.forceUpdate();
+    			
+    			perform('select[cursor]', node.id);
+    		}
+    }
+    
+    private recursiveUnselectAllOfNodes(nodes: [ITreeNode]) {
+    		for (let node of nodes) {
+  				node.selected = false;
+  				this.recursiveUnselectAllOfNodes(node.nodes);
+  			}
+    }
+    
     render() {
       return (
       	<div className={"timeline-manager-container"}>
-        	<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
+        	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} />
       		<span className="btn btn-light add">+</span>
         </div>
       )

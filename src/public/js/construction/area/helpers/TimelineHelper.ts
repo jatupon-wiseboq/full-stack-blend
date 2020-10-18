@@ -27,6 +27,7 @@ var TimelineHelper = {
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
   				customClassName: (reactMode) ? 'is-react-component' : '',
   				name: (isTableLayoutCell) ? 'cell' : name,
+  				deselectable: false,
   				selectable: !isTableLayoutCell,
   				dropable: (isTableLayoutCell ||
   					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1) &&

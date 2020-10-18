@@ -17,6 +17,7 @@ const InsertDirection = Object.freeze({
 interface ITreeNode {
 	id: string,
   name: string,
+  deselectable: boolean,
   selectable: boolean,
   dropable: boolean,
   dragging: boolean,
@@ -64,6 +65,7 @@ class TreeNode extends React.Component<IProps, IState> {
     
     protected onChange(node) {
   		if (!node.selectable) return;
+  		if (node.selected && node.deselectable === false) return;
   		
       node.selected = !node.selected;
       
@@ -203,13 +205,24 @@ class TreeNode extends React.Component<IProps, IState> {
             this.props.onUpdateOptionVisibleChanged(value, tag);
         }
     }
+    private recursiveCheckForContaining(node: ITreeNode): boolean {
+    	if (node.selected) return true;
+    	else {
+    		for (let child of node.nodes) {
+    			if (this.recursiveCheckForContaining(child)) {
+    				return true;
+    			}
+    		}
+    		return false;
+    	}
+    }
     
     render() {
       return (
         <div ref="container">
           {this.props.nodes.map((node, index) => {
             return (
-              <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '')}>
+              <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '') + (this.recursiveCheckForContaining(node) ? ' contained' : '')} id={node.id}>
                 <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "")}>
                   <div className={"treenode-body col offset-" + this.props.deep} onMouseDown={this.mouseDown.bind(this)} node={node.id}>
                     {(() => {
