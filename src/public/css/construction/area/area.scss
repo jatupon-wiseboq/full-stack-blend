@@ -116,13 +116,13 @@ html.internal-fsb-guide-on {
             width: 1px;
             top: 0;
             bottom: 0;
-            left: -0.5px;
+            left: -1.0px;
             background-color: rgba(0, 0, 0, 0.05);
           }
           
           &:last-child::after {
             left: inherit;
-            right: -0.5px;
+            right: -1.0px;
           }
         }
       }
@@ -171,7 +171,7 @@ html.internal-fsb-guide-on {
     left: 0px;
     bottom: 0px;
     z-index: $maximum-z-index;
-    width: 1px;
+    width: 2px;
     height: 20px;
     
     @include animation(0, 1s, animation-blink);

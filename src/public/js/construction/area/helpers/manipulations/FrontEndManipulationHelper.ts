@@ -8,33 +8,33 @@ import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
 import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
-import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../../Constants.js';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants.js';
 
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};
 
 var FrontEndManipulationHelper = {
-	handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
-  	let accessory = null;
-  	let element = null;
-  	
-  	if (!Accessories.cursor.getDOMNode().parentNode) {
-  		alert('Please place a cursor anywhere before performing insertion.');
-  		return [accessory, false, link];
-  	}
-  	
-  	if (typeof content === 'string') {
-  		if (composedUntitledNameCount[content] === undefined) {
-      	composedUntitledNameCount[content] = 0;
+  handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+    let accessory = null;
+    let element = null;
+    
+    if (!Accessories.cursor.getDOMNode().parentNode) {
+      alert('Please place a cursor anywhere before performing insertion.');
+      return [accessory, false, link];
+    }
+    
+    if (typeof content === 'string') {
+      if (composedUntitledNameCount[content] === undefined) {
+        composedUntitledNameCount[content] = 0;
       }
       composedUntitledNameCount[content]++;
-		      
-  		content = {
-  			klass: content,
-  			guid: RandomHelper.generateGUID(),
-  			name: content + ' ' + composedUntitledNameCount[content]
-  		}
-  	}
+          
+      content = {
+        klass: content,
+        guid: RandomHelper.generateGUID(),
+        name: content + ' ' + composedUntitledNameCount[content]
+      }
+    }
     
     accessory = content;
     
@@ -91,69 +91,69 @@ var FrontEndManipulationHelper = {
         `, element);
         break;
       case 'Link':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-          a.internal-fsb-element.internal-fsb-allow-cursor
+          a.internal-fsb-element.internal-fsb-allow-cursor.col-2
             .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
               | Link
         `, element);
         break;
       case 'Rectangle':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element.internal-fsb-allow-cursor.col-2
         `, element);
         break;
       case 'Iframe':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '100%', minHeight: '300px'})
-        		iframe
+          .internal-fsb-element(style={display: 'block', borderTopStyle: 'none', borderRightStyle: 'none', borderBottomStyle: 'none', borderLeftStyle: 'none', width: '100%', minHeight: '300px'})
+            iframe
         `, element);
         break;
       case 'HTML':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element
-        	  .html
+          .internal-fsb-element
+            .html
         `, element);
         break;
       case 'Hidden':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	input.internal-fsb-element(type='hidden')
+          input.internal-fsb-element(type='hidden')
         `, element);
         break;
       case 'Textbox':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', width: '100%'})
-        		input(type='text')
+          .internal-fsb-element(style={display: 'block', width: '100%'})
+            input(type='text')
         `, element);
         break;
       case 'Select':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', width: '100%'})
-        		select
+          .internal-fsb-element(style={display: 'block', width: '100%'})
+            select
         `, element);
         break;
       case 'Radio':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
-        		input(type='radio')
+          .internal-fsb-element(style={display: 'block'})
+            input(type='radio')
         `, element);
         break;
       case 'Checkbox':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block'})
-        		input(type='checkbox')
+          .internal-fsb-element(style={display: 'block'})
+            input(type='checkbox')
         `, element);
         break;
       case 'Label':
-      	element = document.createElement('label');
+        element = document.createElement('label');
         element = ReactDOM.render(pug `
           label.internal-fsb-element
             .container-fluid
@@ -161,43 +161,45 @@ var FrontEndManipulationHelper = {
         `, element);
         break;
       case 'File':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element(style={display: 'block', width: '100%'})
-        		input(type='file')
+          .internal-fsb-element(style={display: 'block', width: '100%'})
+            input(type='file')
         `, element);
         break;
       case 'Button':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
           button.internal-fsb-element.internal-fsb-allow-cursor.col-2(type='button')
+            .internal-fsb-element(contentEditable='true', suppressContentEditableWarning=true, internal-fsb-class='TextElement', internal-fsb-guid=content.guid + '-text', internal-fsb-name='TextElement')
+              | Link
         `, element);
         break;
       case 'Image':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
-        		img
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
+            img
         `, element);
         break;
       case 'Video':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element = ReactDOM.render(pug `
-        	.internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
-        		video
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
+            video
         `, element);
         break;
       case 'Component':
         let componentInfo = WorkspaceHelper.getComponentData(content.id);
         let componentName = componentInfo.name;
-  	  
-    	  if (composedUntitledNameCount[componentName] === undefined) {
-        	composedUntitledNameCount[componentName] = 0;
+      
+        if (composedUntitledNameCount[componentName] === undefined) {
+          composedUntitledNameCount[componentName] = 0;
         }
         composedUntitledNameCount[componentName]++;
         
-    	  content.guid = RandomHelper.generateGUID();
-    	  content.name = componentName + ' ' + composedUntitledNameCount[componentName];
+        content.guid = RandomHelper.generateGUID();
+        content.name = componentName + ' ' + composedUntitledNameCount[componentName];
         
         element = document.createElement('div');
         element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
@@ -224,32 +226,32 @@ var FrontEndManipulationHelper = {
       
       // Forwarding style to its children capability
       //
-    	let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(content.klass) != -1);
+      let isForwardingStyleToChildren = (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(content.klass) != -1);
     
       if (!isComponentInsertion && isForwardingStyleToChildren) {
-      	CapabilityHelper.installCapabilityOfForwardingStyle(element);
+        CapabilityHelper.installCapabilityOfForwardingStyle(element);
       }
       
       // Insert the element before the cursor.
       //
       if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       if (LayoutHelper.isNestedComponent(Accessories.cursor.getDOMNode().parentNode, content.id)) {
-    		alert("The editor doesn't allow nest of components.");
-    		remember = false;
-    	} else {
-	      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-	        if (!isComponentInsertion && !isForwardingStyleToChildren && ['Button', 'Rectangle'].indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
-	        Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
-	      } else {
-	        StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
-	        StylesheetHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
-	        StylesheetHelper.setStyleAttribute(element, 'width', '150px');
-	        Accessories.cursor.getDOMNode().parentNode.appendChild(element);
-	      }
+        alert("The editor doesn't allow nest of components.");
+        remember = false;
+      } else {
+        if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+          if (!isComponentInsertion && !isForwardingStyleToChildren && SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
+          Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
+        } else {
+          StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);
+          StylesheetHelper.setStyleAttribute(element, 'top', Accessories.cursor.getDOMNode().style.top);
+          StylesheetHelper.setStyleAttribute(element, 'width', '150px');
+          Accessories.cursor.getDOMNode().parentNode.appendChild(element);
+        }
       
-	      // Update Editor UI
-	      EditorHelper.updateEditorProperties();
-	    }
+        // Update Editor UI
+        EditorHelper.updateEditorProperties();
+      }
     }
     
     ManipulationHelper.updateComponentData(element);

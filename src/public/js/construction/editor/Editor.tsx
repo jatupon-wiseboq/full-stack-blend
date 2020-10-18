@@ -36,6 +36,7 @@ import './components/code/OptionManager.js';
 import './components/code/WizardInputManager.js';
 import './components/code/BackEndScriptEditor.js';
 import './components/code/DebuggingConsole.js';
+import './components/code/ExternalLibrariesManager.js';
 
 import './components/content/SitePreview.js';
 import './components/content/PageManager.js';

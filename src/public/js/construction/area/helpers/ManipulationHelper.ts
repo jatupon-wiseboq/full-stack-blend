@@ -16,7 +16,7 @@ import {CapabilityHelper} from './CapabilityHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {FrontEndManipulationHelper} from './manipulations/FrontEndManipulationHelper.js';
 import {BackEndManipulationHelper} from './manipulations/BackEndManipulationHelper.js';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER} from '../../Constants.js';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants.js';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -1195,7 +1195,7 @@ var ManipulationHelper = {
 		  	
 		  	link = RandomHelper.generateGUID();
 	  		
-		  	if (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
+		  	if (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
 		  		let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
 		  		
 		  		elementClassName = elementClassName.replace(ALL_RESPONSIVE_SIZE_REGEX, '');

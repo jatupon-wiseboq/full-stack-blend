@@ -124,14 +124,16 @@ export const LIBRARIES = [{
     stylesheets: null,
     scripts: [
       "https://unpkg.com/react@16/umd/react.production.min.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"
+      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
       "https://unpkg.com/react@16/umd/react.development.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.development.js"
+      "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
+      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
     ]
   }
 },{
@@ -367,7 +369,7 @@ export const BACKEND_DATA_LOCK_MODE = [["data-lock-mode", "always", ["fa-circle"
 export const BACKEND_DATA_LOCK_MATCHING_MODE = [["data-lock-matching-mode", null, ["fa-circle", "Static Value"]], ["data-lock-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MODE = [["data-rendering-condition-mode", "block", ["fa-circle", "Block"]], ["data-rendering-condition-mode", "relation", ["fa-circle-o", "Relation"]], ["data-rendering-condition-mode", "session", ["fa-circle-o", "Session"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE = [["data-rendering-condition-matching-mode", null, ["fa-circle", "Static Value"]], ["data-rendering-condition-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
-
+export const SINGLE_DOM_CONTAINER_ELEMENTS = ['Rectangle', 'Button', 'Link'];
 export const ANIMATION_TIMING_MODE = [["internal-fsb-animation-timing-mode", null, ["fa-hourglass-2", "Time"]], ["internal-fsb-animation-timing-mode", "scrolling", ["fa-arrows-v", "Scrolling"]]];
 export const ANIMATION_SCROLLING_TRIGGERING = [["internal-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["internal-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["internal-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];
 export const ANIMATION_EASING_MODE = [["internal-fsb-animation-easing-mode", "in", ["fa-sign-out", "In"]], ["internal-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["internal-fsb-animation-easing-mode", "out", ["fa-sign-in", "Out"]]];

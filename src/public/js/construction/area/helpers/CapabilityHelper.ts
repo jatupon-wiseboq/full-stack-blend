@@ -3,6 +3,7 @@ import {EventHelper} from '../../helpers/EventHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {ManipulationHelper} from './ManipulationHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
+import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants.js';
 
 var CapabilityHelper = {
 	installCapabilityOfBeingSelected: (_container: HTMLElement) => {
@@ -91,7 +92,7 @@ var CapabilityHelper = {
 	              if (EventHelper.checkIfDenyForHandle(event)) return;
 	              
 	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
-	              let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-class')) != -1);
+	              let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-class')) != -1);
 	              
 	              if (isReferenceElementASingleDomElement) {
 	              	referenceElement = allowCursorElement;

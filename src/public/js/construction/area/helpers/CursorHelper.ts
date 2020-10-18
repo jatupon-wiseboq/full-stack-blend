@@ -3,6 +3,7 @@ import {ManipulationHelper} from './ManipulationHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {InternalProjectSettings} from './WorkspaceHelper.js';
 import {Accessories, EditorHelper} from './EditorHelper.js';
+import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants.js';
 
 var CursorHelper = {
 	moveCursorToTheEndOfDocument: (remember: boolean=true) => {
@@ -83,7 +84,7 @@ var CursorHelper = {
     
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+      let allowCursorElements = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];
       
@@ -141,7 +142,7 @@ var CursorHelper = {
   },
 	findWalkPathForElement: function(allowCursorElement: HTMLElement) {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByClassName('internal-fsb-begin');
-    let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
+    let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
     
     if (isReferenceElementASingleDomElement) {
     	referenceElement = allowCursorElement;
@@ -166,7 +167,7 @@ var CursorHelper = {
   findWalkPathForCursor: function() {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (referenceElement) {
-      let allowCursorElements = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
+      let allowCursorElements = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1) ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = Accessories.cursor.getDOMNode().parentNode;
       let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
@@ -205,7 +206,7 @@ var CursorHelper = {
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-    	let isReferenceElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
+    	let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
       let allowCursorElements = isReferenceElementASingleDomElement ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];
@@ -216,9 +217,9 @@ var CursorHelper = {
             Accessories.cursor.getDOMNode().parentNode.removeChild(Accessories.cursor.getDOMNode());
           }
           
-          let isTheAllowCursorElementASingleDomElement = (['Rectangle', 'Button'].indexOf(HTMLHelper.getAttribute(theAllowCursorElement, 'internal-fsb-class')) != -1);
+          let isTheAllowCursorElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(theAllowCursorElement, 'internal-fsb-class')) != -1);
           
-          Accessories.cursor.getDOMNode().style.left = '-0.5px';
+          Accessories.cursor.getDOMNode().style.left = '-1.0px';
           Accessories.cursor.getDOMNode().style.top = isTheAllowCursorElementASingleDomElement ? '20px' : '0px';
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'relative');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);

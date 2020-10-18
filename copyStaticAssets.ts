@@ -4,7 +4,10 @@ import archiver from "archiver";
 
 shell.cp("-R", "src/public/fonts", "dist/public/");
 shell.cp("-R", "src/public/images", "dist/public/");
-shell.cp("-R", "src/public/js/lib", "dist/public/js");
+shell.mkdir("dist/public/js/");
+shell.mkdir("dist/public/css/");
+shell.cp("-R", "src/public/js/*", "dist/public/js/");
+shell.cp("-R", "src/public/css/*", "dist/public/css/");
 
 if (shell.ls('boilerplate').length == 0) {
   shell.exec("git clone https://github.com/SoftenStorm/boilerplate.git");

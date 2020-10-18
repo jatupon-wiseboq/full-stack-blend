@@ -189,7 +189,7 @@ class AttributeManager extends Base<Props, State> {
         return (
             <FullStackBlend.Components.ListManager customClassName="non-selectable non-insertable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
-                    <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update Attribute"}</div>
+                    <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update an Attribute"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Name</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
                         <FullStackBlend.Controls.Textbox failedValidationMessage={this.state.nameInputFailedValidationMessage} ref="name" value={this.state.name} preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>

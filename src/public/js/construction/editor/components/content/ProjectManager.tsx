@@ -18,7 +18,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ["externalLibraries", "pages"]
+  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -241,6 +241,31 @@ class ProjectManager extends Base<Props, State> {
                 }
             }
             
+            let customHeaderExternalStylesheets = [];
+			      let customHeaderExternalScripts = [];
+			      let customFooterExternalStylesheets = [];
+			      let customFooterExternalScripts = [];
+			      
+			      let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+			      for (let externalLibrary of externalLibraries) {
+			      	if (!externalLibrary) continue;
+			      	
+			      	let splited = externalLibrary.split('#');
+			      	if (splited[1] != 'footer') {
+			      		if (splited[0].toLowerCase().indexOf('.css') != -1) {
+			      			customHeaderExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+			      		} else {
+			      			customHeaderExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+			      		}
+			      	} else {
+			      		if (splited[0].toLowerCase().indexOf('.css') != -1) {
+			      			customFooterExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+			      		} else {
+			      			customFooterExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+			      		}
+			      	}
+			      }
+            
             let combinedHTMLPageDict = {};
             let arrayOfCombinedExpandingFeatureScripts = [];
             for (let key in frontEndCodeInfoDict) {
@@ -296,8 +321,10 @@ html
     meta(property="og:type" content=headers && headers.itemType || 'website')
     meta(property="og:description" content=headers && headers.description || '${description}')
     meta(property="og:locale" content=headers && headers.contentLocale || 'en_US')
-    link(rel="stylesheet" href="//staging.stackblend.com/css/embed.css")
+    link(rel="stylesheet" href="/css/embed.css")
     ${externalStylesheets.join('\n    ')}
+    ${customHeaderExternalStylesheets.join('\n    ')}
+    ${customHeaderExternalScripts.join('\n    ')}
     style(type="text/css").
       ${combinedStylesheet}
   body${combinedInlineBodyStyle}
@@ -309,7 +336,8 @@ html
     script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
     ${externalScripts.join('\n    ')}
-    script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js")
+    ${customFooterExternalStylesheets.join('\n    ')}
+    ${customFooterExternalScripts.join('\n    ')}
     script(type="text/javascript" src="/js/Site.bundle.js")
 `
                 combinedHTMLPageDict[key] = combinedHTMLPage;
