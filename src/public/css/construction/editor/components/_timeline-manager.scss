@@ -40,6 +40,7 @@
 		
 	.treenode-container {
 		cursor: pointer;
+		position: relative;
 		
 		.treenode-body {
 			padding: 0 3px;
@@ -148,6 +149,21 @@
 				background-color: rgba(0, 200, 255, 1.0);
 				flex: 0 0 100%;
 			}
+		}
+		
+		.keyframe {
+			position: absolute;
+	    display: block;
+	    color: rgba(0, 144, 255, 1.0);
+	    font-size: 20px;
+	    width: 20px;
+	    height: 20px;
+	    top: 2px;
+	    
+	    &::before {
+	    	content: '\2666';
+	    	display: inline-block;
+	    }
 		}
 	}
 	
