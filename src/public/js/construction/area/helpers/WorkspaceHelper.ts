@@ -356,6 +356,11 @@ var WorkspaceHelper = {
     let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holder)];
     accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
     
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', holder)].reverse();
+    for (let component of components) {
+    	component.innerHTML = '';
+    }
+    
     if (preview) {
     	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(holder.firstChild, true);
     }
@@ -374,6 +379,11 @@ var WorkspaceHelper = {
     
     let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holderWindow.document)];
     accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
+    
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', holderWindow.document)].reverse();
+    for (let component of components) {
+    	component.innerHTML = '';
+    }
     
     document.body.removeChild(holder);
     
