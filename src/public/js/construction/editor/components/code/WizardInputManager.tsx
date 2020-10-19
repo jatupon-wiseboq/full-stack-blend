@@ -40,7 +40,7 @@ class WizardInputManager extends Base<Props, State> {
         if (!super.update(properties)) return;
         
         let nodes = CodeHelper.clone(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
-        nodes = this.recursiveWalkExtractingNodes(nodes);
+        nodes = this.recursiveWalkExtractingNodes(nodes || []);
         
         let guids = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').split(' ');
         for (let node of nodes) {

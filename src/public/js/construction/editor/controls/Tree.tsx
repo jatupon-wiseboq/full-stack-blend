@@ -13,10 +13,11 @@ interface IProps {
   onEndDragging();
   onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
-  onContainerMouseDown(event: any, node: ITreeNode);
   enableDragging: boolean;
   draggableAfterSelected: boolean;
   customDraggerClassName: string;
+  editingControl: any;
+  extendingControl: any;
 }
 
 interface IState {
@@ -37,7 +38,6 @@ class Tree extends React.Component<IProps, IState> {
     }
     
     constructor(props) {
-    	if (props.onContainerMouseDown) console.log('Tree');
       super(props);
     }
     
@@ -185,11 +185,6 @@ class Tree extends React.Component<IProps, IState> {
         this.props.onUpdateOptionVisibleChanged(value, node);
       }
     }
-    private onContainerMouseDown(event: any, node: ITreeNode) {
-    	if (this.props.onContainerMouseDown) {
-        this.props.onContainerMouseDown(event, node);
-      }
-    }
     
     render() {
       return (
@@ -198,7 +193,7 @@ class Tree extends React.Component<IProps, IState> {
             {(() => {
         	    if (this.props.nodes && this.props.nodes.filter(node => (node.id !== 'delete')).length != 0) {
         	      return (
-              	  <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} onContainerMouseDown={this.onContainerMouseDown.bind(this)}>
+              	  <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl}>
                     {this.props.children}
                   </TreeNode>
         	      );

@@ -6,12 +6,12 @@ import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode} from '../../controls/TreeNode.js';
 import '../../controls/Tree.js';
+import './KeyframeManager.js'
+import {SECOND_SPAN_SIZE} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
 declare let perform: any;
-
-const SECOND_SPAN_SIZE = 40;
 
 interface Props extends IProps {
 }
@@ -60,26 +60,10 @@ class TimelineManager extends Base<Props, State> {
 			}
     }
     
-    private onContainerMouseDown(event: any, node: ITreeNode) {
-    	let container = EventHelper.getCurrentElement(event);
-    	let containerPosition = HTMLHelper.getPosition(container);
-    	let mousePosition = EventHelper.getMousePosition(event);
-    	
-    	let keyframePosition = this.state.scrollingBegin + (Math.floor((mousePosition[0] - containerPosition[0]) / SECOND_SPAN_SIZE * 100) / 100);
-    	if (keyframePosition * SECOND_SPAN_SIZE - 10 < 250) return;
-    	
-    	// [TODO]
-    	let keyframe = document.createElement('div');
-    	keyframe.className = 'keyframe';
-    	keyframe.style.left = (keyframePosition * SECOND_SPAN_SIZE - 10) + 'px';
-    	
-    	container.appendChild(keyframe);
-    }
-    
     render() {
       return (
       	<div className={"timeline-manager-container"}>
-        	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} onContainerMouseDown={this.onContainerMouseDown.bind(this)} />
+        	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} extendingControl={FullStackBlend.Components.KeyframeManager} />
       		<span className="btn btn-light add">+</span>
       		<div className={"slider-outer-container"}>
       			<div className={"slider-inner-container"}>

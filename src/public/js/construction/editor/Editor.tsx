@@ -49,6 +49,8 @@ import './components/content/SchemaManager.js';
 
 import './components/animation/AnimationPicker.js';
 import './components/animation/TimelineManager.js';
+import './components/animation/KeyframeManager.js';
+import './components/animation/Keyframe.js';
 
 //import GitHub from 'github-api';
 

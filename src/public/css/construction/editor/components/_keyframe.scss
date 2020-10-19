@@ -1,0 +1,20 @@
+// Keyframe
+// -------------------------
+.keyframe-container {
+	position: absolute;
+  display: block;
+  color: rgba(0, 144, 255, 1.0);
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  top: 2px;
+  
+  &::before {
+  	content: '\2662';
+  	display: inline-block;
+  }
+  
+  &.selected::before {
+  	content: '\2666';
+  }
+}

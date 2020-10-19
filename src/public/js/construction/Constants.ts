@@ -377,3 +377,4 @@ export const ANIMATION_EASING_FN_1 = [["internal-fsb-animation-easing-fn", null,
 export const ANIMATION_EASING_FN_2 = [["internal-fsb-animation-easing-fn", "expo", ["d-none", "Expo"]], ["internal-fsb-animation-easing-fn", "quad", ["d-none", "Quad"]], ["internal-fsb-animation-easing-fn", "quart", ["d-none", "Quart"]], ["internal-fsb-animation-easing-fn", "quint", ["d-none", "Quint"]], ["internal-fsb-animation-easing-fn", "sine", ["d-none", "Sine"]]];
 export const ANIMATION_REPEATING_MODE = [["internal-fsb-animation-repeating-mode", null, ["fa-hourglass", "Infinite"]], ["internal-fsb-animation-repeating-mode", "time", ["fa-hourglass-1", "Time"]], ["internal-fsb-animation-repeating-mode", "disabled", ["fa-hourglass-o", "Disabled"]]];
 export const ANIMATION_DEFAULT_STATE = [["internal-fsb-animation-state", null, ["fa-circle", "Add"]], ["internal-fsb-animation-state", "off", ["fa-circle-o", "Remove"]]];
+export const SECOND_SPAN_SIZE = 40;
