@@ -385,6 +385,11 @@ var WorkspaceHelper = {
     	component.innerHTML = '';
     }
     
+    components = [...HTMLHelper.getElementsByAttribute('internal-fsb-react-mode', holderWindow.document)].reverse();
+    for (let component of components) {
+    	component.innerHTML = '';
+    }
+    
     document.body.removeChild(holder);
     
     return holderWindow.document.body.outerHTML;
