@@ -16,6 +16,12 @@ declare let js_beautify;
 declare let css_beautify;
 declare let html_beautify;
 
+const merging_beautify = (beautified_content: string) => {
+	if (!beautified_content) return beautified_content;
+	
+	return beautified_content.replace(/\n[ \t]+</g, '\n<').replace(/ ([a-zA-Z0-9\_\-]+=")/g, '\n    $1');
+};
+
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
 let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 
@@ -262,7 +268,7 @@ var WorkspaceHelper = {
       page.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       EditorHelper.detach();
-      page.body = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
+      page.body = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML)))).split('\n');
       
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -284,7 +290,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
-      InternalDataFlows.default = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
+      InternalDataFlows.default = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML)))).split('\n');
       Accessories.overlay.setEnable(true);
       
       InternalDataFlows.schema = SchemaHelper.generateDataSchema();
@@ -294,7 +300,7 @@ var WorkspaceHelper = {
       }
     } else if (InternalProjectSettings.currentMode == 'services') {
       EditorHelper.detach();
-      InternalServices.default = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML))).split('\n');
+      InternalServices.default = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML)))).split('\n');
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -304,13 +310,13 @@ var WorkspaceHelper = {
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
     	
-      component.html = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML))).split('\n');
+      component.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
     	
-      popup.html = html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML))).split('\n');
+      popup.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
     }
   },
   removeComponentData: (id: string) => {
