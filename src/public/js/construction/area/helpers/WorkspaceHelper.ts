@@ -385,9 +385,16 @@ var WorkspaceHelper = {
     	component.innerHTML = '';
     }
     
-    components = [...HTMLHelper.getElementsByAttribute('internal-fsb-react-mode', holderWindow.document)].reverse();
+    components = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-react-mode', 'Site', holderWindow.document), ...HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-react-mode', 'Global', holderWindow.document)].reverse();
     for (let component of components) {
     	component.innerHTML = '';
+    	
+    	let attributes = [...component.attributes || []].reverse();
+    	for (let attribute of attributes) {
+    		if (attribute.name.indexOf('internal-fsb-') != -1 && INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) == -1) {
+    			HTMLHelper.removeAttribute(component, attribute.name);
+    		}
+    	}
     }
     
     document.body.removeChild(holder);
