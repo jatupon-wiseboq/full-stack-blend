@@ -64,11 +64,19 @@ var WorkspaceHelper = {
       delete clonedInternalProjectSettings[key];
     }
     
+    let clonedInternalSites = CodeHelper.clone(InternalSites);
+    for (let key in clonedInternalSites) {
+  		if (clonedInternalSites.hasOwnProperty(key)) {
+  			clonedInternalSites[key].extensions = {};
+  			clonedInternalSites[key].accessories = {};
+  		}
+  	}
+    
     return Object.assign(
     	{
 	    	version: version,
 	      globalSettings: clonedInternalProjectSettings,
-	      sites: InternalSites,
+	      sites: clonedInternalSites,
 	      components: InternalComponents,
 	      popups: InternalPopups,
 	      flows: InternalDataFlows,
