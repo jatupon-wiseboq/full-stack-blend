@@ -229,7 +229,7 @@ html
               	Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
               	
                 this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
-                  this.create('../../project.stackblend', JSON.stringify(nextProjectData, null, 2)).then(() => {
+                  this.create('../../project.stackblend', JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)).then(() => {
                     this.commit().then(() => {
                       cb(true);
                     }).catch(() => {

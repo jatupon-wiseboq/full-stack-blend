@@ -104,6 +104,29 @@ var CodeHelper = {
     var p = Object.keys(x);
     return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
         p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
+  },
+  sortHashtable: (object: any) => {
+  	return CodeHelper.recursiveSortHashtable(object);
+  },
+  recursiveSortHashtable: (object: any) => {
+  	if (Array.isArray(object)) {
+  		for (let i=0; i<object.length; i++) {
+  			object[i] = CodeHelper.recursiveSortHashtable(object[i]);
+  		}
+  		
+  		return object;
+  	} else if ((typeof object === 'object') && object != null) {
+  		let keys = Object.keys(object);
+  		keys.sort();
+  		
+  		let result = {};
+  		for (let key of keys) {
+  			result[key] = CodeHelper.recursiveSortHashtable(object[key]);
+  		}
+  		return result;
+  	} else {
+  		return object;
+  	}
   }
 };
 
