@@ -67,7 +67,6 @@ var WorkspaceHelper = {
     let clonedInternalSites = CodeHelper.clone(InternalSites);
     for (let key in clonedInternalSites) {
   		if (clonedInternalSites.hasOwnProperty(key)) {
-  			clonedInternalSites[key].extensions = {};
   			clonedInternalSites[key].accessories = {};
   		}
   	}
