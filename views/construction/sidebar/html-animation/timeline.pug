@@ -5,15 +5,15 @@ div(internal-fsb-for="editingAnimationID")
     .section-subtitle
       | Name
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-track'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupName'], inline: true, button: false}")
     .section-subtitle
       | Note
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupNote'], inline: true, button: false, multiline: true}")
     .section-subtitle
       | Default State
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-state', 'internal-fsb-animation-state']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-state', 'animationGroupState'], todoOverriding: true}")
     .section-note
       | An animation group will containing a multiple of the animation track of any HTML elements. You can add any tracks to the group while it's selecting.
     .section-hr.internal-fsb-selecting-on
@@ -23,24 +23,24 @@ div(internal-fsb-for="editingAnimationID")
     .section-subtitle
       | Animation Mode
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-mode', 'internal-fsb-animation-timing-mode']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-mode', '-fsb-animation-timing-mode']}")
     .section-subtitle
       | Easing Mode
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-mode', 'internal-fsb-animation-easing-mode']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-mode', '-fsb-animation-easing-mode']}")
     .section-subtitle
       | Easing Function
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-fn-1', 'internal-fsb-animation-easing-fn']}")
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-easing-fn-2', 'internal-fsb-animation-easing-fn']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-1', '-fsb-animation-easing-fn']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-2', '-fsb-animation-easing-fn']}")
     .section-subtitle
       | Repeating Mode
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-repeating-mode', 'internal-fsb-animation-repeating-mode']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-repeating-mode', '-fsb-animation-repeating-mode']}")
     .section-subtitle(internal-fsb-for="internal-fsb-animation-repeating-mode:time")
       | Repeating Time
     .section-body(internal-fsb-for="internal-fsb-animation-repeating-mode:time")
-      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-animation-repeating-time'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingStyleNames: ['-fsb-animation-repeating-time'], inline: true, button: false}")
     .section-hr
   .section-container(internal-fsb-for="internal-fsb-animation-timing-mode:scrolling")
     .section-title
@@ -48,7 +48,7 @@ div(internal-fsb-for="editingAnimationID")
     .section-subtitle
       | Triggering Edge
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['animation-scrolling-triggering', 'internal-fsb-animation-scrolling-triggering']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-scrolling-triggering', '-fsb-animation-scrolling-triggering']}")
     .section-note
       | This will triggering the animation from a beginning edge til an opposite edge with any duration all along user scrolling.
     .section-hr

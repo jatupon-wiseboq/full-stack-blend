@@ -78,6 +78,7 @@ interface Props extends IProps {
     options: any;
     onValueChange(value: any);
     required: boolean;
+    todoOverriding: boolean;
 }
 
 interface State extends IState {
@@ -231,12 +232,21 @@ class RadioButtonPicker extends Base<Props, State> {
 						        });
 						        break;
 		            case Mode.EXTENSION:
-		            		perform('style', {
-						            styles: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: (currentState) ? null : target
-						            }]
-						        });
+		            		if (this.props.todoOverriding) {
+		            			perform('update', {
+							            extensions: [{
+							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+							                value: (currentState) ? null : target
+							            }]
+							        });
+		            		} else {
+			            		perform('style', {
+							            styles: [{
+							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+							                value: (currentState) ? null : target
+							            }]
+							        });
+							      }
 						        break;
             }
         }

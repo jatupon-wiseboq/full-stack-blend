@@ -60,11 +60,20 @@ class TimelineManager extends Base<Props, State> {
 			}
     }
     
+    private addOnClick() {
+    	perform('update', {
+    		extensions: [{
+    			name: 'editingAnimationID',
+    			value: 'internal-fsb-new-group'
+    		}]
+    	});
+    }
+    
     render() {
       return (
       	<div className={"timeline-manager-container"}>
         	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} extendingControl={FullStackBlend.Components.KeyframeManager} />
-      		<span className="btn btn-light add">+</span>
+      		<span className="btn btn-light add" onClick={this.addOnClick.bind(this)}>+</span>
       		<div className={"slider-outer-container"}>
       			<div className={"slider-inner-container"}>
       				<div className={"slider"}></div>

@@ -39,6 +39,8 @@ class AnimationPicker extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
+        return;
+        
         let nodes: [ITreeNode] = [];
         
         if (properties.extensions && properties.extensions.animationDefinitionKeys) {
