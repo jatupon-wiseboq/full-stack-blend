@@ -2,6 +2,7 @@ import {TextHelper} from '../../../helpers/TextHelper.js';
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {EventHelper} from '../../../helpers/EventHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode} from '../../controls/TreeNode.js';
@@ -49,6 +50,14 @@ class TimelineManager extends Base<Props, State> {
   			node.selected = true;
   			this.forceUpdate();
   			
+  			console.log(node);
+  			
+  			perform('update', {
+	    		extensions: [{
+	    			name: 'editingAnimationID',
+	    			value: node.tag.key
+	    		}]
+	    	});
   			perform('select[cursor]', node.id);
   		}
     }
@@ -64,7 +73,7 @@ class TimelineManager extends Base<Props, State> {
     	perform('update', {
     		extensions: [{
     			name: 'editingAnimationID',
-    			value: 'internal-fsb-new-group'
+    			value: RandomHelper.generateGUID()
     		}]
     	});
     }

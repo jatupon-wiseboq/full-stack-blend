@@ -51,6 +51,8 @@ class TextPicker extends Base<Props, State> {
         		original = this.state.styleValues[this.props.watchingStyleNames[0]];
         } else if (this.props.watchingAttributeNames[0]) {
         		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+        } else if (this.props.watchingExtensionNames[0]) {
+        		original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
         }
         
         if (original) {
@@ -83,7 +85,7 @@ class TextPicker extends Base<Props, State> {
         }
         else if (this.props.watchingExtensionNames[0] && !this.props.manual) {
             perform('update', {
-                attributes: [{
+                extensions: [{
                     name: this.props.watchingExtensionNames[0].split('[')[0],
                     value: this.composeValue(value)
                 }],

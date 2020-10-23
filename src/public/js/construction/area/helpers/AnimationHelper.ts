@@ -31,49 +31,85 @@ var AnimationHelper = {
     return style;
   },
   getStylesheetDefinition: function(presetId: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	if (!InternalProjectSettings.editingKeyframeID) return null;
+  	
   	if (!stylesheetDefinitions[InternalProjectSettings.editingAnimationID]) return null;
-  	else return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || null;
+  	if (!stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId]) return null;
+  	
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][InternalProjectSettings.editingKeyframeID] || null;
   },
   removeStylesheetDefinition: function(presetId: string) {
-    delete stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId];
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	if (!InternalProjectSettings.editingKeyframeID) return;
+  	
+    delete stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][InternalProjectSettings.editingKeyframeID];
     
     stylesheetDefinitionRevision++;
     
     AnimationHelper.renderStylesheetElement();
   },
-  setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
-  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
-    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = content;
+  setAnimationGroup: function(editingAnimationID: string) {
+  	InternalProjectSettings.editingAnimationID = editingAnimationID;
     
-    if (groupName) {
-    	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupName = groupName;
-    }
+  	if (InternalProjectSettings.editingAnimationID) {
+    	stylesheetDefinitionRevision++;
+    
+  		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	}
+  },
+  setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	if (!InternalProjectSettings.editingKeyframeID) return;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+    
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = content;
     
     stylesheetDefinitionRevision++;
     
     AnimationHelper.renderStylesheetElement();
   },
   setAnimationGroupName: function(groupName: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupName = groupName;
   },
   setAnimationGroupNote: function(groupNote: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupNote = groupNote;
   },
   setAnimationGroupState: function(groupState: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState = groupState;
   },
   getAnimationGroupName: function(groupName: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupName || 'Untitled';
   },
   getAnimationGroupNote: function(groupNote: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupNote || '';
   },
   getAnimationGroupState: function(groupState: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState || null;
   },
@@ -81,7 +117,12 @@ var AnimationHelper = {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
       cachedPrioritizedKeysRevision = stylesheetDefinitionRevision;
       
-      cachedPrioritizedKeys = Object.keys(stylesheetDefinitions);
+      cachedPrioritizedKeys = Object.keys(stylesheetDefinitions).sort((a, b) => {
+        let pa = stylesheetDefinitions[a].groupName || 'Untitled';
+        let pb = stylesheetDefinitions[b].groupName || 'Untitled';
+        
+        return (pa < pb) ? 1 : -1;
+      });
       
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((groupId) => {
       	let groupName = stylesheetDefinitions[groupId].groupName || 'Untitled';

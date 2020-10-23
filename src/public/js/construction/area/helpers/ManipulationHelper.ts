@@ -513,15 +513,15 @@ var ManipulationHelper = {
               
               switch (extension.name) {
               	case 'animationGroupName':
-              		if (AnimationHelper.getAnimationGroupName() !== (extension.value || 'Untitled')) found = true;
+              		if (AnimationHelper.getAnimationGroupName() != (extension.value || 'Untitled')) found = true;
 		            	AnimationHelper.setAnimationGroupName(extension.value || 'Untitled');
 		              break;
 		            case 'animationGroupNote':
-              		if (AnimationHelper.getAnimationGroupNote() !== (extension.value || '')) found = true;
+              		if (AnimationHelper.getAnimationGroupNote() != (extension.value || '')) found = true;
 		            	AnimationHelper.setAnimationGroupNote(extension.value || '');
 		              break;
 		            case 'animationGroupState':
-              		if (AnimationHelper.getAnimationGroupState() !== (extension.value || null)) found = true;
+              		if (AnimationHelper.getAnimationGroupState() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupState(extension.value || null);
 		              break;
               }
@@ -550,6 +550,9 @@ var ManipulationHelper = {
                 InternalProjectSettings[extension.name] = extension.value;
               } else if (extension.name == 'externalLibraries') {
                 InternalProjectSettings[extension.name] = extension.value;
+                EditorHelper.updateExternalLibraries();
+              } else if (extension.name == 'editingAnimationID') {
+              	AnimationHelper.setAnimationGroup(extension.value);
                 EditorHelper.updateExternalLibraries();
               } else {
                 InternalProjectSettings[extension.name] = extension.value;

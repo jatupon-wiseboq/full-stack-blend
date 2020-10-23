@@ -29,6 +29,7 @@ const DefaultProjectSettings: {[Identifier: string]: any} = {
   editingComponentID: null,
   editingPopupID: null,
   editingAnimationID: null,
+  editingKeyframeID: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
   popups: []

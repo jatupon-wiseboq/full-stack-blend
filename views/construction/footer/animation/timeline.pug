@@ -1,9 +1,9 @@
 include ../../mixin/CreateReactComponent
 .workspace-decoration-top-horizontal-line
 div(internal-fsb-not-for="internal-fsb-inheriting")
-  .timeline.internal-fsb-selecting-on
+  .timeline(internal-fsb-for="editingAnimationID")
     +CreateReactComponent('FullStackBlend.Components.TimelineManager')
-  .timeline.internal-fsb-selecting-off
+  .timeline(internal-fsb-not-for="editingAnimationID")
     include ../../common/empty
 div(internal-fsb-for="internal-fsb-inheriting")
   include ../../common/component-guide
