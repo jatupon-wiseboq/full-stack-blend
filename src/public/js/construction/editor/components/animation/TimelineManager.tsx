@@ -28,8 +28,10 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ['timelineTreeNodes']
+  watchingExtensionNames: ['timelineTreeNodes', 'editingAnimationID']
 });
+
+let groupCount = 0;
 
 class TimelineManager extends Base<Props, State> {
     protected state: State = {};
@@ -76,6 +78,12 @@ class TimelineManager extends Base<Props, State> {
     			value: RandomHelper.generateGUID()
     		}]
     	});
+	  	perform('update', {
+	  		extensions: [{
+	  			name: 'animationGroupName',
+	  			value: 'Untitled ' + ++groupCount
+	  		}]
+	  	});
     }
     
     render() {

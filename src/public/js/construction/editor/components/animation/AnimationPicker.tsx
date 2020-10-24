@@ -23,7 +23,6 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingStyleNames: ['-fsb-reusable-name', '-fsb-reusable-id'],
     watchingExtensionNames: ['animationDefinitionRevision']
 });
 
@@ -39,60 +38,19 @@ class AnimationPicker extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        return;
-        
         let nodes: [ITreeNode] = [];
+        let dict = JSON.parse(this.state.attributeValues[this.props.watchingAttributeNames[0]] || '{}');
+        let items = dict[this.props.keyName] || [];
         
         if (properties.extensions && properties.extensions.animationDefinitionKeys) {
-        		let allInheritanceHash = {};
-        		let prioritizedKeys = [];
-        		let stylesheetDefinitionHash = {};
-        		for (let info of properties.extensions.animationDefinitionKeys) {
-        			prioritizedKeys.push(info.name);
-        			stylesheetDefinitionHash[info.id] = info;
-        		}
-        		for (let info of properties.extensions.animationDefinitionKeys) {
-        			allInheritanceHash[info.id] = info.inheritances.filter(token => token != '').sort((a, b) => {
-        				
-        				let pa = prioritizedKeys.indexOf(stylesheetDefinitionHash[a] && stylesheetDefinitionHash[a].name || null);
-					    	let pb = prioritizedKeys.indexOf(stylesheetDefinitionHash[b] && stylesheetDefinitionHash[b].name || null);
-					    	
-					    	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
-					    	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
-					    	
-					    	return (pa > pb) ? 1 : -1;
-        			});
-        		}
-        		
 		        for (let info of properties.extensions.animationDefinitionKeys) {
-		            let isItself = (info.id == this.state.styleValues['-fsb-reusable-id']);
-		        		let chosen = (isItself) ? false : (this.state.styleValues['-fsb-inherited-presets'] &&
-		                         this.state.styleValues['-fsb-inherited-presets'].indexOf(info.id) != -1) || false;
-		        		
-		        		let childNodes = [];
-		        		if (allInheritanceHash[info.id]) {
-		        			for (let childKey of allInheritanceHash[info.id]) {
-		        				let childInfo = stylesheetDefinitionHash[childKey];
-		        				if (!childInfo) continue;
-		        				
-		        				childNodes.push({
-		        					id: null,
-		        					name: childInfo.name.replace(/_/g, ' ') + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
-		        					selectable: true,
-		                	disabled: true,
-		                	selected: chosen,
-		                	nodes: []
-		        				});
-		        			}
-		        		}
-		        		
 		            nodes.push({
 		            		id: info.id,
-		                name: info.name.replace(/_/g, ' '),
+		                name: info.name || 'Untitled',
 		                selectable: true,
-		                disabled: isItself,
-		                selected: chosen,
-		                nodes: childNodes
+		                disabled: false,
+		                selected: (items.indexOf(info.id) != -1),
+		                nodes: []
 		            });
 		        }
       	}
@@ -103,25 +61,21 @@ class AnimationPicker extends Base<Props, State> {
     }
     
     protected onUpdate(node: ITreeNode) {
-        let presets = [];
-        let klasses = [];
+        let items = [];
         for (let node of this.state.nodes) {
             if (node.selected) {
-                presets.push(node.id);
+                items.push(node.id);
             }
         }
         
-        let className = this.state.attributeValues['class'] || '';
-    
+        let dict = JSON.parse(this.state.attributeValues[this.props.watchingAttributeNames[0]] || '{}');
+        dict[this.props.keyName] = items;
+        
         perform('update', {
         		attributes: [{
-        				name: 'class',
-        				value: TextHelper.mergeClassNameWithPrefixedClasses(this.state.attributeValues['class'], '-fsb-preset-', presets)
-        		}],
-            styles: [{
-                name: '-fsb-inherited-presets',
-                value: presets.join(', ')
-            }]
+        				name: this.props.watchingAttributeNames[0],
+        				value: JSON.stringify(dict)
+        		}]
         });
     }
     

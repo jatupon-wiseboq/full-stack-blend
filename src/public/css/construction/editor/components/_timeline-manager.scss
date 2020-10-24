@@ -39,7 +39,7 @@
 	}
 		
 	.treenode-container {
-		cursor: pointer;
+		cursor: default;
 		position: relative;
 		
 		.treenode-body {
@@ -57,6 +57,7 @@
 			.treenode-title {
 				padding-left: 5px;
 				font-size: 12.5px;
+				cursor: pointer;
 			
 				&::before {
 					content: '\221F';
@@ -102,6 +103,8 @@
 				color: rgba(255, 0, 0, 0.75);
 				
 				.treenode-title {
+					cursor: default;
+				
 					&::before {
 						content: '\25CF';
 						color: rgba(255, 0, 0, 0.75);
@@ -164,6 +167,7 @@
 					> .treenode-container {
 						> .treenode-body {
 							.treenode-title {
+								cursor: default;
 								font-weight: bold;
 								color: rgba(0, 0, 0, 0.15);
 									

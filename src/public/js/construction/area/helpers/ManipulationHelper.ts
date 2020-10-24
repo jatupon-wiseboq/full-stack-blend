@@ -553,7 +553,8 @@ var ManipulationHelper = {
                 EditorHelper.updateExternalLibraries();
               } else if (extension.name == 'editingAnimationID') {
               	AnimationHelper.setAnimationGroup(extension.value);
-                EditorHelper.updateExternalLibraries();
+              } else if (extension.name == 'editingKeyframeID') {
+              	AnimationHelper.setCurrentKeyframe(extension.value);
               } else {
                 InternalProjectSettings[extension.name] = extension.value;
               }

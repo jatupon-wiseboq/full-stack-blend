@@ -11,31 +11,36 @@ var TimelineHelper = {
 		cachedElementTreeNodes = null;
 	},
   getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
-  	let keys = AnimationHelper.getStylesheetDefinitionKeys();
+  	if (cachedElementTreeNodes) return cachedElementTreeNodes;
+  	
+  	let infos = AnimationHelper.getStylesheetDefinitionKeys();
   	
   	if (!InternalProjectSettings.editingAnimationID) {
   		AnimationHelper.setAnimationGroup(RandomHelper.generateGUID());
-  		keys = AnimationHelper.getStylesheetDefinitionKeys();
+  		infos = AnimationHelper.getStylesheetDefinitionKeys();
   	}
   	
-  	for (let key of keys) {
+  	for (let info of infos) {
 			nodes.push({
-				id: key.id,
+				id: info.id,
 				customClassName: '',
-				name: key.name || 'Untitled',
+				name: info.name || 'Untitled',
 				deselectable: false,
 				selectable: true,
 				dropable: false,
 				disabled: false,
 				selected: false,
-				nodes: TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, key.id),
+				nodes: TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, info.id),
 				tag: {
-					key: key.id
+					key: info.id,
+					root: true,
+					keyframes: null
 				}
 			});
   	}
 		
-  	return nodes;
+		cachedElementTreeNodes = nodes;
+  	return cachedElementTreeNodes;
   },
   recursiveGetElementTreeNodes: function(nodes: array=[], container: any=document.body, key: string=null) {
   	for (let element of container.childNodes) {
@@ -50,7 +55,7 @@ var TimelineHelper = {
   		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   		
   		if ((id || isTableLayoutCell) && !isTheBeginElement) {
-  			if (AnimationHelper.getStylesheetDefinition(id) != null || (element == EditorHelper.getSelectingElement() && key == InternalProjectSettings.editingAnimationID)) {
+  			if (AnimationHelper.hasStylesheetDefinition(id, key) || (element == EditorHelper.getSelectingElement() && key == InternalProjectSettings.editingAnimationID)) {
 	  			nodes.push({
 	  				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
 	  					',' + [...element.parentNode.childNodes].indexOf(element) : id,
@@ -65,7 +70,9 @@ var TimelineHelper = {
 						selected: (key == InternalProjectSettings.editingAnimationID && Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
 	  				nodes: TimelineHelper.recursiveGetElementTreeNodes([], element, key),
 	  				tag: {
-	  					key: key
+	  					key: key,
+	  					root: false,
+	  					keyframes: (key == InternalProjectSettings.editingAnimationID) ? AnimationHelper.getKeyframes(guid) : []
 	  				}
 	  			});
 	  		} else {

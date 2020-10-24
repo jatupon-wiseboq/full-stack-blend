@@ -1,6 +1,10 @@
 // Keyframe Manager
 // -------------------------
 .keyframe-manager-container {
-	position: relative;
+	position: absolute;
   left: 251px;
+  top: 0px;
+  bottom: 0px;
+  width: 2000px;
+	cursor: pointer;
 }

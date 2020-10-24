@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper.js';
 import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
+import {EventHelper} from '../../../helpers/EventHelper.js';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
 import {ITreeNode, InsertDirection} from '../../controls/TreeNode.js';
@@ -11,6 +12,10 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
+	keyframe: string;
+	time: number;
+	tag: any;
+	selected: boolean;
 }
 
 interface State extends IState {
@@ -37,9 +42,22 @@ class Keyframe extends Base<Props, State> {
     if (!super.update(properties)) return;
   }
   
+  private onClick(event: any) {
+  	perform('select[cursor]', this.props.tag.id);
+  	perform('update', {
+  		extensions: [{
+  			name: 'editingKeyframeID',
+  			value: this.props.keyframe
+  		}]
+  	});
+  	
+  	return EventHelper.cancel(event);
+  }
+  
   render() {
     return (
-    	<div ref="container" className="keyframe-container" style={{left: (1.0 * SECOND_SPAN_SIZE - 10) + 'px'}}></div>
+    	<div ref="container" className={"keyframe-container " + (this.props.selected ? 'selected' : '')}
+    		style={{left: (this.props.time * SECOND_SPAN_SIZE - 7.5) + 'px'}} onClick={this.onClick.bind(this)}></div>
     );
   }
 }
