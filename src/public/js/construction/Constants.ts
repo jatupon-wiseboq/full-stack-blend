@@ -378,3 +378,4 @@ export const ANIMATION_EASING_FN_2 = [["-fsb-animation-easing-fn", "expo", ["d-n
 export const ANIMATION_REPEATING_MODE = [["-fsb-animation-repeating-mode", null, ["fa-hourglass", "Infinite"]], ["-fsb-animation-repeating-mode", "time", ["fa-hourglass-1", "Time"]], ["-fsb-animation-repeating-mode", "disabled", ["fa-hourglass-o", "Disabled"]]];
 export const ANIMATION_DEFAULT_STATE = [["animationGroupState", null, ["fa-circle", "Add"]], ["animationGroupState", "off", ["fa-circle-o", "Remove"]]];
 export const SECOND_SPAN_SIZE = 40;
+export const MAXIMUM_OF_SECONDS = 500;

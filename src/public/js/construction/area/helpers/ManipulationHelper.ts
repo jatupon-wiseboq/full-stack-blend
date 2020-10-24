@@ -189,7 +189,7 @@ var ManipulationHelper = {
       resolve();
     }
     
-    Accessories.overlay.renderAllRelations();
+    Accessories.overlay && Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
   },
   updateComponentData: (node: any) => {

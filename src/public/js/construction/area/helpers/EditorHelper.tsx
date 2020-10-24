@@ -374,6 +374,8 @@ var EditorHelper = {
     }
   },
   getSelectingElement: () => {
+  	if (Accessories.resizer == null) return null;
+  	
     let current = Accessories.resizer.getDOMNode();
     while (current != null && current != document.body) {
       current = current.parentNode;

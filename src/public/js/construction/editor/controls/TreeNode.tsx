@@ -48,8 +48,14 @@ interface IState {
 }
 
 class TreeNode extends React.Component<IProps, IState> {
+	  private mouseUpDelegate: any = null;
+	  private mouseMoveDelegate: any = null;
+	  
     constructor(props) {
     	super(props);
+    	
+	    this.mouseUpDelegate = this.mouseUp.bind(this);
+	    this.mouseMoveDelegate = this.mouseMove.bind(this);
     }
     
     private originalMousePos: Point = {
@@ -79,16 +85,16 @@ class TreeNode extends React.Component<IProps, IState> {
     }
     
     private installEventHandlers() {
-			document.body.addEventListener('mouseup', this.mouseUp, false);
-			document.body.addEventListener('mousemove', this.mouseMove, false);
-			window.top.document.body.addEventListener('mouseup', this.mouseUp, false);
-			window.top.document.body.addEventListener('mousemove', this.mouseMove, false);
+			document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+			document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
+			window.top.document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+			window.top.document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
 		}
 		private uninstallEventHandlers() {
-			document.body.removeEventListener('mouseup', this.mouseUp, false);
-			document.body.removeEventListener('mousemove', this.mouseMove, false);
-			window.top.document.body.removeEventListener('mouseup', this.mouseUp, false);
-			window.top.document.body.removeEventListener('mousemove', this.mouseMove, false);
+			document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+			document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
+			window.top.document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+			window.top.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
 		}
 		private createDraggingElement(title: string, width: number) {
 			if (this.draggingElement == null) {

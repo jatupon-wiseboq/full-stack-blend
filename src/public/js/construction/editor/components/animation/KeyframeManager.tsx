@@ -7,7 +7,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import {ITreeNode, InsertDirection} from '../../controls/TreeNode.js';
 import '../../controls/Tree.js';
 import './Keyframe.js';
-import {SECOND_SPAN_SIZE} from '../../../Constants.js';
+import {SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS} from '../../../Constants.js';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -70,15 +70,17 @@ class KeyframeManager extends Base<Props, State> {
   	if (this.props.tag.tag.root) return (<div />);
   	else {
 	    return (
-	    	<div ref="container" className="keyframe-manager-container" onClick={this.onClick.bind(this)}>
-	    		{this.props.tag.tag.keyframes.map((value, index) => {
-  					return (
-  						<FullStackBlend.Components.Keyframe key={'keyframe-' + value.id}
-  							keyframe={value.id} tag={this.props.tag}
-  							selected={value.id == this.state.extensionValues[this.props.watchingExtensionNames[0]]}
-  							time={value.time}></FullStackBlend.Components.Keyframe>
-  					)
-  				})}
+	    	<div ref="container" className="keyframe-manager-container" onClick={this.onClick.bind(this)} style={{width: MAXIMUM_OF_SECONDS * SECOND_SPAN_SIZE + 'px'}}>
+	    		<div style={{position: "relative", left: "-7.5px"}}>
+		    		{this.props.tag.tag.keyframes.map((value, index) => {
+	  					return (
+	  						<FullStackBlend.Components.Keyframe key={'keyframe-' + value.id}
+	  							keyframe={value.id} tag={this.props.tag}
+	  							selected={value.id == this.state.extensionValues[this.props.watchingExtensionNames[0]]}
+	  							time={value.time}></FullStackBlend.Components.Keyframe>
+	  					)
+	  				})}
+  				</div>
 	    	</div>
 	    );
 	  }
