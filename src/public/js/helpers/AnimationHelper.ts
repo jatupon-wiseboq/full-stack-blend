@@ -13,7 +13,7 @@ const AnimationHelper = {
     	
     	for (let animation of animations) {
     		if (currentAnimations.indexOf('animation-group-' + animation) == -1) {
-    			currentAnimations.append('animation-group-' + animation);
+    			currentAnimations.push('animation-group-' + animation);
     		}
     	}
     	
