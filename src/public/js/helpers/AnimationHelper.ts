@@ -20,7 +20,7 @@ const AnimationHelper = {
     	currentAnimations = currentAnimations.filter(currentAnimation => currentAnimation != '');
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
-  }
+  },
   remove: (animations: any) => {
     let container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
     if (container) {
