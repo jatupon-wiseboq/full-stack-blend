@@ -12,8 +12,8 @@ const AnimationHelper = {
     	let currentAnimations = (HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ');
     	
     	for (let animation of animations) {
-    		if (currentAnimations.indexOf(animation) == -1) {
-    			currentAnimations.append(animation);
+    		if (currentAnimations.indexOf('animation-group-' + animation) == -1) {
+    			currentAnimations.append('animation-group-' + animation);
     		}
     	}
     	
@@ -27,7 +27,7 @@ const AnimationHelper = {
     	let currentAnimations = (HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ');
     	
     	for (let animation of animations) {
-    		let index = currentAnimations.indexOf(animation);
+    		let index = currentAnimations.indexOf('animation-group-' + animation);
     		if (index != -1) {
     			currentAnimations.splice(index, 1);
     		}
