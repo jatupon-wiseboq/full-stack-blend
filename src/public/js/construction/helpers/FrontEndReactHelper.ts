@@ -65,6 +65,7 @@ import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelp
 import {CodeHelper} from '../helpers/CodeHelper.js';
 import {EventHelper} from '../helpers/EventHelper.js';
 import {HTMLHelper} from '../helpers/HTMLHelper.js';
+import {AnimationHelper} from '../helpers/AnimationHelper.js';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base.js';
 // <---Auto[Import]// Auto[Declare]--->
 
@@ -265,14 +266,22 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             if (value.event) {
             		if (code == '') code = MERGING_BOILERPLATE;
             	
+            		let ACTIVE_ANIMATION = '';
+            		if (value['add-animation-tracks']) {
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.add(JSON.stringify(value['add-animation-tracks']));`;
+            		}
+            		if (value['remove-animation-tracks']) {
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.remove(JSON.stringify(value['remove-animation-tracks']));`;
+            		}
+            		
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(MERGE_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${ACTIVE_ANIMATION}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${MERGE_END_BEGIN}`);
                 } else {
-                    code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+                    code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${ACTIVE_ANIMATION}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
                 }
                 
