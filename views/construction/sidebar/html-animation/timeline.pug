@@ -32,9 +32,21 @@ div(internal-fsb-for="editingAnimationID")
       .section-note
         | This will triggering the animation from a beginning edge til an opposite edge with any duration all along user scrolling.
       .section-hr
+    .section-container.internal-fsb-selecting-on(internal-fsb-not-for="animationGroupMode:scrolling")
+      .section-title
+        | Track Options
+      .section-subtitle
+        | Repeating Mode
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-repeating-mode', 'animationRepeatMode'], todoOverriding: true}")
+      .section-subtitle(internal-fsb-for="animationRepeatMode:time")
+        | Repeating Time
+      .section-body(internal-fsb-for="animationRepeatMode:time")
+        +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingExtensionNames: ['animationRepeatTime'], inline: true, button: false}")
+      .section-hr
     .section-container.internal-fsb-selecting-on
       .section-title
-        | Keyframe Timing
+        | Keyframe Options
       .section-subtitle
         | Easing Mode
       .section-body
@@ -43,16 +55,6 @@ div(internal-fsb-for="editingAnimationID")
         | Easing Function
       .section-body
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-1', '-fsb-animation-easing-fn']}")
-        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-2', '-fsb-animation-easing-fn']}")
-      div(internal-fsb-not-for="animationGroupMode:scrolling")
-        .section-subtitle
-          | Repeating Mode
-        .section-body
-          +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-repeating-mode', '-fsb-animation-repeating-mode']}")
-        .section-subtitle(internal-fsb-for="-fsb-animation-repeating-mode:time")
-          | Repeating Time
-        .section-body(internal-fsb-for="-fsb-animation-repeating-mode:time")
-          +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingStyleNames: ['-fsb-animation-repeating-time'], inline: true, button: false}")
       .section-hr
   .section-container.internal-fsb-selecting-on
     .section-title

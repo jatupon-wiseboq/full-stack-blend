@@ -230,7 +230,9 @@ var EditorHelper = {
         	animationGroupName: AnimationHelper.getAnimationGroupName(),
         	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
         	animationGroupState: AnimationHelper.getAnimationGroupState(),
-        	animationGroupMode: AnimationHelper.getAnimationGroupMode()
+        	animationGroupMode: AnimationHelper.getAnimationGroupMode(),
+	        animationRepeatMode: null,
+	        animationRepeatTime: null
 	      }),
 	      tag: tag
 	    });
@@ -279,7 +281,9 @@ var EditorHelper = {
       	animationGroupName: AnimationHelper.getAnimationGroupName(),
       	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
       	animationGroupState: AnimationHelper.getAnimationGroupState(),
-        animationGroupMode: AnimationHelper.getAnimationGroupMode()
+        animationGroupMode: AnimationHelper.getAnimationGroupMode(),
+        animationRepeatMode: AnimationHelper.getAnimationRepeatMode(presetId),
+        animationRepeatTime: AnimationHelper.getAnimationRepeatTime(presetId)
       }, Accessories.cellFormater.getInfo()),
 	    tag: tag
     });

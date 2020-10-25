@@ -3,7 +3,7 @@ import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {InternalProjectSettings} from './WorkspaceHelper.js';
 import {EditorHelper} from './EditorHelper.js';
 import {TimelineHelper} from './TimelineHelper.js';
-import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../Constants.js';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT} from '../../Constants.js';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
@@ -55,10 +55,12 @@ var AnimationHelper = {
     
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
-    
     AnimationHelper.renderStylesheetElement();
   },
   setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
+  	console.log(presetId);
+  	console.log(content);
+  	
   	if (!InternalProjectSettings.editingAnimationID) return;
   	if (!InternalProjectSettings.editingKeyframeID) return;
   	
@@ -69,8 +71,9 @@ var AnimationHelper = {
     
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
-    
     AnimationHelper.renderStylesheetElement();
+    
+  	console.log(JSON.stringify(stylesheetDefinitions));
   },
   setAnimationGroup: function(editingAnimationID: string) {
   	InternalProjectSettings.editingAnimationID = editingAnimationID;
@@ -96,16 +99,15 @@ var AnimationHelper = {
   	if (!InternalProjectSettings.editingAnimationID) return;
   	
   	stylesheetDefinitionRevision++;
-    TimelineHelper.invalidate();
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupName = groupName;
+  	
+    TimelineHelper.invalidate();
+  	EditorHelper.updateEditorProperties();
   },
   setAnimationGroupNote: function(groupNote: string) {
   	if (!InternalProjectSettings.editingAnimationID) return;
-  	
-  	stylesheetDefinitionRevision++;
-    TimelineHelper.invalidate();
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupNote = groupNote;
@@ -114,19 +116,41 @@ var AnimationHelper = {
   	if (!InternalProjectSettings.editingAnimationID) return;
   	
   	stylesheetDefinitionRevision++;
-    TimelineHelper.invalidate();
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState = groupState;
+  	
+  	AnimationHelper.renderStylesheetElement();
   },
   setAnimationGroupMode: function(groupMode: string) {
   	if (!InternalProjectSettings.editingAnimationID) return;
   	
   	stylesheetDefinitionRevision++;
-    TimelineHelper.invalidate();
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode = groupMode;
+    
+    AnimationHelper.renderStylesheetElement();
+  },
+  setAnimationRepeatMode: function(presetId: string, repeatMode: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatMode = repeatMode;
+    
+    AnimationHelper.renderStylesheetElement();
+  },
+  setAnimationRepeatTime: function(presetId: string, repeatTime: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatTime = repeatTime;
     
     AnimationHelper.renderStylesheetElement();
   },
@@ -153,6 +177,22 @@ var AnimationHelper = {
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode || null;
+  },
+  getAnimationRepeatMode: function(presetId: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+    
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatMode || null;
+  },
+  getAnimationRepeatTime: function(presetId: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+    
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatTime || null;
   },
   getStylesheetDefinitionKeys: function() {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
@@ -182,12 +222,10 @@ var AnimationHelper = {
   getKeyframes: function(presetId: string) {
 		if (!InternalProjectSettings.editingAnimationID) return [];
 		
-		console.log(stylesheetDefinitions);
-		
 		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
 		
-  	return Object.keys(stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId]).map((keyframeID: string) => {
+  	return Object.keys(stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId]).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1).map((keyframeID: string) => {
   		let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][keyframeID]);
   		
   		return {
@@ -218,10 +256,12 @@ var AnimationHelper = {
   			let animationElements = [];
   			
   			for (let presetId in stylesheetDefinitions[animationId]) {
-		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId)) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
 		  			let animationKeyframes = [];
 		  			
-		  			let keyframes = Object.keys(stylesheetDefinitions[animationId][presetId]).map((keyframeId) => {
+		  			let keyframes = Object.keys(stylesheetDefinitions[animationId][presetId])
+		  				.filter(keyframeId => ['repeatMode', 'repeatTime'].indexOf(keyframeId) == -1)
+		  				.map((keyframeId) => {
 		  				let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[animationId][presetId][keyframeId]);
 		  				let clonedHashMap = CodeHelper.clone(hashMap);
 		  				
@@ -251,15 +291,40 @@ var AnimationHelper = {
 		  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
 		  				
 		  				let current = (total == 0) ? 0 : (parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']) - delay) / total;
+		  				let timing = [];
 		  				
-		  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw} }`);
+		  				if (nextKeyframe != null) {
+			  				let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+			  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+			  				let easing2 = 0;
+			  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+			  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+			  				let easing4 = 0;
+		  				
+			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
+				  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
+				  			}
+			  			}
+		  				
+		  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw}; ${timing.join('; ')}; }`);
 		  			}
 		  			
 		  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
 		  				animationElements.push(`${prefix} fsb-animation-${presetId} { ${animationKeyframes.join(' ')} }`);
 		  			}
 		  			
-		  			animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"] { animation-name: fsb-animation-${presetId}; animation-delay: ${delay}s; animation-duration: ${total}s; animation-iteration-count: infinite; }`);
+		  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
+		  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
+		  			
+		  			if (repeatMode != 'disabled') {
+		  				let animations = [];
+		  				
+		  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
+			  				animations.push(`${prefix}animation-name: fsb-animation-${presetId}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
+			  			}
+			  			
+			  			animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+			  		}
 		  		}
 		  	}
 		  	

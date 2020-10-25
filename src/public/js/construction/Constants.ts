@@ -372,10 +372,12 @@ export const BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE = [["data-rendering-
 export const SINGLE_DOM_CONTAINER_ELEMENTS = ['Rectangle', 'Button', 'Link'];
 export const ANIMATION_TIMING_MODE = [["animationGroupMode", null, ["fa-hourglass-2", "Time"]], ["animationGroupMode", "scrolling", ["fa-arrows-v", "Scrolling"]]];
 export const ANIMATION_SCROLLING_TRIGGERING = [["-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];
-export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-sign-out", "In"]], ["-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["-fsb-animation-easing-mode", "out", ["fa-sign-in", "Out"]]];
-export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "back", ["d-none", "Back"]], ["-fsb-animation-easing-fn", "circ", ["d-none", "Circ"]], ["-fsb-animation-easing-fn", "cubic", ["d-none", "Cubic"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
-export const ANIMATION_EASING_FN_2 = [["-fsb-animation-easing-fn", "expo", ["d-none", "Expo"]], ["-fsb-animation-easing-fn", "quad", ["d-none", "Quad"]], ["-fsb-animation-easing-fn", "quart", ["d-none", "Quart"]], ["-fsb-animation-easing-fn", "quint", ["d-none", "Quint"]], ["-fsb-animation-easing-fn", "sine", ["d-none", "Sine"]]];
-export const ANIMATION_REPEATING_MODE = [["-fsb-animation-repeating-mode", null, ["fa-hourglass", "Infinite"]], ["-fsb-animation-repeating-mode", "time", ["fa-hourglass-1", "Time"]], ["-fsb-animation-repeating-mode", "disabled", ["fa-hourglass-o", "Disabled"]]];
+export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-sign-in", "In"]], ["-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["-fsb-animation-easing-mode", "out", ["fa-sign-out", "Out"]]];
+export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
+export const EASING_COEFFICIENT = {
+	ease: 0.42
+};
+export const ANIMATION_REPEATING_MODE = [["animationRepeatMode", null, ["fa-hourglass", "Infinite"]], ["animationRepeatMode", "time", ["fa-hourglass-1", "Time"]], ["animationRepeatMode", "disabled", ["fa-hourglass-o", "Disabled"]]];
 export const ANIMATION_DEFAULT_STATE = [["animationGroupState", null, ["fa-circle", "Add"]], ["animationGroupState", "off", ["fa-circle-o", "Remove"]]];
 export const SECOND_SPAN_SIZE = 40;
 export const MAXIMUM_OF_SECONDS = 500;
