@@ -268,10 +268,10 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             	
             		let ACTIVE_ANIMATION = '';
             		if (value['add-animation-tracks']) {
-            				ACTIVE_ANIMATION += `\n    AnimationHelper.add(JSON.stringify(value['add-animation-tracks']));`;
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.add(${JSON.stringify(value['add-animation-tracks'])});`;
             		}
             		if (value['remove-animation-tracks']) {
-            				ACTIVE_ANIMATION += `\n    AnimationHelper.remove(JSON.stringify(value['remove-animation-tracks']));`;
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.remove(${JSON.stringify(value['remove-animation-tracks'])});`;
             		}
             		
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
