@@ -357,8 +357,6 @@ var EditorHelper = {
 	  } else {
 	  	Accessories.cellFormater.setTableElement(null);
 	  }
-	  
-	  AnimationHelper.setCurrentKeyframe(null);
   },
   deselect: () => {
     if (Accessories.resizer.getDOMNode().parentNode != null) {

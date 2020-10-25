@@ -53,6 +53,8 @@ var AnimationHelper = {
   	
     delete stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][InternalProjectSettings.editingKeyframeID];
     
+    AnimationHelper.setCurrentKeyframe(null);
+    
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
     AnimationHelper.renderStylesheetElement();
@@ -153,6 +155,12 @@ var AnimationHelper = {
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatTime = repeatTime;
     
     AnimationHelper.renderStylesheetElement();
+  },
+  getAnimationGroup: function() {
+  	return InternalProjectSettings.editingAnimationID;
+  },
+  getCurrentKeyframe: function() {
+  	return InternalProjectSettings.editingKeyframeID;
   },
   getAnimationGroupName: function(groupName: string) {
   	if (!InternalProjectSettings.editingAnimationID) return null;

@@ -85,15 +85,19 @@ class TimelineManager extends Base<Props, State> {
   			node.selected = true;
   			this.forceUpdate();
   			
-  			console.log(node);
-  			
+				let link = Math.random().toString();
+			
   			perform('update', {
 	    		extensions: [{
 	    			name: 'editingAnimationID',
 	    			value: node.tag.key
-	    		}]
+	    		}],
+	  			link: link
 	    	});
-  			perform('select[cursor]', node.id);
+	    	perform('select[cursor]', {
+			  	content: node.id,
+			  	link: link
+			  });
   		}
     }
     
@@ -105,17 +109,21 @@ class TimelineManager extends Base<Props, State> {
     }
     
     private addOnClick() {
+			let link = Math.random().toString();
+			
     	perform('update', {
     		extensions: [{
     			name: 'editingAnimationID',
     			value: RandomHelper.generateGUID()
-    		}]
+    		}],
+	  		link: link
     	});
 	  	perform('update', {
 	  		extensions: [{
 	  			name: 'animationGroupName',
 	  			value: 'Untitled ' + ++groupCount
-	  		}]
+	  		}],
+	  		link: link
 	  	});
     }
     

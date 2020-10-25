@@ -73,9 +73,26 @@ var ManipulationHelper = {
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
     
+    if (content && (typeof content === 'object') && content.link !== undefined) {
+    	link = content.link;
+    }
+    if (content && (typeof content === 'object') && content.content !== undefined) {
+    	content = content.content;
+    }
+    
     switch (name) {
       case 'select':
+      	if (link === false) link = Math.random();
       	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	
+      	promise.then(() => {
+      		ManipulationHelper.perform('update', {
+	      		extensions: [{
+	      			name: 'editingKeyframeID',
+	      			value: null
+	      		}]
+	      	}, true, false, link);
+      	});
         break;
       case 'select[cursor]':
       	name = 'select';
@@ -109,6 +126,13 @@ var ManipulationHelper = {
 		          }
 	      		}
 	      	}
+	      }).then(() => {
+	      	ManipulationHelper.perform('update', {
+	      		extensions: [{
+	      			name: 'editingKeyframeID',
+	      			value: null
+	      		}]
+	      	}, true, false, link);
 	      });
       	break;
       case 'insert':
@@ -503,39 +527,88 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime'].indexOf(extension.name) != -1) {
-          		accessory = {
-                extensions: [{
-                  name: extension.name,
-                  value: AnimationHelper.getAnimationGroupName(extension.name)
-                }]
-              };
-              
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID'].indexOf(extension.name) != -1) {
               switch (extension.name) {
               	case 'animationGroupName':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupName()
+		                }]
+		              };
               		if (AnimationHelper.getAnimationGroupName() != (extension.value || 'Untitled')) found = true;
 		            	AnimationHelper.setAnimationGroupName(extension.value || 'Untitled');
 		              break;
 		            case 'animationGroupNote':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupNote()
+		                }]
+		              };
               		if (AnimationHelper.getAnimationGroupNote() != (extension.value || '')) found = true;
 		            	AnimationHelper.setAnimationGroupNote(extension.value || '');
 		              break;
 		            case 'animationGroupState':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupState()
+		                }]
+		              };
               		if (AnimationHelper.getAnimationGroupState() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupState(extension.value || null);
 		              break;
 		            case 'animationGroupMode':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupMode()
+		                }]
+		              };
               		if (AnimationHelper.getAnimationGroupMode() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupMode(extension.value || null);
 		              break;
 		            case 'animationRepeatMode':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationRepeatMode(presetId)
+		                }]
+		              };
               		if (AnimationHelper.getAnimationRepeatMode(presetId) != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationRepeatMode(presetId, extension.value || null);
 		              break;
 		            case 'animationRepeatTime':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationRepeatTime(presetId)
+		                }]
+		              };
               		if (AnimationHelper.getAnimationRepeatTime(presetId) != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationRepeatTime(presetId, extension.value || null);
 		              break;
+		            case 'editingAnimationID':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getAnimationGroup()
+	                  }]
+	                };
+	                if (AnimationHelper.getAnimationGroup() != (extension.value || null)) found = true;
+	              	AnimationHelper.setAnimationGroup(extension.value);
+		            	break;
+		            case 'editingKeyframeID':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getCurrentKeyframe()
+	                  }]
+	                };
+	                if (AnimationHelper.getCurrentKeyframe() != (extension.value || null)) found = true;
+	              	AnimationHelper.setCurrentKeyframe(extension.value);
+		            	break;
               }
           	} else if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
@@ -563,10 +636,6 @@ var ManipulationHelper = {
               } else if (extension.name == 'externalLibraries') {
                 InternalProjectSettings[extension.name] = extension.value;
                 EditorHelper.updateExternalLibraries();
-              } else if (extension.name == 'editingAnimationID') {
-              	AnimationHelper.setAnimationGroup(extension.value);
-              } else if (extension.name == 'editingKeyframeID') {
-              	AnimationHelper.setCurrentKeyframe(extension.value);
               } else {
                 InternalProjectSettings[extension.name] = extension.value;
               }
@@ -592,6 +661,7 @@ var ManipulationHelper = {
       
 	    if (found) FrontEndDOMHelper.invalidate();
 	    if (found) StyleHelper.invalidate();
+    	if (found) TimelineHelper.invalidate();
     	if (found) SchemaHelper.invalidate();
       
       if (remember && !found) {
@@ -860,11 +930,26 @@ var ManipulationHelper = {
   	let shouldContinue = true;
   	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
   	
-  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
-  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
-  			shouldContinue = false;
-  		}
-  	}
+  	let deletingKeyframe = EditorHelper.getEditorCurrentMode() == 'animation' && !!InternalProjectSettings.editingKeyframeID;
+  	
+  	if (!deletingKeyframe) {
+	  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
+	  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  	if (element) {
+	  		if (!confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  } else {
+	  	if (element) {
+	  		if (!confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  }
   	
   	accessory = {
   	  element: element,
@@ -872,17 +957,23 @@ var ManipulationHelper = {
   	}
   	
     if (shouldContinue && element) {
-    	link = Math.random();
-	  	promise.then(() => {
-	  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-				removeAllPresetReferences(presetId, link);
-				StylesheetHelper.removeStylesheetDefinition(presetId);
-			});
-			
-			let parentNode = element.parentNode;
-      parentNode.removeChild(element);
-      
-      ManipulationHelper.updateComponentData(parentNode);
+    	if (!deletingKeyframe) {
+	    	link = Math.random();
+		  	promise.then(() => {
+		  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+					removeAllPresetReferences(presetId, link);
+					StylesheetHelper.removeStylesheetDefinition(presetId);
+				});
+				
+				let parentNode = element.parentNode;
+	      parentNode.removeChild(element);
+	      
+	      ManipulationHelper.updateComponentData(parentNode);
+	    } else {
+	    	let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	    	
+	    	AnimationHelper.removeStylesheetDefinition(presetId);
+	    }
     } else {
     	remember = false;
     }

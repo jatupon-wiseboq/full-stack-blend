@@ -73,13 +73,19 @@ class Keyframe extends Base<Props, State> {
 		document.getElementById('area').contentWindow.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
 	}
   
-  private mouseClick(event) {			
-		perform('select[cursor]', this.props.tag.id);
+  private mouseClick(event) {
+		let link = Math.random().toString();
+		
+	  perform('select[cursor]', {
+	  	content: this.props.tag.id,
+	  	link: link
+	  });
   	perform('update', {
   		extensions: [{
   			name: 'editingKeyframeID',
   			value: this.props.keyframe
-  		}]
+  		}],
+  		link: link
   	});
   	
 		return EventHelper.cancel(event);
@@ -126,18 +132,25 @@ class Keyframe extends Base<Props, State> {
 		this.uninstallEventHandlers();
 		
 		if (this.isMouseMoveReachedThreshold) {
-		  perform('select[cursor]', this.props.tag.id);
+			let link = Math.random().toString();
+			
+		  perform('select[cursor]', {
+		  	content: this.props.tag.id,
+		  	link: link
+		  });
 	  	perform('update', {
 	  		extensions: [{
 	  			name: 'editingKeyframeID',
 	  			value: this.props.keyframe
-	  		}]
+	  		}],
+	  		link: link
 	  	});
 	  	perform('update', {
 	  		styles: [{
 	  			name: '-fsb-animation-keyframe-time',
 	  			value: parseFloat(this.originalElement.style.left) / SECOND_SPAN_SIZE
-	  		}]
+	  		}],
+	  		link: link
 	  	});
 		}
 		this.isMouseMoveReachedThreshold = false;

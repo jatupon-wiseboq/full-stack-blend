@@ -43,7 +43,12 @@ class KeyframeManager extends Base<Props, State> {
   }
   
   private onClick(event: any) {
-  	perform('select[cursor]', this.props.tag.id);
+		let link = Math.random().toString();
+		
+  	perform('select[cursor]', {
+	  	content: this.props.tag.id,
+	  	link: link
+	  });
   	perform('update', {
   		extensions: [{
   			name: 'editingAnimationID',
@@ -51,7 +56,8 @@ class KeyframeManager extends Base<Props, State> {
   		}, {
   			name: 'editingKeyframeID',
   			value: RandomHelper.generateGUID()
-  		}]
+  		}],
+	  	link: link
   	});
   	
   	let element = EventHelper.getCurrentElement(event);
@@ -62,7 +68,8 @@ class KeyframeManager extends Base<Props, State> {
   		styles: [{
   			name: '-fsb-animation-keyframe-time',
   			value: (mouse[0] - position[0]) / SECOND_SPAN_SIZE
-  		}]
+  		}],
+	  	link: link
   	});
   }
   
