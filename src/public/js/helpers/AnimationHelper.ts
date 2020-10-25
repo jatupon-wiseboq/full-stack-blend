@@ -9,7 +9,7 @@ const AnimationHelper = {
   add: (animations: any) => {
     let container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
     if (container) {
-    	let currentAnimations = (HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ');
+    	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
     	for (let animation of animations) {
     		if (currentAnimations.indexOf('animation-group-' + animation) == -1) {
@@ -24,7 +24,7 @@ const AnimationHelper = {
   remove: (animations: any) => {
     let container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
     if (container) {
-    	let currentAnimations = (HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ');
+    	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
     	for (let animation of animations) {
     		let index = currentAnimations.indexOf('animation-group-' + animation);
