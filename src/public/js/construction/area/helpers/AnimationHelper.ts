@@ -335,9 +335,10 @@ var AnimationHelper = {
   		}
   	}
   	
-  	HTMLHelper.setAttribute(document.body, 'internal-fsb-animation', '');
+  	let begin = HTMLHelper.getElementByClassName('internal-fsb-begin');
+  	HTMLHelper.setAttribute(begin, 'internal-fsb-animation', '');
   	window.setTimeout(() => {
-  		HTMLHelper.setAttribute(document.body, 'internal-fsb-animation', activeAnimationGroup.join(' '));
+  		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
   	}, 0);
   	
   	let source = animationGroups.join(' ');
