@@ -558,7 +558,7 @@ var WorkspaceHelper = {
  	},
   generateFrontEndCodeForCurrentPage: () => {
     let results = FrontEndDOMHelper.generateFrontEndCode();
-  	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true)].join('\n'));
+  	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true)].join('; '));
   	
   	return results;
   },
