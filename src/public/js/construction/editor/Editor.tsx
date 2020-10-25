@@ -47,6 +47,11 @@ import './components/content/PopupManager.js';
 import './components/content/EndpointManager.js';
 import './components/content/SchemaManager.js';
 
+import './components/animation/AnimationPicker.js';
+import './components/animation/TimelineManager.js';
+import './components/animation/KeyframeManager.js';
+import './components/animation/Keyframe.js';
+
 //import GitHub from 'github-api';
 
 declare let React: any;
@@ -181,7 +186,7 @@ let cachedUpdateEditorProperties = {};
 	      $('[internal-fsb-for]').hide();
 	      $('[internal-fsb-not-for]').show();
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode']) {
+	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode', 'internal-fsb-animation-timing-mode']) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
@@ -197,8 +202,30 @@ let cachedUpdateEditorProperties = {};
 		          $('[internal-fsb-not-for="' + key + '"]').hide();
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
+		        
+		        let style = content['attributes']['style'];
+		        if (style) {
+		        	let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
+		        	for (let key of ['-fsb-animation-timing-mode']) {
+		        		let value = hashMap[key];
+		        		$('[internal-fsb-for="' + key + '"]').each((index, element) => {
+			          	element = $(element);
+			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+			          	else element.show();
+			          });
+			          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
+			          	element = $(element);
+			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+			          	else element.show();
+			          });
+			          $('[internal-fsb-not-for="' + key + '"]').hide();
+			          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
+		        	}
+		        }
 	      	}
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing']) {
+	      }
+	      if (content && content['extensions']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {

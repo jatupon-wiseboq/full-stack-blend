@@ -1,6 +1,174 @@
-.internal-fsb-selecting-on(internal-fsb-not-for="internal-fsb-inheriting")
-	| Timeline
-div(internal-fsb-for="internal-fsb-inheriting")
-	include ../../common/component-guide
-.internal-fsb-selecting-off
-	include ../../common/empty
+div(internal-fsb-for="editingAnimationID")
+  .section-container
+    .section-title
+      | Animation Group
+    .section-subtitle
+      | Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupName'], inline: true, button: false}")
+    .section-subtitle
+      | Note
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupNote'], inline: true, button: false, multiline: true}")
+    .section-subtitle
+      | Default State
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-state', 'animationGroupState'], todoOverriding: true}")
+    .section-subtitle
+      | Animation Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-mode', 'animationGroupMode'], todoOverriding: true}")
+    .section-note
+      | An animation group will containing a multiple of the animation track of any HTML elements. You can add any tracks to the group while it's selecting.
+    .section-hr.internal-fsb-selecting-on
+  div(internal-fsb-for="editingKeyframeID")
+    .section-container(internal-fsb-for="animationGroupMode:scrolling")
+      .section-title
+        | Scrolling Mode
+      .section-subtitle
+        | Triggering Edge
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-scrolling-triggering', '-fsb-animation-scrolling-triggering']}")
+      .section-note
+        | This will triggering the animation from a beginning edge til an opposite edge with any duration all along user scrolling.
+      .section-hr
+    .section-container.internal-fsb-selecting-on(internal-fsb-not-for="animationGroupMode:scrolling")
+      .section-title
+        | Track Options
+      .section-subtitle
+        | Repeating Mode
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-repeating-mode', 'animationRepeatMode'], todoOverriding: true}")
+      .section-subtitle(internal-fsb-for="animationRepeatMode:time")
+        | Repeating Time
+      .section-body(internal-fsb-for="animationRepeatMode:time")
+        +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingExtensionNames: ['animationRepeatTime'], inline: true, button: false}")
+      .section-hr
+    .section-container.internal-fsb-selecting-on
+      .section-title
+        | Keyframe Options
+      .section-subtitle
+        | Easing Mode
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-mode', '-fsb-animation-easing-mode']}")
+      .section-subtitle
+        | Easing Function
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-1', '-fsb-animation-easing-fn']}")
+      .section-hr
+  .section-container.internal-fsb-selecting-on
+    .section-title
+      | Animation Events Binding
+    div(internal-fsb-for="hasParentReactComponent")
+      .section-subtitle(internal-fsb-for="internal-fsb-class:Button")
+        | Action
+      .section-body(internal-fsb-for="internal-fsb-class:Button")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmitting'], mode: 'animation'}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmitted'], mode: 'animation'}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfailed'], mode: 'animation'}")
+        +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsuccess'], mode: 'animation'}")
+    .section-subtitle
+      | Mouse
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbclick'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdblclick'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousedown'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousemove'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseout'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseover'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmouseup'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmousewheel'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwheel'], mode: 'animation'}")
+    .section-subtitle
+      | Keyboard
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeydown'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeypress'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbkeyup'], mode: 'animation'}")
+    .section-subtitle
+      | Touch
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchstart'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchmove'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchend'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtouchcancel'], mode: 'animation'}")
+    .section-subtitle
+      | Dragging
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrag'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragend'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragenter'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragleave'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragover'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdragstart'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdrop'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbscroll'], mode: 'animation'}")
+    .section-subtitle
+      | Document
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbafterprint'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeprint'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbbeforeunload'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbhashchange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbload'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbmessage'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsboffline'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbonline'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpagehide'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpageshow'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpopstate'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbresize'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstorage'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbunload'], mode: 'animation'}")
+    .section-subtitle
+      | Clipboard
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcopy'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcut'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpaste'], mode: 'animation'}")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+      | Form
+    .section-body(internal-fsb-for="internal-fsb-class:Textbox, internal-fsb-class:Select, internal-fsb-class:Radio, internal-fsb-class:Checkbox, internal-fsb-class:File, internal-fsb-class:Button")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbblur'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbchange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcontextmenu'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfocus'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinput'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinvalid'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbreset'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsearch'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbselect'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmit'], mode: 'animation'}")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+      | Media
+    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbabort'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplay'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplaythrough'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcuechange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdurationchange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbemptied'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbended'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsberror'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadeddata'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadedmetadata'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbloadstart'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpause'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplay'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbplaying'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbprogress'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbratechange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeked'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbseeking'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstalled'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsuspend'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbtimeupdate'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting'], mode: 'animation'}")
+    .section-note
+      | These will generating event boilerplates in the current folding react component.
+  .internal-fsb-selecting-off
+    include ../../common/empty
+div(internal-fsb-not-for="editingAnimationID")
+  include ../../common/component-guide

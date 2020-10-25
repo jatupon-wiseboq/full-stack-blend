@@ -173,6 +173,18 @@ html
           function Controller() {
               this.dictionary = {};
           }
+          Controller.prototype.onTextElementClick_d3615ea5 = function (event) {
+              // Handle the event of onTextElementClick (TextElement 1) here:
+              // 
+          };
+          Controller.prototype.onTextElementClick_7ed79c7a = function (event) {
+              // Handle the event of onTextElementClick (TextElement 3) here:
+              // 
+          };
+          Controller.prototype.onRectangleClick_13ae6870 = function (event) {
+              // Handle the event of onRectangleClick (Rectangle 1) here:
+              // 
+          };
           Controller.prototype.onButtonClick_651393e4 = function (event) {
               // Handle the event of onButtonClick (Button 1) here:
               // 
@@ -211,9 +223,15 @@ html
           return Controller;
       }());
       var controller = new Controller();
+      controller.register('d3615ea5', 'click', 'onTextElementClick_d3615ea5');
+      controller.register('7ed79c7a', 'click', 'onTextElementClick_7ed79c7a');
+      controller.register('13ae6870', 'click', 'onRectangleClick_13ae6870');
       controller.register('651393e4', 'click', 'onButtonClick_651393e4');
       controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4');
       controller.register('57bd398a', 'click', 'onButtonClick_57bd398a');
+      controller.listen('d3615ea5');
+      controller.listen('7ed79c7a');
+      controller.listen('13ae6870');
       controller.listen('651393e4');
       controller.listen('d85b2bd4');
       controller.listen('57bd398a');

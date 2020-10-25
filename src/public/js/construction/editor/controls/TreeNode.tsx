@@ -17,6 +17,7 @@ const InsertDirection = Object.freeze({
 interface ITreeNode {
 	id: string,
   name: string,
+  deselectable: boolean,
   selectable: boolean,
   dropable: boolean,
   dragging: boolean,
@@ -39,14 +40,22 @@ interface IProps {
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
   draggableAfterSelected: boolean;
   customDraggerClassName: string;
+  editingControl: any;
+  extendingControl: any;
 }
 
 interface IState {
 }
 
 class TreeNode extends React.Component<IProps, IState> {
+	  private mouseUpDelegate: any = null;
+	  private mouseMoveDelegate: any = null;
+	  
     constructor(props) {
-        super(props);
+    	super(props);
+    	
+	    this.mouseUpDelegate = this.mouseUp.bind(this);
+	    this.mouseMoveDelegate = this.mouseMove.bind(this);
     }
     
     private originalMousePos: Point = {
@@ -64,6 +73,7 @@ class TreeNode extends React.Component<IProps, IState> {
     
     protected onChange(node) {
   		if (!node.selectable) return;
+  		if (node.selected && node.deselectable === false) return;
   		
       node.selected = !node.selected;
       
@@ -75,16 +85,16 @@ class TreeNode extends React.Component<IProps, IState> {
     }
     
     private installEventHandlers() {
-			document.body.addEventListener('mouseup', this.mouseUp, false);
-			document.body.addEventListener('mousemove', this.mouseMove, false);
-			window.top.document.body.addEventListener('mouseup', this.mouseUp, false);
-			window.top.document.body.addEventListener('mousemove', this.mouseMove, false);
+			document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+			document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
+			window.top.document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+			window.top.document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
 		}
 		private uninstallEventHandlers() {
-			document.body.removeEventListener('mouseup', this.mouseUp, false);
-			document.body.removeEventListener('mousemove', this.mouseMove, false);
-			window.top.document.body.removeEventListener('mouseup', this.mouseUp, false);
-			window.top.document.body.removeEventListener('mousemove', this.mouseMove, false);
+			document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+			document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
+			window.top.document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+			window.top.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
 		}
 		private createDraggingElement(title: string, width: number) {
 			if (this.draggingElement == null) {
@@ -203,21 +213,42 @@ class TreeNode extends React.Component<IProps, IState> {
             this.props.onUpdateOptionVisibleChanged(value, tag);
         }
     }
+    private recursiveCheckForContaining(node: ITreeNode): boolean {
+    	if (node.selected) return true;
+    	else {
+    		for (let child of node.nodes) {
+    			if (this.recursiveCheckForContaining(child)) {
+    				return true;
+    			}
+    		}
+    		return false;
+    	}
+    }
     
     render() {
       return (
         <div ref="container">
           {this.props.nodes.map((node, index) => {
             return (
-              <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '')}>
+              <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '') + (this.recursiveCheckForContaining(node) ? ' contained' : '')} id={node.id}>
                 <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "")}>
+                	{(() => {
+                    if (this.props.extendingControl) {
+                    	const ExtendingControl = this.props.extendingControl;
+                      return (
+                        <ExtendingControl tag={node}>
+                        </ExtendingControl>
+                      )
+                    }
+                  })()}
                   <div className={"treenode-body col offset-" + this.props.deep} onMouseDown={this.mouseDown.bind(this)} node={node.id}>
                     {(() => {
-                      if (this.props.children) {
+                      if (this.props.children && this.props.editingControl) {
+                      	const EditingControl = this.props.editingControl;
                         return (
-                          <FullStackBlend.Controls.DropDownControl representing="ICON:fa fa-edit" onVisibleChanged={this.onVisibleChanged.bind(this)} tag={node}>
+                          <EditingControl representing="ICON:fa fa-edit" onVisibleChanged={this.onVisibleChanged.bind(this)} tag={node}>
                             {this.props.children}
-                          </FullStackBlend.Controls.DropDownControl>
+                          </EditingControl>
                         )
                       }
                     })()}
@@ -230,7 +261,7 @@ class TreeNode extends React.Component<IProps, IState> {
                   </div>
                 </div>
                 <div style={{display: (node.insert == InsertDirection.BOTTOM || node.dragging) ? 'none' : 'inherit'}}>
-                	<FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging}>
+                	<FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl}>
                 	  {this.props.children}
                 	</FullStackBlend.Controls.TreeNode>
                 </div>

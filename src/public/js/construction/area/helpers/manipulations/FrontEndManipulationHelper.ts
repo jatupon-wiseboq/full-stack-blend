@@ -3,6 +3,7 @@ import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {Accessories, EditorHelper} from '../EditorHelper.js';
 import {WorkspaceHelper} from '../WorkspaceHelper.js';
 import {LayoutHelper} from '../LayoutHelper.js';
+import {TimelineHelper} from '../TimelineHelper.js';
 import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
@@ -255,6 +256,7 @@ var FrontEndManipulationHelper = {
     
     ManipulationHelper.updateComponentData(element);
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     FrontEndDOMHelper.invalidate();
     
     return [accessory, remember, link];

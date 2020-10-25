@@ -16,6 +16,8 @@ interface IProps {
   enableDragging: boolean;
   draggableAfterSelected: boolean;
   customDraggerClassName: string;
+  editingControl: any;
+  extendingControl: any;
 }
 
 interface IState {
@@ -36,7 +38,7 @@ class Tree extends React.Component<IProps, IState> {
     }
     
     constructor(props) {
-        super(props);
+      super(props);
     }
     
     protected onUpdate(node: ITreeNode) {
@@ -179,9 +181,9 @@ class Tree extends React.Component<IProps, IState> {
 		}
     
     private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
-        if (this.props.onUpdateOptionVisibleChanged) {
-            this.props.onUpdateOptionVisibleChanged(value, node);
-        }
+      if (this.props.onUpdateOptionVisibleChanged) {
+        this.props.onUpdateOptionVisibleChanged(value, node);
+      }
     }
     
     render() {
@@ -191,7 +193,7 @@ class Tree extends React.Component<IProps, IState> {
             {(() => {
         	    if (this.props.nodes && this.props.nodes.filter(node => (node.id !== 'delete')).length != 0) {
         	      return (
-              	  <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+              	  <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl}>
                     {this.props.children}
                   </TreeNode>
         	      );

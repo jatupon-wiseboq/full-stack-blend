@@ -80,7 +80,6 @@ var StylesheetHelper = {
       });
       console.log(cachedPrioritizedKeys);
       
-      
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
       	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
       	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');

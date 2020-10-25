@@ -14,7 +14,7 @@ import {Base} from './Base.js';
 // <---Auto[Import]
 
 // Import additional modules here:
-// 
+//
 
 
 // Auto[Declare]--->
@@ -41,7 +41,7 @@ enum ValidationInfo {
 // <---Auto[Declare]
 
 // Declare private static variables here:
-// 
+//
 
 
 // Auto[Interface]--->
@@ -67,7 +67,7 @@ interface Input {
 // <---Auto[Interface]
 
 // Declare or extend interfaces here:
-// 
+//
 
 
 // Auto[ClassBegin]--->

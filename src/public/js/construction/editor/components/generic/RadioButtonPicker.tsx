@@ -40,7 +40,16 @@ let options = {
 		"data-lock-mode": CONSTANTS.BACKEND_DATA_LOCK_MODE,
 		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
 		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
-		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE
+		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
+
+		// Animations
+		// 
+		"animation-mode": CONSTANTS.ANIMATION_TIMING_MODE,
+		"animation-scrolling-triggering": CONSTANTS.ANIMATION_SCROLLING_TRIGGERING,
+		"animation-easing-mode": CONSTANTS.ANIMATION_EASING_MODE,
+		"animation-easing-fn-1": CONSTANTS.ANIMATION_EASING_FN_1,
+		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE,
+		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE
 }
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
@@ -67,6 +76,7 @@ interface Props extends IProps {
     options: any;
     onValueChange(value: any);
     required: boolean;
+    todoOverriding: boolean;
 }
 
 interface State extends IState {
@@ -220,12 +230,21 @@ class RadioButtonPicker extends Base<Props, State> {
 						        });
 						        break;
 		            case Mode.EXTENSION:
-		            		perform('style', {
-						            styles: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: (currentState) ? null : target
-						            }]
-						        });
+		            		if (this.props.todoOverriding) {
+		            			perform('update', {
+							            extensions: [{
+							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+							                value: (currentState) ? null : target
+							            }]
+							        });
+		            		} else {
+			            		perform('style', {
+							            styles: [{
+							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+							                value: (currentState) ? null : target
+							            }]
+							        });
+							      }
 						        break;
             }
         }
