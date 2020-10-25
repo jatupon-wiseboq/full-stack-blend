@@ -1,4 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {CodeHelper} from '../../helpers/CodeHelper.js';
 import {InternalProjectSettings} from './WorkspaceHelper.js';
 import {EditorHelper} from './EditorHelper.js';
 import {TimelineHelper} from './TimelineHelper.js';
@@ -83,13 +84,13 @@ var AnimationHelper = {
   	AnimationHelper.setCurrentKeyframe(null);
   	
     TimelineHelper.invalidate();
-  	EditorHelper.updateExternalLibraries();
+  	EditorHelper.updateEditorProperties();
   },
   setCurrentKeyframe: function(editingKeyframeID: string) {
   	InternalProjectSettings.editingKeyframeID = editingKeyframeID;
   	
     TimelineHelper.invalidate();
-  	EditorHelper.updateExternalLibraries();
+  	EditorHelper.updateEditorProperties();
   },
   setAnimationGroupName: function(groupName: string) {
   	if (!InternalProjectSettings.editingAnimationID) return;
@@ -118,6 +119,17 @@ var AnimationHelper = {
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState = groupState;
   },
+  setAnimationGroupMode: function(groupMode: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+    TimelineHelper.invalidate();
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode = groupMode;
+    
+    AnimationHelper.renderStylesheetElement();
+  },
   getAnimationGroupName: function(groupName: string) {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
@@ -135,6 +147,12 @@ var AnimationHelper = {
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState || null;
+  },
+  getAnimationGroupMode: function(groupMode: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode || null;
   },
   getStylesheetDefinitionKeys: function() {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
@@ -191,59 +209,73 @@ var AnimationHelper = {
     element.innerText = AnimationHelper.renderStylesheet();
   },
   renderStylesheet: function(production: boolean=false) {
-  	return '';
+  	let animationGroups = [];
+  	let activeAnimationGroup = [];
   	
-    let lines = [];
-    let prioritizedKeys = AnimationHelper.getStylesheetDefinitionKeys();
-    let inversedReferenceHash = {};
-    let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
-    	'.internal-fsb-absolute-layout > .internal-fsb-element',
-    	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
-    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element'];
-    
-  	for (let info of prioritizedKeys) {
-  		let references = info.inheritances.filter(token => token != '');
-  		
-  		for (let reference of references) {
-  			if (!inversedReferenceHash[reference]) {
-  					inversedReferenceHash[reference] = [];
-  			}
+  	for (let animationId in stylesheetDefinitions) {
+  		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
+  			let animationAssignments = [];
+  			let animationElements = [];
   			
-  			if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
-  					inversedReferenceHash[reference].push(info.id);
-  			}
+  			for (let presetId in stylesheetDefinitions[animationId]) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId)) {
+		  			let animationKeyframes = [];
+		  			
+		  			let keyframes = Object.keys(stylesheetDefinitions[animationId][presetId]).map((keyframeId) => {
+		  				let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[animationId][presetId][keyframeId]);
+		  				let clonedHashMap = CodeHelper.clone(hashMap);
+		  				
+		  				delete clonedHashMap['-fsb-animation-keyframe-time'];
+		  				
+		  				return {
+		  					id: keyframeId,
+		  					hashMap: hashMap,
+		  					raw: HTMLHelper.getInlineStyleFromHashMap(clonedHashMap)
+		  				};
+		  			});
+		  			
+		  			if (keyframes.length == 0) continue;
+		  			
+		  			keyframes = keyframes.sort((a, b) => {
+		  				const timeA = parseFloat(a.hashMap['-fsb-animation-keyframe-time']);
+		  				const timeB = parseFloat(b.hashMap['-fsb-animation-keyframe-time']);
+		  				
+		  				return (timeA > timeB) ? 1 : -1;
+		  			});
+		  			
+		  			let delay = parseFloat(keyframes[0].hashMap['-fsb-animation-keyframe-time']);
+		  			let total = parseFloat(keyframes[keyframes.length - 1].hashMap['-fsb-animation-keyframe-time']) - delay;
+		  			
+		  			for (let i=0; i<keyframes.length; i++) {
+		  				let currentKeyframe = keyframes[i];
+		  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
+		  				
+		  				let current = (total == 0) ? 0 : (parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']) - delay) / total;
+		  				
+		  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw} }`);
+		  			}
+		  			
+		  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
+		  				animationElements.push(`${prefix} fsb-animation-${presetId} { ${animationKeyframes.join(' ')} }`);
+		  			}
+		  			
+		  			animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"] { animation-name: fsb-animation-${presetId}; animation-delay: ${delay}s; animation-duration: ${total}s; animation-iteration-count: infinite; }`);
+		  		}
+		  	}
+		  	
+		  	animationGroups.push(animationElements.join(' '));
+		  	animationGroups.push(animationAssignments.join(' '));
+		  	
+		  	if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`animation-group-${animationId}`);
   		}
   	}
-    
-    for (let i=prioritizedKeys.length-1; i>=0; i--) {
-      let info = prioritizedKeys[i];
-      let prefixes = [];
-      let isForChildren = (stylesheetDefinitions[info.id].indexOf('-fsb-for-children: true') != -1);
-      let suffix = (isForChildren) ? ' > :first-child' : '';
-      
-      for (let prefix of wysiwygCSSSelectorPrefixes) {
-	      prefixes.push(prefix + '.-fsb-self-' + info.id + suffix);
-	      prefixes.push(prefix + '.-fsb-preset-' + info.id + suffix);
-	    }
-      
-      lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
-      
-      // Table Cell Property (With Reusable Stylesheet)
-      // 
-      let tableCellDefinitions = stylesheetDefinitions[info.id].match(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL);
-      if (tableCellDefinitions !== null) {
-  	   	for (let tableCellDefinition of tableCellDefinitions) {
-     			let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
-     			
-     			for (let prefix of prefixes) {
-     				lines.push(prefix + ' tbody > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
-     								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
-     			}
-  	   	}
-  	  }
-    }
-    let source = lines.join(' ');
-    
+  	
+  	HTMLHelper.setAttribute(document.body, 'internal-fsb-animation', '');
+  	window.setTimeout(() => {
+  		HTMLHelper.setAttribute(document.body, 'internal-fsb-animation', activeAnimationGroup.join(' '));
+  	}, 0);
+  	
+  	let source = animationGroups.join(' ');
     return source;
   }
 };

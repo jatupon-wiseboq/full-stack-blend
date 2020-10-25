@@ -503,7 +503,7 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState'].indexOf(extension.name) != -1) {
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode'].indexOf(extension.name) != -1) {
           		accessory = {
                 extensions: [{
                   name: extension.name,
@@ -523,6 +523,10 @@ var ManipulationHelper = {
 		            case 'animationGroupState':
               		if (AnimationHelper.getAnimationGroupState() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupState(extension.value || null);
+		              break;
+		            case 'animationGroupMode':
+              		if (AnimationHelper.getAnimationGroupMode() != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationGroupMode(extension.value || null);
 		              break;
               }
           	} else if (InternalProjectSettings[extension.name] != extension.value) {

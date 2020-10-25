@@ -202,10 +202,30 @@ let cachedUpdateEditorProperties = {};
 		          $('[internal-fsb-not-for="' + key + '"]').hide();
 		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
 		        }
+		        
+		        let style = content['attributes']['style'];
+		        if (style) {
+		        	let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
+		        	for (let key of ['-fsb-animation-timing-mode']) {
+		        		let value = hashMap[key];
+		        		$('[internal-fsb-for="' + key + '"]').each((index, element) => {
+			          	element = $(element);
+			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+			          	else element.show();
+			          });
+			          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
+			          	element = $(element);
+			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
+			          	else element.show();
+			          });
+			          $('[internal-fsb-not-for="' + key + '"]').hide();
+			          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
+		        	}
+		        }
 	      	}
 	      }
 	      if (content && content['extensions']) {
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
