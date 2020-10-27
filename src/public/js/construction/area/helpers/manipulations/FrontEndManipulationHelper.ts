@@ -202,8 +202,11 @@ var FrontEndManipulationHelper = {
         content.name = componentName + ' ' + composedUntitledNameCount[componentName];
         
         element = document.createElement('div');
-        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
         element = element.firstChild;
+        
+        WorkspaceHelper.updateInheritingComponents(element);
+        WorkspaceHelper.recursiveCleanupComponentPreviewDOM(element, true);
         
         HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);
         

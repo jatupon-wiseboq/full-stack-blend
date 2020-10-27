@@ -360,7 +360,7 @@ var WorkspaceHelper = {
     
     WorkspaceHelper.updateInheritingComponents();
   },
-  cleanupComponentHTMLData: (html: string, preview: boolean=false) => {
+  cleanupComponentHTMLData: (html: string) => {
   	let holder = document.createElement('div');
     holder.innerHTML = html;
     
@@ -370,10 +370,6 @@ var WorkspaceHelper = {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', holder)].reverse();
     for (let component of components) {
     	component.innerHTML = '';
-    }
-    
-    if (preview) {
-    	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(holder.firstChild, true);
     }
     
     return holder.innerHTML;
@@ -472,7 +468,7 @@ var WorkspaceHelper = {
       
       let element = document.createElement('div');
       let parentNode = component.parentNode;
-      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
+      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
       let firstChild = element.firstChild;
       parentNode.insertBefore(firstChild, component);
       parentNode.removeChild(component);
@@ -513,6 +509,9 @@ var WorkspaceHelper = {
       }
       
       CapabilityHelper.installCapabilitiesForInternalElements(component);
+      
+      WorkspaceHelper.updateInheritingComponents(component);
+      WorkspaceHelper.recursiveCleanupComponentPreviewDOM(component, true);
       
       if (isSelecting) EditorHelper.select(component);
     }
