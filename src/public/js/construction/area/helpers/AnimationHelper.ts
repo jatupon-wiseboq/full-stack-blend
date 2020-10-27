@@ -12,6 +12,8 @@ let cachedPrioritizedKeysRevision = -1;
 
 var AnimationHelper = {
   generateStylesheetData: () => {
+  	CodeHelper.deleteEmptyKeys(stylesheetDefinitions);
+  	
     return stylesheetDefinitions;
   },
   initializeStylesheetData: (data: any) => {

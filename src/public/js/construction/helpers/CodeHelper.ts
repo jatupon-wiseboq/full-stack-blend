@@ -127,7 +127,38 @@ var CodeHelper = {
   	} else {
   		return object;
   	}
-  }
+  },
+  deleteEmptyKeys: (object: any) => {
+  	while (CodeHelper.recursiveDeleteEmptyKeys(object));
+  },
+  recursiveDeleteEmptyKeys: (object: any, currentKey: string=null): boolean => {
+  	let current = (currentKey == null) ? object : object[currentKey];
+  	if (Array.isArray(current)) {
+  		let result = false;
+  		
+  		for (let i=0; i<current.length; i++) {
+  			result = result || CodeHelper.recursiveDeleteEmptyKeys(current[i]);
+  		}
+  		
+  		return result;
+  	} else if ((typeof current === 'object') && current != null) {
+  		let keys = Object.keys(current);
+  		let result = false;
+  		
+  		if (keys.length != 0) {
+	  		for (let key of keys) {
+	  			result = result || CodeHelper.recursiveDeleteEmptyKeys(current, key);
+	  		}
+	  	} else {
+	  		delete object[currentKey];
+	  		result = true;
+	  	}
+  		
+  		return result;
+  	} else {
+  		return false;
+  	}
+  },
 };
 
 export {CodeHelper};
