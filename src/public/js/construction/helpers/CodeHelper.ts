@@ -129,34 +129,27 @@ var CodeHelper = {
   	}
   },
   deleteEmptyKeys: (object: any) => {
-  	while (CodeHelper.recursiveDeleteEmptyKeys(object));
-  },
-  recursiveDeleteEmptyKeys: (object: any, currentKey: string=null): boolean => {
-  	let current = (currentKey == null) ? object : object[currentKey];
-  	if (Array.isArray(current)) {
-  		let result = false;
-  		
-  		for (let i=0; i<current.length; i++) {
-  			result = result || CodeHelper.recursiveDeleteEmptyKeys(current[i]);
+  	let result = false;
+  	while (result) {
+  		const keys = Object.keys(object);
+  		for (let key of keys) {
+  			result = result || CodeHelper.recursiveDeleteEmptyKeys(object, key);
   		}
-  		
-  		return result;
-  	} else if ((typeof current === 'object') && current != null) {
-  		let keys = Object.keys(current);
-  		let result = false;
-  		
-  		if (keys.length != 0) {
-	  		for (let key of keys) {
-	  			result = result || CodeHelper.recursiveDeleteEmptyKeys(current, key);
-	  		}
-	  	} else {
-	  		delete object[currentKey];
-	  		result = true;
-	  	}
-  		
-  		return result;
+  	}
+  },
+  recursiveDeleteEmptyKeys: (object: any, previousKey: string): boolean => {
+  	if ((typeof object !== 'object') || object === null || object === undefined) return false;
+  	
+  	const keys = Object.keys(object[previousKey]);
+  	if (keys.length == 0) {
+  		delete object[previousKey];
+  		return true;
   	} else {
-  		return false;
+  		let result = false;
+  		for (let nextKey of keys) {
+  			result = result || CodeHelper.recursiveDeleteEmptyKeys(object[previousKey], nextKey);
+  		}
+  		return result;
   	}
   },
 };
