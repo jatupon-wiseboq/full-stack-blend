@@ -256,7 +256,7 @@ var AnimationHelper = {
     
     element.innerText = AnimationHelper.renderStylesheet();
   },
-  renderStylesheet: function(production: boolean=false) {
+  renderStylesheet: function(production: boolean=false, startOver: boolean=true) {
   	let animationGroups = [];
   	let activeAnimationGroup = [];
   	
@@ -346,10 +346,15 @@ var AnimationHelper = {
   	}
   	
   	let begin = HTMLHelper.getElementByClassName('internal-fsb-begin');
-  	HTMLHelper.setAttribute(begin, 'internal-fsb-animation', '');
-  	window.setTimeout(() => {
-  		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
-  	}, 0);
+  	
+  	if (startOver) {
+	  	HTMLHelper.setAttribute(begin, 'internal-fsb-animation', '');
+	  	window.setTimeout(() => {
+	  		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
+	  	}, 0);
+	 	} else {
+	 		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
+	 	}
   	
   	let source = animationGroups.join(' ');
     return source;
