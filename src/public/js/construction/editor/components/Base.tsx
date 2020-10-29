@@ -123,7 +123,8 @@ class Base extends React.Component {
 		                            let tokens = splited[1].split(',');
 		                            let index = parseInt(tokens[0]);
 		                            
-		                            value = value.split(' ')[index];
+		                            value = value.replace(/(,[ ]*)/g, ',').split(' ')[index]
+		                            value = value && value.replace(/(,[ ]*)/g, ', ') || value;
 		                        }
 		                        styleValues[nameOrRegularExpression] = value;
 		                    }

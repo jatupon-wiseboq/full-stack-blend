@@ -44,14 +44,16 @@ class SwatchPicker extends Base<Props, State> {
         this.forceUpdate();
         
         if (this.props.onColorPicked) {
-            this.props.onColorPicked(this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] || 'rgba(255, 255, 255, 1.0)');
+        		let color = this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] || 'rgba(255, 255, 255, 1.0)';
+            
+            this.props.onColorPicked(color);
         }
     }
     
     public setCurrentSwatchColor(color: string) {
         if (!this.state.extensionValues[this.props.watchingExtensionNames[0]]) return;
         if (this.state.index == -1) return;
-      
+      	
         this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] = color;
         
         perform('update', {
