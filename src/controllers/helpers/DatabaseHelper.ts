@@ -82,8 +82,8 @@ const DatabaseHelper = {
     const results = [];
     const hash = {};
     for (const item of data) {
-      if (!hash[`${item.target}:${item.group}:${item.name}`.toLowerCase()]) {
-        hash[`${item.target}:${item.group}:${item.name}`.toLowerCase()] = true;
+      if (!hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()]) {
+        hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()] = true;
         results.push(item);
       }
     }
