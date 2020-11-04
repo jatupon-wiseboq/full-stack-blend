@@ -2,8 +2,20 @@
   "animations": {
     "d0e675b7": {
       "474b3846": {},
+      "651393e4": {
+        "04d52929": "-fsb-animation-keyframe-time: 2.025",
+        "0c789e46": "-fsb-animation-keyframe-time: 0.6; background: rgba(0, 174, 255, 1)",
+        "3b195d8d": "-fsb-animation-keyframe-time: 0"
+      },
+      "6ac85eab": {},
+      "722b0448": {
+        "0b6ca772": "-fsb-animation-keyframe-time: 5; background-position: 0px -15px; -fsb-animation-easing-fn: ease",
+        "9cbea9b1": "-fsb-animation-keyframe-time: 0; -fsb-animation-easing-fn: ease",
+        "e16e0c10": "-fsb-animation-keyframe-time: 10; -fsb-animation-easing-fn: ease"
+      },
       "b9a33578": {},
-      "d055083e": {}
+      "d055083e": {},
+      "e90dbe28": {}
     }
   },
   "backEndControllerBlobSHADict": {
@@ -522,7 +534,7 @@
     "currentMode": "site",
     "editingAnimationID": "d0e675b7",
     "editingComponentID": null,
-    "editingKeyframeID": null,
+    "editingKeyframeID": "0c789e46",
     "editingPageID": "index",
     "editingPopupID": null,
     "externalLibraries": "react@16 bootstrap@4",
@@ -723,7 +735,7 @@
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
         "    internal-fsb-guid=\"0\"",
-        "    internal-fsb-animation=\"\">",
+        "    internal-fsb-animation=\"animation-group-d0e675b7\">",
         "<div",
         "    class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -1385,6 +1397,6 @@
   "version": 1.1,
   "viewBlobSHADict": {
     "b160aa0e": "d303b8792f57ed283a73ec0ceacc947282c22c19",
-    "index": "872babd5ca15d036dab0e408ba394719ee982065"
+    "index": "4d2b8d80a73ec97005c901cae6e6b132a78811e2"
   }
 }
