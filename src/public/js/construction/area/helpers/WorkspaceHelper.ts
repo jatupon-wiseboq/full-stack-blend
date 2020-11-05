@@ -64,6 +64,17 @@ var WorkspaceHelper = {
       delete clonedInternalProjectSettings[key];
     }
     
+    clonedInternalProjectSettings.currentMode = 'site';
+    clonedInternalProjectSettings.editingPageID = 'index';
+    clonedInternalProjectSettings.editingComponentID = null;
+    clonedInternalProjectSettings.editingPopupID = null;
+    
+    Object.keys(InternalSites).each((page) => {
+    	InternalSites[page].accessories = InternalSites[page].accessories || {};
+    	InternalSites[page].accessories.selectingElementGUID = null;
+    	InternalSites[page].accessories.currentCursorWalkPath = null;
+    });
+    
     return Object.assign(
     	{
 	    	version: version,
@@ -327,7 +338,7 @@ var WorkspaceHelper = {
   	InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
-      html: WorkspaceHelper.cleanupComponentHTMLData(html || '').split('\n')
+      html: merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(html || '')))).split('\n')
     };
     
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
