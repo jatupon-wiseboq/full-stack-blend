@@ -420,24 +420,32 @@ var HTMLHelper = {
       }
 
       for (let i = 0; i < attributes.length; i++) {
-      	switch (attributes[i].name) {
-      		case 'style':
-      			if (attributes[i].value) {
-      				attributes[i].value = attributes[i].value.split('; ').sort().join('; ');
-      			}
-      			break;
-      		case 'class':
-      			if (attributes[i].value) {
-      				attributes[i].value = attributes[i].value.split(' ').sort().join(' ');
-      			}
-      			break;
-      	}
+      	HTMLHelper.sortAttributeValues(attributes[i]);
       	
         elements[j].setAttribute(attributes[i].name, attributes[i].value);
       }
       
       elements[j].children && HTMLHelper.recursiveSortAttributes(elements[j].children);
     }
+	},
+	sortAttributeValues: (attribute: any) => {
+		switch (attribute.name) {
+  		case 'style':
+  			if (attribute.value) {
+  				attribute.value = attribute.value.split('; ').sort().join('; ');
+  			}
+  			break;
+  		case 'class':
+  			if (attribute.value) {
+  				attribute.value = attribute.value.split(' ').sort().join(' ');
+  			}
+  			break;
+  		case 'internal-fsb-data-controls':
+  			if (attribute.value) {
+  				attribute.value = attribute.value.trim().split(' ').sort().join(' ');
+  			}
+  			break;
+  	}
 	}
 };
 
