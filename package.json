@@ -20,7 +20,7 @@
         "watch-ts": "babel src --out-dir dist --extensions '.ts,.tsx' --watch",
         "build-bundle": "browserify dist/public/js/Site.js -o dist/public/js/Site.bundle.js && browserify dist/public/js/Embed.js -o dist/public/js/Embed.bundle.js",
         "watch-bundle": "concurrently -k -p \"[{name}]\" -n \"Sass,TypeScript,Node\" -c \"yellow.bold,cyan.bold,green.bold\" \"watchify dist/public/js/Site.js -o dist/public/js/Site.bundle.js\" \"watchify dist/public/js/Embed.js -o dist/public/js/Embed.bundle.js\"",
-        "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
+        "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix-dry-run",
         "copy-static-assets": "ts-node copyStaticAssets.ts",
         "debug": "npm run build && npm run watch-debug",
         "serve-debug": "nodemon --inspect dist/server.js",
