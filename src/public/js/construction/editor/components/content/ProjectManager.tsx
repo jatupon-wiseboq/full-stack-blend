@@ -238,13 +238,13 @@ class ProjectManager extends Base<Props, State> {
           let continueFn = ((previousProjectData) => {
           	previousProjectData = CodeHelper.clone(previousProjectData);
           	
-        		let constructionEditorData = CodeHelper.clone(this.generateWorkspaceData() || {});
+        		let constructionPageData = CodeHelper.clone(constructionWindow.generateWorkspaceData() || {});
         		let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages());
         		let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages());
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);
-            Object.assign(nextProjectData, constructionEditorData);
+            Object.assign(nextProjectData, constructionPageData);
             
             let originalProjectData = JSON.stringify(nextProjectData);
             
@@ -595,11 +595,7 @@ html
 	                        });
 	                      };
 	                      
-	                      if (originalProjectData !== JSON.stringify(nextProjectData)) {
-	                      	repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), null, createTree);
-	                      } else {
-	                      	alert('Your changes have been saved successfully.');
-	                      }
+	                      repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), null, createTree);
 	                    });
 	                  });
                   });

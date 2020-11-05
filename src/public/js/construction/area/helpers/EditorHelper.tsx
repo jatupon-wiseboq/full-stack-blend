@@ -312,10 +312,7 @@ var EditorHelper = {
         }
     }
     
-    const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-stylesheet-element', 'custom');
-    for (let element of elements) {
-    		element.parentNode.removeChild(element);
-    }
+    let elements = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-stylesheet-element', 'custom')];
     
 		let externalLibraries: string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
     for (let externalLibrary of externalLibraries) {
@@ -323,13 +320,23 @@ var EditorHelper = {
 			  
 	    	let splited = externalLibrary.split('#');
 	    	if (splited[0].toLowerCase().indexOf('.css') != -1) {
-	    			let element = document.createElement('link');
-            element.setAttribute('rel', 'stylesheet');
-            element.setAttribute('type', 'text/css');
-            element.setAttribute('href', splited[0]);
-            element.setAttribute('internal-stylesheet-element', 'custom');
-            document.head.appendChild(element);
+	    			let filters = elements.filter(element => element.getAttribute('rel') === 'stylesheet' && element.getAttribute('href') === splited[0]);
+	    			
+	    			if (filters.length == 0) {
+			    			let element = document.createElement('link');
+		            element.setAttribute('rel', 'stylesheet');
+		            element.setAttribute('type', 'text/css');
+		            element.setAttribute('href', splited[0]);
+		            element.setAttribute('internal-stylesheet-element', 'custom');
+		            document.head.appendChild(element);
+	          } else {
+	          		elements = elements.filter(element => filters.indexOf(element) == -1);
+	          }
 		    }
+    }
+    
+    for (let element of elements) {
+    		element.parentNode.removeChild(element);
     }
   },
   

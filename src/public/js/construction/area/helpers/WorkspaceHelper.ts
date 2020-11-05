@@ -624,6 +624,11 @@ var WorkspaceHelper = {
  	clearFullStackCodeForAllPages: (data: any) => {
  		cacheOfGeneratedFrontEndCodeForAllPages = {};
  		cacheOfGeneratedBackEndCodeForAllPages = {};
+    
+    data.globalSettings.currentMode = InternalProjectSettings.currentMode;
+    data.globalSettings.editingPageID = InternalProjectSettings.editingPageID;
+    data.globalSettings.editingComponentID = InternalProjectSettings.editingComponentID;
+    data.globalSettings.editingPopupID = InternalProjectSettings.editingPopupID;
  		
  		WorkspaceHelper.initializeWorkspaceData(data);
  	},
