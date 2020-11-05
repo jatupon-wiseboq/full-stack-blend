@@ -4,8 +4,6 @@ import {FONTS} from '../Fonts.js';
 let setupFont = {};
 let allFontsCache = null;
 let fontInfoCache = {};
-let italicsCache = {};
-let normalsCache = {};
 
 var FontHelper = {
   generateFontData: () => {
@@ -15,6 +13,7 @@ var FontHelper = {
     if (data == null) return;
     
     setupFont = {};
+    fontInfoCache = {};
     
     let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-font')];
     for (let element of elements) {
@@ -55,7 +54,6 @@ var FontHelper = {
   },
   getAllItalics: function(info: any) {
     if (info == null) return [];
-    if (italicsCache[info.family] !== undefined) return italicsCache[info.family];
     
     let variants = [];
     for (let variant of info.variants) {
@@ -66,12 +64,10 @@ var FontHelper = {
       }
     }
     
-    italicsCache[info.family] = variants;
     return variants;
   },
   getAllNormals: function(info: any) {
     if (info == null) return [];
-    if (normalsCache[info.family] !== undefined) return normalsCache[info.family];
     
     let variants = [];
     for (let variant of info.variants) {
@@ -82,7 +78,6 @@ var FontHelper = {
       }
     }
     
-    normalsCache[info.family] = variants;
     return variants;
   },
   load: function(name: string) {
