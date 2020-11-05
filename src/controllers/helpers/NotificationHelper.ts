@@ -103,6 +103,11 @@ socket.sockets.on("connection", (socket) => {
   	setSocket(null);
   	sessionLookupTable[sessionId] = null;
   });
+  
+  socket.on("reconnect", (socket) => {
+  	setSocket(socket);
+  	sessionLookupTable[sessionId] = socket;
+  });
 });
 
 const NotificationHelper = {

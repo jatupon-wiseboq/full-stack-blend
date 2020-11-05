@@ -82,28 +82,20 @@ const DatabaseHelper = {
     const results = [];
     const hash = {};
     for (const item of data) {
-      if (!hash[`${item.target}:${item.group}:${item.name}`.toLowerCase()]) {
-        hash[`${item.target}:${item.group}:${item.name}`.toLowerCase()] = true;
+      if (!hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()]) {
+        hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()] = true;
         results.push(item);
       }
     }
     return results;
   },
-  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema): boolean => {
+  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null): boolean => {
   	if (data.length == 0) return false;
   	
   	data = CodeHelper.clone(data);
     data = [...DatabaseHelper.distinct(data)];
     
-    for (const input of data) {
-    	if (input.premise && input.premise.indexOf(schema.group) == 0) {
-  			const splited = input.premise.split(".");
-  			splited.shift();
-  			input.premise = splited.join(".") || null;
-  		}
-  	}
-    
-    let inputs = data.filter(item => item.target == schema.source && item.group == schema.group && item.premise == null);
+    let inputs = data.filter(item => item.target == schema.source && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
     
     switch (action) {
@@ -135,7 +127,8 @@ const DatabaseHelper = {
         }
         break;
       case ActionType.Retrieve:
-        return (inputs.length != 0);
+        if (inputs.length == 0) return false;
+        break;
       default:
         return false;
     }
@@ -146,57 +139,74 @@ const DatabaseHelper = {
     	existingKeys[input.name] = true;
     }
     
-    if (Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
+    if (action != ActionType.Retrieve && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
       return false;
     } else {
-      data = data.filter(item => item.group != schema.group || item.premise != null);
+    	data = data.filter(item => item.group != schema.group || item.premise != premise);
+    	if (data.length == 0) return true;
+    	
+      let next = data.filter(item => item.premise == premise);
+      let keys = Array.from(new Set(next.map(input => input.group)));
       
-      if (data.length == 0) {
-        return true;
-      } else {
-      	const schemata = [];
-      	
-        for (const key in schema.relations) {
-          if (schema.relations.hasOwnProperty(key)) {
-            const length = data.length;
-            for (let i=0; i<length; i++) {
-            	const input = data[i];
-            	
-              if (input.group == schema.relations[key].targetGroup) {
-                data.push({
-                  target: ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup].source,
-                  group: schema.relations[key].targetGroup,
-                  name: schema.relations[key].targetEntity,
-                  value: null,
-                  guid: null,
-  								premise: null,
-                  validation: null
-                });
-                schemata.push(ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup]);
-              }
+      for (let key of keys) {
+      	const current = next.filter(item => item.group == key);
+      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise)) {
+        	return false;
+        }
+      }
+      
+    	const schemata = [];
+    	const nextPremise = (premise == null) ? schema.group : `${premise}.${schema.group}`;
+      
+      next = data.filter(item => item.premise == nextPremise);
+      
+    	if (next.length == 0) return true;
+    	
+      for (const key in schema.relations) {
+        if (schema.relations.hasOwnProperty(key)) {
+          const length = next.length;
+          let found = false;
+          
+          for (let i=0; i<length; i++) {
+          	const input = next[i];
+          	
+            if (input.group == schema.relations[key].targetGroup) {
+              next.push({
+                target: ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup].source,
+                group: schema.relations[key].targetGroup,
+                name: schema.relations[key].targetEntity,
+                value: null,
+                guid: null,
+								premise: nextPremise,
+                validation: null
+              });
+              
+              found = true;
             }
           }
+          
+          if (found) schemata.push(ProjectConfigurationHelper.getDataSchema().tables[schema.relations[key].targetGroup]);
         }
-        
-        data = DatabaseHelper.distinct(data);
-        
-        for (const schema of schemata) {
-         	if (DatabaseHelper.satisfy(data, action, schema)) {
-          	return true;
-          }
-        }
-        
-        return false;
       }
+      
+      next = DatabaseHelper.distinct(next);
+      
+      for (const nextSchema of schemata) {
+       	if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise)) {
+        	return false;
+        }
+      }
+      
+      return true;
     }
   },
-  getRows: (data: Input[], action: ActionType, schema: DataTableSchema): HierarchicalDataRow[] => {
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null): HierarchicalDataRow[] => {
   	const results: HierarchicalDataRow[] = [];
 	  let found: boolean = false;
 	  
     for (const input of data) {
     	if (input.group != schema.group) continue;
-    	if (input.premise) continue;
+    	if (input.premise != premise) continue;
     	
     	found = true;
     	
@@ -225,7 +235,7 @@ const DatabaseHelper = {
     }
     
     if (!found) {
-    	throw new Error(`There was an error preparing data for manipulation (${data.map(item => (item.premise ? item.premise + "." : "") + item.group + "." + item.name).join(", ")} couldn\'t be children of '${schema.group}').`);
+    	throw new Error(`There was an error preparing data for manipulation (${data.map(item => (item.premise ? item.premise + "." : "") + item.group + "." + item.name).join(", ")} couldn\'t be children of '${premise}').`);
     }
     
     for (const row of results) {
@@ -405,54 +415,38 @@ const DatabaseHelper = {
 	  
 	  return results;
 	},
-	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, current: HierarchicalDataTable=null) => {
+	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, current: HierarchicalDataTable=null, premise: string=null) => {
 		const tables = [];
 		
 		if (baseSchema == null) {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
-		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key])) {
+		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		        
 		        const current = {
 				      source: baseSchema.source,
 				      group: baseSchema.group,
-				      rows: DatabaseHelper.getRows(data, action, baseSchema)
+				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise)
 				    };
 				    tables.push(current);
-				    
-				    for (const input of data) {
-					    if (input.premise && input.premise.indexOf(baseSchema.group) == 0) {
-				  			const splited = input.premise.split(".");
-				  			splited.shift();
-				  			input.premise = splited.join(".") || null;
-				  		}
-				  	}
 	    
-				  	const items = data.filter(item => item.group == baseSchema.group && item.premise == null);
+				  	const items = data.filter(item => item.group == baseSchema.group && item.premise == premise);
 				    for (const item of items) {
 				   		data.splice(data.indexOf(item), 1);
 				    }
 		      }
 		    }
 	    }
-	  } else if (DatabaseHelper.satisfy(data, action, baseSchema)) {
+	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise)) {
 	  	const current = {
 	      source: baseSchema.source,
 	      group: baseSchema.group,
-	      rows: DatabaseHelper.getRows(data, action, baseSchema)
+	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise)
 	    };
 	    tables.push(current);
 	    
-	    for (const input of data) {
-		    if (input.premise && input.premise.indexOf(baseSchema.group) == 0) {
-	  			const splited = input.premise.split(".");
-	  			splited.shift();
-	  			input.premise = splited.join(".") || null;
-	  		}
-	  	}
-	    
-	  	const items = data.filter(item => item.group == baseSchema.group && item.premise == null);
+	  	const items = data.filter(item => item.group == baseSchema.group && item.premise == premise);
 	    for (const item of items) {
 	   		data.splice(data.indexOf(item), 1);
 	    }
@@ -462,50 +456,55 @@ const DatabaseHelper = {
 			results[table.group] = table;
 			baseSchema = ProjectConfigurationHelper.getDataSchema().tables[table.group];
 			
-			for (const key in baseSchema.relations) {
-	    	if (baseSchema.relations.hasOwnProperty(key)) {
-	      	const _data = [...data];
-	      	const _appended = [];
-	      	const _hash = {};
-	      	const _currentGroup = baseSchema.relations[key].targetGroup;
-	      	const _currentName = baseSchema.relations[key].targetEntity;
-	      	const _schema = ProjectConfigurationHelper.getDataSchema().tables[_currentGroup];
-	      	
-	      	for (const input of data) {
-	      		if (input.premise) continue;
-            if (input.group == _currentGroup) {
-            	const splited = input.guid.split("[");
-            	let index = -1;
-            	if (splited.length > 1) {
-            		index = parseInt(splited[1].split("]")[0]);
-            	}
-            	
-            	if (_hash[index]) continue;
-            	_hash[index] = true;
-            
-            	const forwarding = {
-                target: _schema.source,
-                group: _currentGroup,
-                name: _currentName,
-                value: "123",
-                guid: (index == -1) ? "" : "[" + index + "]",
-								premise: null,
-                validation: null
-              };
-            
-              _data.push(forwarding);
-              _appended.push(forwarding);
-            }
+			const keys = Object.keys(baseSchema.relations);
+			keys.sort((a, b) => {
+				return (data.some(input => input.premise == premise && input.group == a)) ? -1 : 1;
+			});
+			
+			const nextPremise = (premise == null) ? baseSchema.group : `${premise}.${baseSchema.group}`;
+			
+			for (const key of keys) {
+      	const _data = [...data];
+      	const _appended = [];
+      	const _hash = {};
+      	const _currentGroup = baseSchema.relations[key].targetGroup;
+      	const _currentName = baseSchema.relations[key].targetEntity;
+      	const _schema = ProjectConfigurationHelper.getDataSchema().tables[_currentGroup];
+      	
+      	for (const input of data) {
+      		if (input.premise != nextPremise) continue;
+          if (input.group == _currentGroup) {
+          	const splited = input.guid.split("[");
+          	let index = -1;
+          	if (splited.length > 1) {
+          		index = parseInt(splited[1].split("]")[0]);
+          	}
+          	
+          	if (_hash[index]) continue;
+          	_hash[index] = true;
+          
+          	const forwarding = {
+              target: _schema.source,
+              group: _currentGroup,
+              name: _currentName,
+              value: "123",
+              guid: (index == -1) ? "" : "[" + index + "]",
+							premise: nextPremise,
+              validation: null
+            };
+          
+            _data.push(forwarding);
+            _appended.push(forwarding);
           }
-  	      
-  	      if (DatabaseHelper.satisfy(_data, action, _schema)) {
-  	      	for (const item of _appended) {
-  	      		data.push(item);
-  	      	}
-  	      	
-  	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table);
-  	      }
-  	    }
+        }
+	      
+	      if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise)) {
+	      	for (const item of _appended) {
+	      		data.push(item);
+	      	}
+	      	
+	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table, nextPremise);
+	      }
 	    }
 		}
 	},
