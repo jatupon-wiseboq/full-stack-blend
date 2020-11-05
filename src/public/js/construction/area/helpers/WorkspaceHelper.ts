@@ -21,7 +21,7 @@ declare let html_beautify;
 const merging_beautify = (beautified_content: string) => {
 	if (!beautified_content) return beautified_content;
 	
-	return beautified_content.replace(/\n[ \t]+</g, '\n<').replace(/\/></g, '\/>\n<').replace(/"></g, '">\n<').replace(/ ([a-zA-Z0-9\_\-]+=")/g, '\n    $1');
+	return beautified_content.replace(/\n[ \t]+</g, '\n<').replace(/></g, '>\n<').replace(/ ([a-zA-Z0-9\_\-]+=")/g, '\n    $1');
 };
 
 let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
