@@ -129,16 +129,17 @@ var CodeHelper = {
   	}
   },
   deleteEmptyKeys: (object: any) => {
-  	let result = false;
-  	while (result) {
+  	let result: boolean;
+  	do {
+  		result = false;
   		const keys = Object.keys(object);
   		for (let key of keys) {
   			result = result || CodeHelper.recursiveDeleteEmptyKeys(object, key);
   		}
-  	}
+  	} while (result);
   },
   recursiveDeleteEmptyKeys: (object: any, previousKey: string): boolean => {
-  	if ((typeof object !== 'object') || object === null || object === undefined) return false;
+  	if ((typeof object[previousKey] !== 'object') || object[previousKey] === null || object[previousKey] === undefined) return false;
   	
   	const keys = Object.keys(object[previousKey]);
   	if (keys.length == 0) {
