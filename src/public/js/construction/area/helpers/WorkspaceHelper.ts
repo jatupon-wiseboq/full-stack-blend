@@ -51,7 +51,7 @@ let InternalAnimations = {};
 let backEndControllerBlobSHADict = {};
 let frontEndComponentsBlobSHADict = {};
 let viewBlobSHADict = {};
-let version = 1.1;
+let version = 1.2;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
@@ -117,25 +117,57 @@ var WorkspaceHelper = {
     InternalProjectSettings.currentMode = 'site';
     
     if (data) {
-    	if (!data.version || data.version == 1) {
-	    	for (let key in InternalSites) {
-	    		if (InternalSites.hasOwnProperty(key)) {
-	    			InternalSites[key].body = html_beautify(InternalSites[key].body || '').split('\n');
-	    		}
-	    	}
-	    	for (let key in InternalComponents) {
-	    		if (InternalComponents.hasOwnProperty(key)) {
-	    			InternalComponents[key].html = html_beautify(InternalComponents[key].html || '').split('\n');
-	    		}
-	    	}
-	    	for (let key in InternalPopups) {
-	    		if (InternalPopups.hasOwnProperty(key)) {
-	    			InternalPopups[key].html = html_beautify(InternalPopups[key].html || '').split('\n');
-	    		}
-	    	}
-	    	InternalDataFlows.default = html_beautify(InternalDataFlows.default || '').split('\n');
-	    	InternalServices.default = html_beautify(InternalServices.default || '').split('\n');
-	   	}
+      if (!data.version || data.version == 1) {
+        for (let key in InternalSites) {
+          if (InternalSites.hasOwnProperty(key)) {
+            InternalSites[key].body = html_beautify(InternalSites[key].body || '').split('\n');
+          }
+        }
+        for (let key in InternalComponents) {
+          if (InternalComponents.hasOwnProperty(key)) {
+            InternalComponents[key].html = html_beautify(InternalComponents[key].html || '').split('\n');
+          }
+        }
+        for (let key in InternalPopups) {
+          if (InternalPopups.hasOwnProperty(key)) {
+            InternalPopups[key].html = html_beautify(InternalPopups[key].html || '').split('\n');
+          }
+        }
+        InternalDataFlows.default = html_beautify(InternalDataFlows.default || '').split('\n');
+        InternalServices.default = html_beautify(InternalServices.default || '').split('\n');
+      }
+      if (!data.version || data.version <= 1.1) {
+        for (let key in InternalSites) {
+          if (InternalSites.hasOwnProperty(key)) {
+            for (let extension of BACKEND_DATA_EXTENSIONS) {
+              if (InternalSites[key].extensions && InternalSites[key].extensions.hasOwnProperty(extension)) {
+                InternalSites[key].extensions[extension] = InternalSites[key].extensions[extension] &&
+                	InternalSites[key].extensions[extension].split('\n') || null;
+              }
+            }
+          }
+        }
+        for (let key in InternalComponents) {
+          if (InternalComponents.hasOwnProperty(key)) {
+            for (let extension of BACKEND_DATA_EXTENSIONS) {
+              if (InternalComponents[key].extensions && InternalComponents[key].extensions.hasOwnProperty(extension)) {
+                InternalComponents[key].extensions[extension] = InternalComponents[key].extensions[extension] &&
+                	InternalComponents[key].extensions[extension].split('\n') || null;
+              }
+            }
+          }
+        }
+        for (let key in InternalPopups) {
+          if (InternalPopups.hasOwnProperty(key)) {
+            for (let extension of BACKEND_DATA_EXTENSIONS) {
+              if (InternalPopups[key].extensions && InternalPopups[key].extensions.hasOwnProperty(extension)) {
+                InternalPopups[key].extensions[extension] = InternalPopups[key].extensions[extension] &&
+                	InternalPopups[key].extensions[extension].split('\n') || null;
+              }
+            }
+          }
+        }
+      }
     }
     
     WorkspaceHelper.loadWorkspaceData();
@@ -180,7 +212,11 @@ var WorkspaceHelper = {
       //
       if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
-      Object.assign(InternalProjectSettings, page.extensions);
+      for (let key of BACKEND_DATA_EXTENSIONS) {
+      	if (page.extensions.hasOwnProperty(key)) {
+        	InternalProjectSettings[key] = page.extensions[key] && page.extensions[key].join('\n') || null;
+        }
+      }
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
@@ -295,7 +331,9 @@ var WorkspaceHelper = {
       
       page.extensions = {};
       for (let key of BACKEND_DATA_EXTENSIONS) {
-        page.extensions[key] = InternalProjectSettings[key];
+      	if (InternalProjectSettings.hasOwnProperty(key)) {
+        	page.extensions[key] = InternalProjectSettings[key] && InternalProjectSettings[key].split('\n') || null;
+        }
       }
       
       page.notations = SchemaHelper.generateTreeOfDotNotations();
