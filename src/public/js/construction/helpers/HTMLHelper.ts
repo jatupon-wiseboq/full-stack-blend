@@ -404,7 +404,41 @@ var HTMLHelper = {
   },
   hasVendorPrefix: (prefix: string, name: string) => {
     return vendor_prefixes_hash[prefix + name] === true;
-  }
+  },
+  sortAttributes: (container: HTMLElement=document) => {
+  	HTMLHelper.recursiveSortAttributes([document.body]);
+  },
+	recursiveSortAttributes: (elements: any) => {
+    for (let j = 0; j < elements.length; j++) {
+    	if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
+    	
+      const attributes = HTMLHelper.getAttributes(elements[j], true);
+      const flag = {};
+			
+      for (let i = 0; i < attributes.length; i++) {
+        elements[j].removeAttribute(attributes[i].name);
+      }
+
+      for (let i = 0; i < attributes.length; i++) {
+      	switch (attributes[i].name) {
+      		case 'style':
+      			if (attributes[i].value) {
+      				attributes[i].value = attributes[i].value.split('; ').sort().join('; ');
+      			}
+      			break;
+      		case 'class':
+      			if (attributes[i].value) {
+      				attributes[i].value = attributes[i].value.split(' ').sort().join(' ');
+      			}
+      			break;
+      	}
+      	
+        elements[j].setAttribute(attributes[i].name, attributes[i].value);
+      }
+      
+      elements[j].children && HTMLHelper.recursiveSortAttributes(elements[j].children);
+    }
+	}
 };
 
 export {HTMLHelper};

@@ -314,6 +314,8 @@ var WorkspaceHelper = {
     SchemaHelper.invalidate();
   },
   saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
+  	HTMLHelper.sortAttributes();
+  	
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
       
