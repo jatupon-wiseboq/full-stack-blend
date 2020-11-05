@@ -1,9 +1,34 @@
 {
+  "animations": {
+    "d0e675b7": {
+      "474b3846": {},
+      "651393e4": {
+        "04d52929": "-fsb-animation-keyframe-time: 2.025",
+        "0c789e46": "-fsb-animation-keyframe-time: 0.6; background: rgba(0, 174, 255, 1)",
+        "3b195d8d": "-fsb-animation-keyframe-time: 0"
+      },
+      "6ac85eab": {},
+      "722b0448": {
+        "0b6ca772": "-fsb-animation-keyframe-time: 5; background-position: 0px -15px; -fsb-animation-easing-fn: ease",
+        "9cbea9b1": "-fsb-animation-keyframe-time: 0; -fsb-animation-easing-fn: ease",
+        "e16e0c10": "-fsb-animation-keyframe-time: 10; -fsb-animation-easing-fn: ease"
+      },
+      "b9a33578": {},
+      "d055083e": {},
+      "e90dbe28": {}
+    }
+  },
   "backEndControllerBlobSHADict": {
     "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9",
-    "index": "969f1546eecd97a427931690073eb1ebf4c29cec"
+    "index": "56fc9868965e93a3e4094d612dd13015186c8092"
   },
   "components": {},
+  "currentPersistingFiles": [
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "src/controllers/components/index.ts",
+    "views/home/developer/_b160aa0e.pug",
+    "views/home/index.pug"
+  ],
   "flows": {
     "default": [
       "<body class=\"internal-fsb-guide-on internal-fsb-disabled-guide\">",
@@ -507,7 +532,9 @@
     ],
     "components": [],
     "currentMode": "site",
+    "editingAnimationID": "d0e675b7",
     "editingComponentID": null,
+    "editingKeyframeID": "0c789e46",
     "editingPageID": "index",
     "editingPopupID": null,
     "externalLibraries": "react@16 bootstrap@4",
@@ -707,7 +734,8 @@
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-guid=\"0\">",
+        "    internal-fsb-guid=\"0\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7\">",
         "<div",
         "    class=\"row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -1196,6 +1224,16 @@
         "    class=\"\"",
         "    src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png\"></div>",
         "<div",
+        "    class=\"internal-fsb-element col-12 col-md-10 offset-0 offset-md-1\"",
+        "    internal-fsb-guid=\"b9a33578\"",
+        "    internal-fsb-name=\"Image 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    style=\"-fsb-empty\"",
+        "    internal-fsb-class=\"Image\"><img",
+        "    style=\"display: block; width: 100%; -fsb-for-children: true; margin-top: 30px; margin-bottom: 45px\"",
+        "    class=\"\"",
+        "    src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/timeline.png\"></div>",
+        "<div",
         "    class=\"internal-fsb-element col-12 offset-0 col-lg-10 offset-lg-1\"",
         "    internal-fsb-guid=\"be5edae1\"",
         "    internal-fsb-name=\"FlowLayout 1\"",
@@ -1359,6 +1397,6 @@
   "version": 1.1,
   "viewBlobSHADict": {
     "b160aa0e": "d303b8792f57ed283a73ec0ceacc947282c22c19",
-    "index": "c7d26e7bf6866495f77292ce74c7c042c36a0749"
+    "index": "4d2b8d80a73ec97005c901cae6e6b132a78811e2"
   }
 }
