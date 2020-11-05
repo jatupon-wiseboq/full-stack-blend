@@ -621,9 +621,11 @@ var WorkspaceHelper = {
     
     return cacheOfGeneratedBackEndCodeForAllPages;
  	},
- 	clearFullStackCodeForAllPages: () => {
+ 	clearFullStackCodeForAllPages: (data: any) => {
  		cacheOfGeneratedFrontEndCodeForAllPages = {};
  		cacheOfGeneratedBackEndCodeForAllPages = {};
+ 		
+ 		WorkspaceHelper.initializeWorkspaceData(data);
  	},
   getCommonExpandingFeatureScripts: () => {
   	let container = document.createElement('div');

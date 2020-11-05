@@ -96,18 +96,41 @@ class ProjectManager extends Base<Props, State> {
    	  
    	  let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
    	  
-   	  repo.createBlob = (content, cb) => {
+   	  repo.createBlob = (content, previousSHA, cb) => {
    	  	if (content) {
         	content = TextHelper.removeMultipleBlankLines(content);
         }
-   	  	let utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function(match, p1) {
-		    	return String.fromCharCode('0x' + p1);
-		    });
-				let postBody = {
-					content: btoa(utf8Bytes),
-					encoding: 'base64'
-				};
-				return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, cb);
+		    
+		    const hashCode = (value) => {
+			    let hash = 0, i, chr;
+			    for (i = 0; i < value.length; i++) {
+			      chr   = value.charCodeAt(i);
+			      hash  = ((hash << 5) - hash) + chr;
+			      hash |= 0; // Convert to 32bit integer
+			    }
+			    return hash;
+			  }
+		    const current = hashCode(content).toString();
+		    
+		    if (previousSHA && previousSHA.split('#')[1] === current) {
+		    	cb(false, {sha: previousSHA}, null);
+		    } else {
+		    	let utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+			    	return String.fromCharCode('0x' + p1);
+			    });
+			    
+					let postBody = {
+						content: btoa(utf8Bytes),
+						encoding: 'base64'
+					};
+					
+					return repo._request('POST', `/repos/${repo.__fullname}/git/blobs`, postBody, (error, result, request) => {
+						if (!error && result.sha) {
+							result.sha = result.sha + '#' + current;
+						}
+						cb(error, result, request);
+					});
+		    }
 			};
    	  repo.deleteFile = (path, cb) => {
    	  	repo._request('GET', `/repos/${repo.__fullname}/contents/${path}?ref=${'heads/' + GITHUB_FEATURE_BRANCH}`, null, (error, result, request) => {
@@ -213,15 +236,17 @@ class ProjectManager extends Base<Props, State> {
           if (DEBUG_GITHUB_UPLOADER) console.log('previousProjectDataSHA', previousProjectDataSHA);
           
           let continueFn = ((previousProjectData) => {
-        		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
-        		let constructionEditorData = this.generateWorkspaceData() || {};
-        		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
-        		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
+          	previousProjectData = CodeHelper.clone(previousProjectData);
+          	
+        		let constructionEditorData = CodeHelper.clone(this.generateWorkspaceData() || {});
+        		let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages());
+        		let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages());
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);
-            Object.assign(nextProjectData, constructionAreaHTMLData);
             Object.assign(nextProjectData, constructionEditorData);
+            
+            let originalProjectData = JSON.stringify(nextProjectData);
             
             let externalStylesheets = [];
         		let externalScripts = [];
@@ -403,11 +428,14 @@ html
             nextProjectData.globalSettings.components = nextProjectData.globalSettings.components.filter(component => component.state != 'delete');
             nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
             
-            this.createRouteBlob(repo, nextProjectData.globalSettings.pages, (routeBlobSHA: string) => {
-              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, (controllerBlobSHA: string) => {
-                this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, (viewBlobSHADict: any) => {
-                	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, (backEndControllerBlobSHADict: any) => {
-	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict: any) => {
+            this.createRouteBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.routeBlobSHA, (routeBlobSHA: string) => {
+              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
+                this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
+                	this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
+	                  this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict: any) => {
+	                    
+	                    nextProjectData.routeBlobSHA = routeBlobSHA;
+	                    nextProjectData.controllerBlobSHA = controllerBlobSHA;
 	                    
 	                    nextProjectData.backEndControllerBlobSHADict = nextProjectData.backEndControllerBlobSHADict || {};
 	                    Object.assign(nextProjectData.backEndControllerBlobSHADict, backEndControllerBlobSHADict);
@@ -434,7 +462,10 @@ html
 	                    	}
 	                    }
 	                    
-	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, (siteBundleBlobSHA: string) => {
+	                    this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, nextProjectData.siteBundleBlobSHA, (siteBundleBlobSHA: string) => {
+	                    
+	                    	nextProjectData.siteBundleBlobSHA = siteBundleBlobSHA;
+	                    
 	                    	let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
 	                    	let nextPersistingFiles = [];
                         
@@ -457,7 +488,7 @@ html
                         let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
                         nextProjectData.currentPersistingFiles = nextPersistingFiles;
 	                    	
-	                      repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), (error, result, request) => {
+	                      const createTree = (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
 	                          return;
@@ -470,22 +501,22 @@ html
 	                          path: 'project.stackblend',
 	                          mode: "100644",
 	                          type: "blob",
-	                          sha: nextProjectDataSHA
+	                          sha: nextProjectDataSHA.split('#')[0]
 	                        },{
 	                          path: 'src/route.ts',
 	                          mode: "100644",
 	                          type: "blob",
-	                          sha: routeBlobSHA
+	                          sha: routeBlobSHA.split('#')[0]
 	                        },{
 	                          path: 'src/controllers/Home.ts',
 	                          mode: "100644",
 	                          type: "blob",
-	                          sha: controllerBlobSHA
+	                          sha: controllerBlobSHA.split('#')[0]
 	                        },{
 	                          path: `src/public/js/Site.tsx`,
 	                          mode: "100644",
 	                          type: "blob",
-	                          sha: siteBundleBlobSHA
+	                          sha: siteBundleBlobSHA.split('#')[0]
 	                        }];
 	                        
 	                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
@@ -494,7 +525,7 @@ html
 		                            path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
 		                            mode: "100644",
 		                            type: "blob",
-		                            sha: nextProjectData.backEndControllerBlobSHADict[key]
+		                            sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
 		                          });
 		                        }
 	                        }
@@ -504,7 +535,7 @@ html
 		                            path: `src/public/js/components/${key}.tsx`,
 		                            mode: "100644",
 		                            type: "blob",
-		                            sha: nextProjectData.frontEndComponentsBlobSHADict[key]
+		                            sha: nextProjectData.frontEndComponentsBlobSHADict[key].split('#')[0]
 		                          });
 		                        }
 	                        }
@@ -514,7 +545,7 @@ html
 	                              path: `views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`,
 	                              mode: "100644",
 	                              type: "blob",
-	                              sha: nextProjectData.viewBlobSHADict[key]
+	                              sha: nextProjectData.viewBlobSHADict[key].split('#')[0]
 	                            });
 	                          }
 	                        }
@@ -545,7 +576,7 @@ html
   	                                return;
   	                              }
             
-            											constructionWindow.clearFullStackCodeForAllPages();
+            											constructionWindow.clearFullStackCodeForAllPages(nextProjectData);
             											
             											this.deleteFiles(repo, deletingPersistingFiles, () => {
             												RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
@@ -562,7 +593,13 @@ html
   	                          });
   	                        }
 	                        });
-	                      });
+	                      };
+	                      
+	                      if (originalProjectData !== JSON.stringify(nextProjectData)) {
+	                      	repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), null, createTree);
+	                      } else {
+	                      	alert('Your changes have been saved successfully.');
+	                      }
 	                    });
 	                  });
                   });
@@ -671,7 +708,7 @@ html
         });
       });
    	}
-   	createRouteBlob(repo: any, routes: string[], cb: any) {
+   	createRouteBlob(repo: any, routes: string[], previousSHA: string, cb: any) {
    	  repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -686,7 +723,7 @@ ${routes.map(route => ` app.get("${route.path}", homeController.${this.getRepres
 export default route;
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -697,7 +734,7 @@ export default route;
         cb(nextRouteDataSHA);
       });
    	}
-   	createControllerBlob(repo: any, routes: string[], cb: any) {
+   	createControllerBlob(repo: any, routes: string[], previousSHA: string, cb: any) {
    	  repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -709,7 +746,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
@@ -720,7 +757,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
         cb(nextControllerDataSHA);
       });
    	}
-   	createViewBlob(repo: any, inputDict: any, pages: any, cb: any) {
+   	createViewBlob(repo: any, inputDict: any, pages: any, previousSHADict: any, cb: any) {
    	  let keys = Object.keys(inputDict);
    	  let nextViewDataSHADict = {};
    	  
@@ -733,7 +770,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
 
 //- <--- Auto[Generating:V1]
-//- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+//- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[keys[index]] || null, (error, result, request) => {
           if (error) {
             alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
             return;
@@ -750,7 +787,7 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
    	  }
    	  process(0);
  	  }
-   	createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], cb: any) {
+   	createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
    	  let nextFrontEndComponentsDataSHADict = {};
    	  let mainprocess = (mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
@@ -770,7 +807,7 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
 ${tokens[1]}
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[tokens[0]] || null, (error, result, request) => {
               if (error) {
                 alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                 return;
@@ -792,7 +829,7 @@ ${tokens[1]}
       }
       mainprocess(0);
    	}
-   	createBackEndControllerBlob(repo: any, arrayOfContent: string[], cb: any) {
+   	createBackEndControllerBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
    	  let nextBackEndControllersDataSHADict = {};
    	  let mainprocess = (mainIndex: number) => {
      	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
@@ -812,7 +849,7 @@ ${tokens[1]}
 ${tokens[1]}
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[tokens[0]] || null, (error, result, request) => {
               if (error) {
                 alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                 return;
@@ -834,7 +871,7 @@ ${tokens[1]}
       }
       mainprocess(0);
    	}
-   	createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
+   	createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, previousSHA: string, cb: any) {
  	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -861,7 +898,7 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
 }
 
 // <--- Auto[Generating:V1]
-// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, (error, result, request) => {
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
