@@ -14,6 +14,30 @@ var AnimationHelper = {
   generateStylesheetData: () => {
   	CodeHelper.deleteEmptyKeys(stylesheetDefinitions);
   	
+  	for (ley key in stylesheetDefinitions) {
+  		if (stylesheetDefinitions.hasOwnProperty(key)) {
+  			if (stylesheetDefinitions[key]) {
+  				stylesheetDefinitions[key] = stylesheetDefinitions[key].split('; ').sort().join('; ');
+  			}
+  		}
+  	}
+  	
+  	for (let animationId in stylesheetDefinitions) {
+  		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
+  			for (let presetId in stylesheetDefinitions[animationId]) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
+		  			for (let keyframeId in stylesheetDefinitions[animationId][presetId]) {
+  						if (stylesheetDefinitions[animationId][presetId].hasOwnProperty(keyframeId)) {
+  							if (stylesheetDefinitions[animationId][presetId][keyframeId]) {
+  								stylesheetDefinitions[animationId][presetId][keyframeId] = stylesheetDefinitions[animationId][presetId][keyframeId].split('; ').sort().join('; ');
+  							}
+  						}
+  					}
+  				}
+  			}
+  		}
+  	}
+  	
     return stylesheetDefinitions;
   },
   initializeStylesheetData: (data: any) => {
