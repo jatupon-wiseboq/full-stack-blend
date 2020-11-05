@@ -46,7 +46,7 @@ class CSSCustomClasses extends Base<Props, State> {
             perform('update', {
             		attributes: [{
         						name: 'class',
-        						value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), filteredValue].join(' ')
+        						value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), filteredValue].sort().join(' ')
         				}],
                 replace: 'custom-classname'
             });

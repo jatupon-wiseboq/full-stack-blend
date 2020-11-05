@@ -63,6 +63,7 @@ class ExternalLibrariesChooser extends Base<Props, State> {
                 presets.push(node.id);
             }
         }
+        presets.sort();
         
         perform('update', {
         		extensions: [{

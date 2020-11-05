@@ -103,7 +103,6 @@ class CSSPresets extends Base<Props, State> {
     
     protected onUpdate(node: ITreeNode) {
         let presets = [];
-        let klasses = [];
         for (let node of this.state.nodes) {
             if (node.selected) {
                 presets.push(node.id);
@@ -112,6 +111,8 @@ class CSSPresets extends Base<Props, State> {
         
         let className = this.state.attributeValues['class'] || '';
     
+    		presets.sort();
+    		
         perform('update', {
         		attributes: [{
         				name: 'class',

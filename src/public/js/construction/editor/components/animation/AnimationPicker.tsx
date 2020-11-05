@@ -67,6 +67,7 @@ class AnimationPicker extends Base<Props, State> {
                 items.push(node.id);
             }
         }
+        items.sort();
         
         let dict = JSON.parse(this.state.attributeValues[this.props.watchingAttributeNames[0]] || '{}');
         dict[this.props.keyName] = items;

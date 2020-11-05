@@ -77,6 +77,8 @@ class WizardInputManager extends Base<Props, State> {
             }
         }
         
+        guids.sort();
+        
         perform('update', {
             attributes: [{
                 name: this.props.watchingAttributeNames[0],

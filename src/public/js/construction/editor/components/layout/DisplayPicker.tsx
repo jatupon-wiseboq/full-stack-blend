@@ -64,7 +64,7 @@ class DisplayPicker extends Base<Props, State> {
         perform('update', {
             attributes: [{
                 name: 'class',
-                value: TextHelper.removeExtraWhitespaces(elementClassName)
+                value: TextHelper.removeExtraWhitespaces(elementClassName.split(' ').sort().join(' '))
             }]
         });
     }

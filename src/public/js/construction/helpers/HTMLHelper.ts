@@ -115,6 +115,10 @@ var HTMLHelper = {
         });
       }
       
+      elementAttributes.sort((a: any, b: any) => {
+      	return (a.name > b.name) ? 1 : -1;
+      });
+      
       return elementAttributes;
     } else {
       if (reverseForwarding && HTMLHelper.isForChildren(element)) {
@@ -133,6 +137,8 @@ var HTMLHelper = {
           }
         }
       }
+      
+      CodeHelper.sortHashtable(mergeAttributes);
       
       return mergeAttributes;
     }
@@ -251,7 +257,7 @@ var HTMLHelper = {
     if (index != -1) {
       splited.splice(index, 1);
     }
-    element.className = HTMLHelper.cleanArray(splited).join(' ');
+    element.className = HTMLHelper.cleanArray(splited).sort().join(' ');
   },
   addClass: (element: HTMLElement, name: string) => {
     let classAttributeValue: string = element;
@@ -263,7 +269,7 @@ var HTMLHelper = {
     if (splited.indexOf(name) == -1) {
       splited.push(name);
     }
-    element.className = HTMLHelper.cleanArray(splited).join(' ');
+    element.className = HTMLHelper.cleanArray(splited).sort().join(' ');
   },
   cleanArray: (splited: string[]) => {
     let results = [];
@@ -295,7 +301,7 @@ var HTMLHelper = {
       splited.push(styleName + ': ' + styleValue);
     }
     
-    return splited.join('; ');
+    return splited.sort().join('; ');
   },
   getInlineStyle: (inlineStyle: string, styleName: string) => {
   	if (!inlineStyle) return null;
@@ -331,7 +337,7 @@ var HTMLHelper = {
         results.push(key + ': ' + hash[key]);
       }
     }
-    return results.join('; ');
+    return results.sort().join('; ');
   },
   
   getPosition: (object: HTMLElement, ofDocument: boolean=true, ofOrigin: boolean=false) => {
