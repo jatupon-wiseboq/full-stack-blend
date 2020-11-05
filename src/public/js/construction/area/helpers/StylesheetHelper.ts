@@ -8,7 +8,7 @@ let cachedPrioritizedKeysRevision = -1;
 
 var StylesheetHelper = {
   generateStylesheetData: () => {
-  	for (ley key in stylesheetDefinitions) {
+  	for (let key in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(key)) {
   			if (stylesheetDefinitions[key]) {
   				stylesheetDefinitions[key] = stylesheetDefinitions[key].split('; ').sort().join('; ');
