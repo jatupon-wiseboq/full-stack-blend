@@ -8,9 +8,11 @@ import {Accessories, EditorHelper} from './EditorHelper.js';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper.js';
 import {CursorHelper} from './CursorHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
+import {TimelineHelper} from './TimelineHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {StyleHelper} from './StyleHelper.js';
 import {StylesheetHelper} from './StylesheetHelper.js';
+import {AnimationHelper} from './AnimationHelper.js';
 import {CapabilityHelper} from './CapabilityHelper.js';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper.js';
 import {FrontEndManipulationHelper} from './manipulations/FrontEndManipulationHelper.js';
@@ -71,9 +73,26 @@ var ManipulationHelper = {
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
     
+    if (content && (typeof content === 'object') && content.link !== undefined) {
+    	link = content.link;
+    }
+    if (content && (typeof content === 'object') && content.content !== undefined) {
+    	content = content.content;
+    }
+    
     switch (name) {
       case 'select':
+      	if (link === false) link = Math.random();
       	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	
+      	promise.then(() => {
+      		ManipulationHelper.perform('update', {
+	      		extensions: [{
+	      			name: 'editingKeyframeID',
+	      			value: null
+	      		}]
+	      	}, true, false, link);
+      	});
         break;
       case 'select[cursor]':
       	name = 'select';
@@ -107,6 +126,13 @@ var ManipulationHelper = {
 		          }
 	      		}
 	      	}
+	      }).then(() => {
+	      	ManipulationHelper.perform('update', {
+	      		extensions: [{
+	      			name: 'editingKeyframeID',
+	      			value: null
+	      		}]
+	      	}, true, false, link);
 	      });
       	break;
       case 'insert':
@@ -187,7 +213,7 @@ var ManipulationHelper = {
       resolve();
     }
     
-    Accessories.overlay.renderAllRelations();
+    Accessories.overlay && Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
   },
   updateComponentData: (node: any) => {
@@ -232,10 +258,23 @@ var ManipulationHelper = {
       let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
       let presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       
+      if (EditorHelper.getEditorCurrentMode() == 'animation') {
+      	if (content.attributes) {
+	      	for (let attribute of content.attributes) {
+	          switch (attribute.name) {
+	          	case 'style':
+	          		attribute.name = 'keyframe';
+	          		break;
+	          }
+	        }
+	      }
+      }
+      
       if (previousReusablePresetName) {
         accessory = {
           attributes: HTMLHelper.getAttributes(selectingElement, true, {
-            style: StylesheetHelper.getStylesheetDefinition(presetId)
+            style: StylesheetHelper.getStylesheetDefinition(presetId),
+            keyframe: AnimationHelper.getStylesheetDefinition(presetId)
           }),
           extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
           options: LayoutHelper.getElementOptions(selectingElement)
@@ -243,7 +282,8 @@ var ManipulationHelper = {
       } else {
         accessory = {
           attributes: HTMLHelper.getAttributes(selectingElement, true, {
-            style: HTMLHelper.getAttribute(selectingElement, 'style')
+            style: HTMLHelper.getAttribute(selectingElement, 'style'),
+            keyframe: AnimationHelper.getStylesheetDefinition(presetId)
           }),
           extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
           options: LayoutHelper.getElementOptions(selectingElement)
@@ -321,6 +361,13 @@ var ManipulationHelper = {
                 }
               }
               break;
+            case 'keyframe':
+              let style = AnimationHelper.getStylesheetDefinition(presetId);
+              if (style != attribute.value) {
+                found = true;
+                AnimationHelper.setStylesheetDefinition(presetId, null, attribute.value);
+              }
+              break;
             case 'internal-fsb-textbox-mode':
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
                 found = true;
@@ -364,6 +411,7 @@ var ManipulationHelper = {
               	}
               } else if (attribute.name == 'internal-fsb-name') {
     						LayoutHelper.invalidate();
+    						TimelineHelper.invalidate();
               }
               
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
@@ -379,7 +427,7 @@ var ManipulationHelper = {
         }
       }
       {
-      	let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
+      	let inlineStyle = ((EditorHelper.getEditorCurrentMode() == 'animation') ? AnimationHelper.getStyle(selectingElement) : StylesheetHelper.getStyle(selectingElement)) || '';
         let hash = HTMLHelper.getHashMapFromInlineStyle(inlineStyle);
         
         if (content.styles != undefined) {
@@ -400,7 +448,9 @@ var ManipulationHelper = {
           }
           
           inlineStyle = HTMLHelper.getInlineStyleFromHashMap(hash);
-          StylesheetHelper.setStyle(selectingElement, inlineStyle);
+          
+          if (EditorHelper.getEditorCurrentMode() == 'animation') AnimationHelper.setStyle(selectingElement, inlineStyle);
+          else StylesheetHelper.setStyle(selectingElement, inlineStyle);
         }
         
         // Perspective Property
@@ -477,7 +527,90 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-            if (InternalProjectSettings[extension.name] != extension.value) {
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID'].indexOf(extension.name) != -1) {
+              switch (extension.name) {
+              	case 'animationGroupName':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupName()
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationGroupName() != (extension.value || 'Untitled')) found = true;
+		            	AnimationHelper.setAnimationGroupName(extension.value || 'Untitled');
+		              break;
+		            case 'animationGroupNote':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupNote()
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationGroupNote() != (extension.value || '')) found = true;
+		            	AnimationHelper.setAnimationGroupNote(extension.value || '');
+		              break;
+		            case 'animationGroupState':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupState()
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationGroupState() != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationGroupState(extension.value || null);
+		              break;
+		            case 'animationGroupMode':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupMode()
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationGroupMode() != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationGroupMode(extension.value || null);
+		              break;
+		            case 'animationRepeatMode':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationRepeatMode(presetId)
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationRepeatMode(presetId) != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationRepeatMode(presetId, extension.value || null);
+		              break;
+		            case 'animationRepeatTime':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationRepeatTime(presetId)
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationRepeatTime(presetId) != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationRepeatTime(presetId, extension.value || null);
+		              break;
+		            case 'editingAnimationID':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getAnimationGroup()
+	                  }]
+	                };
+	                if (AnimationHelper.getAnimationGroup() != (extension.value || null)) found = true;
+	              	AnimationHelper.setAnimationGroup(extension.value);
+		            	break;
+		            case 'editingKeyframeID':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getCurrentKeyframe()
+	                  }]
+	                };
+	                if (AnimationHelper.getCurrentKeyframe() != (extension.value || null)) found = true;
+	              	AnimationHelper.setCurrentKeyframe(extension.value);
+		            	break;
+              }
+          	} else if (InternalProjectSettings[extension.name] != extension.value) {
               found = true;
               
               if (['editingPageID', 'editingComponentID', 'editingPopupID'].indexOf(extension.name) != -1) {
@@ -528,6 +661,7 @@ var ManipulationHelper = {
       
 	    if (found) FrontEndDOMHelper.invalidate();
 	    if (found) StyleHelper.invalidate();
+    	if (found) TimelineHelper.invalidate();
     	if (found) SchemaHelper.invalidate();
       
       if (remember && !found) {
@@ -542,9 +676,11 @@ var ManipulationHelper = {
     return [accessory, remember, link];
   },
   handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
-  	let accessory = null;
+  	if (EditorHelper.getEditorCurrentMode() == 'animation') return;
   	
+  	let accessory = null;
   	let selectingElement = EditorHelper.getSelectingElement();
+  	
     if (selectingElement) {
       let origin = HTMLHelper.getPosition(selectingElement.parentNode);
       let position = HTMLHelper.getPosition(selectingElement);
@@ -701,6 +837,9 @@ var ManipulationHelper = {
           }
       
           EditorHelper.deselect();
+          
+    			LayoutHelper.invalidate();
+    			TimelineHelper.invalidate();
         }
         break;
       case 9:
@@ -713,6 +852,7 @@ var ManipulationHelper = {
           EditorHelper.selectNextElement();
           
           LayoutHelper.invalidate();
+    			TimelineHelper.invalidate();
         }
         break;
       case 16:
@@ -780,6 +920,7 @@ var ManipulationHelper = {
     }
     
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     StyleHelper.invalidate();
   	
   	return [accessory, remember, link];
@@ -789,11 +930,26 @@ var ManipulationHelper = {
   	let shouldContinue = true;
   	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
   	
-  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
-  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
-  			shouldContinue = false;
-  		}
-  	}
+  	let deletingKeyframe = EditorHelper.getEditorCurrentMode() == 'animation' && !!InternalProjectSettings.editingKeyframeID;
+  	
+  	if (!deletingKeyframe) {
+	  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
+	  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  	if (element) {
+	  		if (!confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  } else {
+	  	if (element) {
+	  		if (!confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  			shouldContinue = false;
+	  		}
+	  	}
+	  }
   	
   	accessory = {
   	  element: element,
@@ -801,22 +957,29 @@ var ManipulationHelper = {
   	}
   	
     if (shouldContinue && element) {
-    	link = Math.random();
-	  	promise.then(() => {
-	  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-				removeAllPresetReferences(presetId, link);
-				StylesheetHelper.removeStylesheetDefinition(presetId);
-			});
-			
-			let parentNode = element.parentNode;
-      parentNode.removeChild(element);
-      
-      ManipulationHelper.updateComponentData(parentNode);
+    	if (!deletingKeyframe) {
+	    	link = Math.random();
+		  	promise.then(() => {
+		  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+					removeAllPresetReferences(presetId, link);
+					StylesheetHelper.removeStylesheetDefinition(presetId);
+				});
+				
+				let parentNode = element.parentNode;
+	      parentNode.removeChild(element);
+	      
+	      ManipulationHelper.updateComponentData(parentNode);
+	    } else {
+	    	let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+	    	
+	    	AnimationHelper.removeStylesheetDefinition(presetId);
+	    }
     } else {
     	remember = false;
     }
     
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	
@@ -1126,6 +1289,7 @@ var ManipulationHelper = {
   	
   	ManipulationHelper.updateComponentData(selectingElement);
   	LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     FrontEndDOMHelper.invalidate();
     StyleHelper.invalidate();
   	
@@ -1230,6 +1394,7 @@ var ManipulationHelper = {
   	ManipulationHelper.updateComponentData(destination);
   	ManipulationHelper.updateComponentData(origin);
   	LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
   	

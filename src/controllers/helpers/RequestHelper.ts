@@ -18,7 +18,7 @@ const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
 	registerInput: (guid: string, target: string, group: string, name: string): void => {
-		if (!guid || !target || !group || !name) throw new Error("There was an error trying to retrieve input info (guid, target, group, or name is empty).");
+		if (!guid || !target || !group || !name) return;
 		
 		let _target: SourceType;
 		switch (target) {

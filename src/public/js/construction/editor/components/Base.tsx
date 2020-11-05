@@ -46,6 +46,7 @@ let DefaultProps: any = {
 class Base extends React.Component {
     protected state: IState = {};
     protected static defaultProps: IProps = DefaultProps;
+    private mounted: boolean = false;
     
     constructor(props) {
         super(props);
@@ -70,6 +71,14 @@ class Base extends React.Component {
             extensionValues[nameOrRegularExpression] = null;
         });
     }
+    
+    componentDidMount() { 
+				this.mounted = true;
+		}
+		
+		componentWillUnmount() {
+				this.mounted = false;
+		}
     
     public update(properties: any) {
         let changed = false;
@@ -114,7 +123,8 @@ class Base extends React.Component {
 		                            let tokens = splited[1].split(',');
 		                            let index = parseInt(tokens[0]);
 		                            
-		                            value = value.split(' ')[index];
+		                            value = value.replace(/(,[ ]*)/g, ',').split(' ')[index]
+		                            value = value && value.replace(/(,[ ]*)/g, ', ') || value;
 		                        }
 		                        styleValues[nameOrRegularExpression] = value;
 		                    }
@@ -212,7 +222,7 @@ class Base extends React.Component {
             }
         });
         
-        if (changed) {
+        if (changed && this.mounted) {
             this.forceUpdate();
         }
         

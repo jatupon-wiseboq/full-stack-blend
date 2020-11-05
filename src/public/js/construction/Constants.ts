@@ -370,3 +370,22 @@ export const BACKEND_DATA_LOCK_MATCHING_MODE = [["data-lock-matching-mode", null
 export const BACKEND_DATA_RENDERING_CONDITION_MODE = [["data-rendering-condition-mode", "block", ["fa-circle", "Block"]], ["data-rendering-condition-mode", "relation", ["fa-circle-o", "Relation"]], ["data-rendering-condition-mode", "session", ["fa-circle-o", "Session"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE = [["data-rendering-condition-matching-mode", null, ["fa-circle", "Static Value"]], ["data-rendering-condition-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
 export const SINGLE_DOM_CONTAINER_ELEMENTS = ['Rectangle', 'Button', 'Link'];
+export const ANIMATION_TIMING_MODE = [["animationGroupMode", null, ["fa-hourglass-2", "Time"]], ["animationGroupMode", "scrolling", ["fa-arrows-v", "Scrolling"]]];
+export const ANIMATION_SCROLLING_TRIGGERING = [["-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];
+export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-sign-in", "In"]], ["-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["-fsb-animation-easing-mode", "out", ["fa-sign-out", "Out"]]];
+export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
+export const EASING_COEFFICIENT = {
+	ease: 0.42
+};
+export const ANIMATION_REPEATING_MODE = [["animationRepeatMode", null, ["fa-hourglass", "Infinite"]], ["animationRepeatMode", "time", ["fa-hourglass-1", "Time"]], ["animationRepeatMode", "disabled", ["fa-hourglass-o", "Disabled"]]];
+export const ANIMATION_DEFAULT_STATE = [["animationGroupState", null, ["fa-circle", "Add"]], ["animationGroupState", "off", ["fa-circle-o", "Remove"]]];
+export const SECOND_SPAN_SIZE = 40;
+export const MAXIMUM_OF_SECONDS = 500;
+export const TEXT_SHADOW_0_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const TEXT_SHADOW_1_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const TEXT_SHADOW_2_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const TEXT_SHADOW_3_OPTIONS = [null, "{COLOR}"];
+export const BOX_SHADOW_0_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const BOX_SHADOW_1_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const BOX_SHADOW_2_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px"];
+export const BOX_SHADOW_3_OPTIONS = [null, "{COLOR}"];

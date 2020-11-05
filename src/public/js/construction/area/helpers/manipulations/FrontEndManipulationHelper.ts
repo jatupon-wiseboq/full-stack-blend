@@ -3,6 +3,7 @@ import {RandomHelper} from '../../../helpers/RandomHelper.js';
 import {Accessories, EditorHelper} from '../EditorHelper.js';
 import {WorkspaceHelper} from '../WorkspaceHelper.js';
 import {LayoutHelper} from '../LayoutHelper.js';
+import {TimelineHelper} from '../TimelineHelper.js';
 import {StylesheetHelper} from '../StylesheetHelper.js';
 import {CapabilityHelper} from '../CapabilityHelper.js';
 import {ManipulationHelper} from '../ManipulationHelper.js';
@@ -201,8 +202,11 @@ var FrontEndManipulationHelper = {
         content.name = componentName + ' ' + composedUntitledNameCount[componentName];
         
         element = document.createElement('div');
-        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'), true);
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
         element = element.firstChild;
+        
+        WorkspaceHelper.updateInheritingComponents(element);
+        WorkspaceHelper.recursiveCleanupComponentPreviewDOM(element, true);
         
         HTMLHelper.setAttribute(element, 'internal-fsb-inheriting', content.id);
         
@@ -255,6 +259,7 @@ var FrontEndManipulationHelper = {
     
     ManipulationHelper.updateComponentData(element);
     LayoutHelper.invalidate();
+    TimelineHelper.invalidate();
     FrontEndDOMHelper.invalidate();
     
     return [accessory, remember, link];

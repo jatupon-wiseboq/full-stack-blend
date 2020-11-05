@@ -42,10 +42,21 @@ class LayerManager extends Base<Props, State> {
     
     private onUpdate(node: ITreeNode) {
     		if (node.selected) {
+    			this.recursiveUnselectAllOfNodes(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
+    			node.selected = true;
+    			this.forceUpdate();
+    			
     			perform('select[cursor]', node.id);
     		} else {
     			perform('select', null);
     		}
+    }
+    
+    private recursiveUnselectAllOfNodes(nodes: [ITreeNode]) {
+    		for (let node of nodes) {
+  				node.selected = false;
+  				this.recursiveUnselectAllOfNodes(node.nodes);
+  			}
     }
     
     private onStartDragging(node: ITreeNode) {

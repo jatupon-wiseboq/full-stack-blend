@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from "./../helpers/DatabaseHelper.js";
@@ -13,7 +14,8 @@ import {Base} from "./Base.js";
 // <---Auto[Import]
 
 // Import additional modules here:
-// 
+//
+
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -39,7 +41,8 @@ enum ValidationInfo {
 // <---Auto[Declare]
 
 // Declare private static variables here:
-// 
+//
+
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
@@ -64,7 +67,8 @@ interface Input {
 // <---Auto[Interface]
 
 // Declare or extend interfaces here:
-// 
+//
+
 
 // Auto[ClassBegin]--->
 class Controller extends Base {
@@ -215,6 +219,8 @@ class Controller extends Base {
     });
   }
  	
+  
+ 	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	const schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
@@ -244,6 +250,7 @@ class Controller extends Base {
 // Export variables here:
 //
 export default Controller;
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

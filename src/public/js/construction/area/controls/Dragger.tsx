@@ -160,7 +160,7 @@ class Dragger extends React.Component<IProps, IState> {
 		this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
 		this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
 		
-		Accessories.overlay.renderAllRelations();
+		Accessories.overlay && Accessories.overlay.renderAllRelations();
 	}
 	
 	render() {

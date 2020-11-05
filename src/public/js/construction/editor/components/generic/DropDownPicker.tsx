@@ -90,7 +90,15 @@ let options = {
     "justify-content": CONSTANTS.FLEX_JUSTIFY_CONTENT_OPTIONS,
     "align-self": CONSTANTS.FLEX_JUSTIFY_ALIGN_SELF_OPTIONS,
     "align-items": CONSTANTS.FLEX_JUSTIFY_ALIGN_ITEMS_OPTIONS,
-    "align-content": CONSTANTS.FLEX_JUSTIFY_ALIGN_CONTENT_OPTIONS
+    "align-content": CONSTANTS.FLEX_JUSTIFY_ALIGN_CONTENT_OPTIONS,
+    "text-shadow[0,4]": CONSTANTS.TEXT_SHADOW_0_OPTIONS,
+    "text-shadow[1,4]": CONSTANTS.TEXT_SHADOW_1_OPTIONS,
+    "text-shadow[2,4]": CONSTANTS.TEXT_SHADOW_2_OPTIONS,
+    "text-shadow[3,4]": CONSTANTS.TEXT_SHADOW_3_OPTIONS,
+    "box-shadow[0,4]": CONSTANTS.BOX_SHADOW_0_OPTIONS,
+    "box-shadow[1,4]": CONSTANTS.BOX_SHADOW_1_OPTIONS,
+    "box-shadow[2,4]": CONSTANTS.BOX_SHADOW_2_OPTIONS,
+    "box-shadow[3,4]": CONSTANTS.BOX_SHADOW_3_OPTIONS
 }
 let map = {
     "object-position[0,2]": "object-position-x",
@@ -101,7 +109,15 @@ let map = {
     "background-position[1,2]": "background-position-y",
     "quotes[0,2]": "quotes-begin",
     "quotes[1,2]": "quotes-end",
-    "-fsb-cell-border-size": "size"
+    "-fsb-cell-border-size": "size",
+    "text-shadow[0,4]": "left",
+    "text-shadow[1,4]": "top",
+    "text-shadow[2,4]": "blur",
+    "text-shadow[3,4]": "color",
+    "box-shadow[0,4]": "left",
+    "box-shadow[1,4]": "top",
+    "box-shadow[2,4]": "blur",
+    "box-shadow[3,4]": "color"
 }
 let reject = {
     "font-weight": function(scope) {
@@ -246,7 +262,20 @@ class DropDownPicker extends Base<Props, State> {
             case '{TEXT}':
                 return this.refs.text.getValue();
             case '{COLOR}':
-                return this.refs.color.getValue();
+            		if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+            			let rgba = this.refs.color.getValue();
+            			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+            			
+            			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+            			current = current && current.replace(/(,[ ]*)/g, ',') || current;
+            			
+            			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+            			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+            			
+            			return composed;
+            		} else {
+            			return this.refs.color.getValue();
+            		}
             case '{BROWSE}':
                 return this.refs.file.getValue();
             case '{SETTING}':

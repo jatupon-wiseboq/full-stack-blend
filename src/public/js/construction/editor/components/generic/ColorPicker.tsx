@@ -52,16 +52,19 @@ class ColorPicker extends Base<Props, State> {
     
     protected colorPickerOnUpdate(rgba: any) {
         rgba = rgba || 'rgba(0, 0, 0, 1.0)';
+        
         this.state.value = rgba;
         this.refs.swatchPicker.setCurrentSwatchColor(rgba);
-      
-        perform('update', {
-            styles: [{
-                name: this.props.watchingStyleNames[0].split('[')[0],
-                value: rgba
-            }],
-            replace: this.props.watchingStyleNames[0]
-        });
+      	
+      	if (!this.props.manual) {
+	        perform('update', {
+	            styles: [{
+	                name: this.props.watchingStyleNames[0].split('[')[0],
+	                value: rgba
+	            }],
+	            replace: this.props.watchingStyleNames[0]
+	        });
+	      }
     }
     
     protected onVisibleChanged(visible: boolean, tag: any) {
@@ -89,13 +92,15 @@ class ColorPicker extends Base<Props, State> {
         });
         this.refs.colorPicker.setCurrentColor(color);
         
-        perform('update', {
-            styles: [{
-                name: this.props.watchingStyleNames[0].split('[')[0],
-                value: color
-            }],
-            replace: this.props.watchingStyleNames[0]
-        });
+        if (!this.props.manual) {
+	        perform('update', {
+	            styles: [{
+	                name: this.props.watchingStyleNames[0].split('[')[0],
+	                value: color
+	            }],
+	            replace: this.props.watchingStyleNames[0]
+	        });
+	      }
     }
     
     render() {

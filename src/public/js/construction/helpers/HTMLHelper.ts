@@ -372,6 +372,7 @@ var HTMLHelper = {
   },
   getOriginalPosition: (_position: [number, number], currentWindow: Window) => {
     let result = [_position[0], _position[1]];
+    if (currentWindow.parent == null) return result;
     
     while (currentWindow !== null && currentWindow != currentWindow.parent) {
       let iframe = HTMLHelper.getContainingIframe(currentWindow);

@@ -457,7 +457,7 @@ html
                         let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
                         nextProjectData.currentPersistingFiles = nextPersistingFiles;
 	                    	
-	                      repo.createBlob(JSON.stringify(nextProjectData, null, 2), (error, result, request) => {
+	                      repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), (error, result, request) => {
 	                        if (error) {
 	                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
 	                          return;
