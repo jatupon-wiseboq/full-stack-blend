@@ -1328,7 +1328,7 @@
         "    internal-fsb-name=\"TextElement 1\"",
         "    style=\"-fsb-inherited-presets: ab25187a; color: rgba(68, 68, 68, 1); font-family: Roboto; font-weight: 300; margin-bottom: 20px\">Our Consulting Customers</div>",
         "<div",
-        "    class=\"col-6 col-md-4 col-xl-2 internal-fsb-element offset-3 offset-md-4 offset-xl-5\"",
+        "    class=\"col-12 col-lg-4 col-md-6 internal-fsb-element offset-0 offset-lg-4 offset-md-3\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"c664882e\"",
@@ -1361,13 +1361,13 @@
         "    style=\"-fsb-for-children: true; display: block; width: 100%\">",
         "</div>",
         "<div",
-        "    class=\"internal-fsb-element\"",
+        "    class=\"col-12 internal-fsb-element\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
-        "    internal-fsb-guid=\"eda09cdc-text\"",
-        "    internal-fsb-name=\"TextElement\"",
-        "    style=\"font-family: Roboto; font-size: 15px; font-weight: 400; margin-bottom: 10px; margin-top: 5px; text-align: center\">WiseBOQ – Bill of Quantities Auction&nbsp;Service</div>",
+        "    internal-fsb-guid=\"3732e827\"",
+        "    internal-fsb-name=\"TextElement 2\"",
+        "    style=\"font-family: Roboto; font-size: 15px; font-weight: 400; margin-bottom: 10px; margin-top: 5px; text-align: center\">WiseBOQ –Bill of Quantities Auction Service</div>",
         "</a>",
         "</div>",
         "</div>",
@@ -1503,6 +1503,6 @@
   "version": 1.2,
   "viewBlobSHADict": {
     "b160aa0e": "d303b8792f57ed283a73ec0ceacc947282c22c19",
-    "index": "6ba7637948d8978e19e5a6b102ba1e5993e07363#722008087"
+    "index": "c1b61f03f7642ae798d37397aca11900bb17eb97#-274217391"
   }
 }
