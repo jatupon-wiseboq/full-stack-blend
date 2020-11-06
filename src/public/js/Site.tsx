@@ -4,6 +4,7 @@
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
 import {HTMLHelper} from './helpers/HTMLHelper.js';
 import {EventHelper} from './helpers/EventHelper.js';
+import './components/Project.Controls.Settings.js';
 
 declare let React: any;
 declare let ReactDOM: any;
