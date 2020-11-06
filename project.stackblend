@@ -511,9 +511,9 @@
       null,
       null,
       null,
-      null,
-      null,
-      null,
+      "rgba(247, 247, 247, 1)",
+      "rgba(0, 0, 0, 0.25)",
+      "rgba(255, 255, 255, 1)",
       null,
       null,
       null,
@@ -1313,7 +1313,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"976ea10d\"",
         "    internal-fsb-name=\"FlowLayout 1\"",
-        "    style=\"background: rgba(255, 255, 255, 1); padding-bottom: 20px; padding-top: 30px\">",
+        "    style=\"-fsb-background-type: linear; -webkit-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); background: linear-gradient(180deg, rgba(247, 247, 247, 1) 0%, rgba(255, 255, 255, 1) 100%); border-bottom-color: rgba(212, 212, 212, 1); border-bottom-style: solid; border-bottom-width: 1px; border-top-color: rgba(212, 212, 212, 1); border-top-style: solid; border-top-width: 1px; box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.2); padding-bottom: 20px; padding-top: 30px\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -1503,6 +1503,6 @@
   "version": 1.2,
   "viewBlobSHADict": {
     "b160aa0e": "d303b8792f57ed283a73ec0ceacc947282c22c19",
-    "index": "c1b61f03f7642ae798d37397aca11900bb17eb97#-274217391"
+    "index": "db3f4fdafb04fca065ae6032a11676e45800d49e#-1790496730"
   }
 }
