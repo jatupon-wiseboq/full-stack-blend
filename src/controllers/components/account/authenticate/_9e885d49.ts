@@ -135,7 +135,13 @@ class Controller extends Base {
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await super.get(data));
+        const user = this.request.user as UserDocument;
+        if (user) {
+          this.response.redirect('/account/settings');
+          resolve({});
+        } else {
+          resolve(await super.get(data));
+        }
       } catch(error) {
         reject(error);
       }

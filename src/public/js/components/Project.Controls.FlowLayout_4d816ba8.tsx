@@ -155,9 +155,11 @@ class FlowLayout_4d816ba8 extends Base {
                 | By accessing the website, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.
             .col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
               .internal-fsb-allow-cursor.internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
-              .internal-fsb-element(style={'WebkitFlexBasis': '250px', 'flexBasis': '250px'}, internal-fsb-guid="35e36a4a")
+              .internal-fsb-element(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-guid="35e36a4a")
                 .container-fluid
                   .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
+                    .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, internal-fsb-guid="e439a68e")
+                      | Please login or signup to start using StackBlend studio
                     .col-12.internal-fsb-allow-cursor.internal-fsb-element(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-guid="89972713")
                       .container-fluid
                         .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
