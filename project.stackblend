@@ -852,8 +852,11 @@
         "</div>",
         "</div>"
       ],
+      "id": "245bc127",
       "klass": "Settings",
-      "namespace": "Project.Controls"
+      "name": "Settings",
+      "namespace": "Project.Controls",
+      "state": "create"
     }
   },
   "controllerBlobSHA": "be3484e8503fbb89c1852bb448a4ac4d6c42618b#1503510186",
@@ -1443,7 +1446,7 @@
       "body": [
         "<body",
         "    class=\"\"",
-        "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: center center; background-size: cover; position: relative\">",
+        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy_full.jpg); background-position: center center; background-size: cover; position: relative\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
         "    internal-fsb-animation=\"animation-group-d0e675b7\"",
@@ -2677,7 +2680,7 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "a39704963c69de23e53d1d0773475ccf31cedcd5#1539461395",
+    "3cb10a6e": "06d17a3b76f8b82cbbb81d4ae57b4724c4169d8c#2020268823",
     "9e885d49": "6eb4d8423ea9e694bbd8c3a84289c390441fe2a5#-269584019",
     "b160aa0e": "64b9209b02341b9a1f53f8a027117325fa77f38e#-1216143757",
     "index": "8e0e93e37b6f3ff012df854340a51652d35c2f16#-1771419497"
