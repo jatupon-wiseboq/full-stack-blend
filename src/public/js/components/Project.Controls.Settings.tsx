@@ -117,7 +117,7 @@ class Settings extends Base {
   // Auto[ClassEnd]--->
   protected render(): any {
     return pug `
-      div(style=Object.assign({'FsbBackgroundType': 'linear', 'WebkitBorderRadius': '8px 8px 8px 8px', 'background': 'linear-gradient(0deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 1) 100%)', 'borderBottomColor': 'rgba(3, 115, 252, 1)', 'borderBottomStyle': 'solid', 'borderBottomWidth': '5px', 'borderLeftColor': 'rgba(3, 115, 252, 1)', 'borderLeftStyle': 'solid', 'borderLeftWidth': '5px', 'borderRadius': '8px 8px 8px 8px', 'borderRightColor': 'rgba(3, 115, 252, 1)', 'borderRightStyle': 'solid', 'borderRightWidth': '5px', 'borderTopColor': 'rgba(3, 115, 252, 1)', 'borderTopStyle': 'solid', 'borderTopWidth': '5px', 'width': '70vw'}, this.props.forward && this.props.forward.styles || {}), className="internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="245bc127")
+      div(style=Object.assign({}, this.props.forward && this.props.forward.styles || {}), className="-fsb-self-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="245bc127")
         .container-fluid
           .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
             .col-3.internal-fsb-allow-cursor.internal-fsb-element(style={'MsFlexDirection': 'column', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'left': '0px', 'paddingLeft': '0px', 'paddingRight': '0px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="e2601245")
