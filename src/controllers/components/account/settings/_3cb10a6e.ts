@@ -14,6 +14,7 @@ import {Base} from '../../Base.js';
 
 // Import additional modules here:
 //
+import {UserDocument, User} from "../../../../models/User";
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -84,6 +85,21 @@ class Controller extends Base {
   	// The message of thrown error will be the validation message.
   	//
  		ValidationHelper.validate(data);
+        
+    let password, confirmPassword;
+  	
+  	for (let input of data) {
+    	switch (input.name) {
+    	  case 'password':
+    	    password = input.value;
+    	    break;
+    	  case 'confirmPassword':
+    	    confirmPassword = input.value;
+    	    break;
+    	}
+  	}
+  	
+  	if ((!!password || !!confirmPassword) && password !== confirmPassword) throw new Error("Password confirmation doesn't match password."); 
   }
   
   protected async accessories(data: Input[]): Promise<any> {
@@ -111,9 +127,43 @@ class Controller extends Base {
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       try {
-        resolve(await super.get(data));
+        const user = this.request.user as UserDocument;
+        if (user) {
+          User.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
+              throw new Error('NOT LOGGING IN');
+            } else {
+              resolve({
+                User: {
+                  source: SourceType.Document,
+                	group: 'User',
+                  rows: [
+                    {
+                      keys: {},
+                      columns: {
+                        email: user.email,
+                        name: user.profile.name,
+                        alias: user.alias,
+                        project: user.project,
+                        feature: user.feature,
+                        develop: user.develop,
+                        staging: user.staging,
+                        endpoint: user.endpoint,
+                        facebook: !!user.facebook,
+                        github: !!user.github
+                      },
+                      relations: {}
+                    }
+                  ]
+                }
+              });
+            }
+          });
+        } else {
+          throw new Error('NOT LOGGING IN');
+        }
       } catch(error) {
-        reject(error);
+        this.response.redirect('/account/authenticate');
       }
     });
   }
@@ -166,7 +216,75 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
     	try {
       	let options = RequestHelper.getOptions(this.pageId, this.request);
-        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
+      	let email, name, alias, project, feature, develop, staging, endpoint, password, confirmPassword;
+      	
+      	for (let input of data) {
+        	switch (input.name) {
+        	  case 'email':
+        	    email = input.value;
+        	    break;
+        	  case 'name':
+        	    name = input.value;
+        	    break;
+        	  case 'alias':
+        	    alias = input.value;
+        	    break;
+        	  case 'project':
+        	    project = input.value;
+        	    break;
+        	  case 'feature':
+        	    feature = input.value;
+        	    break;
+        	  case 'develop':
+        	    develop = input.value;
+        	    break;
+        	  case 'staging':
+        	    staging = input.value;
+        	    break;
+        	  case 'endpoint':
+        	    endpoint = input.value;
+        	    break;
+        	  case 'password':
+        	    password = input.value;
+        	    break;
+        	}
+      	}
+      	
+      	const user = this.request.user as UserDocument;
+        if (user) {
+          User.findById(user.id, (err, user: UserDocument) => {
+            if (err) {
+              throw new Error('NOT LOGGING IN');
+            } else {
+              user.email = email || "";
+              user.profile.name = name || "";
+              user.alias = alias || "";
+              user.project = project || "";
+              user.feature = feature || "";
+              user.develop = develop || "";
+              user.staging = staging || "";
+              user.endpoint = endpoint || "";
+              
+              if (!!password) {
+                user.password = password;
+                user.passwordResetToken = undefined;
+                user.passwordResetExpires = undefined;
+              }
+              
+              user.save((err: WriteError) => {
+                if (err) {
+                  throw new Error('NOT LOGGING IN');
+                } else {
+                  resolve([]);
+                }
+              });
+            }
+          });
+        } else {
+          throw new Error('NOT LOGGING IN');
+        }
+        
+        // resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
       }
@@ -224,14 +342,14 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", null, ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "68840b17", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "b391283e", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "187c250b", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "551c67a8", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "82975b43", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "4e677128", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-		RequestHelper.registerInput('27d35136', undefined, undefined, undefined);
+		RequestHelper.registerInput('27d35136', "document", "User", "email");
 		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '27d35136' + ((i == -1) ? '' : '[' + i + ']'));
@@ -241,7 +359,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('ece2d619', undefined, undefined, undefined);
+		RequestHelper.registerInput('ece2d619', "document", "User", "name");
 		ValidationHelper.registerInput('ece2d619', "Textbox 2", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, 'ece2d619' + ((i == -1) ? '' : '[' + i + ']'));
@@ -251,7 +369,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('d3e700b6', undefined, undefined, undefined);
+		RequestHelper.registerInput('d3e700b6', "document", "User", "alias");
 		ValidationHelper.registerInput('d3e700b6', "Textbox 3", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, 'd3e700b6' + ((i == -1) ? '' : '[' + i + ']'));
@@ -261,7 +379,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('0762b97d', undefined, undefined, undefined);
+		RequestHelper.registerInput('0762b97d', "document", "User", "project");
 		ValidationHelper.registerInput('0762b97d', "Textbox 4", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '0762b97d' + ((i == -1) ? '' : '[' + i + ']'));
@@ -271,7 +389,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('098c6ea6', undefined, undefined, undefined);
+		RequestHelper.registerInput('098c6ea6', "document", "User", "feature");
 		ValidationHelper.registerInput('098c6ea6', "Textbox 2", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '098c6ea6' + ((i == -1) ? '' : '[' + i + ']'));
@@ -281,7 +399,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('25254217', undefined, undefined, undefined);
+		RequestHelper.registerInput('25254217', "document", "User", "develop");
 		ValidationHelper.registerInput('25254217', "Textbox 3", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '25254217' + ((i == -1) ? '' : '[' + i + ']'));
@@ -291,7 +409,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('1da99335', undefined, undefined, undefined);
+		RequestHelper.registerInput('1da99335', "document", "User", "staging");
 		ValidationHelper.registerInput('1da99335', "Textbox 4", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '1da99335' + ((i == -1) ? '' : '[' + i + ']'));
@@ -301,7 +419,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('74d68ec6', undefined, undefined, undefined);
+		RequestHelper.registerInput('74d68ec6', "document", "User", "endpoint");
 		ValidationHelper.registerInput('74d68ec6', "Textbox 5", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '74d68ec6' + ((i == -1) ? '' : '[' + i + ']'));
@@ -311,7 +429,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('3478b9ac', undefined, undefined, undefined);
+		RequestHelper.registerInput('3478b9ac', "document", "User", "password");
 		ValidationHelper.registerInput('3478b9ac', "Textbox 1", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '3478b9ac' + ((i == -1) ? '' : '[' + i + ']'));
@@ -321,7 +439,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('33832ba7', undefined, undefined, undefined);
+		RequestHelper.registerInput('33832ba7', "document", "User", "confirmPassword");
 		ValidationHelper.registerInput('33832ba7', "Textbox 1", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '33832ba7' + ((i == -1) ? '' : '[' + i + ']'));
