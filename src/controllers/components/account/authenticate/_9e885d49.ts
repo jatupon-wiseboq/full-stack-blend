@@ -87,10 +87,13 @@ class Controller extends Base {
   	//
  		ValidationHelper.validate(data);
         
-    let password, confirmPassword;
+    let email, password, confirmPassword;
   	
   	for (let input of data) {
     	switch (input.name) {
+    	  case 'email':
+    	    email = input.value;
+    	    break;
     	  case 'password':
     	    password = input.value;
     	    break;
@@ -98,6 +101,10 @@ class Controller extends Base {
     	    confirmPassword = input.value;
     	    break;
     	}
+  	}
+  	
+  	if (email && !email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+  	  throw new Error("You have entered a wrong email address."); 
   	}
   	
   	if ((!!password && !!confirmPassword) && password !== confirmPassword) throw new Error("Password confirmation doesn't match password."); 
