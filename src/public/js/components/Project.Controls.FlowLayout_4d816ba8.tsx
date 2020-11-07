@@ -107,6 +107,38 @@ class FlowLayout_4d816ba8 extends Base {
     this.setState({currentTab: 1});
     
   }
+
+  protected onButtonSubmitting_954a291a(event: Event) {
+
+    // Handle the event of onButtonSubmitting (Button 3) here:
+    // 
+    this.setState({submitting: true});
+    
+  }
+
+  protected onButtonSubmitted_954a291a(event: Event) {
+
+    // Handle the event of onButtonSubmitted (Button 3) here:
+    // 
+    this.setState({submitting: false});
+    
+  }
+
+  protected onButtonSubmitting_b2b66792(event: Event) {
+
+    // Handle the event of onButtonSubmitting (Button 1) here:
+    // 
+    this.setState({submitting: true});
+    
+  }
+
+  protected onButtonSubmitted_b2b66792(event: Event) {
+
+    // Handle the event of onButtonSubmitted (Button 1) here:
+    // 
+    this.setState({submitting: false});
+    
+  }
   // <---Auto[Merging]
   
   // Auto[ClassEnd]--->
@@ -136,18 +168,18 @@ class FlowLayout_4d816ba8 extends Base {
                             .internal-fsb-element(internal-fsb-guid="875ac000-text")
                               | Signup
                     .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="1b650e66")
-                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'width': '100%'}, placeholder="Email address", type="text", disabled=this.state.submitting)
+                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'width': '100%'}, placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
                     .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="22d343bd")
-                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting)
+                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
                     .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-guid="4729c240")
                       .container-fluid
                         .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
                           .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="d3de6c93")
-                            input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Confirm password", type="password", disabled=this.state.submitting)
-                    Button.btn.btn-md.btn-primary.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 0) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('954a291a', 'User', event, ((results) => { this.manipulate('954a291a', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting, type="button", internal-fsb-guid="954a291a")
+                            input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Confirm password", type="password", disabled=this.state.submitting, required=true)
+                    Button.btn.btn-md.btn-primary.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 0) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('954a291a', 'User', event, ((results) => { this.manipulate('954a291a', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting, type="button", onSubmitted=this.onButtonSubmitted_954a291a.bind(this), onSubmitting=this.onButtonSubmitting_954a291a.bind(this), internal-fsb-guid="954a291a")
                       .internal-fsb-element(internal-fsb-guid="954a291a-text")
                         | Continue
-                    Button.btn.btn-md.btn-primary.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 1) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('b2b66792', 'User', event, ((results) => { this.manipulate('b2b66792', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting, type="button", internal-fsb-guid="b2b66792")
+                    Button.btn.btn-md.btn-primary.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 1) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('b2b66792', 'User', event, ((results) => { this.manipulate('b2b66792', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting, type="button", onSubmitted=this.onButtonSubmitted_b2b66792.bind(this), onSubmitting=this.onButtonSubmitting_b2b66792.bind(this), internal-fsb-guid="b2b66792")
                       .internal-fsb-element(internal-fsb-guid="b2b66792-text")
                         | Continue
               .internal-fsb-allow-cursor.internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="d5903637")

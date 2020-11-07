@@ -14,6 +14,8 @@ import {Base} from '../../Base.js';
 
 // Import additional modules here:
 //
+import passport from "passport";
+import {UserDocument, User} from "../../../../models/User";
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -84,6 +86,21 @@ class Controller extends Base {
   	// The message of thrown error will be the validation message.
   	//
  		ValidationHelper.validate(data);
+        
+    let password, confirmPassword;
+  	
+  	for (let input of data) {
+    	switch (input.name) {
+    	  case 'password':
+    	    password = input.value;
+    	    break;
+    	  case 'confirmPassword':
+    	    confirmPassword = input.value;
+    	    break;
+    	}
+  	}
+  	
+  	if ((!!password && !!confirmPassword) && password !== confirmPassword) throw new Error("Password confirmation doesn't match password."); 
   }
   
   protected async accessories(data: Input[]): Promise<any> {
@@ -207,8 +224,67 @@ class Controller extends Base {
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
     	try {
-      	throw new Error("Not Implemented Error");
-        // resolve('/');
+    	  let email, password, confirmPassword;
+      	
+      	for (let input of data) {
+        	switch (input.name) {
+        	  case 'email':
+        	    email = input.value;
+        	    break;
+        	  case 'password':
+        	    password = input.value;
+        	    break;
+        	  case 'confirmPassword':
+        	    confirmPassword = input.value;
+        	    break;
+        	}
+      	}
+      	
+      	if (!!password && !!confirmPassword) {
+      	  const user = new User({
+            email: email,
+            password: password
+          });
+
+          User.findOne({email: email}, (err, existingUser) => {
+            if (err) {
+              reject(new Error('There was an internal server error, please try again. (1001)'));
+              return;
+            }
+            if (existingUser) {
+              reject(new Error('Account with that email address already exists.'));
+              return;
+            }
+            
+            user.save((err) => {
+              if (err) {
+                reject(new Error('There was an internal server error, please try again. (1002)'));
+                return;
+              }
+              
+              this.request.logIn(user, (err) => {
+                if (err) {
+                  reject(new Error('There was an internal server error, please try again. (1003)'));
+                  return;
+                }
+                resolve('/editor');
+              });
+            });
+          });
+      	} else {
+      	  const user = new User({
+            email: email,
+            password: password
+          });
+          
+          this.request.logIn(user, (err) => {
+            if (err) {
+              reject(new Error('There was an internal server error, please try again. (1101)'));
+              return;
+            }
+            resolve('/editor');
+          });
+      	}
       } catch(error) {
         reject(error);
       }
@@ -229,7 +305,7 @@ class Controller extends Base {
     RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 		RequestHelper.registerInput('1b650e66', "document", "User", "email");
-		ValidationHelper.registerInput('1b650e66', "Textbox 1", false, undefined);
+		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email");
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '1b650e66' + ((i == -1) ? '' : '[' + i + ']'));
     
@@ -239,7 +315,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('22d343bd', "document", "User", "password");
-		ValidationHelper.registerInput('22d343bd', "Textbox 2", false, undefined);
+		ValidationHelper.registerInput('22d343bd', "Textbox 2", true, "Please enter your password");
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '22d343bd' + ((i == -1) ? '' : '[' + i + ']'));
     
@@ -249,7 +325,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('d3de6c93', "Textbox 3", false, undefined);
+		ValidationHelper.registerInput('d3de6c93', "Textbox 3", true, "Please confirm your password");
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, 'd3de6c93' + ((i == -1) ? '' : '[' + i + ']'));
     

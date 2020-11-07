@@ -254,7 +254,8 @@ class Controller extends Base {
         if (user) {
           User.findById(user.id, (err, user: UserDocument) => {
             if (err) {
-              throw new Error('NOT LOGGING IN');
+              reject(new Error('Please login before continuing.'));
+              return;
             } else {
               user.email = email || "";
               user.profile.name = name || "";
@@ -273,7 +274,8 @@ class Controller extends Base {
               
               user.save((err: WriteError) => {
                 if (err) {
-                  throw new Error('NOT LOGGING IN');
+                  reject(new Error('Please login before continuing.'));
+                  return;
                 } else {
                   resolve([]);
                 }
@@ -281,7 +283,8 @@ class Controller extends Base {
             }
           });
         } else {
-          throw new Error('NOT LOGGING IN');
+          reject(new Error('Please login before continuing.'));
+          return;
         }
         
         // resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
