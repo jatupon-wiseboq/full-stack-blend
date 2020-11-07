@@ -14,7 +14,7 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "58bc037437f8c74067e0f3c9faad51f5b75368b1#-1943368400",
+    "3cb10a6e": "4352990cc53bae00a3f67ac66915fb8dec1689f0#-1990323540",
     "9e885d49": "2a1f2910e11b2063661e4e0c775718c76eab118b#1264790381",
     "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9#1409907872",
     "index": "56fc9868965e93a3e4094d612dd13015186c8092#2023923522"
@@ -991,62 +991,11 @@
         "</div>",
         "</div>"
       ],
+      "id": "245bc127",
       "klass": "Settings",
-      "namespace": "Project.Controls"
-    },
-    "3249d676": {
-      "html": [
-        "<div",
-        "    class=\"col-12 internal-fsb-element\"",
-        "    internal-fsb-guid=\"3249d676\"",
-        "    internal-fsb-name=\"Resume Navigation Bar\"",
-        "    internal-fsb-event-no-propagate=\"1\"",
-        "    internal-fsb-class=\"FlowLayout\"",
-        "    style=\"margin-top: 15px; padding-left: 0px; padding-right: 15px\"",
-        "    internal-fsb-react-mode=\"Site\"",
-        "    internal-fsb-react-class=\"ResumeNavigationBar\">",
-        "<div",
-        "    class=\"container-fluid\"",
-        "    internal-fsb-event-no-propagate=\"1\">",
-        "<div",
-        "    class=\"internal-fsb-allow-cursor internal-fsb-strict-layout row\">",
-        "<a",
-        "    class=\"btn btn-primary btn-sm col-2 internal-fsb-allow-cursor internal-fsb-element offset-8\"",
-        "    internal-fsb-guid=\"58b4d577\"",
-        "    internal-fsb-name=\"Link 1\"",
-        "    internal-fsb-event-no-propagate=\"1\"",
-        "    internal-fsb-class=\"Link\"",
-        "    style=\"left: -5px\"",
-        "    href=\"/editor\">",
-        "<div",
-        "    contenteditable=\"true\"",
-        "    internal-fsb-class=\"TextElement\"",
-        "    internal-fsb-guid=\"58b4d577-text\"",
-        "    internal-fsb-name=\"TextElement\"",
-        "    class=\"internal-fsb-element\"",
-        "    internal-fsb-event-no-propagate=\"1\">Back to Editor</div>",
-        "</a>",
-        "<a",
-        "    class=\"btn btn-danger btn-sm col-2 internal-fsb-allow-cursor internal-fsb-element\"",
-        "    internal-fsb-guid=\"5d42c3ad\"",
-        "    internal-fsb-name=\"Link 2\"",
-        "    internal-fsb-event-no-propagate=\"1\"",
-        "    internal-fsb-class=\"Link\"",
-        "    href=\"/logout\">",
-        "<div",
-        "    contenteditable=\"true\"",
-        "    internal-fsb-class=\"TextElement\"",
-        "    internal-fsb-guid=\"5d42c3ad-text\"",
-        "    internal-fsb-name=\"TextElement\"",
-        "    class=\"internal-fsb-element\"",
-        "    internal-fsb-event-no-propagate=\"1\">Logout</div>",
-        "</a>",
-        "</div>",
-        "</div>",
-        "</div>"
-      ],
-      "klass": "ResumeNavigationBar",
-      "namespace": "Project.Controls"
+      "name": "Settings",
+      "namespace": "Project.Controls",
+      "state": "create"
     },
     "4d816ba8": {
       "html": [
@@ -1414,6 +1363,18 @@
     }
   },
   "controllerBlobSHA": "be3484e8503fbb89c1852bb448a4ac4d6c42618b#1503510186",
+  "currentPersistingFiles": [
+    "src/controllers/components/account/settings/_3cb10a6e.ts",
+    "src/controllers/components/account/authenticate/_9e885d49.ts",
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "src/controllers/components/index.ts",
+    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
+    "src/public/js/components/Project.Controls.Settings.tsx",
+    "views/home/account/settings/_3cb10a6e.pug",
+    "views/home/account/authenticate/_9e885d49.pug",
+    "views/home/developer/_b160aa0e.pug",
+    "views/home/index.pug"
+  ],
   "flows": {
     "default": [
       "<body class=\"internal-fsb-guide-on internal-fsb-disabled-guide\">",
@@ -1884,9 +1845,8 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_3249d676": "fe71da84dcd91af8922b4d43b11eaab729da6ff0#-1469321365",
     "Project.Controls.FlowLayout_4d816ba8": "05916a588d74c02c38dfd86e78e8e868ccdd8d92#-600971999",
-    "Project.Controls.Settings": "2930073622a56c87158ccb08235e368df20fca57#-1483410506"
+    "Project.Controls.Settings": "882d59c4ca68bd2044a1eb504df691d7a2a4a07c#-519646893"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -1921,18 +1881,13 @@
     ],
     "components": [
       {
-        "id": "245bc127",
-        "name": "Settings",
-        "state": "create"
-      },
-      {
         "id": "4d816ba8",
         "name": "Authenticator",
         "state": "create"
       },
       {
-        "id": "3249d676",
-        "name": "Resume Navigation Bar",
+        "id": "245bc127",
+        "name": "Settings",
         "state": "create"
       }
     ],
@@ -1942,7 +1897,7 @@
     "editingKeyframeID": null,
     "editingPageID": "index",
     "editingPopupID": null,
-    "externalLibraries": "react@16 bootstrap@4",
+    "externalLibraries": "bootstrap@4 react@16",
     "pages": [
       {
         "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
@@ -1994,7 +1949,7 @@
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "03d7cb302b66de687898ee59541b2effa016e7e2#536234134",
+  "siteBundleBlobSHA": "a573cd5ab6b6b60acff7904b686d1d4f0eb56e9a#-1132404956",
   "sites": {
     "3cb10a6e": {
       "accessories": {},
@@ -2009,14 +1964,24 @@
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
         "    internal-fsb-event-no-propagate=\"1\">",
+        "",
+        "<a",
+        "    class=\" btn btn-secondary btn-sm col-5 col-lg-2 col-md-3 col-sm-4 col-xl-2 internal-fsb-allow-cursor internal-fsb-element offset-7 offset-lg-10 offset-md-9 offset-sm-8 offset-xl-10\"",
+        "    internal-fsb-guid=\"a32459c0\"",
+        "    internal-fsb-name=\"Back to Editor\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-class=\"Link\"",
+        "    style=\"-webkit-opacity: 0.9; opacity: 0.9; right: 15px; top: 10px\"",
+        "    href=\"/editor\">",
         "<div",
-        "    class=\" col-12 internal-fsb-element\"",
-        "    internal-fsb-guid=\"68491089\"",
-        "    internal-fsb-name=\"Resume Navigation Bar 1\"",
-        "    style=\"margin-top: 15px; padding-left: 0px; padding-right: 15px\"",
-        "    internal-fsb-react-mode=\"Site\"",
-        "    internal-fsb-inheriting=\"3249d676\">",
-        "</div>",
+        "    contenteditable=\"true\"",
+        "    internal-fsb-class=\"TextElement\"",
+        "    internal-fsb-guid=\"a32459c0-text\"",
+        "    internal-fsb-name=\"TextElement\"",
+        "    class=\"internal-fsb-element\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    style=\"\">Back to Editor</div>",
+        "</a>",
         "<div",
         "    class=\"-fsb-self-245bc127 col-12 internal-fsb-element\"",
         "    internal-fsb-guid=\"245bc127\"",
@@ -2083,7 +2048,8 @@
           "        if (user) {",
           "          User.findById(user.id, (err, user: UserDocument) => {",
           "            if (err) {",
-          "              throw new Error('NOT LOGGING IN');",
+          "              this.response.redirect('/account/authenticate');",
+          "              resolve({});",
           "            } else {",
           "              resolve({",
           "                User: {",
@@ -2112,7 +2078,8 @@
           "            }",
           "          });",
           "        } else {",
-          "          throw new Error('NOT LOGGING IN');",
+          "          this.response.redirect('/account/authenticate');",
+          "          resolve({});",
           "        }",
           "      } catch(error) {",
           "        this.response.redirect('/account/authenticate');",
@@ -3612,9 +3579,9 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "46e55f081391da691c86d55eb3d13be4f1dba340#1971909033",
-    "9e885d49": "35668562cf8bdd02972c10bfcf0413bc1416a9fe#-821823171",
+    "3cb10a6e": "f4528d88d5a84862f1cbeae2b7167ce796988126#1943421828",
+    "9e885d49": "bbef0291b7551aeb3cb8ce5601249b2bb0c189ef#-2101837047",
     "b160aa0e": "2867db3cc625e9cd91255c6098dc62f9f4fad171#321306006",
-    "index": "d7a4b8f10312f8862875fb316aefee1ee7897cea#1410818417"
+    "index": "79795b512dcf12d06a96e72efafe6cbab5522b25#1259468679"
   }
 }
