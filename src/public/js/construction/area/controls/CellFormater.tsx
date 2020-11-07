@@ -92,7 +92,7 @@ class CellFormater extends React.Component<Props, State> {
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
 					x = [...cell.parentNode.childNodes].indexOf(cell);
-					y = [...this.tableElement.firstChild.childNodes].indexOf(cell.parentNode);
+					y = [...this.tableElement.firstElementChild.childNodes].indexOf(cell.parentNode);
 					
 					li = Math.min(li, x);
 					ri = Math.max(ri, x);
@@ -108,7 +108,7 @@ class CellFormater extends React.Component<Props, State> {
 			for (let cell of this.allCellElements) {
 				if (HTMLHelper.hasClass(cell, 'internal-fsb-selected')) {
 					x = [...cell.parentNode.childNodes].indexOf(cell);
-					y = [...this.tableElement.firstChild.childNodes].indexOf(cell.parentNode);
+					y = [...this.tableElement.firstElementChild.childNodes].indexOf(cell.parentNode);
 					let prefix = '-fsb-cell-' + x + '-' + y + '-';
 					let prefixOffsetRight = '-fsb-cell-' + (x + 1) + '-' + y + '-';
 					let prefixOffsetBottom = '-fsb-cell-' + x + '-' + (y + 1) + '-';
@@ -147,14 +147,14 @@ class CellFormater extends React.Component<Props, State> {
 						if (!isCollapseMode) {
 							results[prefix + 'bottom'] = db;
 						} else {
-							if (y + 1 < this.tableElement.firstChild.childNodes.length) {
-								if (this.tableElement.firstChild.childNodes[y + 1].tagName == 'TR') {
+							if (y + 1 < this.tableElement.firstElementChild.childNodes.length) {
+								if (this.tableElement.firstElementChild.childNodes[y + 1].tagName == 'TR') {
 									results[prefix + 'bottom'] = (!this.getBorderDefinition(x, y + 1, Edge.TOP)) ? null : db;
 									results[prefix + 'bottom:' + prefixOffsetBottom + 'top'] = results[prefix + 'bottom'];
 								} else {
 									results[prefix + 'bottom'] = db;
 								}
-							} else if (y + 1 == this.tableElement.firstChild.childNodes.length) {
+							} else if (y + 1 == this.tableElement.firstElementChild.childNodes.length) {
 								results[prefix + 'bottom'] = db;
 							}
 						}

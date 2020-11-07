@@ -104,7 +104,7 @@ class TreeNode extends React.Component<IProps, IState> {
 			}
 			
 			this.draggingElement.style.width = width + 'px';
-			this.draggingElement.firstChild.firstChild.firstChild.innerHTML = title;
+			this.draggingElement.firstElementChild.firstElementChild.firstElementChild.innerHTML = title;
 			
 			document.body.appendChild(this.draggingElement);
 		}

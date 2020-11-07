@@ -43,7 +43,7 @@ var EditorHelper = {
   setup: () => {
     let cursorContainer = document.createElement('div');
     Accessories.cursor = ReactDOM.render(<FullStackBlend.Controls.Cursor />, cursorContainer);
-    Accessories.cursor.setDOMNode(cursorContainer.firstChild);
+    Accessories.cursor.setDOMNode(cursorContainer.firstElementChild);
     cursorContainer.removeChild(Accessories.cursor.getDOMNode());
     
     function resizerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
@@ -92,30 +92,30 @@ var EditorHelper = {
     
     let resizerContainer = document.createElement('div');
     Accessories.resizer = ReactDOM.render(<FullStackBlend.Controls.Resizer onPreview={resizerOnPreview} onUpdate={resizerOnUpdate} />, resizerContainer);
-    Accessories.resizer.setDOMNode(resizerContainer.firstChild);
+    Accessories.resizer.setDOMNode(resizerContainer.firstElementChild);
     resizerContainer.removeChild(Accessories.resizer.getDOMNode());
     
     let cellFormaterContainer = document.createElement('div');
     Accessories.cellFormater = ReactDOM.render(<FullStackBlend.Controls.CellFormater />, cellFormaterContainer);
-    Accessories.cellFormater.setDOMNode(cellFormaterContainer.firstChild);
+    Accessories.cellFormater.setDOMNode(cellFormaterContainer.firstElementChild);
     
     let guideContainer = document.createElement('div');
     Accessories.guide = ReactDOM.render(<FullStackBlend.Controls.Guide />, guideContainer);
-    Accessories.guide.setDOMNode(guideContainer.firstChild);
+    Accessories.guide.setDOMNode(guideContainer.firstElementChild);
     guideContainer.removeChild(Accessories.guide.getDOMNode());
     
     let layoutContainer = document.createElement('div');
     Accessories.layoutInfo = ReactDOM.render(<FullStackBlend.Controls.LayoutInfo />, layoutContainer);
-    Accessories.layoutInfo.setDOMNode(layoutContainer.firstChild);
+    Accessories.layoutInfo.setDOMNode(layoutContainer.firstElementChild);
     
     let draggerContainer = document.createElement('div');
     Accessories.dragger = ReactDOM.render(<FullStackBlend.Controls.Dragger />, draggerContainer);
-    Accessories.dragger.setDOMNode(draggerContainer.firstChild);
+    Accessories.dragger.setDOMNode(draggerContainer.firstElementChild);
     draggerContainer.removeChild(Accessories.dragger.getDOMNode());
     
     let overlayContainer = document.createElement('div');
     Accessories.overlay = ReactDOM.render(<FullStackBlend.Controls.Overlay />, overlayContainer);
-    Accessories.overlay.setDOMNode(overlayContainer.firstChild);
+    Accessories.overlay.setDOMNode(overlayContainer.firstElementChild);
     overlayContainer.removeChild(Accessories.overlay.getDOMNode());
     
     EditorHelper.init(true, true);
@@ -350,7 +350,7 @@ var EditorHelper = {
         if (HTMLHelper.hasClass(current, 'container') ||
         		HTMLHelper.hasClass(current, 'container-fluid') ||
         		(HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
-          current.insertBefore(Accessories.guide.getDOMNode(), current.firstChild);
+          current.insertBefore(Accessories.guide.getDOMNode(), current.firstElementChild);
           break;
         }
         current = current.parentNode;
@@ -402,15 +402,15 @@ var EditorHelper = {
   	switch (direction) {
     	case 'insertBefore':
     		destination.parentNode.insertBefore(target, destination);
-  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
+  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
     		break;
     	case 'appendChild':
     		destination.appendChild(target);
-  			destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstChild);
+  			destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstElementChild);
     		break;
     	case 'insertAfter':
     		destination.parentNode.insertBefore(target, HTMLHelper.getNextSibling(destination));
-  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstChild);
+  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
     		break;
   	}
   },

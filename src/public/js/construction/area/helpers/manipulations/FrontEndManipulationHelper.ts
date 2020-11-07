@@ -203,7 +203,7 @@ var FrontEndManipulationHelper = {
         
         element = document.createElement('div');
         element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
-        element = element.firstChild;
+        element = element.firstElementChild;
         
         WorkspaceHelper.updateInheritingComponents(element);
         WorkspaceHelper.recursiveCleanupComponentPreviewDOM(element, true);

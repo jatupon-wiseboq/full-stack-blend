@@ -13,7 +13,7 @@ var LayoutHelper = {
       let measure = document.createElement('div');
       let i: number;
       
-      selectingElement.parentNode.insertBefore(measure, selectingElement.parentNode.firstChild);
+      selectingElement.parentNode.insertBefore(measure, selectingElement.parentNode.firstElementChild);
       
       for (i=1; i<=12; i++) {
         measure.className = 'col-' + i;
@@ -71,7 +71,7 @@ var LayoutHelper = {
   },
   getElementOptions: function(element: HTMLElement) {
     if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Select') {
-      let children = HTMLHelper.getElementsByTagName('option', element.firstChild);
+      let children = HTMLHelper.getElementsByTagName('option', element.firstElementChild);
       return [...children].map((child) => {
         if (child.tagName)
   	    return {

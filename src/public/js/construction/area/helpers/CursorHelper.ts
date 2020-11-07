@@ -227,7 +227,7 @@ var CursorHelper = {
           Accessories.cursor.getDOMNode().style.left = walkPath[2] + 'px';
           Accessories.cursor.getDOMNode().style.top = walkPath[3] + 'px';
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'absolute');
-          theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstChild);
+          theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstElementChild);
         }
       }
     }

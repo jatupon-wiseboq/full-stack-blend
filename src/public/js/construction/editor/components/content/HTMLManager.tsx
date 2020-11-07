@@ -63,7 +63,7 @@ class HTMLManager extends Base<Props, State> {
     		let container = ReactDOM.findDOMNode(this.refs.listManager);
     		let deleteElement = HTMLHelper.getElementByClassName('delete', container);
     		
-    		deleteElement.style.top = (container.firstChild.scrollTop + 3) + 'px';
+    		deleteElement.style.top = (container.firstElementChild.scrollTop + 3) + 'px';
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {

@@ -373,10 +373,10 @@ var ManipulationHelper = {
                 found = true;
                 if (attribute.value !== null) {
                 	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
-                  selectingElement.firstChild.outerHTML = selectingElement.firstChild.outerHTML.replace(/<input/,"<textarea");
+                  selectingElement.firstElementChild.outerHTML = selectingElement.firstElementChild.outerHTML.replace(/<input/,"<textarea");
                 } else {
                 	HTMLHelper.removeAttribute(selectingElement, attribute.name);
-                  selectingElement.firstChild.outerHTML = selectingElement.firstChild.outerHTML.replace(/<textarea/,"<input");
+                  selectingElement.firstElementChild.outerHTML = selectingElement.firstElementChild.outerHTML.replace(/<textarea/,"<input");
                 }
               }
               break;
@@ -385,10 +385,10 @@ var ManipulationHelper = {
                 found = true;
                 if (attribute.value !== null) {
                 	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
-                  selectingElement.firstChild.innerHTML = attribute.value.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '<div style="font-family: Courier; font-size: 10px; color: #dc3545;">&lt;script&gt;Please compose custom scripts in coding user interface.&lt;/script&gt;</div>');
+                  selectingElement.firstElementChild.innerHTML = attribute.value.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '<div style="font-family: Courier; font-size: 10px; color: #dc3545;">&lt;script&gt;Please compose custom scripts in coding user interface.&lt;/script&gt;</div>');
                 } else {
                 	HTMLHelper.removeAttribute(selectingElement, attribute.name);
-                  selectingElement.firstChild.innerHTML = '';
+                  selectingElement.firstElementChild.innerHTML = '';
                 }
               }
               break;
@@ -482,7 +482,7 @@ var ManipulationHelper = {
         	let isCollapse = (hash['border-collapse'] == 'collapse');
         	HTMLHelper.setAttribute(selectingElement, 'internal-fsb-table-collapse', (isCollapse) ? 'true' : 'false');
         	
-        	for (let childY of [...selectingElement.firstChild.childNodes]) {
+        	for (let childY of [...selectingElement.firstElementChild.childNodes]) {
         		for (let childX of [...childY.childNodes]) {
         			let _inlineStyle = HTMLHelper.getAttribute(childX, 'style') || '';
         			
@@ -506,7 +506,7 @@ var ManipulationHelper = {
 				   			let side = matchedInfo[3];
 				   			let style = matchedInfo[4];
 				   			
-				   			let childY = selectingElement.firstChild.childNodes[y];
+				   			let childY = selectingElement.firstElementChild.childNodes[y];
 				   			if (childY) {
 				   				if (childY.childNodes[x]) {
 				   					let childX = childY.childNodes[x];
@@ -645,7 +645,7 @@ var ManipulationHelper = {
       }
       {
         if (content.options !== undefined && content.options !== null) {
-          selectingElement.firstChild.innerText = '';
+          selectingElement.firstElementChild.innerText = '';
           found = true;
           for (let option of content.options) {
             let optionElement = document.createElement('option');
@@ -654,7 +654,7 @@ var ManipulationHelper = {
             if (option.selected) optionElement.setAttribute('selected', 'true');
             optionElement.innerText = option.name;
             
-            selectingElement.firstChild.appendChild(optionElement);
+            selectingElement.firstElementChild.appendChild(optionElement);
           }
         }
       }
@@ -1335,7 +1335,7 @@ var ManipulationHelper = {
 		  		let suffix = "";
 		  		if (target.parentNode.tagName == 'TD') {
 		  			let layout = HTMLHelper.findTheParentInClassName('internal-fsb-element', target.parentNode);
-		  			let row = [...layout.firstChild.childNodes].indexOf(target.parentNode.parentNode);
+		  			let row = [...layout.firstElementChild.childNodes].indexOf(target.parentNode.parentNode);
 		  			let column = [...target.parentNode.parentNode.childNodes].indexOf(target.parentNode);
 		  			
 		  			suffix = ':' + row + ',' + column;
@@ -1379,7 +1379,7 @@ var ManipulationHelper = {
 	      			let row = parseInt(info[0]);
 	      			let column = parseInt(info[1]);
 	      			
-	      			destination = destination.firstChild.childNodes[row].childNodes[column];
+	      			destination = destination.firstElementChild.childNodes[row].childNodes[column];
 	      			break;
 	      		case 'AbsoluteLayout':
 	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);

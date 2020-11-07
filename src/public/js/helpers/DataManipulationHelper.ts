@@ -72,13 +72,7 @@ const DataManipulationHelper = {
 		  			// we must look into their children.
 		  			// 
 		  			if (element.tagName != 'INPUT') {
-			  			element = element.firstChild;
-			  			
-			  			// Also skip text node.
-			  			// 
-			  			while (element && ['INPUT', 'TEXTAREA', 'SELECT'].indexOf(element.tagName) == -1) {
-			  				element = element.nextSibling;
-			  			}
+			  			element = element.firstElementChild;
 			  		}
 			  		
 			  		let name = (elements.length > 1) ? `${field}[${index}]` : field;

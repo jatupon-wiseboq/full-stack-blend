@@ -271,9 +271,9 @@ var WorkspaceHelper = {
       if (component == null) return;
       
       document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
-      document.body.firstChild.firstChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
+      document.body.firstElementChild.firstElementChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
       
-      HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
+      HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
       
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -298,9 +298,9 @@ var WorkspaceHelper = {
       if (popup == null) return;
       
       document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
-      document.body.firstChild.firstChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
+      document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
       
-      HTMLHelper.setAttribute(document.body.firstChild.firstChild.firstChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID)
+      HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID)
       
       // The second head element did appear after setting content to the outerHTML of body element.
       // Remove the extra one.
@@ -502,8 +502,8 @@ var WorkspaceHelper = {
 		      let element = document.createElement('div');
 		      let parentNode = component.parentNode;
 		      element.innerHTML = componentInfo.html.join('\n');
-		      let firstChild = element.firstChild;
-		      parentNode.insertBefore(firstChild, component);
+		      let firstElementChild = element.firstElementChild;
+		      parentNode.insertBefore(firstElementChild, component);
 		      parentNode.removeChild(component);
 	      }
 	    }
@@ -527,10 +527,10 @@ var WorkspaceHelper = {
       let element = document.createElement('div');
       let parentNode = component.parentNode;
       element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
-      let firstChild = element.firstChild;
-      parentNode.insertBefore(firstChild, component);
+      let firstElementChild = element.firstElementChild;
+      parentNode.insertBefore(firstElementChild, component);
       parentNode.removeChild(component);
-      component = firstChild;
+      component = firstElementChild;
       
       for (let i=0; i<INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.length; i++) {
         if (reservedAttributeValues[i]) {

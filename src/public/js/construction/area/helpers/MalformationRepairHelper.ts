@@ -6,7 +6,7 @@ var MalformationRepairHelper = {
   },
 	recursiveRepair: (elements: any) => {
     for (let j = 0; j < elements.length; j++) {
-    	if (HTMLHelper.isForChildren(elements[j]) && (!elements[j].firstChild || !elements[j].firstChild.tagName)) {
+    	if (HTMLHelper.isForChildren(elements[j]) && (!elements[j].firstElementChild || !elements[j].firstElementChild.tagName)) {
     		elements[j].parentNode.removeChild(elements[j]);
     		continue;
     	}

@@ -198,7 +198,7 @@ class Base extends React.Component {
       case 'popup':
         let container = document.createElement('div');
         ReactDOM.render(React.createElement(DeclarationHelper.get(options.initClass), {data: results}, null), container);
-        document.body.appendChild(container.firstChild);
+        document.body.appendChild(container.firstElementChild);
         break;
       case 'navigate':
         /* handled */

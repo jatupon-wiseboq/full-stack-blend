@@ -80,10 +80,10 @@ var HTMLHelper = {
       
       if (reverseForwarding && HTMLHelper.isForChildren(element)) {
         for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
-          if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
+          if (HTMLHelper.hasAttribute(element.firstElementChild, attributeName)) {
             elementAttributes.push({
               name: attributeName,
-              value: HTMLHelper.getAttribute(element.firstChild, attributeName)
+              value: HTMLHelper.getAttribute(element.firstElementChild, attributeName)
             });
           }
         }
@@ -123,8 +123,8 @@ var HTMLHelper = {
     } else {
       if (reverseForwarding && HTMLHelper.isForChildren(element)) {
         for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
-          if (HTMLHelper.hasAttribute(element.firstChild, attributeName)) {
-            mergeAttributes[attributeName] = HTMLHelper.getAttribute(element.firstChild, attributeName);
+          if (HTMLHelper.hasAttribute(element.firstElementChild, attributeName)) {
+            mergeAttributes[attributeName] = HTMLHelper.getAttribute(element.firstElementChild, attributeName);
           }
         }
       }
@@ -149,11 +149,11 @@ var HTMLHelper = {
   getAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute) return null;
   	if (name == 'style' && HTMLHelper.isForChildren(element)) {
-  		return element.firstChild.getAttribute(name);
+  		return element.firstElementChild.getAttribute(name);
   	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
-  		return [element.getAttribute(name) || '', element.firstChild.getAttribute(name) || ''].join(' ');
+  		return [element.getAttribute(name) || '', element.firstElementChild.getAttribute(name) || ''].join(' ');
   	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstChild.getAttribute(name);
+  		return element.firstElementChild.getAttribute(name);
   	} else {
   		return element.getAttribute(name);
   	}
@@ -162,12 +162,12 @@ var HTMLHelper = {
   	if (!element || !element.getAttribute || !element.setAttribute) return;
   	if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
   		element.setAttribute(name, '-fsb-empty');
-  		return element.firstChild.setAttribute(name, value);
+  		return element.firstElementChild.setAttribute(name, value);
   	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
   		element.setAttribute(name, CodeHelper.getInternalClasses(value));
-  		return element.firstChild.setAttribute(name, CodeHelper.getCustomClasses(value));
+  		return element.firstElementChild.setAttribute(name, CodeHelper.getCustomClasses(value));
   	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstChild.setAttribute(name, value);
+  		return element.firstElementChild.setAttribute(name, value);
   	} else {
   		return element.setAttribute(name, value);
   	}
@@ -176,9 +176,9 @@ var HTMLHelper = {
   	if (!element || !element.getAttribute || !element.removeAttribute) return;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
   		element.removeAttribute(name);
-  		element.firstChild.removeAttribute(name);
+  		element.firstElementChild.removeAttribute(name);
   	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstChild.removeAttribute(name);
+  		return element.firstElementChild.removeAttribute(name);
   	} else {
   		return element.removeAttribute(name);
   	}
@@ -186,9 +186,9 @@ var HTMLHelper = {
   hasAttribute: (element: HTMLElement, name: string) => {
   	if (!element || !element.getAttribute || !element.hasAttribute) return null;
   	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
-  		return element.firstChild.hasAttribute(name);
+  		return element.firstElementChild.hasAttribute(name);
   	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstChild.hasAttribute(name);
+  		return element.firstElementChild.hasAttribute(name);
   	} else {
   		return element.hasAttribute(name);
   	}
