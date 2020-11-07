@@ -139,6 +139,14 @@ class Settings extends Base {
     
   }
 
+  protected onButtonClick_b391283e(event: Event) {
+
+    // Handle the event of onButtonClick (Button 3) here:
+    // 
+    window.location = '/account/delete';
+    
+  }
+
   protected onButtonClick_187c250b(event: Event) {
 
     // Handle the event of onButtonClick (Button 4) here:
@@ -308,7 +316,7 @@ class Settings extends Base {
                           | Delete Account
                         .-fsb-preset-baed14b5.col-12.internal-fsb-element(style={'FsbInheritedPresets': 'baed14b5'}, internal-fsb-guid="1bdb6469")
                           | ⚠️ You can delete your account, but keep in mind this action is irreversible.
-                        Button.btn.btn-danger.btn-sm.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(disabled=this.state.submitting, type="button", internal-fsb-guid="b391283e")
+                        Button.btn.btn-danger.btn-sm.col-6.internal-fsb-allow-cursor.internal-fsb-element.offset-3(disabled=this.state.submitting, type="button", onClick=this.onButtonClick_b391283e.bind(this), internal-fsb-guid="b391283e")
                           .internal-fsb-element(internal-fsb-guid="b391283e-text")
                             | Delete my account
                         .-fsb-preset-12bc19e4.col-12.internal-fsb-element(style={'FsbInheritedPresets': '12bc19e4'}, internal-fsb-guid="be0488a7")

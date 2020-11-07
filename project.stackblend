@@ -848,7 +848,15 @@
         "    internal-fsb-name=\"Button 3\"",
         "    style=\"\"",
         "    type=\"button\"",
-        "    disabled=\"{this.state.submitting}\">",
+        "    disabled=\"{this.state.submitting}\"",
+        "    onfsbclick=\"{&quot;event&quot;:true}\"",
+        "    internal-fsb-react-code-onfsbclick=\"",
+        "",
+        "    // Handle the event of onButtonClick (Button 3) here:",
+        "    // ",
+        "    window.location = '/account/delete';",
+        "    ",
+        "    \">",
         "<div",
         "    class=\"internal-fsb-element\"",
         "    contenteditable=\"true\"",
@@ -1468,7 +1476,7 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.Settings": "08d98dcd3a93a1de5b9d51d94d6ec5b8f3e45b7c#-1858021043"
+    "Project.Controls.Settings": "2930073622a56c87158ccb08235e368df20fca57#-1483410506"
   },
   "globalSettings": {
     "colorSwatches": [
