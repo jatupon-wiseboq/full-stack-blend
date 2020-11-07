@@ -226,8 +226,9 @@ class Controller extends Base {
 	  // Auto[Merging]--->
     RequestHelper.registerSubmit("9e885d49", "d7d59dd2", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("9e885d49", "875ac000", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("9e885d49", "954a291a", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-		RequestHelper.registerInput('1b650e66', undefined, undefined, undefined);
+    RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+		RequestHelper.registerInput('1b650e66', "document", "User", "email");
 		ValidationHelper.registerInput('1b650e66', "Textbox 1", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '1b650e66' + ((i == -1) ? '' : '[' + i + ']'));
@@ -237,7 +238,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('22d343bd', undefined, undefined, undefined);
+		RequestHelper.registerInput('22d343bd', "document", "User", "password");
 		ValidationHelper.registerInput('22d343bd', "Textbox 2", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, '22d343bd' + ((i == -1) ? '' : '[' + i + ']'));
@@ -247,7 +248,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('d3de6c93', undefined, undefined, undefined);
+		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
 		ValidationHelper.registerInput('d3de6c93', "Textbox 3", false, undefined);
     for (let i=-1; i<128; i++) {
       input = RequestHelper.getInput(this.pageId, request, 'd3de6c93' + ((i == -1) ? '' : '[' + i + ']'));
