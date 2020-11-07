@@ -10,6 +10,8 @@ declare let React: any;
 declare let ReactDOM: any;
 declare let ts: any;
 
+let recentCommitMessage = null;
+
 interface Props extends IProps {
 }
 
@@ -559,7 +561,8 @@ html
 	                          let updatedTreeSHA = result.sha;
 	                          if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
 	                          
-	                          let message = prompt('Please describe your recent changes:');
+	                          let message = prompt('Please describe your recent changes:', recentCommitMessage || '');
+	                          
 	                          if (message !== null && message.trim() !== "") {
   	                          repo.commit(baseCommitSHA, updatedTreeSHA, message, (error, result, request) => {
   	                            if (error) {
@@ -577,6 +580,10 @@ html
   	                              }
             
             											constructionWindow.clearFullStackCodeForAllPages(nextProjectData);
+            											
+            											if (message.indexOf('[continue]') != 0) {
+				                          	recentCommitMessage = '[continue] ' + message;
+				                          }
             											
             											this.deleteFiles(repo, deletingPersistingFiles, () => {
             												RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
