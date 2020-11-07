@@ -422,8 +422,16 @@ var HTMLHelper = {
     for (let j = 0; j < elements.length; j++) {
     	if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
     	
-      const attributes = HTMLHelper.getAttributes(elements[j], true);
-      const flag = {};
+    	const attributes = [];
+    	if (elements[j].hasAttributes()) {
+        let attrs = elements[j].attributes;
+        for (let attr of attrs) {
+          attributes.push({
+            name: attr.name,
+            value: attr.value
+          });
+        }
+      }
 			
       for (let i = 0; i < attributes.length; i++) {
         elements[j].removeAttribute(attributes[i].name);

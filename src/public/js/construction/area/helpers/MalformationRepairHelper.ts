@@ -11,7 +11,9 @@ var MalformationRepairHelper = {
     		continue;
     	}
     	
-    	
+    	if (elements[j].getAttribute && (elements[j].getAttribute('style') || '').indexOf('-fsb-for-children') != -1) {
+    		elements[j].setAttribute('style', '-fsb-for-children: true');
+    	}
       
       elements[j].children && MalformationRepairHelper.recursiveRepair(elements[j].children);
     }
