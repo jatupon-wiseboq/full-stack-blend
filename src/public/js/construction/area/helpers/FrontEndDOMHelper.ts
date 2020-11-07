@@ -686,7 +686,8 @@ ${rootScript}`;
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
-              attribute.value = element.getAttribute('style');
+              attribute.value = element.getAttribute('style').replace(/"/g, "'");
+              if (attribute.value) attribute.value = attribute.value.replace(/"/g, "'");
               if (attribute.value == '-fsb-empty') {
                 isForChildren = true;
                 continue;
