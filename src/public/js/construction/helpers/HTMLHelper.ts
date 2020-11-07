@@ -119,7 +119,17 @@ var HTMLHelper = {
       	return (a.name > b.name) ? 1 : -1;
       });
       
-      return elementAttributes;
+      const _elementAttributes = [];
+      const _insertedKeys = {};
+      
+      for (let _element of elementAttributes) {
+      	if (_insertedKeys[_element.name] === true) continue;
+      	_insertedKeys[_element.name] = true;
+      	
+      	_elementAttributes.push(_element);
+      }
+      
+      return _elementAttributes;
     } else {
       if (reverseForwarding && HTMLHelper.isForChildren(element)) {
         for (let attributeName of FORWARED_ATTRIBUTES_FOR_CHILDREN) {
