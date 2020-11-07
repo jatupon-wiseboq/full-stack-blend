@@ -534,6 +534,8 @@ ${rootScript}`;
           if (reactData) _attributes.push('row=' + _nodeData);
           if (inheritingID) _attributes.push(`forward={${inheritingAttributes.join(', ')}}`);
           
+          _attributes = Array.from(new Set(_attributes));
+          
           composed = indent;
           composed += '_' + (reactNamespace + '.' + reactClass).split('.').join('_') + '_(' + _attributes.join(', ') + ')';
           lines.push(composed);
