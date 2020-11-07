@@ -104,7 +104,7 @@ class Controller extends Base {
   	}
   	
   	if (email && !email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-  	  throw new Error("You have entered a wrong email address."); 
+  	  throw new Error("You have entered a wrong email."); 
   	}
   	
   	if ((!!password && !!confirmPassword) && password !== confirmPassword) throw new Error("Password confirmation doesn't match password."); 
@@ -279,17 +279,23 @@ class Controller extends Base {
             });
           });
       	} else {
-      	  const user = new User({
-            email: email,
-            password: password
-          });
-          
-          this.request.logIn(user, (err) => {
+      	  User.findOne({email: email}, (err, existingUser) => {
             if (err) {
               reject(new Error('There was an internal server error, please try again. (1101)'));
               return;
             }
-            resolve('/editor');
+            if (!existingUser) {
+              reject(new Error('An account with the email address doesn\'t exist.'));
+              return;
+            }
+            
+            this.request.logIn(existingUser, (err) => {
+              if (err) {
+                reject(new Error('There was an internal server error, please try again. (1103)'));
+                return;
+              }
+              resolve('/editor');
+            });
           });
       	}
       } catch(error) {

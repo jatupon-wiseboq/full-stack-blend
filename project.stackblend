@@ -14,8 +14,8 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "5f10a53f92613b62d2df0147c4a3b4d0fca585b8#-1293135293",
-    "9e885d49": "a6131e21c3a6828209505f67cd5312e8bf4b8fc7#1475587666",
+    "3cb10a6e": "2d69b2d8788471d9337667107fa9a0a60dafe798#-1086425745",
+    "9e885d49": "de309ca0db6aa7d498c46b3e6d1e02e376576ea6#-1996328351",
     "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9#1409907872",
     "index": "56fc9868965e93a3e4094d612dd13015186c8092#2023923522"
   },
@@ -1362,7 +1362,7 @@
       "state": "create"
     }
   },
-  "controllerBlobSHA": "be3484e8503fbb89c1852bb448a4ac4d6c42618b#1503510186",
+  "controllerBlobSHA": "11871f17af66d94adca53bc4dab4ba78af2b51fe#-743364732",
   "currentPersistingFiles": [
     "src/controllers/components/account/settings/_3cb10a6e.ts",
     "src/controllers/components/account/authenticate/_9e885d49.ts",
@@ -1910,10 +1910,19 @@
       },
       {
         "description": null,
+        "id": "9e885d49",
+        "image": null,
+        "keywords": null,
+        "name": "StackBlend - Authenticate",
+        "path": "/account/authenticate",
+        "state": "update"
+      },
+      {
+        "description": null,
         "id": "3cb10a6e",
         "image": null,
         "keywords": null,
-        "name": "Settings",
+        "name": "StackBlend - Settings",
         "path": "/account/settings",
         "state": "update"
       },
@@ -1922,24 +1931,15 @@
         "id": "b160aa0e",
         "image": null,
         "keywords": null,
-        "name": "Developer Notes",
+        "name": "StackBlend - Developer Notes",
         "path": "/developer",
-        "state": "update"
-      },
-      {
-        "description": null,
-        "id": "9e885d49",
-        "image": null,
-        "keywords": null,
-        "name": "Authenticate",
-        "path": "/account/authenticate",
         "state": "update"
       }
     ],
     "popups": []
   },
   "popups": {},
-  "routeBlobSHA": "f48fceb5da29c32bbba4d8e57bcc7089b03ed3fd#1655237481",
+  "routeBlobSHA": "319486d118bc1eb3e59f266dc23eed899691cf09#-1452187911",
   "services": {
     "default": [
       "<body class=\"internal-fsb-disabled-guide\">",
@@ -2020,7 +2020,7 @@
           "  \t}",
           "  \t",
           "  \tif (email && !email.match(/^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/)) {",
-          "  \t  throw new Error(\"You have entered a wrong email address.\"); ",
+          "  \t  throw new Error(\"You have entered a wrong email.\"); ",
           "  \t}",
           "  \t",
           "  \tif ((!!password || !!confirmPassword) && password !== confirmPassword) throw new Error(\"Password confirmation doesn't match password.\"); ",
@@ -2296,7 +2296,7 @@
       "id": "3cb10a6e",
       "image": null,
       "keywords": null,
-      "name": "Settings",
+      "name": "StackBlend - Settings",
       "notations": {
         "User": {
           "alias": {},
@@ -2365,7 +2365,7 @@
           "  \t}",
           "  \t",
           "  \tif (email && !email.match(/^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$/)) {",
-          "  \t  throw new Error(\"You have entered a wrong email address.\"); ",
+          "  \t  throw new Error(\"You have entered a wrong email.\"); ",
           "  \t}",
           "  \t",
           "  \tif ((!!password && !!confirmPassword) && password !== confirmPassword) throw new Error(\"Password confirmation doesn't match password.\"); ",
@@ -2540,17 +2540,23 @@
           "            });",
           "          });",
           "      \t} else {",
-          "      \t  const user = new User({",
-          "            email: email,",
-          "            password: password",
-          "          });",
-          "          ",
-          "          this.request.logIn(user, (err) => {",
+          "      \t  User.findOne({email: email}, (err, existingUser) => {",
           "            if (err) {",
           "              reject(new Error('There was an internal server error, please try again. (1101)'));",
           "              return;",
           "            }",
-          "            resolve('/editor');",
+          "            if (!existingUser) {",
+          "              reject(new Error('An account with the email address doesn\\'t exist.'));",
+          "              return;",
+          "            }",
+          "            ",
+          "            this.request.logIn(existingUser, (err) => {",
+          "              if (err) {",
+          "                reject(new Error('There was an internal server error, please try again. (1103)'));",
+          "                return;",
+          "              }",
+          "              resolve('/editor');",
+          "            });",
           "          });",
           "      \t}",
           "      } catch(error) {",
@@ -2594,7 +2600,7 @@
       "id": "9e885d49",
       "image": null,
       "keywords": null,
-      "name": "Authenticate",
+      "name": "StackBlend - Authenticate",
       "notations": {},
       "path": "/account/authenticate",
       "state": "update"
@@ -2704,7 +2710,7 @@
       "id": "b160aa0e",
       "image": null,
       "keywords": null,
-      "name": "Developer Notes",
+      "name": "StackBlend - Developer Notes",
       "notations": {},
       "path": "/developer",
       "state": "update"
@@ -3593,9 +3599,9 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "f4528d88d5a84862f1cbeae2b7167ce796988126#1943421828",
-    "9e885d49": "bbef0291b7551aeb3cb8ce5601249b2bb0c189ef#-2101837047",
-    "b160aa0e": "2867db3cc625e9cd91255c6098dc62f9f4fad171#321306006",
+    "3cb10a6e": "19be908769e513d86ad8673797a9e7b56d4dde9f#567064211",
+    "9e885d49": "d39e0010eb62f1b5eb9c90ef21a72db3cb5ca686#-723213886",
+    "b160aa0e": "ce1db94a918dbb53046fa623278582fe30d215a7#436614352",
     "index": "79795b512dcf12d06a96e72efafe6cbab5522b25#1259468679"
   }
 }
