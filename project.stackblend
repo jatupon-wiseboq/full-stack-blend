@@ -114,8 +114,8 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"99e5677d\"",
         "    internal-fsb-name=\"TextElement 5\"",
-        "    style=\"-fsb-reusable-id: 99e5677d; color: rgba(3, 115, 252, 1); display: inline-block\"",
-        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 0) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\">Profile</div>",
+        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 0) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\"",
+        "    style=\"-fsb-reusable-id: 99e5677d; color: rgba(3, 115, 252, 1); display: inline-block\">Profile</div>",
         "</div>",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
@@ -149,8 +149,8 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"a345a908\"",
         "    internal-fsb-name=\"TextElement 6\"",
-        "    style=\"-fsb-inherited-presets: ; color: rgba(255, 255, 255, 1); display: inline-block\"",
-        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 1) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\">Repository</div>",
+        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 1) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\"",
+        "    style=\"-fsb-inherited-presets: ; color: rgba(255, 255, 255, 1); display: inline-block\">Repository</div>",
         "</div>",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
@@ -192,8 +192,8 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"c7844719\"",
         "    internal-fsb-name=\"TextElement 7\"",
-        "    style=\"-fsb-inherited-presets: ; color: rgba(255, 255, 255, 1); display: inline-block\"",
-        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 2) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\">Account</div>",
+        "    internal-fsb-react-style-color=\"CODE[return (this.state.currentTab == 2) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';]\"",
+        "    style=\"-fsb-inherited-presets: ; color: rgba(255, 255, 255, 1); display: inline-block\">Account</div>",
         "</div>",
         "",
         "</div>",
@@ -203,7 +203,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"ea965490\"",
         "    internal-fsb-name=\"Top Navigation\"",
-        "    style=\"background: rgba(255, 255, 255, 0.95); height: 45px; left: 0px; padding-right: 10px; padding-top: 10px; position: absolute; right: 0px; top: 0px; z-index: 900\">",
+        "    style=\"-webkit-border-radius: 0px 8px 0px 0px; background: rgba(255, 255, 255, 0.95); border-radius: 0px 8px 0px 0px; height: 45px; left: 0px; padding-right: 10px; padding-top: 10px; position: absolute; right: 0px; top: 0px; z-index: 900\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -1338,7 +1338,7 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.Settings": "a9c38df4cd0463d59f0c98b5fa18ce1bf471e77e#-1088800084"
+    "Project.Controls.Settings": "ec365f21908652d17af25d656f1a7664003afa03#85538112"
   },
   "globalSettings": {
     "colorSwatches": [

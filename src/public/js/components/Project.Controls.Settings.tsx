@@ -137,7 +137,7 @@ class Settings extends Base {
                   | 🔐 
                 .internal-fsb-element(style={'FsbInheritedPresets': '', 'color': (()=>{return (this.state.currentTab == 2) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';})() || 'rgba(255, 255, 255, 1)', 'display': 'inline-block'}, internal-fsb-guid="c7844719")
                   | Account
-            .col-9.internal-fsb-element.offset-3(style={'background': 'rgba(255, 255, 255, 0.95)', 'height': '45px', 'left': '0px', 'paddingRight': '10px', 'paddingTop': '10px', 'position': 'absolute', 'right': '0px', 'top': '0px', 'zIndex': '900'}, internal-fsb-guid="ea965490")
+            .col-9.internal-fsb-element.offset-3(style={'WebkitBorderRadius': '0px 8px 0px 0px', 'background': 'rgba(255, 255, 255, 0.95)', 'borderRadius': '0px 8px 0px 0px', 'height': '45px', 'left': '0px', 'paddingRight': '10px', 'paddingTop': '10px', 'position': 'absolute', 'right': '0px', 'top': '0px', 'zIndex': '900'}, internal-fsb-guid="ea965490")
               .container-fluid
                 .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
                   Button.btn.btn-primary.btn-sm.col-2.internal-fsb-allow-cursor.internal-fsb-element.offset-10(onClick=((event) => { window.internalFsbSubmit('ea9268d1', '', event, ((results) => { this.manipulate('ea9268d1', '', results); }).bind(this)); }).bind(this), type="button", internal-fsb-guid="ea9268d1")
