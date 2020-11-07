@@ -862,14 +862,14 @@
   "controllerBlobSHA": "be3484e8503fbb89c1852bb448a4ac4d6c42618b#1503510186",
   "currentPersistingFiles": [
     "src/controllers/components/account/settings/_3cb10a6e.ts",
+    "src/controllers/components/account/authenticate/_9e885d49.ts",
     "src/controllers/components/developer/_b160aa0e.ts",
     "src/controllers/components/index.ts",
-    "src/controllers/components/account/authenticate/_9e885d49.ts",
     "src/public/js/components/Project.Controls.Settings.tsx",
     "views/home/account/settings/_3cb10a6e.pug",
+    "views/home/account/authenticate/_9e885d49.pug",
     "views/home/developer/_b160aa0e.pug",
-    "views/home/index.pug",
-    "views/home/account/authenticate/_9e885d49.pug"
+    "views/home/index.pug"
   ],
   "flows": {
     "default": [
@@ -1543,7 +1543,13 @@
         "    internal-fsb-name=\"Rectangle 3\"",
         "    style=\"-ms-flex-direction: row; -webkit-align-content: space-around; -webkit-flex-direction: row; align-content: space-around; bottom: 0px; display: flex; flex-direction: row; position: absolute; right: 0px; top: 0px\">",
         "<div",
-        "    class=\"col-12 internal-fsb-element\"",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
+        "    internal-fsb-class=\"Rectangle\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-guid=\"73b5e922\"",
+        "    internal-fsb-name=\"Rectangle 1\">",
+        "<div",
+        "    class=\"internal-fsb-element\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"35e36a4a\"",
@@ -1662,6 +1668,7 @@
         "    internal-fsb-guid=\"954a291a-text\"",
         "    internal-fsb-name=\"TextElement\">Continue</div>",
         "</button>",
+        "</div>",
         "</div>",
         "</div>",
         "</div>",
@@ -2680,9 +2687,9 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "06d17a3b76f8b82cbbb81d4ae57b4724c4169d8c#2020268823",
-    "9e885d49": "6eb4d8423ea9e694bbd8c3a84289c390441fe2a5#-269584019",
+    "3cb10a6e": "6a6b10414ac8c40b2278e75961b6a6803b93622a#1240260",
+    "9e885d49": "ecd54632c89ebd30484dabad32a2f2f21135b864#1975233501",
     "b160aa0e": "64b9209b02341b9a1f53f8a027117325fa77f38e#-1216143757",
-    "index": "8e0e93e37b6f3ff012df854340a51652d35c2f16#-1771419497"
+    "index": "007735cea3ef83e108efc08736a64156061faa95#1997886235"
   }
 }
