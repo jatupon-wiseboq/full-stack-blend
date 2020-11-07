@@ -112,7 +112,7 @@ app.use((req, res, next) => {
         req.session.returnTo = req.path;
     
     } else if (req.user &&
-    req.path == "/account") {
+    req.path == "/account/settings") {
         req.session.returnTo = req.path;
     }
     next();
@@ -131,41 +131,41 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
  */
 app.get("/editor", constructionController.index);
 app.get("/editor/construction/area/html", constructionController.html);
-app.get("/login", userController.getLogin);
-app.post("/login", userController.postLogin);
+// app.get("/login", userController.getLogin);
+// app.post("/login", userController.postLogin);
 app.get("/logout", userController.logout);
-app.get("/forgot", userController.getForgot);
-app.post("/forgot", userController.postForgot);
-app.get("/reset/:token", userController.getReset);
-app.post("/reset/:token", userController.postReset);
-app.get("/signup", userController.getSignup);
-app.post("/signup", userController.postSignup);
-app.get("/contact", contactController.getContact);
-app.post("/contact", contactController.postContact);
-app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
-app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
-app.post("/account/github", passportConfig.isAuthenticated, userController.postUpdateGitHub);
-app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
-app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
+// app.get("/forgot", userController.getForgot);
+// app.post("/forgot", userController.postForgot);
+// app.get("/reset/:token", userController.getReset);
+// app.post("/reset/:token", userController.postReset);
+// app.get("/signup", userController.getSignup);
+// app.post("/signup", userController.postSignup);
+// app.get("/contact", contactController.getContact);
+// app.post("/contact", contactController.postContact);
+// app.get("/account", passportConfig.isAuthenticated, userController.getAccount);
+// app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
+// app.post("/account/github", passportConfig.isAuthenticated, userController.postUpdateGitHub);
+// app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
+// app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**
  * API examples routes.
  */
-app.get("/api", apiController.getApi);
-app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
+// app.get("/api", apiController.getApi);
+// app.get("/api/facebook", passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
 
 /**
  * OAuth authentication routes. (Sign in)
  */
 app.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email",
     "public_profile"]}));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/login"}), (req, res) => {
-    res.redirect("/editor");
+app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/account/authenticate"}), (req, res) => {
+    res.redirect("/account/settings");
 });
 app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
-app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/login"}), (req, res) => {
-    res.redirect("/account");
+app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/account/authenticate"}), (req, res) => {
+    res.redirect("/account/settings");
 });
 
 // Cache configuration

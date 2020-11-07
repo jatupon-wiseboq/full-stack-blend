@@ -46,7 +46,7 @@ Whatever you are a full-stack engineer or not, StackBlend will helps you cope wi
 To get started:
 
 1. Signup and Login to StackBlend at https://staging.stackblend.com/signup.
-2. Go to Settings at https://staging.stackblend.com/account.
+2. Go to Settings at https://staging.stackblend.com/account/settings.
 3. Connect to a newly created GitHub account (dedicatedly for StackBlend platform).
 4. From Organization Or User Alias, enter "YOUR_ALIAS".
 5. From Project Name, enter "YOUR_GITHUB_PROJECT_NAME".

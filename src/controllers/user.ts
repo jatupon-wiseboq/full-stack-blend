@@ -393,7 +393,7 @@ export const getOauthUnlink = (req: Request, res: Response, next: NextFunction) 
 
             }
             req.flash("info", {msg: `${provider} account has been unlinked.`});
-            res.redirect("/account");
+            res.redirect("/account/settings");
 
         });
 
