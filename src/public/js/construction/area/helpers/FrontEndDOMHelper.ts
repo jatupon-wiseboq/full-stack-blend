@@ -582,6 +582,9 @@ ${rootScript}`;
             attributes.splice(0, 0, 'style=Object.assign({}, this.props.forward && this.props.forward.styles || {})');
           }
           if (composed == indent) composed += 'div';
+          
+          attributes = Array.from(new Set(attributes));
+          
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (!dangerouslySetInnerHTML) {
@@ -843,6 +846,9 @@ ${rootScript}`;
           if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
           if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
+          
+          attributes = Array.from(new Set(attributes));
+          
           if (attributes.length != 0) composed += '(' + attributes.join(', ') + ')';
           
           lines.push(composed);
