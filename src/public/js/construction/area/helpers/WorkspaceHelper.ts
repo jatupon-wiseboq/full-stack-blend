@@ -12,6 +12,7 @@ import {BackEndDOMHelper} from './BackEndDOMHelper.js';
 import {SchemaHelper} from './SchemaHelper.js';
 import {LayoutHelper} from './LayoutHelper.js';
 import {TimelineHelper} from './TimelineHelper.js';
+import {MalformationRepairHelper} from './MalformationRepairHelper.js';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants.js';
 
 declare let js_beautify;
@@ -51,6 +52,9 @@ let InternalAnimations = {};
 let backEndControllerBlobSHADict = {};
 let frontEndComponentsBlobSHADict = {};
 let viewBlobSHADict = {};
+let routeBlobSHA = null;
+let controllerBlobSHA = null;
+let siteBundleBlobSHA = null;
 let version = 1.2;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
@@ -95,7 +99,10 @@ var WorkspaceHelper = {
 	    }, removeSHADict ? {} : {
 	      backEndControllerBlobSHADict: backEndControllerBlobSHADict,
 	      frontEndComponentsBlobSHADict: frontEndComponentsBlobSHADict,
-	      viewBlobSHADict: viewBlobSHADict
+	      viewBlobSHADict: viewBlobSHADict,
+				routeBlobSHA: routeBlobSHA,
+				controllerBlobSHA: controllerBlobSHA,
+				siteBundleBlobSHA: siteBundleBlobSHA
 	    }
    	);
   },
@@ -113,6 +120,9 @@ var WorkspaceHelper = {
     backEndControllerBlobSHADict = data.backEndControllerBlobSHADict || {};
     frontEndComponentsBlobSHADict = data.frontEndComponentsBlobSHADict || {};
     viewBlobSHADict = data.viewBlobSHADict || {};
+    routeBlobSHA = data.routeBlobSHA || null;
+    controllerBlobSHA = data.controllerBlobSHA || null;
+    siteBundleBlobSHA = data.siteBundleBlobSHA || null;
     
     InternalProjectSettings.currentMode = 'site';
     
@@ -220,6 +230,7 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      MalformationRepairHelper.repair();
       
       FontHelper.initializeFontData(page.head.fonts);
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -271,6 +282,7 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      MalformationRepairHelper.repair();
       
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
@@ -297,6 +309,7 @@ var WorkspaceHelper = {
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
+      MalformationRepairHelper.repair();
       
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
@@ -625,12 +638,12 @@ var WorkspaceHelper = {
  		cacheOfGeneratedFrontEndCodeForAllPages = {};
  		cacheOfGeneratedBackEndCodeForAllPages = {};
     
-    data.globalSettings.currentMode = InternalProjectSettings.currentMode;
-    data.globalSettings.editingPageID = InternalProjectSettings.editingPageID;
-    data.globalSettings.editingComponentID = InternalProjectSettings.editingComponentID;
-    data.globalSettings.editingPopupID = InternalProjectSettings.editingPopupID;
- 		
- 		WorkspaceHelper.initializeWorkspaceData(data);
+    backEndControllerBlobSHADict = data.backEndControllerBlobSHADict || {};
+    frontEndComponentsBlobSHADict = data.frontEndComponentsBlobSHADict || {};
+    viewBlobSHADict = data.viewBlobSHADict || {};
+    routeBlobSHA = data.routeBlobSHA || null;
+    controllerBlobSHA = data.controllerBlobSHA || null;
+    siteBundleBlobSHA = data.siteBundleBlobSHA || null;
  	},
   getCommonExpandingFeatureScripts: () => {
   	let container = document.createElement('div');

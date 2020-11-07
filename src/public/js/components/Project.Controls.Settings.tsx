@@ -209,20 +209,18 @@ class Settings extends Base {
                           | Account Settings
                         .-fsb-preset-12bc19e4.col-12.internal-fsb-element(style={'FsbInheritedPresets': '12bc19e4'}, internal-fsb-guid="a379e3b8")
                           | Change Password
+                        .internal-fsb-element(style={'display': 'block', 'width': '100%', padding: '0px'}, internal-fsb-guid="3478b9ac")
+                          input(style={'display': 'block', 'width': '100%'}, type="text", type="text")
                         label.-fsb-preset-24bc9bae.col-12.internal-fsb-element(style={'FsbInheritedPresets': '24bc9bae'}, internal-fsb-guid="06cb46e5")
                           .container-fluid
                             .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
                               .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="0bd07ebe")
-                                | New password:
-                              .col-7.internal-fsb-element.offset-0(style={'display': 'block', 'width': '100%', padding: '0px'}, internal-fsb-guid="cee19129")
-                                input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="text", type="text")
+                                | New password ABC:
                         label.-fsb-preset-24bc9bae.col-12.internal-fsb-element(style={'FsbInheritedPresets': '24bc9bae'}, internal-fsb-guid="76574a2d")
                           .container-fluid
                             .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
                               .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="b4d97ce1")
                                 | Confirm password:
-                              .col-7.internal-fsb-element.offset-0(style={'display': 'block', 'width': '100%', padding: '0px'}, internal-fsb-guid="4330a5ac")
-                                input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="text", type="text")
                         .-fsb-preset-12bc19e4.col-12.internal-fsb-element(style={'FsbInheritedPresets': '12bc19e4'}, internal-fsb-guid="d577da61")
                           | Delete Account
                         .-fsb-preset-baed14b5.col-12.internal-fsb-element(style={'FsbInheritedPresets': 'baed14b5'}, internal-fsb-guid="1bdb6469")

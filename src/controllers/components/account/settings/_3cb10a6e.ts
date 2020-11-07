@@ -311,22 +311,12 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('cee19129', undefined, undefined, undefined);
-		ValidationHelper.registerInput('cee19129', "Textbox 1", false, undefined);
+		RequestHelper.registerInput('3478b9ac', undefined, undefined, undefined);
+		ValidationHelper.registerInput('3478b9ac', "Textbox 1", false, undefined);
     for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, 'cee19129' + ((i == -1) ? '' : '[' + i + ']'));
+      input = RequestHelper.getInput(this.pageId, request, '3478b9ac' + ((i == -1) ? '' : '[' + i + ']'));
     
       // Override data parsing and manipulation of Textbox 1 here:
-      // 
-      
-      if (input != null) data.push(input);
-    }
-		RequestHelper.registerInput('4330a5ac', undefined, undefined, undefined);
-		ValidationHelper.registerInput('4330a5ac', "Textbox 2", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '4330a5ac' + ((i == -1) ? '' : '[' + i + ']'));
-    
-      // Override data parsing and manipulation of Textbox 2 here:
       // 
       
       if (input != null) data.push(input);
