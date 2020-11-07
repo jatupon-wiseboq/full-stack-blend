@@ -146,7 +146,7 @@ app.get("/logout", userController.logout);
 // app.post("/account/profile", passportConfig.isAuthenticated, userController.postUpdateProfile);
 // app.post("/account/github", passportConfig.isAuthenticated, userController.postUpdateGitHub);
 // app.post("/account/password", passportConfig.isAuthenticated, userController.postUpdatePassword);
-// app.post("/account/delete", passportConfig.isAuthenticated, userController.postDeleteAccount);
+app.get("/account/delete", passportConfig.isAuthenticated, userController.getDeleteAccount);
 app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**

@@ -367,6 +367,25 @@ export const postDeleteAccount = (req: Request, res: Response, next: NextFunctio
 
 };
 
+export const getDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
+
+    const user = req.user as UserDocument;
+
+    User.remove({_id: user.id}, (err) => {
+
+        if (err) {
+
+            return next(err);
+
+        }
+        req.logout();
+        req.flash("info", {msg: "Your account has been deleted."});
+        res.redirect("/");
+
+    });
+
+};
+
 /**
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
