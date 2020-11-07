@@ -321,6 +321,16 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
+		RequestHelper.registerInput('33832ba7', undefined, undefined, undefined);
+		ValidationHelper.registerInput('33832ba7', "Textbox 1", false, undefined);
+    for (let i=-1; i<128; i++) {
+      input = RequestHelper.getInput(this.pageId, request, '33832ba7' + ((i == -1) ? '' : '[' + i + ']'));
+    
+      // Override data parsing and manipulation of Textbox 1 here:
+      // 
+      
+      if (input != null) data.push(input);
+    }
 
 	  // <---Auto[Merging]
 	  

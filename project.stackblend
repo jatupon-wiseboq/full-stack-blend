@@ -14,7 +14,7 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "a4149cb61180288063ac635a05ec04051ebdaf9e#-1891110405",
+    "3cb10a6e": "d350b1718b8af2623439856fbc33eca6ee741a15#1964226690",
     "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9#1409907872",
     "index": "56fc9868965e93a3e4094d612dd13015186c8092#2023923522"
   },
@@ -628,17 +628,6 @@
         "    internal-fsb-name=\"TextElement 1\"",
         "    style=\"-fsb-inherited-presets: 12bc19e4\">Change Password</div>",
         "",
-        "<div",
-        "    class=\"internal-fsb-element\"",
-        "    internal-fsb-guid=\"3478b9ac\"",
-        "    internal-fsb-name=\"Textbox 1\"",
-        "    internal-fsb-event-no-propagate=\"1\"",
-        "    style=\"-fsb-empty\"",
-        "    internal-fsb-class=\"Textbox\">",
-        "<input",
-        "    type=\"text\"",
-        "    style=\"-fsb-for-children: true; display: block; width: 100%\">",
-        "</div>",
         "<label",
         "    class=\"-fsb-preset-24bc9bae col-12 internal-fsb-element\"",
         "    internal-fsb-class=\"Label\"",
@@ -658,8 +647,20 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"0bd07ebe\"",
         "    internal-fsb-name=\"TextElement 4\"",
-        "    style=\"-fsb-inherited-presets: c8d71ae6\">New password ABC:</div>",
+        "    style=\"-fsb-inherited-presets: c8d71ae6\">New password:</div>",
         "",
+        "<div",
+        "    class=\"col-7 internal-fsb-element\"",
+        "    internal-fsb-guid=\"3478b9ac\"",
+        "    internal-fsb-name=\"Textbox 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    style=\"-fsb-empty\"",
+        "    internal-fsb-class=\"Textbox\">",
+        "<input",
+        "    type=\"text\"",
+        "    style=\"-fsb-for-children: true; display: block; width: 100%\"",
+        "    class=\"form-control form-control-sm \">",
+        "</div>",
         "</div>",
         "</div>",
         "</label>",
@@ -684,6 +685,18 @@
         "    internal-fsb-name=\"TextElement 5\"",
         "    style=\"-fsb-inherited-presets: c8d71ae6\">Confirm password:</div>",
         "",
+        "<div",
+        "    class=\"col-7 internal-fsb-element\"",
+        "    internal-fsb-guid=\"33832ba7\"",
+        "    internal-fsb-name=\"Textbox 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    style=\"-fsb-empty\"",
+        "    internal-fsb-class=\"Textbox\">",
+        "<input",
+        "    type=\"text\"",
+        "    style=\"-fsb-for-children: true; display: block; width: 100%\"",
+        "    class=\"form-control form-control-sm \">",
+        "</div>",
         "</div>",
         "</div>",
         "</label>",
@@ -1288,7 +1301,7 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.Settings": "eeb6df73d309e327c37aa120924972b20e84f61a#66311557"
+    "Project.Controls.Settings": "2c669449a3d9814e7c03dbeee8ce9248e57ed66f#-704747605"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -1377,7 +1390,7 @@
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "cb75f5d2867dae6bbbc31c2b7ae6222074c6ce2a#-61569745",
+  "siteBundleBlobSHA": "892ee14f79a19ff6254ac10272f4987cc6eaa206#-496688403",
   "sites": {
     "3cb10a6e": {
       "accessories": {},
