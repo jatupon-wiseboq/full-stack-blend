@@ -135,7 +135,8 @@ class Controller extends Base {
         if (user) {
           User.findById(user.id, (err, user: UserDocument) => {
             if (err) {
-              throw new Error('NOT LOGGING IN');
+              this.response.redirect('/account/authenticate');
+              resolve({});
             } else {
               resolve({
                 User: {
@@ -164,7 +165,8 @@ class Controller extends Base {
             }
           });
         } else {
-          throw new Error('NOT LOGGING IN');
+          this.response.redirect('/account/authenticate');
+          resolve({});
         }
       } catch(error) {
         this.response.redirect('/account/authenticate');
