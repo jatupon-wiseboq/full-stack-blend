@@ -412,7 +412,11 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"baed14b5\"",
         "    internal-fsb-name=\"TextElement 26\"",
-        "    internal-fsb-reusable-preset-name=\"settings_note\">⚠️ Please create a dedicate GitHub account to use with StackBlend: a separate developer account, instead of admin one, that has a writing permission of the project which will be developed on StackBlend platform.</div>",
+        "    internal-fsb-reusable-preset-name=\"settings_note\">⚠️ Please create a dedicate GitHub account to use with StackBlend: a separate developer account, instead of admin one, that has a writing permission of the project which will be developed on StackBlend platform.<div>",
+        "<br>",
+        "</div>",
+        "<div>Please follow the instruction at: https://github.com/SoftenStorm/boilerplate</div>",
+        "</div>",
         "<button",
         "    class=\"btn btn-primary btn-sm col-6 internal-fsb-allow-cursor internal-fsb-element offset-3\"",
         "    internal-fsb-class=\"Button\"",
@@ -987,11 +991,8 @@
         "</div>",
         "</div>"
       ],
-      "id": "245bc127",
       "klass": "Settings",
-      "name": "Settings",
-      "namespace": "Project.Controls",
-      "state": "create"
+      "namespace": "Project.Controls"
     },
     "3249d676": {
       "html": [
@@ -1002,7 +1003,8 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    style=\"margin-top: 15px; padding-left: 0px; padding-right: 15px\"",
-        "    internal-fsb-react-mode=\"Site\">",
+        "    internal-fsb-react-mode=\"Site\"",
+        "    internal-fsb-react-class=\"ResumeNavigationBar\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -1043,11 +1045,8 @@
         "</div>",
         "</div>"
       ],
-      "id": "3249d676",
-      "klass": "FlowLayout_3249d676",
-      "name": "Resume Navigation Bar",
-      "namespace": "Project.Controls",
-      "state": "create"
+      "klass": "ResumeNavigationBar",
+      "namespace": "Project.Controls"
     },
     "4d816ba8": {
       "html": [
@@ -1415,19 +1414,6 @@
     }
   },
   "controllerBlobSHA": "be3484e8503fbb89c1852bb448a4ac4d6c42618b#1503510186",
-  "currentPersistingFiles": [
-    "src/controllers/components/account/settings/_3cb10a6e.ts",
-    "src/controllers/components/account/authenticate/_9e885d49.ts",
-    "src/controllers/components/developer/_b160aa0e.ts",
-    "src/controllers/components/index.ts",
-    "src/public/js/components/Project.Controls.Settings.tsx",
-    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
-    "src/public/js/components/Project.Controls.FlowLayout_3249d676.tsx",
-    "views/home/account/settings/_3cb10a6e.pug",
-    "views/home/account/authenticate/_9e885d49.pug",
-    "views/home/developer/_b160aa0e.pug",
-    "views/home/index.pug"
-  ],
   "flows": {
     "default": [
       "<body class=\"internal-fsb-guide-on internal-fsb-disabled-guide\">",
@@ -2372,13 +2358,7 @@
         "    style=\"-fsb-inherited-presets: 245bc127\"",
         "    internal-fsb-react-mode=\"Site\">",
         "</div>",
-        "<div",
-        "    class=\"col-12 internal-fsb-element\"",
-        "    internal-fsb-guid=\"3249d676\"",
-        "    internal-fsb-name=\"Resume Navigation Bar\"",
-        "    style=\"margin-top: 15px; padding-left: 0px; padding-right: 15px\"",
-        "    internal-fsb-react-mode=\"Site\">",
-        "</div>",
+        "",
         "</div>",
         "</div>",
         "</body>"
@@ -3032,7 +3012,7 @@
         "",
         "    // Handle the event of onButtonClick (Button 1) here:",
         "    // ",
-        "    window.location = 'https://github.com/SoftenStorm/boilerplate';",
+        "    window.location = '/account/authenticate';",
         "    ",
         "    \"",
         "    onfsbclick=\"{&quot;event&quot;:true}\"",
