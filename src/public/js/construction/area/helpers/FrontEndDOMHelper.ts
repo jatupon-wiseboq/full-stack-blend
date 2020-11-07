@@ -272,7 +272,7 @@ ${rootScript}`;
         }
         
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
-          bindingStyles = {'padding': '0px'};
+          bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
         
         for (let attribute of _attributes) {
@@ -672,7 +672,7 @@ ${rootScript}`;
         }
         
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
-          bindingStyles = {'padding': '0px'};
+          bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
         
         for (let attribute of _attributes) {
