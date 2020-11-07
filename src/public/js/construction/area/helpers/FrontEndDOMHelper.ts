@@ -672,6 +672,7 @@ ${rootScript}`;
         }
         
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
+        	bindingStyles = {}; // Disable custom binding.
           bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
         
@@ -782,6 +783,14 @@ ${rootScript}`;
           executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
           
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
+        }
+        
+        for (let key in bindingStyles) {
+          if (bindingStyles.hasOwnProperty(key)) {
+            if (styles == null) styles = [];
+            let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+            styles.push(camelKey + ': ' + bindingStyles[key]);
+          }
         }
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
