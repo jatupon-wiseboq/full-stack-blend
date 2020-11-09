@@ -159,7 +159,7 @@ class FlowLayout_4d816ba8 extends Base {
                 .container-fluid
                   .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
                     .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, internal-fsb-guid="e439a68e")
-                      | Please login or signup to start using StackBlend Studio
+                      | Please login or signup to start using StackBlend studio
                     .col-12.internal-fsb-allow-cursor.internal-fsb-element(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-guid="89972713")
                       .container-fluid
                         .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
