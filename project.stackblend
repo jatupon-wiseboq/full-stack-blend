@@ -1974,7 +1974,7 @@
         "    internal-fsb-event-no-propagate=\"1\">",
         "",
         "<a",
-        "    class=\" btn btn-secondary btn-sm col-5 col-lg-2 col-md-3 col-sm-4 col-xl-2 internal-fsb-allow-cursor internal-fsb-element offset-7 offset-lg-10 offset-md-9 offset-sm-8 offset-xl-10\"",
+        "    class=\"btn btn-secondary btn-sm col-5 col-lg-2 col-md-3 col-sm-4 col-xl-1 internal-fsb-allow-cursor internal-fsb-element offset-7 offset-lg-10 offset-md-9 offset-sm-8 offset-xl-11\"",
         "    internal-fsb-guid=\"a32459c0\"",
         "    internal-fsb-name=\"Back to Editor\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -3613,8 +3613,8 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "19be908769e513d86ad8673797a9e7b56d4dde9f#567064211",
-    "9e885d49": "d39e0010eb62f1b5eb9c90ef21a72db3cb5ca686#-723213886",
+    "3cb10a6e": "559e58779f2ea709997c1e1880d99c962dcff021#-37726662",
+    "9e885d49": "d8f91a3bc59cada775a1c5702864a3892a1e8f9d#-384022117",
     "b160aa0e": "ce1db94a918dbb53046fa623278582fe30d215a7#436614352",
     "index": "79795b512dcf12d06a96e72efafe6cbab5522b25#1259468679"
   }
