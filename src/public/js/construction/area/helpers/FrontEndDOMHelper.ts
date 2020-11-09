@@ -276,6 +276,8 @@ ${rootScript}`;
         }
         
         for (let attribute of _attributes) {
+        	if (attribute.value === null) continue;
+        	
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.trim().replace(/[\ ]+/g, ' ');
@@ -677,6 +679,8 @@ ${rootScript}`;
         }
         
         for (let attribute of _attributes) {
+        	if (attribute.value === null) continue;
+        	
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace(/(internal-fsb-allow-cursor)/g, '').trim();
