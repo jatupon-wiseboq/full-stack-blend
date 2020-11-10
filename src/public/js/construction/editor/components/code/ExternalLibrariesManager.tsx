@@ -141,7 +141,6 @@ class ExternalLibrariesManager extends Base<Props, State> {
     		    values = values.filter(value => value.indexOf(this.state.src + '#') == -1);
     		    
     		    values.push(this.state.src + '#' + this.state.mode);
-    		    values.sort();
     		    
     		    perform('update', {
     		        extensions: [{
