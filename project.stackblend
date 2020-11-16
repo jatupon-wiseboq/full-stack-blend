@@ -73,7 +73,7 @@
         "\"",
         "    internal-fsb-react-mode=\"Site\"",
         "    internal-fsb-reusable-preset-name=\"settings\"",
-        "    internal-fsb-note=\"[ShutterStock] The background image used here is limited usage in print, advertising, and packaging, but unlimited in web distribution.\">",
+        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -992,8 +992,11 @@
         "</div>",
         "</div>"
       ],
+      "id": "245bc127",
       "klass": "Settings",
-      "namespace": "Project.Controls"
+      "name": "Settings",
+      "namespace": "Project.Controls",
+      "state": "create"
     },
     "4d816ba8": {
       "html": [
@@ -1047,7 +1050,7 @@
         "  }",
         "  ",
         "  \"",
-        "    internal-fsb-note=\"[ShutterStock] The background image used here is limited usage in print, advertising, and packaging, but unlimited in web distribution.\">",
+        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -2997,7 +3000,7 @@
         "    internal-fsb-guid=\"722b0448\"",
         "    internal-fsb-name=\"FlowLayout 6\"",
         "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px top; background-size: cover\"",
-        "    internal-fsb-note=\"[ShutterStock] The background image used here is limited usage in print, advertising, and packaging, but unlimited in web distribution.\">",
+        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -3499,7 +3502,7 @@
         "    internal-fsb-guid=\"1daa10d1\"",
         "    internal-fsb-name=\"FlowLayout 23\"",
         "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px bottom; background-size: cover\"",
-        "    internal-fsb-note=\"[ShutterStock] The background image used here is limited usage in print, advertising, and packaging, but unlimited in web distribution.\">",
+        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -3644,9 +3647,9 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "00efaf9d5bb835aa3adfc6e17ca11a27303bfe56#-1328370174",
+    "3cb10a6e": "84874b809574e2ac6f4b41c5c46e9e2ceee97f69#1698072233",
     "9e885d49": "9d9df1e1a7fa7a05aa211802e264057737a6d70f#-218408566",
     "b160aa0e": "dc6bc91a8e000dbedb4c73db0abd0a064299423b#-548997569",
-    "index": "35330964ab482588e5dd511d1dcd622d45d581dc#1459365601"
+    "index": "286dc8b03569b13beeccc84490032886dfdba6fa#1339109434"
   }
 }
