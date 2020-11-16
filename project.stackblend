@@ -1068,7 +1068,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"08a05b72\"",
         "    internal-fsb-name=\"TextElement 2\"",
-        "    style=\"color: rgba(255, 255, 255, 1); display: block; font-size: 24px; width: 100%\">StackBlend Studio 2020</div>",
+        "    style=\"color: rgba(255, 255, 255, 1); display: block; font-size: 24px; width: 100%\">StackBlend Studio</div>",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
         "    internal-fsb-class=\"Rectangle\"",
@@ -1084,7 +1084,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"e55072d1\"",
         "    internal-fsb-name=\"TextElement 3\"",
-        "    style=\"color: rgba(255, 255, 255, 1); display: block; font-size: 12px; width: 100%\">By accessing the website, you are agreeing to be bound by these terms of service, all applicable laws and regulations, and agree that you are responsible for compliance with any applicable local laws. If you do not agree with any of these terms, you are prohibited from using or accessing this site. The materials contained in this website are protected by applicable copyright and trademark law.</div>",
+        "    style=\"-moz-hyphens: auto; -ms-hyphens: auto; -ms-overflow-y: scroll; -ms-word-break: break-word; -webkit-hyphens: auto; color: rgba(255, 255, 255, 1); display: block; font-size: 10px; hyphens: auto; overflow-y: scroll; text-align: justify; width: 100%; word-break: break-word\">ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>",
         "</div>",
         "",
         "<div",
@@ -1869,7 +1869,7 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "f1044ccbafed3d876192406f901c3e0d6d8d9a91#824850414",
+    "Project.Controls.FlowLayout_4d816ba8": "235a4f89ef306fc8ce96c97cbc36caf98dd14d2d#-2102816570",
     "Project.Controls.Settings": "882d59c4ca68bd2044a1eb504df691d7a2a4a07c#-519646893"
   },
   "globalSettings": {
@@ -1918,7 +1918,7 @@
     "currentMode": "site",
     "editingAnimationID": "d0e675b7",
     "editingComponentID": null,
-    "editingKeyframeID": "0b6ca772",
+    "editingKeyframeID": null,
     "editingPageID": "index",
     "editingPopupID": null,
     "externalLibraries": "bootstrap@4 react@16",
@@ -3630,8 +3630,8 @@
   "version": 1.2,
   "viewBlobSHADict": {
     "3cb10a6e": "a311d620fcdf162ff0109e59b132327150bbdb33#653713555",
-    "9e885d49": "d8f91a3bc59cada775a1c5702864a3892a1e8f9d#-384022117",
+    "9e885d49": "0cd1b5f96d59353ce0683b1b4f8d35f6a51f6a0f#794727601",
     "b160aa0e": "ce1db94a918dbb53046fa623278582fe30d215a7#436614352",
-    "index": "d339b42f768d39f7fa7e58e07aa4a6a3005483a6#-598111631"
+    "index": "01530c2edb7acff05182097a2c2a564b652493ec#151265848"
   }
 }
