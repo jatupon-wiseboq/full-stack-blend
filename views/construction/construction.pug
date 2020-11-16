@@ -1,0 +1,45 @@
+link(rel='stylesheet', href='/css/construction/editor.css')
+script(src='https://unpkg.com/react@16/umd/react.development.js')
+script(src='https://unpkg.com/react-dom@16/umd/react-dom.development.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/react-ace/8.1.0/react-ace.min.js')
+script(src='https://code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/jquery-colpick@3.1.0/css/colpick.css')
+script(src='https://cdn.jsdelivr.net/npm/jquery-colpick@3.1.0/js/colpick.min.js')
+script(src='https://unpkg.com/github-api/dist/GitHub.bundle.min.js')
+script(src='https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js')
+link(rel='stylesheet', href='https://jsoverson.github.io/jsconsole/bower_components/codemirror/lib/codemirror.css')
+link(rel='stylesheet', href='https://jsoverson.github.io/jsconsole/bower_components/codemirror/theme/eclipse.css')
+link(rel='stylesheet', href='https://jsoverson.github.io/jsconsole/bower_components/codemirror/theme/base16-dark.css')
+link(rel='stylesheet', href='https://jsoverson.github.io/jsconsole/styles/console.css')
+script(src='https://jsoverson.github.io/jsconsole/bower_components/codemirror/lib/codemirror.js')
+script(src='https://jsoverson.github.io/jsconsole/bower_components/codemirror/mode/javascript/javascript.js')
+script(src='https://jsoverson.github.io/jsconsole/dist/console.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.11.0/beautify.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.11.0/beautify-css.min.js')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.11.0/beautify-html.min.js')
+script(src='/js/construction/Editor.bundle.js')
+
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      include toolbar/toolbar
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel
+      .workspace-container
+        .workspace-horizontal-container
+          .workspace-horizontal-panel(style="border-bottom: solid 1px #c8c8c8;")
+            include explorer/explorer
+          .workspace-horizontal-panel.full-relative-size(style="border-bottom: solid 1px #c8c8c8;")
+            .workspace-container
+              .workspace-vertical-container
+                .workspace-vertical-panel
+                  include area/area
+              include footer/footer
+          .workspace-horizontal-panel
+            include sidebar/sidebar
+
+script(src='https://kit.fontawesome.com/a1b6590f7b.js', crossorigin='anonymous')
+script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', integrity='sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q', crossorigin='anonymous')
+script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', integrity='sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl' crossorigin='anonymous')
+script.
+  if (window.setup) window.setup();

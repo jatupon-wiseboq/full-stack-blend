@@ -1,0 +1,100 @@
+.workspace-container
+  .workspace-horizontal-container
+    .workspace-horizontal-panel
+      .workspace-container
+        .workspace-vertical-container
+          .workspace-vertical-panel
+            .workspace-panel-container.sidebar
+              .workspace-container
+                .workspace-vertical-container.full-relative-size
+                  .workspace-vertical-panel(style="border-bottom: none;")
+                    .workspace-container.siteToolset.popupsToolset.componentsToolset.toolset
+                      .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
+                        .workspace-vertical-panel
+                          .workspace-tab-container
+                            .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-main-panel.active(id='sidebarAction', onclick="swap('.sidebar-main-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=true)
+                                | Action
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-shape-panel(id='formatStyle', onclick="swap('.sidebar-format-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=false)
+                                | Format
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-shape-panel(id='sidebarStyle', onclick="swap('.sidebar-style-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=false)
+                                | Style
+                      .workspace-vertical-container.full-relative-size(internal-fsb-for="editing", style="display: none;")
+                        .workspace-vertical-panel
+                          .workspace-panel-container.scrollable
+                            .panel.sidebar-main-panel.active
+                              .workspace-container
+                                .workspace-vertical-container
+                                  .workspace-vertical-panel
+                                    .workspace-panel-container.white
+                                      .panel.active(id='design')
+                                        include html-design/action/action
+                                      .panel(id='animation')
+                                        include html-animation/timeline
+                                      .panel(id='coding')
+                                        include html-coding/coding
+                            .panel.sidebar-format-panel
+                              include html-common/format/format
+                            .panel.sidebar-style-panel
+                              include html-common/style/style
+                      .workspace-vertical-container.full-relative-size(internal-fsb-not-for="editing")
+                        .workspace-vertical-panel
+                          .workspace-panel-container
+                            include ../common/empty
+                    .workspace-container.dataToolset.toolset(style="display: none;")
+                      .workspace-vertical-container
+                        .workspace-vertical-panel
+                          .workspace-tab-container
+                            .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-properties-panel.active(id='sidebarProperties', onclick="swap('.sidebar-properties-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=true)
+                                | Properties
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-permission-panel(id='sidebarPermission', onclick="swap('.sidebar-permission-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '86px'})
+                                input(type='radio', name='options', checked=true)
+                                | Permission
+                      .workspace-vertical-container.full-relative-size
+                        .workspace-vertical-panel
+                          .workspace-panel-container.scrollable
+                            .panel.sidebar-properties-panel.active
+                              include html-data/properties
+                            .panel.sidebar-permission-panel
+                              include html-data/permission
+                    .workspace-container.servicesToolset.toolset(style="display: none;")
+                      .workspace-vertical-container
+                        .workspace-vertical-panel
+                          .workspace-tab-container
+                            .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
+                                input(type='radio', name='options', checked=true, style={width: '86px'})
+                                | Properties
+                      .workspace-vertical-container.full-relative-size
+                        .workspace-vertical-panel
+                          .workspace-panel-container.scrollable
+                            .panel.active
+                              | Services
+    .workspace-horizontal-panel(style="border-left: solid 1px #c8c8c8;")
+      .workspace-container(style="width: 259px;")
+        .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
+          .workspace-vertical-panel
+            .workspace-tab-container
+              .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(id='layers', onclick="swap('.sidebar-layers-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '85px'})
+                  input(type='radio', name='options', checked=true)
+                  | Layers
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(id='computedStyle', onclick="swap('.sidebar-computed-style-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '130px'})
+                  input(type='radio', name='options', checked=true)
+                  | Computed Style
+        .workspace-vertical-container.full-relative-size(internal-fsb-for="editing", style="display: none;")
+          .workspace-vertical-panel
+            .workspace-panel-container.scrollable
+              .panel.sidebar-layers-panel.active
+                include html-common/layers/layers
+              .panel.sidebar-computed-style-panel
+                include html-common/style/computed
+        .workspace-vertical-container.full-relative-size(internal-fsb-not-for="editing")
+          .workspace-vertical-panel
+            .workspace-panel-container
+              include ../common/empty

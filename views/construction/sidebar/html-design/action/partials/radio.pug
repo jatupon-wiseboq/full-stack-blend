@@ -1,0 +1,24 @@
+.section-container(internal-fsb-for="internal-fsb-class:Radio")
+  .section-title
+    | Radio Options
+  .section-subtitle
+    | Group Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['name'], inline: true, button: false}")
+  .section-subtitle
+    | Default Checked
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['checked']}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
+  .section-subtitle
+    | Editable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
+  .section-hr

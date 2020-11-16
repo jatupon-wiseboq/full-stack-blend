@@ -1,24 +1,47 @@
-import errorHandler from "errorhandler";
+import * as SocketIO from "socket.io";
+import fs from "fs";
+import dotenv from "dotenv";
 
-import app from "./app";
+import app from "./app.js";
 
-/**
- * Error Handler. Provides full stack - remove for production
- */
-app.use(errorHandler());
+let socket = null;
+let server = null;
 
-/**
- * Start Express server.
- */
-const server = app.listen(app.get("port"), () => {
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+}
 
-    console.log(
-        "  App is running at http://localhost:%d in %s mode",
-        app.get("port"),
-        app.get("env")
-    );
-    console.log("  Press CTRL-C to stop\n");
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  const https = require("https");
+  
+  // Development SSL
+  const sslkey = fs.readFileSync("localhost.key");
+  const sslcert = fs.readFileSync("localhost.crt");
+  const options = {
+      key: sslkey,
+      cert: sslcert
+  };
+  
+  server = https.createServer(options, app).listen(443);
+	socket = SocketIO.listen(server);
+} else {
+	const http = require("http");
+	
+	// [TODO] Replace and configure production SSL
+  server = http.createServer(app).listen(process.env.PORT || 8000);
+	socket = SocketIO.listen(server);
+}
 
-});
+// StackBlend routes
+// 
+import * as endpoint from "./controllers/Endpoint";
 
-export default server;
+try {
+	const route = require("./route");
+	route.default(app);
+} catch (error) {
+	console.log("\x1b[31m", error, "\x1b[0m");
+	endpoint.addRecentError(error);
+}
+
+export {server, socket};

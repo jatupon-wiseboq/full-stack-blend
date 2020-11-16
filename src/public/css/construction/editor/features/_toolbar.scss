@@ -1,0 +1,72 @@
+@import "../../common/variables";
+
+// Toolbar
+// -------------------------
+.toolbar {
+  border-bottom: solid 1px rgb(127,127,127);
+  background: rgb(195,195,195);
+  background: linear-gradient(0deg, rgba(222,222,222,1) 0%, rgba(232,232,232,1) 50%, rgba(242,242,242,1) 100%);
+  
+  .btn {
+    border-radius: 5px;
+    margin-bottom: 17px;
+    position: relative;
+    
+    .title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -22px;
+      font-size: 0.85em;
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+  
+  i.fa {
+    min-width: 21px;
+    min-height: 18px;
+  }
+  
+  .dropdown-menu {
+    top: 20px;
+    z-index: #{$maximum-z-index - 50};
+    
+    .dropdown-item {
+      cursor: pointer;
+      
+      &.active {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+// Tooltip
+// -------------------------
+.tooltip {
+  .tooltip-inner {
+    min-width: 240px;
+    color: #666;
+    background-color: #fff;
+    -webkit-box-shadow: 1.5px 1.5px 3px 3px #ddd;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+    -moz-box-shadow:    1.5px 1.5px 3px 3px #ddd;  /* Firefox 3.5 - 3.6 */
+    box-shadow:         1.5px 1.5px 3px 3px #ddd;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
+    text-align: left;
+    
+    p {
+      margin: 0 3px;
+      font-size: 0.9em;
+      
+      b {
+        color: #000;
+        font-weight: 500;
+        font-size: 1.15em;
+      }
+    }
+  }
+}
+.tooltip.bs-tooltip-top > .arrow::before { border-top-color: white; }
+.tooltip.bs-tooltip-bottom > .arrow::before { border-bottom-color: white; }
+.tooltip.bs-tooltip-left > .arrow::before { border-left-color: white; }
+.tooltip.bs-tooltip-right > .arrow::before { border-right-color: white; }

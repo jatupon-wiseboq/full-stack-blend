@@ -1,0 +1,111 @@
+// Custom Icon
+// -------------------------
+.custom-icon-table-top,
+.custom-icon-table-right,
+.custom-icon-table-bottom,
+.custom-icon-table-left,
+.custom-icon-table-vertical,
+.custom-icon-table-horizontal,
+.custom-icon-table-center,
+.custom-icon-table-outline {
+	position: relative;
+	display: block;
+	width: 21px;
+	height: 21px;
+	border: dashed 1px #aaaaaa;
+
+	&::before {
+		content: '';
+		display: 'block';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 10px;
+		border-bottom: dashed 1px #aaaaaa;
+	}
+	&::after {
+		content: '';
+		display: 'block';
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 10px;
+		height: 100%;
+		border-left: dashed 1px #aaaaaa;
+	}	
+}
+.custom-icon-table-top {
+	border-top: solid 2px #333333;
+}
+.btn-primary .custom-icon-table-top {
+	border-top-color: #ffffff;
+}
+.custom-icon-table-right {
+	border-right: solid 2px #333333;
+}
+.btn-primary .custom-icon-table-right {
+	border-right-color: #ffffff;
+}
+.custom-icon-table-bottom {
+	border-bottom: solid 2px #333333;
+}
+.btn-primary .custom-icon-table-bottom {
+	border-bottom-color: #ffffff;
+}
+.custom-icon-table-left {
+	border-left: solid 2px #333333;
+}
+.btn-primary .custom-icon-table-left {
+	border-left-color: #ffffff;
+}
+.custom-icon-table-horizontal {
+	&::before {
+		border-bottom: solid 2px #333333;
+	}
+}
+.btn-primary {
+	.custom-icon-table-horizontal {
+		&::before {
+			border-bottom-color: #ffffff;
+		}
+	}
+}
+.custom-icon-table-vertical {
+	&::after {
+		border-left: solid 2px #333333;
+	}
+}
+.btn-primary {
+	.custom-icon-table-vertical {
+		&::after {
+			border-left-color: #ffffff;
+		}
+	}
+}
+.custom-icon-table-center {
+	&::before {
+		border-bottom: solid 2px #333333;
+	}
+	&::after {
+		border-left: solid 2px #333333;
+	}
+}
+.btn-primary {
+	.custom-icon-table-center {
+		&::before {
+			border-bottom-color: #ffffff;
+		}
+		&::after {
+			border-left-color: #ffffff;
+		}
+	}
+}
+.custom-icon-table-outline {
+	border: solid 2px #333333;
+}
+.btn-primary {
+	.custom-icon-table-outline {
+		border-color: #ffffff;
+	}
+}

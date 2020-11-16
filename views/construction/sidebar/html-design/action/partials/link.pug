@@ -1,0 +1,12 @@
+.section-container(internal-fsb-for="internal-fsb-class:Link")
+  .section-title
+    | Link Options
+  .section-subtitle
+    | Destination
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['href'], inline: true, button: false}")
+  .section-subtitle
+    | Target
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['target'], inline: true, button: false}")
+  .section-hr

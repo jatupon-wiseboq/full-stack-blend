@@ -46,6 +46,49 @@ block content
           | Update Profile
 
   .page-header
+    h3 GitHub Account
+    h5 Please create a dedicate GitHub account to use with StackBlend: a separate developer account, instead of admin one, that has a writing permission of the project which will be developed on StackBlend platform.
+    hr
+
+  form.form-horizontal(action='/account/github', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    if !user.github
+      .form-group.row.justify-content-md-center
+        .col-sm-4
+          a.btn.btn.btn-primary(href="/auth/github")
+            | Connect to a Developer Account
+    else
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='alias') Organization Or User Alias
+        .col-sm-7
+          input.form-control(type='text', name='alias', id='alias', value=user.alias)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='project') Project Name
+        .col-sm-7
+          input.form-control(type='text', name='project', id='project', value=user.project)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='feature') Feature Branch (Isolate Save)
+        .col-sm-7
+          input.form-control(type='text', name='feature', id='feature', value=user.feature)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='develop') Develop Branch (Merged Save)
+        .col-sm-7
+          input.form-control(type='text', name='develop', id='develop', value=user.develop)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='staging') Staging Branch (Deploy)
+        .col-sm-7
+          input.form-control(type='text', name='staging', id='staging', value=user.staging)
+      .form-group.row.justify-content-md-center
+        label.col-sm-3.col-form-label.text-right.font-weight-bold(for='endpoint') Endpoint (For Testing APIs)
+        .col-sm-7
+          input.form-control(type='text', name='endpoint', id='endpoint', value=user.endpoint)
+      .form-group.row.justify-content-md-center
+        .col-sm-4
+          button.btn.btn.btn-primary(type='submit')
+            i.fa.fa-pencil
+            | Update GitHub Information
+
+  .page-header
     h3 Change Password
     hr
 
@@ -88,4 +131,8 @@ block content
           p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
         else
           p: a(href='/auth/facebook') Link your Facebook account
+        if user.github
+          p: a.text-danger(href='/account/unlink/github') Unlink your GitHub account
+        else
+          p: a(href='/auth/github') Link your GitHub account
 

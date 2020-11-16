@@ -1,0 +1,14 @@
+// Dropdown Picker
+// -------------------------
+.dropdown-picker {
+  font-size: 11px;
+  display: inline-block;
+  
+  .btn::after {
+    display: none;
+  }
+  
+  * {
+    font-size: 11px;
+  }
+}

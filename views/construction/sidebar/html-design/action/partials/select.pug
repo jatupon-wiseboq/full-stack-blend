@@ -1,0 +1,28 @@
+.section-container(internal-fsb-for="internal-fsb-class:Select")
+  .section-title
+    | Select Options
+  .section-subtitle
+    | Multiple Selection
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['multiple']}")
+  .section-subtitle
+    | Size of Visible Options
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['size'], inline: true, button: false}")
+  .section-subtitle
+    | List of Items
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.OptionManager', "{}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
+  .section-subtitle
+    | Editable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
+  .section-hr

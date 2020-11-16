@@ -1,7 +1,9 @@
 import passport from "passport";
 import passportLocal from "passport-local";
 import passportFacebook from "passport-facebook";
+import passportGitHub from "passport-github";
 import _ from "lodash";
+import dotenv from "dotenv";
 
 // Import { User, UserType } from '../models/User';
 import {User, UserDocument} from "../models/User";
@@ -9,6 +11,13 @@ import {Request, Response, NextFunction} from "express";
 
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
+const GitHubStrategy = passportGitHub.Strategy;
+
+if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+  dotenv.config();
+} else {
+	dotenv.config();
+}
 
 passport.serializeUser<any, any>((user, done) => {
 
@@ -177,6 +186,113 @@ passport.use(new FacebookStrategy({
                     user.profile.gender = profile._json.gender;
                     user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
                     user.profile.location = profile._json.location ? profile._json.location.name : "";
+                    user.save((err: Error) => {
+
+                        done(err, user);
+
+                    });
+
+                }
+
+            });
+
+        });
+
+    }
+
+}));
+
+/**
+ * Sign in with GitHub.
+ */
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_ID,
+    clientSecret: process.env.GITHUB_SECRET,
+    callbackURL: "/auth/github/callback",
+    passReqToCallback: true
+}, (req: any, accessToken, refreshToken, profile, done) => {
+
+    if (req.user) {
+
+        User.findOne({github: profile.id}, (err, existingUser) => {
+
+            if (err) {
+
+                return done(err);
+
+            }
+            if (existingUser) {
+
+                existingUser.github = profile.id;
+                existingUser.tokens = existingUser.tokens.filter(token => token.kind != "github");
+                existingUser.tokens.push({kind: "github",
+                    accessToken});
+                existingUser.save((err: Error) => {
+
+                    req.flash("info", {msg: "GitHub account has been linked."});
+                    done(err, existingUser);
+
+                });
+
+            } else {
+
+                User.findById(req.user.id, (err, user: any) => {
+
+                    if (err) {
+
+                        return done(err);
+
+                    }
+                    user.github = profile.id;
+                    user.tokens.push({kind: "github",
+                        accessToken});
+                    user.save((err: Error) => {
+
+                        req.flash("info", {msg: "GitHub account has been linked."});
+                        done(err, user);
+
+                    });
+
+                });
+
+            }
+
+        });
+
+    } else {
+
+        User.findOne({github: profile.id}, (err, existingUser) => {
+
+            if (err) {
+
+                return done(err);
+
+            }
+            if (existingUser) {
+
+                return done(undefined, existingUser);
+
+            }
+            User.findOne({email: profile._json.email}, (err, existingEmailUser) => {
+
+                if (err) {
+
+                    return done(err);
+
+                }
+                if (existingEmailUser) {
+
+                    req.flash("errors", {msg: "There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings."});
+                    done(err);
+
+                } else {
+
+                    const user: any = new User();
+
+                    user.email = profile._json.email;
+                    user.github = profile.id;
+                    user.tokens.push({kind: "github",
+                        accessToken});
                     user.save((err: Error) => {
 
                         done(err, user);

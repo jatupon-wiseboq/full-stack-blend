@@ -1,0 +1,20 @@
+.section-container(internal-fsb-for="internal-fsb-class:File")
+  .section-title
+    | File Options
+  .section-subtitle
+    | Multiple Selection
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['multiple']}")
+  .section-subtitle
+    | File Extensions
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['accept'], inline: true, button: false}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['required']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
+  .section-hr

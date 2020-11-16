@@ -8,6 +8,7 @@ import {IVerifyOptions} from "passport-local";
 import {WriteError} from "mongodb";
 import {check, sanitize, validationResult} from "express-validator";
 import "../config/passport";
+import "babel-polyfill";
 
 /**
  * GET /login
@@ -250,6 +251,53 @@ export const postUpdateProfile = async (req: Request, res: Response, next: NextF
 };
 
 /**
+ * POST /account/github
+ * Update profile information.
+ */
+export const postUpdateGitHub = async (req: Request, res: Response, next: NextFunction) => {
+
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+
+        req.flash("errors", errors.array());
+
+        return res.redirect("/account");
+
+    }
+
+    const user = req.user as UserDocument;
+
+    User.findById(user.id, (err, user: UserDocument) => {
+
+        if (err) {
+
+            return next(err);
+
+        }
+        user.alias = req.body.alias || "";
+        user.project = req.body.project || "";
+        user.feature = req.body.feature || "";
+        user.develop = req.body.develop || "";
+        user.staging = req.body.staging || "";
+        user.endpoint = req.body.endpoint || "";
+        user.save((err: WriteError) => {
+
+            if (err) {
+
+                return next(err);
+
+            }
+            req.flash("success", {msg: "GitHub information has been updated."});
+            res.redirect("/account");
+
+        });
+
+    });
+
+};
+
+/**
  * POST /account/password
  * Update current password.
  */
@@ -319,6 +367,25 @@ export const postDeleteAccount = (req: Request, res: Response, next: NextFunctio
 
 };
 
+export const getDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
+
+    const user = req.user as UserDocument;
+
+    User.remove({_id: user.id}, (err) => {
+
+        if (err) {
+
+            return next(err);
+
+        }
+        req.logout();
+        req.flash("info", {msg: "Your account has been deleted."});
+        res.redirect("/");
+
+    });
+
+};
+
 /**
  * GET /account/unlink/:provider
  * Unlink OAuth provider.
@@ -345,7 +412,7 @@ export const getOauthUnlink = (req: Request, res: Response, next: NextFunction) 
 
             }
             req.flash("info", {msg: `${provider} account has been unlinked.`});
-            res.redirect("/account");
+            res.redirect("/account/settings");
 
         });
 

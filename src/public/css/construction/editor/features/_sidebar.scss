@@ -1,0 +1,68 @@
+// Sidebar
+// -------------------------
+.sidebar {
+  width: 259px;
+  
+  .workspace-panel-container {
+    .btn.btn-sm {
+      font-size: 11px;
+    }
+    
+    .dropdown-item {
+      font-size: 11px;
+    }
+    
+    .fa {
+      &.active {
+        color: #007bff;
+      }
+    }
+  }
+}
+
+// Event
+// -------------------------
+#event {
+  display: none;
+  
+  &.active {
+    display: table-row;
+  }
+}
+
+// Section
+// -------------------------
+.section-container {
+  font-size: 13px;
+  font-weight: 400;
+  padding: 7px;
+  
+  .section-title {
+    font-weight: 600;
+    margin: 3px 0 0;
+    color: #007bff;
+  }
+  
+  .section-subtitle {
+    font-size: 12px;
+    margin: 3px 0 0;
+    color: #888;
+  }
+  
+  .section-body {
+    margin: 3px 0;
+  }
+  
+  .section-note {
+    font-size: 12px;
+    margin: 7px 0 0;
+    color: #888;
+    text-align: center;
+  }
+
+  .section-hr {
+    margin: 11px 0 0;
+    height: 1px;
+    background-color: #ddd;
+  }
+}

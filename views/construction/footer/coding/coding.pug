@@ -1,0 +1,25 @@
+include ../../mixin/CreateReactComponent
+.workspace-decoration-top-horizontal-line
+.workspace-container
+  .workspace-vertical-container
+    .workspace-vertical-panel
+      .workspace-tab-container
+        .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+          a.btn.btn-secondary.btn-sm.btn-light.text-secondary.footer-front-end-panel.active(id='footerFrontEnd', onclick="swap('.footer-front-end-panel', null, null, null, null, true)", style={width: '100px'})
+            input(type='radio', name='options', checked=true)
+            | Front-End
+          a.btn.btn-secondary.btn-sm.btn-light.text-secondary.footer-back-end-panel(id='footerBackEnd', onclick="swap('.footer-back-end-panel', null, null, null, null, true)", style={width: '100px'})
+            input(type='radio', name='options', checked=false)
+            | Back-End
+          a.btn.btn-secondary.btn-sm.btn-light.text-secondary.footer-back-end-panel(id='footerConsole', onclick="swap('.footer-console-panel', null, null, null, null, true)", style={width: '120px'})
+            input(type='radio', name='options', checked=false)
+            | Debug Console
+  .workspace-vertical-container.full-relative-size
+    .workspace-vertical-panel(style="border-bottom: none;")
+      .workspace-panel-container
+        .panel.footer-front-end-panel.active
+          +CreateReactComponent('FullStackBlend.Components.FrontEndScriptEditor')
+        .panel.footer-back-end-panel
+          +CreateReactComponent('FullStackBlend.Components.BackEndScriptEditor')
+        .panel.footer-console-panel
+          +CreateReactComponent('FullStackBlend.Components.DebuggingConsole')
