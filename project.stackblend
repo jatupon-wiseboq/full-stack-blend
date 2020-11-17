@@ -1917,7 +1917,7 @@
     "currentMode": "site",
     "editingAnimationID": "d0e675b7",
     "editingComponentID": null,
-    "editingKeyframeID": "0b6ca772",
+    "editingKeyframeID": null,
     "editingPageID": "index",
     "editingPopupID": null,
     "externalLibraries": "bootstrap@4 react@16",
@@ -3013,7 +3013,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ac85eab\"",
         "    internal-fsb-name=\"FlowLayout 7\"",
-        "    style=\"padding-bottom: 200px; padding-top: 200px; position: relative\">",
+        "    style=\"padding-bottom: 180px; padding-top: 180px; position: relative\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -3650,6 +3650,6 @@
     "3cb10a6e": "00efaf9d5bb835aa3adfc6e17ca11a27303bfe56#-1328370174",
     "9e885d49": "9d9df1e1a7fa7a05aa211802e264057737a6d70f#-218408566",
     "b160aa0e": "dc6bc91a8e000dbedb4c73db0abd0a064299423b#-548997569",
-    "index": "35330964ab482588e5dd511d1dcd622d45d581dc#1459365601"
+    "index": "bd193221b8118e24e44bc4eb140d5965d9db5c1c#-713239729"
   }
 }
