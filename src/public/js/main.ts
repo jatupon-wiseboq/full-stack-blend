@@ -1,4 +1,3 @@
 $(document).ready(function() {
-    // Place JavaScript code here...
-
+  ($('[data-toggle="tooltip"]') as any).tooltip();
 });

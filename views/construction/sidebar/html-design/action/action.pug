@@ -1,0 +1,68 @@
+include ../../../mixin/CreateReactComponent
+.section-container.internal-fsb-selecting-on
+  .section-title
+    | Layer
+  .section-subtitle
+    | Name
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+  .section-subtitle
+    | Note
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
+  .section-hr
+div(internal-fsb-not-for="internal-fsb-inheriting")
+  include ./partials/table
+  include ./partials/textbox
+  include ./partials/select
+  include ./partials/radio
+  include ./partials/checkbox
+  include ./partials/file
+  include ./partials/button
+  include ./partials/iframe
+  include ./partials/image
+  include ./partials/video
+  include ./partials/link
+  .section-container
+    .section-title
+      | Presets
+    .section-subtitle
+      | Reusable Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
+    .section-subtitle
+      | Priority
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{inline: true, button: false, watchingStyleNames: ['-fsb-priority']}")
+    .section-subtitle
+      | Inheritance
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.CSSPresets')
+    .section-subtitle
+      | Custom CSS Classes
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.CSSCustomClasses')
+    .section-note
+      | This will combine both inherited presets and styles into a preset.
+    .section-hr
+.section-container
+  .section-title
+    | Responsive Placement
+  .section-subtitle
+    | Size
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.GridPicker')
+  .section-subtitle
+    | Left Offset
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.OffsetPicker')
+  .section-subtitle
+    | Hidden
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.DisplayPicker')
+  .section-subtitle
+    | Preserve Space
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.PreservePicker')
+  .section-note
+    | Inherit Direction: Left to Right

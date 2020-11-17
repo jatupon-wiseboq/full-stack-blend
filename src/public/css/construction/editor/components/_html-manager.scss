@@ -1,0 +1,130 @@
+// Layer Manager
+// -------------------------
+.html-manager {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding-bottom: 25px;
+	
+	.tree-container {
+  	width: 100%;
+    height: 100%;
+  	position: relative;
+    padding: 0 0 6px 0;
+	  overflow-y: scroll;
+	  overflow-x: hidden;
+    
+    .treenode-outer-container.delete {
+    	position: absolute;
+	    top: 3px;
+	    right: 21px;
+	    left: 21px;
+	    padding: 3px;
+	    opacity: 0.9;
+	    z-index: 100;
+      
+      .treenode-container {
+        height: 60px;
+        
+        .treenode-body {
+          padding-top: 20px;
+        }
+      }
+    }
+  	
+  	.treenode-outer-container.html {
+  	  margin: 6px 6px 0 6px;
+  	  
+	    .treenode-container {
+	      background-color: #ddd;
+		    color: #444;
+	      height: 60px;
+	      position: relative;
+	      border-radius: 3px;
+	      
+  	    .treenode-body {
+  	      padding: 10px 0;
+  	      
+    			.form-check {
+    				.form-check-label {
+    				  input {
+    				    display: none;
+    				  }
+    				}
+    				.treenode-title {
+    				  width: 190px;
+    				  
+    				  .name, .path {
+    				    white-space: nowrap; 
+                overflow: hidden;
+                text-overflow: ellipsis;
+    				  }
+    				  .name {
+        		    font-size: 13px;
+        		    font-weight: 500;
+        		  }
+    				  .path {
+    				    font-size: 12px;
+    				  }
+    				}
+    			}
+    			
+    			.fsb-dropdown-container,
+    			.fsb-dropdown-container .fsb-dropdown-button {
+    			  position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 100;
+            
+            i.fa {
+              display: none;
+            }
+    			}
+  	    }
+      }
+      
+      .treenode-container.selected {
+        background-color: #007bff;
+		    color: #fff;
+      }
+  	}
+    
+    .container-fluid {
+    }
+  }
+	
+	.add {
+		position: absolute;
+		height: 25px;
+	  left: 0;
+	  bottom: 0;
+	  right: 0;
+	}
+}
+
+.draging-html-item {
+  .treenode-container {
+    .treenode-body {
+      height: 60px;
+      padding: 10px 15px;
+      border-radius: 3px;
+      
+      .name, .path {
+        white-space: nowrap; 
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .name {
+        font-size: 15px;
+        font-weight: 400;
+      }
+      .path {
+        font-size: 12px;
+      }
+    }
+  }
+}

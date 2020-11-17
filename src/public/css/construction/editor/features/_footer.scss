@@ -1,0 +1,10 @@
+// Footer
+// -------------------------
+.ace_searchbtn[action="replaceAndFindNext"] {
+	border-radius: 0 3px 3px 0;
+  border-right: 1px solid #cbcbcb;
+  padding: 0 15.5px;
+}
+.ace_searchbtn[action="replaceAll"] {
+	display: none;
+}

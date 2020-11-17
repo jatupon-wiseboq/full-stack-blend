@@ -1,0 +1,36 @@
+.section-container(internal-fsb-for="internal-fsb-class:Textbox")
+  .section-title
+    | Textbox Options
+  .section-subtitle
+    | Text Mode
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-textbox-mode']}")
+  .section-subtitle(internal-fsb-for="internal-fsb-textbox-mode:multiple")
+    | Number of Lines
+  .section-body(internal-fsb-for="internal-fsb-textbox-mode:multiple")
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['rows'], inline: true, button: false}")
+  .section-subtitle(internal-fsb-not-for="internal-fsb-textbox-mode:multiple")
+    | Input Type
+  .section-body(internal-fsb-not-for="internal-fsb-textbox-mode:multiple")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['type'], inline: true, button: false, required: true}")
+  .section-subtitle
+    | Placeholder
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['placeholder'], inline: true, button: false}")
+  .section-subtitle
+    | Default Value
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
+  .section-subtitle
+    | Editable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
+  .section-hr

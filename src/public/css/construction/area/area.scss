@@ -1,0 +1,481 @@
+@import "../common/bootstrap/mixins/animation";
+@import "../common/bootstrap/functions";
+@import "../common/bootstrap/variables";
+@import "../common/bootstrap/mixins/breakpoints";
+@import "../common/variables";
+
+// Scaffolding
+//
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+html.internal-fsb-guide-on {
+  // Layout
+  //
+  .internal-fsb-table-layout {
+    > tbody {
+      > tr {
+        height: 20px;
+        
+        > td {
+          border: dashed 1px rgba(0, 0, 255, 127);
+          
+          &.internal-fsb-selected {
+            background-color: rgba(0, 144, 255, 0.5) !important;
+          }
+          
+          > .internal-fsb-cursor {
+				  	height: 20px !important;
+				  }
+        }
+      }
+    }
+    
+    .internal-fsb-resizer {
+      display: table-caption !important;
+    }
+  }
+  
+  .internal-fsb-strict-layout {
+  	> .internal-fsb-inheriting-element,
+    > .internal-fsb-element {
+    	min-height: 20px;
+      border: solid 1px rgba(0, 0, 255, 127);
+      
+      &[internal-fsb-react-mode] {
+      	border-color: #7f20ff;
+      }
+    }
+  }
+  
+  .internal-fsb-absolute-layout {
+  	> .internal-fsb-inheriting-element,
+    > .internal-fsb-element {
+    	min-height: 20px;
+      border: solid 1px rgba(0, 255, 0, 127);
+      
+      &[internal-fsb-react-mode] {
+      	border-color: #7f20ff;
+      }
+    }
+  }
+  
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+      z-index: 0;
+    }
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.2),
+        rgba(0, 0, 0, 0.2) 10px,
+        rgba(0, 0, 0, 0.3) 10px,
+        rgba(0, 0, 0, 0.3) 20px
+      );
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1;
+    }
+  }
+  
+  // Guide
+  //
+  .internal-fsb-guide {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: #{$maximum-z-index - 1};
+    
+    .container,
+    .container-fluid {
+      height: 100%;
+      
+      .row {
+        height: 100%; 
+        
+        .col-1 {
+          position: relative;
+          height: 100%;
+          
+          &::before,
+          &:last-child::after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 1px;
+            top: 0;
+            bottom: 0;
+            left: -1.0px;
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+          
+          &:last-child::after {
+            left: inherit;
+            right: -1.0px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.internal-fsb-guide-off {
+  // Guide
+  //
+  .internal-fsb-guide {
+    display: none;
+  }
+  
+  [internal-fsb-inheriting] {
+    > :first-child {
+      pointer-events: none;
+    }
+  }
+}
+
+.internal-fsb-disabled-guide {
+	.internal-fsb-guide {
+    display: none !important;
+  }
+}
+
+// Cursor
+//
+.internal-fsb-cursor {
+  position: relative;
+  left: inherit;
+  top: inherit;
+  min-height: 20px;
+  width: 0px;
+  
+  .col-1 {
+  	width: 100%;
+  	height: 100%;
+  }
+  
+  .col-1::before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    z-index: $maximum-z-index;
+    width: 2px;
+    height: 20px;
+    
+    @include animation(0, 1s, animation-blink);
+  }
+}
+body.internal-fsb-focusing-text-element,
+body.internal-fsb-mode-coding {
+  .internal-fsb-cursor {
+    display: none;
+  }
+}
+.internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
+	height: 20px;
+	width: 1px;
+}
+
+@include keyframe(animation-blink) {
+  0% {
+    background-color: white;
+  }
+  45% {
+    background-color: white;
+  }
+  55% {
+    background-color: black;
+  }
+  100% {
+    background-color: black;
+  }
+}
+
+// Dragger
+//
+.internal-fsb-inheriting-element,
+.internal-fsb-element {
+  &[internal-fsb-class="Button"] {
+    -webkit-user-select: auto !important;
+    -moz-user-select: auto !important;
+    -ms-user-select: auto !important;
+    user-select: auto !important;
+    
+    outline: none !important;
+  }
+
+  > .internal-fsb-resizer {
+    display: none;
+      
+    span {
+      position: absolute;
+      
+      &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        z-index: #{$maximum-z-index - 2};
+        top: -#{$selected-element-resizer-size/2}px;
+        left: -#{$selected-element-resizer-size/2}px;
+        background-color: white;
+        width: #{$selected-element-resizer-size}px;
+        height: #{$selected-element-resizer-size}px;
+        border: solid 1px rgb(0, 0, 255);
+      }
+      
+      &.t { top: 0 !important; left: 50%; cursor: n-resize; }
+      &.r { left: 100% !important; top: 50%; cursor: e-resize; }
+      &.b { top: 100% !important; left: 50%; cursor: s-resize; }
+      &.l { left: 0 !important; top: 50%; cursor: w-resize; }
+      &.t.l { cursor: nw-resize; }
+      &.t.r { cursor: ne-resize; }
+      &.b.r { cursor: se-resize; }
+      &.b.l { cursor: sw-resize; }
+    }
+  }
+}
+
+.internal-fsb-strict-layout {
+	> .internal-fsb-inheriting-element,
+  > .internal-fsb-element {
+    > .internal-fsb-resizer {
+      display: block;
+    }
+  }
+}
+
+.internal-fsb-absolute-layout {
+	> .internal-fsb-inheriting-element,
+  > .internal-fsb-element {
+    > .internal-fsb-resizer {
+      display: block;
+      
+      span {
+        &::before {
+          border: solid 1px rgb(0, 255, 0);
+        }
+      }
+    }
+  }
+}
+
+.internal-fsb-inheriting-element,
+.internal-fsb-element {
+  flex-wrap: wrap;
+  
+	> .container,
+  > .container-fluid {
+  	height: 100%;
+  	min-height: inherit;
+  	
+  	flex-direction: inherit;
+    flex-wrap: inherit;
+    justify-content: inherit;
+    align-items: inherit;
+    align-content: inherit;
+  	
+  	> .row.internal-fsb-strict-layout {
+  		flex-direction: inherit;
+	    flex-wrap: inherit;
+	    justify-content: inherit;
+	    align-items: inherit;
+	    align-content: inherit;
+  	}
+	}
+}
+
+// Layout Info
+//
+.internal-layout-info {
+  position: fixed;
+  top: -1000px;
+  height: 0px;
+  width: 100px;
+}
+
+// Hidden Element
+//
+html.internal-fsb-guide-on {
+  @include media-breakpoint-only(xs) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-none {
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-resizer {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-preserve-space {
+          visibility: visible !important;
+          outline-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(sm) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-sm-none {
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-resizer {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-sm-preserve-space {
+          visibility: visible !important;
+          outline-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(md) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-md-none {
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-resizer {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-md-preserve-space {
+          visibility: visible !important;
+          outline-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(lg) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-lg-none {
+        border: solid 1px rgb(255, 0, 0);
+        > .internal-fsb-resizer {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-lg-preserve-space {
+          visibility: visible !important;
+          outline-style: dashed;
+        }
+      }
+    }
+  }
+  @include media-breakpoint-only(xl) {
+    .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-absolute-layout > .internal-fsb-inheriting-element,
+    .internal-fsb-strict-layout > .internal-fsb-element,
+    .internal-fsb-absolute-layout > .internal-fsb-element {
+      &.d-xl-none {
+        border: solid 1px red;
+        > .internal-fsb-resizer {
+          span {
+            &::before {
+              border: solid 1px rgb(255, 0, 0);
+            }
+          }
+        }
+        &.d-xl-preserve-space {
+          visibility: visible !important;
+          outline-style: dashed;
+        }
+      }
+    }
+  }
+  
+  .internal-fsb-inheriting-element.d-none,
+  .internal-fsb-inheriting-element.d-sm-none,
+  .internal-fsb-inheriting-element.d-md-none,
+  .internal-fsb-inheriting-element.d-lg-none,
+  .internal-fsb-inheriting-element.d-xl-none,
+  .internal-fsb-element.d-none,
+  .internal-fsb-element.d-sm-none,
+  .internal-fsb-element.d-md-none,
+  .internal-fsb-element.d-lg-none,
+  .internal-fsb-element.d-xl-none {
+		display: block !important;
+		visibility: visible !important;
+	}
+  table.internal-fsb-inheriting-element.d-none,
+  table.internal-fsb-inheriting-element.d-sm-none,
+  table.internal-fsb-inheriting-element.d-md-none,
+  table.internal-fsb-inheriting-element.d-lg-none,
+  table.internal-fsb-inheriting-element.d-xl-none,
+  table.internal-fsb-element.d-none,
+  table.internal-fsb-element.d-sm-none,
+  table.internal-fsb-element.d-md-none,
+  table.internal-fsb-element.d-lg-none,
+  table.internal-fsb-element.d-xl-none {
+		display: table !important;
+		visibility: visible !important;
+	}
+}
+
+input[type='radio'], input[type='checkbox'] {
+  pointer-events: none !important;
+}
+
+.internal-fsb-inheriting-element[internal-fsb-class="Iframe"],
+.internal-fsb-inheriting-element[internal-fsb-class="HTML"],
+.internal-fsb-inheriting-element[internal-fsb-class="Video"],
+.internal-fsb-element[internal-fsb-class="Iframe"],
+.internal-fsb-element[internal-fsb-class="HTML"],
+.internal-fsb-element[internal-fsb-class="Video"] {
+ 	iframe, video, a {
+  	pointer-events: none;
+  }
+}
+
+.internal-fsb-dragging-handle {
+  cursor: move;
+}
+
+.internal-fsb-inheriting-element[internal-fsb-class="Iframe"],
+.internal-fsb-inheriting-element[internal-fsb-class="Textbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="Select"],
+.internal-fsb-inheriting-element[internal-fsb-class="Radio"],
+.internal-fsb-inheriting-element[internal-fsb-class="Checkbox"],
+.internal-fsb-inheriting-element[internal-fsb-class="File"],
+.internal-fsb-inheriting-element[internal-fsb-class="Image"],
+.internal-fsb-inheriting-element[internal-fsb-class="Video"],
+.internal-fsb-element[internal-fsb-class="Iframe"],
+.internal-fsb-element[internal-fsb-class="Textbox"],
+.internal-fsb-element[internal-fsb-class="Select"],
+.internal-fsb-element[internal-fsb-class="Radio"],
+.internal-fsb-element[internal-fsb-class="Checkbox"],
+.internal-fsb-element[internal-fsb-class="File"],
+.internal-fsb-element[internal-fsb-class="Image"],
+.internal-fsb-element[internal-fsb-class="Video"] {
+ 	padding: 0px;
+}

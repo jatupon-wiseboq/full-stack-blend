@@ -1,0 +1,23 @@
+.setting-picker {
+  position: relative;
+  
+  &::before {
+    content: 'Project.Settings.';
+    display: block;
+    position: absolute;
+    left: 8px;
+    top: 7px;
+    color: #cccccc;
+    font-size: 13px;
+    pointer-events: none;
+    z-index: 1000;
+  }
+  
+  input[type="text"] {
+    padding-left: 107px;
+  }
+  
+  i.fa {
+    width: 15px;
+  }
+}

@@ -1,0 +1,12 @@
+script(type="text/javascript").
+  window.TOKENS = !{JSON.stringify(user.tokens)};
+  window.GITHUB_ALIAS = "!{user.alias}";
+  window.GITHUB_PROJECT = "!{user.project}";
+  window.GITHUB_FEATURE_BRANCH = "!{user.feature}";
+  window.GITHUB_DEVELOP_BRANCH = "!{user.develop}";
+  window.GITHUB_STAGING_BRANCH = "!{user.staging}";
+  window.ENDPOINT = "!{user.endpoint}";
+div(internal-fsb-for="editing", style="display: none;")
+  iframe.construction(id='area', src='/editor/construction/area/html')
+div(internal-fsb-not-for="editing")
+  include ../common/empty

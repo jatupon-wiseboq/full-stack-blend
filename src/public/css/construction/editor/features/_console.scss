@@ -1,0 +1,28 @@
+// Console
+// -------------------------
+#console, #console-container {
+  width: 100%;
+  height: 100%;
+}
+.jsconsole .CodeMirror-code pre {
+  padding-left: 22px !important;
+}
+.jsconsole-input {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+  z-index: 100;
+  
+  &::before {
+    content: '';
+    position: relative;
+    display: block;
+    left: 0;
+    top: -2;
+    right: 0;
+    height: 2px;
+    background-color: #c8c8c8;
+  }
+}

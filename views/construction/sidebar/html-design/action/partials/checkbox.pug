@@ -1,0 +1,20 @@
+.section-container(internal-fsb-for="internal-fsb-class:Checkbox")
+  .section-title
+    | Checkbox Options
+  .section-subtitle
+    | Default Checked
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['checked']}")
+  .section-subtitle
+    | Useable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
+  .section-subtitle
+    | Editable
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
+  .section-subtitle
+    | Tab Index
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
+  .section-hr

@@ -1,0 +1,10 @@
+// Timeline
+// -------------------------
+#timeline {
+  display: none;
+  
+  &.active {
+    display: table-row;
+    height: 25%;
+  }
+}

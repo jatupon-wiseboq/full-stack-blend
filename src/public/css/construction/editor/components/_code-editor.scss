@@ -1,0 +1,10 @@
+// Coding
+// -------------------------
+#codeEditor {
+  display: none;
+  
+  &.active {
+    display: table-row;
+    height: 66%;
+  }
+}
