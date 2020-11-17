@@ -1086,7 +1086,7 @@
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"e55072d1\"",
         "    internal-fsb-name=\"TextElement 3\"",
-        "    style=\"-moz-hyphens: auto; -ms-hyphens: auto; -ms-overflow-y: scroll; -ms-word-break: break-word; -webkit-hyphens: auto; color: rgba(255, 255, 255, 1); display: block; font-size: 10px; hyphens: auto; overflow-y: scroll; text-align: justify; width: 100%; word-break: break-word\">ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>",
+        "    style=\"-moz-hyphens: auto; -ms-hyphens: auto; -ms-overflow-y: auto; -ms-word-break: break-word; -webkit-hyphens: auto; color: rgba(255, 255, 255, 1); display: block; font-size: 10px; hyphens: auto; overflow-y: auto; text-align: justify; width: 100%; word-break: break-word\">ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>",
         "</div>",
         "",
         "<div",
@@ -1868,7 +1868,7 @@
     }
   },
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "235a4f89ef306fc8ce96c97cbc36caf98dd14d2d#-2102816570",
+    "Project.Controls.FlowLayout_4d816ba8": "950196dbe208465e6e0238ad722e81b67c9bfdff#1239455622",
     "Project.Controls.Settings": "882d59c4ca68bd2044a1eb504df691d7a2a4a07c#-519646893"
   },
   "globalSettings": {
@@ -2994,12 +2994,24 @@
         "</div>",
         "</div>",
         "<div",
+        "    class=\"col-12 internal-fsb-element\"",
+        "    internal-fsb-guid=\"ca4a758d\"",
+        "    internal-fsb-name=\"FlowLayout 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-class=\"FlowLayout\"",
+        "    style=\"-ms-overflow-x: hidden; -ms-overflow-y: hidden; overflow-x: hidden; overflow-y: hidden; position: relative\">",
+        "<div",
+        "    class=\"container-fluid\"",
+        "    internal-fsb-event-no-propagate=\"1\">",
+        "<div",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-strict-layout row\">",
+        "<div",
         "    class=\"col-12 internal-fsb-element offset-0\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"722b0448\"",
         "    internal-fsb-name=\"FlowLayout 6\"",
-        "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px top; background-size: cover\"",
+        "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg&quot;); background-position: 0px top; background-size: cover; bottom: -20px; left: 0px; position: absolute; right: 0px; top: -20px\"",
         "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "<div",
         "    class=\"container-fluid\"",
@@ -3007,13 +3019,16 @@
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-strict-layout row\">",
         "",
+        "</div>",
+        "</div>",
+        "</div>",
         "<div",
         "    class=\"col-12 internal-fsb-element\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ac85eab\"",
         "    internal-fsb-name=\"FlowLayout 7\"",
-        "    style=\"padding-bottom: 200px; padding-top: 200px; position: relative\">",
+        "    style=\"padding-bottom: 180px; padding-top: 180px; position: relative\">",
         "<div",
         "    class=\"container-fluid\"",
         "    internal-fsb-event-no-propagate=\"1\">",
@@ -3647,9 +3662,9 @@
   },
   "version": 1.2,
   "viewBlobSHADict": {
-    "3cb10a6e": "84874b809574e2ac6f4b41c5c46e9e2ceee97f69#1698072233",
+    "3cb10a6e": "00efaf9d5bb835aa3adfc6e17ca11a27303bfe56#-1328370174",
     "9e885d49": "9d9df1e1a7fa7a05aa211802e264057737a6d70f#-218408566",
     "b160aa0e": "dc6bc91a8e000dbedb4c73db0abd0a064299423b#-548997569",
-    "index": "286dc8b03569b13beeccc84490032886dfdba6fa#1339109434"
+    "index": "38d1379268ecbc4f9182fe072849e5d2ea8f5e65#-533685645"
   }
 }
