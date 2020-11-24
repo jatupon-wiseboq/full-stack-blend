@@ -386,14 +386,24 @@ var WorkspaceHelper = {
     	if (InternalProjectSettings.editingComponentID == null) return;
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+    	let previous = component.html;
     	
       component.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
+      
+      if (force || component.html != previous) {
+      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingComponentID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      }
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+    	let previous = popup.html;
     	
       popup.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
+      
+      if (force || popup.html != previous) {
+      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPopupID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      }
     }
   },
   removeComponentData: (id: string) => {
