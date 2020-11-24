@@ -9,7 +9,7 @@ const staging = ENVIRONMENT === "staging";
 const test = ENVIRONMENT === "test";
 const develop = !prod && !staging && !test;
 
-const envPath = path.resolve(__dirname, "../../dev.env");
+const envPath = path.resolve(__dirname, "../../.env");
 
 if ((develop || test) && fs.existsSync(envPath)) {
 
