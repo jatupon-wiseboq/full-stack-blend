@@ -174,6 +174,7 @@ ${rootScript}`;
         let realTimeUpdate = null;
         let retrieveInto = null;
         let customEvents = [];
+        let isPopup = (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Popup');
         
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
         let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
@@ -310,14 +311,14 @@ ${rootScript}`;
                     styles.push(token);
                     delete bindingStyles[key];
                   
-                    if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
+                    if (isPopup || INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
                       inheritingStyles.push(token);
                     }
                   } else {
                     let token = "'" + camelKey + "': '" + hashMap[key] + "'";
                     styles.push(token);
                   
-                    if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
+                    if (isPopup || INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
                       inheritingStyles.push(token);
                     }
                   }
@@ -394,7 +395,7 @@ ${rootScript}`;
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
                 
-                if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
+                if (isPopup || INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
                   inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
                 }
               }
@@ -468,7 +469,7 @@ ${rootScript}`;
         
         if (reactMode == 'Site' && isFirstElement) {
           if (classes) classes = classes.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '').trim().replace(/[\ ]+/g, ' ');
-          if (styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
+          if (!isPopup && styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
         }
         
         if (!inheritingID && WorkspaceHelper.getComponentData(reactClassComposingInfoGUID)) {
