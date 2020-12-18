@@ -14,7 +14,8 @@ enum SourceType {
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  Other
 }
 enum ActionType {
   Insert,
