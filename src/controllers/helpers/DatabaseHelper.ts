@@ -632,8 +632,10 @@ const DatabaseHelper = {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
 		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -662,6 +664,10 @@ const DatabaseHelper = {
 								record = await map.create(hash, {transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								collection.insertOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
 								record = hash;
 							}
 							
@@ -741,12 +747,6 @@ const DatabaseHelper = {
 						}
 		    		
 		    		break;
-		    	case SourceType.VolatileMemory:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    }
 		    
 	  		resolve();
@@ -790,8 +790,10 @@ const DatabaseHelper = {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
 		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -818,6 +820,10 @@ const DatabaseHelper = {
 								record = (await map.upsert(hash, {transaction: transaction.relationalDatabaseTransaction}))[0];
 							} else if (input.source == SourceType.Document) {
 								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
 								record = hash;
 							}
 							
@@ -899,12 +905,6 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
 		    		
 		    		break;
-		    	case SourceType.VolatileMemory:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    }
 		    
 	  		resolve();
@@ -947,8 +947,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
 		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -975,6 +978,10 @@ const DatabaseHelper = {
 								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
 								record = hash;
 							}
 							
@@ -1047,12 +1054,6 @@ const DatabaseHelper = {
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
-		    		
-		    		break;
-		    	case SourceType.VolatileMemory:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
 		    		
 		    		break;
 		    }
@@ -1170,8 +1171,10 @@ const DatabaseHelper = {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
 		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -1197,6 +1200,9 @@ const DatabaseHelper = {
 								records = await map.findAll({where: hash}) || [];
 							} else if (input.source == SourceType.Document) {
 								records = [];
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								record = VolatileMemoryClient.get(_key, hash);
 							}
 							
 							for (const record of records) {
@@ -1274,12 +1280,6 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
 		    		
 		    		break;
-		    	case SourceType.VolatileMemory:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    }
 		    
 	  		resolve();
@@ -1322,9 +1322,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-					case SourceType.Document:
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
 		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -1345,6 +1347,10 @@ const DatabaseHelper = {
 								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								record = 
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								record = VolatileMemoryClient.get(_key, hash);
+								VolatileMemoryClient.del(_key);
 							}
 						  
 						  const result = {
@@ -1416,12 +1422,6 @@ const DatabaseHelper = {
 						if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						throw new Error("Cannot perform DELETE on prioritized worker.");
-						
-						break;
-					case SourceType.VolatileMemory:
-						if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-						
-						throw new Error("Not Implemented Error");
 						
 						break;
 				}
