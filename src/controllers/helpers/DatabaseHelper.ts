@@ -4,6 +4,7 @@
 import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {CodeHelper} from "./CodeHelper.js";
 import {NotificationHelper} from "./NotificationHelper.js";
+import {DataFormationHelper} from "./DataFormationHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
 import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
@@ -730,13 +731,18 @@ const DatabaseHelper = {
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		for (const row of input.rows) {
+							PrioritizedWorkerClient.enqueue(schema.group, [row], {
+						    retry: true,
+						    queue: "normal"
+							});
+						}
 		    		
 		    		break;
 		    	case SourceType.VolatileMemory:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Not Implemented Error");
 		    		
@@ -888,13 +894,13 @@ const DatabaseHelper = {
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
 		    		
 		    		break;
 		    	case SourceType.VolatileMemory:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Not Implemented Error");
 		    		
@@ -1038,13 +1044,13 @@ const DatabaseHelper = {
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
 		    		
 		    		break;
 		    	case SourceType.VolatileMemory:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Not Implemented Error");
 		    		
@@ -1130,9 +1136,9 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
-	        		throw new Error("Not Implemented Error");
+	        		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
 	        		
 	        		break;
 	        	case SourceType.Document:
@@ -1142,7 +1148,7 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.VolatileMemory:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
 	        		throw new Error("Not Implemented Error");
 	        		
@@ -1263,13 +1269,13 @@ const DatabaseHelper = {
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
 		    		
 		    		break;
 		    	case SourceType.VolatileMemory:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Not Implemented Error");
 		    		
@@ -1407,13 +1413,13 @@ const DatabaseHelper = {
 						}
 						break;
 					case SourceType.PrioritizedWorker:
-						if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+						if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						throw new Error("Not Implemented Error");
+						throw new Error("Cannot perform DELETE on prioritized worker.");
 						
 						break;
 					case SourceType.VolatileMemory:
-						if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+						if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						throw new Error("Not Implemented Error");
 						

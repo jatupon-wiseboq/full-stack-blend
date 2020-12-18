@@ -55,9 +55,9 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 	if (process.env.PRIORITIZED_WORKER_KEY == process.env.VOLATILE_MEMORY_KEY) {
 		PrioritizedWorkerVolatileMemoryClient = VolatileMemoryClient;
 	} else {
-		const connectionURL = new URL(process.env[process.env.PRIORITIZE_WORKER_KEY]);
-		PrioritizedWorkerVolatileMemoryClient = mysql.createConnection({
-		  host     : connectionURL.host,
+		const connectionURL = new URL(process.env[process.env.PRIORITIZED_WORKER_KEY]);
+		PrioritizedWorkerVolatileMemoryClient = redis.createClient({
+			host     : connectionURL.host,
 		  user     : connectionURL.username,
 		  password : connectionURL.password,
 		  port     : connectionURL.port
