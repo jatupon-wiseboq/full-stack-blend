@@ -67,11 +67,48 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 }
 
 const CreateTransaction = (options) => {
+	let relationalDatabaseTransaction = null;
+	let documentDatabaseSession = null;
+	
 	if (RelationalDatabaseORMClient) {
-		return RelationalDatabaseORMClient.transaction(options);
+		relationalDatabaseTransaction = RelationalDatabaseORMClient.transaction({});
+	}
+	if (DocumentDatabaseClient) {
+		documentDatabaseSession = DocumentDatabaseClient.startSession({
+			retryWrites: true,
+			causalConsistency: true
+		});
+		documentDatabaseSession.startTransaction({
+			readPreference: 'primary',
+			readConcern: {
+				level: 'local'
+			},
+			writeConcern: {
+				w: 'majority'
+			}
+    });
 	}
 	
-	return null;
+	return {
+		commit: () => {
+			try {
+				if (relationalDatabaseTransaction) relationalDatabaseTransaction.commit();
+				if (documentDatabaseSession) documentDatabaseSession.commitTransaction();
+			} finally {
+				if (documentDatabaseSession) documentDatabaseSession.endSession();
+			}
+		},
+		rollback: () => {
+			try {
+				if (relationalDatabaseTransaction) relationalDatabaseTransaction.rollback();
+				if (documentDatabaseSession) documentDatabaseSession.abortTransaction();
+			} finally {
+				if (documentDatabaseSession) documentDatabaseSession.endSession();
+			}
+		},
+		relationalDatabaseTransaction: relationalDatabaseTransaction,
+		documentDatabaseSession: documentDatabaseSession
+	};
 };
 
 export {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient, CreateTransaction};

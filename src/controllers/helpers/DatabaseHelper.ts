@@ -629,9 +629,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -653,7 +655,13 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
-							const record = await map.create(hash, {transaction: transaction});
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								record = await map.create(hash, {transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								collection.insertOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							}
 							
 						  const result = {
 						    keys: {},
@@ -726,12 +734,6 @@ const DatabaseHelper = {
 		    		throw new Error("Not Implemented Error");
 		    		
 		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
@@ -780,9 +782,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -802,7 +806,13 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							const record = (await map.upsert(hash, {transaction: transaction}))[0];
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								record = (await map.upsert(hash, {transaction: transaction.relationalDatabaseTransaction}))[0];
+							} else if (input.source == SourceType.Document) {
+								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							}
 							
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
@@ -882,12 +892,6 @@ const DatabaseHelper = {
 		    		throw new Error("Not Implemented Error");
 		    		
 		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
@@ -936,9 +940,10 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -957,9 +962,15 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
-							await map.update(data, {where: hash, transaction: transaction});
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								await map.update(data, {where: hash, transaction: transaction.relationalDatabaseTransaction});
+								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							}
 							
-							const record = await map.findOne({where: hash, transaction: transaction});
 						  const result = {
 						    keys: {},
 						    columns: {},
@@ -1027,12 +1038,6 @@ const DatabaseHelper = {
 						break;
 		    	case SourceType.PrioritizedWorker:
 		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Not Implemented Error");
 		    		
@@ -1157,9 +1162,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(baseSchema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 		      		const hash = {};
@@ -1178,7 +1185,12 @@ const DatabaseHelper = {
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 							
 							const rows = [];
-							const records = await map.findAll({where: hash}) || [];
+							let records;
+							if (input.source == SourceType.Relational) {
+								records = await map.findAll({where: hash}) || [];
+							} else if (input.source == SourceType.Document) {
+								records = [];
+							}
 							
 							for (const record of records) {
 							  const row = {
@@ -1255,12 +1267,6 @@ const DatabaseHelper = {
 		    		throw new Error("Not Implemented Error");
 		    		
 		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
 		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
@@ -1309,9 +1315,11 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+					case SourceType.Document:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -1324,8 +1332,13 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
-							const record = await map.findOne({where: hash, transaction: transaction});
-							await record.destroy({force: true, transaction: transaction});
+						  let records;
+							if (input.source == SourceType.Relational) {
+								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								record = 
+							}
 						  
 						  const result = {
 						    keys: {},
@@ -1394,12 +1407,6 @@ const DatabaseHelper = {
 						break;
 					case SourceType.PrioritizedWorker:
 						if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-						
-						throw new Error("Not Implemented Error");
-						
-						break;
-					case SourceType.Document:
-						if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
 						throw new Error("Not Implemented Error");
 						
