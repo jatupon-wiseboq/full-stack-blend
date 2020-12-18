@@ -69,7 +69,7 @@ const DataFormationHelper = {
 		return row;
 	},
 	convertFromHierarchicalDataTableToJSON: (data: HierarchicalDataTable): any => {
-		
+		return DataFormationHelper.recursiveExtractNodesIntoDictionary(data.rows[0]);
 	},
 	recursiveExtractNodesIntoDictionary: (row: HierarchicalDataRow): any => {
 		if (row.columns.hasOwnProperty('_')) {

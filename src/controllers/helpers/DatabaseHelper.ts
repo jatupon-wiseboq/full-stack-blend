@@ -5,6 +5,7 @@ import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMCli
 import {CodeHelper} from "./CodeHelper.js";
 import {NotificationHelper} from "./NotificationHelper.js";
 import {DataFormationHelper} from "./DataFormationHelper.js";
+import {RequestHelper} from "./RequestHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
 import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
@@ -16,6 +17,7 @@ enum SourceType {
   PrioritizedWorker,
   Document,
   VolatileMemory,
+  RESTAPI,
   Other
 }
 enum ActionType {
@@ -747,6 +749,14 @@ const DatabaseHelper = {
 						}
 		    		
 		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.put(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
+		    		
+		    		break;
 		    }
 		    
 	  		resolve();
@@ -905,6 +915,10 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
 		    		
 		    		break;
+		    	case SourceType.RESTAPI:
+		    		throw new Error("Cannot perform UPSERT on REST API.");
+		    		
+		    		break;
 		    }
 		    
 	  		resolve();
@@ -1056,6 +1070,14 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
 		    		
 		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.post(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
+		    		
+		    		break;
 		    }
 		    
 	  		resolve();
@@ -1154,6 +1176,14 @@ const DatabaseHelper = {
 	        		throw new Error("Not Implemented Error");
 	        		
 	        		break;
+			    	case SourceType.RESTAPI:
+			    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+			    		const output = RequestHelper.get(schema.group, input, 'json');
+			    		
+			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+			    		results.push(table.rows[0]);
+			    		
+			    		break;
 	        }
 	      
 	      	resolve(results);
@@ -1278,6 +1308,14 @@ const DatabaseHelper = {
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
 		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
+		    		
+		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.get(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
 		    		
 		    		break;
 		    }
@@ -1424,6 +1462,14 @@ const DatabaseHelper = {
 						throw new Error("Cannot perform DELETE on prioritized worker.");
 						
 						break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.delete(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
+		    		
+		    		break;
 				}
 		    
 	  		resolve();
