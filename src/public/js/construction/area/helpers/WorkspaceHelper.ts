@@ -61,7 +61,7 @@ const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-b
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
 const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
-const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element col-12" style="width: 100vw; height: 100vh"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
+const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class="Popup" style="height: 100vh; left: 0px; position: fixed; top: 0px; width: 100vw" internal-fsb-event-no-propagate="1" internal-fsb-name="Container" internal-fsb-react-mode="Site"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="internal-fsb-allow-cursor internal-fsb-strict-layout row"></div></div></div>`.split('\n');
 const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
@@ -386,14 +386,24 @@ var WorkspaceHelper = {
     	if (InternalProjectSettings.editingComponentID == null) return;
     	
     	let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+    	let previous = component.html;
     	
       component.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
+      
+      if (force || component.html != previous) {
+      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingComponentID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      }
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
     	
     	let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+    	let previous = popup.html;
     	
       popup.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
+      
+      if (force || popup.html != previous) {
+      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPopupID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      }
     }
   },
   removeComponentData: (id: string) => {

@@ -207,7 +207,9 @@ html
     ${customFooterExternalScripts.join('\n    ')}
     script(type="text/javascript" src="/js/Site.bundle.js")
 `
-          combinedHTMLPageDict[key] = combinedHTMLPage;
+          if (pages && pages[0]) {
+          	combinedHTMLPageDict[key] = combinedHTMLPage;
+          }
           arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
         }
       }
