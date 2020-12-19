@@ -180,9 +180,9 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='perform("insert", "DocumentTable")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Place A Table</b></p><p>Define a table on the NoSQL database, so that your project can access and modify data under the priviledges.</p>")
             i.fa.fa-table
             | Table
-          a.dropdown-item(onclick='perform("insert", "DocumentNotation")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Notation</b></p><p>Define all dot notations using a multiple of this hierarchy tool to create a type-based hierarchical data structure of the table.</p>")
+          a.dropdown-item(onclick='perform("insert", "DocumentNotation")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Notation</b></p><p>Define a column of the table with choices of different characteristics of data, including, type, size, and limitation.</p>")
             i.fa.fa-code-fork.fa-rotate-90
-            | Hierarchy
+            | Column
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-sort-numeric-asc.m-0
@@ -219,38 +219,14 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-globe.m-0
           .title
-            | Route
+            | RESTful
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "Router")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Router</b></p><p>Create a router to allow requests from clients, or to expose APIs for your businesses.</p>")
+          a.dropdown-item(onclick='perform("insert", "RESTful")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A RESTful collection</b></p><p>Create a RESTful collection to perform CRUD across your or other businesses.</p>")
             i.fa.fa-globe
-            | Router
-          a.dropdown-item(onclick='perform("insert", "Get")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A GET</b></p><p>Allow GET requests from your front-end or your businesses to retrieve information.</p>")
+            | Collection
+          a.dropdown-item(onclick='perform("insert", "Verb")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Verb</b></p><p>Allow CRUD requests from your front-end and back-end across the businesses.</p>")
             i.fa.fa-long-arrow-right
-            | GET
-          a.dropdown-item(onclick='perform("insert", "Post")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A POST</b></p><p>Allow POST requests from your front-end or your businesses to retrieve information.</p>")
-            i.fa.fa-long-arrow-right
-            | POST
-          a.dropdown-item(onclick='perform("insert", "Put")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A PUT</b></p><p>Allow PUT requests from your front-end or your businesses to insert information.</p>")
-            i.fa.fa-long-arrow-right
-            | PUT
-          a.dropdown-item(onclick='perform("insert", "Delete")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A DELETE</b></p><p>Allow DELETE requests from your front-end or your businesses to delete information.</p>")
-            i.fa.fa-long-arrow-right
-            | DELETE
-      .dropdown.mr-1(style='display: inline;')
-        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-          i.fa.fa-magic.m-0
-          .title
-            | Event
-        .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "Insert")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Binding Insert Request</b></p><p>Binding insert requests to customize their default habits of performing insertion based on dot notations of form controls.</p>")
-            i.fa.fa-long-arrow-right
-            | Insert
-          a.dropdown-item(onclick='perform("insert", "Update")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Binding Update Request</b></p><p>Binding update requests to customize their default habits of performing updating based on dot notations of form controls.</p>")
-            i.fa.fa-long-arrow-right
-            | Update
-          a.dropdown-item(onclick='perform("insert", "Delete")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Binding Delete Request</b></p><p>Binding deleting requests to customize their default habits of performing deletion based on dot notations of form controls.</p>")
-            i.fa.fa-long-arrow-right
-            | Delete
+            | Verb
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-cogs.m-0

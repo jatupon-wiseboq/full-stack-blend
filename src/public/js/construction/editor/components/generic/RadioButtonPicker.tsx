@@ -19,6 +19,7 @@ let options = {
     "multiple": CONSTANTS.MULTIPLE_OPTIONS,
     "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
+    "data-source-type-3": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_3,
     "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
     "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
     "data-wizard-type-3": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_3,
@@ -41,6 +42,7 @@ let options = {
 		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
 		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
 		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
+		"data-verb": CONSTANTS.BACKEND_VERB,
 
 		// Animations
 		// 
@@ -54,6 +56,7 @@ let options = {
 let map = {
     "data-source-type-1": "internal-fsb-data-source-type",
     "data-source-type-2": "internal-fsb-data-source-type",
+    "data-source-type-3": "internal-fsb-data-source-type",
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
     "data-wizard-type-2": "internal-fsb-data-wizard-type",
     "data-wizard-type-3": "internal-fsb-data-wizard-type",

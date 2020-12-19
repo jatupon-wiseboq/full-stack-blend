@@ -153,8 +153,8 @@ class Overlay extends React.Component<Props, State> {
     private getColumnOfRelation(groupName: string, entityName: string) {
       if (!groupName || !entityName) return null;
       
-      const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory'];
-      const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix'];
+      const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory', 'RESTful'];
+      const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix', 'Verb'];
       
       for (const [i, group] of groups.entries()) {
         let tables = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', group);

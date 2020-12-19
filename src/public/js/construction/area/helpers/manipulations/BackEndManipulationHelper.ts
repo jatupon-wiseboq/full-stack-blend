@@ -43,7 +43,7 @@ var BackEndManipulationHelper = {
     switch (content.klass) {
       case 'RelationalDatabase':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside outside any element to insert a relational database.');
+      		alert('Please place a cursor outside any element to insert a relational database.');
       		return [accessory, false, link];
       	}
       	
@@ -88,7 +88,7 @@ var BackEndManipulationHelper = {
         break;
       case 'DocumentDatabase':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside outside any element to insert a document database.');
+      		alert('Please place a cursor outside any element to insert a document database.');
       		return [accessory, false, link];
       	}
       	
@@ -133,7 +133,7 @@ var BackEndManipulationHelper = {
         break;
       case 'WorkerInstance':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside outside any element to insert a worker instance.');
+      		alert('Please place a cursor outside any element to insert a worker instance.');
       		return [accessory, false, link];
       	}
       	
@@ -162,7 +162,7 @@ var BackEndManipulationHelper = {
         break;
       case 'VolatileMemory':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside outside any element to insert a relational database.');
+      		alert('Please place a cursor outside any element to insert a relational database.');
       		return [accessory, false, link];
       	}
       	
@@ -193,13 +193,42 @@ var BackEndManipulationHelper = {
       	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
       		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
-      		alert('Please place a cursor outside outside any element for cross database relation, or inside a database element for cross table relation, to insert such a relation.');
+      		alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation, to insert such a relation.');
       		return [accessory, false, link];
       	}
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
           .internal-fsb-element.internal-fsb-dragging-handle
+        `, element);
+        break;
+      case 'RESTful':
+      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      		alert('Please place a cursor outside any element to insert a RESTful collection.');
+      		return [accessory, false, link];
+      	}
+      	
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element
+            .internal-fsb-title.internal-fsb-dragging-handle
+              | RESTful
+            .container-fluid
+              .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+        `, element);
+        break;
+      case 'Verb':
+      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RESTful') {
+      		alert('Please place a cursor inside a RESTful collection to insert a verb.');
+      		return [accessory, false, link];
+      	}
+      	
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element.col-12
+            .internal-fsb-title
+              | name
         `, element);
         break;
     }

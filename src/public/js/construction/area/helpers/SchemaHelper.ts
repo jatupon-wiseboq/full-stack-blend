@@ -9,8 +9,8 @@ var SchemaHelper = {
   generateDataSchema: (): any => {
     let tables = {};
     
-    const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory'];
-    const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix'];
+    const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory', 'RESTful'];
+    const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix', 'Verb'];
     
     for (const [i, group] of groups.entries()) {
       let tableElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', group);
@@ -32,6 +32,8 @@ var SchemaHelper = {
           let fieldType = HTMLHelper.getAttribute(columnElement, 'data-field-type');
           let required = HTMLHelper.getAttribute(columnElement, 'data-required');
           let unique = HTMLHelper.getAttribute(columnElement, 'data-unique');
+          let verb = HTMLHelper.getAttribute(columnElement, 'data-verb');
+          let url = HTMLHelper.getAttribute(columnElement, 'data-url');
           
           if (columnType == 'primary') {
             keys[columnName] = {
@@ -40,6 +42,8 @@ var SchemaHelper = {
             	fieldType: fieldType,
             	required: (required == 'true'),
             	unique: (unique == 'true'),
+            	verb: verb,
+            	url: url,
               modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
               retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
             }
@@ -50,6 +54,8 @@ var SchemaHelper = {
             	fieldType: fieldType,
             	required: (required == 'true'),
             	unique: (unique == 'true'),
+            	verb: verb,
+            	url: url,
               modifyingPermission: SchemaHelper.generatePermission(columnElement, 'data-lock'),
               retrievingPermission: SchemaHelper.generatePermission(columnElement, 'data-rendering-condition')
             }
@@ -88,7 +94,7 @@ var SchemaHelper = {
         }
         
         tables[tableName] = {
-          source: ['relational', 'worker', 'document', 'volatile-memory'][i],
+          source: ['relational', 'worker', 'document', 'volatile-memory', 'RESTful'][i],
           group: tableName,
           guid: tableGUID,
           keys: keys,

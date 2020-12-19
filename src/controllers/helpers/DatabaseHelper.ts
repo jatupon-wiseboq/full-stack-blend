@@ -17,7 +17,7 @@ enum SourceType {
   PrioritizedWorker,
   Document,
   VolatileMemory,
-  RESTAPI,
+  RESTful,
   Other
 }
 enum ActionType {
@@ -78,6 +78,9 @@ const DatabaseHelper = {
 				return SourceType.Document;
 			case "volatile-memory":
 				return SourceType.VolatileMemory;
+			case "RESTful":
+				_target = SourceType.RESTful;
+				break;
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
@@ -642,35 +645,36 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const hash = {};
+							const keys = {};
+							const data = {};
 							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-							      hash[key] = row.columns[key];
+							      data[key] = row.columns[key];
 							    }
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-							      hash[key] = row.keys[key];
+							      keys[key] = row.keys[key];
 							    }
 							  }
 							}
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
 							let record = null;
 							if (input.source == SourceType.Relational) {
-								record = await map.create(hash, {transaction: transaction.relationalDatabaseTransaction});
+								record = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								collection.insertOne(hash, { transaction.documentDatabaseSession });
-								record = hash;
+								DocumentDatabaseClient.db.collection.insertOne(Object.assign({}, data, keys));
+								record = Object.assign({}, data, keys);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
-								VolatileMemoryClient.set(_key, hash);
-								record = hash;
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								VolatileMemoryClient.set(_key, Object.assign({}, data, keys));
+								record = Object.assign({}, data, keys);
 							}
 							
 						  const result = {
@@ -749,11 +753,11 @@ const DatabaseHelper = {
 						}
 		    		
 		    		break;
-		    	case SourceType.RESTAPI:
-		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const output = RequestHelper.put(schema.group, input, 'json');
+		    	case SourceType.RESTful:
+		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const _output = RequestHelper.put(schema.group, _input, 'json');
 		    		
-		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
 		    		
 		    		break;
@@ -808,42 +812,44 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const hash = {};
+							const keys = {};
+							const data = {};
 						
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-							      hash[key] = row.columns[key];
+							      data[key] = row.columns[key];
 							    }
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-							      hash[key] = row.keys[key];
+							      keys[key] = row.keys[key];
 							    }
 							  }
 							}
 							
 							let record = null;
 							if (input.source == SourceType.Relational) {
-								record = (await map.upsert(hash, {transaction: transaction.relationalDatabaseTransaction}))[0];
+								record = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 							} else if (input.source == SourceType.Document) {
-								collection.updateOne(hash, { transaction.documentDatabaseSession });
-								record = hash;
+								DocumentDatabaseClient.db.collection.updateOne(hash, data, {upsert: true});
+								record = DocumentDatabaseClient.db.collection.findOne(hash);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
-								VolatileMemoryClient.set(_key, hash);
-								record = hash;
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								record = VolatileMemoryClient.get(_key) || {};
+								VolatileMemoryClient.set(_key, Object.assign({}, record, data, keys));
+								record = VolatileMemoryClient.get(_key);
 							}
 							
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    hash[key] = record[key];
+							    keys[key] = record[key];
 							  }
 							}
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, hash, session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 							
 						  const result = {
 						    keys: {},
@@ -915,7 +921,7 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
 		    		
 		    		break;
-		    	case SourceType.RESTAPI:
+		    	case SourceType.RESTful:
 		    		throw new Error("Cannot perform UPSERT on REST API.");
 		    		
 		    		break;
@@ -970,12 +976,12 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const hash = {};
+							const keys = {};
 							const data = {};
 						
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    hash[key] = row.keys[key];
+							    keys[key] = row.keys[key];
 							  }
 							}
 							for (const key in schema.columns) {
@@ -984,19 +990,20 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
 							let record = null;
 							if (input.source == SourceType.Relational) {
-								await map.update(data, {where: hash, transaction: transaction.relationalDatabaseTransaction});
-								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
+								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								collection.updateOne(hash, { transaction.documentDatabaseSession });
-								record = hash;
+								DocumentDatabaseClient.db.collection.updateOne(keys, data);
+								record = DocumentDatabaseClient.db.collection.findOne(keys);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
-								VolatileMemoryClient.set(_key, hash);
-								record = hash;
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								record = VolatileMemoryClient.get(_key) || {};
+								VolatileMemoryClient.set(_key, Object.assign({}, record, data, keys));
+								record = VolatileMemoryClient.get(_key);
 							}
 							
 						  const result = {
@@ -1070,11 +1077,11 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
 		    		
 		    		break;
-		    	case SourceType.RESTAPI:
-		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const output = RequestHelper.post(schema.group, input, 'json');
+		    	case SourceType.RESTful:
+		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const _output = RequestHelper.post(schema.group, _input, 'json');
 		    		
-		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
 		    		
 		    		break;
@@ -1176,11 +1183,11 @@ const DatabaseHelper = {
 	        		throw new Error("Not Implemented Error");
 	        		
 	        		break;
-			    	case SourceType.RESTAPI:
-			    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-			    		const output = RequestHelper.get(schema.group, input, 'json');
+			    	case SourceType.RESTful:
+			    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+			    		const _output = RequestHelper.get(schema.group, _input, 'json');
 			    		
-			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 			    		results.push(table.rows[0]);
 			    		
 			    		break;
@@ -1209,30 +1216,32 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-		      		const hash = {};
+		      		const keys = {};
+		      		const data = {};
 							
 							for (const key in baseSchema.columns) {
 							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    hash[key] = row.columns[key];
+							    data[key] = row.columns[key];
 							  }
 							}
 							for (const key in baseSchema.keys) {
 							  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    hash[key] = row.keys[key];
+							    keys[key] = row.keys[key];
 							  }
 							}
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 							
 							const rows = [];
 							let records;
 							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: hash}) || [];
+								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
 							} else if (input.source == SourceType.Document) {
-								records = [];
+								records = DocumentDatabaseClient.db.collection.find(Object.assign({}, data, keys));
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
-								record = VolatileMemoryClient.get(_key, hash);
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const record = VolatileMemoryClient.get(_key);
+								records = record && [record] || [];
 							}
 							
 							for (const record of records) {
@@ -1310,11 +1319,11 @@ const DatabaseHelper = {
 		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
 		    		
 		    		break;
-		    	case SourceType.RESTAPI:
-		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const output = RequestHelper.get(schema.group, input, 'json');
+		    	case SourceType.RESTful:
+		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const _output = RequestHelper.get(schema.group, _input, 'json');
 		    		
-		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
 		    		
 		    		break;
@@ -1369,25 +1378,26 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const hash = {};
+							const keys = {};
 						
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    hash[key] = row.keys[key];
+							    keys[key] = row.keys[key];
 							  }
 							}
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, keys, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
 						  let records;
 							if (input.source == SourceType.Relational) {
-								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								record = 
+								record = DocumentDatabaseClient.db.collection.findOne(keys) || {};
+								record = DocumentDatabaseClient.db.collection.deleteOne(keys);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
-								record = VolatileMemoryClient.get(_key, hash);
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								record = VolatileMemoryClient.get(_key) || {};
 								VolatileMemoryClient.del(_key);
 							}
 						  
@@ -1462,11 +1472,11 @@ const DatabaseHelper = {
 						throw new Error("Cannot perform DELETE on prioritized worker.");
 						
 						break;
-		    	case SourceType.RESTAPI:
-		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const output = RequestHelper.delete(schema.group, input, 'json');
+		    	case SourceType.RESTful:
+		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const _output = RequestHelper.delete(schema.group, _input, 'json');
 		    		
-		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
 		    		
 		    		break;

@@ -108,6 +108,9 @@ const RequestHelper = {
 			case "volatile-memory":
 				_target = SourceType.VolatileMemory;
 				break;
+			case "RESTful":
+				_target = SourceType.RESTful;
+				break;
 			default:
 				throw new Error("There was an error trying to retrieve input info (target value isn't in the predefined set).");
 		}
