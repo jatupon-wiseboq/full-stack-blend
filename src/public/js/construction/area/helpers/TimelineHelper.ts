@@ -1,8 +1,8 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {RandomHelper} from '../../helpers/RandomHelper.js';
-import {AnimationHelper} from './AnimationHelper.js';
-import {InternalProjectSettings} from './WorkspaceHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 

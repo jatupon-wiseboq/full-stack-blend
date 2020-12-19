@@ -1,56 +1,56 @@
-import {FullStackBlend} from '../helpers/DeclarationHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {RequestHelper} from '../helpers/RequestHelper.js';
+import {FullStackBlend} from '../helpers/DeclarationHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {RequestHelper} from '../helpers/RequestHelper';
 
-import './components/layout/GridPicker.js';
-import './components/layout/OffsetPicker.js';
-import './components/layout/DisplayPicker.js';
-import './components/layout/PreservePicker.js';
-import './components/layout/LayerManager.js';
+import './components/layout/GridPicker';
+import './components/layout/OffsetPicker';
+import './components/layout/DisplayPicker';
+import './components/layout/PreservePicker';
+import './components/layout/LayerManager';
 
-import './components/css/CSSPresets.js';
-import './components/css/CSSStyles.js';
-import './components/css/CSSPresetName.js';
-import './components/css/CSSCustomClasses.js';
-import './components/css/ComputedStyleManager.js';
+import './components/css/CSSPresets';
+import './components/css/CSSStyles';
+import './components/css/CSSPresetName';
+import './components/css/CSSCustomClasses';
+import './components/css/ComputedStyleManager';
 
-import './components/shape/DimensionPicker.js';
-import './components/shape/AppearancePicker.js';
-import './components/shape/BoundaryPicker.js';
-import './components/shape/Transformer.js';
-import './components/shape/SizePicker.js';
-import './components/shape/SwatchPicker.js';
-import './components/shape/GradientPicker.js';
+import './components/shape/DimensionPicker';
+import './components/shape/AppearancePicker';
+import './components/shape/BoundaryPicker';
+import './components/shape/Transformer';
+import './components/shape/SizePicker';
+import './components/shape/SwatchPicker';
+import './components/shape/GradientPicker';
 
-import './components/generic/DropDownPicker.js';
-import './components/generic/RadioButtonPicker.js';
-import './components/generic/NumberPicker.js';
-import './components/generic/TextPicker.js';
+import './components/generic/DropDownPicker';
+import './components/generic/RadioButtonPicker';
+import './components/generic/NumberPicker';
+import './components/generic/TextPicker';
 
-import './components/code/FrontEndScriptEditor.js';
-import './components/code/ReactEventBinder.js';
-import './components/code/ExternalLibrariesChooser.js';
-import './components/code/AttributeManager.js';
-import './components/code/OptionManager.js';
-import './components/code/WizardInputManager.js';
-import './components/code/BackEndScriptEditor.js';
-import './components/code/DebuggingConsole.js';
-import './components/code/ExternalLibrariesManager.js';
+import './components/code/FrontEndScriptEditor';
+import './components/code/ReactEventBinder';
+import './components/code/ExternalLibrariesChooser';
+import './components/code/AttributeManager';
+import './components/code/OptionManager';
+import './components/code/WizardInputManager';
+import './components/code/BackEndScriptEditor';
+import './components/code/DebuggingConsole';
+import './components/code/ExternalLibrariesManager';
 
-import './components/content/SitePreview.js';
-import './components/content/PageManager.js';
-import './components/content/ProjectManager.js';
-import './components/content/ComponentMenu.js';
-import './components/content/ComponentManager.js';
-import './components/content/PopupManager.js';
-import './components/content/EndpointManager.js';
-import './components/content/SchemaManager.js';
+import './components/content/SitePreview';
+import './components/content/PageManager';
+import './components/content/ProjectManager';
+import './components/content/ComponentMenu';
+import './components/content/ComponentManager';
+import './components/content/PopupManager';
+import './components/content/EndpointManager';
+import './components/content/SchemaManager';
 
-import './components/animation/AnimationPicker.js';
-import './components/animation/TimelineManager.js';
-import './components/animation/KeyframeManager.js';
-import './components/animation/Keyframe.js';
+import './components/animation/AnimationPicker';
+import './components/animation/TimelineManager';
+import './components/animation/KeyframeManager';
+import './components/animation/Keyframe';
 
 //import GitHub from 'github-api';
 

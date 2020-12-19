@@ -1,4 +1,4 @@
-import {HTMLHelper} from './HTMLHelper.js';
+import {HTMLHelper} from './HTMLHelper';
 
 let denyForHandle: any = {};
 var EventHelper = {

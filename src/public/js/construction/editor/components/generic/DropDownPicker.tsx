@@ -1,19 +1,19 @@
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {FontHelper} from '../../../helpers/FontHelper.js';
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../../controls/DropDownList.js';
-import '../shape/SizePicker.js';
-import '../generic/NumberPicker.js';
-import '../generic/TextPicker.js';
-import '../generic/ColorPicker.js';
-import '../generic/FilePicker.js';
-import '../code/SettingPicker.js';
-import '../code/PropertyPicker.js';
-import '../code/StatePicker.js';
-import '../code/CustomCodePicker.js';
-import * as CONSTANTS from '../../../Constants.js';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {FontHelper} from '../../../helpers/FontHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import '../../controls/DropDownList';
+import '../shape/SizePicker';
+import '../generic/NumberPicker';
+import '../generic/TextPicker';
+import '../generic/ColorPicker';
+import '../generic/FilePicker';
+import '../code/SettingPicker';
+import '../code/PropertyPicker';
+import '../code/StatePicker';
+import '../code/CustomCodePicker';
+import * as CONSTANTS from '../../../Constants';
 
 let options = {
     "object-fit": CONSTANTS.OBJECT_FIT_OPTIONS,

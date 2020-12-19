@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-import * as homeController from './controllers/Home.js';
+import * as homeController from './controllers/Home';
 
 const route = (app: any) => {
  app.get("/", homeController.index);

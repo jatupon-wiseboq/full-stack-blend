@@ -1,9 +1,9 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {InternalProjectSettings} from './WorkspaceHelper.js';
-import {EditorHelper} from './EditorHelper.js';
-import {TimelineHelper} from './TimelineHelper.js';
-import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT} from '../../Constants.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {EditorHelper} from './EditorHelper';
+import {TimelineHelper} from './TimelineHelper';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;

@@ -2,10 +2,11 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {Request} from "express";
-import {SourceType, ActionType, Input} from "./DatabaseHelper.js";
-import {DataTableSchema, DataSchema, SchemaHelper} from "./SchemaHelper.js";
-import {ValidationHelper} from "./ValidationHelper.js";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
+import {SourceType, ActionType, Input} from "./DatabaseHelper";
+import {DataTableSchema, DataSchema, SchemaHelper} from "./SchemaHelper";
+import {ValidationHelper} from "./ValidationHelper";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
+import {XMLHttpRequest} from 'xmlhttprequest-ts';
 
 interface RequestParamInfo {
   target: SourceType;
@@ -30,7 +31,7 @@ const RequestHelper = {
   						} catch { /* void */ }
   						resolve(output);
   					} else {
-  					  window.setTimeout((() => {
+  					  setTimeout((() => {
   					    if (--retryCount >= 0) {
   					      process();
   					    } else {

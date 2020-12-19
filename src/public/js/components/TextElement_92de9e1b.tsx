@@ -2,11 +2,11 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 // Auto[Import]--->
-import {Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
-import {CodeHelper} from '../helpers/CodeHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base.js';
+import {Project, DeclarationHelper} from '../helpers/DeclarationHelper';
+import {CodeHelper} from '../helpers/CodeHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Base} from './Base';
 // <---Auto[Import]
 
 // Import additional modules here:

@@ -1,9 +1,9 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {ITreeNode, InsertDirection} from '../../controls/TreeNode.js';
-import '../../controls/Tree.js';
-import '../../controls/DropDownControl.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
+import '../../controls/Tree';
+import '../../controls/DropDownControl';
 
 declare let React: any;
 declare let ReactDOM: any;

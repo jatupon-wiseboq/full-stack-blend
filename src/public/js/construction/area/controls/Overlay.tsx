@@ -1,5 +1,5 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
 declare let React: any;
 declare let ReactDOM: any;

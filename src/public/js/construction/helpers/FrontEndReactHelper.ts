@@ -1,4 +1,4 @@
-import {CAMEL_OF_EVENTS_DICTIONARY, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants.js';
+import {CAMEL_OF_EVENTS_DICTIONARY, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
 
 const DEFAULTS = {
   Import: `
@@ -61,12 +61,12 @@ export {IProps, IState, DefaultProps, DefaultState};
 
 const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
-import {CodeHelper} from '../helpers/CodeHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {AnimationHelper} from '../helpers/AnimationHelper.js';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base.js';
+import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
+import {CodeHelper} from '../helpers/CodeHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {AnimationHelper} from '../helpers/AnimationHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;

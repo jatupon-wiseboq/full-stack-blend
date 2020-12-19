@@ -1,6 +1,6 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
 
 var MalformationRepairHelper = {
 	repair: (container: HTMLElement=document) => {

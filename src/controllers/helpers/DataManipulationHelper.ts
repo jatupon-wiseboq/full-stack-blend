@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper.js";
+import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper";
 
 let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 

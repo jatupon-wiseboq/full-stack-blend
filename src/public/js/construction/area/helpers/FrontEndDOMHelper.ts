@@ -1,12 +1,12 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../helpers/CodeHelper.js';
-import {TextHelper} from '../../helpers/TextHelper.js';
-import {StylesheetHelper} from './StylesheetHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
-import {WorkspaceHelper} from './WorkspaceHelper.js';
-import {SchemaHelper} from './SchemaHelper.js';
-import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {TextHelper} from '../../helpers/TextHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {WorkspaceHelper} from './WorkspaceHelper';
+import {SchemaHelper} from './SchemaHelper';
+import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;

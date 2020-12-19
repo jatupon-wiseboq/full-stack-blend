@@ -1,10 +1,10 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {RequestHelper} from '../../../helpers/RequestHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -249,7 +249,7 @@ html
    	  this.create('../route.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-import * as homeController from './controllers/Home.js';
+import * as homeController from './controllers/Home';
 
 const route = (app: any) => {
 ${routes.map(route => ` app.get("${route.path}", homeController.${this.getRepresentativeName(route.id)});
@@ -267,7 +267,7 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}.js";`).join('\n')}
+${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
 	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
@@ -375,10 +375,10 @@ ${tokens[1]}
  	    this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
-import {HTMLHelper} from './helpers/HTMLHelper.js';
-import {EventHelper} from './helpers/EventHelper.js';
-${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}.js';`).join('\n')}
+import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
+import {HTMLHelper} from './helpers/HTMLHelper';
+import {EventHelper} from './helpers/EventHelper';
+${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;

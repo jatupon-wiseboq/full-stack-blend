@@ -1,14 +1,14 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {RandomHelper} from '../../../helpers/RandomHelper.js';
-import {Accessories, EditorHelper} from '../EditorHelper.js';
-import {WorkspaceHelper} from '../WorkspaceHelper.js';
-import {LayoutHelper} from '../LayoutHelper.js';
-import {TimelineHelper} from '../TimelineHelper.js';
-import {StylesheetHelper} from '../StylesheetHelper.js';
-import {CapabilityHelper} from '../CapabilityHelper.js';
-import {ManipulationHelper} from '../ManipulationHelper.js';
-import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
-import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Accessories, EditorHelper} from '../EditorHelper';
+import {WorkspaceHelper} from '../WorkspaceHelper';
+import {LayoutHelper} from '../LayoutHelper';
+import {TimelineHelper} from '../TimelineHelper';
+import {StylesheetHelper} from '../StylesheetHelper';
+import {CapabilityHelper} from '../CapabilityHelper';
+import {ManipulationHelper} from '../ManipulationHelper';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants';
 
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};

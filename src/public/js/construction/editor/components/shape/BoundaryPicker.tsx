@@ -1,6 +1,6 @@
-import {IProps, IState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import './SizePicker.js';
+import {IProps, IState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import './SizePicker';
 
 declare let React: any;
 declare let ReactDOM: any;

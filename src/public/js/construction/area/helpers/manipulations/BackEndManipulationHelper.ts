@@ -1,13 +1,13 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {RandomHelper} from '../../../helpers/RandomHelper.js';
-import {Accessories, EditorHelper} from '../EditorHelper.js';
-import {WorkspaceHelper} from '../WorkspaceHelper.js';
-import {SchemaHelper} from '../SchemaHelper.js';
-import {LayoutHelper} from '../LayoutHelper.js';
-import {StylesheetHelper} from '../StylesheetHelper.js';
-import {CapabilityHelper} from '../CapabilityHelper.js';
-import {ManipulationHelper} from '../ManipulationHelper.js';
-import {FrontEndDOMHelper} from '../FrontEndDOMHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Accessories, EditorHelper} from '../EditorHelper';
+import {WorkspaceHelper} from '../WorkspaceHelper';
+import {SchemaHelper} from '../SchemaHelper';
+import {LayoutHelper} from '../LayoutHelper';
+import {StylesheetHelper} from '../StylesheetHelper';
+import {CapabilityHelper} from '../CapabilityHelper';
+import {ManipulationHelper} from '../ManipulationHelper';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
 
 let composedUntitledNameCount: any = {};
 let composedUntitledNameDictionary: any = {};

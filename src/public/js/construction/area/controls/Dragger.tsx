@@ -1,8 +1,8 @@
-import {EventHelper} from '../../helpers/EventHelper.js';
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {Point, MathHelper} from '../../helpers/MathHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import {Accessories, EditorHelper} from '../helpers/EditorHelper.js';
+import {EventHelper} from '../../helpers/EventHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../helpers/MathHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {Accessories, EditorHelper} from '../helpers/EditorHelper';
 
 declare let React: any;
 declare let ReactDOM: any;

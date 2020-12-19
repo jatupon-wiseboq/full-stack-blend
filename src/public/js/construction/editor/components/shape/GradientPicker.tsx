@@ -1,12 +1,12 @@
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {Point, MathHelper} from '../../../helpers/MathHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../../controls/Tree.js';
-import '../../controls/Textbox.js';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../../helpers/MathHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import '../../controls/Tree';
+import '../../controls/Textbox';
 
 declare let React: any;
 declare let ReactDOM: any;

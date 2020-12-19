@@ -3,12 +3,12 @@
 
 
 // Auto[Import]--->
-import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper.js';
-import {CodeHelper} from '../helpers/CodeHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {AnimationHelper} from '../helpers/AnimationHelper.js';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base.js';
+import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
+import {CodeHelper} from '../helpers/CodeHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {AnimationHelper} from '../helpers/AnimationHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
 // <---Auto[Import]
 
 // Import additional modules here:

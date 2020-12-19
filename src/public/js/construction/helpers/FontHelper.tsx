@@ -1,5 +1,5 @@
-import {HTMLHelper} from './HTMLHelper.js';
-import {FONTS} from '../Fonts.js';
+import {HTMLHelper} from './HTMLHelper';
+import {FONTS} from '../Fonts';
 
 let setupFont = {};
 let allFontsCache = null;

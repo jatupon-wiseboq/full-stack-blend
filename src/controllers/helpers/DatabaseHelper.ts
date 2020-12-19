@@ -1,15 +1,15 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
-import {CodeHelper} from "./CodeHelper.js";
-import {NotificationHelper} from "./NotificationHelper.js";
-import {DataFormationHelper} from "./DataFormationHelper.js";
-import {RequestHelper} from "./RequestHelper.js";
-import {ValidationInfo} from "./ValidationHelper.js";
-import {PermissionHelper} from "./PermissionHelper.js";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
-import {FieldType, DataTableSchema} from "./SchemaHelper.js";
+import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper";
+import {CodeHelper} from "./CodeHelper";
+import {NotificationHelper} from "./NotificationHelper";
+import {DataFormationHelper} from "./DataFormationHelper";
+import {RequestHelper} from "./RequestHelper";
+import {ValidationInfo} from "./ValidationHelper";
+import {PermissionHelper} from "./PermissionHelper";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
+import {FieldType, DataTableSchema} from "./SchemaHelper";
 import {DataTypes} from "sequelize";
 
 enum SourceType {
@@ -79,8 +79,7 @@ const DatabaseHelper = {
 			case "volatile-memory":
 				return SourceType.VolatileMemory;
 			case "RESTful":
-				_target = SourceType.RESTful;
-				break;
+				return SourceType.RESTful;
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
@@ -669,11 +668,10 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								record = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								DocumentDatabaseClient.db.collection.insertOne(Object.assign({}, data, keys));
-								record = Object.assign({}, data, keys);
+								record = (await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
 								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								VolatileMemoryClient.set(_key, Object.assign({}, data, keys));
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
 								record = Object.assign({}, data, keys);
 							}
 							
@@ -754,8 +752,12 @@ const DatabaseHelper = {
 		    		
 		    		break;
 		    	case SourceType.RESTful:
+		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'PUT');
+		    		
+		    		if (_column.length == 0) throw new Error(`Cannot perform PUT on RESTful group "${schema.group}".`);
+		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const _output = RequestHelper.put(schema.group, _input, 'json');
+		    		const _output = RequestHelper.put(_column[0].url, _input, 'json');
 		    		
 		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
@@ -814,6 +816,7 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 							const data = {};
+							const query = {};
 						
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
@@ -826,6 +829,7 @@ const DatabaseHelper = {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
 							      keys[key] = row.keys[key];
+							    	query[key] = {$eq: row.keys[key]};
 							    }
 							  }
 							}
@@ -834,13 +838,13 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								record = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 							} else if (input.source == SourceType.Document) {
-								DocumentDatabaseClient.db.collection.updateOne(hash, data, {upsert: true});
-								record = DocumentDatabaseClient.db.collection.findOne(hash);
+								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
+								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
 								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = VolatileMemoryClient.get(_key) || {};
-								VolatileMemoryClient.set(_key, Object.assign({}, record, data, keys));
-								record = VolatileMemoryClient.get(_key);
+								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
+								record = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
 							
 							for (const key in schema.keys) {
@@ -922,7 +926,15 @@ const DatabaseHelper = {
 		    		
 		    		break;
 		    	case SourceType.RESTful:
-		    		throw new Error("Cannot perform UPSERT on REST API.");
+		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
+		    		
+		    		if (_column.length == 0) throw new Error(`Cannot perform POST on RESTful group "${schema.group}".`);
+		    		
+		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const _output = RequestHelper.post(_column[0].url, _input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
+		    		results.push(table.rows[0]);
 		    		
 		    		break;
 		    }
@@ -978,10 +990,12 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 							const data = {};
+							const query = {};
 						
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
+							    query[key] = {$eq: row.keys[key]};
 							  }
 							}
 							for (const key in schema.columns) {
@@ -997,13 +1011,13 @@ const DatabaseHelper = {
 								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
 								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								DocumentDatabaseClient.db.collection.updateOne(keys, data);
-								record = DocumentDatabaseClient.db.collection.findOne(keys);
+								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).updateOne(query, {$set: data});
+								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
 								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = VolatileMemoryClient.get(_key) || {};
-								VolatileMemoryClient.set(_key, Object.assign({}, record, data, keys));
-								record = VolatileMemoryClient.get(_key);
+								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
+								record = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
 							
 						  const result = {
@@ -1078,8 +1092,12 @@ const DatabaseHelper = {
 		    		
 		    		break;
 		    	case SourceType.RESTful:
+		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
+		    		
+		    		if (_column.length == 0) throw new Error(`Cannot perform POST on RESTful group "${schema.group}".`);
+		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const _output = RequestHelper.post(schema.group, _input, 'json');
+		    		const _output = RequestHelper.post(_column[0].url, _input, 'json');
 		    		
 		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);
@@ -1168,24 +1186,28 @@ const DatabaseHelper = {
 	        	case SourceType.PrioritizedWorker:
 	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
-	        		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
+	        		throw new Error("Cannot perform RETRIEVE ALL on prioritized worker.");
 	        		
 	        		break;
 	        	case SourceType.Document:
 	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
-	        		throw new Error("Not Implemented Error");
+	        		throw new Error("Cannot perform RETRIEVE ALL on document database.");
 	        		
 	        		break;
 	        	case SourceType.VolatileMemory:
 	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
-	        		throw new Error("Not Implemented Error");
+	        		throw new Error("Cannot perform RETRIEVE ALL on volatile memory.");
 	        		
 	        		break;
 			    	case SourceType.RESTful:
+			    		const _column = Object.keys(baseSchema.columns).map(key => baseSchema.columns[key]).filter(column => column.verb == null);
+			    		
+			    		if (_column.length == 0) throw new Error(`Cannot perform RETRIEVE ALL on RESTful named "${baseSchema.group}".`);
+			    		
 			    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-			    		const _output = RequestHelper.get(schema.group, _input, 'json');
+			    		const _output = RequestHelper.get(_column[0].url, _input, 'json');
 			    		
 			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 			    		results.push(table.rows[0]);
@@ -1213,20 +1235,23 @@ const DatabaseHelper = {
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(baseSchema) : null;
 						
 						for (const row of input.rows) {
 		      		const keys = {};
 		      		const data = {};
+		      		const query = {};
 							
 							for (const key in baseSchema.columns) {
 							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    data[key] = row.columns[key];
+							    query[key] = {$eq: row.columns[key]};
 							  }
 							}
 							for (const key in baseSchema.keys) {
 							  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
+							    query[key] = {$eq: row.keys[key]};
 							  }
 							}
 							
@@ -1237,11 +1262,20 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
 							} else if (input.source == SourceType.Document) {
-								records = DocumentDatabaseClient.db.collection.find(Object.assign({}, data, keys));
+								let connection = await DocumentDatabaseClient.connect();
+								records = await new Promise(async (resolve, reject) => {
+									await connection.db('stackblend').collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
+										if (error) {
+											reject(error);
+										} else {
+											resolve(results);
+										}
+									});
+								});
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								const record = VolatileMemoryClient.get(_key);
-								records = record && [record] || [];
+								let _key = baseSchema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const record = await VolatileMemoryClient.get(_key);
+								records = record && [JSON.parse(record)] || [];
 							}
 							
 							for (const record of records) {
@@ -1320,11 +1354,15 @@ const DatabaseHelper = {
 		    		
 		    		break;
 		    	case SourceType.RESTful:
+		    		const _column = Object.keys(baseSchema.columns).map(key => baseSchema.columns[key]).filter(column => column.verb == null);
+		    		
+		    		if (_column.length == 0) throw new Error(`Cannot perform GET on RESTful group "${baseSchema.group}".`);
+		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const _output = RequestHelper.get(schema.group, _input, 'json');
+		    		const _output = RequestHelper.get(_column[0].url, _input, 'json');
 		    		
 		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
-		    		results.push(table.rows[0]);
+		    		results[table.group] = table;
 		    		
 		    		break;
 		    }
@@ -1379,26 +1417,28 @@ const DatabaseHelper = {
 						
 						for (const row of input.rows) {
 							const keys = {};
+		      		const query = {};
 						
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
+							    query[key] = {$eq: row.keys[key]};
 							  }
 							}
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, keys, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
-						  let records;
+						  let record;
 							if (input.source == SourceType.Relational) {
 								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								record = DocumentDatabaseClient.db.collection.findOne(keys) || {};
-								record = DocumentDatabaseClient.db.collection.deleteOne(keys);
+								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query) || {};
+								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).deleteOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
 								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = VolatileMemoryClient.get(_key) || {};
-								VolatileMemoryClient.del(_key);
+								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								await VolatileMemoryClient.del(_key);
 							}
 						  
 						  const result = {
@@ -1473,8 +1513,12 @@ const DatabaseHelper = {
 						
 						break;
 		    	case SourceType.RESTful:
+		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'DELETE');
+		    		
+		    		if (_column.length == 0) throw new Error(`Cannot perform DELETE on RESTful group "${schema.group}".`);
+		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const _output = RequestHelper.delete(schema.group, _input, 'json');
+		    		const _output = RequestHelper.delete(_column[0].url, _input, 'json');
 		    		
 		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results.push(table.rows[0]);

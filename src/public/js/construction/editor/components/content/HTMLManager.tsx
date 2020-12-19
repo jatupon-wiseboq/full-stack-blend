@@ -1,13 +1,13 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {RandomHelper} from '../../../helpers/RandomHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {ITreeNode} from '../../controls/TreeNode.js';
-import '../../controls/Textbox.js';
-import '../generic/ListManager.js';
-import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
+import '../../controls/Textbox';
+import '../generic/ListManager';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

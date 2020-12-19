@@ -1,9 +1,9 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {EventHelper} from '../../helpers/EventHelper.js';
-import {CursorHelper} from './CursorHelper.js';
-import {ManipulationHelper} from './ManipulationHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
-import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {CursorHelper} from './CursorHelper';
+import {ManipulationHelper} from './ManipulationHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
 var CapabilityHelper = {
 	installCapabilityOfBeingSelected: (_container: HTMLElement) => {

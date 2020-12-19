@@ -1,5 +1,5 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 

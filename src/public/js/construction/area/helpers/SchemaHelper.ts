@@ -1,4 +1,4 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
 
 let cachedElementTreeNodes = null;
 
