@@ -55,9 +55,9 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 	if (process.env.PRIORITIZED_WORKER_KEY == process.env.VOLATILE_MEMORY_KEY) {
 		PrioritizedWorkerVolatileMemoryClient = VolatileMemoryClient;
 	} else {
-		const connectionURL = new URL(process.env[process.env.PRIORITIZE_WORKER_KEY]);
-		PrioritizedWorkerVolatileMemoryClient = mysql.createConnection({
-		  host     : connectionURL.host,
+		const connectionURL = new URL(process.env[process.env.PRIORITIZED_WORKER_KEY]);
+		PrioritizedWorkerVolatileMemoryClient = redis.createClient({
+			host     : connectionURL.host,
 		  user     : connectionURL.username,
 		  password : connectionURL.password,
 		  port     : connectionURL.port
@@ -67,11 +67,48 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 }
 
 const CreateTransaction = (options) => {
+	let relationalDatabaseTransaction = null;
+	let documentDatabaseSession = null;
+	
 	if (RelationalDatabaseORMClient) {
-		return RelationalDatabaseORMClient.transaction(options);
+		relationalDatabaseTransaction = RelationalDatabaseORMClient.transaction({});
+	}
+	if (DocumentDatabaseClient) {
+		documentDatabaseSession = DocumentDatabaseClient.startSession({
+			retryWrites: true,
+			causalConsistency: true
+		});
+		documentDatabaseSession.startTransaction({
+			readPreference: 'primary',
+			readConcern: {
+				level: 'local'
+			},
+			writeConcern: {
+				w: 'majority'
+			}
+    });
 	}
 	
-	return null;
+	return {
+		commit: () => {
+			try {
+				if (relationalDatabaseTransaction) relationalDatabaseTransaction.commit();
+				if (documentDatabaseSession) documentDatabaseSession.commitTransaction();
+			} finally {
+				if (documentDatabaseSession) documentDatabaseSession.endSession();
+			}
+		},
+		rollback: () => {
+			try {
+				if (relationalDatabaseTransaction) relationalDatabaseTransaction.rollback();
+				if (documentDatabaseSession) documentDatabaseSession.abortTransaction();
+			} finally {
+				if (documentDatabaseSession) documentDatabaseSession.endSession();
+			}
+		},
+		relationalDatabaseTransaction: relationalDatabaseTransaction,
+		documentDatabaseSession: documentDatabaseSession
+	};
 };
 
 export {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient, CreateTransaction};

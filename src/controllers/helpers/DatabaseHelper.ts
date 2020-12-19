@@ -4,6 +4,8 @@
 import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper.js";
 import {CodeHelper} from "./CodeHelper.js";
 import {NotificationHelper} from "./NotificationHelper.js";
+import {DataFormationHelper} from "./DataFormationHelper.js";
+import {RequestHelper} from "./RequestHelper.js";
 import {ValidationInfo} from "./ValidationHelper.js";
 import {PermissionHelper} from "./PermissionHelper.js";
 import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
@@ -14,7 +16,9 @@ enum SourceType {
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTAPI,
+  Other
 }
 enum ActionType {
   Insert,
@@ -629,9 +633,13 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -653,7 +661,17 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, hash, session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
-							const record = await map.create(hash, {transaction: transaction});
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								record = await map.create(hash, {transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								collection.insertOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
+								record = hash;
+							}
 							
 						  const result = {
 						    keys: {},
@@ -721,21 +739,22 @@ const DatabaseHelper = {
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		for (const row of input.rows) {
+							PrioritizedWorkerClient.enqueue(schema.group, [row], {
+						    retry: true,
+						    queue: "normal"
+							});
+						}
+		    		
+		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.put(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
 		    		
 		    		break;
 		    }
@@ -780,9 +799,13 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -802,7 +825,17 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							const record = (await map.upsert(hash, {transaction: transaction}))[0];
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								record = (await map.upsert(hash, {transaction: transaction.relationalDatabaseTransaction}))[0];
+							} else if (input.source == SourceType.Document) {
+								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
+								record = hash;
+							}
 							
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
@@ -877,21 +910,13 @@ const DatabaseHelper = {
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
+		    		
+		    		break;
+		    	case SourceType.RESTAPI:
+		    		throw new Error("Cannot perform UPSERT on REST API.");
 		    		
 		    		break;
 		    }
@@ -936,9 +961,13 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -957,9 +986,19 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, hash, session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
-							await map.update(data, {where: hash, transaction: transaction});
+							let record = null;
+							if (input.source == SourceType.Relational) {
+								await map.update(data, {where: hash, transaction: transaction.relationalDatabaseTransaction});
+								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								collection.updateOne(hash, { transaction.documentDatabaseSession });
+								record = hash;
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								VolatileMemoryClient.set(_key, hash);
+								record = hash;
+							}
 							
-							const record = await map.findOne({where: hash, transaction: transaction});
 						  const result = {
 						    keys: {},
 						    columns: {},
@@ -1026,21 +1065,17 @@ const DatabaseHelper = {
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
+		    		
+		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.post(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
 		    		
 		    		break;
 		    }
@@ -1124,9 +1159,9 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
-	        		throw new Error("Not Implemented Error");
+	        		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
 	        		
 	        		break;
 	        	case SourceType.Document:
@@ -1136,11 +1171,19 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.VolatileMemory:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 	        		
 	        		throw new Error("Not Implemented Error");
 	        		
 	        		break;
+			    	case SourceType.RESTAPI:
+			    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+			    		const output = RequestHelper.get(schema.group, input, 'json');
+			    		
+			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+			    		results.push(table.rows[0]);
+			    		
+			    		break;
 	        }
 	      
 	      	resolve(results);
@@ -1157,9 +1200,13 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(baseSchema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 		      		const hash = {};
@@ -1178,7 +1225,15 @@ const DatabaseHelper = {
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, hash, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 							
 							const rows = [];
-							const records = await map.findAll({where: hash}) || [];
+							let records;
+							if (input.source == SourceType.Relational) {
+								records = await map.findAll({where: hash}) || [];
+							} else if (input.source == SourceType.Document) {
+								records = [];
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								record = VolatileMemoryClient.get(_key, hash);
+							}
 							
 							for (const record of records) {
 							  const row = {
@@ -1250,21 +1305,17 @@ const DatabaseHelper = {
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.Document:
-		    		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		
-		    		throw new Error("Not Implemented Error");
-		    		
-		    		break;
-		    	case SourceType.VolatileMemory:
 		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 		    		
-		    		throw new Error("Not Implemented Error");
+		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
+		    		
+		    		break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.get(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
 		    		
 		    		break;
 		    }
@@ -1309,9 +1360,13 @@ const DatabaseHelper = {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
-		    		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    	case SourceType.Document:
+		    	case SourceType.VolatileMemory:
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						const map = DatabaseHelper.ormMap(schema);
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
 							const hash = {};
@@ -1324,8 +1379,17 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, hash, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
-							const record = await map.findOne({where: hash, transaction: transaction});
-							await record.destroy({force: true, transaction: transaction});
+						  let records;
+							if (input.source == SourceType.Relational) {
+								record = await map.findOne({where: hash, transaction: transaction.relationalDatabaseTransaction});
+								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								record = 
+							} else if (input.source == SourceType.VolatileMemory) {
+								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(CodeHelper.clone(row.keys)));
+								record = VolatileMemoryClient.get(_key, hash);
+								VolatileMemoryClient.del(_key);
+							}
 						  
 						  const result = {
 						    keys: {},
@@ -1393,23 +1457,19 @@ const DatabaseHelper = {
 						}
 						break;
 					case SourceType.PrioritizedWorker:
-						if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
-						
-						throw new Error("Not Implemented Error");
-						
-						break;
-					case SourceType.Document:
-						if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-						
-						throw new Error("Not Implemented Error");
-						
-						break;
-					case SourceType.VolatileMemory:
 						if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
 						
-						throw new Error("Not Implemented Error");
+						throw new Error("Cannot perform DELETE on prioritized worker.");
 						
 						break;
+		    	case SourceType.RESTAPI:
+		    		const input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
+		    		const output = RequestHelper.delete(schema.group, input, 'json');
+		    		
+		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(output);
+		    		results.push(table.rows[0]);
+		    		
+		    		break;
 				}
 		    
 	  		resolve();
