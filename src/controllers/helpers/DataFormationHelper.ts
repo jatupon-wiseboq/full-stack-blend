@@ -98,14 +98,14 @@ const DataFormationHelper = {
 						
 						return results;
 					} else {
-						if (row.relations[key].source == SourceType.Collection) {
+						if (row.relations[key].source == SourceType.Dictionary) {
+							dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0])
+						} else {
 							dictionary[key] = [];
-						
+							
 							for (let _row of row.relations[key].rows) {
 								dictionary[key].push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
 							}
-						} else if (row.relations[key].source == SourceType.Dictionary) {
-							dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0])
 						}
 					}
 				}
