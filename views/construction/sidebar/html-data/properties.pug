@@ -75,9 +75,17 @@ include ../../mixin/CreateReactComponent
     .section-title
       | Volatile Prefix Options
     .section-subtitle
-      | Group
+      | Field
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Column
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-column-type']}")
+    .section-subtitle
+      | Kind
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-field-type-3', 'data-field-type']}")
   .section-container(internal-fsb-for="internal-fsb-class:Verb")
     .section-title
       | Verb Options
