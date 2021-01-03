@@ -362,6 +362,7 @@ export const SYSTEM_CODE_REGEX_END_GLOBAL = /(\n[ ]*\/\/ \Auto\[([a-zA-Z0-9_:]+)
 export const BACKEND_DATA_COLUMN_TYPE = [["data-column-type", "primary", ["fa-circle", "Primary"]], ["data-column-type", null, ["fa-circle-o", "General"]]];
 export const BACKEND_DATA_FIELD_TYPE_1 = [["data-field-type", "auto", ["d-none", "Increase"]], ["data-field-type", null, ["d-none", "String"]], ["data-field-type", "number", ["d-none", "Number"]], ["data-field-type", "boolean", ["d-none", "Boolean"]]];
 export const BACKEND_DATA_FIELD_TYPE_2 = [["data-field-type", "datetime", ["d-none", "DateTime"]]];
+export const BACKEND_DATA_FIELD_TYPE_3 = [["data-field-type", null, ["d-none", "String"]], ["data-field-type", "number", ["d-none", "Number"]], ["data-field-type", "boolean", ["d-none", "Boolean"]], ["data-field-type", "datetime", ["d-none", "DateTime"]]];
 export const BACKEND_DATA_REQUIRED = [["data-required", "true", ["fa-circle", "Necessary"]], ["data-required", null, ["fa-circle-o", "Additional"]]];
 export const BACKEND_DATA_UNIQUE = [["data-unique", "true", ["fa-circle", "Unique"]], ["data-unique", null, ["fa-circle-o", "Common"]]];
 export const BACKEND_DATA_FORCE_CONSTRAINT = [["data-force-constraint", "true", ["fa-circle", "Always Have"]], ["data-force-constraint", null, ["fa-circle-o", "None"]]];
