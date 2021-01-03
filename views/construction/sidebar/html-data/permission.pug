@@ -46,9 +46,9 @@ include ../../mixin/CreateReactComponent
       | Retrieval 
     .section-subtitle
       | Restriction
-    .section-body(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
+    .section-body(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:RelationalColumn")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-mode']}")
-    .section-body(internal-fsb-not-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
+    .section-body(internal-fsb-for="internal-fsb-class:DocumentTable,internal-fsb-class:DocumentNotation,internal-fsb-class:VolatileMemory,internal-fsb-class:VolatilePrefix,internal-fsb-class:RESTful,internal-fsb-class:Verb")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-mode-1']}")
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
       | Source Group
