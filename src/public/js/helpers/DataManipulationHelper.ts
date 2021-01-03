@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {RequestHelper} from './RequestHelper.js';
-import {NotificationHelper} from './NotificationHelper.js';
-import {HTMLHelper} from './HTMLHelper.js';
-import {EventHelper} from './EventHelper.js';
+import {RequestHelper} from './RequestHelper';
+import {NotificationHelper} from './NotificationHelper';
+import {HTMLHelper} from './HTMLHelper';
+import {EventHelper} from './EventHelper';
 
 declare let window: any;
 

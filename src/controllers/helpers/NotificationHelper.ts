@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {CodeHelper} from "./CodeHelper.js";
-import {DataTableSchema} from "./SchemaHelper.js";
-import {ActionType, HierarchicalDataRow} from "./DatabaseHelper.js";
-import {socket} from "../../server.js";
+import {CodeHelper} from "./CodeHelper";
+import {DataTableSchema} from "./SchemaHelper";
+import {ActionType, HierarchicalDataRow} from "./DatabaseHelper";
+import {socket} from "../../server";
 import {Md5} from "md5-typescript";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";

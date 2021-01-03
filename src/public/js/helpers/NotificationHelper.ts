@@ -1,8 +1,8 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataTable} from './DataManipulationHelper.js';
-import {RequestHelper} from './RequestHelper.js';
+import {HierarchicalDataTable} from './DataManipulationHelper';
+import {RequestHelper} from './RequestHelper';
 
 const sockets = {};
 const notificationInfos = {};

@@ -1,9 +1,9 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {ManipulationHelper} from './ManipulationHelper.js';
-import {LayoutHelper} from './LayoutHelper.js';
-import {InternalProjectSettings} from './WorkspaceHelper.js';
-import {Accessories, EditorHelper} from './EditorHelper.js';
-import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {ManipulationHelper} from './ManipulationHelper';
+import {LayoutHelper} from './LayoutHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
 var CursorHelper = {
 	moveCursorToTheEndOfDocument: (remember: boolean=true) => {

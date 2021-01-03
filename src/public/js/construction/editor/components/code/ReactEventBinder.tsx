@@ -1,8 +1,8 @@
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../../controls/DropDownControl.js';
-import '../generic/RadioButtonPicker.js';
-import * as CONSTANTS from '../../../Constants.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import '../../controls/DropDownControl';
+import '../generic/RadioButtonPicker';
+import * as CONSTANTS from '../../../Constants';
 
 let options = {
 		"onfsbsubmitting": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,

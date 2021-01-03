@@ -2,10 +2,10 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-import Componentindex from "./components/index.js";
-import Component9e885d49 from "./components/account/authenticate/_9e885d49.js";
-import Component3cb10a6e from "./components/account/settings/_3cb10a6e.js";
-import Componentb160aa0e from "./components/developer/_b160aa0e.js";
+import Componentindex from "./components/index";
+import Component9e885d49 from "./components/account/authenticate/_9e885d49";
+import Component3cb10a6e from "./components/account/settings/_3cb10a6e";
+import Componentb160aa0e from "./components/developer/_b160aa0e";
 
 export const index = (req: Request, res: Response) => {
 	new Componentindex(req, res, "home/index");

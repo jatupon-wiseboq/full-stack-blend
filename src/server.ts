@@ -2,7 +2,7 @@ import * as SocketIO from "socket.io";
 import fs from "fs";
 import dotenv from "dotenv";
 
-import app from "./app.js";
+import app from "./app";
 
 let socket = null;
 let server = null;

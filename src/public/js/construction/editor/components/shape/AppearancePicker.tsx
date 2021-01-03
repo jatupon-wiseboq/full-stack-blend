@@ -1,8 +1,8 @@
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import './BorderStylePicker.js';
-import './SizePicker.js';
-import './BackgroundStylePicker.js';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import './BorderStylePicker';
+import './SizePicker';
+import './BackgroundStylePicker';
 
 declare let React: any;
 declare let ReactDOM: any;

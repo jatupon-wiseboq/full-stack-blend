@@ -2,7 +2,7 @@
 
 The purpose of this repository is for forking and being used with StackBlend platform. The forked repository will be your assets under the MIT License ([read more on terms of service, section 2: Use License](https://www.softenstorm.com/stackblend-policy-and-terms)).
 
-For beta testers and developers, please go to https://staging.stackblend.com/signup to get started. Please note that a dedicated GitHub account for StackBlend is recommended while it is underdevelopment.
+Please go to https://www.stackblend.org to get started. Please note that a dedicated GitHub account for StackBlend is recommended while it is underdevelopment.
 
 ## Running boilerplate on local machine
 
@@ -45,8 +45,8 @@ Whatever you are a full-stack engineer or not, StackBlend will helps you cope wi
 
 To get started:
 
-1. Signup and Login to StackBlend at https://staging.stackblend.com/signup.
-2. Go to Settings at https://staging.stackblend.com/account/settings.
+1. Signup and Login to StackBlend at https://www.stackblend.org/account/authenticate.
+2. Go to Settings at https://www.stackblend.org/account/settings.
 3. Connect to a newly created GitHub account (dedicatedly for StackBlend platform).
 4. From Organization Or User Alias, enter "YOUR_ALIAS".
 5. From Project Name, enter "YOUR_GITHUB_PROJECT_NAME".

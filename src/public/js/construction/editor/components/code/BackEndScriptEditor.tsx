@@ -1,9 +1,9 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {BackEndScriptHelper, DEFAULTS} from '../../../helpers/BackEndScriptHelper.js';
-import {CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST} from '../../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {BackEndScriptHelper, DEFAULTS} from '../../../helpers/BackEndScriptHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

@@ -1,9 +1,9 @@
-import {HTMLHelper} from '../helpers/HTMLHelper.js';
-import {EventHelper} from '../helpers/EventHelper.js';
-import {WorkspaceHelper} from './helpers/WorkspaceHelper.js';
-import {CursorHelper} from './helpers/CursorHelper.js';
-import {CapabilityHelper} from './helpers/CapabilityHelper.js';
-import {EditorHelper} from './helpers/EditorHelper.js';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {WorkspaceHelper} from './helpers/WorkspaceHelper';
+import {CursorHelper} from './helpers/CursorHelper';
+import {CapabilityHelper} from './helpers/CapabilityHelper';
+import {EditorHelper} from './helpers/EditorHelper';
 
 (() => {
   let isLoaded: boolean = false;

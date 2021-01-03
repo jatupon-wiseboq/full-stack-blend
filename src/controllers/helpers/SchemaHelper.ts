@@ -1,9 +1,9 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {SourceType} from "./DatabaseHelper.js";
-import {Permission} from "./PermissionHelper.js";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
+import {SourceType} from "./DatabaseHelper";
+import {Permission} from "./PermissionHelper";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
 
 enum FieldType {
   AutoNumber,
@@ -32,6 +32,8 @@ interface DataColumnSchema {
 	fieldType: FieldType;
 	required: boolean;
 	unique: boolean;
+	verb: string;
+	url: string;
   modifyingPermission: Permission;
   retrievingPermission: Permission;
 }

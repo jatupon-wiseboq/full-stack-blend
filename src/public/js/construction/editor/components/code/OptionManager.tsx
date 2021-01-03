@@ -1,10 +1,10 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {InsertDirection, ITreeNode} from '../../controls/TreeNode.js';
-import '../../controls/Textbox.js';
-import '../generic/ListManager.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {InsertDirection, ITreeNode} from '../../controls/TreeNode';
+import '../../controls/Textbox';
+import '../generic/ListManager';
 
 declare let React: any;
 declare let ReactDOM: any;

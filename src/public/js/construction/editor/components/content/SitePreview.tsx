@@ -1,9 +1,9 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {RequestHelper} from '../../../helpers/RequestHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

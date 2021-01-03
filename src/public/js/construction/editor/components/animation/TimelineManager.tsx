@@ -1,15 +1,15 @@
-import {TextHelper} from '../../../helpers/TextHelper.js';
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {RandomHelper} from '../../../helpers/RandomHelper.js';
-import {Point, MathHelper} from '../../../helpers/MathHelper.js';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import {ITreeNode} from '../../controls/TreeNode.js';
-import '../../controls/Tree.js';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Point, MathHelper} from '../../../helpers/MathHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
+import '../../controls/Tree';
 import './KeyframeManager.js'
-import {SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS} from '../../../Constants.js';
+import {SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

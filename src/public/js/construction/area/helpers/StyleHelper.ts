@@ -1,4 +1,4 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
 
 let defaultElement = document.createElement('div');
 let cachedElementComputedStyleNodesElement = null;

@@ -1,11 +1,11 @@
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {EventHelper} from '../../../helpers/EventHelper.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
-import '../../controls/ColorPicker.js';
-import '../../controls/DropDownList.js';
-import '../../controls/DropDownControl.js';
-import {BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE} from '../../../Constants.js';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import '../../controls/ColorPicker';
+import '../../controls/DropDownList';
+import '../../controls/DropDownControl';
+import {BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

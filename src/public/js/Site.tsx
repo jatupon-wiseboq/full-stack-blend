@@ -1,11 +1,11 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-import {Project, DeclarationHelper} from './helpers/DeclarationHelper.js';
-import {HTMLHelper} from './helpers/HTMLHelper.js';
-import {EventHelper} from './helpers/EventHelper.js';
-import './components/Project.Controls.FlowLayout_4d816ba8.js';
-import './components/Project.Controls.Settings.js';
+import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
+import {HTMLHelper} from './helpers/HTMLHelper';
+import {EventHelper} from './helpers/EventHelper';
+import './components/Project.Controls.FlowLayout_4d816ba8';
+import './components/Project.Controls.Settings';
 
 declare let React: any;
 declare let ReactDOM: any;

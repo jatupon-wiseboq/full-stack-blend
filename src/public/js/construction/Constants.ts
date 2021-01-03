@@ -1,4 +1,4 @@
-import {FontHelper} from './helpers/FontHelper.js';
+import {FontHelper} from './helpers/FontHelper';
 
 export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col\-md\-([0-9]+)/, /col\-lg\-([0-9]+)/, /col\-xl\-([0-9]+)/];
 export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/, /offset\-xl\-([0-9]+)/];
@@ -327,6 +327,7 @@ export const REQUIRE_OPTIONS = [["required", "true", ["fa-circle", "Necessary"]]
 export const MULTIPLE_OPTIONS = [["multiple", null, ["fa-minus", "Single"]], ["multiple", "true", ["fa-reorder", "Multiple"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "relational", ["fa-share-alt", "Relational"]], ["internal-fsb-data-source-type", "worker", ["fa-sort-numeric-asc", "Prioritized Worker"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_2 = [["internal-fsb-data-source-type", "document", ["fa-file-o", "Document"]], ["internal-fsb-data-source-type", "volatile-memory", ["fa-thumb-tack", "Volatile Memory"]]];
+export const DATA_SOURCE_TYPE_OPTIONS_3 = [["internal-fsb-data-source-type", "RESTful", ["fa-globe", "RESTful"]]];
 export const DATA_WIZARD_TYPE_OPTIONS_1 = [["internal-fsb-data-wizard-type", "insert", ["fa-save", "Insert"]], ["internal-fsb-data-wizard-type", "update", ["fa-save", "Update"]], ["internal-fsb-data-wizard-type", "upsert", ["fa-save", "Upsert"]]];
 export const DATA_WIZARD_TYPE_OPTIONS_2 = [["internal-fsb-data-wizard-type", "delete", ["fa-save", "Delete"]], ["internal-fsb-data-wizard-type", "retrieve", ["fa-database", "Retrieve"]], ["internal-fsb-data-wizard-type", "popup", ["fa-list-alt", "Popup"]]];
 export const DATA_WIZARD_TYPE_OPTIONS_3 = [["internal-fsb-data-wizard-type", "navigate", ["fa-link", "Navigate"]]];
@@ -369,6 +370,7 @@ export const BACKEND_DATA_LOCK_MODE = [["data-lock-mode", "always", ["fa-circle"
 export const BACKEND_DATA_LOCK_MATCHING_MODE = [["data-lock-matching-mode", null, ["fa-circle", "Static Value"]], ["data-lock-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MODE = [["data-rendering-condition-mode", "block", ["fa-circle", "Block"]], ["data-rendering-condition-mode", "relation", ["fa-circle-o", "Relation"]], ["data-rendering-condition-mode", "session", ["fa-circle-o", "Session"]]];
 export const BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE = [["data-rendering-condition-matching-mode", null, ["fa-circle", "Static Value"]], ["data-rendering-condition-matching-mode", "session", ["fa-circle-o", "Dynamic Value"]]];
+export const BACKEND_VERB = [["data-verb", null, ["d-none", "GET"]], ["data-verb", "POST", ["d-none", "POST"]], ["data-verb", "PUT", ["d-none", "PUT"]], ["data-verb", "DELETE", ["d-none", "DELETE"]]];
 export const SINGLE_DOM_CONTAINER_ELEMENTS = ['Rectangle', 'Button', 'Link'];
 export const ANIMATION_TIMING_MODE = [["animationGroupMode", null, ["fa-hourglass-2", "Time"]], ["animationGroupMode", "scrolling", ["fa-arrows-v", "Scrolling"]]];
 export const ANIMATION_SCROLLING_TRIGGERING = [["-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];

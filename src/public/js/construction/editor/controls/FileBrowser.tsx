@@ -1,7 +1,7 @@
-import {EventHelper} from '../../helpers/EventHelper.js';
-import {RandomHelper} from '../../helpers/RandomHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import {DEBUG_GITHUB_UPLOADER} from '../../Constants.js';
+import {EventHelper} from '../../helpers/EventHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {DEBUG_GITHUB_UPLOADER} from '../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;

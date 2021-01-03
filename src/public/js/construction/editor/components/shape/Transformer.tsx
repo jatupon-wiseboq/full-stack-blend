@@ -1,10 +1,10 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper.js';
-import {CodeHelper} from '../../../helpers/CodeHelper.js';
-import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../../lib/TransformControls.js';
-import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../../lib/three.module.js';
-import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../../lib/CSS3DRenderer.js';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base.js';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../../lib/TransformControls';
+import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../../lib/three.module';
+import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../../lib/CSS3DRenderer';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 
 declare let React: any;
 declare let ReactDOM: any;

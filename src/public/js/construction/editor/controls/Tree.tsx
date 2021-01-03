@@ -1,7 +1,7 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper.js';
-import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper.js';
-import {ITreeNode, TreeNode, InsertDirection} from './TreeNode.js';
-import {Point, MathHelper} from '../../helpers/MathHelper.js';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {ITreeNode, TreeNode, InsertDirection} from './TreeNode';
+import {Point, MathHelper} from '../../helpers/MathHelper';
 
 declare let React: any;
 declare let ReactDOM: any;

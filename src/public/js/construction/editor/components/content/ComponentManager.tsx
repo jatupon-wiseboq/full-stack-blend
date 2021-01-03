@@ -1,4 +1,4 @@
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper.js';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, HTMLManager} from './HTMLManager.js'
 
 declare let React: any;

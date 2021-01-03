@@ -1,5 +1,5 @@
-import {CodeHelper} from './CodeHelper.js';
-import {VENDOR_PREFIXES} from '../VendorPrefixes.js';
+import {CodeHelper} from './CodeHelper';
+import {VENDOR_PREFIXES} from '../VendorPrefixes';
 import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../Constants.js'
 
 let vendor_prefixes_hash = {};
