@@ -5,8 +5,10 @@ include ../../mixin/CreateReactComponent
       | Modification
     .section-subtitle
       | Lock Mode
-    .section-body
+    .section-body(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-lock-mode']}")
+    .section-body(internal-fsb-not-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-lock-mode-1']}")
     .section-subtitle(internal-fsb-for="data-lock-mode:relation")
       | Source Group
     .section-body(internal-fsb-for="data-lock-mode:relation")
@@ -44,8 +46,10 @@ include ../../mixin/CreateReactComponent
       | Retrieval 
     .section-subtitle
       | Restriction
-    .section-body
+    .section-body(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-mode']}")
+    .section-body(internal-fsb-not-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:RelationalColumn")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-rendering-condition-mode-1']}")
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
       | Source Group
     .section-body(internal-fsb-for="data-rendering-condition-mode:relation")

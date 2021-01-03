@@ -40,8 +40,10 @@ let options = {
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
 		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
 		"data-lock-mode": CONSTANTS.BACKEND_DATA_LOCK_MODE,
+		"data-lock-mode-1": CONSTANTS.BACKEND_DATA_LOCK_MODE_1,
 		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
 		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
+		"data-rendering-condition-mode-1": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE_1,
 		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
 		"data-verb": CONSTANTS.BACKEND_VERB,
 
