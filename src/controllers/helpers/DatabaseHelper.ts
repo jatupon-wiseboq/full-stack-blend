@@ -18,7 +18,8 @@ enum SourceType {
   Document,
   VolatileMemory,
   RESTful,
-  Other
+  Dictionary,
+  Collection
 }
 enum ActionType {
   Insert,
