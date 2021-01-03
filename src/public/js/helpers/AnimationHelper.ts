@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HTMLHelper} from './HTMLHelper.js';
+import {HTMLHelper} from './HTMLHelper';
 
 const AnimationHelper = {
 	// Document Object Model (DOM) Queries

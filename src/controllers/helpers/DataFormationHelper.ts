@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper.js";
+import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
 
 const DataFormationHelper = {
 	convertFromJSONToHierarchicalDataTable: (data: any, group: string): HierarchicalDataTable => {

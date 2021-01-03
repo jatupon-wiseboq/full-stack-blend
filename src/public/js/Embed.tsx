@@ -1,4 +1,4 @@
-import {DataManipulationHelper} from './helpers/DataManipulationHelper.js';
+import {DataManipulationHelper} from './helpers/DataManipulationHelper';
 
 declare let window: any;
 

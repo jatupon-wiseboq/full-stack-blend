@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {ActionType} from "./DatabaseHelper.js";
-import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from "./SchemaHelper.js";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper.js";
-import {RelationalDatabaseClient} from "./ConnectionHelper.js";
+import {ActionType} from "./DatabaseHelper";
+import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from "./SchemaHelper";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
+import {RelationalDatabaseClient} from "./ConnectionHelper";
 import {Md5} from "md5-typescript";
 
 const cachedPermissions = {};

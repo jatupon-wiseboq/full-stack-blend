@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {Input} from "./DatabaseHelper.js";
+import {Input} from "./DatabaseHelper";
 
 interface ValidationInfo {
   name: string;
