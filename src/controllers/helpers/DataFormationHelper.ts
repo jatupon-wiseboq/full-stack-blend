@@ -6,7 +6,7 @@ import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./Database
 const DataFormationHelper = {
 	convertFromJSONToHierarchicalDataTable: (data: any, group: string): HierarchicalDataTable => {
 		const table = {
-			source: SourceType.Other,
+			source: SourceType.Collection,
 			group: group,
 		  rows: []
 		};
@@ -24,7 +24,7 @@ const DataFormationHelper = {
 		
 		if (Array.isArray(data)) {
 			const table = {
-				source: SourceType.Other,
+				source: SourceType.Collection,
 				group: 'Children',
 			  rows: []
 			};
@@ -37,7 +37,7 @@ const DataFormationHelper = {
 				if (data.hasOwnProperty(key)) {
 					if (Array.isArray(data[key])) {
 						const table = {
-							source: SourceType.Other,
+							source: SourceType.Collection,
 							group: key,
 						  rows: []
 						};
@@ -47,7 +47,7 @@ const DataFormationHelper = {
 						row.relations[key] = table;
 					} else if (typeof data[key] === 'object') {
 						const table = {
-							source: SourceType.Other,
+							source: SourceType.Dictionary,
 							group: key,
 						  rows: []
 						};
@@ -92,16 +92,20 @@ const DataFormationHelper = {
 					if (key == 'Children') {
 						const results = [];
 						
-						for (let _row in row.relations['Children'].rows) {
+						for (let _row of row.relations['Children'].rows) {
 							results.push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
 						}
 						
 						return results;
 					} else {
-						dictionary[key] = [];
+						if (row.relations[key].source == SourceType.Collection) {
+							dictionary[key] = [];
 						
-						for (let _row in row.relations[key].rows) {
-							dictionary[key].push(DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key]));
+							for (let _row of row.relations[key].rows) {
+								dictionary[key].push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
+							}
+						} else if (row.relations[key].source == SourceType.Dictionary) {
+							dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0])
 						}
 					}
 				}
