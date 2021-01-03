@@ -3,8 +3,8 @@
 
 import fs from "fs";
 import path from "path";
-import {DataSchema, SchemaHelper} from "./SchemaHelper.js";
-import {DatabaseHelper} from "./DatabaseHelper.js";
+import {DataSchema, SchemaHelper} from "./SchemaHelper";
+import {DatabaseHelper} from "./DatabaseHelper";
 
 const file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
 const data = JSON.parse(file);

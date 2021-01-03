@@ -2,7 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {Response} from "express";
-import {DataManipulationHelper} from "./DataManipulationHelper.js";
+import {DataManipulationHelper} from "./DataManipulationHelper";
 
 const RenderHelper = {
 	json: (response: Response, data: any) => {
