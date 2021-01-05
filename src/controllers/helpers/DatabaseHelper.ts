@@ -1207,11 +1207,10 @@ const DatabaseHelper = {
 			    		
 			    		if (_column.length == 0) throw new Error(`Cannot perform RETRIEVE ALL on RESTful named "${baseSchema.group}".`);
 			    		
-			    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-			    		const _output = RequestHelper.get(_column[0].url, _input, 'json');
+			    		const _output = RequestHelper.get(_column[0].url, 'json');
 			    		
 			    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
-			    		results.push(table.rows[0]);
+			    		results[table.group] = table;
 			    		
 			    		break;
 	        }
@@ -1304,7 +1303,7 @@ const DatabaseHelper = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: rows,
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, hash, session) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, keys, session) : null
 							};
 							
 							for (const _row of rows) {
@@ -1360,7 +1359,7 @@ const DatabaseHelper = {
 		    		if (_column.length == 0) throw new Error(`Cannot perform GET on RESTful group "${baseSchema.group}".`);
 		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
-		    		const _output = RequestHelper.get(_column[0].url, _input, 'json');
+		    		const _output = RequestHelper.get(_column[0].url, 'json');
 		    		
 		    		const table = DataFormationHelper.convertFromJSONToHierarchicalDataTable(_output);
 		    		results[table.group] = table;

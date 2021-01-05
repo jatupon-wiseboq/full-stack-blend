@@ -25,10 +25,23 @@ const RequestHelper = {
   	    xmlhttp.onreadystatechange = function() {
   				if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
   					if (xmlhttp.status == 200) {
-  						let output = xmlhttp.response;
-  						try {
-  						  output = JSON.parse(xmlhttp.responseText);
-  						} catch { /* void */ }
+  						let output = xmlhttp.responseText;
+  						
+			  	    switch (responseType) {
+			  	    	case 'json':
+			  	    		try {
+			  	    			output = JSON.parse(xmlhttp.responseText);
+			  	    		} catch(error) {
+			  	    			reject(error);
+			  	    			
+			  	    			return;
+			  	    		}
+			  	    		break;
+			  	    	default:
+			  	    		output = xmlhttp.responseText;
+			  	    		break;
+			  	    }
+			  	    
   						resolve(output);
   					} else {
   					  setTimeout((() => {
@@ -41,23 +54,6 @@ const RequestHelper = {
   					}
   				}
   	    };
-  	    switch (responseType) {
-  	    	case 'arraybuffer':
-  	    		xmlhttp.responseType = "arraybuffer";
-  	    		break;
-  	    	case 'blob':
-  	    		xmlhttp.responseType = "blob";
-  	    		break;
-  	    	case 'document':
-  	    		xmlhttp.responseType = "document";
-  	    		break;
-  	    	case 'json':
-  	    		xmlhttp.responseType = "json";
-  	    		break;
-  	    	case 'text':
-  	    		xmlhttp.responseType = "text";
-  	    		break;
-  	    }
   	    xmlhttp.open(method, url, true);
   	    if (body) {
   	    	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
