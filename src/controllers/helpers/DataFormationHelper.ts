@@ -4,7 +4,7 @@
 import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
 
 const DataFormationHelper = {
-	convertFromJSONToHierarchicalDataTable: (data: any, group: string): HierarchicalDataTable => {
+	convertFromJSONToHierarchicalDataTable: (data: any, group: string="Collection"): HierarchicalDataTable => {
 		const table = {
 			source: SourceType.Collection,
 			group: group,
