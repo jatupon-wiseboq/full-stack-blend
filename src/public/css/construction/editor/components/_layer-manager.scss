@@ -135,6 +135,14 @@
 		}
 	}
 	
+	.treenode-outer-container.is-containing-preset {
+		> .treenode-container {
+			> .treenode-body {
+				border-color: #ff00ff;
+			}
+		}
+	}
+	
 	&.dragger {
 		position: absolute;
 		left: 0;
