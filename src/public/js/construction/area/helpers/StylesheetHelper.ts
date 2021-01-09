@@ -149,6 +149,11 @@ var StylesheetHelper = {
       for (let prefix of wysiwygCSSSelectorPrefixes) {
 	      prefixes.push(prefix + '.internal-fsb-element.-fsb-self-' + info.id + suffix);
 	      prefixes.push(prefix + '.internal-fsb-element.-fsb-preset-' + info.id + suffix);
+	      
+	      if (!production) {
+	      	prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-self-' + info.id + suffix);
+	      	prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-preset-' + info.id + suffix);
+	      }
 	    }
       
       // Inheritance
