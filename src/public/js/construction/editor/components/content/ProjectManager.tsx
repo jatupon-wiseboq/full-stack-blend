@@ -43,6 +43,19 @@ class ProjectManager extends Base<Props, State> {
       if (!super.update(properties)) return;
     }
     
+    replaceShortcuts(textContent: any) {
+			textContent = textContent.replace(/(\@)(\{[^}]+\})([ ]*,[ ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, table) => {
+				try {
+					const createInputs = `RequestHelper.createInputs(${content})`;
+					if (!table) return createInputs;
+					else return `${createInputs}, ProjectConfigurationHelper.getDataSchema().tables[${table.split(',')[1].trim()}]`;
+				} catch(error) {
+					return match;
+				}
+  		});
+  		
+  		return textContent;
+		}
     getRepresentativeName(key: string) {
     	if (key == 'index') return key;
     	else return `_${key}`;
@@ -851,7 +864,7 @@ ${tokens[1]}
        	    repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${tokens[1]}
+${this.replaceShortcuts(tokens[1])}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[tokens[0]] || null, (error, result, request) => {
