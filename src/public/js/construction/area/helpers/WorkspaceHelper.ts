@@ -493,8 +493,10 @@ var WorkspaceHelper = {
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-class');
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-id');
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-data');
-	    HTMLHelper.removeAttribute(element, 'internal-fsb-class');
-	    HTMLHelper.removeAttribute(element, 'internal-fsb-guid');
+	    
+	    // HTMLHelper.removeAttribute(element, 'internal-fsb-class');
+	    // HTMLHelper.removeAttribute(element, 'internal-fsb-guid');
+	    
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-inheriting');
   	}
   	

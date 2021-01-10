@@ -32,7 +32,7 @@ var BackEndDOMHelper = {
   	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
-    	if (HTMLHelper.hasClass(element, 'internal-fsb-element') &&
+    	if ((HTMLHelper.hasClass(element, 'internal-fsb-element') || HTMLHelper.hasClass(element, 'internal-fsb-inheriting-element')) &&
     		FORM_CONTROL_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
 		    let info = HTMLHelper.getAttributes(element, false);
     		
@@ -42,7 +42,7 @@ var BackEndDOMHelper = {
 	    	if (code) lines.push(code);
     	}
     	
-    	if (HTMLHelper.hasClass(element, 'internal-fsb-element') && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button') {
+    	if ((HTMLHelper.hasClass(element, 'internal-fsb-element') || HTMLHelper.hasClass(element, 'internal-fsb-inheriting-element')) && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button') {
     		let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     		let submitType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-type');
     		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls');
