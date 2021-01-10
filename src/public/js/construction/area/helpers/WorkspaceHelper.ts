@@ -55,7 +55,7 @@ let viewBlobSHADict = {};
 let routeBlobSHA = null;
 let controllerBlobSHA = null;
 let siteBundleBlobSHA = null;
-let version = 1.2;
+let version = 1.3;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
@@ -177,6 +177,10 @@ var WorkspaceHelper = {
             }
           }
         }
+      }
+      if (!data.version || data.version <= 1.2) {
+      	if (InternalDataFlows.default.join('') === '') InternalDataFlows.default = DEFAULT_ABSOLUTE_PAGE_HTML.split('\n');
+      	if (InternalServices.default.join('') === '') InternalServices.default = DEFAULT_ABSOLUTE_PAGE_HTML.split('\n');
       }
     }
     
