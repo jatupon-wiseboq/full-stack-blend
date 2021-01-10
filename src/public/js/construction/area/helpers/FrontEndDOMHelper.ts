@@ -291,7 +291,6 @@ ${rootScript}`;
             case 'style':
               attribute.value = element.getAttribute('style');
               if (attribute.value == '-fsb-empty') {
-                isForChildren = true;
                 continue;
               }
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
@@ -302,7 +301,6 @@ ${rootScript}`;
                   if (!camelKey) continue;
                   if (camelKey.indexOf('FsbCell') == 0) continue;
                   if (camelKey.indexOf('FsbForChildren') == 0 && hashMap[key] == 'true') {
-                    isForChildren = true;
                     continue;
                   }
                   
@@ -405,7 +403,7 @@ ${rootScript}`;
         
         // In case of no attribute "style":
         //
-        if (element.parentNode.getAttribute('style') === '-fsb-empty') {
+        if (element.getAttribute('style') === '-fsb-empty' || element.parentNode.getAttribute('style') === '-fsb-empty') {
           isForChildren = true;
         }
         
@@ -694,7 +692,6 @@ ${rootScript}`;
             case 'style':
               attribute.value = element.getAttribute('style');
               if (attribute.value == '-fsb-empty') {
-                isForChildren = true;
                 continue;
               }
               let hashMap = HTMLHelper.getHashMapFromInlineStyle(attribute.value);
@@ -703,7 +700,6 @@ ${rootScript}`;
                   if (styles == null) styles = [];
                   if (key.indexOf('-fsb-cell') == 0) continue;
                   if (key.indexOf('-fsb-for-children') == 0 && hashMap[key] == 'true') {
-                    isForChildren = true;
                     continue;
                   }
                   let token = "'" + key + "': '" + hashMap[key] + "'";
@@ -777,7 +773,7 @@ ${rootScript}`;
         
         // In case of no attribute "style":
         //
-        if (element.parentNode.getAttribute('style') === '-fsb-empty') {
+        if (element.getAttribute('style') === '-fsb-empty' || element.parentNode.getAttribute('style') === '-fsb-empty') {
           isForChildren = true;
         }
         
