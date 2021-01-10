@@ -143,8 +143,8 @@ var WorkspaceHelper = {
             InternalPopups[key].html = html_beautify(InternalPopups[key].html || '').split('\n');
           }
         }
-        InternalDataFlows.default = html_beautify(InternalDataFlows.default || '').split('\n');
-        InternalServices.default = html_beautify(InternalServices.default || '').split('\n');
+        InternalDataFlows.default = html_beautify(InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).split('\n');
+        InternalServices.default = html_beautify(InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).split('\n');
       }
       if (!data.version || data.version <= 1.1) {
         for (let key in InternalSites) {
