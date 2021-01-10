@@ -135,8 +135,8 @@ ${rootScript}`;
         		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
         	} else {
         		let textContent = element.textContent;
-        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
-        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+        		textContent = textContent.replace(/(\@)\{([A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*)\}/g, (match, hash, suffix) => {
+        			return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
         		});
         		
           	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
