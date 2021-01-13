@@ -662,7 +662,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -832,7 +832,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1006,7 +1006,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1184,12 +1184,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 								  if (baseSchema.columns.hasOwnProperty(key) && record[key] != undefined) {
-								    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+								    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 								  }
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
-								    row.keys[key] = fixType(schema.columns[key].fieldType, record[key]);
+								    row.keys[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 								  }
 								}
 	  				  
@@ -1255,7 +1255,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false) => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1318,12 +1318,12 @@ const DatabaseHelper = {
 						  	
 							  for (const key in baseSchema.columns) {
 		  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+		  					    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					for (const key in baseSchema.keys) {
 		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+		  					    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					
@@ -1433,7 +1433,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
