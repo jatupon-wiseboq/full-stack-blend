@@ -68,6 +68,37 @@ interface Input {
   validation: ValidationInfo;
 }
 
+const fixType = (type: FieldType, value: any): any => {
+	if (value === undefined) return value;
+	if (value === null) return value;
+	
+	switch (type) {
+		case FieldType.AutoNumber:
+		case FieldType.Number:
+			if (typeof value !== 'number') {
+				return parseFloat(value.toString());
+			}
+			break;
+		case FieldType.String:
+			if (typeof value !== 'string') {
+				return value.toString();
+			}
+			break;
+		case FieldType.Boolean:
+			if (typeof value !== 'boolean') {
+				return value.toString() == 'true';
+			}
+			break;
+		case FieldType.DateTime:
+			if (!(value instanceof Date)) {
+				return new Date(value);
+			}
+			break;
+	}
+	
+	return value;
+}
+
 const DatabaseHelper = {
 	getSourceType: (value: string): SourceType => {
 		switch (value) {
@@ -684,12 +715,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 							
@@ -864,12 +895,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 							
@@ -1029,12 +1060,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key)) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key)) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 						
@@ -1153,12 +1184,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 								  if (baseSchema.columns.hasOwnProperty(key) && record[key] != undefined) {
-								    row.columns[key] = record[key];
+								    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 								  }
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
-								    row.keys[key] = record[key];
+								    row.keys[key] = fixType(schema.columns[key].fieldType, record[key]);
 								  }
 								}
 	  				  
@@ -1287,12 +1318,12 @@ const DatabaseHelper = {
 						  	
 							  for (const key in baseSchema.columns) {
 		  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.columns[key] = record[key];
+		  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					for (const key in baseSchema.keys) {
 		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.keys[key] = record[key];
+		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					
@@ -1449,13 +1480,13 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 						  
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 						
