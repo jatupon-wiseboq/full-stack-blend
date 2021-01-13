@@ -91,7 +91,7 @@ const fixType = (type: FieldType, value: any): any => {
 			break;
 		case FieldType.DateTime:
 			if (!(value instanceof Date)) {
-				return new Date(value);
+				return new Date(value.toString());
 			}
 			break;
 	}
