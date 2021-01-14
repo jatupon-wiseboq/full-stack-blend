@@ -350,6 +350,25 @@ const DatabaseHelper = {
 		            }
 		          }
 			        break;
+			      case ActionType.Retrieve:
+			      	switch (schema.keys[key].fieldType) {
+	              case FieldType.AutoNumber:
+	              case FieldType.Number:
+	                if (isNaN(parseFloat(row.keys[key].toString())))
+	                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+	                row.keys[key] = parseFloat(row.keys[key].toString());
+	                break;
+	              case FieldType.Boolean:
+	                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+	                break;
+	              case FieldType.String:
+	                row.keys[key] = row.keys[key].toString();
+	                break;
+	              case FieldType.DateTime:
+	                row.keys[key] = new Date(row.keys[key].toString());
+	                break;
+	            }
+			      	break;
 			    }
 			  }
 			}
@@ -435,6 +454,26 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Delete:
+			      case ActionType.Retrieve:
+			      	if (row.columns[key]) {
+		            switch (schema.columns[key].fieldType) {
+		              case FieldType.AutoNumber:
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(row.columns[key].toString())))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+		                row.columns[key] = parseFloat(row.columns[key].toString());
+		                break;
+		              case FieldType.Boolean:
+		                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+		                break;
+		              case FieldType.String:
+		                row.columns[key] = row.columns[key].toString();
+		                break;
+		              case FieldType.DateTime:
+		                row.columns[key] = new Date(row.columns[key].toString());
+		                break;
+		            }
+		          }
 			        break;
 			    }
 			  }
