@@ -351,23 +351,25 @@ const DatabaseHelper = {
 		          }
 			        break;
 			      case ActionType.Retrieve:
-			      	switch (schema.keys[key].fieldType) {
-	              case FieldType.AutoNumber:
-	              case FieldType.Number:
-	                if (isNaN(parseFloat(`${row.keys[key]}`)))
-	                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-	                row.keys[key] = parseFloat(`${row.keys[key]}`);
-	                break;
-	              case FieldType.Boolean:
-	                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
-	                break;
-	              case FieldType.String:
-	                row.keys[key] = `${row.keys[key]}`;
-	                break;
-	              case FieldType.DateTime:
-	                row.keys[key] = new Date(`${row.keys[key]}`);
-	                break;
-	            }
+			      	if (row.keys[key]) {
+				      	switch (schema.keys[key].fieldType) {
+		              case FieldType.AutoNumber:
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
+		                break;
+		              case FieldType.Boolean:
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+		                break;
+		              case FieldType.String:
+		                row.keys[key] = `${row.keys[key]}`;
+		                break;
+		              case FieldType.DateTime:
+		                row.keys[key] = new Date(`${row.keys[key]}`);
+		                break;
+		            }
+		          }
 			      	break;
 			    }
 			  }
