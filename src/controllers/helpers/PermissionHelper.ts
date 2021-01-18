@@ -61,10 +61,10 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, columnValue: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, columnValue, data);
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, values: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, values, data);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, columnValue: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, values: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			try {
 				if (permission == null) {
@@ -116,8 +116,8 @@ const PermissionHelper = {
 							}
 						}
 						
-						if (WHERE_CLAUSE.length == 1 && `${columnValue}` != `${value}`) {
-							resolve(false);
+						if (WHERE_CLAUSE.length == 1) {
+							resolve(`${values[permission.relationModeSourceEntity]}` == `${value}`);
 	      			return;
 						}
 						
