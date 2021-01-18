@@ -287,18 +287,18 @@ const DatabaseHelper = {
 			          } else {
 			            switch (schema.keys[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.keys[key].toString())))
+			                if (isNaN(parseFloat(`${row.keys[key]}`)))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.keys[key] = parseFloat(row.keys[key].toString());
+			                row.keys[key] = parseFloat(`${row.keys[key]}`);
 			                break;
 			              case FieldType.Boolean:
-			                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+			                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 			                break;
 			              case FieldType.String:
-			                row.keys[key] = row.keys[key].toString();
+			                row.keys[key] = `${row.keys[key]}`;
 			                break;
 			              case FieldType.DateTime:
-			                row.keys[key] = new Date(row.keys[key].toString());
+			                row.keys[key] = new Date(`${row.keys[key]}`);
 			                break;
 			            }
 			          }
@@ -310,18 +310,18 @@ const DatabaseHelper = {
 		          } else {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.keys[key].toString())))
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(row.keys[key].toString());
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                row.keys[key] = `${row.keys[key]}`;
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(row.keys[key].toString());
+		                row.keys[key] = new Date(`${row.keys[key]}`);
 		                break;
 		            }
 		          }
@@ -334,18 +334,18 @@ const DatabaseHelper = {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.keys[key].toString())))
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(row.keys[key].toString());
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                row.keys[key] = `${row.keys[key]}`;
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(row.keys[key].toString());
+		                row.keys[key] = new Date(`${row.keys[key]}`);
 		                break;
 		            }
 		          }
@@ -354,18 +354,18 @@ const DatabaseHelper = {
 			      	switch (schema.keys[key].fieldType) {
 	              case FieldType.AutoNumber:
 	              case FieldType.Number:
-	                if (isNaN(parseFloat(row.keys[key].toString())))
+	                if (isNaN(parseFloat(`${row.keys[key]}`)))
 	                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-	                row.keys[key] = parseFloat(row.keys[key].toString());
+	                row.keys[key] = parseFloat(`${row.keys[key]}`);
 	                break;
 	              case FieldType.Boolean:
-	                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+	                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 	                break;
 	              case FieldType.String:
-	                row.keys[key] = row.keys[key].toString();
+	                row.keys[key] = `${row.keys[key]}`;
 	                break;
 	              case FieldType.DateTime:
-	                row.keys[key] = new Date(row.keys[key].toString());
+	                row.keys[key] = new Date(`${row.keys[key]}`);
 	                break;
 	            }
 			      	break;
@@ -384,18 +384,18 @@ const DatabaseHelper = {
 			          	if (row.columns[key]) {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(row.columns[key].toString())))
+				                if (isNaN(parseFloat(`${row.columns[key]}`)))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(row.columns[key].toString());
+				                row.columns[key] = parseFloat(`${row.columns[key]}`);
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+				                row.columns[key] = `${row.columns[key]}`;
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(row.columns[key].toString());
+				                row.columns[key] = new Date(`${row.columns[key]}`);
 				                break;
 				            }
 				          }
@@ -409,18 +409,18 @@ const DatabaseHelper = {
 		          	if (row.columns[key]) {
 			            switch (schema.columns[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.columns[key].toString())))
+			                if (isNaN(parseFloat(`${row.columns[key]}`)))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key] = parseFloat(row.columns[key].toString());
+			                row.columns[key] = parseFloat(`${row.columns[key]}`);
 			                break;
 			              case FieldType.Boolean:
-			                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+			                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 			                break;
 			              case FieldType.String:
-			                row.columns[key] = row.columns[key].toString();
+			                row.columns[key] = `${row.columns[key]}`;
 			                break;
 			              case FieldType.DateTime:
-			                row.columns[key] = new Date(row.columns[key].toString());
+			                row.columns[key] = new Date(`${row.columns[key]}`);
 			                break;
 			            }
 			          }
@@ -435,18 +435,18 @@ const DatabaseHelper = {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.AutoNumber:
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(row.columns[key].toString())))
+				                if (isNaN(parseFloat(`${row.columns[key]}`)))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(row.columns[key].toString());
+				                row.columns[key] = parseFloat(`${row.columns[key]}`);
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+				                row.columns[key] = `${row.columns[key]}`;
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(row.columns[key].toString());
+				                row.columns[key] = new Date(`${row.columns[key]}`);
 				                break;
 				            }
 				          }
@@ -459,18 +459,18 @@ const DatabaseHelper = {
 		            switch (schema.columns[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.columns[key].toString())))
+		                if (isNaN(parseFloat(`${row.columns[key]}`)))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.columns[key] = parseFloat(row.columns[key].toString());
+		                row.columns[key] = parseFloat(`${row.columns[key]}`);
 		                break;
 		              case FieldType.Boolean:
-		                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+		                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 		                break;
 		              case FieldType.String:
-		                row.columns[key] = row.columns[key].toString();
+		                row.columns[key] = `${row.columns[key]}`;
 		                break;
 		              case FieldType.DateTime:
-		                row.columns[key] = new Date(row.columns[key].toString());
+		                row.columns[key] = new Date(`${row.columns[key]}`);
 		                break;
 		            }
 		          }
