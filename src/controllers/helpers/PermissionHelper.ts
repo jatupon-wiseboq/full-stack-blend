@@ -61,10 +61,10 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, columnValue: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, columnValue, data);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, columnValue: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			try {
 				if (permission == null) {
@@ -114,6 +114,11 @@ const PermissionHelper = {
 								WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
 								VALUES.push(modifyingColumns[key]);
 							}
+						}
+						
+						if (WHERE_CLAUSE.length == 1 && `${columnValue}` != `${value}`) {
+							resolve(false);
+	      			return;
 						}
 						
 						const COMMAND = `SELECT * FROM ${target.group} ${INNER_JOIN.join(" ")} WHERE ${WHERE_CLAUSE.join(" AND ")} LIMIT 1`;
