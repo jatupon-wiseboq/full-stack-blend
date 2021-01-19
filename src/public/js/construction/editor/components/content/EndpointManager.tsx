@@ -41,6 +41,19 @@ class EndpointManager extends Base<Props, State> {
       if (!super.update(properties)) return;
     }
     
+		replaceShortcuts(textContent: any) {
+			textContent = textContent.replace(/(\@)(\{[^}]+\})([ ]*,[ ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, table) => {
+				try {
+					const createInputs = `RequestHelper.createInputs(${content})`;
+					if (!table) return createInputs;
+					else return `${createInputs}, ProjectConfigurationHelper.getDataSchema().tables[${table.split(',')[1].trim()}]`;
+				} catch(error) {
+					return match;
+				}
+  		});
+  		
+  		return textContent;
+		}
     getRepresentativeName(key: string) {
     	if (key == 'index') return key;
     	else return `_${key}`;
@@ -353,7 +366,7 @@ ${tokens[1]}
        	    this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${tokens[1]}
+${this.replaceShortcuts(tokens[1])}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {

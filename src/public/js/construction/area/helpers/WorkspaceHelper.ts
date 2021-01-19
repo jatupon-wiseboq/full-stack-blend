@@ -55,7 +55,7 @@ let viewBlobSHADict = {};
 let routeBlobSHA = null;
 let controllerBlobSHA = null;
 let siteBundleBlobSHA = null;
-let version = 1.2;
+let version = 1.3;
 
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
@@ -143,8 +143,8 @@ var WorkspaceHelper = {
             InternalPopups[key].html = html_beautify(InternalPopups[key].html || '').split('\n');
           }
         }
-        InternalDataFlows.default = html_beautify(InternalDataFlows.default || '').split('\n');
-        InternalServices.default = html_beautify(InternalServices.default || '').split('\n');
+        InternalDataFlows.default = html_beautify(InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).split('\n');
+        InternalServices.default = html_beautify(InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).split('\n');
       }
       if (!data.version || data.version <= 1.1) {
         for (let key in InternalSites) {
@@ -177,6 +177,10 @@ var WorkspaceHelper = {
             }
           }
         }
+      }
+      if (!data.version || data.version <= 1.2) {
+      	if (InternalDataFlows.default.join('') === '') InternalDataFlows.default = CodeHelper.clone(DEFAULT_ABSOLUTE_PAGE_HTML);
+      	if (InternalServices.default.join('') === '') InternalServices.default = CodeHelper.clone(DEFAULT_ABSOLUTE_PAGE_HTML);
       }
     }
     
@@ -237,6 +241,8 @@ var WorkspaceHelper = {
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
       
       EditorHelper.init(true, updateUI);
@@ -249,6 +255,8 @@ var WorkspaceHelper = {
       if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
       Accessories.overlay.setEnable(true);
       
       EditorHelper.init(false, updateUI);
@@ -261,6 +269,8 @@ var WorkspaceHelper = {
       if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
       Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
@@ -288,6 +298,8 @@ var WorkspaceHelper = {
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
@@ -315,6 +327,8 @@ var WorkspaceHelper = {
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
+      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
       
       EditorHelper.init(false, updateUI);
@@ -493,8 +507,12 @@ var WorkspaceHelper = {
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-class');
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-id');
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-react-data');
-	    HTMLHelper.removeAttribute(element, 'internal-fsb-class');
-	    HTMLHelper.removeAttribute(element, 'internal-fsb-guid');
+	    
+	    if (HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', HTMLHelper.getAttribute(element, 'internal-fsb-guid')).length > 1) {
+	    	HTMLHelper.removeAttribute(element, 'internal-fsb-class');
+	    	HTMLHelper.removeAttribute(element, 'internal-fsb-guid');
+	    }
+	    
 	    HTMLHelper.removeAttribute(element, 'internal-fsb-inheriting');
   	}
   	
