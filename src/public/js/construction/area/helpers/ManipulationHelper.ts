@@ -1372,7 +1372,7 @@ var ManipulationHelper = {
 	    	case 'appendChild':
 	    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class')) {
 	      		case 'FlowLayout':
-	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination, 'internal-fsb-allow-cursor');
 	      			break;
 	      		case 'TableLayout':
 	      			let info = content.destination.split(':')[1].split(',');
@@ -1382,7 +1382,7 @@ var ManipulationHelper = {
 	      			destination = destination.firstElementChild.childNodes[row].childNodes[column];
 	      			break;
 	      		case 'AbsoluteLayout':
-	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination, 'internal-fsb-allow-cursor');
 	      			break;
 	      	}
 	    	default:
