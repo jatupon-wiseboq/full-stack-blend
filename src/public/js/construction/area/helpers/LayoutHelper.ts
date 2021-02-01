@@ -55,7 +55,7 @@ var LayoutHelper = {
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
   				dropable: (isTableLayoutCell ||
-  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1) &&
+  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label', 'Link'].indexOf(klass) != -1) &&
   					!HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
