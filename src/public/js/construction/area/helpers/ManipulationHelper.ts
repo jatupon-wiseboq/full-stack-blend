@@ -1384,6 +1384,13 @@ var ManipulationHelper = {
 	      		case 'AbsoluteLayout':
 	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
 	      			break;
+	      		case 'Label':
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			break;
+	      		case 'Rectangle':
+	      		case 'Button':
+	      		case 'Link':
+	      			break;
 	      	}
 	    	default:
 	    		EditorHelper.move(target, destination, content.direction);
