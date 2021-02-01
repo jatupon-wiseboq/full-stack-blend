@@ -279,6 +279,8 @@ ${rootScript}`;
         for (let attribute of _attributes) {
         	if (attribute.value === null) continue;
         	
+        	attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
+        	
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.trim().replace(/[\ ]+/g, ' ');
@@ -679,6 +681,8 @@ ${rootScript}`;
         
         for (let attribute of _attributes) {
         	if (attribute.value === null) continue;
+        	
+        	attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
         	
           switch (attribute.name) {
             case 'class':

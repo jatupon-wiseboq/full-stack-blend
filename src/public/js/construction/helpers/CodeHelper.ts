@@ -1,4 +1,5 @@
-import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX} from '../Constants';
+import {TextHelper} from './TextHelper';
+import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../Constants';
 
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
@@ -153,6 +154,20 @@ var CodeHelper = {
   		return result;
   	}
   },
+  replaceCamelIntoDashCase: (camelCase: string): string => {
+  	if (camelCase.indexOf('internal-fsb-') != -1) return camelCase;
+  	if (CAMEL_OF_EVENTS_DICTIONARY[camelCase.toLowerCase()]) return camelCase;
+  	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(camelCase.toLowerCase()) != -1) return camelCase;
+  	
+  	return TextHelper.trim(camelCase.replace(/[A-Z]/g, token => `-${token.toLowerCase()}`), '-');
+  },
+  replaceDashIntoCamelCase: (dashCase: string): string => {
+  	if (dashCase.indexOf('internal-fsb-') != -1) return dashCase;
+  	if (CAMEL_OF_EVENTS_DICTIONARY[dashCase.toLowerCase()]) return dashCase;
+  	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(dashCase.toLowerCase()) != -1) return dashCase;
+  	
+  	return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
+  }
 };
 
 export {CodeHelper};
