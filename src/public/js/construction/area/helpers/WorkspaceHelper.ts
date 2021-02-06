@@ -188,6 +188,8 @@ var WorkspaceHelper = {
     EditorHelper.updateEditorProperties();
   },
   setMode: (mode: string) => {
+  	if (InternalProjectSettings.currentMode == mode) return;
+  
     WorkspaceHelper.saveWorkspaceData(false);
     InternalProjectSettings.currentMode = mode;
     WorkspaceHelper.loadWorkspaceData(true);
@@ -641,14 +643,24 @@ var WorkspaceHelper = {
   getDataFlows: () => {
   	return InternalDataFlows.schema;
  	},
-  generateFrontEndCodeForCurrentPage: () => {
+  generateFrontEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
+  	const previousMode = InternalProjectSettings.currentMode;
+  	if (autoSwitch === true) WorkspaceHelper.setMode('site');
+  	
     let results = FrontEndDOMHelper.generateFrontEndCode();
   	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	
+  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
+  	
   	return results;
   },
-  generateBackEndCodeForCurrentPage: () => {
+  generateBackEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
+  	const previousMode = InternalProjectSettings.currentMode;
+  	if (autoSwitch === true) WorkspaceHelper.setMode('site');
+  	
     let results = BackEndDOMHelper.generateBackEndCode();
+  	
+  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
   	
   	return results;
   },

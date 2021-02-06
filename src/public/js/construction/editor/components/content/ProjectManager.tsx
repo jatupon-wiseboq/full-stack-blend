@@ -254,8 +254,8 @@ class ProjectManager extends Base<Props, State> {
           	previousProjectData = CodeHelper.clone(previousProjectData);
           	
         		let constructionPageData = CodeHelper.clone(constructionWindow.generateWorkspaceData() || {});
-        		let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages());
-        		let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages());
+        		let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages(true));
+        		let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages(true));
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);

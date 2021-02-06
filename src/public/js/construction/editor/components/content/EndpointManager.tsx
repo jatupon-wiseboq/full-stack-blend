@@ -95,8 +95,8 @@ class EndpointManager extends Base<Props, State> {
       
   		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
   		let constructionEditorData = this.generateWorkspaceData() || {};
-  		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
-  		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
+  		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages(true);
+  		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages(true);
       let nextProjectData = {};
       
       Object.assign(nextProjectData, {});
