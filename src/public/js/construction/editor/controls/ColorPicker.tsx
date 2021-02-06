@@ -23,11 +23,20 @@ jQuery(jQuery(picker).colpick({
         }
     }
 }).children()[0]).css({height: '180px'});
+
 let opacityControl = jQuery(picker).find('.colpick_hex_field').clone();
 jQuery(picker).find('.colpick_hex_field').before(opacityControl);
 opacityControl.find('.colpick_field_letter').text('A');
 opacityControl.css('left', '277px').css('width', '60px');
 opacityControl.find('input').attr('maxlength', '6').attr('size', '6').val(recentOpacity.toString());
+jQuery(picker).find('.colpick_hex_field').css('width', '60px');
+
+let setControl = jQuery(picker).find('.colpick_submit');
+let unsetControl = setControl.clone();
+setControl.before(unsetControl);
+unsetControl.text('UNSET').css('width', '60px');
+setControl.css('left', '277px').css('width', '60px')
+
 opacityControl.find('input').bind('keyup', (event) => {
     if (event.which >= 37 && event.which <= 40) return;
     
@@ -52,6 +61,7 @@ function setOpacityValue(value: number) {
 
 interface IProps {
     onUpdate(value: any);
+    onUnset();
     visible: boolean;
     value: string;
 }
@@ -71,6 +81,8 @@ class ColorPicker extends React.Component<IProps, IState> {
         
         this.onSubmitDelegate = this.onSubmit.bind(this);
         hooks.push(this.onSubmitDelegate);
+        
+        unsetControl[0].addEventListener('click', this.onUnset.bind(this));
     }
     
     componentWillUnmount() {
@@ -105,6 +117,17 @@ class ColorPicker extends React.Component<IProps, IState> {
             }
         }
         if (hide && this.props.onRequestHiding) {
+            this.props.onRequestHiding();
+        }
+    }
+    
+    onUnset() {
+        if (this.props.visible) {
+            if (this.props.onUnset) {
+                this.props.onUnset();
+            }
+        }
+        if (this.props.onRequestHiding) {
             this.props.onRequestHiding();
         }
     }
