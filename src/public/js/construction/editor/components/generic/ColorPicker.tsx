@@ -12,7 +12,8 @@ declare let perform: any;
 
 interface Props extends IProps {
     inline: boolean,
-    manual: boolean
+    manual: boolean,
+    hexMode: boolean
 }
 
 interface State extends IState {
@@ -29,7 +30,8 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     inline: false,
-    manual: false
+    manual: false,
+    hexMode: false
 });
 
 class ColorPicker extends Base<Props, State> {
@@ -92,14 +94,33 @@ class ColorPicker extends Base<Props, State> {
         });
         this.refs.colorPicker.setCurrentColor(color);
         
-        if (!this.props.manual) {
-	        perform('update', {
-	            styles: [{
-	                name: this.props.watchingStyleNames[0].split('[')[0],
-	                value: color
-	            }],
-	            replace: this.props.watchingStyleNames[0]
-	        });
+	      if (!this.props.manual) {
+	      		if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+	        			let rgba = color;
+	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+	        			
+	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
+	        			
+	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+	        			
+	        			perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: composed
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+				        });
+        		} else {
+        				perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: color
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+			        	});
+        		}
 	      }
     }
     
