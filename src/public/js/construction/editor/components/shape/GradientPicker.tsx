@@ -200,7 +200,7 @@ class GradientPicker extends Base<Props, State> {
     }
     
     protected rotationPickerOnUpdate(value: string) {
-        this.state.degree = (value == '') ? 90 : parseInt(value);
+        this.state.degree = (value == '') ? 90 : parseFloat(value);
         this.forceUpdate();
         if (this.props.onValueChange) this.props.onValueChange();
     }

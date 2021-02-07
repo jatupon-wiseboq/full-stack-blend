@@ -57,7 +57,7 @@ class SizePicker extends Base<Props, State> {
     private getRepresentedValue() {
         let status = this.state.styleValues[this.props.watchingStyleNames[0]];
         if (status) {
-            return parseInt(status);
+            return parseFloat(status);
         } else {
             return null;
         }
@@ -68,7 +68,7 @@ class SizePicker extends Base<Props, State> {
         
         let original = this.state.styleValues[this.props.watchingStyleNames[0]];
         let isString = typeof original === 'string';
-        let value = (isString) ? parseInt(original) : null;
+        let value = (isString) ? parseFloat(original) : null;
         let matched = (isString) ? original.match(/[a-z%]+/) || null : null;
         let unit = (matched !== null) ? matched[0] : null;
         
