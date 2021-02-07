@@ -48,6 +48,10 @@ class DisplayPicker extends Base<Props, State> {
                 elementClassName = elementClassName.replace(' ' + name + ' ', ' ');
             }
         });
+        
+        const originalElementClassName = elementClassName;
+        let count = 0;
+        
         for (let i=0; i<5; i++) {
             let name0 = this.props.watchingClassNames[i * 2];
             let name1 = this.props.watchingClassNames[i * 2 + 1];
@@ -55,8 +59,13 @@ class DisplayPicker extends Base<Props, State> {
             if (this.state.classNameStatuses[name0]) {
                 elementClassName += ' ' + name0;
             } else if (!!name1) {
+                count++;
                 elementClassName += ' ' + name1;
             }
+        }
+        
+        if (count == 5) {
+        	elementClassName = originalElementClassName;
         }
         
         this.forceUpdate();

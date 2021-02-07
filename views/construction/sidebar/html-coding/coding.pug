@@ -289,5 +289,13 @@ div(internal-fsb-for="internal-fsb-inheriting")
         | Hierarchical Dot Notation
       .section-body
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+      .section-hr
+    .section-container.internal-fsb-selecting-on
+      .section-title
+        | Front-End Custom Attributes
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
+      .section-note
+        | These can be both forwarding react properties or HTML tag attributes.
   div(internal-fsb-not-for="hasParentReactComponent")
     include ../../common/component-guide
