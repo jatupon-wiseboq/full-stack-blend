@@ -12,17 +12,12 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         | Minimum & Maximum Size
       .section-body
         +CreateReactComponent('FullStackBlend.Components.BoundaryPicker')
+      .section-hr
+    .section-container
+      .section-title
+        | Traditional Layout
       .section-subtitle
-        | Containing Behaviours
-      .section-body
-        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-fit'], watchingAttributeNames: ['internal-fsb-react-style-object-fit']}")
-        span(internal-fsb-not-for="editorCurrentMode:coding")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[0,2]', 'object-position']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[1,2]', 'object-position']}")
-        span(internal-fsb-for="editorCurrentMode:coding")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-object-position']}")
-      .section-subtitle
-        | Container Behaviours
+        | Container
       .section-body
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
@@ -32,10 +27,19 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['visibility'], watchingAttributeNames: ['internal-fsb-react-style-visibility']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-x'], watchingAttributeNames: ['internal-fsb-react-style-overflow-x']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-y'], watchingAttributeNames: ['internal-fsb-react-style-overflow-y']}")
+      .section-subtitle
+        | Children
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-fit'], watchingAttributeNames: ['internal-fsb-react-style-object-fit']}")
+        span(internal-fsb-not-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[0,2]', 'object-position']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['object-position[1,2]', 'object-position']}")
+        span(internal-fsb-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-object-position']}")
       .section-hr
     .section-container
       .section-title
-        | Flexbox
+        | Flexbox Layout
       .section-subtitle
         | Container
       .section-body
@@ -119,7 +123,7 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
       .section-subtitle
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['pointer-events'], watchingAttributeNames: ['internal-fsb-react-style-pointer-events']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['cursor'], watchingAttributeNames: ['internal-fsb-react-style-cursor']}")
-      .section-hr
+      .section-hr.internal-fsb-selecting-on(internal-fsb-not-for="editorCurrentMode:coding")
     .section-container.internal-fsb-selecting-on(internal-fsb-not-for="editorCurrentMode:coding")
       .section-title
         | Transform
@@ -133,8 +137,12 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         | Size & Position
       .section-body
         +CreateReactComponent('FullStackBlend.Components.DimensionPicker')
+      .section-hr
+    .section-container
+      .section-title
+        | Traditional Layout
       .section-subtitle
-        | Container Behaviours
+        | Container
       .section-body
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
     div(internal-fsb-for="internal-fsb-class:Iframe, internal-fsb-class:Textbox,internal-fsb-class:Select,internal-fsb-class:Radio,internal-fsb-class:Checkbox,internal-fsb-class:File,internal-fsb-class:Image,internal-fsb-class:Video")
