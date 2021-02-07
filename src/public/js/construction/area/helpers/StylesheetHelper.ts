@@ -75,26 +75,25 @@ var StylesheetHelper = {
     if (cachedPrioritizedKeysRevision != stylesheetDefinitionRevision || cachedPrioritizedKeys == null) {
       cachedPrioritizedKeysRevision = stylesheetDefinitionRevision;
       
-      console.log(Object.keys(stylesheetDefinitions));
       cachedPrioritizedKeys = Object.keys(stylesheetDefinitions).sort((a, b) => {
         let pa = parseInt(HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-priority') || '0');
         let pb = parseInt(HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-priority') || '0');
         let na = HTMLHelper.getInlineStyle(stylesheetDefinitions[a], '-fsb-reusable-name');
         let nb = HTMLHelper.getInlineStyle(stylesheetDefinitions[b], '-fsb-reusable-name');
         
-        console.log(pa, pb, na, nb);
-        
         return ((pa != pb) ? pa < pb : na > nb) ? 1 : -1;
       });
-      console.log(cachedPrioritizedKeys);
       
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
       	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
       	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
       	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
+      	let priority = parseInt(HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-priority') || '0');
+      	
       	return {
       		id: presetId,
 	      	name: presetName,
+	      	priority: priority,
 	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
 	      }
       });
