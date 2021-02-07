@@ -31,18 +31,21 @@ var StyleHelper = {
   			
   			if (name.match(/^[0-9]+$/)) continue;
   			if (!style) continue;
-  			if (style === defaultStyle[name]) continue;
+  			if (style === defaultStyle[name] && name !== 'fontFamily') continue;
   			
 		  	nodes.push({
 					id: 'id',
-					customClassName: (style === defaultStyle[name]) ? 'original' : 'different',
+					customClassName: 'different', // (style === defaultStyle[name]) ? 'original' : 'different',
 					name: `${name}: ${style}`,
 					selectable: false,
 					dropable: false,
 					disabled: false,
 					selected: false,
 					nodes: [],
-					tag: null
+					tag: {
+						name: name,
+						style: style
+					}
 				});
 			}
   	}

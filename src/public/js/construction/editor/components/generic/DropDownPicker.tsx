@@ -122,6 +122,15 @@ let map = {
 let reject = {
     "font-weight": function(scope) {
         let family = scope.state.styleValues['font-family'];
+        
+        if (!family && scope.state.extensionValues['elementComputedStyleNodes']) {
+        	const computedStyleNode = scope.state.extensionValues['elementComputedStyleNodes'].filter(node => node.tag.name == 'fontFamily')[0];
+        	
+        	if (computedStyleNode) {
+        		family = computedStyleNode.tag.style;
+        	}
+        }
+        
         let normals = (scope.state.styleValues['font-style'] == 'italic') ?
             FontHelper.getAllItalics(FontHelper.getFontInfo(family)) :
             FontHelper.getAllNormals(FontHelper.getFontInfo(family));
