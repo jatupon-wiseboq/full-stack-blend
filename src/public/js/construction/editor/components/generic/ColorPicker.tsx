@@ -79,7 +79,7 @@ class ColorPicker extends Base<Props, State> {
         				perform('update', {
 				            styles: [{
 				                name: this.props.watchingStyleNames[0].split('[')[0],
-				                value: color
+				                value: rgba
 				            }],
 				            replace: this.props.watchingStyleNames[0]
 			        	});
