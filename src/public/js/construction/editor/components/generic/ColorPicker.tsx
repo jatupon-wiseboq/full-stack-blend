@@ -59,13 +59,31 @@ class ColorPicker extends Base<Props, State> {
         this.refs.swatchPicker.setCurrentSwatchColor(rgba);
       	
       	if (!this.props.manual) {
-	        perform('update', {
-	            styles: [{
-	                name: this.props.watchingStyleNames[0].split('[')[0],
-	                value: rgba
-	            }],
-	            replace: this.props.watchingStyleNames[0]
-	        });
+	        	if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+	        			
+	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
+	        			
+	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+	        			
+	        			perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: composed
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+				        });
+        		} else {
+        				perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: color
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+			        	});
+        		}
 	      }
     }
     
