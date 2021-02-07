@@ -95,7 +95,7 @@ export const TABLE_CELL_1_OPTIONS = [
 	[[table_cell_vertical, table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-center"],
 	[[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
 ];
-export const FONT_FAMILY_OPTIONS = FontHelper.listAllFonts();
+export const FONT_FAMILY_OPTIONS = [null, ...FontHelper.listAllFonts()];
 export const _FONT_STYLE_OPTIONS = [null, "italic"];
 export const _TEXT_ALIGN_OPTIONS = [null, "left", "center", "right", "justify"];
 export const _FONT_COLOR_OPTIONS = [null, "{TEXT}"];

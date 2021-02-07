@@ -177,7 +177,7 @@ class DropDownList extends React.Component<Props, State> {
     render() {
       let filtered = this.props.options;
       if (this.state.filter) {
-        filtered = filtered.filter(value => value.toLowerCase().indexOf(this.state.filter.toLowerCase().trim()) != -1);
+        filtered = filtered.filter(value => value == null || value.toLowerCase().indexOf(this.state.filter.toLowerCase().trim()) != -1);
       }
       let textbox = (<FullStackBlend.Controls.Textbox value={this.state.filter} preRegExp="(([a-zA-Z0-9])|([a-zA-Z0-9][a-zA-Z0-9 ]*))?" postRegExp="[a-zA-Z0-9 ]*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>);
     
