@@ -353,6 +353,7 @@ var EditorHelper = {
         		HTMLHelper.hasClass(current, 'container-fluid') ||
         		(HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
           current.insertBefore(Accessories.guide.getDOMNode(), current.firstElementChild);
+      		Accessories.guide.invalidate();
           break;
         }
         current = current.parentNode;
@@ -415,6 +416,8 @@ var EditorHelper = {
   			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
     		break;
   	}
+    
+    Accessories.guide.invalidate();
   },
   getEditorCurrentMode: () => {
     return editorCurrentMode;

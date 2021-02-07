@@ -663,6 +663,7 @@ var ManipulationHelper = {
 	    if (found) StyleHelper.invalidate();
     	if (found) TimelineHelper.invalidate();
     	if (found) SchemaHelper.invalidate();
+    	if (found) Accessories.guide.invalidate();
       
       if (remember && !found) {
         remember = false;

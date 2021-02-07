@@ -11,6 +11,7 @@ var CursorHelper = {
     if (element) {
       ManipulationHelper.perform('move[cursor]', CursorHelper.createWalkPathForCursor(), remember);
       element.parentNode.appendChild(Accessories.guide.getDOMNode());
+      Accessories.guide.invalidate();
     }
   },
   moveCursorToTheLeft: (link: any=Math.random()) => {
