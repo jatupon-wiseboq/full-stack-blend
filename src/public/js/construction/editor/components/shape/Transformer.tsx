@@ -86,6 +86,8 @@ class Transformer extends Base<Props, State> {
             this.currentTransform = null;
             this.currentMode = null;
             this.render3D();
+            
+            this.forceUpdate();
         }
     }
     
