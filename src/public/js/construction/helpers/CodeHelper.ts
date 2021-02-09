@@ -156,6 +156,7 @@ var CodeHelper = {
   },
   replaceCamelIntoDashCase: (camelCase: string): string => {
   	if (camelCase.indexOf('internal-fsb-') != -1) return camelCase;
+  	if (camelCase.indexOf('data-') == 0) return camelCase;
   	if (CAMEL_OF_EVENTS_DICTIONARY[camelCase.toLowerCase()]) return camelCase;
   	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(camelCase.toLowerCase()) != -1) return camelCase;
   	
@@ -163,6 +164,7 @@ var CodeHelper = {
   },
   replaceDashIntoCamelCase: (dashCase: string): string => {
   	if (dashCase.indexOf('internal-fsb-') != -1) return dashCase;
+  	if (dashCase.indexOf('data-') == 0) return dashCase;
   	if (CAMEL_OF_EVENTS_DICTIONARY[dashCase.toLowerCase()]) return dashCase;
   	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(dashCase.toLowerCase()) != -1) return dashCase;
   	
