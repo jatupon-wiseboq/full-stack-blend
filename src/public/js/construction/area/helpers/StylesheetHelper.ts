@@ -92,7 +92,7 @@ var StylesheetHelper = {
       	
       	return {
       		id: presetId,
-	      	name: presetName,
+	      	name: presetName || 'Untitled',
 	      	priority: priority,
 	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
 	      }
