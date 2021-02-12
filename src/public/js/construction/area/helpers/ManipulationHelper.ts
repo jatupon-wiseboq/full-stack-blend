@@ -923,6 +923,10 @@ var ManipulationHelper = {
     LayoutHelper.invalidate();
     TimelineHelper.invalidate();
     StyleHelper.invalidate();
+    
+    if (selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'TextElement') {
+    	ManipulationHelper.updateComponentData(selectingElement);
+    }
   	
   	return [accessory, remember, link];
   },
