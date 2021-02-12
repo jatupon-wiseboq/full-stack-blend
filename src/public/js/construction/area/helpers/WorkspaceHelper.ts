@@ -664,13 +664,13 @@ var WorkspaceHelper = {
   	
   	return results;
   },
-  generateFrontEndCodeForAllPages: () => {
-    cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+  generateFrontEndCodeForAllPages: (autoSwitch: boolean=false) => {
+    cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
     
     return cacheOfGeneratedFrontEndCodeForAllPages;
   },
-  generateBackEndCodeForAllPages: () => {
-  	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+  generateBackEndCodeForAllPages: (autoSwitch: boolean=false) => {
+  	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);
     
     return cacheOfGeneratedBackEndCodeForAllPages;
  	},
