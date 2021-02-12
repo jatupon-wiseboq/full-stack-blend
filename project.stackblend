@@ -1386,18 +1386,6 @@
     }
   },
   "controllerBlobSHA": "949339a4c09bf5b28eca32e5dd57592a7cc05814#1163846700",
-  "currentPersistingFiles": [
-    "src/controllers/components/account/settings/_3cb10a6e.ts",
-    "src/controllers/components/account/authenticate/_9e885d49.ts",
-    "src/controllers/components/developer/_b160aa0e.ts",
-    "src/controllers/components/index.ts",
-    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
-    "src/public/js/components/Project.Controls.Settings.tsx",
-    "views/home/account/settings/_3cb10a6e.pug",
-    "views/home/account/authenticate/_9e885d49.pug",
-    "views/home/developer/_b160aa0e.pug",
-    "views/home/index.pug"
-  ],
   "flows": {
     "default": [
       "<body",
@@ -4367,7 +4355,7 @@
     "d2a8edc9": "-fsb-reusable-id: d2a8edc9; -fsb-reusable-name: feature_subtitle; color: rgba(255, 255, 255, 1); font-family: Roboto; font-size: 16px; font-weight: 300; text-align: center",
     "d7d59dd2": "-fsb-reusable-id: d7d59dd2; -fsb-reusable-name: settings_tab; -webkit-border-radius: 3px 3px 3px 3px; background: rgba(3, 115, 252, 0.15); border-bottom-color: rgba(0, 174, 255, 1); border-bottom-style: solid; border-bottom-width: 2px; border-left-style: none; border-radius: 3px 3px 3px 3px; border-right-style: none; border-top-style: none; color: rgba(3, 115, 252, 1); padding-bottom: 2px; padding-top: 2px"
   },
-  "version": 1.2,
+  "version": 1.3,
   "viewBlobSHADict": {
     "3cb10a6e": "00efaf9d5bb835aa3adfc6e17ca11a27303bfe56#-1328370174",
     "9e885d49": "9d9df1e1a7fa7a05aa211802e264057737a6d70f#-218408566",
