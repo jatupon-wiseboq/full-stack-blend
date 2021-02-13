@@ -14,14 +14,14 @@ declare let DataManipulationHelper: any;
 
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 for (let expandingPlaceholder of expandingPlaceholders) {
-	let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
-	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
-	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
-	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+  let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
+  ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
+  expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
+  expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
 
 window.internalFsbSubmit = (guid: string, notation: string, event, callback: any) => {
-	DataManipulationHelper.request(guid, notation, event, callback);
+  DataManipulationHelper.request(guid, notation, event, callback);
 }
 
 // <--- Auto[Generating:V1]

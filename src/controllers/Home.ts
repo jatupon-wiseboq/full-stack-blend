@@ -8,16 +8,16 @@ import Component3cb10a6e from "./components/account/settings/_3cb10a6e";
 import Componentb160aa0e from "./components/developer/_b160aa0e";
 
 export const index = (req: Request, res: Response) => {
-	new Componentindex(req, res, "home/index");
+  new Componentindex(req, res, "home/index");
 }
 export const _9e885d49 = (req: Request, res: Response) => {
-	new Component9e885d49(req, res, "home/account/authenticate/_9e885d49");
+  new Component9e885d49(req, res, "home/account/authenticate/_9e885d49");
 }
 export const _3cb10a6e = (req: Request, res: Response) => {
-	new Component3cb10a6e(req, res, "home/account/settings/_3cb10a6e");
+  new Component3cb10a6e(req, res, "home/account/settings/_3cb10a6e");
 }
 export const _b160aa0e = (req: Request, res: Response) => {
-	new Componentb160aa0e(req, res, "home/developer/_b160aa0e");
+  new Componentb160aa0e(req, res, "home/developer/_b160aa0e");
 }
 
 // <--- Auto[Generating:V1]

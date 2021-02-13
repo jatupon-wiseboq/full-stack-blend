@@ -14,10 +14,10 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "2d69b2d8788471d9337667107fa9a0a60dafe798#-1086425745",
-    "9e885d49": "ca1915b9b8f768d670ff6f2fb834467ce10e880a#956425506",
-    "b160aa0e": "d21bff9b33de7e573af30650362a5436b3d386b9#1409907872",
-    "index": "37b2d14dc70cd5eea4adc6696b68e2345714b544#9921008"
+    "3cb10a6e": "5525a7c5986497f558b0a5b19a65550f09710c53#1754395792",
+    "9e885d49": "762e8f8cddc5a7ea960b835392a3a2d4b690cc94#1923920097",
+    "b160aa0e": "a5e56befb10ead4b6ac2284f4865a4e4add073f9#975611240",
+    "index": "330870566253f961e6981c48643acad93ff19131#1346106910"
   },
   "components": {
     "245bc127": {
@@ -1381,11 +1381,26 @@
         "</div>",
         "</div>"
       ],
+      "id": "4d816ba8",
       "klass": "FlowLayout_4d816ba8",
-      "namespace": "Project.Controls"
+      "name": "Authenticator",
+      "namespace": "Project.Controls",
+      "state": "create"
     }
   },
-  "controllerBlobSHA": "949339a4c09bf5b28eca32e5dd57592a7cc05814#1163846700",
+  "controllerBlobSHA": "412073fbb81cba1ed429a2aaeb557a9cd42cc8d7#39405662",
+  "currentPersistingFiles": [
+    "src/controllers/components/account/settings/_3cb10a6e.ts",
+    "src/controllers/components/account/authenticate/_9e885d49.ts",
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "src/controllers/components/index.ts",
+    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
+    "src/public/js/components/Project.Controls.Settings.tsx",
+    "views/home/account/settings/_3cb10a6e.pug",
+    "views/home/account/authenticate/_9e885d49.pug",
+    "views/home/developer/_b160aa0e.pug",
+    "views/home/index.pug"
+  ],
   "flows": {
     "default": [
       "<body",
@@ -2562,9 +2577,10 @@
       }
     }
   },
+  "footerBlobSHA": "6bf70eb34d8256162c350be007bf06a2a119ac6a#30916047",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "950196dbe208465e6e0238ad722e81b67c9bfdff#1239455622",
-    "Project.Controls.Settings": "882d59c4ca68bd2044a1eb504df691d7a2a4a07c#-519646893"
+    "Project.Controls.FlowLayout_4d816ba8": "90a25a3262747cedc4a867d8b31aab5b190b6fd2#-359051224",
+    "Project.Controls.Settings": "00676ff7396a494b160403eaa6e6b9b89e94470b#1743819377"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -2656,6 +2672,7 @@
     ],
     "popups": []
   },
+  "headerBlobSHA": "12793121aaf7329ae25db89f4f28da2c9bf704f2#544427720",
   "popups": {},
   "routeBlobSHA": "7130cffc4772acafe64fa9b9711ff4dada54d664#-924783804",
   "services": {
@@ -2667,7 +2684,7 @@
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "7d1d38ebc45a31b34b7f544f583a2ac18acffc3b#-223593983",
+  "siteBundleBlobSHA": "449cac24c6c76dd329287f2ad0bb1a8db7536a60#-1660807882",
   "sites": {
     "3cb10a6e": {
       "accessories": {},
@@ -4357,9 +4374,9 @@
   },
   "version": 1.3,
   "viewBlobSHADict": {
-    "3cb10a6e": "00efaf9d5bb835aa3adfc6e17ca11a27303bfe56#-1328370174",
-    "9e885d49": "9d9df1e1a7fa7a05aa211802e264057737a6d70f#-218408566",
-    "b160aa0e": "dc6bc91a8e000dbedb4c73db0abd0a064299423b#-548997569",
-    "index": "38d1379268ecbc4f9182fe072849e5d2ea8f5e65#-533685645"
+    "3cb10a6e": "7b8715eb7e15b994e27bbe3c8abc208ae7822279#1039707079",
+    "9e885d49": "f544b3e2efc68764a752943215fca0361d00749d#1300328507",
+    "b160aa0e": "9a6254235093def3f494a086f3e5eaa77e257385#71754390",
+    "index": "17ca4b6b4729d3211c9cc9f79a5686237e33f756#-1449789692"
   }
 }
