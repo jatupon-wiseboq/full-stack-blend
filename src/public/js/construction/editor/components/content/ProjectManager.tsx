@@ -71,7 +71,7 @@ class ProjectManager extends Base<Props, State> {
       return (path) ? path + '/' : '';
     }
     getRootDirectory(key: string) {
-      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]/g, '..');
+      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
     }
     extractErrorMessage(error) {
       if (error && error.response && error.response.data && error.response.data.errors) {

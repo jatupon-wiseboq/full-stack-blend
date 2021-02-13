@@ -69,7 +69,7 @@ class EndpointManager extends Base<Props, State> {
       return (path) ? path + '/' : '';
     }
     getRootDirectory(key: string) {
-      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]/g, '..');
+      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
     }
     
     files: any = [];
