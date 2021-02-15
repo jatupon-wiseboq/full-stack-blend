@@ -226,16 +226,16 @@ html
       
       let combinedHeaderScripts = `
 link(rel="stylesheet" href="/css/embed.css")
-${externalStylesheets.join('\n    ')}
-${customHeaderExternalStylesheets.join('\n    ')}
-${customHeaderExternalScripts.join('\n    ')}
+${externalStylesheets.join('\n')}
+${customHeaderExternalStylesheets.join('\n')}
+${customHeaderExternalScripts.join('\n')}
 style(type="text/css").
   ${globalCombinedStylesheet}
 `;
   let combinedFooterScripts = `
-${externalScripts.join('\n    ')}
-${customFooterExternalStylesheets.join('\n    ')}
-${customFooterExternalScripts.join('\n    ')}
+${externalScripts.join('\n')}
+${customFooterExternalStylesheets.join('\n')}
+${customFooterExternalScripts.join('\n')}
 script(type="text/javascript" src="/js/Site.bundle.js")
 `;
       
