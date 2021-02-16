@@ -647,8 +647,8 @@ var WorkspaceHelper = {
   	const previousMode = InternalProjectSettings.currentMode;
   	if (autoSwitch === true) WorkspaceHelper.setMode('site');
   	
-    let results = FrontEndDOMHelper.generateFrontEndCode();
-  	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
+    let results = (InternalProjectSettings.currentMode == 'site') ? FrontEndDOMHelper.generateFrontEndCode() : null;
+  	if (InternalProjectSettings.currentMode == 'site') results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	
   	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
   	
@@ -658,19 +658,21 @@ var WorkspaceHelper = {
   	const previousMode = InternalProjectSettings.currentMode;
   	if (autoSwitch === true) WorkspaceHelper.setMode('site');
   	
-    let results = BackEndDOMHelper.generateBackEndCode();
+    let results = (InternalProjectSettings.currentMode == 'site') ? BackEndDOMHelper.generateBackEndCode() : null;
   	
   	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
   	
   	return results;
   },
   generateFrontEndCodeForAllPages: (autoSwitch: boolean=false) => {
-    cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
+    const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
+    if (result != null) cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
     
     return cacheOfGeneratedFrontEndCodeForAllPages;
   },
   generateBackEndCodeForAllPages: (autoSwitch: boolean=false) => {
-  	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);
+  	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);
+    if (result != null) cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
     
     return cacheOfGeneratedBackEndCodeForAllPages;
  	},
