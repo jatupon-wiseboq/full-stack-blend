@@ -1515,7 +1515,7 @@
       "    internal-fsb-name=\"Connection 1\"",
       "    internal-fsb-event-no-propagate=\"1\"",
       "    internal-fsb-class=\"Connection\"",
-      "    style=\"left: 389px; top: -188px; width: 150px;\"",
+      "    style=\"left: 369px; top: -189px; width: 150px;\"",
       "    data-source-group-name=\"User\"",
       "    data-source-entity-name=\"uid\"",
       "    data-target-group-name=\"Log\"",
@@ -4377,6 +4377,6 @@
     "3cb10a6e": "7b8715eb7e15b994e27bbe3c8abc208ae7822279#1039707079",
     "9e885d49": "f544b3e2efc68764a752943215fca0361d00749d#1300328507",
     "b160aa0e": "4a11b78d250a048b1b43316bb3c23b574b69ac26#15010383",
-    "index": "ec5d7c2509a262385be84ab43fcf5e045d794eab#-304735203"
+    "index": "17ca4b6b4729d3211c9cc9f79a5686237e33f756#-1449789692"
   }
 }
