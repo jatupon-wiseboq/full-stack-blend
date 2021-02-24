@@ -668,11 +668,27 @@ var WorkspaceHelper = {
     const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
     if (result != null) cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
     
+    for (let key in cacheOfGeneratedFrontEndCodeForAllPages) {
+      if (cacheOfGeneratedFrontEndCodeForAllPages.hasOwnProperty(key)) {
+        if (cacheOfGeneratedFrontEndCodeForAllPages[key] === null) {
+          delete cacheOfGeneratedFrontEndCodeForAllPages[key];
+        }
+      }
+    }
+    
     return cacheOfGeneratedFrontEndCodeForAllPages;
   },
   generateBackEndCodeForAllPages: (autoSwitch: boolean=false) => {
   	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);
     if (result != null) cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
+    
+    for (let key in cacheOfGeneratedBackEndCodeForAllPages) {
+      if (cacheOfGeneratedBackEndCodeForAllPages.hasOwnProperty(key)) {
+        if (cacheOfGeneratedBackEndCodeForAllPages[key] === null) {
+          delete cacheOfGeneratedBackEndCodeForAllPages[key];
+        }
+      }
+    }
     
     return cacheOfGeneratedBackEndCodeForAllPages;
  	},
