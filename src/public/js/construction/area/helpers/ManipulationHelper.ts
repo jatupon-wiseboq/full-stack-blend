@@ -66,12 +66,13 @@ function removeAllPresetReferences(presetId: string, link: string) {
 }
 
 var ManipulationHelper = {
-  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
+  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false, fromUndo: boolean=false) => {
     let accessory = null;
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
+    let recentSelectingElement = null;
     
     if (content && (typeof content === 'object') && content.link !== undefined) {
     	link = content.link;
@@ -82,21 +83,27 @@ var ManipulationHelper = {
     
     switch (name) {
       case 'select':
-      	if (link === false) link = Math.random();
-      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	recentSelectingElement = EditorHelper.getSelectingElement();
       	
-      	promise.then(() => {
-      		ManipulationHelper.perform('update', {
-	      		extensions: [{
-	      			name: 'editingKeyframeID',
-	      			value: null
-	      		}]
-	      	}, true, false, link);
-      	});
+      	link = link || Math.random();
+      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+	      
+      	if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+	      	promise.then(() => {
+	      		ManipulationHelper.perform('update', {
+		      		extensions: [{
+		      			name: 'editingKeyframeID',
+		      			value: null
+		      		}]
+		      	}, true, false, link);
+	      	});
+	      }
         break;
       case 'select[cursor]':
-      	name = 'select';
-      	link = Math.random();
+      	recentSelectingElement = EditorHelper.getSelectingElement();
+      	
+    		name = 'select';
+      	link = link || Math.random();
       	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
       	
       	promise.then(() => {
@@ -127,12 +134,14 @@ var ManipulationHelper = {
 	      		}
 	      	}
 	      }).then(() => {
-	      	ManipulationHelper.perform('update', {
-	      		extensions: [{
-	      			name: 'editingKeyframeID',
-	      			value: null
-	      		}]
-	      	}, true, false, link);
+      		if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+			      ManipulationHelper.perform('update', {
+		      		extensions: [{
+		      			name: 'editingKeyframeID',
+		      			value: null
+		      		}]
+		      	}, true, false, link);
+		      }
 	      });
       	break;
       case 'insert':
@@ -259,7 +268,7 @@ var ManipulationHelper = {
       let presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       
       if (EditorHelper.getEditorCurrentMode() == 'animation') {
-      	if (content.attributes) {
+      	if (content.attributes && !content.attributes.some(attribute => attribute.name == 'keyframe')) {
 	      	for (let attribute of content.attributes) {
 	          switch (attribute.name) {
 	          	case 'style':
@@ -1490,7 +1499,7 @@ var ManipulationHelper = {
       
       performedIndex -= 1;
       if (!done) {
-        ManipulationHelper.perform(name, content, false, true);
+        ManipulationHelper.perform(name, content, false, true, false, true);
       }
     }
     
