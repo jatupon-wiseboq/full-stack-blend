@@ -86,63 +86,73 @@ var ManipulationHelper = {
       	recentSelectingElement = EditorHelper.getSelectingElement();
       	
       	link = link || Math.random();
-      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
-	      
-      	if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
-	      	promise.then(() => {
-	      		ManipulationHelper.perform('update', {
-		      		extensions: [{
-		      			name: 'editingKeyframeID',
-		      			value: null
-		      		}]
-		      	}, true, false, link);
-	      	});
-	      }
+      	
+      	if (!recentSelectingElement || HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+      		[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      		
+	      	if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+		      	promise.then(() => {
+		      		ManipulationHelper.perform('update', {
+			      		extensions: [{
+			      			name: 'editingKeyframeID',
+			      			value: null
+			      		}]
+			      	}, true, false, link);
+		      	});
+		      }
+      	} else {
+      		remember = false;
+      	}
         break;
       case 'select[cursor]':
       	recentSelectingElement = EditorHelper.getSelectingElement();
       	
     		name = 'select';
       	link = link || Math.random();
-      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
       	
-      	promise.then(() => {
-	      	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
-	      	if (element) {
-	      		let allowCursorElement = element.parentNode;
-	      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
-		      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
-		      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
-		          let theAllowCursorElement = allowCursorElement;
-		          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
-		      		
-		      		if (indexOfAllowCursorElement != -1) {
-		            let children = [...theAllowCursorElement.children];
-		            let index = [...theAllowCursorElement.children].indexOf(element);
-		            let cursorIndex = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
-		            
-		            if (cursorIndex == -1 || cursorIndex >= index) {
-		            	index += 1;
-		            }
-		            
-		            let walkPath = CursorHelper.createWalkPathForCursor(
-		            	HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
-		            	indexOfAllowCursorElement,
-		            	index);
-		            ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
-		          }
-	      		}
-	      	}
-	      }).then(() => {
-      		if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
-			      ManipulationHelper.perform('update', {
-		      		extensions: [{
-		      			name: 'editingKeyframeID',
-		      			value: null
-		      		}]
-		      	}, true, false, link);
-		      }
-	      });
+      	if (!recentSelectingElement || HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+      		[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	
+	      	promise.then(() => {
+		      	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
+		      	if (element) {
+		      		let allowCursorElement = element.parentNode;
+		      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
+			      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+			      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+			          let theAllowCursorElement = allowCursorElement;
+			          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
+			      		
+			      		if (indexOfAllowCursorElement != -1) {
+			            let children = [...theAllowCursorElement.children];
+			            let index = [...theAllowCursorElement.children].indexOf(element);
+			            let cursorIndex = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
+			            
+			            if (cursorIndex == -1 || cursorIndex >= index) {
+			            	index += 1;
+			            }
+			            
+			            let walkPath = CursorHelper.createWalkPathForCursor(
+			            	HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
+			            	indexOfAllowCursorElement,
+			            	index);
+			            ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
+			          }
+		      		}
+		      	}
+		      }).then(() => {
+	      		if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+				      ManipulationHelper.perform('update', {
+			      		extensions: [{
+			      			name: 'editingKeyframeID',
+			      			value: null
+			      		}]
+			      	}, true, false, link);
+			      }
+		      });
+		    } else {
+		    	remember = false;
+		    }
       	break;
       case 'insert':
         if (InternalProjectSettings.currentMode != 'data') {
