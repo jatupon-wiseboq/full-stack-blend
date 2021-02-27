@@ -66,7 +66,7 @@ function removeAllPresetReferences(presetId: string, link: string) {
 }
 
 var ManipulationHelper = {
-  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false, fromUndo: boolean=false) => {
+  perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
     let accessory = null;
     let resolve = null;
     let promise = new Promise((_resolve) => { resolve = _resolve; });
@@ -1509,7 +1509,7 @@ var ManipulationHelper = {
       
       performedIndex -= 1;
       if (!done) {
-        ManipulationHelper.perform(name, content, false, true, false, true);
+        ManipulationHelper.perform(name, content, false, true);
       }
     }
     
