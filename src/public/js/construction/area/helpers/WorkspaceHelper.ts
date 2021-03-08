@@ -208,6 +208,20 @@ var WorkspaceHelper = {
       return 'services';
     }
   },
+  getAllUsingFonts: () => {
+    let usingFonts = {};
+    
+    for (let key in InternalSites) {
+      if (InternalSites.hasOwnProperty(key)) {
+        let page = WorkspaceHelper.getPageData(key);
+        if (page == null) continue;
+        
+        Object.assign(usingFonts, page.head.fonts || {});
+      }
+    }
+    
+    return usingFonts;
+  },
   loadWorkspaceData: (updateUI: boolean=false) => {
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
@@ -297,6 +311,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       MalformationRepairHelper.repair();
       
+      FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
@@ -326,6 +341,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.updateInheritingComponents();
       MalformationRepairHelper.repair();
       
+      FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
@@ -407,6 +423,14 @@ var WorkspaceHelper = {
     	
       component.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
       
+      if (reinit) {
+        EditorHelper.init(true, false);
+        
+        FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
+      	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      	AnimationHelper.initializeStylesheetData(InternalAnimations);
+      }
+      
       if (force || component.html != previous) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       }
@@ -417,6 +441,14 @@ var WorkspaceHelper = {
     	let previous = popup.html;
     	
       popup.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
+      
+      if (reinit) {
+        EditorHelper.init(true, false);
+        
+        FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
+      	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
+      	AnimationHelper.initializeStylesheetData(InternalAnimations);
+      }
       
       if (force || popup.html != previous) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
