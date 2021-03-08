@@ -2,6 +2,7 @@ import {CodeHelper} from '../../helpers/CodeHelper';
 import {FontHelper} from '../../helpers/FontHelper';
 import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {TextHelper} from '../../helpers/TextHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 import {CapabilityHelper} from './CapabilityHelper';
 import {StylesheetHelper} from './StylesheetHelper';
@@ -378,7 +379,7 @@ var WorkspaceHelper = {
       }
       
       if (force || !CodeHelper.equals(clonedPage, page)) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
       }
     } else if (InternalProjectSettings.currentMode == 'data') {
@@ -407,7 +408,7 @@ var WorkspaceHelper = {
       component.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
       
       if (force || component.html != previous) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingComponentID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       }
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
@@ -418,7 +419,7 @@ var WorkspaceHelper = {
       popup.html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element')[0].outerHTML)))).split('\n');
       
       if (force || popup.html != previous) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPopupID] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       }
     }
   },
@@ -645,12 +646,23 @@ var WorkspaceHelper = {
  	},
   generateFrontEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
   	const previousMode = InternalProjectSettings.currentMode;
-  	if (autoSwitch === true) WorkspaceHelper.setMode('site');
+  	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode('site');
   	
-    let results = (InternalProjectSettings.currentMode == 'site') ? FrontEndDOMHelper.generateFrontEndCode() : null;
-  	if (InternalProjectSettings.currentMode == 'site') results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
+    let results = null;
+    
+  	if (InternalProjectSettings.currentMode == 'site') {
+  		results = FrontEndDOMHelper.generateFrontEndCode();
+  	} else if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+  		results = FrontEndDOMHelper.generateFrontEndCode();
+  		results[0] = false;
+  		results[1] = false;
+  		results[3] = false;
+  		results[4] = false;
+  	}
   	
-  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
+  	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
+  	
+  	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
   	
   	return results;
   },
@@ -664,9 +676,21 @@ var WorkspaceHelper = {
   	
   	return results;
   },
+  getCurrentGenerateFrontEndCodeKey: () => {
+  	switch (InternalProjectSettings.currentMode) {
+  		case 'site':
+  			return InternalProjectSettings.editingPageID;
+  		case 'components':
+  			return '__' + InternalProjectSettings.editingComponentID;
+  		case 'popups':
+  			return '__' + InternalProjectSettings.editingPopupID;
+  		default:
+  			return '__' + RandomHelper.generateGUID();
+  	}
+  },
   generateFrontEndCodeForAllPages: (autoSwitch: boolean=false) => {
     const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
-    if (result != null) cacheOfGeneratedFrontEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
+    if (result != null) cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = result;
     
     for (let key in cacheOfGeneratedFrontEndCodeForAllPages) {
       if (cacheOfGeneratedFrontEndCodeForAllPages.hasOwnProperty(key)) {
@@ -676,7 +700,7 @@ var WorkspaceHelper = {
       }
     }
     
-    return cacheOfGeneratedFrontEndCodeForAllPages;
+    return CodeHelper.sortHashtable(cacheOfGeneratedFrontEndCodeForAllPages);
   },
   generateBackEndCodeForAllPages: (autoSwitch: boolean=false) => {
   	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);

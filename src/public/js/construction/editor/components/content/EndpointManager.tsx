@@ -167,13 +167,16 @@ class EndpointManager extends Base<Props, State> {
           });
           if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
           if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
-          globalCombinedStylesheet = combinedStylesheet;
+          if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
           
           if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
           else combinedInlineBodyStyle = '';
           
-          let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
-          compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+          let compiledCombinedMinimalFeatureScripts = '';
+          if (combinedMinimalFeatureScripts) {
+            compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
+            compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+          }
           
           let pages = this.state.extensionValues['pages'];
           let editingPageID = key;
@@ -185,9 +188,10 @@ class EndpointManager extends Base<Props, State> {
           let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
           let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
           
-          combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+          if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
           
-          let combinedHTMLPage = `.
+          if (pages && pages[0]) {
+          	let combinedHTMLPage = `.
   <!DOCTYPE html>
 html
   head
@@ -217,10 +221,10 @@ html
       window.data = !{JSON.stringify(data)};
     include ${this.getRootDirectory(key)}_footer.pug
 `
-          if (pages && pages[0]) {
             combinedHTMLPageDict[key] = combinedHTMLPage;
           }
-          arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
+          
+          if (combinedExpandingFeatureScripts) arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
         }
       }
       
