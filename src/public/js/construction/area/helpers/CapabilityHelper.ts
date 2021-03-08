@@ -127,6 +127,9 @@ var CapabilityHelper = {
               	let layoutPosition = HTMLHelper.getPosition(allowCursorElement);
                 let mousePosition = EventHelper.getMousePosition(event);
                 
+                mousePosition[0] += document.body.scrollLeft;
+                // mousePosition[1] += document.body.scrollTop;
+                
                 ManipulationHelper.perform('move[cursor]', CursorHelper.createWalkPathForCursor(
                   '0',
                   0,
