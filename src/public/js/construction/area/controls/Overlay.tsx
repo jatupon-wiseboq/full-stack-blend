@@ -22,6 +22,8 @@ class Overlay extends React.Component<Props, State> {
     
     constructor() {
       super();
+      
+      window.renderAllRelations = this.renderAllRelations.bind(this);
     }
 
     public getDOMNode() {
