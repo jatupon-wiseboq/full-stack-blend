@@ -61,7 +61,7 @@ let version = 1.3;
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
-const DEFAULT_COMPONENT_HTML = `<div class="internal-fsb-element col-4"><div class="container-fluid"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
+const DEFAULT_COMPONENT_HTML = `<div class="col-4 internal-fsb-element" internal-fsb-name="Container" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" internal-fsb-react-mode="Site"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
 const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class="Popup" style="height: 100vh; left: 0px; position: fixed; top: 0px; width: 100vw" internal-fsb-event-no-propagate="1" internal-fsb-name="Container" internal-fsb-react-mode="Site"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="internal-fsb-allow-cursor internal-fsb-strict-layout row"></div></div></div>`.split('\n');
 const DEFAULT_PAGE_EXTENSIONS = {};
 
@@ -559,12 +559,12 @@ var WorkspaceHelper = {
   updateInPageComponents: () => {
     for (let _component of InternalProjectSettings.components) {
       let component = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', _component.id);
-      if (component) {
+      if (component && (InternalProjectSettings.currentMode != 'components' || component != document.body.firstElementChild.firstElementChild.firstElementChild)) {
 	      let componentInfo = WorkspaceHelper.getComponentData(_component.id);
 	      if (componentInfo) {
 		      let element = document.createElement('div');
 		      let parentNode = component.parentNode;
-		      element.innerHTML = componentInfo.html.join('\n');
+		      element.innerHTML = (componentInfo.html || DEFAULT_COMPONENT_HTML).join('\n');
 		      let firstElementChild = element.firstElementChild;
 		      parentNode.insertBefore(firstElementChild, component);
 		      parentNode.removeChild(component);
@@ -589,7 +589,7 @@ var WorkspaceHelper = {
       
       let element = document.createElement('div');
       let parentNode = component.parentNode;
-      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(componentInfo.html.join('\n'));
+      element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData((componentInfo.html || DEFAULT_COMPONENT_HTML).join('\n'));
       let firstElementChild = element.firstElementChild;
       parentNode.insertBefore(firstElementChild, component);
       parentNode.removeChild(component);
@@ -765,7 +765,7 @@ var WorkspaceHelper = {
   	for (let key in InternalComponents) {
   		if (InternalComponents.hasOwnProperty(key)) {
   			let element = document.createElement('div');
-  			element.innerHTML = InternalComponents[key].html.join('\n');
+  			element.innerHTML = (InternalComponents[key].html || DEFAULT_COMPONENT_HTML).join('\n');
   			
   			container.appendChild(element);
   		}
@@ -773,7 +773,7 @@ var WorkspaceHelper = {
   	for (let key in InternalPopups) {
   		if (InternalPopups.hasOwnProperty(key)) {
   			let element = document.createElement('div');
-  			element.innerHTML = InternalPopups[key].html.join('\n');
+  			element.innerHTML = (InternalPopups[key].html || DEFAULT_POPUP_HTML).join('\n');
   			
   			container.appendChild(element);
   		}
