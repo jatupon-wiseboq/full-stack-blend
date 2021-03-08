@@ -309,8 +309,6 @@ class ProjectManager extends Base<Props, State> {
               }
             }
             
-            debugger;
-            
             let combinedHTMLPageDict = {};
             let globalCombinedStylesheet = '';
             let arrayOfCombinedExpandingFeatureScripts = [];
