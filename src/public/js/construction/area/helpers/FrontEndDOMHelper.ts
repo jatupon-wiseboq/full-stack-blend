@@ -172,7 +172,7 @@ ${rootScript}`;
         let submitType = null;
         let submitCrossType = null;
         let realTimeUpdate = null;
-        let retrieveInto = null;
+        let manipulateInto = null;
         let customEvents = [];
         let isPopup = (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Popup');
         
@@ -356,7 +356,8 @@ ${rootScript}`;
             	if (!!attribute.value) realTimeUpdate = attribute.value;
             	break;
             case 'internal-fsb-data-wizard-retrieve-into':
-            	if (!!attribute.value) retrieveInto = attribute.value;
+            case 'internal-fsb-data-wizard-manipulate-into':
+            	if (!!attribute.value) manipulateInto = attribute.value;
             	break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
@@ -413,7 +414,7 @@ ${rootScript}`;
         	let splited = submitControls && submitControls.split(' ') || [];
         	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
         	
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, retrieveInto: ${JSON.stringify(retrieveInto)}});`);
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${JSON.stringify(manipulateInto)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           if (!notation) {
