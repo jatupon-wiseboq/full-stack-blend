@@ -532,7 +532,7 @@ ${rootScript}`;
           }
           
           let _attributes = _props || [];
-          if (reactData) _attributes.push('key="item_" + ' + dotNotationChar);
+          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')');
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
           if (reactData) _attributes.push('row=' + _nodeData);
@@ -548,7 +548,7 @@ ${rootScript}`;
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
-          attributes.splice(0, 0, 'key="item_" + ' + dotNotationChar);
+          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')');
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {
