@@ -847,7 +847,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           }
         });
       }
-      process(0);
+      if (keys.length > 0) process(0);
+      else cb(nextViewDataSHADict);
     }
     createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
       let nextFrontEndComponentsDataSHADict = {};
@@ -889,7 +890,8 @@ ${tokens[1]}
           subprocess(1);
         }
       }
-      mainprocess(0);
+      if (Object.keys(nextFrontEndComponentsDataSHADict).length != 0) mainprocess(0);
+      else cb(nextFrontEndComponentsDataSHADict);
     }
     createBackEndControllerBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
       let nextBackEndControllersDataSHADict = {};
@@ -931,7 +933,8 @@ ${this.replaceShortcuts(tokens[1])}
           subprocess(1);
         }
       }
-      mainprocess(0);
+      if (Object.keys(nextBackEndControllersDataSHADict).length != 0) mainprocess(0);
+      else cb(nextBackEndControllersDataSHADict);
     }
     createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, previousSHA: string, cb: any) {
       repo.createBlob(`// Auto[Generating:V1]--->
