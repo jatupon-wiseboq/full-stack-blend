@@ -240,7 +240,8 @@ var ManipulationHelper = {
 	    let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
 	    
 	    for (let element of elements) {
-	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting') &&
+	    		(InternalProjectSettings.currentMode != 'popups' || !HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout'))) {
 	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
 	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
 	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');

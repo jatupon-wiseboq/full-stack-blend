@@ -127,6 +127,8 @@ var CapabilityHelper = {
               	let layoutPosition = HTMLHelper.getPosition(allowCursorElement);
                 let mousePosition = EventHelper.getMousePosition(event);
                 
+                mousePosition[0] += document.body.scrollLeft;
+                
                 ManipulationHelper.perform('move[cursor]', CursorHelper.createWalkPathForCursor(
                   '0',
                   0,
@@ -141,6 +143,8 @@ var CapabilityHelper = {
 	                if (referenceElement == EditorHelper.getSelectingElement()) {
 	                  let layoutPosition = HTMLHelper.getPosition(allowCursorElement);
 	                  let mousePosition = EventHelper.getMousePosition(event);
+	                  
+	                  mousePosition[0] += document.body.scrollLeft;
 	                  
 	                  ManipulationHelper.perform('move[cursor]', CursorHelper.createWalkPathForCursor(
 	                    HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),

@@ -327,13 +327,16 @@ class ProjectManager extends Base<Props, State> {
                 });
                 if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
                 if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
-                globalCombinedStylesheet = combinedStylesheet;
+                if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
                 
                 if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
                 else combinedInlineBodyStyle = '';
                 
-                let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
-                compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+                let compiledCombinedMinimalFeatureScripts = '';
+                if (combinedMinimalFeatureScripts) {
+	                compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
+	                compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+	              }
                 
                 let pages = this.state.extensionValues['pages'];
                 let editingPageID = key;
@@ -345,9 +348,10 @@ class ProjectManager extends Base<Props, State> {
                 let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
                 let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
                 
-                combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+                if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
                 
-                let combinedHTMLPage = `.
+                if (pages && pages[0]) {
+                	let combinedHTMLPage = `.
   <!DOCTYPE html>
 html
   head
@@ -377,10 +381,10 @@ html
       window.data = !{JSON.stringify(data)};
     include ${this.getRootDirectory(key)}_footer.pug
 `
-                if (pages && pages[0]) {
                   combinedHTMLPageDict[key] = combinedHTMLPage;
                 }
-                arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
+                
+                if (combinedExpandingFeatureScripts) arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
               }
             }
             
@@ -843,7 +847,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           }
         });
       }
-      process(0);
+      if (keys.length > 0) process(0);
+      else cb(nextViewDataSHADict);
     }
     createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
       let nextFrontEndComponentsDataSHADict = {};
@@ -885,7 +890,8 @@ ${tokens[1]}
           subprocess(1);
         }
       }
-      mainprocess(0);
+      if (Object.keys(nextFrontEndComponentsDataSHADict).length != 0) mainprocess(0);
+      else cb(nextFrontEndComponentsDataSHADict);
     }
     createBackEndControllerBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
       let nextBackEndControllersDataSHADict = {};
@@ -927,7 +933,8 @@ ${this.replaceShortcuts(tokens[1])}
           subprocess(1);
         }
       }
-      mainprocess(0);
+      if (Object.keys(nextBackEndControllersDataSHADict).length != 0) mainprocess(0);
+      else cb(nextBackEndControllersDataSHADict);
     }
     createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, previousSHA: string, cb: any) {
       repo.createBlob(`// Auto[Generating:V1]--->

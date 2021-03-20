@@ -118,7 +118,11 @@ var CodeHelper = {
   		return object;
   	} else if ((typeof object === 'object') && object != null) {
   		let keys = Object.keys(object);
-  		keys.sort();
+  		keys.sort((a, b) => {
+  			if (a.indexOf('__') == 0 && b.indexOf('__') != 0) return 1;
+  			else if (b.indexOf('__') == 0 && a.indexOf('__') != 0) return -1;
+  			else return (a < b) ? -1 : 1;
+  		});
   		
   		let result = {};
   		for (let key of keys) {
