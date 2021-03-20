@@ -890,7 +890,7 @@ ${tokens[1]}
           subprocess(1);
         }
       }
-      if (Object.keys(nextFrontEndComponentsDataSHADict).length != 0) mainprocess(0);
+      if (arrayOfContent.length != 0) mainprocess(0);
       else cb(nextFrontEndComponentsDataSHADict);
     }
     createBackEndControllerBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
@@ -933,7 +933,7 @@ ${this.replaceShortcuts(tokens[1])}
           subprocess(1);
         }
       }
-      if (Object.keys(nextBackEndControllersDataSHADict).length != 0) mainprocess(0);
+      if (arrayOfContent.length != 0) mainprocess(0);
       else cb(nextBackEndControllersDataSHADict);
     }
     createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, previousSHA: string, cb: any) {

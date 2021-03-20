@@ -329,7 +329,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           }
         });
       }).bind(this);
-      process(0);
+      if (keys.length > 0) process(0);
+      else cb(nextViewDataSHADict);
     }
     createFrontEndComponents(arrayOfContent: string[], cb: any) {
       let nextFrontEndComponentsDataSHADict = {};
@@ -366,7 +367,8 @@ ${tokens[1]}
           subprocess(1);
         }
       }).bind(this);
-      mainprocess(0);
+      if (arrayOfContent.length != 0) mainprocess(0);
+      else cb(nextFrontEndComponentsDataSHADict);
     }
     createBackEndController(arrayOfContent: string[], cb: any) {
       let nextBackEndControllersDataSHAInfos = [];
@@ -401,7 +403,8 @@ ${this.replaceShortcuts(tokens[1])}
           subprocess(1);
         }
       }).bind(this);
-      mainprocess(0);
+      if (arrayOfContent.length != 0) mainprocess(0);
+      else cb();
     }
     createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
       this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
