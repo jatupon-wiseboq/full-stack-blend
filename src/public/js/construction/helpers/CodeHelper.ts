@@ -185,7 +185,26 @@ var CodeHelper = {
   	return contentHolder.innerHTML;
   },
   recursiveReplaceAllGUID: (current: any, isContainingInComponent: boolean=false) => {
-  	if (!isContainingInComponent && HTMLHelper.getAttribute(current, 'internal-fsb-guid')) {
+  	if (HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
+  		const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
+  		
+  		const classes = (element.className || '').split(' ');
+  		for (let classname of classes) {
+  			if (classname.indexOf('-fsb-preset-') == 0) {
+  				HTMLHelper.removeClass(current, '-fsb-preset-' + guid);
+  			}
+  		}
+  		
+  		HTMLHelper.addClass(current, '-fsb-preset-' + guid);
+  		
+  		let _inlineStyle = HTMLHelper.getAttribute(current, 'style') || '';
+  		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, '-fsb-inherited-presets', '');
+      HTMLHelper.setAttribute(current, 'style', _inlineStyle);
+      
+  		HTMLHelper.removeAttribute(current, 'internal-fsb-reusable-preset-name');
+  	}
+  	
+  	if (!isContainingInComponent && HTMLHelper.hasAttribute(current, 'internal-fsb-guid')) {
   		HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
   	}
   	
