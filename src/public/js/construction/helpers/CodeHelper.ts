@@ -1,4 +1,6 @@
 import {TextHelper} from './TextHelper';
+import {RandomHelper} from './RandomHelper';
+import {HTMLHelper} from './HTMLHelper';
 import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../Constants';
 
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
@@ -173,6 +175,28 @@ var CodeHelper = {
   	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(dashCase.toLowerCase()) != -1) return dashCase;
   	
   	return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
+  },
+  replaceAllGUID: (html: string): string => {
+  	let contentHolder = document.createElement('div');
+  	contentHolder.innerHTML = html;
+  	
+  	CodeHelper.recursiveReplaceAllGUID(contentHolder);
+  	
+  	return contentHolder.innerHTML;
+  },
+  recursiveReplaceAllGUID: (current: any, isContainingInComponent: boolean=false) => {
+  	if (!isContainingInComponent && HTMLHelper.getAttribute(current, 'internal-fsb-guid')) {
+  		HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
+  	}
+  	
+  	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
+  		current.remove();
+  		return;
+  	}
+  	
+  	for (let element of current.children) {
+  		CodeHelper.recursiveReplaceAllGUID(element, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
+  	}
   }
 };
 

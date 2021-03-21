@@ -212,6 +212,18 @@ var FrontEndManipulationHelper = {
         
         isComponentInsertion = true;
         break;
+      case 'Pasteboard':
+      	element = document.createElement('div');
+        element.innerHTML = content.html;
+        element = element.firstElementChild;
+      	
+      	content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+        content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
+        
+        WorkspaceHelper.updateInheritingComponents(element);
+        
+        isComponentInsertion = true;
+      	break;
     }
     
     if (element !== null) {

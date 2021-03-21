@@ -26,6 +26,7 @@ let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
+let pasteboard: string = null;
 
 function removeAllPresetReferences(presetId: string, link: string) {
 	// TODO: should iterate in all documents.
@@ -886,6 +887,22 @@ var ManipulationHelper = {
         break;
       case 91:
         isCommandKeyActive = true;
+        remember = false;
+        break;
+      case 67:
+        if (isCtrlKeyActive || isCommandKeyActive) {
+        	let selectingElement = EditorHelper.getSelectingElement();
+        	pasteboard = selectingElement.outerHTML;
+        }
+        remember = false;
+        break;
+      case 86:
+        if ((isCtrlKeyActive || isCommandKeyActive) && pasteboard) {
+        	ManipulationHelper.perform('insert', {
+        		klass: 'Pasteboard',
+		        html: CodeHelper.replaceAllGUID(pasteboard)
+        	});
+        }
         remember = false;
         break;
       case 90:
