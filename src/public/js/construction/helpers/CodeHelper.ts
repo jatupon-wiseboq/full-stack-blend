@@ -188,7 +188,7 @@ var CodeHelper = {
   	if (HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
   		const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
   		
-  		const classes = (element.className || '').split(' ');
+  		const classes = (current.className || '').split(' ');
   		for (let classname of classes) {
   			if (classname.indexOf('-fsb-preset-') == 0) {
   				HTMLHelper.removeClass(current, '-fsb-preset-' + guid);
