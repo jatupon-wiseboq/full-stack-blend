@@ -277,6 +277,7 @@ class HTMLManager extends Base<Props, State> {
     }
     
     render() {
+    		const currentMode = this.state && this.state.watchingExtensionNames && this.state.watchingExtensionNames[0];
         return (
             <FullStackBlend.Components.ListManager ref="listManager" customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
@@ -293,14 +294,18 @@ class HTMLManager extends Base<Props, State> {
                     <div className="section-body">
                         <FullStackBlend.Controls.Textbox ref="description" value={this.state.description} preRegExp='.*' postRegExp='.*' onUpdate={this.descriptionOnUpdate.bind(this)} maxLength={165} multiline={true}></FullStackBlend.Controls.Textbox>
                     </div>
-                    <div className="section-subtitle">Keywords</div>
-                    <div className="section-body">
-                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} multiline={true}></FullStackBlend.Controls.Textbox>
-                    </div>
-                    <div className="section-subtitle">Image</div>
-                    <div className="section-body">
-                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                    </div>
+                    {['components', 'popups'].indexOf(currentMode) == -1 && (
+                    	<div>
+		                    <div className="section-subtitle">Keywords</div>
+		                    <div className="section-body">
+		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} multiline={true}></FullStackBlend.Controls.Textbox>
+		                    </div>
+		                    <div className="section-subtitle">Image</div>
+		                    <div className="section-body">
+		                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+		                    </div>
+		                  </div>
+                    )}
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
                     </div>
