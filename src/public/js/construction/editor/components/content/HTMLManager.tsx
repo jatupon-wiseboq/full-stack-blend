@@ -277,7 +277,7 @@ class HTMLManager extends Base<Props, State> {
     }
     
     render() {
-    		const currentMode = this.state && this.state.watchingExtensionNames && this.state.watchingExtensionNames[0];
+    		const currentMode = this.props && this.props.watchingExtensionNames && this.props.watchingExtensionNames[0];
         return (
             <FullStackBlend.Components.ListManager ref="listManager" customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
