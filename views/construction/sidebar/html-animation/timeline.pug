@@ -168,7 +168,7 @@ div(internal-fsb-for="editingAnimationID")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting'], mode: 'animation'}")
     .section-note
-      | These will generating event boilerplates in the current folding react component.
+      | These will generating event boilerplates in the current folding react component binding to the selecting element, except events in the document group will bind directly to the document element.
   .internal-fsb-selecting-off
     include ../../common/empty
 div(internal-fsb-not-for="editingAnimationID")
