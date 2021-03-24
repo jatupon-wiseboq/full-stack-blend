@@ -684,15 +684,15 @@ var WorkspaceHelper = {
     
   	if (InternalProjectSettings.currentMode == 'site') {
   		results = FrontEndDOMHelper.generateFrontEndCode();
+  		results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	} else if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
   		results = FrontEndDOMHelper.generateFrontEndCode();
   		results[0] = false;
   		results[1] = false;
   		results[3] = false;
   		results[4] = false;
+  		results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	}
-  	
-  	results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	
   	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
   	

@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {WorkspaceHelper} from './WorkspaceHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -148,7 +148,8 @@ ${rootScript}`;
         
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let _props = [];
-        let _events = [];
+        let _globalEvents = [];
+        let _localEvents = [];
         let classes = '';
         let styles = null;
         let bindingStyles = {};
@@ -383,10 +384,10 @@ ${rootScript}`;
                 if (value.event) {
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
-                  if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
-                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                  if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
+                    _globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
                   } else {
-                    _events.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _localEvents.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   }
                 }
               } else {
@@ -454,11 +455,13 @@ ${rootScript}`;
         }
         
         if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
-        	_forwardAttributes = [..._props, ..._events];
+        	_forwardAttributes = [..._props, ..._localEvents];
         } else {
-        	attributes = [...attributes, ..._props, ..._events];
+        	attributes = [...attributes, ..._props, ..._localEvents];
         	_forwardAttributes = [];
         }
+        
+        if (_globalEvents.length != 0) executions.push(`    ${_globalEvents.join('\n    ')}`);
         
         if (!reactNamespace) {
           reactNamespace = 'Project.Controls';
@@ -628,7 +631,8 @@ ${rootScript}`;
         let classes = '';
         let styles = null;
         let bindingStyles = {};
-        let events = [];
+        let _globalEvents = [];
+        let _localEvents = [];
         let attributes = [];
         let isForChildren = false;
         let isReactElement = false;
@@ -761,8 +765,10 @@ ${rootScript}`;
                 if (value.event) {
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
-                  if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) == -1) {
-                    events.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
+                  if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
+                  	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                  } else {
+                    _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
                   }
                 }
               } else {
@@ -802,6 +808,8 @@ ${rootScript}`;
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
         }
+        
+        if (_globalEvents.length != 0) executions.push(_globalEvents.join('\n'));
         
         if (!reactNamespace) {
           reactNamespace = 'Project.Controls';
@@ -868,7 +876,7 @@ ${rootScript}`;
           
           lines.push(composed);
           
-          for (let eventInfo of events) {
+          if (_localEvents.length != 0) {
             executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
           }
           
