@@ -176,16 +176,16 @@ var CodeHelper = {
   	
   	return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
   },
-  replaceAllGUID: (html: string): string => {
+  preparePastingContent: (html: string, cut: boolean=false): string => {
   	let contentHolder = document.createElement('div');
   	contentHolder.innerHTML = html;
   	
-  	CodeHelper.recursiveReplaceAllGUID(contentHolder);
+  	CodeHelper.recursivePreparePastingContent(contentHolder, cut);
   	
   	return contentHolder.innerHTML;
   },
-  recursiveReplaceAllGUID: (current: any, isContainingInComponent: boolean=false) => {
-  	if (HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
+  recursivePreparePastingContent: (current: any, cut: boolean=false, isContainingInComponent: boolean=false) => {
+  	if (!cut && HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
   		const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
   		
   		const classes = (current.className || '').split(' ');
@@ -204,17 +204,17 @@ var CodeHelper = {
   		HTMLHelper.removeAttribute(current, 'internal-fsb-reusable-preset-name');
   	}
   	
-  	if (!isContainingInComponent && HTMLHelper.hasAttribute(current, 'internal-fsb-guid')) {
+  	if (!cut && !isContainingInComponent && HTMLHelper.hasAttribute(current, 'internal-fsb-guid')) {
   		HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
   	}
   	
   	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
   		current.remove();
-  		return;
+  		return; 
   	}
   	
   	for (let element of current.children) {
-  		CodeHelper.recursiveReplaceAllGUID(element, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
+  		CodeHelper.recursivePreparePastingContent(element, cut, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
   	}
   }
 };
