@@ -114,8 +114,12 @@ ${rootScript}`;
     let lines: string[] = [];
     
     if (EditorHelper.hasParentReactComponent(element)) {
+      executions.push(`    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):document.attachEvent("onreadystatechange",function(e){"complete"==document.readyState&&a(e)})};
+        `);
       FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', executions, lines);
     } else {
+      executions.push(`function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):document.attachEvent("onreadystatechange",function(e){"complete"==document.readyState&&a(e)})};
+        `);
       FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(element, '    ', executions, lines);
     }
     
@@ -385,7 +389,11 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
-                    _globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                  	if (attribute.name == 'onfsbready') {
+                    	_globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
+                    } else {
+                    	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                    }
                   } else {
                     _localEvents.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
                   }
@@ -766,7 +774,11 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
-                  	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                  	if (attribute.name == 'onfsbready') {
+                  		_globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
+                  	} else {
+                  		_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                  	}
                   } else {
                     _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
                   }
