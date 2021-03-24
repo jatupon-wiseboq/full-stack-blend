@@ -205,9 +205,10 @@ html.internal-fsb-guide-on {
     position: absolute;
     left: 0px;
     bottom: 0px;
+    top: 0px;
     z-index: $maximum-z-index;
     width: 2px;
-    height: 20px;
+    min-height: 20px;
     
     // The blinking of the inline cursor
     @include animation(0, 1s, animation-blink);
@@ -238,10 +239,10 @@ body.internal-fsb-mode-coding {
     background-color: white;
   }
   55% {
-    background-color: black;
+    background-color: #444444;
   }
   100% {
-    background-color: black;
+    background-color: #444444;
   }
 }
 

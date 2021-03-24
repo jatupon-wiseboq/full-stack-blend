@@ -221,7 +221,7 @@ var CursorHelper = {
           let isTheAllowCursorElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(theAllowCursorElement, 'internal-fsb-class')) != -1);
           
           Accessories.cursor.getDOMNode().style.left = '-1.0px';
-          Accessories.cursor.getDOMNode().style.top = isTheAllowCursorElementASingleDomElement ? '20px' : '0px';
+          Accessories.cursor.getDOMNode().style.top = isTheAllowCursorElementASingleDomElement ? '0px' : '0px';
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'relative');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.children[walkPath[2]] || null);
         } else {
