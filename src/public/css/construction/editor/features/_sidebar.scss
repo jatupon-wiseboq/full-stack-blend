@@ -65,4 +65,39 @@
     height: 1px;
     background-color: #ddd;
   }
+  
+  &.help {
+  	.section-subtitle {
+  		color: #007bff;
+  	}
+  	
+  	.section-body {
+  		color: #999;
+  		font-size: 11px;
+  		text-indent: 14px;
+    	margin-bottom: 8px;
+  		line-height: 1.3em;
+  	}
+  	
+  	img {
+  		max-width: 100%;
+    	margin: 10px 0 5px;
+  	}
+  	
+  	.section-note {
+    	font-size: 11px;
+    	margin: 0;
+  	}
+  	
+  	ol, ul, dl {
+  		margin-top: 5px;
+  		margin-bottom: 10px;
+  		padding-left: 15px;
+  		text-indent: 0;
+  		
+  		li {
+  			text-indent: 0;
+  		}
+  	}
+  }
 }
