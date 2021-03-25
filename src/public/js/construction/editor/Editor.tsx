@@ -301,7 +301,8 @@ let cachedUpdateEditorProperties = {};
   });
   
   window.addEventListener("beforeunload", (event: any) => {
-  	return 'Are you sure you want to exit the editor?';
+  	event.preventDefault();
+  	return 'Your changes may be lost. Are you sure you want to exit the editor?';
   });
   
   window.setup = (() => {
