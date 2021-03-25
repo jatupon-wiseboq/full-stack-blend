@@ -302,6 +302,8 @@ let cachedUpdateEditorProperties = {};
   
   window.addEventListener("beforeunload", (event: any) => {
   	event.preventDefault();
+  	event.returnValue = 'Your changes may be lost. Are you sure you want to exit the editor?';
+  	
   	return 'Your changes may be lost. Are you sure you want to exit the editor?';
   });
   
