@@ -35,7 +35,7 @@ let Accessories = {
   overlay: null
 };
 
-let editorCurrentMode: string = null;
+let editorCurrentMode: string = 'design';
 let cachedUpdateEditorProperties = {};
 let updateEditorPropertiesTimer = null;
 
