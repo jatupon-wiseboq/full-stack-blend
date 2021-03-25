@@ -300,6 +300,10 @@ let cachedUpdateEditorProperties = {};
     }
   });
   
+  window.addEventListener("beforeunload", (event: any) => {
+  	return 'Are you sure you want to exit the editor?';
+  });
+  
   window.setup = (() => {
     $('.workspace-panel-container.scrollable').on('scroll', (event) => {
       document.body.click();
