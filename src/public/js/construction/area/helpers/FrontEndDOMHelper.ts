@@ -114,11 +114,11 @@ ${rootScript}`;
     let lines: string[] = [];
     
     if (EditorHelper.hasParentReactComponent(element)) {
-      executions.push(`    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):document.attachEvent("onreadystatechange",function(e){"complete"==document.readyState&&a(e)})};
+      executions.push(`    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         `);
       FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(element, '      ', executions, lines);
     } else {
-      executions.push(`function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):document.attachEvent("onreadystatechange",function(e){"complete"==document.readyState&&a(e)})};
+      executions.push(`function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         `);
       FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(element, '    ', executions, lines);
     }
