@@ -290,12 +290,23 @@ body.internal-fsb-mode-coding {
   }
 }
 
+.internal-fsb-inheriting-element,
+.internal-fsb-element {
+	&.internal-fsb-selecting {
+		outline: dashed 2px rgba(0, 0, 255, 0.5);
+	}
+}
+
 .internal-fsb-strict-layout {
 	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     > .internal-fsb-resizer {
       display: block;
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 
@@ -311,6 +322,10 @@ body.internal-fsb-mode-coding {
         }
       }
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 

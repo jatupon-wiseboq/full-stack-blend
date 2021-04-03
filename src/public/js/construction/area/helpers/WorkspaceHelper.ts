@@ -499,6 +499,9 @@ var WorkspaceHelper = {
     	component.innerHTML = '';
     }
     
+    const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting', holder);
+    if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+    
     return holder.innerHTML;
   },
   cleanupPageHTMLData: (html: string, preview: boolean=false) => {
@@ -530,6 +533,9 @@ var WorkspaceHelper = {
     		}
     	}
     }
+    
+    const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting', holder);
+    if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     
     document.body.removeChild(holder);
     
