@@ -24,7 +24,7 @@ html.internal-fsb-guide-on {
         height: 20px;
         
         > td {
-          border: dashed 1px rgba(0, 0, 255, 127);
+          outline: dashed 1px rgba(0, 0, 255, 127);
           
           // The style of selecting cell
           &.internal-fsb-selected {
@@ -54,12 +54,12 @@ html.internal-fsb-guide-on {
     	// The minimum height while the toggle is on which may be sized equaling
     	// to the height of cell which is containing the element
     	min-height: 20px;
-      border: solid 1px rgba(0, 0, 255, 127);
+      outline: solid 1px rgba(0, 0, 255, 127);
       
       // Distinguish React element from the others to prevent user from loosing
       // the React code attributed right in this element.
       &[internal-fsb-react-mode] {
-      	border-color: #7f20ff;
+      	outline-color: #7f20ff;
       }
     }
   }
@@ -72,12 +72,12 @@ html.internal-fsb-guide-on {
     > .internal-fsb-element {
     	// The height while the toggle is on
     	min-height: 20px;
-      border: solid 1px rgba(0, 255, 0, 127);
+      outline: solid 1px rgba(0, 255, 0, 127);
       
       // Distinguish React element from the others to prevent user from loosing
       // the React code attributed right in this element.
       &[internal-fsb-react-mode] {
-      	border-color: #7f20ff;
+      	outline-color: #7f20ff;
       }
     }
   }
@@ -275,7 +275,7 @@ body.internal-fsb-mode-coding {
         background-color: white;
         width: #{$selected-element-resizer-size}px;
         height: #{$selected-element-resizer-size}px;
-        border: solid 1px rgb(0, 0, 255);
+        outline: solid 1px rgb(0, 0, 255);
       }
       
       &.t { top: 0 !important; left: 50%; cursor: n-resize; }
@@ -290,12 +290,23 @@ body.internal-fsb-mode-coding {
   }
 }
 
+.internal-fsb-inheriting-element,
+.internal-fsb-element {
+	&.internal-fsb-selecting {
+		outline: dashed 2px rgba(0, 0, 255, 0.5);
+	}
+}
+
 .internal-fsb-strict-layout {
 	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     > .internal-fsb-resizer {
       display: block;
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 
@@ -307,10 +318,14 @@ body.internal-fsb-mode-coding {
       
       span {
         &::before {
-          border: solid 1px rgb(0, 255, 0);
+          outline: solid 1px rgb(0, 255, 0);
         }
       }
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 
@@ -357,11 +372,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -378,11 +393,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -399,11 +414,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -420,11 +435,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -441,11 +456,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-xl-none {
-        border: solid 1px red;
+        outline: solid 1px red;
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }

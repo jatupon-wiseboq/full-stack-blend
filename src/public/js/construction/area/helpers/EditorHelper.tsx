@@ -345,6 +345,12 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
+    	if (Accessories.resizer.getDOMNode().parentNode != null) {
+    		HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
+    	}
+    	
+    	HTMLHelper.addClass(element, 'internal-fsb-selecting');
+    	
       element.appendChild(Accessories.resizer.getDOMNode());
       
       let current = element;
@@ -359,6 +365,8 @@ var EditorHelper = {
         current = current.parentNode;
       }
       
+      element.parentNode.insertBefore(Accessories.cursor.getDOMNode(), element.nextSibling);
+      
       EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
     }
@@ -370,6 +378,8 @@ var EditorHelper = {
   },
   deselect: () => {
     if (Accessories.resizer.getDOMNode().parentNode != null) {
+    	HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
+    	
       Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     }
     EditorHelper.synchronize("click", null);
