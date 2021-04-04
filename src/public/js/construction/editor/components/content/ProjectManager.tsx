@@ -1,6 +1,7 @@
 import {CodeHelper} from '../../../helpers/CodeHelper';
 import {HTMLHelper} from '../../../helpers/HTMLHelper';
 import {TextHelper} from '../../../helpers/TextHelper';
+import {StorageHelper} from '../../../helpers/StorageHelper';
 import {RequestHelper} from '../../../helpers/RequestHelper';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
@@ -10,7 +11,7 @@ declare let React: any;
 declare let ReactDOM: any;
 declare let ts: any;
 
-let recentCommitMessage = null;
+let recentCommitMessage = StorageHelper.getCookie('recentCommitMessage');
 
 interface Props extends IProps {
 }
@@ -640,7 +641,11 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                                       
                                       if (message.indexOf('[continue]') != 0) {
                                         recentCommitMessage = '[continue] ' + message;
+                                      } else {
+                                        recentCommitMessage = message;
                                       }
+                                      
+                                      StorageHelper.setCookie('recentCommitMessage', recentCommitMessage);
                                       
                                       this.deleteFiles(repo, deletingPersistingFiles, () => {
                                         RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
