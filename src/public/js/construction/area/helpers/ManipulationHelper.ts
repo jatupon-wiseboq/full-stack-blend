@@ -181,6 +181,9 @@ var ManipulationHelper = {
       case 'delete':
       	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
         break;
+      case 'delete[silence]':
+      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, false, true);
+        break;
       case 'delete[cut]':
       	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, true);
         break;
@@ -1000,7 +1003,7 @@ var ManipulationHelper = {
   	
   	return [accessory, remember, link];
   },
-  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any, cut: boolean=false) => {
+  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any, cut: boolean=false, silence: boolean=false) => {
   	let accessory = null;
   	let shouldContinue = true;
   	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
@@ -1010,19 +1013,19 @@ var ManipulationHelper = {
   	if (!deletingKeyframe) {
   		if (!cut) {
 		  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
-		  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
+		  		if (!silence && !confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
 		  			shouldContinue = false;
 		  		}
 		  	}
 		  	if (element) {
-		  		if (!confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+		  		if (!silence && !confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
 		  			shouldContinue = false;
 		  		}
 		  	}
 	  	}
 	  } else {
 	  	if (element) {
-	  		if (!confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  		if (!silence && !confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
 	  			shouldContinue = false;
 	  		}
 	  	}
@@ -1533,10 +1536,11 @@ var ManipulationHelper = {
       
       switch (name) {
         case 'insert':
-          name = 'delete';
+          name = 'delete[silence]';
           content = accessory.guid;
           break;
         case 'delete':
+        case 'delete[silence]':
         case 'delete[cut]':
           if (HTMLHelper.hasClass(accessory.container, 'internal-fsb-absolute-layout')) {
             accessory.container.appendChild(accessory.element);
