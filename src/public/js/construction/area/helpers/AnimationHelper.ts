@@ -419,7 +419,11 @@ var AnimationHelper = {
 			  			}
 			  			
 			  			if (animationId != 'selector') {
-			  				animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+			  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
+			  				} else {
+			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+			  				}
 			  			} else {
 			  				const splited = presetId.split(':');
 			  				
