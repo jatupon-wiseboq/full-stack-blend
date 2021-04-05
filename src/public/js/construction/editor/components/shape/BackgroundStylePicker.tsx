@@ -95,7 +95,7 @@ class BackgroundStylePicker extends Base<Props, State> {
         perform('update', {
             styles: [{
                 name: this.props.watchingStyleNames[0],
-                value: this.state.color
+                value: null
             }],
             replace: this.props.watchingStyleNames[0] + ':' + this.props.watchingStyleNames[1]
         });
