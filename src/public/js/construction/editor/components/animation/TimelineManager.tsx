@@ -94,10 +94,23 @@ class TimelineManager extends Base<Props, State> {
 	    		}],
 	  			link: link
 	    	});
-	    	perform('select[cursor]', {
-			  	content: node.id,
-			  	link: link
-			  });
+	    	
+	    	if (node.id != 'selector') {
+	    		if (node.id.indexOf(':') == -1) {
+			    	perform('select[cursor]', {
+					  	content: node.id,
+					  	link: link
+					  });
+					} else {
+						perform('update', {
+					  	extensions: [{
+			    			name: 'editingAnimationSelector',
+			    			value: node.id
+			    		}],
+					  	link: link
+					  });
+					}
+				}
   		}
     }
     

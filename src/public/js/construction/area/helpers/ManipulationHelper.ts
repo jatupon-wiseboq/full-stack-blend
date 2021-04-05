@@ -363,6 +363,8 @@ var ManipulationHelper = {
                 }
               }
               
+              if (found) AnimationHelper.renderStylesheetElement();
+              
               if (nextReusablePresetName) {
                 HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);
               } else {
@@ -555,7 +557,7 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID'].indexOf(extension.name) != -1) {
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID', 'editingAnimationSelector'].indexOf(extension.name) != -1) {
               switch (extension.name) {
               	case 'animationGroupName':
 		          		accessory = {
@@ -626,6 +628,16 @@ var ManipulationHelper = {
 	                };
 	                if (AnimationHelper.getAnimationGroup() != (extension.value || null)) found = true;
 	              	AnimationHelper.setAnimationGroup(extension.value);
+		            	break;
+		            case 'editingAnimationSelector':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getAnimationSelector()
+	                  }]
+	                };
+	                if (AnimationHelper.getAnimationSelector() != (extension.value || null)) found = true;
+	              	AnimationHelper.setAnimationSelector(extension.value);
 		            	break;
 		            case 'editingKeyframeID':
 			            accessory = {

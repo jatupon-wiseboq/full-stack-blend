@@ -38,6 +38,7 @@ const DefaultProjectSettings: {[Identifier: string]: any} = {
   editingPopupID: null,
   editingAnimationID: null,
   editingKeyframeID: null,
+  editingSelector: null,
   pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
   popups: []
@@ -78,6 +79,9 @@ var WorkspaceHelper = {
     clonedInternalProjectSettings.editingPageID = 'index';
     clonedInternalProjectSettings.editingComponentID = null;
     clonedInternalProjectSettings.editingPopupID = null;
+	  clonedInternalProjectSettings.editingAnimationID = null;
+	  clonedInternalProjectSettings.editingKeyframeID = null;
+	  clonedInternalProjectSettings.editingSelector = null;
     
     let clonedInternalSites = CodeHelper.clone(InternalSites);
     for (let key in clonedInternalSites) {

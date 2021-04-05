@@ -23,14 +23,14 @@ var TimelineHelper = {
   	for (let info of infos) {
 			nodes.push({
 				id: info.id,
-				customClassName: '',
+				customClassName: (info.id == 'selector') ? 'selector' : '',
 				name: info.name || 'Untitled',
 				deselectable: false,
 				selectable: true,
 				dropable: false,
-				disabled: false,
+				disabled: Accessories.resizer.getDOMNode().parentNode == null,
 				selected: false,
-				nodes: TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, info.id),
+				nodes: (info.id == 'selector') ? TimelineHelper.getSelectorTreeNodes() : TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, info.id),
 				tag: {
 					key: info.id,
 					root: true,
@@ -83,6 +83,28 @@ var TimelineHelper = {
   		}
   	}
   	return nodes;
+  },
+  getSelectorTreeNodes: function() {
+  	if (Accessories.resizer.getDOMNode().parentNode == null || InternalProjectSettings.editingAnimationID != 'selector') return [];
+  	else return ['Active', 'Focus', 'Hover', 'Visited'].map((selector) => {
+  		const selectorId = `:${selector.toLowerCase()}`;
+  		return {
+				id: selectorId,
+				customClassName: '',
+				name: selector,
+				deselectable: false,
+				selectable: true,
+				dropable: false,
+				disabled: false,
+				selected: (selectorId == AnimationHelper.getAnimationSelector()),
+				nodes: [],
+				tag: {
+					key: 'selector',
+					root: false,
+					keyframes: AnimationHelper.getKeyframes(selectorId)
+				}
+			}
+  	});
   }
 };
 
