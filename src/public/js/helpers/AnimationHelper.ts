@@ -8,6 +8,8 @@ const AnimationHelper = {
 	// 
   add: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
+    	if (container.tagName != 'DIV') container = container.parentNode;
+    	
     	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
     	for (let animation of animations) {
@@ -22,6 +24,8 @@ const AnimationHelper = {
   },
   remove: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
+    	if (container.tagName != 'DIV') container = container.parentNode;
+    	
     	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
     	for (let animation of animations) {
