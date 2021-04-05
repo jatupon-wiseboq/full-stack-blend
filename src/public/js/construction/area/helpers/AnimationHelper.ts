@@ -301,8 +301,6 @@ var AnimationHelper = {
   getKeyframes: function(presetId: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	
-  	console.log('getKeyframes', stylesheetDefinitions);
-  	
 		if (!InternalProjectSettings.editingAnimationID) return [];
 		
 		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
@@ -320,11 +318,11 @@ var AnimationHelper = {
   extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
   	if (Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;
   	
-  	if ([':active', ':focus', ':hover', ':visited'].indexOf(presetIdOrSelector) != -1) {
+  	if (presetIdOrSelector && [':active', ':focus', ':hover', ':visited'].indexOf(presetIdOrSelector) != -1) {
   		const guid = HTMLHelper.getAttribute(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-guid');
   		return guid + presetIdOrSelector;
   	}
-  	else if (presetIdOrSelector.indexOf(':') == -1 && AnimationHelper.getAnimationGroup() == 'selector') {
+  	else if (presetIdOrSelector && presetIdOrSelector.indexOf(':') == -1 && AnimationHelper.getAnimationGroup() == 'selector') {
   		return presetIdOrSelector + AnimationHelper.getAnimationSelector();
   	}
   	else return presetIdOrSelector;
