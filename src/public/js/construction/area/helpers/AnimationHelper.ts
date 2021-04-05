@@ -368,70 +368,89 @@ var AnimationHelper = {
 		  			});
 		  			
 		  			if (keyframes.length == 0) continue;
-		  			
-		  			keyframes = keyframes.sort((a, b) => {
-		  				const timeA = parseFloat(a.hashMap['-fsb-animation-keyframe-time']);
-		  				const timeB = parseFloat(b.hashMap['-fsb-animation-keyframe-time']);
+		  			if (keyframes.length == 1) {
+		  				const content = `${keyframes[0].raw}${keyframes[0].raw && ';' || ''}`;
 		  				
-		  				return (timeA > timeB) ? 1 : -1;
-		  			});
-		  			
-		  			let delay = parseFloat(keyframes[0].hashMap['-fsb-animation-keyframe-time']);
-		  			let total = parseFloat(keyframes[keyframes.length - 1].hashMap['-fsb-animation-keyframe-time']) - delay;
-		  			
-		  			for (let i=0; i<keyframes.length; i++) {
-		  				let currentKeyframe = keyframes[i];
-		  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
-		  				
-		  				let current = (total == 0) ? 0 : (parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']) - delay) / total;
-		  				let timing = [];
-		  				
-		  				if (nextKeyframe != null) {
-			  				let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
-			  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
-			  				let easing2 = 0;
-			  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
-			  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
-			  				let easing4 = 0;
-		  				
-			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
-				  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
-				  			}
-			  			}
-		  				
-		  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-		  			}
-		  			
-		  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
-		  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
-		  			}
-		  			
-		  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
-		  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
-		  			
-		  			if (repeatMode != 'disabled') {
-		  				let animations = [];
-		  				
-		  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
-			  				animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
-			  			}
-			  			
-			  			if (animationId != 'selector') {
+		  				if (animationId != 'selector') {
 			  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
-			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
+			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
 			  				} else {
-			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
 			  				}
 			  			} else {
 			  				const splited = presetId.split(':');
 			  				
 			  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
-			  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
+			  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
 			  				} else {
-			  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);
+			  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
 			  				}
 			  			}
-			  		}
+		  			} else {
+			  			keyframes = keyframes.sort((a, b) => {
+			  				const timeA = parseFloat(a.hashMap['-fsb-animation-keyframe-time']);
+			  				const timeB = parseFloat(b.hashMap['-fsb-animation-keyframe-time']);
+			  				
+			  				return (timeA > timeB) ? 1 : -1;
+			  			});
+			  			
+			  			let delay = parseFloat(keyframes[0].hashMap['-fsb-animation-keyframe-time']);
+			  			let total = parseFloat(keyframes[keyframes.length - 1].hashMap['-fsb-animation-keyframe-time']) - delay;
+			  			
+			  			for (let i=0; i<keyframes.length; i++) {
+			  				let currentKeyframe = keyframes[i];
+			  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
+			  				
+			  				let current = (total == 0) ? 0 : (parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']) - delay) / total;
+			  				let timing = [];
+			  				
+			  				if (nextKeyframe != null) {
+				  				let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+				  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+				  				let easing2 = 0;
+				  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+				  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+				  				let easing4 = 0;
+			  				
+				  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
+					  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
+					  			}
+				  			}
+			  				
+			  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+			  			}
+			  			
+			  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
+			  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
+			  			}
+			  			
+			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
+			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
+			  			
+			  			if (repeatMode != 'disabled') {
+			  				let animations = [];
+			  				
+			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
+				  				animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
+				  			}
+				  			
+				  			if (animationId != 'selector') {
+				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
+				  				} else {
+				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+				  				}
+				  			} else {
+				  				const splited = presetId.split(':');
+				  				
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
+				  				} else {
+				  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);
+				  				}
+				  			}
+				  		}
+				  	}
 		  		}
 		  	}
 		  	
