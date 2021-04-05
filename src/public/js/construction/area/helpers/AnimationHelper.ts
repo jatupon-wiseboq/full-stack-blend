@@ -301,8 +301,6 @@ var AnimationHelper = {
   getKeyframes: function(presetId: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	
-  	console.log('getKeyframes', stylesheetDefinitions);
-  	
 		if (!InternalProjectSettings.editingAnimationID) return [];
 		
 		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
