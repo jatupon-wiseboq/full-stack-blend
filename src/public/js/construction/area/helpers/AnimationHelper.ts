@@ -98,6 +98,23 @@ var AnimationHelper = {
   setAnimationGroup: function(editingAnimationID: string) {
   	InternalProjectSettings.editingAnimationID = editingAnimationID;
     
+  	for (let animationId of Object.keys(stylesheetDefinitions).reverse()) {
+  		if (InternalProjectSettings.editingAnimationID == animationId) continue;
+  		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
+    		let found = false;
+  			for (let presetId in stylesheetDefinitions[animationId]) {
+  				if (['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) != -1) continue;
+  				if (stylesheetDefinitions[animationId].hasOwnProperty(presetId)) {
+  					if (Object.keys(stylesheetDefinitions[animationId][presetId]).length != 0) {
+  						found = true;
+  						break;
+  					}
+  				}
+  			}
+  			if (!found && Object.keys(stylesheetDefinitions).length > 1) delete stylesheetDefinitions[animationId];
+  		}
+  	}
+  	
   	if (InternalProjectSettings.editingAnimationID) {
     	stylesheetDefinitionRevision++;
     
