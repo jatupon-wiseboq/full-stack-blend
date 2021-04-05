@@ -58,6 +58,8 @@ html
           return Controller;
       }());
       var controller = new Controller();
+      function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
+      ;
       
     script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
