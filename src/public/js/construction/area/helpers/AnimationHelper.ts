@@ -371,21 +371,28 @@ var AnimationHelper = {
 		  			if (keyframes.length == 1) {
 		  				const content = `${keyframes[0].raw}${keyframes[0].raw && ';' || ''}`;
 		  				
-		  				if (animationId != 'selector') {
-			  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
-			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
-			  				} else {
-			  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
-			  				}
-			  			} else {
-			  				const splited = presetId.split(':');
-			  				
-			  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
-			  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
-			  				} else {
-			  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
-			  				}
-			  			}
+		  				let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
+    	'.internal-fsb-absolute-layout > .internal-fsb-element',
+    	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
+    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element'];
+		  				
+		  				for (let prefix of wysiwygCSSSelectorPrefixes) {
+			  				if (animationId != 'selector') {
+				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] ${prefix}.-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] ${prefix}.-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"]${prefix}.-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"]${prefix}.-fsb-preset-${presetId} { ${content} }`);
+				  				} else {
+				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] ${prefix}[internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"]${prefix}[internal-fsb-guid="${presetId}"] { ${content} }`);
+				  				}
+				  			} else {
+				  				const splited = presetId.split(':');
+				  				
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  					animationAssignments.push(`${prefix}.-fsb-self-${splited[0]}:${splited[1]}, ${prefix}.-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
+				  				} else {
+				  					animationAssignments.push(`${prefix}[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
+				  				}
+				  			}
+				  		}
 		  			} else {
 			  			keyframes = keyframes.sort((a, b) => {
 			  				const timeA = parseFloat(a.hashMap['-fsb-animation-keyframe-time']);
