@@ -6,8 +6,7 @@ import {HTMLHelper} from './HTMLHelper';
 const AnimationHelper = {
 	// Document Object Model (DOM) Queries
 	// 
-  add: (animations: any) => {
-    let container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+  add: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
     	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
@@ -21,8 +20,7 @@ const AnimationHelper = {
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
   },
-  remove: (animations: any) => {
-    let container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+  remove: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
     	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
