@@ -110,14 +110,6 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
-  protected onTextboxMouseOver_22d343bd(event: Event) {
-
-    // Handle the event of onTextboxMouseOver (Textbox 2) here:
-    // 
-    
-    AnimationHelper.add(["d0e675b7"], EventHelper.getCurrentElement(event));
-  }
-
   protected onButtonSubmitting_954a291a(event: Event) {
 
     // Handle the event of onButtonSubmitting (Button 3) here:
@@ -182,7 +174,7 @@ class FlowLayout_4d816ba8 extends Base {
                     .-fsb-self-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="1b650e66")
                       input.form-control.form-control-sm(placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
                     .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="22d343bd")
-                      input.form-control.form-control-sm(style={'FsbInheritedPresets': '1b650e66', 'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", onMouseOver=this.onTextboxMouseOver_22d343bd.bind(this), disabled=this.state.submitting, required=true)
+                      input.form-control.form-control-sm(style={'FsbInheritedPresets': '1b650e66', 'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
                     .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-guid="4729c240")
                       .container-fluid
                         .internal-fsb-allow-cursor.internal-fsb-strict-layout.row
