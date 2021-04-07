@@ -1230,7 +1230,7 @@ const DatabaseHelper = {
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
-								    row.keys[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
+								    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
 								  }
 								}
 	  				  
