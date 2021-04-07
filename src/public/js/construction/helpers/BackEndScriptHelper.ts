@@ -335,7 +335,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
-    const inputs = RequestHelper.getInputs(this.pageId, request, SECTION_GUID);
+    const inputs = RequestHelper.getInputs(this.pageId, request, '${SECTION_GUID}');
     for (let input of inputs) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
       if (input != null) data.push(input);
     }
