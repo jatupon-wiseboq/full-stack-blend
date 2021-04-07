@@ -1,16 +1,19 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from "./ConnectionHelper";
-import {CodeHelper} from "./CodeHelper";
-import {NotificationHelper} from "./NotificationHelper";
-import {DataFormationHelper} from "./DataFormationHelper";
-import {RequestHelper} from "./RequestHelper";
-import {ValidationInfo} from "./ValidationHelper";
-import {PermissionHelper} from "./PermissionHelper";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
-import {FieldType, DataTableSchema} from "./SchemaHelper";
-import {DataTypes} from "sequelize";
+import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from './ConnectionHelper';
+import {CodeHelper} from './CodeHelper';
+import {NotificationHelper} from './NotificationHelper';
+import {DataFormationHelper} from './DataFormationHelper';
+import {RequestHelper} from './RequestHelper';
+import {ValidationInfo} from './ValidationHelper';
+import {PermissionHelper} from './PermissionHelper';
+import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {FieldType, DataTableSchema} from './SchemaHelper';
+import {DataTypes} from 'sequelize';
+import {ObjectID} from 'mongodb';
+
+const DEFAULT_DOCUMENT_DATABASE_NAME = 'stackblend';
 
 enum SourceType {
   Relational,
@@ -51,6 +54,7 @@ interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
 }
 interface HierarchicalDataFilter {
   name: string;
@@ -66,6 +70,7 @@ interface Input {
   guid: string;
   premise: string;
   validation: ValidationInfo;
+  division?: number[];
 }
 
 const fixType = (type: FieldType, value: any): any => {
@@ -97,20 +102,20 @@ const fixType = (type: FieldType, value: any): any => {
 	}
 	
 	return value;
-}
+};
 
 const DatabaseHelper = {
 	getSourceType: (value: string): SourceType => {
 		switch (value) {
-			case "relational":
+			case 'relational':
 				return SourceType.Relational;
-			case "document":
+			case 'document':
 				return SourceType.PrioritizedWorker;
-			case "worker":
+			case 'worker':
 				return SourceType.Document;
-			case "volatile-memory":
+			case 'volatile-memory':
 				return SourceType.VolatileMemory;
-			case "RESTful":
+			case 'RESTful':
 				return SourceType.RESTful;
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
@@ -120,20 +125,22 @@ const DatabaseHelper = {
     const results = [];
     const hash = {};
     for (const item of data) {
-      if (!hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()]) {
-        hash[`${item.premise}:${item.target}:${item.group}:${item.name}`.toLowerCase()] = true;
+      if (!hash[`${item.premise}:${item.target}:${item.group}:${item.name}:${item.division.join(',')}`.toLowerCase()]) {
+        hash[`${item.premise}:${item.target}:${item.group}:${item.name}:${item.name}:${item.division.join(',')}`.toLowerCase()] = true;
         results.push(item);
       }
     }
     return results;
   },
-  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null): boolean => {
+  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[]): boolean => {
   	if (data.length == 0) return false;
   	
   	data = CodeHelper.clone(data);
     data = [...DatabaseHelper.distinct(data)];
     
-    let inputs = data.filter(item => item.target == schema.source && item.group == schema.group && item.premise == premise);
+    data = data.filter(item => item.division.length == division.length + 1 && item.division.join(',').indexOf(division.join(',')) == 0);
+    
+    let inputs = data.filter(item => (item.target == null || item.target == schema.source) && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
     
     switch (action) {
@@ -180,15 +187,15 @@ const DatabaseHelper = {
     if (action != ActionType.Retrieve && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
       return false;
     } else {
-    	data = data.filter(item => item.group != schema.group || item.premise != premise);
+    	data = data.filter(item => (item.group != schema.group || item.premise != premise));
     	if (data.length == 0) return true;
     	
       let next = data.filter(item => item.premise == premise);
-      let keys = Array.from(new Set(next.map(input => input.group)));
+      const keys = Array.from(new Set(next.map(input => input.group)));
       
-      for (let key of keys) {
+      for (const key of keys) {
       	const current = next.filter(item => item.group == key);
-      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise)) {
+      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise, division)) {
         	return false;
         }
       }
@@ -215,6 +222,7 @@ const DatabaseHelper = {
                 name: schema.relations[key].targetEntity,
                 value: null,
                 guid: null,
+                division: input.division,
 								premise: nextPremise,
                 validation: null
               });
@@ -230,7 +238,7 @@ const DatabaseHelper = {
       next = DatabaseHelper.distinct(next);
       
       for (const nextSchema of schemata) {
-       	if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise)) {
+       	if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [])) {
         	return false;
         }
       }
@@ -238,30 +246,32 @@ const DatabaseHelper = {
       return true;
     }
   },
-  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null): HierarchicalDataRow[] => {
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[], matches: Input[]): HierarchicalDataRow[] => {
   	const results: HierarchicalDataRow[] = [];
-	  let found: boolean = false;
+  	const map: any = {};
+	  let found = false;
 	  
     for (const input of data) {
     	if (input.group != schema.group) continue;
     	if (input.premise != premise) continue;
+    	if (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
     	
     	found = true;
     	
-    	const splited = (input.guid || "").split("[");
-    	let index = 0;
-    	
-    	if (splited.length > 1) {
-    		index = parseInt(splited[1].split("]")[0]);
-    	}
-    	if (!results[index]) {
-    		results[index] = {
+    	const key = input.division.join(',');
+    	let row: HierarchicalDataRow;
+    	if (!map[key]) {
+    		row = {
 			    keys: {},
 			    columns: {},
-			    relations: {}
+			    relations: {},
+			    division: input.division
 			  };
+			  results.push(row);
+			  map[key] = row;
+    	} else {
+    		row = map[key];
     	}
-    	const row: HierarchicalDataRow = results[index];
     	
       if (!schema.keys[input.name] && !schema.columns[input.name])
         throw new Error(`There was an error preparing data for manipulation ('${input.name}' column doesn\'t exist in the schema group '${schema.group}').`);
@@ -270,11 +280,11 @@ const DatabaseHelper = {
       } else {
         row.columns[input.name] = input.value;
       }
+      
+      matches.push(input);
     }
     
-    if (!found) {
-    	throw new Error(`There was an error preparing data for manipulation (${data.map(item => (item.premise ? item.premise + "." : "") + item.group + "." + item.name).join(", ")} couldn\'t be children of '${premise}').`);
-    }
+    if (!found) return results;
     
     for (const row of results) {
 			for (const key in schema.keys) {
@@ -287,18 +297,18 @@ const DatabaseHelper = {
 			          } else {
 			            switch (schema.keys[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(`${row.keys[key]}`)))
+			                if (isNaN(parseFloat(row.keys[key].toString())))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.keys[key] = parseFloat(`${row.keys[key]}`);
+			                row.keys[key] = parseFloat(row.keys[key].toString());
 			                break;
 			              case FieldType.Boolean:
-			                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+			                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                row.keys[key] = `${row.keys[key]}`;
+			                row.keys[key] = row.keys[key].toString();
 			                break;
 			              case FieldType.DateTime:
-			                row.keys[key] = new Date(`${row.keys[key]}`);
+			                row.keys[key] = new Date(row.keys[key].toString());
 			                break;
 			            }
 			          }
@@ -310,18 +320,18 @@ const DatabaseHelper = {
 		          } else {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(`${row.keys[key]}`)))
+		                if (isNaN(parseFloat(row.keys[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(`${row.keys[key]}`);
+		                row.keys[key] = parseFloat(row.keys[key].toString());
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = `${row.keys[key]}`;
+		                row.keys[key] = row.keys[key].toString();
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(`${row.keys[key]}`);
+		                row.keys[key] = new Date(row.keys[key].toString());
 		                break;
 		            }
 		          }
@@ -334,39 +344,39 @@ const DatabaseHelper = {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(`${row.keys[key]}`)))
+		                if (isNaN(parseFloat(row.keys[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(`${row.keys[key]}`);
+		                row.keys[key] = parseFloat(row.keys[key].toString());
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = `${row.keys[key]}`;
+		                row.keys[key] = row.keys[key].toString();
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(`${row.keys[key]}`);
+		                row.keys[key] = new Date(row.keys[key].toString());
 		                break;
 		            }
 		          }
 			        break;
 			      case ActionType.Retrieve:
-			      	if (row.keys[key]) {
+			     	 	if (row.keys[key]) {
 				      	switch (schema.keys[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(`${row.keys[key]}`)))
+		                if (isNaN(parseFloat(row.keys[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(`${row.keys[key]}`);
+		                row.keys[key] = parseFloat(row.keys[key].toString());
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = `${row.keys[key]}`;
+		                row.keys[key] = row.keys[key].toString();
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(`${row.keys[key]}`);
+		                row.keys[key] = new Date(row.keys[key].toString());
 		                break;
 		            }
 		          }
@@ -386,18 +396,18 @@ const DatabaseHelper = {
 			          	if (row.columns[key]) {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(`${row.columns[key]}`)))
+				                if (isNaN(parseFloat(row.columns[key].toString())))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(`${row.columns[key]}`);
+				                row.columns[key] = parseFloat(row.columns[key].toString());
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
+				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = `${row.columns[key]}`;
+				                row.columns[key] = row.columns[key].toString();
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(`${row.columns[key]}`);
+				                row.columns[key] = new Date(row.columns[key].toString());
 				                break;
 				            }
 				          }
@@ -411,18 +421,18 @@ const DatabaseHelper = {
 		          	if (row.columns[key]) {
 			            switch (schema.columns[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(`${row.columns[key]}`)))
+			                if (isNaN(parseFloat(row.columns[key].toString())))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key] = parseFloat(`${row.columns[key]}`);
+			                row.columns[key] = parseFloat(row.columns[key].toString());
 			                break;
 			              case FieldType.Boolean:
-			                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
+			                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                row.columns[key] = `${row.columns[key]}`;
+			                row.columns[key] = row.columns[key].toString();
 			                break;
 			              case FieldType.DateTime:
-			                row.columns[key] = new Date(`${row.columns[key]}`);
+			                row.columns[key] = new Date(row.columns[key].toString());
 			                break;
 			            }
 			          }
@@ -437,18 +447,18 @@ const DatabaseHelper = {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.AutoNumber:
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(`${row.columns[key]}`)))
+				                if (isNaN(parseFloat(row.columns[key].toString())))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(`${row.columns[key]}`);
+				                row.columns[key] = parseFloat(row.columns[key].toString());
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
+				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = `${row.columns[key]}`;
+				                row.columns[key] = row.columns[key].toString();
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(`${row.columns[key]}`);
+				                row.columns[key] = new Date(row.columns[key].toString());
 				                break;
 				            }
 				          }
@@ -457,26 +467,26 @@ const DatabaseHelper = {
 			        break;
 			      case ActionType.Delete:
 			      case ActionType.Retrieve:
-			      	if (row.columns[key]) {
-		            switch (schema.columns[key].fieldType) {
+				      if (row.columns[key]) {
+				      	switch (schema.columns[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(`${row.columns[key]}`)))
+		                if (isNaN(parseFloat(row.columns[key].toString())))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.columns[key] = parseFloat(`${row.columns[key]}`);
+		                row.columns[key] = parseFloat(row.columns[key].toString());
 		                break;
 		              case FieldType.Boolean:
-		                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
+		                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.columns[key] = `${row.columns[key]}`;
+		                row.columns[key] = row.columns[key].toString();
 		                break;
 		              case FieldType.DateTime:
-		                row.columns[key] = new Date(`${row.columns[key]}`);
+		                row.columns[key] = new Date(row.columns[key].toString());
 		                break;
 		            }
 		          }
-			        break;
+			      	break;
 			    }
 			  }
 			}
@@ -484,55 +494,60 @@ const DatabaseHelper = {
 		
 		return results;
   },
-	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert: boolean=false): {[Identifier: string]: HierarchicalDataTable} => {
+	prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false): {[Identifier: string]: HierarchicalDataTable} => {
 	  data = CodeHelper.clone(data);
 	  
-	  const results: {[Identifier: string]: HierarchicalDataTable} = {};
-	  DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert);
+	  RequestHelper.sortInputs(data);
 	  
-	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + "." : "") + item.group + "." + item.name))].join(", ")}).`);
+	  const results: {[Identifier: string]: HierarchicalDataTable} = {};
+	  
+	  DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert, data[0].division.slice(0, Math.max(0, data[0].division.length - 1)));
+	  
+	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name))].join(', ')}).`);
 	  
 	  return results;
 	},
-	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, current: HierarchicalDataTable=null, premise: string=null) => {
+	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null) => {
 		const tables = [];
 		
 		if (baseSchema == null) {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
-		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise)) {
+		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		        
+		        const matches = [];
 		        const current = {
 				      source: baseSchema.source,
 				      group: baseSchema.group,
-				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise)
+				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches)
 				    };
 				    tables.push(current);
-	    
-				  	const items = data.filter(item => item.group == baseSchema.group && item.premise == premise);
-				    for (const item of items) {
+	    			
+				  	for (const item of matches) {
 				   		data.splice(data.indexOf(item), 1);
 				    }
 		      }
 		    }
 	    }
-	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise)) {
+	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division)) {
+		  const matches = [];
 	  	const current = {
 	      source: baseSchema.source,
 	      group: baseSchema.group,
-	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise)
+	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches)
 	    };
 	    tables.push(current);
 	    
-	  	const items = data.filter(item => item.group == baseSchema.group && item.premise == premise);
-	    for (const item of items) {
+	    for (const item of matches) {
 	   		data.splice(data.indexOf(item), 1);
 	    }
 	  }
 	  
     for (const table of tables) {
-			results[table.group] = table;
+    	if (results[table.group]) results[table.group].rows = results[table.group].rows.concat(table.rows);
+			else results[table.group] = table;
+			
 			baseSchema = ProjectConfigurationHelper.getDataSchema().tables[table.group];
 			
 			const keys = Object.keys(baseSchema.relations);
@@ -552,37 +567,35 @@ const DatabaseHelper = {
       	
       	for (const input of data) {
       		if (input.premise != nextPremise) continue;
-          if (input.group == _currentGroup) {
-          	const splited = input.guid.split("[");
-          	let index = -1;
-          	if (splited.length > 1) {
-          		index = parseInt(splited[1].split("]")[0]);
-          	}
-          	
-          	if (_hash[index]) continue;
-          	_hash[index] = true;
-          
-          	const forwarding = {
-              target: _schema.source,
-              group: _currentGroup,
-              name: _currentName,
-              value: "123",
-              guid: (index == -1) ? "" : "[" + index + "]",
-							premise: nextPremise,
-              validation: null
-            };
-          
-            _data.push(forwarding);
-            _appended.push(forwarding);
-          }
+          if (input.group != _currentGroup) continue;
+    			if (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
+        	
+        	if (_hash[input.division.join(',')]) continue;
+        	_hash[input.division.join(',')] = true;
+        
+        	const forwarding = {
+            target: _schema.source,
+            group: _currentGroup,
+            name: _currentName,
+            value: '123',
+            guid: (input.division.length == 0) ? '' : '[' + input.division.join(',') + ']',
+            division: input.division,
+						premise: nextPremise,
+            validation: null
+          };
+        
+          _data.push(forwarding);
+          _appended.push(forwarding);
         }
 	      
-	      if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise)) {
-	      	for (const item of _appended) {
-	      		data.push(item);
-	      	}
-	      	
-	        DatabaseHelper.recursivePrepareData(table.rows[0].relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, table, nextPremise);
+	      for (let row of table.rows) {
+	      	if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division)) {
+		      	for (const item of _appended) {
+		      		data.push(item);
+		      	}
+		      	
+		        DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise);
+		      }
 	      }
 	    }
 		}
@@ -618,7 +631,7 @@ const DatabaseHelper = {
               type = DataTypes.DATE;
               break;
             default:
-              throw new Error("There was an error preparing data for manipulation (unsupported field type).");
+              throw new Error('There was an error preparing data for manipulation (unsupported field type).');
 			    }
 			    
 			    columns[key] = {
@@ -656,7 +669,7 @@ const DatabaseHelper = {
               type = DataTypes.DATE;
               break;
             default:
-              throw new Error("There was an error preparing data for manipulation (unsupported field type).");
+              throw new Error('There was an error preparing data for manipulation (unsupported field type).');
 			    }
 			    
 			    columns[key] = {
@@ -674,7 +687,7 @@ const DatabaseHelper = {
 	  
 	  return RelationalDatabaseORMClient.models[schema.group];
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -703,16 +716,16 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
 		    	case SourceType.VolatileMemory:
-		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -741,9 +754,9 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								record = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								record = (await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
+								record = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
 								record = Object.assign({}, data, keys);
 							}
@@ -753,6 +766,8 @@ const DatabaseHelper = {
 						    columns: {},
 						    relations: {}
 						  };
+						  
+						  if (record['_id']) record['id'] = record['_id'].toString();
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -803,23 +818,23 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 		    		
 		    		for (const row of input.rows) {
 							PrioritizedWorkerClient.enqueue(schema.group, [row], {
 						    retry: true,
-						    queue: "normal"
+						    queue: 'normal'
 							});
 						}
 		    		
@@ -844,7 +859,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -873,16 +888,16 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
 		    	case SourceType.VolatileMemory:
-		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -902,7 +917,11 @@ const DatabaseHelper = {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
 							      keys[key] = row.keys[key];
-							    	query[key] = {$eq: row.keys[key]};
+							      if (input.source == SourceType.Document && key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      } else {
+							      	query[key] = {$eq: row.keys[key]};
+							      }
 							    }
 							  }
 							}
@@ -911,10 +930,10 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								record = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
-								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query);
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
+								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
 								record = JSON.parse(await VolatileMemoryClient.get(_key));
@@ -933,6 +952,8 @@ const DatabaseHelper = {
 						    columns: {},
 						    relations: {}
 						  };
+						  
+						  if (record['_id']) record['id'] = record['_id'].toString();
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -982,20 +1003,20 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 		    		
-		    		throw new Error("Cannot perform UPSERT on prioritized worker.");
+		    		throw new Error('Cannot perform UPSERT on prioritized worker.');
 		    		
 		    		break;
 		    	case SourceType.RESTful:
@@ -1018,7 +1039,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1047,16 +1068,16 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
 		    	case SourceType.VolatileMemory:
-		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -1068,7 +1089,11 @@ const DatabaseHelper = {
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
-							    query[key] = {$eq: row.keys[key]};
+							    if (input.source == SourceType.Document && key == 'id') {
+						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+						      } else {
+						      	query[key] = {$eq: row.keys[key]};
+						      }
 							  }
 							}
 							for (const key in schema.columns) {
@@ -1084,10 +1109,12 @@ const DatabaseHelper = {
 								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
 								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).updateOne(query, {$set: data});
-								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query);
+								if (Object.keys(data).length != 0) {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data});
+								}
+								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
 								record = JSON.parse(await VolatileMemoryClient.get(_key));
@@ -1098,6 +1125,8 @@ const DatabaseHelper = {
 						    columns: {},
 						    relations: {}
 						  };
+						  
+						  if (record['_id']) record['id'] = record['_id'].toString();
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key)) {
@@ -1148,20 +1177,20 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 		    		
-		    		throw new Error("Cannot perform UPDATE on prioritized worker.");
+		    		throw new Error('Cannot perform UPDATE on prioritized worker.');
 		    		
 		    		break;
 		    	case SourceType.RESTful:
@@ -1184,7 +1213,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		  	if (data != null) {
@@ -1204,17 +1233,15 @@ const DatabaseHelper = {
 		  	} else {
 		  		if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, {}, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 		  		
-		  		const results = {};
+		  		let map, records;
+		  		const hash = {}, rows = [], results = {};
 		  		
 		  		switch (baseSchema.source) {
 	        	case SourceType.Relational:
-	        		if (!RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
-	        		const map = DatabaseHelper.ormMap(baseSchema);
-	        		const hash = {};
-	  					
-	  					const rows = [];
-	  					const records = await map.findAll() || [];
+	        		map = DatabaseHelper.ormMap(baseSchema);
+	  					records = await map.findAll() || [];
 	  					
 	  					for (const record of records) {
 	  					  const row = {
@@ -1236,12 +1263,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session, Object.assign({}, row.columns, row.keys))) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session, Object.assign({}, row.columns, row.keys))) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1257,21 +1284,69 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
-	        		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
-	        		throw new Error("Cannot perform RETRIEVE ALL on prioritized worker.");
+	        		throw new Error('Cannot perform RETRIEVE ALL on prioritized worker.');
 	        		
 	        		break;
 	        	case SourceType.Document:
-	        		if (!DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
-	        		throw new Error("Cannot perform RETRIEVE ALL on document database.");
+	        		const connection = await DocumentDatabaseClient.connect();
+							records = await new Promise(async (resolve, reject) => {
+								await connection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find().toArray((error: any, results: any) => {
+									if (error) {
+										reject(error);
+									} else {
+										resolve(results);
+									}
+								});
+							});
+							
+							for (const record of records) {
+	  					  const row = {
+	    				    keys: {},
+	    				    columns: {},
+	    				    relations: {}
+	    				  };
+	  				  
+	  					  for (const key in baseSchema.columns) {
+								  if (baseSchema.columns.hasOwnProperty(key) && record[key] != undefined) {
+								    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
+								  }
+								}
+								for (const key in baseSchema.keys) {
+								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
+								    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
+								  }
+								}
+	  				  
+	  					  for (const key in baseSchema.columns) {
+	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
+	    					  }
+	    					}
+	    					for (const key in baseSchema.keys) {
+	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
+	    					  }
+	    					}
+	    					
+	    					rows.push(row);
+	  					}
+	  					
+	  					results[baseSchema.group] = {
+	  					  source: baseSchema.source,
+	  					  group: baseSchema.group,
+	  					  rows: rows,
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, {}, session) : null
+	  					};
 	        		
 	        		break;
 	        	case SourceType.VolatileMemory:
-	        		if (!VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+	        		if (!VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
-	        		throw new Error("Cannot perform RETRIEVE ALL on volatile memory.");
+	        		throw new Error('Cannot perform RETRIEVE ALL on volatile memory.');
 	        		
 	        		break;
 			    	case SourceType.RESTful:
@@ -1296,16 +1371,16 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
 		    	case SourceType.VolatileMemory:
-		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(baseSchema) : null;
 						
@@ -1317,13 +1392,21 @@ const DatabaseHelper = {
 							for (const key in baseSchema.columns) {
 							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    data[key] = row.columns[key];
-							    query[key] = {$eq: row.columns[key]};
+							    if (input.source == SourceType.Document && key == 'id') {
+						      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+						      } else {
+						      	query[key] = {$eq: row.columns[key]};
+						      }
 							  }
 							}
 							for (const key in baseSchema.keys) {
 							  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
-							    query[key] = {$eq: row.keys[key]};
+							    if (input.source == SourceType.Document && key == 'id') {
+						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+						      } else {
+						      	query[key] = {$eq: row.keys[key]};
+						      }
 							  }
 							}
 							
@@ -1334,9 +1417,9 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
 							} else if (input.source == SourceType.Document) {
-								let connection = await DocumentDatabaseClient.connect();
+								const connection = await DocumentDatabaseClient.connect();
 								records = await new Promise(async (resolve, reject) => {
-									await connection.db('stackblend').collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
+									await connection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -1345,7 +1428,7 @@ const DatabaseHelper = {
 									});
 								});
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = baseSchema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = baseSchema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								const record = await VolatileMemoryClient.get(_key);
 								records = record && [JSON.parse(record)] || [];
 							}
@@ -1356,6 +1439,8 @@ const DatabaseHelper = {
 		  				    columns: {},
 		  				    relations: {}
 		  				  };
+						  
+						  	if (record['_id']) record['id'] = record['_id'].toString();
 						  	
 							  for (const key in baseSchema.columns) {
 		  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -1408,21 +1493,21 @@ const DatabaseHelper = {
 							for (const _row of rows) {
 							  for (const key in baseSchema.columns) {
 								  if (baseSchema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session, Object.assign({}, _row.columns, _row.keys))) delete _row.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete _row.columns[key];
 								  }
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session, Object.assign({}, _row.columns, _row.keys))) delete _row.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete _row.keys[key];
 								  }
 								}
 							}
 						}
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 		    		
-		    		throw new Error("Cannot perform RETRIEVE on prioritized worker.");
+		    		throw new Error('Cannot perform RETRIEVE on prioritized worker.');
 		    		
 		    		break;
 		    	case SourceType.RESTful:
@@ -1445,7 +1530,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1474,16 +1559,16 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
 		    	case SourceType.Relational:
 		    	case SourceType.Document:
 		    	case SourceType.VolatileMemory:
-		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error("There was an error trying to obtain a connection (not found).");
-		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error("There was an error trying to obtain a connection (not found).");
+		    		if (input.source == SourceType.Relational && !RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
+		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
@@ -1494,7 +1579,11 @@ const DatabaseHelper = {
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
-							    query[key] = {$eq: row.keys[key]};
+							    if (input.source == SourceType.Document && key == 'id') {
+						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+						      } else {
+						      	query[key] = {$eq: row.keys[key]};
+						      }
 							  }
 							}
 							
@@ -1505,10 +1594,10 @@ const DatabaseHelper = {
 								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								record = await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).findOne(query) || {};
-								await transaction.documentDatabaseConnection.db('stackblend').collection(schema.group).deleteOne(query);
+								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query) || {};
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne(query);
 							} else if (input.source == SourceType.VolatileMemory) {
-								let _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
 								await VolatileMemoryClient.del(_key);
 							}
@@ -1518,6 +1607,8 @@ const DatabaseHelper = {
 						    columns: {},
 						    relations: {}
 						  };
+						  
+						  if (record['_id']) record['id'] = record['_id'].toString();
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -1568,20 +1659,20 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
 							  }
 							}
 						}
 						break;
 					case SourceType.PrioritizedWorker:
-						if (!PrioritizedWorkerClient) throw new Error("There was an error trying to obtain a connection (not found).");
+						if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
-						throw new Error("Cannot perform DELETE on prioritized worker.");
+						throw new Error('Cannot perform DELETE on prioritized worker.');
 						
 						break;
 		    	case SourceType.RESTful:

@@ -1,11 +1,11 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {Request} from "express";
-import {SourceType, ActionType, Input} from "./DatabaseHelper";
-import {DataTableSchema, DataSchema, SchemaHelper} from "./SchemaHelper";
-import {ValidationHelper} from "./ValidationHelper";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
+import {Request} from 'express';
+import {SourceType, ActionType, Input} from './DatabaseHelper';
+import {DataTableSchema, DataSchema, SchemaHelper, FieldType} from './SchemaHelper';
+import {ValidationHelper} from './ValidationHelper';
+import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
 import {XMLHttpRequest} from 'xmlhttprequest-ts';
 
 interface RequestParamInfo {
@@ -18,7 +18,7 @@ const requestParamInfoDict: any = {};
 const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
-	request: async (method: string, url: string, body: string, responseType: string=null, retryCount: number=10): Promise<any> => {
+	request: async (method: string, url: string, body: string, responseType: string=null, retryCount=10): Promise<any> => {
 		return new Promise((resolve, reject) => {
 			const process = (() => {
 			  const xmlhttp = new XMLHttpRequest();
@@ -26,6 +26,8 @@ const RequestHelper = {
   				if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
   					if (xmlhttp.status == 200) {
   						let output = xmlhttp.responseText;
+  						
+  						console.log(`\x1b[35mResults... ${JSON.stringify(output)}\x1b[0m`);
   						
 			  	    switch (responseType) {
 			  	    	case 'json':
@@ -54,9 +56,15 @@ const RequestHelper = {
   					}
   				}
   	    };
+  	    xmlhttp.onerror = function(error) {
+  				console.log(`\x1b[31mResults... ${error}\x1b[0m`);
+  	    };
+  	    
+  	    console.log(`\x1b[32m${JSON.stringify(method)} Requesting ${url}... ${JSON.stringify(body)}\x1b[0m`);
+  	    
   	    xmlhttp.open(method, url, true);
   	    if (body) {
-  	    	xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+  	    	xmlhttp.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
   	    	xmlhttp.send(body);
   	    }
   	    else xmlhttp.send();
@@ -65,26 +73,26 @@ const RequestHelper = {
 		});
 	},
   get: (url: string, responseType: string=null): Promise<any> => {
-  	let method = 'GET';
-  	let bodyString = null;
+  	const method = 'GET';
+  	const bodyString = null;
   	
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
   post: (url: string, body: any, responseType: string=null): Promise<any> => {
-  	let method = 'POST';
-  	let bodyString = JSON.stringify(body);
+  	const method = 'POST';
+  	const bodyString = JSON.stringify(body);
   	
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
   put: (url: string, body: any, responseType: string=null): Promise<any> => {
-  	let method = 'PUT';
-  	let bodyString = JSON.stringify(body);
+  	const method = 'PUT';
+  	const bodyString = JSON.stringify(body);
   	
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
   delete: (url: string, body: any, responseType: string=null): Promise<any> => {
-  	let method = 'DELETE';
-  	let bodyString = JSON.stringify(body);
+  	const method = 'DELETE';
+  	const bodyString = JSON.stringify(body);
   	
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
@@ -93,23 +101,23 @@ const RequestHelper = {
 		
 		let _target: SourceType;
 		switch (target) {
-			case "relational":
+			case 'relational':
 				_target = SourceType.Relational;
 				break;
-			case "worker":
+			case 'worker':
 				_target = SourceType.PrioritizedWorker;
 				break;
-			case "document":
+			case 'document':
 				_target = SourceType.Document;
 				break;
-			case "volatile-memory":
+			case 'volatile-memory':
 				_target = SourceType.VolatileMemory;
 				break;
-			case "RESTful":
+			case 'RESTful':
 				_target = SourceType.RESTful;
 				break;
 			default:
-				throw new Error("There was an error trying to retrieve input info (target value isn't in the predefined set).");
+				throw new Error('There was an error trying to retrieve input info (target value isn\'t in the predefined set).');
 		}
 		
 		requestParamInfoDict[guid] = {
@@ -129,27 +137,27 @@ const RequestHelper = {
 		const json: any = request.body;
 		
 		if (json == null) {
-			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
 		}
 		
 		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
 		
 		switch (action) {
-			case "insert":
+			case 'insert':
 				return ActionType.Insert;
-			case "update":
+			case 'update':
 				return ActionType.Update;
-			case "upsert":
+			case 'upsert':
 				return ActionType.Upsert;
-			case "delete":
+			case 'delete':
 				return ActionType.Delete;
-			case "retrieve":
+			case 'retrieve':
 				return ActionType.Retrieve;
-			case "popup":
+			case 'popup':
 				return ActionType.Popup;
-			case "navigate":
+			case 'navigate':
 				return ActionType.Navigate;
-			case "test":
+			case 'test':
 				return ActionType.Test;
 			default:
 				return null;
@@ -159,7 +167,7 @@ const RequestHelper = {
 		const json: any = request.body;
 		
 		if (json == null) {
-			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
 		}
 		
 		return requestSubmitInfoDict[pageId + json.guid].options;
@@ -168,7 +176,7 @@ const RequestHelper = {
 		const json: any = request.body;
 		
 		if (json == null) {
-			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
 		}
 		
 		return SchemaHelper.getDataTableSchemaFromNotation(json.notation, ProjectConfigurationHelper.getDataSchema());
@@ -177,23 +185,25 @@ const RequestHelper = {
 		const json: any = request.body;
 		
 		if (json == null) {
-			throw new Error("There was an error trying to obtain requesting parameters (requesting body is null).");
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
 		}
 		
 		if (!json.hasOwnProperty(guid)) {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[guid.split("[")[0]];
+		const paramInfo = requestParamInfoDict[guid.split('[')[0]];
 		const submitInfo = requestSubmitInfoDict[pageId + json.guid];
 		
-		if (submitInfo.fields.indexOf(guid.split("[")[0]) == -1) {
-			throw new Error("There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).");
+		if (submitInfo.fields.indexOf(guid.split('[')[0]) == -1) {
+			throw new Error('There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).');
 		}
 		
-		const splited = paramInfo.group.split(".");
+		const namespace = guid.split('[')[0];
+		const indexes = JSON.parse('[' + (guid.split('[')[1] || ']'));
+		const splited = paramInfo.group.split('.');
 		const group = splited.pop();
-		const premise = splited.join(".") || null;
+		const premise = splited.join('.') || null;
 		
 		const input: Input = {
 		  target: paramInfo.target,
@@ -202,6 +212,7 @@ const RequestHelper = {
   		value: json[guid],
   		guid: guid,
   		premise: premise || null,
+  		division: indexes,
   		validation: null
 		};
 		
@@ -211,38 +222,159 @@ const RequestHelper = {
 		
 		return input;
 	},
+	getInputs: (pageId: string, request: Request, guid: string): Input[] => {
+		const json: any = request.body;
+		
+		if (json == null) {
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
+		}
+		
+		const inputs = [];
+		
+		for (const key in json) {
+			if (json.hasOwnProperty(key) && key.indexOf(guid) == 0) {
+				const input = RequestHelper.getInput(pageId, request, key);
+				
+				if (input) inputs.push(input);
+			}
+		}
+		
+		return inputs;
+	},
 	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
 		const results = [];
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
-				const splited = key.split("[")[0].split(".");
+				const namespace = key.split('[')[0];
+				const splited = namespace.split('.');
+				const indexes = JSON.parse('[' + (key.split('[')[1] || ']'));
 				const name = splited.pop() || null;
 				const group = splited.pop() || null;
-				const premise = splited.join(".") || null;
-				
-				if (name == null || group == null) throw new Error("There was an error trying to create a list of inputs (${key}).");
+				const premise = splited.join('.') || null;
+		
+				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
 				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
-				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(", ")}).`);
+				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
 				
-				const input: Input = {
-				  target: data.tables[group].source,
-		  		group: group,
-		  		name: name,
-		  		value: values[key],
-		  		guid: key,
-		  		premise: premise,
-		  		validation: null
-				};
+				let value = values[key];
+				const type = data.tables[group].keys[name] && data.tables[group].keys[name].fieldType ||
+					data.tables[group].columns[name] && data.tables[group].columns[name].fieldType;
 				
-				if (input != null) {
+				if (value === null) continue;
+				if (typeof value === 'string') {
+					if (value == 'null') value = null;
+					else {
+						switch (type) {
+							case FieldType.AutoNumber:
+							case FieldType.Number: 
+								value = parseFloat(value);
+								break;
+						}
+					}
+				
+					const input: Input = {
+					  target: data.tables[group].source,
+			  		group: group,
+			  		name: name,
+			  		value: value,
+		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+			  		premise: premise,
+		  			division: indexes,
+			  		validation: null
+					};
+					
+					results.push(input);
+				} else if (Array.isArray(value)) {
+					let index = 0;
+					for (const _value of value) {
+						const input: Input = {
+						  target: data.tables[group].source,
+				  		group: group,
+				  		name: name,
+				  		value: _value,
+				  		guid: `${namespace}[${index++}]`,
+				  		premise: premise,
+		  				division: indexes,
+				  		validation: null
+						};
+						
+						results.push(input);
+					}
+				} else {
+					const input: Input = {
+					  target: data.tables[group].source,
+			  		group: group,
+			  		name: name,
+			  		value: value,
+		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+			  		premise: premise,
+		  			division: indexes,
+			  		validation: null
+					};
+					
 					results.push(input);
 				}
 			}
 		}
 		
 		return results;
-	}
+	},
+  sortInputs: (inputs: Input[]) => {
+    for (const input of inputs) {
+      input.division = input.division || [];
+    }
+    
+    inputs.sort((a, b) => {
+      const _a = [].concat(a.division);
+      const _b = [].concat(b.division);
+      
+      if (_a.length != _b.length) {
+        const max = Math.max(_a.length, _b.length);
+        
+        if (_a.length < _b.length) _a[_a.length - 1] = -1;
+        else _b[_b.length - 1] = -1;
+        
+        for (let i=_a.length; i<=max; i++) {
+          _a.push(-1);
+        }
+        for (let i=_b.length; i<=max; i++) {
+          _b.push(-1);
+        }
+      }
+      
+      return (_a < _b) ? -1 : 1;
+    });
+    
+    const registers = [];
+    let latest: string = null;
+    let length = 0;
+    
+    for (let i=0; i<inputs.length; i++) {
+    	const division = inputs[i].division;
+    	
+    	if (division.length > length) {
+    		for (let j=length; j<division.length; j++) {
+    			registers[j] = 0;
+    		}
+    	} else if (division.length == length) {
+    		if (latest != division.join(',')) {
+    			registers[length - 1] += 1;
+    		}
+    	} else {
+    		registers[division.length - 1] += 1;
+    	}
+    	
+    	length = division.length;
+    	latest = division.join(',');
+    	
+  		for (let j=0; j<division.length; j++) {
+  			division[j] = registers[j];
+  		}
+    }
+    
+    inputs.map((input) => { console.log(input.division, input.value); });
+  }
 };
 
 export {RequestHelper};

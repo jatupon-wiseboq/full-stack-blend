@@ -1,11 +1,11 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {ActionType} from "./DatabaseHelper";
-import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from "./SchemaHelper";
-import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
-import {RelationalDatabaseClient} from "./ConnectionHelper";
-import {Md5} from "md5-typescript";
+import {ActionType} from './DatabaseHelper';
+import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from './SchemaHelper';
+import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {RelationalDatabaseClient} from './ConnectionHelper';
+import {Md5} from 'md5-typescript';
 
 const cachedPermissions = {};
 
@@ -25,7 +25,7 @@ const PermissionHelper = {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (action == ActionType.Insert || action == ActionType.Upsert) {
-					if (schema.modifyingPermission && schema.modifyingPermission.mode == "relation" && schema.modifyingPermission.relationModeSourceGroup == schema.group) {
+					if (schema.modifyingPermission && schema.modifyingPermission.mode == 'relation' && schema.modifyingPermission.relationModeSourceGroup == schema.group) {
 						if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) {
 							resolve(false);
 							return;
@@ -61,10 +61,10 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, values: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, values, data);
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, values: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise((resolve, reject) => {
 			try {
 				if (permission == null) {
@@ -73,18 +73,18 @@ const PermissionHelper = {
 				}
 				
 				switch (permission.mode) {
-					case "block":
-					case "always":
+					case 'block':
+					case 'always':
 						resolve(false);
 						break;
-					case "relation":
-						if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
+					case 'relation':
+						if (session == null) throw new Error('There was an error authorizing a permission (the request session variable was null).');
 						
 						const shortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
 						let value;
 						
 						switch (permission.relationMatchingMode) {
-							case "session":
+							case 'session':
 								value = session[permission.relationMatchingSessionName];
 								break;
 							default:
@@ -116,12 +116,7 @@ const PermissionHelper = {
 							}
 						}
 						
-						if (WHERE_CLAUSE.length == 1) {
-							resolve(`${values[permission.relationModeSourceEntity]}` == `${value}`);
-	      			return;
-						}
-						
-						const COMMAND = `SELECT * FROM ${target.group} ${INNER_JOIN.join(" ")} WHERE ${WHERE_CLAUSE.join(" AND ")} LIMIT 1`;
+						const COMMAND = `SELECT * FROM ${target.group} ${INNER_JOIN.join(' ')} WHERE ${WHERE_CLAUSE.join(' AND ')} LIMIT 1`;
 	      		console.log(COMMAND);
 	      		
 	      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);
@@ -142,8 +137,8 @@ const PermissionHelper = {
 	      			}
 	      		}).bind(this));
 						break;
-					case "session":
-						if (session == null) throw new Error("There was an error authorizing a permission (the request session variable was null).");
+					case 'session':
+						if (session == null) throw new Error('There was an error authorizing a permission (the request session variable was null).');
 						resolve(session[permission.sessionMatchingSessionName] == permission.sessionMatchingConstantValue);
 						break;
 					default:

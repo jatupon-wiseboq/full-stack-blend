@@ -11,6 +11,9 @@ lib-cov
 .DS_Store
 .env
 
+*.crt
+*.key
+
 pids
 logs
 results

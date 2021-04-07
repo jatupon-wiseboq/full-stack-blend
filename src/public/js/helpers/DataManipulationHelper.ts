@@ -60,49 +60,68 @@ const DataManipulationHelper = {
   		let foundRadio = {};
   		
   		while (!foundAll && current != null && current != document) {
-  			foundAll = true;
-  			
-  			for (const field of fields) {
-		  		let elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
-		  		
-		  		for (let index=0; index < elements.length; index++) {
-		  			let element = elements[index];
-		  			
-		  			// All of inputs are a forwarding element. To get the actual input,
-		  			// we must look into their children.
-		  			// 
-		  			if (element.tagName != 'INPUT') {
-			  			element = element.firstElementChild;
-			  		}
-			  		
-			  		let name = (elements.length > 1) ? `${field}[${index}]` : field;
-		  		
-		  			switch (HTMLHelper.getAttribute(element, 'type')) {
-		  				case 'radio':
-		  					if (foundRadio[element.name] === undefined) {
-		  						foundRadio[element.name] = name;
-		  					}
-		  					if (element.checked) {
-		  						foundRadio[element.name] = true;
-		  						params[name] = element.value;
-		  					}
-		  					break;
-		  				case 'checkbox':
-		  					params[name] = element.checked ? 'true' : 'false';
-		  					break;
-	  					default:
-	  						params[name] = element.value;
-	  						break;
-	  				}
-		  		}
-		  		if (elements.length == 0) {
-		  			foundAll = false;
-		  			break;
-		  		}
-		  	}
-  			
-  			current = current.parentNode;
-  		}
+        foundAll = true;
+        
+        for (const field of fields) {
+          const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
+          
+          if (elements.length == 0) {
+            foundAll = false;
+            break;
+          }
+        }
+        
+        current = current.parentNode;
+      }
+      
+      for (const field of fields) {
+        const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
+        
+        for (let index=0; index < elements.length; index++) {
+          let element = elements[index];
+          
+          // All of inputs are a forwarding element. To get the actual input,
+          // we must look into their children.
+          // 
+          if (element.tagName != 'INPUT') {
+            element = element.firstElementChild;
+          }
+          
+          let indexes = [];
+          let parent = element.parentNode;
+          
+          while (parent != document) {
+            if (HTMLHelper.hasAttribute(parent, 'data-fsb-index')) {
+              indexes.push(HTMLHelper.getAttribute(parent, 'data-fsb-index'));
+            }
+            
+            parent = parent.parentNode;
+          }
+          
+          indexes.reverse();
+          indexes.push(index);
+          
+          const name = (elements.length > 1) ? `${field}[${indexes.join(',')}]` : field;
+        
+          switch (HTMLHelper.getAttribute(element, 'type')) {
+            case 'radio':
+              if (foundRadio[element.name] === undefined) {
+                foundRadio[element.name] = name;
+              }
+              if (element.checked) {
+                foundRadio[element.name] = true;
+                params[name] = element.value;
+              }
+              break;
+            case 'checkbox':
+              params[name] = element.checked ? 'true' : 'false';
+              break;
+            default:
+              params[name] = element.value;
+              break;
+          }
+        }
+      }
   		
   		for (let name in foundRadio) {
   			if (foundRadio.hasOwnProperty(name)) {
