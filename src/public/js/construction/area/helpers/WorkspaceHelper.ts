@@ -715,11 +715,15 @@ var WorkspaceHelper = {
     
   	if (InternalProjectSettings.currentMode == 'site') {
   		WorkspaceHelper.plugComponentInputs();
+  		WorkspaceHelper.updateInPageComponents();
+      WorkspaceHelper.updateInheritingComponents();
   		results = FrontEndDOMHelper.generateFrontEndCode();
   		WorkspaceHelper.unplugComponentInputs();
   		results.push([StylesheetHelper.renderStylesheet(true), AnimationHelper.renderStylesheet(true, false)].join(' '));
   	} else if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
   		WorkspaceHelper.plugComponentInputs();
+  		WorkspaceHelper.updateInPageComponents();
+      WorkspaceHelper.updateInheritingComponents();
   		results = FrontEndDOMHelper.generateFrontEndCode();
   		WorkspaceHelper.unplugComponentInputs();
   		results[0] = false;
@@ -740,6 +744,8 @@ var WorkspaceHelper = {
     let results;
   	if (InternalProjectSettings.currentMode == 'site') {
   		WorkspaceHelper.plugComponentInputs();
+  		WorkspaceHelper.updateInPageComponents();
+      WorkspaceHelper.updateInheritingComponents();
   		results = BackEndDOMHelper.generateBackEndCode();
   		WorkspaceHelper.unplugComponentInputs();
   	} else {
@@ -822,6 +828,8 @@ var WorkspaceHelper = {
   	}
   	
   	WorkspaceHelper.plugComponentInputs(container);
+  	WorkspaceHelper.updateInPageComponents();
+    WorkspaceHelper.updateInheritingComponents();
   	let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
   	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateFrontEndCode(container);
   	WorkspaceHelper.unplugComponentInputs(container);
