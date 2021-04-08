@@ -4,28 +4,34 @@
 @import "../common/bootstrap/mixins/breakpoints";
 @import "../common/variables";
 
-// Scaffolding
-//
+// ---------------------------------------------------------------------------
+// Scaffolding using to distinguish layout and element 
+// ---------------------------------------------------------------------------
 html, body {
   overflow-x: hidden;
   overflow-y: auto;
 }
 
+// These styles will be active when the guide toggle is turning on.
 html.internal-fsb-guide-on {
-  // Layout
-  //
+  // -------------------------------------------------------------------------
+	// Table Layout: using a traditonal of <table> tag
+	// -------------------------------------------------------------------------
   .internal-fsb-table-layout {
     > tbody {
       > tr {
+      	// The height while the toggle is on
         height: 20px;
         
         > td {
-          border: dashed 1px rgba(0, 0, 255, 127);
+          outline: dashed 1px rgba(0, 0, 255, 127);
           
+          // The style of selecting cell
           &.internal-fsb-selected {
             background-color: rgba(0, 144, 255, 0.5) !important;
           }
           
+          // The height of cursor while containing in a none Bootstrap layout
           > .internal-fsb-cursor {
 				  	height: 20px !important;
 				  }
@@ -33,35 +39,53 @@ html.internal-fsb-guide-on {
       }
     }
     
+    // The required style of the resizer, <div>, while containing in <table>
     .internal-fsb-resizer {
       display: table-caption !important;
     }
   }
   
+  // -------------------------------------------------------------------------
+	// Flow Layout: using twelve-griddling system from Bootstrap
+	// -------------------------------------------------------------------------
   .internal-fsb-strict-layout {
   	> .internal-fsb-inheriting-element,
     > .internal-fsb-element {
+    	// The minimum height while the toggle is on which may be sized equaling
+    	// to the height of cell which is containing the element
     	min-height: 20px;
-      border: solid 1px rgba(0, 0, 255, 127);
+      outline: solid 1px rgba(0, 0, 255, 127);
       
+      // Distinguish React element from the others to prevent user from loosing
+      // the React code attributed right in this element.
       &[internal-fsb-react-mode] {
-      	border-color: #7f20ff;
+      	outline-color: #7f20ff;
       }
     }
   }
   
+  // -------------------------------------------------------------------------
+	// Absolute Layout: using absolute <div>
+	// -------------------------------------------------------------------------
   .internal-fsb-absolute-layout {
   	> .internal-fsb-inheriting-element,
     > .internal-fsb-element {
+    	// The height while the toggle is on
     	min-height: 20px;
-      border: solid 1px rgba(0, 255, 0, 127);
+      outline: solid 1px rgba(0, 255, 0, 127);
       
+      // Distinguish React element from the others to prevent user from loosing
+      // the React code attributed right in this element.
       &[internal-fsb-react-mode] {
-      	border-color: #7f20ff;
+      	outline-color: #7f20ff;
       }
     }
   }
   
+  // -------------------------------------------------------------------------
+	// Distinguish inheriting React component (reusing) for the others to indicate
+	// that it cannot be edited.
+	// -------------------------------------------------------------------------
   [internal-fsb-inheriting] {
     > :first-child {
       pointer-events: none;
@@ -86,8 +110,9 @@ html.internal-fsb-guide-on {
     }
   }
   
-  // Guide
-  //
+  // -------------------------------------------------------------------------
+  // Vertical grid to grate the element size using Bootstrap's gridding system.
+  // -------------------------------------------------------------------------
   .internal-fsb-guide {
     position: absolute;
     top: 0;
@@ -130,13 +155,15 @@ html.internal-fsb-guide-on {
   }
 }
 
+// These styles will be active when the guide toggle is turning off.
 .internal-fsb-guide-off {
-  // Guide
-  //
+  // Turning off vertical grid
   .internal-fsb-guide {
     display: none;
   }
   
+	// Turning off the distinguishing of inheriting React component but keep it
+	// from selectable.
   [internal-fsb-inheriting] {
     > :first-child {
       pointer-events: none;
@@ -144,14 +171,17 @@ html.internal-fsb-guide-on {
   }
 }
 
+// This class used to always turning off all of guidings.
 .internal-fsb-disabled-guide {
 	.internal-fsb-guide {
     display: none !important;
   }
 }
 
-// Cursor
-//
+// ---------------------------------------------------------------------------
+// An inline cursor, which can use the keyboard keys, up, down, left, right, to
+// move it
+// ---------------------------------------------------------------------------
 .internal-fsb-cursor {
   position: relative;
   left: inherit;
@@ -159,35 +189,48 @@ html.internal-fsb-guide-on {
   min-height: 20px;
   width: 0px;
   
+  // The container space for the inline cursor perhaps it's being contained
+  // in a container which doesn't use the Bootstrap's griddling system.
   .col-1 {
   	width: 100%;
   	height: 100%;
   }
   
+  // The style of the inline cursor which always has a height of 20px. And when
+  // it's being contained in a column using Bootstrap's griddling system, it will
+  // be positioned at the bottom.
   .col-1::before {
     content: '';
     display: block;
     position: absolute;
     left: 0px;
     bottom: 0px;
+    top: 0px;
     z-index: $maximum-z-index;
     width: 2px;
-    height: 20px;
+    min-height: 20px;
     
+    // The blinking of the inline cursor
     @include animation(0, 1s, animation-blink);
   }
 }
+
+// Turning off the cursor while editing text in a Text Element, or while in the
+// coding mode
 body.internal-fsb-focusing-text-element,
 body.internal-fsb-mode-coding {
   .internal-fsb-cursor {
     display: none;
   }
 }
+
+// Extra style for the container space if the cursor placed in an Absolute Layout
 .internal-fsb-absolute-layout > .internal-fsb-cursor > .col-1 {
 	height: 20px;
 	width: 1px;
 }
 
+// The blinking of the inline cursor's declaration
 @include keyframe(animation-blink) {
   0% {
     background-color: white;
@@ -196,10 +239,10 @@ body.internal-fsb-mode-coding {
     background-color: white;
   }
   55% {
-    background-color: black;
+    background-color: #444444;
   }
   100% {
-    background-color: black;
+    background-color: #444444;
   }
 }
 
@@ -232,7 +275,7 @@ body.internal-fsb-mode-coding {
         background-color: white;
         width: #{$selected-element-resizer-size}px;
         height: #{$selected-element-resizer-size}px;
-        border: solid 1px rgb(0, 0, 255);
+        outline: solid 1px rgb(0, 0, 255);
       }
       
       &.t { top: 0 !important; left: 50%; cursor: n-resize; }
@@ -247,12 +290,23 @@ body.internal-fsb-mode-coding {
   }
 }
 
+.internal-fsb-inheriting-element,
+.internal-fsb-element {
+	&.internal-fsb-selecting {
+		outline: dashed 2px rgba(0, 0, 255, 0.5);
+	}
+}
+
 .internal-fsb-strict-layout {
 	> .internal-fsb-inheriting-element,
   > .internal-fsb-element {
     > .internal-fsb-resizer {
       display: block;
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 
@@ -264,10 +318,14 @@ body.internal-fsb-mode-coding {
       
       span {
         &::before {
-          border: solid 1px rgb(0, 255, 0);
+          outline: solid 1px rgb(0, 255, 0);
         }
       }
     }
+    
+    &.internal-fsb-selecting {
+			outline: none;
+		}
   }
 }
 
@@ -314,11 +372,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -335,11 +393,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-sm-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -356,11 +414,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-md-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -377,11 +435,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-lg-none {
-        border: solid 1px rgb(255, 0, 0);
+        outline: solid 1px rgb(255, 0, 0);
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }
@@ -398,11 +456,11 @@ html.internal-fsb-guide-on {
     .internal-fsb-strict-layout > .internal-fsb-element,
     .internal-fsb-absolute-layout > .internal-fsb-element {
       &.d-xl-none {
-        border: solid 1px red;
+        outline: solid 1px red;
         > .internal-fsb-resizer {
           span {
             &::before {
-              border: solid 1px rgb(255, 0, 0);
+              outline: solid 1px rgb(255, 0, 0);
             }
           }
         }

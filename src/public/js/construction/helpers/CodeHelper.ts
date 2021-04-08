@@ -1,4 +1,7 @@
-import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX} from '../Constants';
+import {TextHelper} from './TextHelper';
+import {RandomHelper} from './RandomHelper';
+import {HTMLHelper} from './HTMLHelper';
+import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../Constants';
 
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
@@ -117,7 +120,11 @@ var CodeHelper = {
   		return object;
   	} else if ((typeof object === 'object') && object != null) {
   		let keys = Object.keys(object);
-  		keys.sort();
+  		keys.sort((a, b) => {
+  			if (a.indexOf('__') == 0 && b.indexOf('__') != 0) return 1;
+  			else if (b.indexOf('__') == 0 && a.indexOf('__') != 0) return -1;
+  			else return (a < b) ? -1 : 1;
+  		});
   		
   		let result = {};
   		for (let key of keys) {
@@ -153,6 +160,63 @@ var CodeHelper = {
   		return result;
   	}
   },
+  replaceCamelIntoDashCase: (camelCase: string): string => {
+  	if (camelCase.indexOf('internal-fsb-') != -1) return camelCase;
+  	if (camelCase.indexOf('data-') == 0) return camelCase;
+  	if (CAMEL_OF_EVENTS_DICTIONARY[camelCase.toLowerCase()]) return camelCase;
+  	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(camelCase.toLowerCase()) != -1) return camelCase;
+  	
+  	return TextHelper.trim(camelCase.replace(/[A-Z]/g, token => `-${token.toLowerCase()}`), '-');
+  },
+  replaceDashIntoCamelCase: (dashCase: string): string => {
+  	if (dashCase.indexOf('internal-fsb-') != -1) return dashCase;
+  	if (dashCase.indexOf('data-') == 0) return dashCase;
+  	if (CAMEL_OF_EVENTS_DICTIONARY[dashCase.toLowerCase()]) return dashCase;
+  	if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(dashCase.toLowerCase()) != -1) return dashCase;
+  	
+  	return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
+  },
+  preparePastingContent: (html: string, cut: boolean=false): string => {
+  	let contentHolder = document.createElement('div');
+  	contentHolder.innerHTML = html;
+  	
+  	CodeHelper.recursivePreparePastingContent(contentHolder, cut);
+  	
+  	return contentHolder.innerHTML;
+  },
+  recursivePreparePastingContent: (current: any, cut: boolean=false, isContainingInComponent: boolean=false) => {
+  	if (!cut && HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
+  		const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
+  		
+  		const classes = (current.className || '').split(' ');
+  		for (let classname of classes) {
+  			if (classname.indexOf('-fsb-preset-') == 0) {
+  				HTMLHelper.removeClass(current, '-fsb-preset-' + guid);
+  			}
+  		}
+  		
+  		HTMLHelper.addClass(current, '-fsb-preset-' + guid);
+  		
+  		let _inlineStyle = HTMLHelper.getAttribute(current, 'style') || '';
+  		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, '-fsb-inherited-presets', '');
+      HTMLHelper.setAttribute(current, 'style', _inlineStyle);
+      
+  		HTMLHelper.removeAttribute(current, 'internal-fsb-reusable-preset-name');
+  	}
+  	
+  	if (!cut && !isContainingInComponent && HTMLHelper.hasAttribute(current, 'internal-fsb-guid')) {
+  		HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
+  	}
+  	
+  	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
+  		current.remove();
+  		return; 
+  	}
+  	
+  	for (let element of current.children) {
+  		CodeHelper.recursivePreparePastingContent(element, cut, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
+  	}
+  }
 };
 
 export {CodeHelper};

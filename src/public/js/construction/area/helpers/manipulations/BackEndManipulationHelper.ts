@@ -242,8 +242,10 @@ var BackEndManipulationHelper = {
       // Install capabilities
       // 
       CapabilityHelper.installCapabilitiesForInternalElements(element);
+      
+      if (!link) link = Math.random();
       promise.then(() => {
-        ManipulationHelper.perform('select', content.guid);
+        ManipulationHelper.perform('select', content.guid, true, false, link);
       });
       
       // Insert the element before the cursor.

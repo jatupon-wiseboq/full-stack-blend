@@ -55,6 +55,10 @@ div(internal-fsb-for="editingAnimationID")
         | Easing Function
       .section-body
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['animation-easing-fn-1', '-fsb-animation-easing-fn']}")
+      .section-subtitle
+        | Timing
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingStyleNames: ['-fsb-animation-keyframe-time'], float: true, inline: true, button: false}")
       .section-hr
   .section-container.internal-fsb-selecting-on
     .section-title
@@ -118,6 +122,7 @@ div(internal-fsb-for="editingAnimationID")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpagehide'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpageshow'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpopstate'], mode: 'animation'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbready'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbresize'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstorage'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbunload'], mode: 'animation'}")
@@ -140,9 +145,9 @@ div(internal-fsb-for="editingAnimationID")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsearch'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbselect'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmit'], mode: 'animation'}")
-    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video")
       | Media
-    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbabort'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplay'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplaythrough'], mode: 'animation'}")
@@ -167,7 +172,7 @@ div(internal-fsb-for="editingAnimationID")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange'], mode: 'animation'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting'], mode: 'animation'}")
     .section-note
-      | These will generating event boilerplates in the current folding react component.
+      | These will generating event boilerplates in the current folding react component binding to the selecting element, except events in the document group will bind directly to the document element.
   .internal-fsb-selecting-off
     include ../../common/empty
 div(internal-fsb-not-for="editingAnimationID")

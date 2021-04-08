@@ -88,10 +88,10 @@ import {EditorHelper} from './helpers/EditorHelper';
   window.generateFrontEndCodeForCurrentPage = (() => {
   	return WorkspaceHelper.generateFrontEndCodeForCurrentPage();
   });
-  window.generateFrontEndCodeForAllPages = (() => {
+  window.generateFrontEndCodeForAllPages = ((autoSwitch) => {
     return WorkspaceHelper.generateFrontEndCodeForAllPages();
   });
-  window.generateBackEndCodeForAllPages = (() => {
+  window.generateBackEndCodeForAllPages = ((autoSwitch) => {
     return WorkspaceHelper.generateBackEndCodeForAllPages();
   });
   window.getCommonExpandingFeatureScripts = (() => {

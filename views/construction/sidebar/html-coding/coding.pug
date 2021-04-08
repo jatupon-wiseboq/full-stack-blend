@@ -67,10 +67,10 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
         | Real-time Update
       .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-wizard-real-time-update', 'internal-fsb-data-wizard-real-time-update']}")
-      .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
-        | Retrieve Into
-      .section-body(internal-fsb-for="internal-fsb-data-wizard-type:retrieve")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-retrieve-into'], inline: true, button: false}")
+      .section-subtitle
+        | Manipulate Into
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false}")
     .section-hr
   div
     .section-container(internal-fsb-for="hasParentReactComponent")
@@ -210,6 +210,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpagehide'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpageshow'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbpopstate'], mode: 'coding'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbready'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbresize'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbstorage'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbunload'], mode: 'coding'}")
@@ -228,13 +229,14 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbfocus'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinput'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinvalid'], mode: 'coding'}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbready'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbreset'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsearch'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbselect'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbsubmit'], mode: 'coding'}")
-    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video")
       | Media
-    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Movie")
+    .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbabort'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplay'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbcanplaythrough'], mode: 'coding'}")
@@ -259,7 +261,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbvolumechange'], mode: 'coding'}")
       +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbwaiting'], mode: 'coding'}")
     .section-note
-      | These will generating event boilerplates in the current folding react component.
+      | These will generating event boilerplates in the current folding react component binding to the selecting element, except events in the document group will bind directly to the document element.
     .section-hr
   .section-container
     .section-title
@@ -289,5 +291,13 @@ div(internal-fsb-for="internal-fsb-inheriting")
         | Hierarchical Dot Notation
       .section-body
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+      .section-hr
+    .section-container.internal-fsb-selecting-on
+      .section-title
+        | Front-End Custom Attributes
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
+      .section-note
+        | These can be both forwarding react properties or HTML tag attributes.
   div(internal-fsb-not-for="hasParentReactComponent")
     include ../../common/component-guide

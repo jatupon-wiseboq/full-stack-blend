@@ -68,6 +68,37 @@ interface Input {
   validation: ValidationInfo;
 }
 
+const fixType = (type: FieldType, value: any): any => {
+	if (value === undefined) return value;
+	if (value === null) return value;
+	
+	switch (type) {
+		case FieldType.AutoNumber:
+		case FieldType.Number:
+			if (typeof value !== 'number') {
+				return parseFloat(value.toString());
+			}
+			break;
+		case FieldType.String:
+			if (typeof value !== 'string') {
+				return value.toString();
+			}
+			break;
+		case FieldType.Boolean:
+			if (typeof value !== 'boolean') {
+				return value.toString() == 'true';
+			}
+			break;
+		case FieldType.DateTime:
+			if (!(value instanceof Date)) {
+				return new Date(value.toString());
+			}
+			break;
+	}
+	
+	return value;
+}
+
 const DatabaseHelper = {
 	getSourceType: (value: string): SourceType => {
 		switch (value) {
@@ -256,18 +287,18 @@ const DatabaseHelper = {
 			          } else {
 			            switch (schema.keys[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.keys[key].toString())))
+			                if (isNaN(parseFloat(`${row.keys[key]}`)))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.keys[key] = parseFloat(row.keys[key].toString());
+			                row.keys[key] = parseFloat(`${row.keys[key]}`);
 			                break;
 			              case FieldType.Boolean:
-			                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+			                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 			                break;
 			              case FieldType.String:
-			                row.keys[key] = row.keys[key].toString();
+			                row.keys[key] = `${row.keys[key]}`;
 			                break;
 			              case FieldType.DateTime:
-			                row.keys[key] = new Date(row.keys[key].toString());
+			                row.keys[key] = new Date(`${row.keys[key]}`);
 			                break;
 			            }
 			          }
@@ -279,18 +310,18 @@ const DatabaseHelper = {
 		          } else {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.keys[key].toString())))
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(row.keys[key].toString());
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                row.keys[key] = `${row.keys[key]}`;
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(row.keys[key].toString());
+		                row.keys[key] = new Date(`${row.keys[key]}`);
 		                break;
 		            }
 		          }
@@ -303,22 +334,43 @@ const DatabaseHelper = {
 		            switch (schema.keys[key].fieldType) {
 		              case FieldType.AutoNumber:
 		              case FieldType.Number:
-		                if (isNaN(parseFloat(row.keys[key].toString())))
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
 		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-		                row.keys[key] = parseFloat(row.keys[key].toString());
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
 		                break;
 		              case FieldType.Boolean:
-		                row.keys[key] = (row.keys[key].toString() === "true" || row.keys[key].toString() === "1");
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                row.keys[key] = `${row.keys[key]}`;
 		                break;
 		              case FieldType.DateTime:
-		                row.keys[key] = new Date(row.keys[key].toString());
+		                row.keys[key] = new Date(`${row.keys[key]}`);
 		                break;
 		            }
 		          }
 			        break;
+			      case ActionType.Retrieve:
+			      	if (row.keys[key]) {
+				      	switch (schema.keys[key].fieldType) {
+		              case FieldType.AutoNumber:
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(`${row.keys[key]}`)))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+		                row.keys[key] = parseFloat(`${row.keys[key]}`);
+		                break;
+		              case FieldType.Boolean:
+		                row.keys[key] = (`${row.keys[key]}` === "true" || `${row.keys[key]}` === "1");
+		                break;
+		              case FieldType.String:
+		                row.keys[key] = `${row.keys[key]}`;
+		                break;
+		              case FieldType.DateTime:
+		                row.keys[key] = new Date(`${row.keys[key]}`);
+		                break;
+		            }
+		          }
+			      	break;
 			    }
 			  }
 			}
@@ -334,18 +386,18 @@ const DatabaseHelper = {
 			          	if (row.columns[key]) {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(row.columns[key].toString())))
+				                if (isNaN(parseFloat(`${row.columns[key]}`)))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(row.columns[key].toString());
+				                row.columns[key] = parseFloat(`${row.columns[key]}`);
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+				                row.columns[key] = `${row.columns[key]}`;
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(row.columns[key].toString());
+				                row.columns[key] = new Date(`${row.columns[key]}`);
 				                break;
 				            }
 				          }
@@ -359,18 +411,18 @@ const DatabaseHelper = {
 		          	if (row.columns[key]) {
 			            switch (schema.columns[key].fieldType) {
 			              case FieldType.Number:
-			                if (isNaN(parseFloat(row.columns[key].toString())))
+			                if (isNaN(parseFloat(`${row.columns[key]}`)))
 			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-			                row.columns[key] = parseFloat(row.columns[key].toString());
+			                row.columns[key] = parseFloat(`${row.columns[key]}`);
 			                break;
 			              case FieldType.Boolean:
-			                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+			                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 			                break;
 			              case FieldType.String:
-			                row.columns[key] = row.columns[key].toString();
+			                row.columns[key] = `${row.columns[key]}`;
 			                break;
 			              case FieldType.DateTime:
-			                row.columns[key] = new Date(row.columns[key].toString());
+			                row.columns[key] = new Date(`${row.columns[key]}`);
 			                break;
 			            }
 			          }
@@ -385,18 +437,18 @@ const DatabaseHelper = {
 				            switch (schema.columns[key].fieldType) {
 				              case FieldType.AutoNumber:
 				              case FieldType.Number:
-				                if (isNaN(parseFloat(row.columns[key].toString())))
+				                if (isNaN(parseFloat(`${row.columns[key]}`)))
 				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(row.columns[key].toString());
+				                row.columns[key] = parseFloat(`${row.columns[key]}`);
 				                break;
 				              case FieldType.Boolean:
-				                row.columns[key] = (row.columns[key].toString() === "true" || row.columns[key].toString() === "1");
+				                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+				                row.columns[key] = `${row.columns[key]}`;
 				                break;
 				              case FieldType.DateTime:
-				                row.columns[key] = new Date(row.columns[key].toString());
+				                row.columns[key] = new Date(`${row.columns[key]}`);
 				                break;
 				            }
 				          }
@@ -404,6 +456,26 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Delete:
+			      case ActionType.Retrieve:
+			      	if (row.columns[key]) {
+		            switch (schema.columns[key].fieldType) {
+		              case FieldType.AutoNumber:
+		              case FieldType.Number:
+		                if (isNaN(parseFloat(`${row.columns[key]}`)))
+		                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+		                row.columns[key] = parseFloat(`${row.columns[key]}`);
+		                break;
+		              case FieldType.Boolean:
+		                row.columns[key] = (`${row.columns[key]}` === "true" || `${row.columns[key]}` === "1");
+		                break;
+		              case FieldType.String:
+		                row.columns[key] = `${row.columns[key]}`;
+		                break;
+		              case FieldType.DateTime:
+		                row.columns[key] = new Date(`${row.columns[key]}`);
+		                break;
+		            }
+		          }
 			        break;
 			    }
 			  }
@@ -631,7 +703,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -684,12 +756,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 							
@@ -731,12 +803,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
 							  }
 							}
 						}
@@ -754,7 +826,6 @@ const DatabaseHelper = {
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'PUT');
-		    		
 		    		if (_column.length == 0) throw new Error(`Cannot perform PUT on RESTful group "${schema.group}".`);
 		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
@@ -801,7 +872,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -864,12 +935,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 							
@@ -910,12 +981,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
 							  }
 							}
 						}
@@ -975,7 +1046,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1029,12 +1100,12 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key)) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key)) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 						
@@ -1076,12 +1147,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
 							  }
 							}
 						}
@@ -1153,23 +1224,23 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 								  if (baseSchema.columns.hasOwnProperty(key) && record[key] != undefined) {
-								    row.columns[key] = record[key];
+								    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 								  }
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && record[key] != undefined) {
-								    row.keys[key] = record[key];
+								    row.keys[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 								  }
 								}
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session, Object.assign({}, row.columns, row.keys))) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session, Object.assign({}, row.columns, row.keys))) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1224,7 +1295,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false) => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates: boolean=false, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1287,12 +1358,12 @@ const DatabaseHelper = {
 						  	
 							  for (const key in baseSchema.columns) {
 		  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.columns[key] = record[key];
+		  					    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					for (const key in baseSchema.keys) {
 		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.keys[key] = record[key];
+		  					    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					
@@ -1336,12 +1407,12 @@ const DatabaseHelper = {
 							for (const _row of rows) {
 							  for (const key in baseSchema.columns) {
 								  if (baseSchema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete _row.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session, Object.assign({}, _row.columns, _row.keys))) delete _row.columns[key];
 								  }
 								}
 								for (const key in baseSchema.keys) {
 								  if (baseSchema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete _row.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session, Object.assign({}, _row.columns, _row.keys))) delete _row.keys[key];
 								  }
 								}
 							}
@@ -1402,7 +1473,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false) => {
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1449,13 +1520,13 @@ const DatabaseHelper = {
 						  
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = record[key];
+							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 							  }
 							}
 						  
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = record[key];
+							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 							  }
 							}
 						
@@ -1496,12 +1567,12 @@ const DatabaseHelper = {
 						
 						  for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.columns[key];
 							  }
 							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session, Object.assign({}, result.columns, result.keys))) delete result.keys[key];
 							  }
 							}
 						}

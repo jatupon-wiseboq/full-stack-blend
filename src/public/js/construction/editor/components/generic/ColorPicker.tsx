@@ -12,7 +12,8 @@ declare let perform: any;
 
 interface Props extends IProps {
     inline: boolean,
-    manual: boolean
+    manual: boolean,
+    hexMode: boolean
 }
 
 interface State extends IState {
@@ -29,7 +30,8 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     inline: false,
-    manual: false
+    manual: false,
+    hexMode: false
 });
 
 class ColorPicker extends Base<Props, State> {
@@ -57,13 +59,31 @@ class ColorPicker extends Base<Props, State> {
         this.refs.swatchPicker.setCurrentSwatchColor(rgba);
       	
       	if (!this.props.manual) {
-	        perform('update', {
-	            styles: [{
-	                name: this.props.watchingStyleNames[0].split('[')[0],
-	                value: rgba
-	            }],
-	            replace: this.props.watchingStyleNames[0]
-	        });
+	        	if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+	        			
+	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
+	        			
+	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+	        			
+	        			perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: composed
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+				        });
+        		} else {
+        				perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: rgba
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+			        	});
+        		}
 	      }
     }
     
@@ -92,11 +112,42 @@ class ColorPicker extends Base<Props, State> {
         });
         this.refs.colorPicker.setCurrentColor(color);
         
-        if (!this.props.manual) {
+	      if (!this.props.manual) {
+	      		if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+	        			let rgba = color;
+	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+	        			
+	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
+	        			
+	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+	        			
+	        			perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: composed
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+				        });
+        		} else {
+        				perform('update', {
+				            styles: [{
+				                name: this.props.watchingStyleNames[0].split('[')[0],
+				                value: color
+				            }],
+				            replace: this.props.watchingStyleNames[0]
+			        	});
+        		}
+	      }
+    }
+    
+    protected colorPickerOnUnset() {
+    		if (!this.props.manual) {
 	        perform('update', {
 	            styles: [{
 	                name: this.props.watchingStyleNames[0].split('[')[0],
-	                value: color
+	                value: null
 	            }],
 	            replace: this.props.watchingStyleNames[0]
 	        });
@@ -116,7 +167,7 @@ class ColorPicker extends Base<Props, State> {
                                 </div>
                                 <div className="section-subtitle">Color</div>
                                 <div className="section-body">
-                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.value} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.value} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
                                 </div>
                             </div>
                         </FullStackBlend.Controls.DropDownControl>
@@ -140,7 +191,7 @@ class ColorPicker extends Base<Props, State> {
                                 </div>
                                 <div className="section-subtitle">Color</div>
                                 <div className="section-body">
-                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]}  visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
                                 </div>
                             </div>
                         </FullStackBlend.Controls.DropDownControl>

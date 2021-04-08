@@ -178,14 +178,14 @@ var FrontEndManipulationHelper = {
       case 'Image':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '100px'})
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%'}, width: '100%')
             img
         `, element);
         break;
       case 'Video':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '150px'})
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '300px'})
             video
         `, element);
         break;
@@ -212,6 +212,18 @@ var FrontEndManipulationHelper = {
         
         isComponentInsertion = true;
         break;
+      case 'Pasteboard':
+      	element = document.createElement('div');
+        element.innerHTML = content.html;
+        element = element.firstElementChild;
+      	
+      	content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+        content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
+        
+        WorkspaceHelper.updateInheritingComponents(element);
+        
+        isComponentInsertion = true;
+      	break;
     }
     
     if (element !== null) {
@@ -223,8 +235,10 @@ var FrontEndManipulationHelper = {
       // Install capabilities
       // 
       CapabilityHelper.installCapabilitiesForInternalElements(element);
+      
+      if (!link) link = Math.random();
       promise.then(() => {
-        ManipulationHelper.perform('select', content.guid);
+        ManipulationHelper.perform('select', content.guid, true, false, link);
       });
       
       // Forwarding style to its children capability

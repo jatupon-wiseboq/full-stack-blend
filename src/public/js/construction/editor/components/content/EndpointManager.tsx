@@ -26,7 +26,7 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class EndpointManager extends Base<Props, State> {
-		protected state: State = {};
+    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
 
     constructor(props) {
@@ -41,12 +41,25 @@ class EndpointManager extends Base<Props, State> {
       if (!super.update(properties)) return;
     }
     
+    replaceShortcuts(textContent: any) {
+      textContent = textContent.replace(/(\@)(\{[^}]+\})([ ]*,[ ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, table) => {
+        try {
+          const createInputs = `RequestHelper.createInputs(${content})`;
+          if (!table) return createInputs;
+          else return `${createInputs}, ProjectConfigurationHelper.getDataSchema().tables[${table.split(',')[1].trim()}]`;
+        } catch(error) {
+          return match;
+        }
+      });
+      
+      return textContent;
+    }
     getRepresentativeName(key: string) {
-    	if (key == 'index') return key;
-    	else return `_${key}`;
+      if (key == 'index') return key;
+      else return `_${key}`;
     }
     getFeatureDirectoryPrefix(key: string) {
-    	let pages = this.state.extensionValues['pages'];
+      let pages = this.state.extensionValues['pages'];
       let editingPageID = key;
       pages = pages.filter(page => page.id == editingPageID);
       
@@ -55,23 +68,26 @@ class EndpointManager extends Base<Props, State> {
       
       return (path) ? path + '/' : '';
     }
+    getRootDirectory(key: string) {
+      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
+    }
     
     files: any = [];
     private create(path: string, content: string) {
       return new Promise((resolve) => {
         this.files.push({
           path: path,
-    			content: content
+          content: content
         });
         resolve();
       });
     }
     private commit() {
       let _files = this.files;
-  		this.files = [];
-  		return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
-  			files: _files
-  		})
+      this.files = [];
+      return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
+        files: _files
+      })
     }
     
     public save(cb) {
@@ -80,10 +96,10 @@ class EndpointManager extends Base<Props, State> {
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
-  		let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
-  		let constructionEditorData = this.generateWorkspaceData() || {};
-  		let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages();
-  		let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages();
+      let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
+      let constructionEditorData = this.generateWorkspaceData() || {};
+      let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages(true);
+      let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages(true);
       let nextProjectData = {};
       
       Object.assign(nextProjectData, {});
@@ -91,8 +107,8 @@ class EndpointManager extends Base<Props, State> {
       Object.assign(nextProjectData, constructionEditorData);
       
       let externalStylesheets = [];
-  		let externalScripts = [];
-  		let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+      let externalScripts = [];
+      let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
       for (let library of LIBRARIES) {
           if (selectedLibraries.indexOf(library.id) != -1) {
               if (library.production.stylesheets) {
@@ -115,61 +131,67 @@ class EndpointManager extends Base<Props, State> {
       
       let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
       for (let externalLibrary of externalLibraries) {
-			  if (!externalLibrary) continue;
-			  
-      	let splited = externalLibrary.split('#');
-      	if (splited[1] != 'footer') {
-      		if (splited[0].toLowerCase().indexOf('.css') != -1) {
-      			customHeaderExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
-      		} else {
-      			customHeaderExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
-      		}
-      	} else {
-      		if (splited[0].toLowerCase().indexOf('.css') != -1) {
-      			customFooterExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
-      		} else {
-      			customFooterExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
-      		}
-      	}
+        if (!externalLibrary) continue;
+        
+        let splited = externalLibrary.split('#');
+        if (splited[1] != 'footer') {
+          if (splited[0].toLowerCase().indexOf('.css') != -1) {
+            customHeaderExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+          } else {
+            customHeaderExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+          }
+        } else {
+          if (splited[0].toLowerCase().indexOf('.css') != -1) {
+            customFooterExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+          } else {
+            customFooterExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+          }
+        }
       }
       
       let combinedHTMLPageDict = {};
+      let globalCombinedStylesheet = '';
       let arrayOfCombinedExpandingFeatureScripts = [];
       for (let key in frontEndCodeInfoDict) {
         if (frontEndCodeInfoDict.hasOwnProperty(key)) {
           let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-      		[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = frontEndCodeInfoDict[key];
-		      
-		      let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
-		      
-		      if (combinedHTMLTags) combinedHTMLTags = combinedHTMLTags.replace(REGEX, '/uploaded');
-		      if (combinedMinimalFeatureScripts) combinedMinimalFeatureScripts = combinedMinimalFeatureScripts.replace(REGEX, '/uploaded');
-		      if (combinedExpandingFeatureScripts) combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(REGEX, '/uploaded');
-		      if (combinedFontTags) combinedFontTags = combinedFontTags.map((tag) => {
-		        return tag.replace(REGEX, '/uploaded');
-		      });
-		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
-		      if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
-		      
-		      if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
-		      else combinedInlineBodyStyle = '';
-	        
-	        let compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
-	        compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
-	        
-	        let pages = this.state.extensionValues['pages'];
-	        let editingPageID = key;
-	        pages = pages.filter(page => page.id == editingPageID);
-	        
-	        let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-	        let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-	        let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-	        let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-	        let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-	        
-	        combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
-	        
-          let combinedHTMLPage = `.
+          [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = frontEndCodeInfoDict[key];
+          
+          let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
+          
+          if (combinedHTMLTags) combinedHTMLTags = combinedHTMLTags.replace(REGEX, '/uploaded');
+          if (combinedMinimalFeatureScripts) combinedMinimalFeatureScripts = combinedMinimalFeatureScripts.replace(REGEX, '/uploaded');
+          if (combinedExpandingFeatureScripts) combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(REGEX, '/uploaded');
+          if (combinedFontTags) combinedFontTags = combinedFontTags.map((tag) => {
+            return tag.replace(REGEX, '/uploaded');
+          });
+          if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
+          if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
+          if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
+          
+          if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
+          else combinedInlineBodyStyle = '';
+          
+          let compiledCombinedMinimalFeatureScripts = '';
+          if (combinedMinimalFeatureScripts) {
+            compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
+            compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+          }
+          
+          let pages = this.state.extensionValues['pages'];
+          let editingPageID = key;
+          pages = pages.filter(page => page.id == editingPageID);
+          
+          let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+          let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+          let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+          let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+          let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+          
+          if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+          
+          if (pages && pages[0]) {
+          	let combinedHTMLPage = `.
   <!DOCTYPE html>
 html
   head
@@ -188,12 +210,7 @@ html
     meta(property="og:type" content=headers && headers.itemType || 'website')
     meta(property="og:description" content=headers && headers.description || '${description}')
     meta(property="og:locale" content=headers && headers.contentLocale || 'en_US')
-    link(rel="stylesheet" href="/css/embed.css")
-    ${externalStylesheets.join('\n    ')}
-    ${customHeaderExternalStylesheets.join('\n    ')}
-    ${customHeaderExternalScripts.join('\n    ')}
-    style(type="text/css").
-      ${combinedStylesheet}
+    include ${this.getRootDirectory(key)}_header.pug
   body${combinedInlineBodyStyle}
     ${combinedHTMLTags}
     script(type="text/javascript" src="/js/Embed.bundle.js")
@@ -202,40 +219,55 @@ html
     ${combinedFontTags.join('\n    ')}
     script(type="text/javascript").
       window.data = !{JSON.stringify(data)};
-    ${externalScripts.join('\n    ')}
-    ${customFooterExternalStylesheets.join('\n    ')}
-    ${customFooterExternalScripts.join('\n    ')}
-    script(type="text/javascript" src="/js/Site.bundle.js")
+    include ${this.getRootDirectory(key)}_footer.pug
 `
-          if (pages && pages[0]) {
-          	combinedHTMLPageDict[key] = combinedHTMLPage;
+            combinedHTMLPageDict[key] = combinedHTMLPage;
           }
-          arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
+          
+          if (combinedExpandingFeatureScripts) arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
         }
       }
+      
+      let combinedHeaderScripts = `
+link(rel="stylesheet" href="/css/embed.css")
+${externalStylesheets.join('\n')}
+${customHeaderExternalStylesheets.join('\n')}
+${customHeaderExternalScripts.join('\n')}
+style(type="text/css").
+  ${globalCombinedStylesheet}
+`;
+  let combinedFooterScripts = `
+${externalScripts.join('\n')}
+${customFooterExternalStylesheets.join('\n')}
+${customFooterExternalScripts.join('\n')}
+script(type="text/javascript" src="/js/Site.bundle.js")
+`;
       
       let arrayOfControllerScripts = [];
       for (let key in backEndControllerInfoDict) {
         if (backEndControllerInfoDict.hasOwnProperty(key)) {
-        	arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
-       	}
+          arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
+        }
       }
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
         this.createController(nextProjectData.globalSettings.pages, () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-          	this.createBackEndController(arrayOfControllerScripts, () => {
+            this.createBackEndController(arrayOfControllerScripts, () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
-              	
-              	let nextFrontEndComponentsBlobSHADict = Object.assign({}, nextProjectData.frontEndComponentsBlobSHADict || {});
-              	Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
-              	
-                this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
-                  this.create('../../project.stackblend', JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)).then(() => {
-                    this.commit().then(() => {
-                      cb(true);
-                    }).catch(() => {
-                      cb(false);
+                this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
+                  this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
+                    let nextFrontEndComponentsBlobSHADict = Object.assign({}, nextProjectData.frontEndComponentsBlobSHADict || {});
+                    Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
+                
+                    this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
+                      this.create('../../project.stackblend', JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)).then(() => {
+                        this.commit().then(() => {
+                          cb(true);
+                        }).catch(() => {
+                          cb(false);
+                        });
+                      });
                     });
                   });
                 });
@@ -245,8 +277,8 @@ html
         });
       });
     }
-   	createRoute(routes: string[], cb: any) {
-   	  this.create('../route.ts', `// Auto[Generating:V1]--->
+    createRoute(routes: string[], cb: any) {
+      this.create('../route.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import * as homeController from './controllers/Home';
@@ -261,29 +293,29 @@ export default route;
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-   	}
-   	createController(routes: string[], cb: any) {
-   	  this.create('./Home.ts', `// Auto[Generating:V1]--->
+    }
+    createController(routes: string[], cb: any) {
+      this.create('./Home.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-	new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
+  new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-   	}
-   	createView(inputDict: any, pages: any, cb: any) {
-   	  let keys = Object.keys(inputDict);
-   	  let nextViewDataSHADict = {};
-   	  
-   	  let process = ((index: number) => {
-   	    let page = pages.filter(page => page.id == keys[index]);
-   	    
-   	    this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
+    }
+    createView(inputDict: any, pages: any, cb: any) {
+      let keys = Object.keys(inputDict);
+      let nextViewDataSHADict = {};
+      
+      let process = ((index: number) => {
+        let page = pages.filter(page => page.id == keys[index]);
+        
+        this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
@@ -296,31 +328,32 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
             cb();
           }
         });
-   	  }).bind(this);
-   	  process(0);
- 	  }
-   	createFrontEndComponents(arrayOfContent: string[], cb: any) {
-   	  let nextFrontEndComponentsDataSHADict = {};
-   	  let mainprocess = ((mainIndex: number) => {
-     	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
-     	  if (results.length < 2) {
-     	    if (mainIndex + 1 < arrayOfContent.length) {
-     	      mainprocess(mainIndex + 1);
-     	    } else {
-     	      cb(nextFrontEndComponentsDataSHADict);
-     	    }
-     	  } else {
-       	  let subprocess = ((subIndex: number) => {
-       	    let tokens = results[subIndex].split("\n// <---Auto[File]");
-       	    
-       	    this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
+      }).bind(this);
+      if (keys.length > 0) process(0);
+      else cb(nextViewDataSHADict);
+    }
+    createFrontEndComponents(arrayOfContent: string[], cb: any) {
+      let nextFrontEndComponentsDataSHADict = {};
+      let mainprocess = ((mainIndex: number) => {
+        let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
+        if (results.length < 2) {
+          if (mainIndex + 1 < arrayOfContent.length) {
+            mainprocess(mainIndex + 1);
+          } else {
+            cb(nextFrontEndComponentsDataSHADict);
+          }
+        } else {
+          let subprocess = ((subIndex: number) => {
+            let tokens = results[subIndex].split("\n// <---Auto[File]");
+            
+            this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
-							nextFrontEndComponentsDataSHADict[tokens[0]] = '';
+              nextFrontEndComponentsDataSHADict[tokens[0]] = '';
 
               if (subIndex + 1 < results.length) {
                 subprocess(subIndex + 1);
@@ -330,30 +363,31 @@ ${tokens[1]}
                 cb(nextFrontEndComponentsDataSHADict);
               }
             });
-       	  }).bind(this);
-       	  subprocess(1);
-       	}
+          }).bind(this);
+          subprocess(1);
+        }
       }).bind(this);
-      mainprocess(0);
-   	}
-   	createBackEndController(arrayOfContent: string[], cb: any) {
-   	  let nextBackEndControllersDataSHAInfos = [];
-   	  let mainprocess = ((mainIndex: number) => {
-     	  let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
-     	  if (results.length < 2) {
-     	    if (mainIndex + 1 < arrayOfContent.length) {
-     	      mainprocess(mainIndex + 1);
-     	    } else {
-     	      cb();
-     	    }
-     	  } else {
-       	  let subprocess = ((subIndex: number) => {
-       	    let tokens = results[subIndex].split("\n// <---Auto[File]");
-       	    
-       	    this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
+      if (arrayOfContent.length != 0) mainprocess(0);
+      else cb(nextFrontEndComponentsDataSHADict);
+    }
+    createBackEndController(arrayOfContent: string[], cb: any) {
+      let nextBackEndControllersDataSHAInfos = [];
+      let mainprocess = ((mainIndex: number) => {
+        let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
+        if (results.length < 2) {
+          if (mainIndex + 1 < arrayOfContent.length) {
+            mainprocess(mainIndex + 1);
+          } else {
+            cb();
+          }
+        } else {
+          let subprocess = ((subIndex: number) => {
+            let tokens = results[subIndex].split("\n// <---Auto[File]");
+            
+            this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
-${tokens[1]}
+${this.replaceShortcuts(tokens[1])}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
@@ -365,14 +399,15 @@ ${tokens[1]}
                 cb();
               }
             });
-       	  }).bind(this);
-       	  subprocess(1);
-       	}
+          }).bind(this);
+          subprocess(1);
+        }
       }).bind(this);
-      mainprocess(0);
-   	}
-   	createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
- 	    this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
+      if (arrayOfContent.length != 0) mainprocess(0);
+      else cb();
+    }
+    createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
+      this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
@@ -387,24 +422,24 @@ declare let DataManipulationHelper: any;
 
 let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
 for (let expandingPlaceholder of expandingPlaceholders) {
-	let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
-	ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
-	expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
-	expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+  let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
+  ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
+  expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
+  expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
 }
 
 window.internalFsbSubmit = (guid: string, notation: string, event, callback: any) => {
-	DataManipulationHelper.request(guid, notation, event, callback);
+  DataManipulationHelper.request(guid, notation, event, callback);
 }
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-   	}
-   	generateWorkspaceData() {
-    	return {};
     }
-   	initializeWorkspaceData(data) {
-    	
+    generateWorkspaceData() {
+      return {};
+    }
+    initializeWorkspaceData(data) {
+      
     }
     
     render() {

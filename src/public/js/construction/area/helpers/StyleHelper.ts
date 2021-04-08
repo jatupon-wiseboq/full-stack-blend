@@ -31,18 +31,21 @@ var StyleHelper = {
   			
   			if (name.match(/^[0-9]+$/)) continue;
   			if (!style) continue;
-  			if (style === defaultStyle[name]) continue;
+  			if (style === defaultStyle[name] && name !== 'fontFamily' && name !== 'font-family') continue;
   			
 		  	nodes.push({
 					id: 'id',
-					customClassName: (style === defaultStyle[name]) ? 'original' : 'different',
+					customClassName: 'different', // (style === defaultStyle[name]) ? 'original' : 'different',
 					name: `${name}: ${style}`,
 					selectable: false,
 					dropable: false,
 					disabled: false,
 					selected: false,
 					nodes: [],
-					tag: null
+					tag: {
+						name: name,
+						style: style
+					}
 				});
 			}
   	}
@@ -59,12 +62,14 @@ var StyleHelper = {
   },
   getComputedStyle(element: HTMLElement) {
     var computedStyle;
+    
     if (typeof element.currentStyle != 'undefined') {
     	computedStyle = element.currentStyle;
     }
     else {
     	computedStyle = document.defaultView.getComputedStyle(element, null);
     }
+    
     return computedStyle;
 	}
 };

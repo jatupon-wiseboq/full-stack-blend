@@ -206,6 +206,22 @@
 							}
 						}
 					}
+					
+					&.selector {
+						> .treenode-container {
+							> .treenode-body {
+								.treenode-title {
+									&::before {
+										content: "\f245";
+										font-weight: 900;
+										font-family: "Font Awesome 5 Free";
+										top: 0px;
+										margin-right: 5px;
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}

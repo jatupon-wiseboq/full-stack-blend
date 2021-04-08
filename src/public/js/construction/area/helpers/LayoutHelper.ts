@@ -2,10 +2,12 @@ import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
+let cachedElementTreeNodesIncludeInheriting = null;
 
 var LayoutHelper = {
 	invalidate: function() {
 		cachedElementTreeNodes = null;
+		cachedElementTreeNodesIncludeInheriting = null;
 	},
   calculateColumnSize: function(width: number) {
     let selectingElement = EditorHelper.getSelectingElement();
@@ -27,10 +29,11 @@ var LayoutHelper = {
       return null;
     }
   },
-  getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
-  	if (container == document.body && cachedElementTreeNodes) return cachedElementTreeNodes;
+  getElementTreeNodes: function(includeInheriting: boolean=false, nodes: array=[], container: any=document.body) {
+  	if (container == document.body && !includeInheriting && cachedElementTreeNodes) return cachedElementTreeNodes;
+  	if (container == document.body && includeInheriting && cachedElementTreeNodesIncludeInheriting) return cachedElementTreeNodesIncludeInheriting;
   	if (!container.childNodes) return nodes;
-  	if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
+  	if (!includeInheriting && HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
   	
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
@@ -39,6 +42,7 @@ var LayoutHelper = {
   		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
   		let guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   		let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
+  		let presetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -47,15 +51,15 @@ var LayoutHelper = {
   			nodes.push({
   				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
   					',' + [...element.parentNode.childNodes].indexOf(element) : id,
-  				customClassName: (reactMode) ? 'is-react-component' : '',
+  				customClassName: (reactMode) ? 'is-react-component' : ((presetName) ? 'is-containing-preset' : ''),
   				name: (isTableLayoutCell) ? 'cell' : name,
   				selectable: !isTableLayoutCell,
   				dropable: (isTableLayoutCell ||
-  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1) &&
+  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label', 'Link'].indexOf(klass) != -1) &&
   					!HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
 					disabled: false,
 					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
-  				nodes: this.getElementTreeNodes([], element),
+  				nodes: this.getElementTreeNodes(includeInheriting, [], element),
   				tag: {
   				  class: klass,
   				  guid: guid,
@@ -63,10 +67,11 @@ var LayoutHelper = {
   				}
   			});
   		} else {
-  			this.getElementTreeNodes(nodes, element);
+  			this.getElementTreeNodes(includeInheriting, nodes, element);
   		}
   	}
-  	if (container == document.body) cachedElementTreeNodes = nodes;
+  	if (container == document.body && !includeInheriting) cachedElementTreeNodes = nodes;
+  	if (container == document.body && includeInheriting) cachedElementTreeNodesIncludeInheriting = nodes;
   	return nodes;
   },
   getElementOptions: function(element: HTMLElement) {

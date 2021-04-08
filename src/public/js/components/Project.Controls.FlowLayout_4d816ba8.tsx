@@ -68,8 +68,10 @@ class FlowLayout_4d816ba8 extends Base {
   }
   
   register() {
-    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, retrieveInto: null});
-    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, retrieveInto: null});
+    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
+        
+    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: null});
+    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: null});
   }
   // <---Auto[ClassBegin]
   
@@ -169,10 +171,10 @@ class FlowLayout_4d816ba8 extends Base {
                           Button.-fsb-preset-d7d59dd2.col-5.internal-fsb-allow-cursor.internal-fsb-element.offset-0(style={'FsbInheritedPresets': 'd7d59dd2', 'marginLeft': '15px', background: (()=>{return (this.state.currentTab == 1) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 1) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 1) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_875ac000.bind(this), internal-fsb-guid="875ac000")
                             .internal-fsb-element(internal-fsb-guid="875ac000-text")
                               | Signup
-                    .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="1b650e66")
-                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'width': '100%'}, placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
-                    .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="22d343bd")
-                      input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
+                    .-fsb-self-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="1b650e66")
+                      input.form-control.form-control-sm(placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
+                    .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="22d343bd")
+                      input.form-control.form-control-sm(style={'FsbInheritedPresets': '1b650e66', 'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
                     .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-guid="4729c240")
                       .container-fluid
                         .internal-fsb-allow-cursor.internal-fsb-strict-layout.row

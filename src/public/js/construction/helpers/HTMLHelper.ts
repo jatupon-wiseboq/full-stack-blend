@@ -15,8 +15,8 @@ var HTMLHelper = {
   getElementById: (id: string, container: HTMLElement=document) => {
     return container.getElementById(id);
   },
-  getElementByClassName: (className: string, container: HTMLElement=document) => { // return the last one
-    let elements = HTMLHelper.getElementsByClassName(className, container);
+  getElementByClassName: (className: string, container: HTMLElement=document, notToBeUnder: string=null) => { // return the last one
+    let elements = HTMLHelper.getElementsByClassName(className, container, notToBeUnder);
     if (elements.length != 0) { return elements[elements.length - 1]; }
     else { return null; }
   },

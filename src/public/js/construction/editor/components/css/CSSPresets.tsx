@@ -76,7 +76,7 @@ class CSSPresets extends Base<Props, State> {
 		        				
 		        				childNodes.push({
 		        					id: null,
-		        					name: childInfo.name.replace(/_/g, ' ') + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
+		        					name: childInfo.name.replace(/_/g, ' ') + ((childInfo.priority != 0) ? ' (' + childInfo.priority + ')' : '') + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
 		        					selectable: true,
 		                	disabled: true,
 		                	selected: chosen,
@@ -87,7 +87,7 @@ class CSSPresets extends Base<Props, State> {
 		        		
 		            nodes.push({
 		            		id: info.id,
-		                name: info.name.replace(/_/g, ' '),
+		                name: info.name.replace(/_/g, ' ') + ((info.priority != 0) ? ' (' + info.priority + ')' : ''),
 		                selectable: true,
 		                disabled: isItself,
 		                selected: chosen,
@@ -95,6 +95,10 @@ class CSSPresets extends Base<Props, State> {
 		            });
 		        }
       	}
+      	
+      	nodes.sort((a, b) => {
+      			return (a.name < b.name) ? -1 : 1;
+      	});
         
         this.state.nodes = nodes;
         

@@ -141,7 +141,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
             | Image
           a.dropdown-item(onclick='perform("insert", "Video")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
             i.fa.fa-file-movie-o
-            | Movie
+            | Video
       .dropdown(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 70px;')
           i.fa.fa-puzzle-piece.m-0
@@ -181,7 +181,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
             i.fa.fa-table
             | Table
           a.dropdown-item(onclick='perform("insert", "DocumentNotation")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Notation</b></p><p>Define a column of the table with choices of different characteristics of data, including, type, size, and limitation.</p>")
-            i.fa.fa-code-fork.fa-rotate-90
+            i.fa.fa-columns
             | Column
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
@@ -263,6 +263,10 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           i.fa.fa-code.font-weight-bold.m-0
           .title
             | Coding
+      a.btn.btn-sm.btn-light.mr-1(href="/account/settings", role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Settings</b></p><p>Use this to config the git repository, working branch name and alias.</p>", style='width: 50px;')
+        i.fa.fa-code-fork.m-0
+        .title
+          | Settings
       a.btn.btn-sm.btn-light(onclick="preview();", role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Play</b></p><p>Preview your pages and their animations right from the workspace area without leaving the editor.</p>", style='width: 50px;')
         i.fa.fa-play.m-0
         .title

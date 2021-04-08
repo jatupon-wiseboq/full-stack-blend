@@ -46,6 +46,12 @@ class Overlay extends React.Component<Props, State> {
       }
     }
     public renderAllRelations() {
+    	this._renderAllRelations();
+    	window.setTimeout((() => {
+    		this._renderAllRelations();
+    	}).bind(this), 1000);
+    }
+    private _renderAllRelations() {
       if (!this.state.enabled) return;
       
       let connections = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'Connection');

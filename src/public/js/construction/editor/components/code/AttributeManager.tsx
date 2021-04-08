@@ -68,7 +68,7 @@ class AttributeManager extends Base<Props, State> {
                 let value = hash[name];
                 this.state.nodes.push({
                     id: JSON.stringify({name: name, value: value}),
-                    name: name + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
+                    name: CodeHelper.replaceDashIntoCamelCase(name) + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
                     selectable: true,
                     dropable: false,
                     disabled: false,
@@ -89,11 +89,11 @@ class AttributeManager extends Base<Props, State> {
     		if (reference.id == 'delete') {
     		    let info = JSON.parse(element.id);
     		    
-    		    delete this.state.attributeValues[info.name];
+    		    delete this.state.attributeValues[CodeHelper.replaceCamelIntoDashCase(info.name)];
     		    
     		    perform('update', {
     		        attributes: [{
-    		            name: info.name,
+    		            name: CodeHelper.replaceCamelIntoDashCase(info.name),
     		            value: null
     		        }]
     		    });
@@ -126,7 +126,7 @@ class AttributeManager extends Base<Props, State> {
             let info = JSON.parse(node.id);
             
             this.setState({
-                name: info.name,
+                name: CodeHelper.replaceDashIntoCamelCase(info.name),
                 value: info.value
             });
         }
@@ -142,17 +142,17 @@ class AttributeManager extends Base<Props, State> {
     
     private addOnClick(event) {
         if (this.state.name && this.state.value) {
-            if (this.state.name.match(this.props.watchingAttributeNames[0]) == null) {
+            if (CodeHelper.replaceCamelIntoDashCase(this.state.name).match(this.props.watchingAttributeNames[0]) == null) {
                 this.state.nameInputFailedValidationMessage = "This is reserved for internal use.";
                 this.forceUpdate();
                 return EventHelper.cancel(event);
             }
-            /* if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(this.state.name.toLowerCase().trim()) != -1) {
+            /* if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(CodeHelper.replaceCamelIntoDashCase(this.state.name).trim()) != -1) {
                 this.state.nameInputFailedValidationMessage = "Please configure this attribute via user interface.";
                 this.forceUpdate();
                 return EventHelper.cancel(event);
             } */
-            if (CAMEL_OF_EVENTS_DICTIONARY[this.state.name.toLowerCase().trim()]) {
+            if (CAMEL_OF_EVENTS_DICTIONARY[CodeHelper.replaceCamelIntoDashCase(this.state.name).trim()]) {
                 this.state.nameInputFailedValidationMessage = "This is reserved for internal use.";
                 this.forceUpdate();
                 return EventHelper.cancel(event);
@@ -163,7 +163,7 @@ class AttributeManager extends Base<Props, State> {
           
             perform('update', {
     		        attributes: [{
-    		            name: this.state.name,
+    		            name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
     		            value: this.state.value
     		        }]
     		    });
@@ -176,7 +176,7 @@ class AttributeManager extends Base<Props, State> {
         if (this.state.name && this.state.value) {
             perform('update', {
     		        attributes: [{
-    		            name: this.state.name,
+    		            name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
     		            value: this.state.value
     		        }]
     		    });

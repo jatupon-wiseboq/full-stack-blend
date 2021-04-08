@@ -266,12 +266,14 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             if (value.event) {
             		if (code == '') code = MERGING_BOILERPLATE;
             	
+            		const target = (value['animation-at-element']) ? 'EventHelper.getCurrentElement(event)' : 'undefined';
+            	
             		let ACTIVE_ANIMATION = '';
             		if (value['add-animation-tracks']) {
-            				ACTIVE_ANIMATION += `\n    AnimationHelper.add(${JSON.stringify(value['add-animation-tracks'])});`;
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.add(${JSON.stringify(value['add-animation-tracks'])}, ${target});`;
             		}
             		if (value['remove-animation-tracks']) {
-            				ACTIVE_ANIMATION += `\n    AnimationHelper.remove(${JSON.stringify(value['remove-animation-tracks'])});`;
+            				ACTIVE_ANIMATION += `\n    AnimationHelper.remove(${JSON.stringify(value['remove-animation-tracks'])}, ${target});`;
             		}
             		
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {

@@ -85,6 +85,16 @@ class BorderStylePicker extends Base<Props, State> {
         });
     }
     
+    protected colorPickerOnUnset() {
+    		perform('update', {
+            styles: [{
+                name: this.props.watchingStyleNames[1],
+                value: null
+            }],
+            replace: this.props.watchingStyleNames[1]
+        });
+    }
+    
     protected colorPickerOnRequestHiding() {
         this.refs.dropdownControl.hide();
         this.refs.borderStyleDropdownList.hide();
@@ -125,7 +135,7 @@ class BorderStylePicker extends Base<Props, State> {
                                 </div>
 				                        <div className="section-subtitle">Border Color</div>
 				                        <div className="section-body">
-				                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+				                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
 				                        </div>
 				                    </div>
 				                </FullStackBlend.Controls.DropDownControl>
@@ -150,7 +160,7 @@ class BorderStylePicker extends Base<Props, State> {
                             </div>
 		                        <div className="section-subtitle">Border Color</div>
 		                        <div className="section-body">
-		                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+		                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
 		                        </div>
 		                    </div>
 		                </FullStackBlend.Controls.DropDownControl>

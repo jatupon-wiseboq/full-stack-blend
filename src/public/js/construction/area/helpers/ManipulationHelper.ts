@@ -26,6 +26,8 @@ let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
+let pasteboard: string = null;
+let isCutMode: boolean = false;
 
 function removeAllPresetReferences(presetId: string, link: string) {
 	// TODO: should iterate in all documents.
@@ -72,6 +74,7 @@ var ManipulationHelper = {
     let promise = new Promise((_resolve) => { resolve = _resolve; });
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
+    let recentSelectingElement = null;
     
     if (content && (typeof content === 'object') && content.link !== undefined) {
     	link = content.link;
@@ -82,58 +85,76 @@ var ManipulationHelper = {
     
     switch (name) {
       case 'select':
-      	if (link === false) link = Math.random();
-      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	recentSelectingElement = EditorHelper.getSelectingElement();
       	
-      	promise.then(() => {
-      		ManipulationHelper.perform('update', {
-	      		extensions: [{
-	      			name: 'editingKeyframeID',
-	      			value: null
-	      		}]
-	      	}, true, false, link);
-      	});
+      	link = link || Math.random();
+      	
+      	if (!recentSelectingElement || HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+      		[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      		
+	      	if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+		      	promise.then(() => {
+		      		ManipulationHelper.perform('update', {
+			      		extensions: [{
+			      			name: 'editingKeyframeID',
+			      			value: null
+			      		}]
+			      	}, true, false, link);
+		      	});
+		      }
+      	} else {
+      		remember = false;
+      	}
         break;
       case 'select[cursor]':
-      	name = 'select';
-      	link = Math.random();
-      	[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	recentSelectingElement = EditorHelper.getSelectingElement();
       	
-      	promise.then(() => {
-	      	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
-	      	if (element) {
-	      		let allowCursorElement = element.parentNode;
-	      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
-		      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
-		      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
-		          let theAllowCursorElement = allowCursorElement;
-		          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
-		      		
-		      		if (indexOfAllowCursorElement != -1) {
-		            let children = [...theAllowCursorElement.children];
-		            let index = [...theAllowCursorElement.children].indexOf(element);
-		            let cursorIndex = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
-		            
-		            if (cursorIndex == -1 || cursorIndex >= index) {
-		            	index += 1;
-		            }
-		            
-		            let walkPath = CursorHelper.createWalkPathForCursor(
-		            	HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
-		            	indexOfAllowCursorElement,
-		            	index);
-		            ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
-		          }
-	      		}
-	      	}
-	      }).then(() => {
-	      	ManipulationHelper.perform('update', {
-	      		extensions: [{
-	      			name: 'editingKeyframeID',
-	      			value: null
-	      		}]
-	      	}, true, false, link);
-	      });
+    		name = 'select';
+      	link = link || Math.random();
+      	
+      	if (!recentSelectingElement || HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+      		[accessory, remember, link] = ManipulationHelper.handleSelectElement(name, content, remember, promise, link);
+      	
+	      	promise.then(() => {
+		      	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
+		      	if (element) {
+		      		let allowCursorElement = element.parentNode;
+		      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
+			      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+			      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
+			          let theAllowCursorElement = allowCursorElement;
+			          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
+			      		
+			      		if (indexOfAllowCursorElement != -1) {
+			            let children = [...theAllowCursorElement.children];
+			            let index = [...theAllowCursorElement.children].indexOf(element);
+			            let cursorIndex = [...theAllowCursorElement.children].indexOf(Accessories.cursor.getDOMNode());
+			            
+			            if (cursorIndex == -1 || cursorIndex >= index) {
+			            	index += 1;
+			            }
+			            
+			            let walkPath = CursorHelper.createWalkPathForCursor(
+			            	HTMLHelper.getAttribute(referenceElement, 'internal-fsb-guid'),
+			            	indexOfAllowCursorElement,
+			            	index);
+			            ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
+			          }
+		      		}
+		      	}
+		      }).then(() => {
+	      		if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+				      ManipulationHelper.perform('update', {
+			      		extensions: [{
+			      			name: 'editingKeyframeID',
+			      			value: null
+			      		}]
+			      	}, true, false, link);
+			      }
+		      });
+		    } else {
+		    	remember = false;
+		    }
       	break;
       case 'insert':
         if (InternalProjectSettings.currentMode != 'data') {
@@ -159,6 +180,12 @@ var ManipulationHelper = {
         break;
       case 'delete':
       	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
+        break;
+      case 'delete[silence]':
+      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, false, true);
+        break;
+      case 'delete[cut]':
+      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, true);
         break;
       case 'table':
       	[accessory, remember, link, content] = ManipulationHelper.handleModifyTable(name, content, remember, promise, link);
@@ -221,7 +248,8 @@ var ManipulationHelper = {
 	    let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
 	    
 	    for (let element of elements) {
-	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+	    	if (HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') == 'Site' && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting') &&
+	    		(InternalProjectSettings.currentMode != 'popups' || !HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout'))) {
 	    		let reactNamespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
 	        let reactClass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class');
 	        let reactClassComposingInfoClassName = HTMLHelper.getAttribute(element, 'internal-fsb-class');
@@ -259,7 +287,7 @@ var ManipulationHelper = {
       let presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       
       if (EditorHelper.getEditorCurrentMode() == 'animation') {
-      	if (content.attributes) {
+      	if (content.attributes && !content.attributes.some(attribute => attribute.name == 'keyframe')) {
 	      	for (let attribute of content.attributes) {
 	          switch (attribute.name) {
 	          	case 'style':
@@ -334,6 +362,8 @@ var ManipulationHelper = {
                   StylesheetHelper.setStyleAttribute(selectingElement, '-fsb-reusable-name', nextReusablePresetName);
                 }
               }
+              
+              if (found) AnimationHelper.renderStylesheetElement();
               
               if (nextReusablePresetName) {
                 HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);
@@ -527,7 +557,7 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID'].indexOf(extension.name) != -1) {
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID', 'editingAnimationSelector'].indexOf(extension.name) != -1) {
               switch (extension.name) {
               	case 'animationGroupName':
 		          		accessory = {
@@ -599,6 +629,16 @@ var ManipulationHelper = {
 	                if (AnimationHelper.getAnimationGroup() != (extension.value || null)) found = true;
 	              	AnimationHelper.setAnimationGroup(extension.value);
 		            	break;
+		            case 'editingAnimationSelector':
+			            accessory = {
+	                  extensions: [{
+	                    name: extension.name,
+	                    value: AnimationHelper.getAnimationSelector()
+	                  }]
+	                };
+	                if (AnimationHelper.getAnimationSelector() != (extension.value || null)) found = true;
+	              	AnimationHelper.setAnimationSelector(extension.value);
+		            	break;
 		            case 'editingKeyframeID':
 			            accessory = {
 	                  extensions: [{
@@ -663,6 +703,7 @@ var ManipulationHelper = {
 	    if (found) StyleHelper.invalidate();
     	if (found) TimelineHelper.invalidate();
     	if (found) SchemaHelper.invalidate();
+    	if (found) Accessories.guide.invalidate();
       
       if (remember && !found) {
         remember = false;
@@ -813,6 +854,25 @@ var ManipulationHelper = {
         CursorHelper.moveCursorDown();
         remember = false;
         break;
+      case 88:
+        if (isCtrlKeyActive || isCommandKeyActive) {
+        	let selectingElement = EditorHelper.getSelectingElement();
+        	pasteboard = selectingElement.outerHTML;
+        	isCutMode = true;
+        	
+          if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+            if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
+                HTMLHelper.hasClass(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-element')) {
+              ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-guid'));
+            } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+              ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+            }
+          } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+            ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+          }
+        }
+        remember = false;
+        break;
       case 8:
         {
           let selectingElement = EditorHelper.getSelectingElement();
@@ -865,6 +925,32 @@ var ManipulationHelper = {
         break;
       case 91:
         isCommandKeyActive = true;
+        remember = false;
+        break;
+      case 67:
+        if (isCtrlKeyActive || isCommandKeyActive) {
+        	let selectingElement = EditorHelper.getSelectingElement();
+        	pasteboard = selectingElement.outerHTML;
+        	isCutMode = false;
+        }
+        remember = false;
+        break;
+      case 86:
+        if ((isCtrlKeyActive || isCommandKeyActive) && pasteboard) {
+        	if (isCutMode) {
+        		ManipulationHelper.perform('insert', {
+	        		klass: 'Pasteboard',
+			        html: CodeHelper.preparePastingContent(pasteboard, true)
+	        	});
+        		pasteboard = null;
+        		isCutMode = false;
+        	} else {
+	        	ManipulationHelper.perform('insert', {
+	        		klass: 'Pasteboard',
+			        html: CodeHelper.preparePastingContent(pasteboard)
+	        	});
+	        }
+        }
         remember = false;
         break;
       case 90:
@@ -922,10 +1008,14 @@ var ManipulationHelper = {
     LayoutHelper.invalidate();
     TimelineHelper.invalidate();
     StyleHelper.invalidate();
+    
+    if (selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'TextElement') {
+    	ManipulationHelper.updateComponentData(selectingElement);
+    }
   	
   	return [accessory, remember, link];
   },
-  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any, cut: boolean=false, silence: boolean=false) => {
   	let accessory = null;
   	let shouldContinue = true;
   	let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
@@ -933,23 +1023,25 @@ var ManipulationHelper = {
   	let deletingKeyframe = EditorHelper.getEditorCurrentMode() == 'animation' && !!InternalProjectSettings.editingKeyframeID;
   	
   	if (!deletingKeyframe) {
-	  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
-	  		if (!confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
-	  			shouldContinue = false;
-	  		}
-	  	}
-	  	if (element) {
-	  		if (!confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
-	  			shouldContinue = false;
-	  		}
+  		if (!cut) {
+		  	if (element && HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name')) {
+		  		if (!silence && !confirm('Remove inheriting from the preset "' + HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name').replace(/_/g, ' ') + '"?')) {
+		  			shouldContinue = false;
+		  		}
+		  	}
+		  	if (element) {
+		  		if (!silence && !confirm('Are you sure you want to delete "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+		  			shouldContinue = false;
+		  		}
+		  	}
 	  	}
 	  } else {
 	  	if (element) {
-	  		if (!confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
+	  		if (!silence && !confirm('Are you sure you want to delete a keyframe of "' + HTMLHelper.getAttribute(element, 'internal-fsb-name') + '"?')) {
 	  			shouldContinue = false;
 	  		}
 	  	}
-	  }
+		}
   	
   	accessory = {
   	  element: element,
@@ -958,12 +1050,14 @@ var ManipulationHelper = {
   	
     if (shouldContinue && element) {
     	if (!deletingKeyframe) {
-	    	link = Math.random();
-		  	promise.then(() => {
-		  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-					removeAllPresetReferences(presetId, link);
-					StylesheetHelper.removeStylesheetDefinition(presetId);
-				});
+    		if (!cut) {
+		    	link = Math.random();
+			  	promise.then(() => {
+			  		let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+						removeAllPresetReferences(presetId, link);
+						StylesheetHelper.removeStylesheetDefinition(presetId);
+					});
+				}
 				
 				let parentNode = element.parentNode;
 	      parentNode.removeChild(element);
@@ -1372,7 +1466,7 @@ var ManipulationHelper = {
 	    	case 'appendChild':
 	    	  switch (HTMLHelper.getAttribute(destination, 'internal-fsb-class')) {
 	      		case 'FlowLayout':
-	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination, 'internal-fsb-allow-cursor');
 	      			break;
 	      		case 'TableLayout':
 	      			let info = content.destination.split(':')[1].split(',');
@@ -1382,7 +1476,14 @@ var ManipulationHelper = {
 	      			destination = destination.firstElementChild.childNodes[row].childNodes[column];
 	      			break;
 	      		case 'AbsoluteLayout':
+	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination, 'internal-fsb-allow-cursor');
+	      			break;
+	      		case 'Label':
 	      			destination = HTMLHelper.getElementByClassName('internal-fsb-allow-cursor', destination);
+	      			break;
+	      		case 'Rectangle':
+	      		case 'Button':
+	      		case 'Link':
 	      			break;
 	      	}
 	    	default:
@@ -1447,10 +1548,12 @@ var ManipulationHelper = {
       
       switch (name) {
         case 'insert':
-          name = 'delete';
+          name = 'delete[silence]';
           content = accessory.guid;
           break;
         case 'delete':
+        case 'delete[silence]':
+        case 'delete[cut]':
           if (HTMLHelper.hasClass(accessory.container, 'internal-fsb-absolute-layout')) {
             accessory.container.appendChild(accessory.element);
           } else {

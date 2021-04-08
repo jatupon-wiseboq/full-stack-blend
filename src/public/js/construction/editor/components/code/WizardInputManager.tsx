@@ -24,7 +24,7 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
     watchingAttributeNames: ['internal-fsb-data-controls'],
-    watchingExtensionNames: ['elementTreeNodes']
+    watchingExtensionNames: ['elementTreeNodesIncludeInheriting']
 });
 
 class WizardInputManager extends Base<Props, State> {

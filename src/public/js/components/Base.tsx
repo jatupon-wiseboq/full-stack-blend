@@ -50,8 +50,8 @@ class Base extends React.Component {
     }).bind(this));
   }
   
-  public update(data: any, retrieveInto: string) {
-  	if (!retrieveInto) {
+  public update(data: any, manipulateInto: string) {
+  	if (!manipulateInto) {
 	  	const previous = this.state.data || this.props.data || {};
 	  	const next = Object.assign({}, previous, data || {})
 	  	
@@ -62,7 +62,7 @@ class Base extends React.Component {
 	      data: next
 	    });
 	  } else {
-	  	const premise = this.getDataFromNotation(retrieveInto);
+	  	const premise = this.getDataFromNotation(manipulateInto);
 	  	const previous = premise.relations || {};
 	  	const next = Object.assign({}, previous, data || {})
 	  	
@@ -93,6 +93,8 @@ class Base extends React.Component {
   public manipulate(guid: string, notation: string, results: any) {
     let {action, options} = DataManipulationHelper.getInfo(guid);
     let data = null;
+    
+    if (options.manipulateInto) notation = options.manipulateInto;
     
     switch (action) {
       case 'insert':
@@ -193,7 +195,7 @@ class Base extends React.Component {
         }
         break;
       case 'retrieve':
-        this.update(results, options.retrieveInto);
+        this.update(results, options.manipulateInto);
         break;
       case 'popup':
         let container = document.createElement('div');

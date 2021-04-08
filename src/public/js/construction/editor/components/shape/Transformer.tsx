@@ -15,7 +15,16 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-    mode: string
+    mode: string,
+    translateX: number,
+    translateY: number,
+    translateZ: number,
+    rotateX: number,
+    rotateY: number,
+    rotateZ: number,
+    scaleX: number,
+    scaleY: number,
+    scaleZ: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -86,6 +95,8 @@ class Transformer extends Base<Props, State> {
             this.currentTransform = null;
             this.currentMode = null;
             this.render3D();
+            
+            this.forceUpdate();
         }
     }
     
@@ -199,6 +210,24 @@ class Transformer extends Base<Props, State> {
         this.css3DElement.quaternion.copy(this.webGLMesh.quaternion);
         this.css3DElement.scale.copy(this.webGLMesh.scale);
         
+        const updatingState = {};
+        
+        if (this.state.translateX != this.webGLMesh.position.x) updatingState.translateX = this.webGLMesh.position.x;
+        if (this.state.translateY != this.webGLMesh.position.y) updatingState.translateY = this.webGLMesh.position.y;
+        if (this.state.translateZ != this.webGLMesh.position.z) updatingState.translateZ = this.webGLMesh.position.z;
+        
+        if (this.state.rotateX != this.webGLMesh.quaternion.x) updatingState.rotateX = this.webGLMesh.quaternion.x;
+        if (this.state.rotateY != this.webGLMesh.quaternion.y) updatingState.rotateY = this.webGLMesh.quaternion.y;
+        if (this.state.rotateZ != this.webGLMesh.quaternion.z) updatingState.rotateZ = this.webGLMesh.quaternion.z;
+        
+        if (this.state.scaleX != this.webGLMesh.scale.x) updatingState.scaleX = this.webGLMesh.scale.x;
+        if (this.state.scaleY != this.webGLMesh.scale.y) updatingState.scaleY = this.webGLMesh.scale.y;
+        if (this.state.scaleZ != this.webGLMesh.scale.z) updatingState.scaleZ = this.webGLMesh.scale.z;
+        
+        if (Object.keys(updatingState).length != 0) {
+        	this.setState(updatingState);
+        }
+        
         this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
         
         let cameraTransform = HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(this.css3DRenderer.domElement.firstElementChild, 'style'), 'transform');
@@ -246,7 +275,92 @@ class Transformer extends Base<Props, State> {
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
     
+    textboxOnUpdateTranslateX(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.position.x = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateTranslateY(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.position.y = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateTranslateZ(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.position.z = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateRotateX(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.quaternion.x = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateRotateY(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.quaternion.y = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateRotateZ(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.quaternion.z = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateScaleX(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.scale.x = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateScaleY(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.scale.y = number;
+    	
+    	this.render3D();
+    }
+    
+    textboxOnUpdateScaleZ(value: string) {
+    	let number = parseFloat(value);    	
+    	if (isNaN(number)) number = 0;
+    	
+    	this.webGLMesh.scale.z = number;
+    	
+    	this.render3D();
+    }
+    
     render() {
+    	const Textbox = FullStackBlend.Controls.Textbox;
+    	const floatingPointPreRegex = "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?";
+    	const floatingPointPostRegex = "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))";
+    	
       return (
         pug `
           div
@@ -275,6 +389,63 @@ class Transformer extends Base<Props, State> {
                     | Scale
                   button.btn.btn-sm.text-center.btn-light(onClick=this.optionOnClick.bind(this, 'reset'))
                     | Reset
+              div(style={display: this.state.mode == 'translate' ? 'block' : 'none', padding: '5px 24px'})
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | x:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.translateX preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateTranslateX.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | y:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.translateY preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateTranslateY.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | z:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.translateZ preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateTranslateZ.bind(this))
+              div(style={display: this.state.mode == 'rotate' ? 'block' : 'none', padding: '5px 24px'})
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | x:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.rotateX preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateRotateX.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | y:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.rotateY preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateRotateY.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | z:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.rotateZ preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateRotateZ.bind(this))
+              div(style={display: this.state.mode == 'scale' ? 'block' : 'none', padding: '5px 24px'})
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | x:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.scaleX preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateScaleX.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | y:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.scaleY preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateScaleY.bind(this))
+                .input-group.input-group-sm(style={padding: '3px 0 0 0'})
+                  .input-group-prepend
+                    .input-group-text(style={backgroundColor: '#f8f9fa'})
+                      | z:
+                  div(style={width: '100%'})
+                    Textbox(value=this.state.scaleZ preRegExp=floatingPointPreRegex postRegExp=floatingPointPostRegex borderRadiusOnLeft=true onUpdate=this.textboxOnUpdateScaleZ.bind(this))
         `
       )
     }

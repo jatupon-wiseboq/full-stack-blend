@@ -81,19 +81,24 @@
           .workspace-vertical-panel
             .workspace-tab-container
               .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(id='layers', onclick="swap('.sidebar-layers-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '85px'})
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(id='layers', onclick="swap('.sidebar-layers-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '85px'})
                   input(type='radio', name='options', checked=true)
                   | Layers
                 a.btn.btn-secondary.btn-sm.btn-light.text-secondary(id='computedStyle', onclick="swap('.sidebar-computed-style-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '130px'})
                   input(type='radio', name='options', checked=true)
                   | Computed Style
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(id='help', onclick="swap('.sidebar-help-panel', null, null, null, null, true)", data-toggle="tooltip", data-placement="bottom", data-html="true", style={width: '43px'})
+                  input(type='radio', name='options', checked=true)
+                  i.fa.fa-question-circle-o.ml-1
         .workspace-vertical-container.full-relative-size(internal-fsb-for="editing", style="display: none;")
           .workspace-vertical-panel
             .workspace-panel-container.scrollable
-              .panel.sidebar-layers-panel.active
+              .panel.sidebar-layers-panel
                 include html-common/layers/layers
               .panel.sidebar-computed-style-panel
                 include html-common/style/computed
+              .panel.sidebar-help-panel.active
+                include html-common/help/help
         .workspace-vertical-container.full-relative-size(internal-fsb-not-for="editing")
           .workspace-vertical-panel
             .workspace-panel-container

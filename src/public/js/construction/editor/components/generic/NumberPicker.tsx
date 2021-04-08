@@ -66,7 +66,7 @@ class NumberPicker extends Base<Props, State> {
         
         if (original !== null) {
             let isString = typeof original === 'string';
-            let value = (isString) ? parseInt(original) : null;
+            let value = (isString) ? parseFloat(original) : null;
             this.state.value = value;
         } else {
             this.state.value = '';

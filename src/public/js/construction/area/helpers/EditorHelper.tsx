@@ -35,7 +35,7 @@ let Accessories = {
   overlay: null
 };
 
-let editorCurrentMode: string = null;
+let editorCurrentMode: string = 'design';
 let cachedUpdateEditorProperties = {};
 let updateEditorPropertiesTimer = null;
 
@@ -218,7 +218,8 @@ var EditorHelper = {
 	      extensions: Object.assign({}, InternalProjectSettings, {
 	        isSelectingElement: false,
 	        hasParentReactComponent: false,
-	        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
+	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
+	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
 	        timelineTreeNodes: TimelineHelper.getElementTreeNodes(),
 	        schemataTreeNodes: SchemaHelper.getElementTreeNodes(),
 	        elementComputedStyleNodes: [],
@@ -267,7 +268,8 @@ var EditorHelper = {
         stylesheetDefinitionRevision: StylesheetHelper.getStylesheetDefinitionRevision(),
         animationDefinitionKeys: AnimationHelper.getStylesheetDefinitionKeys(),
         animationDefinitionRevision: AnimationHelper.getStylesheetDefinitionRevision(),
-        elementTreeNodes: LayoutHelper.getElementTreeNodes(),
+        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
+        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
 	      timelineTreeNodes: TimelineHelper.getElementTreeNodes(),
         schemataTreeNodes: SchemaHelper.getElementTreeNodes(),
         elementComputedStyleNodes: StyleHelper.getElementComputedStyleNodes(element),
@@ -343,6 +345,12 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
+    	if (Accessories.resizer.getDOMNode().parentNode != null) {
+    		HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
+    	}
+    	
+    	HTMLHelper.addClass(element, 'internal-fsb-selecting');
+    	
       element.appendChild(Accessories.resizer.getDOMNode());
       
       let current = element;
@@ -351,10 +359,13 @@ var EditorHelper = {
         		HTMLHelper.hasClass(current, 'container-fluid') ||
         		(HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
           current.insertBefore(Accessories.guide.getDOMNode(), current.firstElementChild);
+      		Accessories.guide.invalidate();
           break;
         }
         current = current.parentNode;
       }
+      
+      element.parentNode.insertBefore(Accessories.cursor.getDOMNode(), element.nextSibling);
       
       EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
@@ -367,6 +378,8 @@ var EditorHelper = {
   },
   deselect: () => {
     if (Accessories.resizer.getDOMNode().parentNode != null) {
+    	HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
+    	
       Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     }
     EditorHelper.synchronize("click", null);
@@ -413,6 +426,8 @@ var EditorHelper = {
   			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
     		break;
   	}
+    
+    Accessories.guide.invalidate();
   },
   getEditorCurrentMode: () => {
     return editorCurrentMode;
