@@ -372,8 +372,6 @@ const RequestHelper = {
   			division[j] = registers[j];
   		}
     }
-    
-    inputs.map((input) => { console.log(input.division, input.value); });
   }
 };
 
