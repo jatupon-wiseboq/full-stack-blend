@@ -783,7 +783,9 @@ import * as homeController from './controllers/Home';
 
 const route = (app: any) => {
 ${routes.map(route => ` app.get("${route.path}", homeController.${this.getRepresentativeName(route.id)});
- app.post("${route.path}", homeController.${this.getRepresentativeName(route.id)});`).join('\n')
+ app.post("${route.path}", homeController.${this.getRepresentativeName(route.id)});
+ app.put("${route.path}", homeController.${this.getRepresentativeName(route.id)});
+ app.delete("${route.path}", homeController.${this.getRepresentativeName(route.id)});`).join('\n')
 }
 }
 
