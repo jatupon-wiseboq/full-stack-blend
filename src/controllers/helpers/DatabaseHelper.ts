@@ -1464,7 +1464,7 @@ const DatabaseHelper = {
 		  					rows.push(row);
 							}
 						
-							results[baseSchema.group] = {
+							results[baseSchema.group] = results[baseSchema.group] || {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: rows,
