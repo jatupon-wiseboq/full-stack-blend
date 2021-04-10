@@ -261,7 +261,7 @@ const RequestHelper = {
 				const type = data.tables[group].keys[name] && data.tables[group].keys[name].fieldType ||
 					data.tables[group].columns[name] && data.tables[group].columns[name].fieldType;
 				
-				if (value === null) continue;
+				if (value === null) value = 'null';
 				if (typeof value === 'string') {
 					if (value == 'null') value = null;
 					else {

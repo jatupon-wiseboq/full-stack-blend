@@ -238,8 +238,9 @@ const DatabaseHelper = {
       next = DatabaseHelper.distinct(next);
       
       for (const nextSchema of schemata) {
-       	if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [])) {
-        	return false;
+        if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division) &&
+          !DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [])) {
+          return false;
         }
       }
       
@@ -588,15 +589,22 @@ const DatabaseHelper = {
           _appended.push(forwarding);
         }
 	      
-	      for (let row of table.rows) {
-	      	if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division)) {
-		      	for (const item of _appended) {
-		      		data.push(item);
-		      	}
-		      	
-		        DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise);
-		      }
-	      }
+        for (let row of table.rows) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division)) {
+            for (const item of _appended) {
+              data.push(item);
+            }
+            
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise);
+          }
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division)) {
+            for (const item of _appended) {
+              data.push(item);
+            }
+            
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise);
+          }
+        }
 	    }
 		}
 	},
