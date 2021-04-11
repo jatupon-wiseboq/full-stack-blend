@@ -168,6 +168,7 @@ ${rootScript}`;
         let reactClass = null;
         let reactID = null;
         let reactData = null;
+        let reactFieldDivision = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
@@ -348,6 +349,9 @@ ${rootScript}`;
               break;
             case 'internal-fsb-react-data':
               if (!!attribute.value) reactData = attribute.value;
+              break;
+            case 'internal-fsb-react-division':
+              if (!!attribute.value) reactFieldDivision = attribute.value;
               break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
@@ -544,7 +548,7 @@ ${rootScript}`;
           }
           
           let _attributes = _props || [];
-          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + '), data-fsb-index=' + dotNotationChar);
+          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
           if (reactData) _attributes.push('row=' + _nodeData);
@@ -560,7 +564,7 @@ ${rootScript}`;
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
-          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + '), data-fsb-index=' + dotNotationChar);
+          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {

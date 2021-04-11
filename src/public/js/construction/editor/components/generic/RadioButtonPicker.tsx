@@ -29,6 +29,7 @@ let options = {
     "data-wizard-cross-operation": CONSTANTS.CROSS_OPERATION_OPTIONS,
     "data-wizard-real-time-update": CONSTANTS.DATA_WIZARD_REAL_TIME_UPDATE,
     "data-value-source": CONSTANTS.DATA_VALUE_SOURCE_OPTIONS,
+    "internal-fsb-react-division": CONSTANTS.REACT_FIELD_DIVISION_OPTIONS,
     
     // Back-End Options
 		// 
