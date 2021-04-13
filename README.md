@@ -21,11 +21,12 @@ You might clone the repository and run it on your local machine for advanced deb
 9. run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
 10. run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
 11. run "npm install".
-12. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
-13. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
-14. From the terminal, run "git reset --hard & git pull".
-15. run "npm run build".
-16. run "npm run watch".
+12. Copy "dev.env" as ".env" and config the file.
+13. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
+14. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
+15. From the terminal, run "git reset --hard & git pull".
+16. run "npm run build".
+17. run "npm run watch".
 
 ## Running boilerplate on Heroku
 
