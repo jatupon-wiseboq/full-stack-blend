@@ -233,7 +233,7 @@ var WorkspaceHelper = {
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
       if (page == null) return;
       
-      document.body.outerHTML = page.body.join('\n');
+      WorkspaceHelper.replaceBodyOuterHTML(page.body.join('\n'));
       
       for (let key of BACKEND_DATA_EXTENSIONS) {
       	delete InternalProjectSettings[key];
@@ -241,11 +241,6 @@ var WorkspaceHelper = {
       		InternalProjectSettings[key] = page.extensions[key];
       	}
       }
-      
-      // The second head element did appear after setting content to the outerHTML of body element.
-      // Remove the extra one.
-      //
-      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       for (let key of BACKEND_DATA_EXTENSIONS) {
       	if (page.extensions.hasOwnProperty(key)) {
@@ -268,12 +263,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
-      document.body.outerHTML = (InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n');
-            
-      // The second head element did appear after setting content to the outerHTML of body element.
-      // Remove the extra one.
-      //
-      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
+    	WorkspaceHelper.replaceBodyOuterHTML((InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
@@ -282,12 +272,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
-      document.body.outerHTML = (InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n');
-            
-      // The second head element did appear after setting content to the outerHTML of body element.
-      // Remove the extra one.
-      //
-      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
+    	WorkspaceHelper.replaceBodyOuterHTML((InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
@@ -301,15 +286,10 @@ var WorkspaceHelper = {
       let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
       if (component == null) return;
       
-      document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
+      WorkspaceHelper.replaceBodyOuterHTML((DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
       document.body.firstElementChild.firstElementChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
       
       HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
-      
-      // The second head element did appear after setting content to the outerHTML of body element.
-      // Remove the extra one.
-      //
-      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
@@ -331,15 +311,10 @@ var WorkspaceHelper = {
       let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
       if (popup == null) return;
       
-      document.body.outerHTML = (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n');
+      WorkspaceHelper.replaceBodyOuterHTML((DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
       document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
       
-      HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID)
-      
-      // The second head element did appear after setting content to the outerHTML of body element.
-      // Remove the extra one.
-      //
-      if (HTMLHelper.getNextSibling(document.head).tagName == 'HEAD') HTMLHelper.getNextSibling(document.head).remove();
+      HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID);
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
@@ -468,6 +443,20 @@ var WorkspaceHelper = {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
       }
     }
+  },
+  replaceBodyOuterHTML: (html: string) => {
+    while(document.body.attributes.length > 0) document.body.removeAttribute(document.body.attributes[0].name);
+    
+    const container = document.createElement('div');
+    container.innerHTML = html.replace(/^\<body/, '<div').replace(/body\>$/, 'div>');
+    
+    while(container.firstChild.attributes.length > 0) {
+      document.body.setAttribute(container.firstChild.attributes[0].name, container.firstChild.attributes[0].value);
+      container.firstChild.removeAttribute(container.firstChild.attributes[0].name);
+    }
+    
+    while(document.body.children.length != 0) document.body.removeChild(document.body.firstChild);
+    while(container.firstChild.children.length != 0) document.body.appendChild(container.firstChild.firstChild);
   },
   removeComponentData: (id: string) => {
     delete InternalComponents[id];
