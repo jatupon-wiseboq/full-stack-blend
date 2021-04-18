@@ -78,6 +78,8 @@ class CSSPresets extends Base<Props, State> {
 		        					id: null,
 		        					name: childInfo.name.replace(/_/g, ' ') + ((childInfo.priority != 0) ? ' (' + childInfo.priority + ')' : '') + ((allInheritanceHash[childKey] && allInheritanceHash[childKey].length != 0) ? ' ...' : ''),
 		        					selectable: true,
+											insertable: true,
+											dragable: true,
 		                	disabled: true,
 		                	selected: chosen,
 		                	nodes: []
@@ -89,6 +91,8 @@ class CSSPresets extends Base<Props, State> {
 		            		id: info.id,
 		                name: info.name.replace(/_/g, ' ') + ((info.priority != 0) ? ' (' + info.priority + ')' : ''),
 		                selectable: true,
+										insertable: true,
+										dragable: true,
 		                disabled: isItself,
 		                selected: chosen,
 		                nodes: childNodes

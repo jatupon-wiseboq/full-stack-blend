@@ -197,6 +197,8 @@ var SchemaHelper = {
 					name: table.group,
 					selectable: false,
 					dropable: false,
+					insertable: true,
+					dragable: true,
 					disabled: false,
 					selected: false,
 					nodes: [{

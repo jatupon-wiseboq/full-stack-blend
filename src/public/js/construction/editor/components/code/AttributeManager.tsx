@@ -71,6 +71,8 @@ class AttributeManager extends Base<Props, State> {
                     name: CodeHelper.replaceDashIntoCamelCase(name) + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
                     selectable: true,
                     dropable: false,
+										insertable: true,
+										dragable: true,
                     disabled: false,
                     selected: false,
                     nodes: []

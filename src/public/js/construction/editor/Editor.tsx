@@ -225,7 +225,7 @@ let cachedUpdateEditorProperties = {};
 	      	}
 	      }
 	      if (content && content['extensions']) {
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {

@@ -46,6 +46,8 @@ class ExternalLibrariesChooser extends Base<Props, State> {
             		id: library.id,
                 name: library.name + ' ' + library.version,
                 selectable: true,
+								insertable: true,
+								dragable: true,
                 disabled: library.prerequisite,
                 selected: values.indexOf(library.id) != -1,
                 nodes: []

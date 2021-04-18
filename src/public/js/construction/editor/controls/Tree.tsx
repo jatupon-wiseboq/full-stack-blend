@@ -91,7 +91,7 @@ class Tree extends React.Component<IProps, IState> {
 				let middleRegion = MathHelper.createRegion(MathHelper.createPoint(0, size[1] / 3.0, position), MathHelper.createPoint(size[0], size[1] * 2.0 / 3.0, position));
 				let bottomRegion = MathHelper.createRegion(MathHelper.createPoint(0, size[1] * 2.0 / 3.0, position), MathHelper.createPoint(size[0], size[1], position));
 				
-				if (node.selectable && MathHelper.inRegion(topRegion, point)) {
+				if (node.selectable && node.insertable && MathHelper.inRegion(topRegion, point)) {
 					node.insert = InsertDirection.TOP;
 					
 					this.state.currentInsertingReferenceNode = node;
@@ -107,7 +107,7 @@ class Tree extends React.Component<IProps, IState> {
 					
 					changed = true;
 					break;
-				} else if (node.selectable && MathHelper.inRegion(bottomRegion, point)) {
+				} else if (node.selectable && node.insertable && MathHelper.inRegion(bottomRegion, point)) {
 					node.insert = InsertDirection.BOTTOM;
 					
 					this.state.currentInsertingReferenceNode = node;

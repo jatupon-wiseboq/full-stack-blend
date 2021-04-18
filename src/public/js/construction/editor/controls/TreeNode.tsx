@@ -122,6 +122,7 @@ class TreeNode extends React.Component<IProps, IState> {
 			let originalElement = EventHelper.getCurrentElement(event);
 			
 			let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
+    	if (!node.dragable) return;
 			if (this.props.draggableAfterSelected && (!node.selectable || !node.selected)) return;
 			
 			this.originalElement = originalElement;
@@ -231,7 +232,7 @@ class TreeNode extends React.Component<IProps, IState> {
           {this.props.nodes.map((node, index) => {
             return (
               <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '') + (this.recursiveCheckForContaining(node) ? ' contained' : '')} id={node.id}>
-                <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "")}>
+                <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "") + (node.dragable ? " dragable" : "")}>
                 	{(() => {
                     if (this.props.extendingControl) {
                     	const ExtendingControl = this.props.extendingControl;

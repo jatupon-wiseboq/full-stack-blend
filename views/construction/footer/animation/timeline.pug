@@ -1,9 +1,12 @@
 include ../../mixin/CreateReactComponent
 .workspace-decoration-top-horizontal-line
-div(internal-fsb-not-for="internal-fsb-inheriting")
-  .timeline(internal-fsb-for="editingAnimationID")
-    +CreateReactComponent('FullStackBlend.Components.TimelineManager')
-  .timeline(internal-fsb-not-for="editingAnimationID")
-    include ../../common/empty
-div(internal-fsb-for="internal-fsb-inheriting")
-  include ../../common/component-guide
+div(internal-fsb-not-for="isTableLayoutRow:true")
+  div(internal-fsb-not-for="internal-fsb-inheriting")
+    .timeline(internal-fsb-for="editingAnimationID")
+      +CreateReactComponent('FullStackBlend.Components.TimelineManager')
+    .timeline(internal-fsb-not-for="editingAnimationID")
+      include ../../common/empty
+  div(internal-fsb-for="internal-fsb-inheriting")
+    include ../../common/puzzle
+div(internal-fsb-for="isTableLayoutRow:true")
+  include ../../common/puzzle
