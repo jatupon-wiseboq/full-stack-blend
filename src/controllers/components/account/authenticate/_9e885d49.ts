@@ -326,8 +326,7 @@ class Controller extends Base {
     RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 		RequestHelper.registerInput('1b650e66', "document", "User", "email");
 		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email");
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '1b650e66' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '1b650e66')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
       // 
@@ -336,8 +335,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('22d343bd', "document", "User", "password");
 		ValidationHelper.registerInput('22d343bd', "Textbox 2", true, "Please enter your password");
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '22d343bd' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '22d343bd')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
       // 
@@ -346,8 +344,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
 		ValidationHelper.registerInput('d3de6c93', "Textbox 3", true, "Please confirm your password");
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, 'd3de6c93' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, 'd3de6c93')) {
     
       // Override data parsing and manipulation of Textbox 3 here:
       // 
