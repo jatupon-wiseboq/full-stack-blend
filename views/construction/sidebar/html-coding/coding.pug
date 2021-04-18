@@ -307,4 +307,22 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
     div(internal-fsb-not-for="hasParentReactComponent")
       include ../../common/puzzle
 div(internal-fsb-for="isTableLayoutRow:true")
-  include ../../common/puzzle
+  .section-container(internal-fsb-for="hasParentReactComponent")
+    .section-title
+      | Front-End Data Binding
+    .section-subtitle
+      | Hierarchical Dot Notation
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+    .section-subtitle
+      | Paging Size
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['internal-fsb-react-paging'], inline: true, button: false}")
+    .section-subtitle
+      | Field Division
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-division'], inline: true, button: false}")
+    .section-note
+      | Having an automatic generated hierarchical data, the notation extends from its parent, and non-leaf node makes it repeating.
+  div(internal-fsb-not-for="hasParentReactComponent")
+    include ../../common/puzzle
