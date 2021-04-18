@@ -407,7 +407,6 @@ var EditorHelper = {
     }
   },
   getSelectingElement: () => {
-  	debugger;
   	if (Accessories.resizer == null) return null;
   	
     let current = Accessories.resizer.getDOMNode();

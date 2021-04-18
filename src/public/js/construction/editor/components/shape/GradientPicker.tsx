@@ -98,6 +98,9 @@ class GradientPicker extends Base<Props, State> {
                         });
                     }
                     
+                    this.state.degree = parseFloat(match[2]);
+                    if (isNaN(this.state.degree)) this.state.degree = 90;
+                    
                     this.forceUpdate();
                 }
             }
@@ -212,8 +215,7 @@ class GradientPicker extends Base<Props, State> {
     }
     
     render() {
-      let match = this.props.value && this.props.value.match(/([0-9]+)deg/) || null
-      let rotationPicker = (<FullStackBlend.Controls.Textbox placeholder="rotation" value={match && match[1] || '90'} preRegExp="([1-3]|[1-2][0-9]|[1-2][0-9][0-9]|3[0-5]|3[0-5][0-9]|360|[0-9]|[1-9][0-9])?" postRegExp="[0-9]*" onUpdate={this.rotationPickerOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>);
+      let rotationPicker = (<FullStackBlend.Controls.Textbox placeholder="rotation" value={this.state.degree} preRegExp="([1-3]|[1-2][0-9]|[1-2][0-9][0-9]|3[0-5]|3[0-5][0-9]|360|[0-9]|[1-9][0-9])?" postRegExp="[0-9]*" onUpdate={this.rotationPickerOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>);
       
       return (
         pug `
