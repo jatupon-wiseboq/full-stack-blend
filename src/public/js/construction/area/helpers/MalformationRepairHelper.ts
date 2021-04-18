@@ -22,6 +22,10 @@ var MalformationRepairHelper = {
     		if (currentConcatenatedClasses != internalConcatenatedClasses) {
     			elements[j].setAttribute('class', internalConcatenatedClasses);
     		}
+    		
+    		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-selecting')) {
+    			HTMLHelper.removeClass(elements[j], 'internal-fsb-selecting');
+    		}
     	}
       
       elements[j].children && MalformationRepairHelper.recursiveRepair(elements[j].children);
