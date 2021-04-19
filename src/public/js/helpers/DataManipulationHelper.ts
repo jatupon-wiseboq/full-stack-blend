@@ -90,7 +90,7 @@ const DataManipulationHelper = {
           let indexes = [];
           let parent = element.parentNode;
           
-          while (parent != document) {
+          while (parent != document && parent != current) {
             if (HTMLHelper.hasAttribute(parent, 'data-fsb-index')) {
               indexes.push(HTMLHelper.getAttribute(parent, 'data-fsb-index'));
             }
