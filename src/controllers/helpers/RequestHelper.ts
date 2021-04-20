@@ -243,6 +243,21 @@ const RequestHelper = {
 	},
 	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
 		const results = [];
+		const _values = {};
+		
+		for (const key in values) {
+			if (values.hasOwnProperty(key)) {
+				if (values[key] != null && typeof values[key] == 'object') {
+					const firstKey = Object.keys(values[key])[0];
+					if (firstKey.match(/^[0-9,]+$/)) {
+						_values[key + '[' + firstKey + ']'] = values[key][firstKey];
+					}
+				}
+				else _values[key] = values[key];
+			}
+		}
+		
+		values = _values;
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
@@ -252,7 +267,7 @@ const RequestHelper = {
 				const name = splited.pop() || null;
 				const group = splited.pop() || null;
 				const premise = splited.join('.') || null;
-		
+				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
 				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
 				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
@@ -278,7 +293,7 @@ const RequestHelper = {
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
 			  		validation: null
@@ -307,7 +322,7 @@ const RequestHelper = {
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
 			  		validation: null
