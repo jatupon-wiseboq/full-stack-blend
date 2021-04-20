@@ -372,6 +372,15 @@ const RequestHelper = {
   			division[j] = registers[j];
   		}
     }
+    
+	  let concurring = 0;
+	  while (multiple[concurring] === false) concurring++;
+	  
+	  for (let i=0; i<inputs.length; i++) {
+	  	const division = inputs[i].division;
+	  	
+	  	division = division.splice(0, concurring);
+	  }
   }
 };
 
