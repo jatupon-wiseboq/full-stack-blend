@@ -322,7 +322,18 @@ const RequestHelper = {
 	},
   sortInputs: (inputs: Input[]) => {
     for (const input of inputs) {
-      input.division = input.division && input.division.length != 0 && input.division || [0];
+      input.division = input.division || [];
+    }
+    
+    let foundEmptied = false;
+    for (let i=0; i<inputs.length; i++) {
+      foundEmptied = foundEmptied || (inputs[i].division.length == 0);
+    }
+    
+    if (foundEmptied) {
+      for (let i=0; i<inputs.length; i++) {
+        inputs[i].division.splice(0, 0, 0);
+      }
     }
     
     inputs.sort((a, b) => {
@@ -347,6 +358,7 @@ const RequestHelper = {
     });
     
     const registers = [];
+    const multiple = [];
     let latest: string = null;
     let length = 0;
     
@@ -377,9 +389,7 @@ const RequestHelper = {
 	  while (multiple[concurring] === false) concurring++;
 	  
 	  for (let i=0; i<inputs.length; i++) {
-	  	const division = inputs[i].division;
-	  	
-	  	division = division.splice(0, concurring);
+	  	inputs[i].division.splice(0, concurring);
 	  }
   }
 };
