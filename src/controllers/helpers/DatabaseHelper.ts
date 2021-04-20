@@ -121,24 +121,30 @@ const DatabaseHelper = {
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
 	},
-  distinct: (data: Input[]): Input[] => {
-    const results = [];
+  distinct: (data: Input[]) => {
+    const remove = [];
     const hash = {};
-    for (const item of data) {
-      if (!hash[`${item.premise}:${item.target}:${item.group}:${item.name}:${item.division.join(',')}`.toLowerCase()]) {
-        hash[`${item.premise}:${item.target}:${item.group}:${item.name}:${item.name}:${item.division.join(',')}`.toLowerCase()] = true;
-        results.push(item);
+    
+    for (const item of [...data].reverse()) {
+    	const key = `${item.premise}:${item.target}:${item.group}:${item.name}:${item.division.join(',')}`.toLowerCase();
+      if (!hash[key]) {
+        hash[key] = true;
+      } else {
+      	remove.push(item);
       }
     }
-    return results;
+    
+    for (const item of remove) {
+    	data.splice(data.indexOf(item), 1);
+    }
   },
   satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[]): boolean => {
   	if (data.length == 0) return false;
   	
   	data = CodeHelper.clone(data);
-    data = [...DatabaseHelper.distinct(data)];
+    DatabaseHelper.distinct(data);
     
-    data = data.filter(item => division.length == 0 || (item.division.length == division.length + 1 && item.division.join(',').indexOf(division.join(',')) == 0));
+    data = data.filter(input => !(division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1));
     
     let inputs = data.filter(item => (item.target == null || item.target == schema.source) && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
@@ -235,7 +241,7 @@ const DatabaseHelper = {
         }
       }
       
-      next = DatabaseHelper.distinct(next);
+      DatabaseHelper.distinct(next);
       
       for (const nextSchema of schemata) {
         if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division) &&
@@ -255,7 +261,7 @@ const DatabaseHelper = {
     for (const input of data) {
     	if (input.group != schema.group) continue;
     	if (input.premise != premise) continue;
-    	if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0)) continue;
+    	if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1) continue;
     	
     	found = true;
     	
@@ -511,6 +517,8 @@ const DatabaseHelper = {
 	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null) => {
 		const tables = [];
 		
+    DatabaseHelper.distinct(data);
+		
 		if (baseSchema == null) {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
@@ -561,6 +569,7 @@ const DatabaseHelper = {
 			for (const key of keys) {
       	const _data = [...data];
       	const _appended = [];
+      	const _based = [];
       	const _hash = {};
       	const _currentGroup = baseSchema.relations[key].targetGroup;
       	const _currentName = baseSchema.relations[key].targetEntity;
@@ -569,7 +578,7 @@ const DatabaseHelper = {
       	for (const input of data) {
       		if (input.premise != nextPremise) continue;
           if (input.group != _currentGroup) continue;
-    			if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0)) continue;
+    			if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1) continue;
         	
         	if (_hash[input.division.join(',')]) continue;
         	_hash[input.division.join(',')] = true;
@@ -587,19 +596,21 @@ const DatabaseHelper = {
         
           _data.push(forwarding);
           _appended.push(forwarding);
+          _based.push(input);
         }
 	      
-        for (let row of table.rows) {
+        for (const row of table.rows) {
           if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division)) {
-            for (const item of _appended) {
-              data.push(item);
+            for (const i in _appended) {
+            	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
             DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise);
           }
+          
           if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division)) {
-            for (const item of _appended) {
-              data.push(item);
+            for (const i in _appended) {
+            	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
             DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise);
@@ -1133,6 +1144,10 @@ const DatabaseHelper = {
 						    relations: {}
 						  };
 						  
+						  if (!record) {
+						  	resolve();
+						  	return;
+						  }
 						  if (record['_id']) record['id'] = record['_id'].toString();
 						  
 						  for (const key in schema.columns) {
