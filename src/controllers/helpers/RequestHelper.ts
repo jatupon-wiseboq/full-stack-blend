@@ -322,7 +322,7 @@ const RequestHelper = {
 	},
   sortInputs: (inputs: Input[]) => {
     for (const input of inputs) {
-      input.division = input.division || [];
+      input.division = input.division && input.division.length != 0 && input.division || [0];
     }
     
     inputs.sort((a, b) => {
