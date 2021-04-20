@@ -341,14 +341,17 @@ const RequestHelper = {
     }
     
     let foundEmptied = false;
+    let foundSingle = false;
     for (let i=0; i<inputs.length; i++) {
       foundEmptied = foundEmptied || (inputs[i].division.length == 0);
+      foundSingle = foundSingle || (inputs[i].division.length == 1);
     }
     
     if (foundEmptied) {
       for (let i=0; i<inputs.length; i++) {
         inputs[i].division.splice(0, 0, 0);
       }
+      foundSingle = true;
     }
     
     inputs.sort((a, b) => {
@@ -383,13 +386,16 @@ const RequestHelper = {
     	if (division.length > length) {
     		for (let j=length; j<division.length; j++) {
     			registers[j] = 0;
+    			if (multiple[j] === undefined) multiple[j] = false;
     		}
     	} else if (division.length == length) {
     		if (latest != division.join(',')) {
     			registers[length - 1] += 1;
+    			multiple[length - 1] = true;
     		}
     	} else {
     		registers[division.length - 1] += 1;
+    		multiple[division.length - 1] = true;
     	}
     	
     	length = division.length;
@@ -400,12 +406,18 @@ const RequestHelper = {
   		}
     }
     
-	  let concurring = 0;
-	  while (multiple[concurring] === false) concurring++;
-	  
-	  for (let i=0; i<inputs.length; i++) {
-	  	inputs[i].division.splice(0, concurring);
-	  }
+    if (!foundSingle) {
+		  let concurring = 0;
+		  while (multiple[concurring] === false) concurring++;
+		  
+		  concurring = Math.min(concurring, multiple.length - 1);
+		  
+		  if (multiple.length > 1) {
+			  for (let i=0; i<inputs.length; i++) {
+			  	inputs[i].division.splice(0, concurring);
+			  }
+			}
+		}
   }
 };
 
