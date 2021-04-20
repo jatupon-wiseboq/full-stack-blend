@@ -1,72 +1,69 @@
 include ../../../mixin/CreateReactComponent
-div(internal-fsb-not-for="isTableLayoutRow:true")
-  div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
-    div(internal-fsb-not-for="internal-fsb-inheriting")
-      .section-container
-        .section-title
-          | Format
-        .section-body
-          span(internal-fsb-not-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family'], searchBox: true, useMaximumHeight: true}")
-            +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['color']}")
-            +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['font-style', 'font-weight', 'text-decoration-line', 'font-family']}")
-            +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['text-align']}")
-          span(internal-fsb-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-font-family']}")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-color']}")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-font-style']}")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-text-align']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-size'], watchingAttributeNames: ['internal-fsb-react-style-font-size']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-weight', 'font-family', 'font-style'], watchingAttributeNames: ['internal-fsb-react-style-font-weight'], watchingExtensionNames: ['elementComputedStyleNodes']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-transform'], watchingAttributeNames: ['internal-fsb-react-style-text-transform']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['vertical-align'], watchingAttributeNames: ['internal-fsb-react-style-vertical-align']}")
-        .section-subtitle
-          | Spacing
-        .section-body
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-indent'], watchingAttributeNames: ['internal-fsb-react-style-text-indent']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-justify'], watchingAttributeNames: ['internal-fsb-react-style-text-justify']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['letter-spacing'], watchingAttributeNames: ['internal-fsb-react-style-letter-spacing']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-spacing'], watchingAttributeNames: ['internal-fsb-react-style-word-spacing']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['tab-size'], watchingAttributeNames: ['internal-fsb-react-style-tab-size']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['line-height'], watchingAttributeNames: ['internal-fsb-react-style-line-height']}")
-        .section-subtitle
-          | Multiline
-        .section-body
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['white-space'], watchingAttributeNames: ['internal-fsb-react-style-white-space']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-break'], watchingAttributeNames: ['internal-fsb-react-style-word-break']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['hyphens'], watchingAttributeNames: ['internal-fsb-react-style-hyphens']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-overflow'], watchingAttributeNames: ['internal-fsb-react-style-text-overflow']}")
-        .section-subtitle
-          | Decoration
-        .section-body
-          span(internal-fsb-not-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['text-decoration-color']}")
-          span(internal-fsb-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-text-decoration-color']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-line'], watchingAttributeNames: ['internal-fsb-react-style-text-decoration-line']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-style'], watchingAttributeNames: ['internal-fsb-react-style-text-decoration-style']}")
-        .section-subtitle
-          | Others
-        .section-body
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['writing-mode'], watchingAttributeNames: ['internal-fsb-react-style-writing-mode']}")
-          span(internal-fsb-not-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[0,2]', 'quotes']}")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[1,2]', 'quotes']}")
-          span(internal-fsb-for="editorCurrentMode:coding")
-            +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-quotes']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['direction'], watchingAttributeNames: ['internal-fsb-react-style-direction']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['unicode-bidi'], watchingAttributeNames: ['internal-fsb-react-style-unicode-bidi']}")
-        .section-hr
-      .section-container
-        .section-title
-          | List
-        .section-subtitle
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-image'], watchingAttributeNames: ['internal-fsb-react-style-list-style-image']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-position'], watchingAttributeNames: ['internal-fsb-react-style-list-style-position']}")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-type'], watchingAttributeNames: ['internal-fsb-react-style-list-style-type']}")
-    div(internal-fsb-for="internal-fsb-inheriting")
-      include ../../../common/empty
-  div(internal-fsb-not-for="areFormatAndStyleOptionsAvailable")
+div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
+  div(internal-fsb-not-for="internal-fsb-inheriting")
+    .section-container
+      .section-title
+        | Format
+      .section-body
+        span(internal-fsb-not-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family'], searchBox: true, useMaximumHeight: true}")
+          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['color']}")
+          +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['font-style', 'font-weight', 'text-decoration-line', 'font-family']}")
+          +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['text-align']}")
+        span(internal-fsb-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-font-family']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-color']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-font-style']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-text-align']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-size'], watchingAttributeNames: ['internal-fsb-react-style-font-size']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-weight', 'font-family', 'font-style'], watchingAttributeNames: ['internal-fsb-react-style-font-weight'], watchingExtensionNames: ['elementComputedStyleNodes']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-transform'], watchingAttributeNames: ['internal-fsb-react-style-text-transform']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['vertical-align'], watchingAttributeNames: ['internal-fsb-react-style-vertical-align']}")
+      .section-subtitle
+        | Spacing
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-indent'], watchingAttributeNames: ['internal-fsb-react-style-text-indent']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-justify'], watchingAttributeNames: ['internal-fsb-react-style-text-justify']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['letter-spacing'], watchingAttributeNames: ['internal-fsb-react-style-letter-spacing']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-spacing'], watchingAttributeNames: ['internal-fsb-react-style-word-spacing']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['tab-size'], watchingAttributeNames: ['internal-fsb-react-style-tab-size']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['line-height'], watchingAttributeNames: ['internal-fsb-react-style-line-height']}")
+      .section-subtitle
+        | Multiline
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['white-space'], watchingAttributeNames: ['internal-fsb-react-style-white-space']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['word-break'], watchingAttributeNames: ['internal-fsb-react-style-word-break']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['hyphens'], watchingAttributeNames: ['internal-fsb-react-style-hyphens']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-overflow'], watchingAttributeNames: ['internal-fsb-react-style-text-overflow']}")
+      .section-subtitle
+        | Decoration
+      .section-body
+        span(internal-fsb-not-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['text-decoration-color']}")
+        span(internal-fsb-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-text-decoration-color']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-line'], watchingAttributeNames: ['internal-fsb-react-style-text-decoration-line']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-style'], watchingAttributeNames: ['internal-fsb-react-style-text-decoration-style']}")
+      .section-subtitle
+        | Others
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['writing-mode'], watchingAttributeNames: ['internal-fsb-react-style-writing-mode']}")
+        span(internal-fsb-not-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[0,2]', 'quotes']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['quotes[1,2]', 'quotes']}")
+        span(internal-fsb-for="editorCurrentMode:coding")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-quotes']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['direction'], watchingAttributeNames: ['internal-fsb-react-style-direction']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['unicode-bidi'], watchingAttributeNames: ['internal-fsb-react-style-unicode-bidi']}")
+      .section-hr
+    .section-container
+      .section-title
+        | List
+      .section-subtitle
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-image'], watchingAttributeNames: ['internal-fsb-react-style-list-style-image']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-position'], watchingAttributeNames: ['internal-fsb-react-style-list-style-position']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['list-style-type'], watchingAttributeNames: ['internal-fsb-react-style-list-style-type']}")
+  div(internal-fsb-for="internal-fsb-inheriting")
     include ../../../common/empty
-div(internal-fsb-for="isTableLayoutRow:true")
-  include ../../../common/puzzle
+div(internal-fsb-not-for="areFormatAndStyleOptionsAvailable")
+  include ../../../common/empty
