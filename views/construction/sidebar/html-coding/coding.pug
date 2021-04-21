@@ -138,9 +138,18 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         | Required
       .section-body(internal-fsb-for="internal-fsb-data-source-type")
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['required']}")
-      .section-subtitle(internal-fsb-for="required")
+      .section-subtitle
+        | Validation Format
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-validation-format-1', 'internal-fsb-data-validation-format']}")
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-validation-format-2', 'internal-fsb-data-validation-format']}")
+      .section-subtitle(internal-fsb-for="internal-fsb-data-validation-format:custom")
+        | Custom Regular Expression
+      .section-body(internal-fsb-for="internal-fsb-data-validation-format:custom")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-regex'], inline: true, button: false}")
+      .section-subtitle
         | Validation Message
-      .section-body(internal-fsb-for="required")
+      .section-body
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-message'], inline: true, button: false}")
       .section-note
         | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.

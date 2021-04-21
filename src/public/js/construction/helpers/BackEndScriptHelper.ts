@@ -307,10 +307,14 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 	      let SECTION_VALUE_SOURCE = info['internal-fsb-data-value-source'];
 	      let SECTION_VALUE_SOURCE_SESSION_NAME = info['internal-fsb-data-session-name'];
 	      let SECTION_VALIDATION_MESSAGE = info['internal-fsb-data-validation-message'];
+	      let SECTION_VALIDATION_FORMAT = info['internal-fsb-data-validation-format'];
+	      let SECTION_VALIDATION_REGEX = info['internal-fsb-data-validation-regex'];
         let SECTION_BEGIN_BEGIN = `    // Auto[${SECTION_GUID}:Begin]--->`;
         let SECTION_BEGIN_END = `\n      // <---Auto[${SECTION_GUID}:Begin]`;
         let SECTION_END_BEGIN = `// Auto[${SECTION_GUID}:End]--->`;
         let SECTION_END_END = `    // <---Auto[${SECTION_GUID}:End]`;
+        
+        if (SECTION_VALIDATION_FORMAT != 'custom') SECTION_VALIDATION_REGEX = null;
         
         let SECTION_BODY = `
     
@@ -321,6 +325,8 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     
     		if (SECTION_NAME != null) SECTION_NAME = JSON.stringify(SECTION_NAME);
     		if (SECTION_VALIDATION_MESSAGE != null) SECTION_VALIDATION_MESSAGE = JSON.stringify(SECTION_VALIDATION_MESSAGE);
+    		if (SECTION_VALIDATION_FORMAT != null) SECTION_VALIDATION_FORMAT = JSON.stringify(SECTION_VALIDATION_FORMAT);
+    		if (SECTION_VALIDATION_REGEX != null) SECTION_VALIDATION_REGEX = JSON.stringify(SECTION_VALIDATION_REGEX);
     		if (SECTION_TARGET != null) SECTION_TARGET = JSON.stringify(SECTION_TARGET);
     		if (SECTION_TABLE_NAME != null) SECTION_TABLE_NAME = JSON.stringify(SECTION_TABLE_NAME);
     		if (SECTION_COLUMN_NAME != null) SECTION_COLUMN_NAME = JSON.stringify(SECTION_COLUMN_NAME);
@@ -334,7 +340,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
-		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE});
+		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE}, ${SECTION_VALIDATION_FORMAT}, ${SECTION_VALIDATION_REGEX});
     for (let input of RequestHelper.getInputs(this.pageId, request, '${SECTION_GUID}')) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
       if (input != null) data.push(input);
     }
