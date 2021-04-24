@@ -364,6 +364,7 @@ var WorkspaceHelper = {
       }
       
       page.notations = SchemaHelper.generateTreeOfDotNotations();
+      page.automaticSchemata = SchemaHelper.generateAutomaticSchemata();
       
       if (reinit) {
         EditorHelper.init(true, false);

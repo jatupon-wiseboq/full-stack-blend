@@ -155,6 +155,104 @@ var SchemaHelper = {
     
     return notations;
   },
+  recursiveAccumulateFields: (schemata: any={}, current: HTMLElement=document.body): any => {
+    const sourceType = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-type');
+    let sourceName = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-name') || '';
+    let sourceColumn = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-column') || '';
+    const valueSource = HTMLHelper.getAttribute(current, 'internal-fsb-data-value-source');
+    const required = HTMLHelper.getAttribute(current, 'required');
+    const validationFormat = HTMLHelper.getAttribute(current, 'internal-fsb-data-validation-format');
+    
+    if (['document', 'volatile-memory'].indexOf(sourceType) != -1) {
+    	sourceName = sourceName.trim();
+    	sourceColumn = sourceColumn.trim();
+    	
+    	const splited = sourceColumn.split('.');
+    	sourceColumn = splited.pop();
+    	
+    	if (valueSource == null && !!sourceName && !!sourceColumn && sourceColumn != 'id') {
+    		schemata[sourceName] = {
+          source: sourceType,
+          group: sourceName,
+          guid: `automatic-table-${sourceName}`,
+          keys: {
+          	'id': {
+          		name: 'id',
+		        	guid: `automatic-column-${sourceName}-id`,
+		        	fieldType: 'auto',
+		        	required: true,
+		        	unique: true,
+		        	verb: null,
+		        	url: null,
+		          modifyingPermission: null,
+		          retrievingPermission: null
+          	}
+          },
+          columns: {},
+          relations: {},
+          modifyingPermission: null,
+          retrievingPermission: null
+        };
+    		
+    		let fieldType = null;
+    		
+    		switch (validationFormat) {
+    			case 'integer':
+    			case 'float':
+    				fieldType = 'number';
+    				break;
+    			case 'boolean':
+    				fieldType = 'boolean';
+    				break;
+    			case 'string':
+    			case 'title':
+    			case 'email':
+    			case 'password':
+    			case 'phone':
+    			case 'zipcode':
+    			case 'custom':
+    				fieldType = null;
+    				break;
+    		}
+    		
+    		const column = {
+    			name: sourceColumn,
+        	guid: `automatic-column-${sourceName}-${sourceColumn}`,
+        	fieldType: fieldType,
+        	required: (required == 'true'),
+        	unique: (sourceColumn == 'id'),
+        	verb: null,
+        	url: null,
+          modifyingPermission: null,
+          retrievingPermission: null
+        };
+        
+        schemata[sourceName].columns[sourceColumn] = column;
+        
+        const targetName = splited.pop();
+        if (targetName) {
+        	const relation = {
+	  				name: null,
+	        	guid: `automatic-relation-${sourceName}-${targetName}`,
+	          sourceGroup: sourceName,
+	          sourceEntity: sourceColumn,
+	          targetGroup: targetName,
+	          targetEntity: (sourceColumn == 'id') ? `${sourceName}_id` : sourceColumn
+	        };
+	        
+	        schemata[sourceName].relations[targetName] = relation;
+        }
+    	}
+    }
+    
+    for (let element of [...current.children]) {
+      if (element.tagName) {
+        SchemaHelper.recursiveAccumulateFields(schemata, element);
+      }
+    }
+    
+    return schemata;
+  },
   declareNamespace: (tree: any, path: string) => {
     let splited = path.split('.');
     let current: any = tree;
@@ -177,6 +275,11 @@ var SchemaHelper = {
     }
     
     return tree;
+  },
+  generateAutomaticSchemata: (): any => {
+    let schemata = SchemaHelper.recursiveAccumulateFields();
+    
+    return schemata;
   },
   getElementTreeNodes: function() {
   	if (cachedElementTreeNodes) return cachedElementTreeNodes;
