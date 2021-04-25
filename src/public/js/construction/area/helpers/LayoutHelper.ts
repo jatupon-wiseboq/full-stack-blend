@@ -45,20 +45,23 @@ var LayoutHelper = {
   		let presetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
-  		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+  		let isTableLayoutRow = (element.tagName == 'TR');
+  		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : ((isTableLayoutRow) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
   		
-  		if ((id || isTableLayoutCell) && !isTheBeginElement) {
+  		if ((id || isTableLayoutCell || isTableLayoutRow) && !isTheBeginElement) {
   			nodes.push({
   				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
-  					',' + [...element.parentNode.childNodes].indexOf(element) : id,
+  					',' + [...element.parentNode.childNodes].indexOf(element) : ((isTableLayoutRow) ? id + ':' + [...element.parentNode.childNodes].indexOf(element) : id),
   				customClassName: (reactMode) ? 'is-react-component' : ((presetName) ? 'is-containing-preset' : ''),
-  				name: (isTableLayoutCell) ? 'cell' : name,
+  				name: (isTableLayoutCell) ? 'cell' : ((isTableLayoutRow) ? 'row' : name),
   				selectable: !isTableLayoutCell,
-  				dropable: (isTableLayoutCell ||
+  				dropable: !isTableLayoutRow && (isTableLayoutCell ||
   					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label', 'Link'].indexOf(klass) != -1) &&
   					!HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
+  				insertable: !isTableLayoutRow,
+  				dragable: !isTableLayoutRow,
 					disabled: false,
-					selected: (Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
+					selected: (HTMLHelper.hasClass(element, 'internal-fsb-selecting')) ? true : false,
   				nodes: this.getElementTreeNodes(includeInheriting, [], element),
   				tag: {
   				  class: klass,

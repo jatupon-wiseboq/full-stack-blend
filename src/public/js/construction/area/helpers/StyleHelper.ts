@@ -39,6 +39,8 @@ var StyleHelper = {
 					name: `${name}: ${style}`,
 					selectable: false,
 					dropable: false,
+					insertable: true,
+					dragable: true,
 					disabled: false,
 					selected: false,
 					nodes: [],

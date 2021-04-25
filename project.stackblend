@@ -16,8 +16,8 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "5525a7c5986497f558b0a5b19a65550f09710c53#1754395792",
-    "9e885d49": "762e8f8cddc5a7ea960b835392a3a2d4b690cc94#1923920097",
+    "3cb10a6e": "399653d6530a7bfbb201b14466857e1db021b29e#-700996132",
+    "9e885d49": "c33df2335641bc4c1dbed33d97122727e7dd01e8#-1299641586",
     "b160aa0e": "a5e56befb10ead4b6ac2284f4865a4e4add073f9#975611240",
     "index": "330870566253f961e6981c48643acad93ff19131#1346106910"
   },
@@ -2675,7 +2675,7 @@
   },
   "headerBlobSHA": "0666c00ffac76ecb5eca642225431df0bb625cff#941636428",
   "popups": {},
-  "routeBlobSHA": "7130cffc4772acafe64fa9b9711ff4dada54d664#-924783804",
+  "routeBlobSHA": "13575ac5090269503bf43366f4067b7d3300720a#1089952362",
   "services": {
     "default": [
       "<body class=\"internal-fsb-disabled-guide\">",
@@ -2695,14 +2695,14 @@
         "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy_full.jpg); background-position: center center; background-size: cover; position: relative\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
         "    internal-fsb-event-no-propagate=\"1\">",
         "",
         "<a",
-        "    class=\"btn btn-secondary btn-sm col-5 col-lg-2 col-md-3 col-sm-4 col-xl-1 internal-fsb-allow-cursor internal-fsb-element offset-7 offset-lg-10 offset-md-9 offset-sm-8 offset-xl-11\"",
+        "    class=\"btn btn-secondary btn-sm col-5 col-lg-2 col-md-3 col-sm-4 col-xl-1 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting offset-7 offset-lg-10 offset-md-9 offset-sm-8 offset-xl-11\"",
         "    internal-fsb-guid=\"a32459c0\"",
         "    internal-fsb-name=\"Back to Editor\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -3056,7 +3056,7 @@
         "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/federa_lake.jpg); background-position: center center; background-size: cover\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3355,7 +3355,7 @@
         "    style=\"font-family: Courier Prime; font-size: 18px\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3406,7 +3406,7 @@
         "</div>",
         "</div>",
         "<div",
-        "    class=\"-fsb-preset-a43dc1c9 col-12 internal-fsb-element\"",
+        "    class=\"-fsb-preset-a43dc1c9 col-12 internal-fsb-element internal-fsb-selecting\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"13187992\"",
@@ -3438,7 +3438,6 @@
         "</div>",
         "</div>",
         "</div>",
-        "",
         "</body>"
       ],
       "description": null,
@@ -3564,7 +3563,7 @@
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3703,6 +3702,7 @@
         "</a>",
         "</div>",
         "</div>",
+        "",
         "</div>",
         "</div>",
         "</div>",
@@ -3719,7 +3719,7 @@
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-strict-layout row\">",
         "<div",
-        "    class=\"col-12 internal-fsb-element internal-fsb-selecting offset-0\"",
+        "    class=\"col-12 internal-fsb-element offset-0\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"722b0448\"",
@@ -3805,7 +3805,7 @@
         "</div>",
         "</div>",
         "<div",
-        "    class=\"-fsb-self-4d8aded9 col-12 col-lg-12 internal-fsb-element internal-fsb-selecting offset-0 offset-lg-0\"",
+        "    class=\"-fsb-self-4d8aded9 col-12 col-lg-12 internal-fsb-element offset-0 offset-lg-0\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"4d8aded9\"",
@@ -4272,7 +4272,6 @@
         "",
         "</div>",
         "</div>",
-        "",
         "</body>"
       ],
       "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
@@ -4314,7 +4313,7 @@
   "viewBlobSHADict": {
     "3cb10a6e": "4e8179bf1bf1553b9e7dd04b318caf9ad33e9b14#2080263591",
     "9e885d49": "37de95db8b765f28dec81033319c3b5c0302b146#590996915",
-    "b160aa0e": "4a11b78d250a048b1b43316bb3c23b574b69ac26#15010383",
-    "index": "ac8dc2b7255944006644e9c2ef67bad687c12d46#145802576"
+    "b160aa0e": "9c036c0ea55d54090f7d0be14dd860bcc456db60#-1761866046",
+    "index": "2222bde17c16f04e54ea1412eb39214eb4f3c95d#1145306135"
   }
 }

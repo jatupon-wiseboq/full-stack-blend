@@ -168,6 +168,7 @@ ${rootScript}`;
         let reactClass = null;
         let reactID = null;
         let reactData = null;
+        let reactFieldDivision = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
@@ -349,6 +350,9 @@ ${rootScript}`;
             case 'internal-fsb-react-data':
               if (!!attribute.value) reactData = attribute.value;
               break;
+            case 'internal-fsb-react-division':
+              if (!!attribute.value) reactFieldDivision = attribute.value;
+              break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
@@ -421,24 +425,23 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	let splited = submitControls && submitControls.split(' ') || [];
-        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
-        	
+          let splited = submitControls && submitControls.split(' ') || [];
+          splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
+          
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${JSON.stringify(manipulateInto)}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
-          if (!notation) {
-          	let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
-            for (let submitControl of splited) {
-              let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
-              if (control) {
-                let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
-                if (dataSourceName) {
-                	let numberOfDots = dataSourceName.split('.').length - 1;
-                	if (numberOfDots < minimumNumberOfDots) {
-                		minimumNumberOfDots = numberOfDots;
-                  	notation = dataSourceName;
-                	}
+          let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
+          
+          for (let submitControl of splited) {
+            let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
+            if (control) {
+              let dataSourceName = HTMLHelper.getAttribute(control, 'internal-fsb-data-source-name');
+              if (dataSourceName) {
+                let numberOfDots = dataSourceName.split('.').length - 1;
+                if (numberOfDots < minimumNumberOfDots) {
+                  minimumNumberOfDots = numberOfDots;
+                  notation = dataSourceName.split('.')[0];
                 }
               }
             }
@@ -544,7 +547,7 @@ ${rootScript}`;
           }
           
           let _attributes = _props || [];
-          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')');
+          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
           if (reactData) _attributes.push('row=' + _nodeData);
@@ -560,7 +563,7 @@ ${rootScript}`;
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
-          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')');
+          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {

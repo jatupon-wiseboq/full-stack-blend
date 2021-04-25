@@ -1,17 +1,17 @@
 include ../../../mixin/CreateReactComponent
-.section-container.internal-fsb-selecting-on
-  .section-title
-    | Layer
-  .section-subtitle
-    | Name
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
-  .section-subtitle
-    | Note
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
-  .section-hr
 div(internal-fsb-not-for="internal-fsb-inheriting")
+  .section-container.internal-fsb-selecting-on
+    .section-title
+      | Layer
+    .section-subtitle(internal-fsb-not-for="isTableLayoutRow:true")
+      | Name
+    .section-body(internal-fsb-not-for="isTableLayoutRow:true")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+    .section-subtitle
+      | Note
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
+    .section-hr
   include ./partials/table
   include ./partials/textbox
   include ./partials/select
@@ -44,25 +44,25 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       +CreateReactComponent('FullStackBlend.Components.CSSCustomClasses')
     .section-note
       | This will combine both inherited presets and styles into a preset.
-    .section-hr
-.section-container
-  .section-title
-    | Responsive Placement
-  .section-subtitle
-    | Size
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.GridPicker')
-  .section-subtitle
-    | Left Offset
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.OffsetPicker')
-  .section-subtitle
-    | Hidden
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.DisplayPicker')
-  .section-subtitle
-    | Preserve Space
-  .section-body
-    +CreateReactComponent('FullStackBlend.Components.PreservePicker')
-  .section-note
-    | Inherit Direction: Left to Right
+    .section-hr(internal-fsb-not-for="isTableLayoutRow:true")
+  .section-container(internal-fsb-not-for="isTableLayoutRow:true")
+    .section-title
+      | Responsive Placement
+    .section-subtitle
+      | Size
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.GridPicker')
+    .section-subtitle
+      | Left Offset
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.OffsetPicker')
+    .section-subtitle
+      | Hidden
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.DisplayPicker')
+    .section-subtitle
+      | Preserve Space
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.PreservePicker')
+    .section-note
+      | Inherit Direction: Left to Right

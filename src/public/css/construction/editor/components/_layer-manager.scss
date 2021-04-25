@@ -59,12 +59,16 @@
 		}
 		
 		&.selected {
-			cursor: move;
-			
 			.treenode-body {
 				background-color: rgba(0, 144, 255, 0.75);
 				border-color: rgba(0, 144, 255, 1.0);
 				color: #ffffff;
+			}
+			
+			cursor: default;
+			
+			&.dragable {
+				cursor: move;
 			}
 		}
 		

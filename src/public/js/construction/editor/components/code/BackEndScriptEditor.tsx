@@ -23,6 +23,8 @@ watchingAttributeNames.push('internal-fsb-data-source-type');
 watchingAttributeNames.push('internal-fsb-data-source-name');
 watchingAttributeNames.push('internal-fsb-data-source-column');
 watchingAttributeNames.push('internal-fsb-data-validation-message');
+watchingAttributeNames.push('internal-fsb-data-validation-format');
+watchingAttributeNames.push('internal-fsb-data-validation-regex');
 watchingAttributeNames.push('internal-fsb-data-wizard-cross-operation');
 watchingAttributeNames.push('internal-fsb-data-value-source');
 watchingAttributeNames.push('internal-fsb-data-session-name');

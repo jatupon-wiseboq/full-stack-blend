@@ -28,6 +28,8 @@ var TimelineHelper = {
 				deselectable: false,
 				selectable: true,
 				dropable: false,
+				insertable: true,
+				dragable: true,
 				disabled: Accessories.resizer.getDOMNode().parentNode == null,
 				selected: false,
 				nodes: (info.id == 'selector') ? TimelineHelper.getSelectorTreeNodes() : TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, info.id),
@@ -66,6 +68,8 @@ var TimelineHelper = {
 	  				dropable: (isTableLayoutCell ||
 	  					['FlowLayout', 'AbsoluteLayout', 'Rectangle', 'Button', 'Label'].indexOf(klass) != -1) &&
 	  					!HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
+						insertable: true,
+						dragable: true,
 						disabled: false,
 						selected: (key == InternalProjectSettings.editingAnimationID && Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
 	  				nodes: TimelineHelper.recursiveGetElementTreeNodes([], element, key),

@@ -364,8 +364,7 @@ class Controller extends Base {
     RequestHelper.registerSubmit("3cb10a6e", "4e677128", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 		RequestHelper.registerInput('27d35136', "document", "User", "email");
 		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '27d35136' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '27d35136')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
       // 
@@ -374,8 +373,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('ece2d619', "document", "User", "name");
 		ValidationHelper.registerInput('ece2d619', "Textbox 2", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, 'ece2d619' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, 'ece2d619')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
       // 
@@ -384,8 +382,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('d3e700b6', "document", "User", "alias");
 		ValidationHelper.registerInput('d3e700b6', "Textbox 3", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, 'd3e700b6' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, 'd3e700b6')) {
     
       // Override data parsing and manipulation of Textbox 3 here:
       // 
@@ -394,8 +391,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('0762b97d', "document", "User", "project");
 		ValidationHelper.registerInput('0762b97d', "Textbox 4", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '0762b97d' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '0762b97d')) {
     
       // Override data parsing and manipulation of Textbox 4 here:
       // 
@@ -404,8 +400,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('098c6ea6', "document", "User", "feature");
 		ValidationHelper.registerInput('098c6ea6', "Textbox 2", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '098c6ea6' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '098c6ea6')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
       // 
@@ -414,8 +409,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('25254217', "document", "User", "develop");
 		ValidationHelper.registerInput('25254217', "Textbox 3", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '25254217' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '25254217')) {
     
       // Override data parsing and manipulation of Textbox 3 here:
       // 
@@ -424,8 +418,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('1da99335', "document", "User", "staging");
 		ValidationHelper.registerInput('1da99335', "Textbox 4", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '1da99335' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '1da99335')) {
     
       // Override data parsing and manipulation of Textbox 4 here:
       // 
@@ -434,8 +427,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('74d68ec6', "document", "User", "endpoint");
 		ValidationHelper.registerInput('74d68ec6', "Textbox 5", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '74d68ec6' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '74d68ec6')) {
     
       // Override data parsing and manipulation of Textbox 5 here:
       // 
@@ -444,8 +436,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('3478b9ac', "document", "User", "password");
 		ValidationHelper.registerInput('3478b9ac', "Textbox 1", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '3478b9ac' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '3478b9ac')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
       // 
@@ -454,8 +445,7 @@ class Controller extends Base {
     }
 		RequestHelper.registerInput('33832ba7', "document", "User", "confirmPassword");
 		ValidationHelper.registerInput('33832ba7', "Textbox 1", false, undefined);
-    for (let i=-1; i<128; i++) {
-      input = RequestHelper.getInput(this.pageId, request, '33832ba7' + ((i == -1) ? '' : '[' + i + ']'));
+    for (let input of RequestHelper.getInputs(this.pageId, request, '33832ba7')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
       // 

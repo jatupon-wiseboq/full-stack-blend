@@ -262,6 +262,7 @@ var EditorHelper = {
       attributes: attributes,
       extensions: Object.assign({}, InternalProjectSettings, {
       	isSelectingElement: true,
+      	isTableLayoutRow: (element.tagName == 'TR'),
 	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),
@@ -345,9 +346,8 @@ var EditorHelper = {
   select: (element: HTMLElement) => {
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-    	if (Accessories.resizer.getDOMNode().parentNode != null) {
-    		HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
-    	}
+    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
     	HTMLHelper.addClass(element, 'internal-fsb-selecting');
     	
@@ -369,6 +369,14 @@ var EditorHelper = {
       
       EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
+    } else if (element.tagName == 'TR') {
+    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+    	
+    	Accessories.guide.getDOMNode().remove();
+    	Accessories.resizer.getDOMNode().remove();
+    	
+    	HTMLHelper.addClass(element, 'internal-fsb-selecting');
     }
     if (element.tagName == 'TABLE') {
 	    Accessories.cellFormater.setTableElement(element);
@@ -378,7 +386,8 @@ var EditorHelper = {
   },
   deselect: () => {
     if (Accessories.resizer.getDOMNode().parentNode != null) {
-    	HTMLHelper.removeClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-selecting');
+    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
       Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
     }
@@ -408,7 +417,7 @@ var EditorHelper = {
     if (current == document.body && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
       return Accessories.resizer.getDOMNode().parentNode;
     } else {
-      return null;
+      return HTMLHelper.getElementByClassName('internal-fsb-selecting');
     }
   },
   move: (target: HTMLElement, destination: HTMLElement, direction: string) => {

@@ -66,6 +66,8 @@ class ExternalLibrariesManager extends Base<Props, State> {
                 name: splited[0],
                 selectable: true,
                 dropable: false,
+								insertable: true,
+								dragable: true,
                 disabled: false,
                 selected: false,
                 nodes: []

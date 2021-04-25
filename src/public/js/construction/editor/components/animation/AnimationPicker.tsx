@@ -48,6 +48,8 @@ class AnimationPicker extends Base<Props, State> {
 		            		id: info.id,
 		                name: info.name || 'Untitled',
 		                selectable: true,
+										insertable: true,
+										dragable: true,
 		                disabled: false,
 		                selected: (items.indexOf(info.id) != -1),
 		                nodes: []

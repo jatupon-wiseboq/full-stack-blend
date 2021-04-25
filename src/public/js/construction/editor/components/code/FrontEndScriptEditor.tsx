@@ -241,7 +241,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
 			  		/>
 			  	</div>
 			  	<div className="text-center" style={{display: (this.state.value == '') ? 'block' : 'none'}}>
-			  		<i className="fa fa-object-group" style={{fontSize: '50px', color: '#f0f0f0', paddingTop: '85px'}} />
+			  		<i className="fa fa-puzzle-piece" style={{fontSize: '50px', color: '#f0f0f0', paddingTop: '85px'}} />
 			  	</div>
 	      </div>
       )

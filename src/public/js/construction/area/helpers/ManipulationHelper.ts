@@ -999,7 +999,14 @@ var ManipulationHelper = {
     }
     
     if (content) {
-      let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content as string);
+    	const splited = (content as string).split(':');
+      let selecting = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', splited[0]);
+      
+      const indexes = splited[1] && splited[1].split(',') || [];
+      if (selecting && indexes.length == 1) {
+      	selecting = selecting.firstElementChild.childNodes[parseInt(indexes[0])];
+      }
+      
       EditorHelper.select(selecting);
     } else {
       EditorHelper.deselect();

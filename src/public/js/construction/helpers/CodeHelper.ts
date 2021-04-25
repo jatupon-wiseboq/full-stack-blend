@@ -208,6 +208,10 @@ var CodeHelper = {
   		HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
   	}
   	
+  	if (HTMLHelper.hasClass(current, 'internal-fsb-selecting')) {
+  		HTMLHelper.removeClass(current, 'internal-fsb-selecting');
+  	}
+  	
   	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
   		current.remove();
   		return; 
