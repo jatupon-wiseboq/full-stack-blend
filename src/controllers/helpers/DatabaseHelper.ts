@@ -1420,21 +1420,26 @@ const DatabaseHelper = {
 							for (const key in baseSchema.columns) {
 							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    data[key] = row.columns[key];
-							    if (input.source == SourceType.Document && key == 'id') {
-						      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
-						      } else {
-						      	query[key] = {$eq: row.columns[key]};
-						      }
+							    keys[key] = row.columns[key];
+							    if (input.source == SourceType.Document) {
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
+							    }
 							  }
 							}
 							for (const key in baseSchema.keys) {
 							  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document && key == 'id') {
-						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-						      } else {
-						      	query[key] = {$eq: row.keys[key]};
-						      }
+							    if (input.source == SourceType.Document) {
+							    	if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      } else {
+							      	query[key] = {$eq: row.keys[key]};
+							      }
+							    }
 							  }
 							}
 							
