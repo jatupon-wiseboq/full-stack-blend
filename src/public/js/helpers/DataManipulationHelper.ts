@@ -71,6 +71,8 @@ const DataManipulationHelper = {
           }
         }
         
+        if (foundAll) break;
+        
         current = current.parentNode;
       }
       
