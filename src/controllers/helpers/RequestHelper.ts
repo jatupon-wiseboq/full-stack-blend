@@ -243,6 +243,21 @@ const RequestHelper = {
 	},
 	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
 		const results = [];
+		const _values = {};
+		
+		for (const key in values) {
+			if (values.hasOwnProperty(key)) {
+				if (values[key] != null && typeof values[key] == 'object') {
+					const firstKey = Object.keys(values[key])[0];
+					if (firstKey.match(/^[0-9,]+$/)) {
+						_values[key + '[' + firstKey + ']'] = values[key][firstKey];
+					}
+				}
+				else _values[key] = values[key];
+			}
+		}
+		
+		values = _values;
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
@@ -252,7 +267,7 @@ const RequestHelper = {
 				const name = splited.pop() || null;
 				const group = splited.pop() || null;
 				const premise = splited.join('.') || null;
-		
+				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
 				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
 				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
@@ -278,7 +293,7 @@ const RequestHelper = {
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
 			  		validation: null
@@ -307,7 +322,7 @@ const RequestHelper = {
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}[${splited[splited.length - 1] || 0}]`,
+		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
 			  		validation: null
@@ -322,7 +337,21 @@ const RequestHelper = {
 	},
   sortInputs: (inputs: Input[]) => {
     for (const input of inputs) {
-      input.division = input.division && input.division.length != 0 && input.division || [0];
+      input.division = input.division || [];
+    }
+    
+    let foundEmptied = false;
+    let foundSingle = false;
+    for (let i=0; i<inputs.length; i++) {
+      foundEmptied = foundEmptied || (inputs[i].division.length == 0);
+      foundSingle = foundSingle || (inputs[i].division.length == 1);
+    }
+    
+    if (foundEmptied) {
+      for (let i=0; i<inputs.length; i++) {
+        inputs[i].division.splice(0, 0, 0);
+      }
+      foundSingle = true;
     }
     
     inputs.sort((a, b) => {
@@ -347,6 +376,7 @@ const RequestHelper = {
     });
     
     const registers = [];
+    const multiple = [];
     let latest: string = null;
     let length = 0;
     
@@ -356,13 +386,16 @@ const RequestHelper = {
     	if (division.length > length) {
     		for (let j=length; j<division.length; j++) {
     			registers[j] = 0;
+    			if (multiple[j] === undefined) multiple[j] = false;
     		}
     	} else if (division.length == length) {
     		if (latest != division.join(',')) {
     			registers[length - 1] += 1;
+    			multiple[length - 1] = true;
     		}
     	} else {
     		registers[division.length - 1] += 1;
+    		multiple[division.length - 1] = true;
     	}
     	
     	length = division.length;
@@ -372,6 +405,19 @@ const RequestHelper = {
   			division[j] = registers[j];
   		}
     }
+    
+    if (!foundSingle) {
+		  let concurring = 0;
+		  while (multiple[concurring] === false) concurring++;
+		  
+		  concurring = Math.min(concurring, multiple.length - 1);
+		  
+		  if (multiple.length > 1) {
+			  for (let i=0; i<inputs.length; i++) {
+			  	inputs[i].division.splice(0, concurring);
+			  }
+			}
+		}
   }
 };
 

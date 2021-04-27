@@ -144,7 +144,7 @@ const DatabaseHelper = {
   	data = CodeHelper.clone(data);
     DatabaseHelper.distinct(data);
     
-    data = data.filter(input => !(division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1));
+    data = data.filter(input => input.division.length <= division.length + 1 && input.division.join(',').indexOf(division.join(',')) == 0);
     
     let inputs = data.filter(item => (item.target == null || item.target == schema.source) && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
@@ -261,7 +261,7 @@ const DatabaseHelper = {
     for (const input of data) {
     	if (input.group != schema.group) continue;
     	if (input.premise != premise) continue;
-    	if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1) continue;
+    	if (input.division.length > division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
     	
     	found = true;
     	
@@ -507,8 +507,13 @@ const DatabaseHelper = {
 	  RequestHelper.sortInputs(data);
 	  
 	  const results: {[Identifier: string]: HierarchicalDataTable} = {};
+	  let length = 0;
+	  let count = 0;
 	  
-	  DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert, data[0] && data[0].division.slice(0, Math.max(0, data[0].division.length - 1)) || []);
+	  while (length != data.length) {
+	  	length = data.length;
+	  	DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert, [count++]);
+	  }
 	  
 	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name))].join(', ')}).`);
 	  
@@ -578,7 +583,7 @@ const DatabaseHelper = {
       	for (const input of data) {
       		if (input.premise != nextPremise) continue;
           if (input.group != _currentGroup) continue;
-    			if (division.length != 0 && (input.division.length != division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) || division.length == 0 && input.division.length > 1) continue;
+    			if (input.division.length > division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
         	
         	if (_hash[input.division.join(',')]) continue;
         	_hash[input.division.join(',')] = true;
