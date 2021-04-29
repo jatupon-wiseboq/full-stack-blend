@@ -3,7 +3,8 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "target": "es6",
+        "target": "es3",
+        "jsx": "react",
         "noImplicitAny": true,
         "moduleResolution": "node",
         "sourceMap": true,
@@ -15,7 +16,8 @@
                 "src/types/*"
             ]
         },
-        "noEmit": true
+        "noEmit": true,
+        "downlevelIteration": true
     },
     "include": [
         "src/**/*"
