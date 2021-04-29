@@ -7,5 +7,8 @@
     "react-auto-binding",
     "transform-react-pug",
     "transform-class-properties",
+  ],
+  "ignore": [
+    "src/public/js/libraries/**/*"
   ]
 }
