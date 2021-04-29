@@ -124,17 +124,25 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://unpkg.com/react@16/umd/react.production.min.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.production.min.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+      "/js/libraries/polyfills/polyfill-0.1.43.min.js",
+      "/js/libraries/polyfills/babel-polyfill-7.12.1.min.js",
+      "/js/libraries/polyfills/es5-shim-4.5.15.min.js",
+      "/js/libraries/polyfills/es6-shim-0.35.6.min.js",
+      "/js/libraries/react@16/react.production.min.js",
+      "/js/libraries/react@16/react-dom.production.min.js",
+      "/js/libraries/socket.io@2/socket.io-2.3.0.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://unpkg.com/react@16/umd/react.development.js",
-      "https://unpkg.com/react-dom@16/umd/react-dom.development.js",
-      "https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
+      "/js/libraries/polyfills/polyfill-0.1.43.min.js",
+      "/js/libraries/polyfills/babel-polyfill-7.12.1.min.js",
+      "/js/libraries/polyfills/es5-shim-4.5.15.min.js",
+      "/js/libraries/polyfills/es6-shim-0.35.6.min.js",
+      "/js/libraries/react@16/react.development.js",
+      "/js/libraries/react@16/react-dom.development.js",
+      "/js/libraries/socket.io@2/socket.io-2.3.0.js"
     ]
   }
 },{
@@ -145,13 +153,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-3.5.1.min.js"
+      "/js/libraries/jquery@3/jquery-3.5.1.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-3.5.1.js"
+      "/js/libraries/jquery@3/jquery-3.5.1.js"
     ]
   }
 },{
@@ -162,13 +170,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-2.2.4.min.js"
+      "/js/libraries/jquery@2/jquery-2.2.4.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-2.2.4.js"
+      "/js/libraries/jquery@2/jquery-2.2.4.js"
     ]
   }
 },{
@@ -179,13 +187,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-1.12.4.min.js"
+      "/js/libraries/jquery@1/jquery-1.12.4.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://code.jquery.com/jquery-1.12.4.js"
+      "/js/libraries/jquery@1/jquery-1.12.4.js"
     ]
   }
 },{
@@ -195,18 +203,18 @@ export const LIBRARIES = [{
   version: '4.x',
   production: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      "/js/libraries/bootstrap@4/bootstrap-4.4.1.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@4/bootstrap-4.4.1.min.js"
     ]
   },
   development: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      "/js/libraries/bootstrap@4/bootstrap-4.4.1.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@4/bootstrap-4.4.1.min.js"
     ]
   }
 },{
@@ -216,18 +224,18 @@ export const LIBRARIES = [{
   version: '3.x',
   production: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      "/js/libraries/bootstrap@3/bootstrap-3.4.1.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@3/bootstrap-3.4.1.min.js"
     ]
   },
   development: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+      "/js/libraries/bootstrap@3/bootstrap-3.4.1.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@3/bootstrap-3.4.1.min.js"
     ]
   }
 },{
@@ -237,18 +245,18 @@ export const LIBRARIES = [{
   version: '2.x',
   production: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+      "/js/libraries/bootstrap@2/bootstrap-2.3.2.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@2/bootstrap-2.3.2.min.js"
     ]
   },
   development: {
     stylesheets: [
-      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css"
+      "/js/libraries/bootstrap@2/bootstrap-2.3.2.min.css"
     ],
     scripts: [
-      "https://stackpath.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"
+      "/js/libraries/bootstrap@2/bootstrap-2.3.2.min.js"
     ]
   }
 },{
@@ -259,13 +267,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"
+      "/js/libraries/underscore@1/underscore-1.9.1.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore.js"
+      "/js/libraries/underscore@1/underscore-1.9.1.js"
     ]
   }
 },{
@@ -276,13 +284,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/0.6.0/underscore-min.js"
+      "/js/libraries/underscore@0/underscore-0.6.0.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/underscore.js/0.6.0/underscore.js"
+      "/js/libraries/underscore@0/underscore-0.6.0.js"
     ]
   }
 },{
@@ -293,13 +301,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone-min.js"
+      "/js/libraries/backbone@1/backbone-1.4.0.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.4.0/backbone.js"
+      "/js/libraries/backbone@1/backbone-1.4.0.js"
     ]
   }
 },{
@@ -310,13 +318,13 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"
+      "/js/libraries/backbone@0/backbone-0.9.10.min.js"
     ]
   },
   development: {
     stylesheets: null,
     scripts: [
-      "https://cdnjs.cloudflare.com/ajax/libs/backbone.js/0.9.10/backbone-min.js"
+      "/js/libraries/backbone@0/backbone-0.9.10.min.js"
     ]
   }
 }];
