@@ -374,6 +374,7 @@ html
     include ${this.getRootDirectory(key)}_header.pug
   body${combinedInlineBodyStyle}
     ${combinedHTMLTags}
+    script(type="text/javascript" src="/js/libraries/polyfills/babel-polyfill-7.12.1.min.js")
     script(type="text/javascript" src="/js/Embed.bundle.js")
     script(type="text/javascript").
       ${compiledCombinedMinimalFeatureScripts}
@@ -957,7 +958,7 @@ declare let ReactDOM: any;
 declare let window: any;
 declare let DataManipulationHelper: any;
 
-let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
+let expandingPlaceholders = Array.from(document.querySelectorAll('[internal-fsb-init-class]'));
 for (let expandingPlaceholder of expandingPlaceholders) {
   let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
   ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);

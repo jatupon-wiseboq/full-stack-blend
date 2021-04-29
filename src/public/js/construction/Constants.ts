@@ -124,10 +124,6 @@ export const LIBRARIES = [{
   production: {
     stylesheets: null,
     scripts: [
-      "/js/libraries/polyfills/polyfill-0.1.43.min.js",
-      "/js/libraries/polyfills/babel-polyfill-7.12.1.min.js",
-      "/js/libraries/polyfills/es5-shim-4.5.15.min.js",
-      "/js/libraries/polyfills/es6-shim-0.35.6.min.js",
       "/js/libraries/react@16/react.production.min.js",
       "/js/libraries/react@16/react-dom.production.min.js",
       "/js/libraries/socket.io@2/socket.io-2.3.0.js"
@@ -136,10 +132,6 @@ export const LIBRARIES = [{
   development: {
     stylesheets: null,
     scripts: [
-      "/js/libraries/polyfills/polyfill-0.1.43.min.js",
-      "/js/libraries/polyfills/babel-polyfill-7.12.1.min.js",
-      "/js/libraries/polyfills/es5-shim-4.5.15.min.js",
-      "/js/libraries/polyfills/es6-shim-0.35.6.min.js",
       "/js/libraries/react@16/react.development.js",
       "/js/libraries/react@16/react-dom.development.js",
       "/js/libraries/socket.io@2/socket.io-2.3.0.js"
