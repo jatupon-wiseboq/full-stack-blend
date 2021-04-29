@@ -1,5 +1,4 @@
 import {DataManipulationHelper} from './helpers/DataManipulationHelper';
-import * from '';
 
 declare let window: any;
 
