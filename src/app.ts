@@ -13,6 +13,7 @@ import cors from "cors";
 import fs from "fs";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
+import polyfill from "polyfill-library";
 
 // API keys and Passport configuration
 import passport from "passport";
@@ -158,6 +159,23 @@ app.use(
 if (["production"].indexOf(process.env.NODE_ENV) == -1) {
   app.use(errorHandler());
 }
+
+// Serve polyfill.io under the same domain to ease non-SNI configuration.
+// 
+app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
+  polyfill.getPolyfillString({
+    uaString: req.get('User-Agent'),
+    minify: true,
+    features: {
+      'es5': { flags: ['gated'] },
+      'es6': { flags: ['gated'] },
+      'es7': { flags: ['gated'] }
+    }
+  }).then(function(bundle) {
+    res.set('Content-Type', 'text/javascript');
+  	res.send(Buffer.from(bundle));
+  });
+});
 
 // StackBlend code editor's endpoint
 // 

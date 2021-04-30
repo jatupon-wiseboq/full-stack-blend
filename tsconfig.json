@@ -3,8 +3,9 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "target": "es6",
-        "noImplicitAny": true,
+        "target": "es3",
+        "jsx": "react",
+        "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
         "outDir": "dist",
@@ -15,9 +16,13 @@
                 "src/types/*"
             ]
         },
-        "noEmit": true
+        "noEmit": true,
+        "downlevelIteration": true
     },
     "include": [
         "src/**/*"
+    ],
+    "exclude": [
+        "src/public/js/libraries/**/*"
     ]
 }
