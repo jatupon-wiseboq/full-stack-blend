@@ -523,6 +523,7 @@ ${rootScript}`;
         // Dot Notation Feature
         // 
         if (reactAccumulateNotation == 'reset') cumulatedDotNotation = '';
+        if (reactData) reactData = reactData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
         
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
@@ -965,15 +966,13 @@ ${rootScript}`;
       tables: WorkspaceHelper.getDataFlows()
     }
     
-    const splited = notation.split(".");
+    const splited = notation.replace(/\[[^\[\]]*\]/g, '').split(".");
     let shifted: string = splited.shift();
-    if (shifted) shifted = shifted.split("[")[0];
     let current: any = null;
     
     do {
       current = FrontEndDOMHelper.getDataTableSchemaFromKey(shifted, current, data);
       shifted = splited.shift();
-      if (shifted) shifted = shifted.split("[")[0];
     } while (current && shifted);
     
     return (current == null);
