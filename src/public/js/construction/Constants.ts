@@ -338,6 +338,7 @@ export const DATA_VALUE_FORMAT_OPTIONS_1 = [["internal-fsb-data-validation-forma
 export const DATA_VALUE_FORMAT_OPTIONS_2 = [["internal-fsb-data-validation-format", "boolean", ["d-none", "Boolean"]], ["internal-fsb-data-validation-format", "title", ["d-none", "Title"]], ["internal-fsb-data-validation-format", "email", ["d-none", "Email"]], ["internal-fsb-data-validation-format", "password", ["d-none", "Password"]]];
 export const DATA_VALUE_FORMAT_OPTIONS_3 = [["internal-fsb-data-validation-format", "phone", ["d-none", "Phone"]], ["internal-fsb-data-validation-format", "zipcode", ["d-none", "Zipcode"]], ["internal-fsb-data-validation-format", "custom", ["d-none", "Custom"]]];
 export const REACT_FIELD_DIVISION_OPTIONS = [["internal-fsb-react-division", "flatten", ["fa-angle-double-right", "Flatten"]], ["internal-fsb-react-division", null, ["fa-minus fa-rotate-90", "Automatic"]]];
+export const REACT_ACCUMULATE_OPTIONS = [["internal-fsb-react-accumulate", "reset", ["fa-eraser", "Reset"]], ["internal-fsb-react-accumulate", null, ["fa-dot-circle-o", "Automatic"]]];
 export const CROSS_OPERATION_OPTIONS = [["internal-fsb-data-wizard-cross-operation", null, ["fa-save", "Same as Action"]], ["internal-fsb-data-wizard-cross-operation", "upsert", ["fa-save", "Upsert"]]];
 export const TEXTBOX_MODE_OPTIONS = [["internal-fsb-textbox-mode", null, ["fa-minus", "Single"]], ["internal-fsb-textbox-mode", "multiple", ["fa-reorder", "Multiple"]]];
 export const REQUIRE_FULL_CLOSING_TAGS = ["select", "textarea", "div"];

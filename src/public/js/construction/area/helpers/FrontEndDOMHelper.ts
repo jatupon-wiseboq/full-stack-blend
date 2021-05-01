@@ -169,6 +169,7 @@ ${rootScript}`;
         let reactID = null;
         let reactData = null;
         let reactFieldDivision = null;
+        let reactAccumulateNotation = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
@@ -353,6 +354,9 @@ ${rootScript}`;
             case 'internal-fsb-react-division':
               if (!!attribute.value) reactFieldDivision = attribute.value;
               break;
+            case 'internal-fsb-react-accumulate':
+              if (!!attribute.value) reactAccumulateNotation = attribute.value;
+              break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
@@ -518,6 +522,8 @@ ${rootScript}`;
         
         // Dot Notation Feature
         // 
+        if (reactAccumulateNotation == 'reset') cumulatedDotNotation = '';
+        
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
         let _nodeData = 'data';
