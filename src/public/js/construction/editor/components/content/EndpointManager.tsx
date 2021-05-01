@@ -213,7 +213,7 @@ html
     include ${this.getRootDirectory(key)}_header.pug
   body${combinedInlineBodyStyle}
     ${combinedHTMLTags}
-    script(type="text/javascript" src="/js/libraries/polyfills/babel-polyfill-7.12.1.min.js")
+    script(type="text/javascript" src="/js/libraries/polyfills/polyfill.io.js")
     script(type="text/javascript" src="/js/Embed.bundle.js")
     script(type="text/javascript").
       ${compiledCombinedMinimalFeatureScripts}
