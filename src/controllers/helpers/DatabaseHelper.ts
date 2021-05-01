@@ -144,7 +144,7 @@ const DatabaseHelper = {
   	data = CodeHelper.clone(data);
     DatabaseHelper.distinct(data);
     
-    data = data.filter(input => input.division.length <= division.length + 1 && input.division.join(',').indexOf(division.join(',')) == 0);
+    data = data.filter(input => input.division.length <= division.length + 1 && (input.division.join(',') + ',').indexOf(division.join(',') + ',') == 0);
     
     let inputs = data.filter(item => (item.target == null || item.target == schema.source) && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
@@ -261,7 +261,7 @@ const DatabaseHelper = {
     for (const input of data) {
     	if (input.group != schema.group) continue;
     	if (input.premise != premise) continue;
-    	if (input.division.length > division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
+    	if (input.division.length > division.length + 1 || (input.division.join(',') + ',').indexOf(division.join(',') + ',') != 0) continue;
     	
     	found = true;
     	
@@ -583,7 +583,7 @@ const DatabaseHelper = {
       	for (const input of data) {
       		if (input.premise != nextPremise) continue;
           if (input.group != _currentGroup) continue;
-    			if (input.division.length > division.length + 1 || input.division.join(',').indexOf(division.join(',')) != 0) continue;
+    			if (input.division.length > division.length + 1 || (input.division.join(',') + ',').indexOf(division.join(',') + ',') != 0) continue;
         	
         	if (_hash[input.division.join(',')]) continue;
         	_hash[input.division.join(',')] = true;
