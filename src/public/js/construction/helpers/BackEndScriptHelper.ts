@@ -52,7 +52,8 @@ const DEFAULTS = {
   }
   
   // ----------------------------------------------------------------------------------------
-  // Example Code:
+  // Example Code of Express Parameters
+  // ----------------------------------------------------------------------------------------
   // 
   // Access path parameters of "/path/:a/:b" using:
   // this.request.params['a'], this.request.params['b']
