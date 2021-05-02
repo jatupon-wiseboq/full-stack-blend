@@ -65,6 +65,7 @@ html
                   | 4. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.
                 div
                   | 5. Failed of Automatic Deploy: clone the project into your local machine and debug it using "npm run build", then try to change the code on StackBlend based on the errors, re-save, run "git reset --hard && git pull", and run "npm run build" to see if it fixed.
+    script(type="text/javascript" src="/js/libraries/polyfills/polyfill.io.js")
     script(type="text/javascript" src="/js/Embed.bundle.js")
     script(type="text/javascript").
       var Controller = /** @class */ (function () {

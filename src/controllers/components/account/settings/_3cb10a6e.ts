@@ -22,7 +22,10 @@ import {UserDocument, User} from "../../../../models/User";
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
 }
 enum ActionType {
   Insert,
@@ -31,12 +34,8 @@ enum ActionType {
   Delete,
   Retrieve,
   Popup,
-  Navigate
-}
-enum ValidationInfo {
-  name: string;
-  required: boolean;
-  customMessage: string;
+  Navigate,
+  Test
 }*/
 // <---Auto[Declare]
 
@@ -54,6 +53,7 @@ interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
 }
 interface Input {
   target: SourceType;
@@ -61,7 +61,16 @@ interface Input {
   name: string;
   value: any;
   guid: string;
+  premise: string;
   validation: ValidationInfo;
+  division?: number[];
+}
+interface ValidationInfo {
+  name: string;
+  required: boolean;
+  customMessage: string;
+  format?: string;
+  regex?: string;
 }*/
 // <---Auto[Interface]
 
@@ -363,7 +372,7 @@ class Controller extends Base {
     RequestHelper.registerSubmit("3cb10a6e", "82975b43", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("3cb10a6e", "4e677128", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 		RequestHelper.registerInput('27d35136', "document", "User", "email");
-		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined);
+		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '27d35136')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
@@ -372,7 +381,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('ece2d619', "document", "User", "name");
-		ValidationHelper.registerInput('ece2d619', "Textbox 2", false, undefined);
+		ValidationHelper.registerInput('ece2d619', "Textbox 2", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'ece2d619')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
@@ -381,7 +390,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('d3e700b6', "document", "User", "alias");
-		ValidationHelper.registerInput('d3e700b6', "Textbox 3", false, undefined);
+		ValidationHelper.registerInput('d3e700b6', "Textbox 3", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'd3e700b6')) {
     
       // Override data parsing and manipulation of Textbox 3 here:
@@ -390,7 +399,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('0762b97d', "document", "User", "project");
-		ValidationHelper.registerInput('0762b97d', "Textbox 4", false, undefined);
+		ValidationHelper.registerInput('0762b97d', "Textbox 4", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '0762b97d')) {
     
       // Override data parsing and manipulation of Textbox 4 here:
@@ -399,7 +408,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('098c6ea6', "document", "User", "feature");
-		ValidationHelper.registerInput('098c6ea6', "Textbox 2", false, undefined);
+		ValidationHelper.registerInput('098c6ea6', "Textbox 2", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '098c6ea6')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
@@ -408,7 +417,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('25254217', "document", "User", "develop");
-		ValidationHelper.registerInput('25254217', "Textbox 3", false, undefined);
+		ValidationHelper.registerInput('25254217', "Textbox 3", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '25254217')) {
     
       // Override data parsing and manipulation of Textbox 3 here:
@@ -417,7 +426,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('1da99335', "document", "User", "staging");
-		ValidationHelper.registerInput('1da99335', "Textbox 4", false, undefined);
+		ValidationHelper.registerInput('1da99335', "Textbox 4", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '1da99335')) {
     
       // Override data parsing and manipulation of Textbox 4 here:
@@ -426,7 +435,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('74d68ec6', "document", "User", "endpoint");
-		ValidationHelper.registerInput('74d68ec6', "Textbox 5", false, undefined);
+		ValidationHelper.registerInput('74d68ec6', "Textbox 5", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '74d68ec6')) {
     
       // Override data parsing and manipulation of Textbox 5 here:
@@ -435,7 +444,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('3478b9ac', "document", "User", "password");
-		ValidationHelper.registerInput('3478b9ac', "Textbox 1", false, undefined);
+		ValidationHelper.registerInput('3478b9ac', "Textbox 1", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '3478b9ac')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
@@ -444,7 +453,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('33832ba7', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('33832ba7', "Textbox 1", false, undefined);
+		ValidationHelper.registerInput('33832ba7', "Textbox 1", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '33832ba7')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
