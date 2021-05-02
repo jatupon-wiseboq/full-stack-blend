@@ -63,7 +63,7 @@ const DEFAULTS = {
   // Access session variables "token" using:
   // this.request.session.token
   // 
-  // Saving session variables using "token" using:
+  // Saving session variables "token" using:
   // this.request.session.token = 'abc';
   // this.request.session.save(() => {
   //   resolve(...);
