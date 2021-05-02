@@ -550,7 +550,7 @@ ${rootScript}`;
           }
         }
         
-        // Display Logic
+        // Render Logic
         // 
         if (reactDisplayLogic == 'statement') {
         	lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
