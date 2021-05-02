@@ -403,7 +403,7 @@ var AnimationHelper = {
 			  			let total = parseFloat(keyframes[keyframes.length - 1].hashMap['-fsb-animation-keyframe-time']) - delay;
 			  			
 			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
-			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
+			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || 1;
 			  			
 			  			for (let i=0; i<keyframes.length; i++) {
 			  				let currentKeyframe = keyframes[i];
@@ -446,9 +446,9 @@ var AnimationHelper = {
 			  				
 			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
 			  					if (repeatMode == 'time') {
-			  						animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}, fsb-animation-${presetId.replace(':', '-')}-end; ${prefix}animation-delay: ${delay}s, ${delay + total * repeatTime}s; ${prefix}animation-duration: ${total}s, 1s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)}, infinite;`);
+			  						animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}, fsb-animation-${presetId.replace(':', '-')}-end; ${prefix}animation-delay: ${delay}s, ${delay + total * repeatTime}s; ${prefix}animation-duration: ${total}s, 1s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime}, infinite;`);
 			  					} else {
-				  					animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
+				  					animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime};`);
 				  				}
 				  			}
 				  			

@@ -14,7 +14,8 @@ interface Props extends IProps {
     inline: boolean,
     button: boolean,
     manual: boolean,
-    float: boolean
+    float: boolean,
+    placeholder: string
 }
 
 interface State extends IState {
@@ -31,7 +32,8 @@ Object.assign(ExtendedDefaultProps, {
     inline: false,
     button: true,
     manual: false,
-    float: false
+    float: false,
+    placeholder: ''
 });
 
 class NumberPicker extends Base<Props, State> {
@@ -150,7 +152,7 @@ class NumberPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     {(() => {
                         if (this.props.button) {
                             return (
@@ -169,7 +171,7 @@ class NumberPicker extends Base<Props, State> {
                 <div className={"number-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>
