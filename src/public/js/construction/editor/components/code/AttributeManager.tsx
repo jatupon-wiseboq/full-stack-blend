@@ -194,7 +194,7 @@ class AttributeManager extends Base<Props, State> {
                     <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update an Attribute"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Name</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
-                        <FullStackBlend.Controls.Textbox failedValidationMessage={this.state.nameInputFailedValidationMessage} ref="name" value={this.state.name} placeholder="KEY" preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox failedValidationMessage={this.state.nameInputFailedValidationMessage} ref="name" value={this.state.name} placeholder="key" preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle">Value</div>
                     <div className="section-body">
