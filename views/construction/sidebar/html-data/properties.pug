@@ -35,7 +35,7 @@ include ../../mixin/CreateReactComponent
     .section-subtitle
       | Name
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
   .section-container(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalColumn")
       | Relational Column Options
@@ -44,7 +44,7 @@ include ../../mixin/CreateReactComponent
     .section-subtitle
       | Name
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'column'}")
     .section-subtitle
       | Column
     .section-body
@@ -70,14 +70,14 @@ include ../../mixin/CreateReactComponent
     .section-subtitle
       | Group
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
   .section-container(internal-fsb-for="internal-fsb-class:VolatilePrefix")
     .section-title
       | Volatile Prefix Options
     .section-subtitle
       | Field
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle
       | Column
     .section-body
@@ -96,11 +96,11 @@ include ../../mixin/CreateReactComponent
     .section-subtitle
       | Method Name
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle
       | Request URL
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-url'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-url'], inline: true, button: false, placeholder: 'URL'}")
   .section-container(internal-fsb-for="internal-fsb-class:Connection")
     .section-title
       | Relation Options
@@ -111,19 +111,19 @@ include ../../mixin/CreateReactComponent
     .section-subtitle
       | Source Group
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-group-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-group-name'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle
       | Source Entity
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-entity-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-source-entity-name'], inline: true, button: false, placeholder: 'column'}")
     .section-subtitle
       | Target Group
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-group-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-group-name'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle
       | Target Entity
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-entity-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-target-entity-name'], inline: true, button: false, placeholder: 'column'}")
     .section-subtitle
       | Force Constraint
     .section-body

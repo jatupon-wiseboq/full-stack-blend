@@ -14,7 +14,8 @@ interface Props extends IProps {
     inline: boolean,
     button: boolean,
     manual: boolean,
-    multiline: boolean
+    multiline: boolean,
+    placeholder: string
 }
 
 interface State extends IState {
@@ -31,7 +32,8 @@ Object.assign(ExtendedDefaultProps, {
     inline: false,
     button: true,
     manual: false,
-    multiline: false
+    multiline: false,
+    placeholder: ''
 });
 
 class TextPicker extends Base<Props, State> {
@@ -127,7 +129,7 @@ class TextPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={this.state.value} placeholder={this.props.placeholder} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
                     {(() => {
                         if (this.props.button) {
                             return (
@@ -146,7 +148,7 @@ class TextPicker extends Base<Props, State> {
                 <div className={"text-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={this.state.value} placeholder={this.props.placeholder} preRegExp="[^']*" postRegExp="[^']*" onUpdate={this.textboxOnUpdate.bind(this)} multiline={this.props.multiline}></FullStackBlend.Controls.Textbox>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>
