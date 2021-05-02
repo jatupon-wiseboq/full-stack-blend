@@ -90,6 +90,14 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-body
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-accumulate'], inline: true, button: false}")
         .section-subtitle
+          | Display Logic
+        .section-body
+          +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-display-logic'], inline: true, button: false}")
+        .section-subtitle(internal-fsb-for="internal-fsb-react-display-logic:statement")
+          | Display Statement
+        .section-body(internal-fsb-for="internal-fsb-react-display-logic:statement")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-display-statement'], inline: true, button: false, placeholder: 'true'}")
+        .section-subtitle
           | Group of Fields Division
         .section-body
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-division'], inline: true, button: false}")

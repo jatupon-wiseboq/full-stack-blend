@@ -34,6 +34,7 @@ let options = {
     "data-validation-format-3": CONSTANTS.DATA_VALUE_FORMAT_OPTIONS_3,
     "internal-fsb-react-division": CONSTANTS.REACT_FIELD_DIVISION_OPTIONS,
     "internal-fsb-react-accumulate": CONSTANTS.REACT_ACCUMULATE_OPTIONS,
+    "internal-fsb-react-display-logic": CONSTANTS.REACT_DISPLAY_LOGIC_OPTIONS,
     
     // Back-End Options
 		// 

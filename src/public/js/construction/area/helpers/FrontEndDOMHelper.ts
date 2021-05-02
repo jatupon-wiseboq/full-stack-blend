@@ -170,6 +170,8 @@ ${rootScript}`;
         let reactData = null;
         let reactFieldDivision = null;
         let reactAccumulateNotation = null;
+        let reactDisplayLogic = null;
+        let reactDisplayStatement = null;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
@@ -357,6 +359,12 @@ ${rootScript}`;
             case 'internal-fsb-react-accumulate':
               if (!!attribute.value) reactAccumulateNotation = attribute.value;
               break;
+            case 'internal-fsb-react-display-logic':
+              if (!!attribute.value) reactDisplayLogic = attribute.value;
+              break;
+            case 'internal-fsb-react-display-statement':
+              if (!!attribute.value) reactDisplayStatement = attribute.value;
+              break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
@@ -530,7 +538,7 @@ ${rootScript}`;
         let _nodeData = 'data';
         if (reactData !== null) {
           if (!_leafNode) {
-            lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true)');
+            lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true, ' + (reactDisplayLogic == 'always') + ')');
             
             indent += '  ';
             
@@ -540,6 +548,13 @@ ${rootScript}`;
             
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '.';
           }
+        }
+        
+        // Display Logic
+        // 
+        if (reactDisplayLogic == 'statement') {
+        	lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
+        	indent += '  ';
         }
         
         // Include Another React Class Feature
