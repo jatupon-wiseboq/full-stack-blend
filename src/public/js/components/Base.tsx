@@ -73,21 +73,27 @@ class Base extends React.Component {
 	  }
   }
   
-  protected getDataFromNotation(notation: string, inArray: boolean=false): any {
+  protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
+    let result;
+    
     if (!notation) {
       console.error("There was an error processing hierarchical data on client side (notation isn't a string).");
-      return [];
-    }
-    
-    if (this.props.row) {
-    	return DataManipulationHelper.getDataFromNotation(notation, this.props.row, inArray);
-    } else if (this.state.data) {
-    	return DataManipulationHelper.getDataFromNotation(notation, this.state.data, inArray);
-    } else if (this.props.data) {
-    	return DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
+      result = [];
     } else {
-      return [''];
-    }
+	    if (this.props.row) {
+	    	result = DataManipulationHelper.getDataFromNotation(notation, this.props.row, inArray);
+	    } else if (this.state.data) {
+	    	result = DataManipulationHelper.getDataFromNotation(notation, this.state.data, inArray);
+	    } else if (this.props.data) {
+	    	result = DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
+	    } else {
+	      result = [''];
+	    }
+	  }
+	  
+	  if (always && inArray && result.length == 0) result.push('');
+	  
+	  return result;
   }
   
   public manipulate(guid: string, notation: string, results: any) {
