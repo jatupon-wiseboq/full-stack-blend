@@ -182,7 +182,7 @@ var FrontEndReactHelper = {
     // 
     // const element = EventHelper.getCurrentElement(event);
     // const control = ReactDOM.findDOMNode(this.refs.ID);
-    //
+    // 
     
     `;
             
@@ -265,7 +265,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     // 
     // const element = EventHelper.getCurrentElement(event);
     // const control = ReactDOM.findDOMNode(this.refs.ID);
-    //
+    // 
     
     `;
             
