@@ -11,8 +11,6 @@ var SchemaHelper = {
   generateDataSchema: (): any => {
     let tables = {};
     
-    if (!HTMLHelper.getElementByClassName('internal-fsb-begin')) return tables;
-    
     const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory', 'RESTful'];
     const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix', 'Verb'];
     

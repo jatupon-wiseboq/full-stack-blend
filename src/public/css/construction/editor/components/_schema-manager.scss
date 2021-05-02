@@ -82,6 +82,9 @@
 				}
 			}
 		}
+		&.pseudo {
+			opacity: 0.25;
+		}
 		&.subtitle > .treenode-container > .treenode-body > .form-check > .form-check-label {
 			.treenode-title {
 				color: #aaaaaa;
