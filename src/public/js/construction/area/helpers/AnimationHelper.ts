@@ -351,6 +351,7 @@ var AnimationHelper = {
   			for (let presetId in stylesheetDefinitions[animationId]) {
 		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
 		  			let animationKeyframes = [];
+		  			let endOfAnimationKeyframes = [];
 		  			
 		  			let keyframes = Object.keys(stylesheetDefinitions[animationId][presetId])
 		  				.filter(keyframeId => ['repeatMode', 'repeatTime'].indexOf(keyframeId) == -1)
@@ -401,6 +402,9 @@ var AnimationHelper = {
 			  			let delay = parseFloat(keyframes[0].hashMap['-fsb-animation-keyframe-time']);
 			  			let total = parseFloat(keyframes[keyframes.length - 1].hashMap['-fsb-animation-keyframe-time']) - delay;
 			  			
+			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
+			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
+			  			
 			  			for (let i=0; i<keyframes.length; i++) {
 			  				let currentKeyframe = keyframes[i];
 			  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
@@ -422,20 +426,30 @@ var AnimationHelper = {
 				  			}
 			  				
 			  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+			  			
+				  			if (repeatMode == 'time' && i == keyframes.length - 1) {
+				  				endOfAnimationKeyframes.push(`0% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  				endOfAnimationKeyframes.push(`100% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  			}
 			  			}
 			  			
 			  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
 			  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
+			  				
+			  				if (repeatMode == 'time') {
+			  					animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')}-end { ${endOfAnimationKeyframes.join(' ')} }`);
+			  				}
 			  			}
-			  			
-			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
-			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || null;
 			  			
 			  			if (repeatMode != 'disabled') {
 			  				let animations = [];
 			  				
 			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
-				  				animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
+			  					if (repeatMode == 'time') {
+			  						animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}, fsb-animation-${presetId.replace(':', '-')}-end; ${prefix}animation-delay: ${delay}s, ${delay + total * repeatTime}s; ${prefix}animation-duration: ${total}s, 1s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)}, infinite;`);
+			  					} else {
+				  					animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : (repeatTime || 1)};`);
+				  				}
 				  			}
 				  			
 				  			if (animationId != 'selector') {
