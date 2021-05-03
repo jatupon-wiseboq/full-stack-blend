@@ -6,12 +6,14 @@ import path from "path";
 import {DataSchema, SchemaHelper} from "./SchemaHelper";
 import {DatabaseHelper} from "./DatabaseHelper";
 
-const file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
-const data = JSON.parse(file);
-
+let file, data;
 let cachedSchema = null;
 
 const ProjectConfigurationHelper = {
+	reload: () => {
+		file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
+		data = JSON.parse(file);
+	},
   convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
       if (tables.hasOwnProperty(tableKey)) {
@@ -44,6 +46,8 @@ const ProjectConfigurationHelper = {
 	  return data.sites[page].notations;
 	}
 };
+
+ProjectConfigurationHelper.reload();
 
 export {ProjectConfigurationHelper};
 
