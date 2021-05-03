@@ -293,7 +293,7 @@ ${rootScript}`;
         	
           switch (attribute.name) {
             case 'class':
-              classes = attribute.value.replace('internal-fsb-selecting', '').trim().replace(/[\ ]+/g, ' ');
+              classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-allow-cursor', '').trim().replace(/[\ ]+/g, ' ');
               
               let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
               let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
@@ -726,7 +726,7 @@ ${rootScript}`;
         	
           switch (attribute.name) {
             case 'class':
-              classes = attribute.value.replace('internal-fsb-selecting', '').replace(/(internal-fsb-allow-cursor)/g, '').trim();
+              classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-allow-cursor', '').trim();
               
               let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
               let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
