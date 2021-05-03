@@ -264,6 +264,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
     // 
     // const element = EventHelper.getCurrentElement(event);
+    // const control = ReactDOM.findDOMNode(this.refs.ID);
     // 
     
     `;
