@@ -79,9 +79,9 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.retrieve(@{
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }, 'collection',
           this.request.session,   // session variables
           false,                  // real-time updates
@@ -102,9 +102,9 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.update(@{
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }, 'collection',
           false,                  // recusive upsert in sub-collection
           this.request.session,   // session variables
@@ -121,9 +121,9 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.insert(@{
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }, 'collection',
           false,                  // recusive upsert in sub-collection
           this.request.session,   // session variables
@@ -134,9 +134,9 @@ const DEFAULTS = {
       } */
       /* try {
         resolve(await DatabaseHelper.upsert(@{
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }, 'collection',
           this.request.session,   // session variables
           false                   // skip permission settings
@@ -152,9 +152,9 @@ const DEFAULTS = {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.delete(@{
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }, 'collection',
           this.request.session,   // session variables
           false                   // leavePermission
