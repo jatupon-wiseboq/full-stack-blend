@@ -6,6 +6,7 @@ import * as shell from "shelljs";
 import path from "path";
 import * as child from "child_process";
 import {Request, Response} from "express";
+import {ProjectConfigurationHelper} from "./helpers/ProjectConfigurationHelper";
 
 let recentError = [];
 export const clearRecentError = () => {
@@ -59,6 +60,8 @@ export const updateContent = (request: Request, response: Response) => {
     			
     			fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
     	  }
+    	  
+    	  ProjectConfigurationHelper.reload();
 			}, 1000);
 		} catch(error) {
 			response.json({
@@ -101,6 +104,8 @@ export const pullContent = async (request: Request, response: Response) => {
 				results: true
 			});
 			response.end();
+    	
+    	ProjectConfigurationHelper.reload();
 		} catch(error) {
 			response.json({
 				success: false,

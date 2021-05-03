@@ -406,18 +406,26 @@ const RequestHelper = {
   		}
     }
     
-    if (!foundSingle) {
-		  let concurring = 0;
-		  while (multiple[concurring] === false) concurring++;
-		  
-		  concurring = Math.min(concurring, multiple.length - 1);
-		  
-		  if (multiple.length > 1) {
-			  for (let i=0; i<inputs.length; i++) {
-			  	inputs[i].division.splice(0, concurring);
-			  }
-			}
+	  let concurring = 0;
+	  while (multiple[concurring] === false) concurring++;
+	  concurring = Math.min(concurring, multiple.length - 1);
+	  
+	  if (multiple.length > 1) {
+		  for (let i=0; i<inputs.length; i++) {
+		  	inputs[i].division.splice(0, concurring);
+		  }
 		}
+		
+		foundEmptied = false;
+    for (let i=0; i<inputs.length; i++) {
+      foundEmptied = foundEmptied || (inputs[i].division.length == 0);
+    }
+    
+    if (foundEmptied) {
+      for (let i=0; i<inputs.length; i++) {
+        inputs[i].division.splice(0, 0, 0);
+      }
+    }
   }
 };
 
