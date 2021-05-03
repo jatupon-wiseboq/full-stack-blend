@@ -16,10 +16,10 @@
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "399653d6530a7bfbb201b14466857e1db021b29e#-700996132",
-    "9e885d49": "c33df2335641bc4c1dbed33d97122727e7dd01e8#-1299641586",
-    "b160aa0e": "a5e56befb10ead4b6ac2284f4865a4e4add073f9#975611240",
-    "index": "330870566253f961e6981c48643acad93ff19131#1346106910"
+    "3cb10a6e": "541f9636c684def5488a88412591b1c78d07ab8b#-306252438",
+    "9e885d49": "a0f7a7cd529c7ca9f7a28626eed62b521051c50d#395811967",
+    "b160aa0e": "5f6db68696cd7d298583dc8cbc0563b8a09d830f#899634711",
+    "index": "45ae5f31be33795e9a931a70389b4dbde4ef183f#-1034963895"
   },
   "components": {
     "245bc127": {
@@ -1384,8 +1384,11 @@
         "</div>",
         "</div>"
       ],
+      "id": "4d816ba8",
       "klass": "FlowLayout_4d816ba8",
-      "namespace": "Project.Controls"
+      "name": "Authenticator",
+      "namespace": "Project.Controls",
+      "state": "create"
     }
   },
   "controllerBlobSHA": "412073fbb81cba1ed429a2aaeb557a9cd42cc8d7#39405662",
@@ -2577,7 +2580,7 @@
       }
     }
   },
-  "footerBlobSHA": "67200557edf9846f4f0c555924fe044789e1c322#-2134452913",
+  "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "37b37233318d85bc3d41fad05c706facfdf666b9#-194971454",
     "Project.Controls.Settings": "ec0a30b261f71758512a4dd1477e240ca47554ff#-1054343501"
@@ -2673,7 +2676,7 @@
     ],
     "popups": []
   },
-  "headerBlobSHA": "0666c00ffac76ecb5eca642225431df0bb625cff#941636428",
+  "headerBlobSHA": "ba52b48eeb2c1271c91b943bd7bd3a05696eb26b#569795602",
   "popups": {},
   "routeBlobSHA": "13575ac5090269503bf43366f4067b7d3300720a#1089952362",
   "services": {
@@ -2685,17 +2688,90 @@
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "449cac24c6c76dd329287f2ad0bb1a8db7536a60#-1660807882",
+  "siteBundleBlobSHA": "d20600a8d7a530429562c0db9ce19eaa04dc6730#-745819560",
   "sites": {
     "3cb10a6e": {
       "accessories": {},
+      "automaticSchemata": {
+        "1373582583047392": {
+          "required": null,
+          "sourceColumn": "endpoint",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "2996370975208429": {
+          "required": null,
+          "sourceColumn": "email",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "4123800620265150": {
+          "required": null,
+          "sourceColumn": "project",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "4220874293903860": {
+          "required": null,
+          "sourceColumn": "staging",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "462235247206624": {
+          "required": null,
+          "sourceColumn": "feature",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "4819778560531580": {
+          "required": null,
+          "sourceColumn": "confirmPassword",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "4972198119894531": {
+          "required": null,
+          "sourceColumn": "develop",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "5530252484561856": {
+          "required": null,
+          "sourceColumn": "password",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "5791118727367336": {
+          "required": null,
+          "sourceColumn": "name",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "7556448496153615": {
+          "required": null,
+          "sourceColumn": "alias",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "version": "1.1"
+      },
       "body": [
         "<body",
         "    class=\"\"",
         "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy_full.jpg); background-position: center center; background-size: cover; position: relative\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-4417747b\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3050,13 +3126,37 @@
     },
     "9e885d49": {
       "accessories": {},
+      "automaticSchemata": {
+        "1940640538049661": {
+          "required": "true",
+          "sourceColumn": "confirmPassword",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "3634429963886437": {
+          "required": "true",
+          "sourceColumn": "password",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "4611631165501262": {
+          "required": "true",
+          "sourceColumn": "email",
+          "sourceName": "User",
+          "sourceType": "document",
+          "validationFormat": null
+        },
+        "version": "1.1"
+      },
       "body": [
         "<body",
         "    class=\"\"",
         "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/federa_lake.jpg); background-position: center center; background-size: cover\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-4417747b\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3349,13 +3449,16 @@
     },
     "b160aa0e": {
       "accessories": {},
+      "automaticSchemata": {
+        "version": "1.1"
+      },
       "body": [
         "<body",
         "    class=\"\"",
         "    style=\"font-family: Courier Prime; font-size: 18px\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-4417747b\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3557,13 +3660,16 @@
     },
     "index": {
       "accessories": {},
+      "automaticSchemata": {
+        "version": "1.1"
+      },
       "body": [
         "<body",
         "    class=\"internal-fsb-guide-off\"",
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-735ec287\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-4417747b\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -4311,9 +4417,9 @@
   },
   "version": 1.3,
   "viewBlobSHADict": {
-    "3cb10a6e": "4e8179bf1bf1553b9e7dd04b318caf9ad33e9b14#2080263591",
-    "9e885d49": "37de95db8b765f28dec81033319c3b5c0302b146#590996915",
-    "b160aa0e": "9c036c0ea55d54090f7d0be14dd860bcc456db60#-1761866046",
-    "index": "2222bde17c16f04e54ea1412eb39214eb4f3c95d#1145306135"
+    "3cb10a6e": "7daa9b43aa824aabac095bb072480d701da6529a#-2062711160",
+    "9e885d49": "a344092581cce32ff74d08bb8ce1ded46319badd#-1895225708",
+    "b160aa0e": "ce48c43a248d5071bc84c88c777f76d6ae5c1086#307493889",
+    "index": "9f65523d7f91f74f88f3e37148a013fd7e965850#-1064934972"
   }
 }

@@ -14,11 +14,11 @@ include ../../mixin/CreateReactComponent
     .section-subtitle(internal-fsb-for="data-lock-mode:relation")
       | Source Group
     .section-body(internal-fsb-for="data-lock-mode:relation")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-group'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-group'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle(internal-fsb-for="data-lock-mode:relation")
       | Source Entity
     .section-body(internal-fsb-for="data-lock-mode:relation")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-entity'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-source-entity'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle(internal-fsb-for="data-lock-mode:relation")
       | Matching Mode
     .section-body(internal-fsb-for="data-lock-mode:relation")
@@ -31,11 +31,11 @@ include ../../mixin/CreateReactComponent
       .section-subtitle(internal-fsb-for="data-lock-matching-mode:session")
         | Session Name
       .section-body(internal-fsb-for="data-lock-matching-mode:session")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-relation-matching-session-name'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-relation-matching-session-name'], inline: true, button: false, placeholder: 'key'}")
     .section-subtitle(internal-fsb-for="data-lock-mode:session")
       | Session Name
     .section-body(internal-fsb-for="data-lock-mode:session")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-session-matching-session-name'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-lock-session-matching-session-name'], inline: true, button: false, placeholder: 'key'}")
     .section-subtitle(internal-fsb-for="data-lock-mode:session")
       | Matching Value
     .section-body(internal-fsb-for="data-lock-mode:session")
@@ -57,11 +57,11 @@ include ../../mixin/CreateReactComponent
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
       | Source Group
     .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-group'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-group'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
       | Source Entity
     .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-entity'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-source-entity'], inline: true, button: false, placeholder: 'column'}")
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:relation")
       | Matching Mode
     .section-body(internal-fsb-for="data-rendering-condition-mode:relation")
@@ -74,7 +74,7 @@ include ../../mixin/CreateReactComponent
       .section-subtitle(internal-fsb-for="data-rendering-condition-matching-mode:session")
         | Session Name
       .section-body(internal-fsb-for="data-rendering-condition-matching-mode:session")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-relation-matching-session-name'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-rendering-condition-relation-matching-session-name'], inline: true, button: false, placeholder: 'key'}")
     .section-subtitle(internal-fsb-for="data-rendering-condition-mode:session")
       | Session Name
     .section-body(internal-fsb-for="data-rendering-condition-mode:session")

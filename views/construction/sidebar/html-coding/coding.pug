@@ -24,15 +24,15 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
         | Namespace
       .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-namespace'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-namespace'], inline: true, button: false, placeholder: 'Project.Controls'}")
       .section-subtitle(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
         | Reusable Component Name
       .section-body(internal-fsb-for="internal-fsb-react-mode:Site, internal-fsb-react-mode:Global")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-class'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-class'], inline: true, button: false, placeholder: 'ClassName'}")
       .section-subtitle
         | Reference ID
       .section-body
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false, placeholder: 'ID'}")
       .section-hr
     .section-container.internal-fsb-selecting-on(internal-fsb-not-for="hasParentReactComponent")
       .section-title
@@ -54,7 +54,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle(internal-fsb-for="internal-fsb-data-wizard-type:popup")
         | Popup React Class
       .section-body(internal-fsb-for="internal-fsb-data-wizard-type:popup")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-popup-init-class'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-popup-init-class'], inline: true, button: false, placeholder: 'Project.Controls.ClassName'}")
       .section-subtitle
         | Inputs
       .section-body
@@ -71,7 +71,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-subtitle
           | Manipulate Into
         .section-body
-          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false}")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false, placeholder: 'collection.collection'}")
       .section-hr
     div
       .section-container(internal-fsb-for="hasParentReactComponent")
@@ -80,7 +80,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-subtitle
           | Hierarchical Dot Notation
         .section-body
-          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false, placeholder: 'collection.collection[i].column'}")
         .section-subtitle
           | Paging Size
         .section-body
@@ -89,6 +89,14 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
           | Accumulate Path
         .section-body
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-accumulate'], inline: true, button: false}")
+        .section-subtitle
+          | Render Logic
+        .section-body
+          +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-display-logic'], inline: true, button: false}")
+        .section-subtitle(internal-fsb-for="internal-fsb-react-display-logic:statement")
+          | Render Displaying Statement
+        .section-body(internal-fsb-for="internal-fsb-react-display-logic:statement")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-display-statement'], inline: true, button: false, placeholder: 'true'}")
         .section-subtitle
           | Group of Fields Division
         .section-body
@@ -114,7 +122,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
         | Group
       .section-body(internal-fsb-for="internal-fsb-data-source-type")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-name'], inline: true, button: false, placeholder: 'collection.collection'}")
       .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:relational")
         | Column Name
       .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:worker")
@@ -124,7 +132,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle(internal-fsb-for="internal-fsb-data-source-type:volatile-memory")
         | Key
       .section-body(internal-fsb-for="internal-fsb-data-source-type")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-source-column'], inline: true, button: false, placeholder: 'column'}")
       .section-subtitle(internal-fsb-for="internal-fsb-data-source-type")
         | Value Source
       .section-body(internal-fsb-for="internal-fsb-data-source-type")
@@ -133,7 +141,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-subtitle(internal-fsb-for="internal-fsb-data-value-source")
           | Session Variable Name
         .section-body(internal-fsb-for="internal-fsb-data-value-source")
-          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-session-name'], inline: true, button: false}")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-session-name'], inline: true, button: false, placeholder: 'key'}")
         .section-subtitle(internal-fsb-not-for="internal-fsb-data-value-source")
           | Default Value
         .section-body(internal-fsb-not-for="internal-fsb-data-value-source")
@@ -151,7 +159,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle(internal-fsb-for="internal-fsb-data-validation-format:custom")
         | Custom Regular Expression
       .section-body(internal-fsb-for="internal-fsb-data-validation-format:custom")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-regex'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-regex'], inline: true, button: false, placeholder: '^[abc]$'}")
       .section-subtitle
         | Validation Message
       .section-body
@@ -300,7 +308,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
       .section-subtitle
         | Reference ID
       .section-body
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-id'], inline: true, button: false, placeholder: 'ID'}")
       .section-hr
     div
       .section-container(internal-fsb-for="hasParentReactComponent")
@@ -309,7 +317,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-subtitle
           | Hierarchical Dot Notation
         .section-body
-          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false, placeholder: 'collection.collection[i].column'}")
         .section-hr
       .section-container.internal-fsb-selecting-on
         .section-title
@@ -327,7 +335,7 @@ div(internal-fsb-for="isTableLayoutRow:true")
     .section-subtitle
       | Hierarchical Dot Notation
     .section-body
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false}")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false, placeholder: 'collection.collection[i].column'}")
     .section-subtitle
       | Paging Size
     .section-body

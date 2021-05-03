@@ -47,8 +47,8 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   
   // Providing data array base on dot notation:
   // 
-  protected getDataFromNotation(notation: string, inArray: boolean=false): any {
-    return super.getDataFromNotation(notation, inArray);
+  protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
+    return super.getDataFromNotation(notation, inArray, always);
   }
   `,
   ClassEnd: `
@@ -180,6 +180,9 @@ var FrontEndReactHelper = {
 
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
     // 
+    // const element = EventHelper.getCurrentElement(event);
+    // const control = ReactDOM.findDOMNode(this.refs.ID);
+    // 
     
     `;
             
@@ -259,6 +262,8 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             let FUNCTION_BODY = `
 
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
+    // 
+    // const element = EventHelper.getCurrentElement(event);
     // 
     
     `;

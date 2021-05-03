@@ -25,6 +25,10 @@ const DEFAULTS = {
  		ValidationHelper.validate(data);
   }
   
+  // ---------------------------------------------------------------
+  // Metadata (SEO)
+  // ---------------------------------------------------------------
+  
   protected async accessories(data: Input[]): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -47,8 +51,45 @@ const DEFAULTS = {
     });
   }
   
+  // ---------------------------------------------------------------
+  // Example Code of Express Parameters
+  // ---------------------------------------------------------------
+  // 
+  // Access path parameters of "/path/:a/:b" using:
+  // this.request.params['a'], this.request.params['b']
+  // 
+  // Access query-string parameters of "/path/a/b?c=123" using:
+  // this.request.query['c']
+  // 
+  // Access session variables "token" using:
+  // this.request.session.token
+  // 
+  // Saving session variables "token" using:
+  // this.request.session.token = 'abc';
+  // this.request.session.save(() => {
+  //   resolve(...);
+  // });
+  // ---------------------------------------------------------------
+
+  // ---------------------------------------------------------------
+  // Traditional HTTP Request Methods
+  // ---------------------------------------------------------------
+  
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
+      /* try {
+        resolve(await DatabaseHelper.retrieve(@{
+            'collectionA.column1': 'abc',
+            'collectionA.column2': 123,
+            'collectionA.collectionB.id': null
+          }, 'collection',
+          this.request.session,   // session variables
+          false,                  // real-time updates
+          false                   // skip permission settings
+        ));
+      } catch(error) {
+        reject(error);
+      } */
       try {
         resolve(await super.get(data));
       } catch(error) {
@@ -60,7 +101,15 @@ const DEFAULTS = {
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.post(data));
+        resolve(await DatabaseHelper.update(@{
+            'collectionA.column1': 'abc',
+            'collectionA.column2': 123,
+            'collectionA.collectionB.id': null
+          }, 'collection',
+          false,                  // recusive upsert in sub-collection
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
       } catch(error) {
         reject(error);
       } */
@@ -71,7 +120,27 @@ const DEFAULTS = {
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.put(data));
+        resolve(await DatabaseHelper.insert(@{
+            'collectionA.column1': 'abc',
+            'collectionA.column2': 123,
+            'collectionA.collectionB.id': null
+          }, 'collection',
+          false,                  // recusive upsert in sub-collection
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
+      } catch(error) {
+        reject(error);
+      } */
+      /* try {
+        resolve(await DatabaseHelper.upsert(@{
+            'collectionA.column1': 'abc',
+            'collectionA.column2': 123,
+            'collectionA.collectionB.id': null
+          }, 'collection',
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
       } catch(error) {
         reject(error);
       } */
@@ -82,13 +151,24 @@ const DEFAULTS = {
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.delete(data));
+        resolve(await DatabaseHelper.delete(@{
+            'collectionA.column1': 'abc',
+            'collectionA.column2': 123,
+            'collectionA.collectionB.id': null
+          }, 'collection',
+          this.request.session,   // session variables
+          false                   // leavePermission
+        ));
       } catch(error) {
         reject(error);
       } */
       reject(new Error("Not Implemented Error"));
     });
   }
+  
+  // ---------------------------------------------------------------
+  // StackBlend Button Request Actions
+  // ---------------------------------------------------------------
   
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
@@ -178,7 +258,10 @@ import {Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
 }
 enum ActionType {
   Insert,
@@ -187,12 +270,8 @@ enum ActionType {
   Delete,
   Retrieve,
   Popup,
-  Navigate
-}
-enum ValidationInfo {
-  name: string;
-  required: boolean;
-  customMessage: string;
+  Navigate,
+  Test
 }*/
 // <---Auto[Declare]
 // Auto[Interface]--->
@@ -206,6 +285,7 @@ interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
 }
 interface Input {
   target: SourceType;
@@ -213,7 +293,16 @@ interface Input {
   name: string;
   value: any;
   guid: string;
+  premise: string;
   validation: ValidationInfo;
+  division?: number[];
+}
+interface ValidationInfo {
+  name: string;
+  required: boolean;
+  customMessage: string;
+  format?: string;
+  regex?: string;
 }*/
 // <---Auto[Interface]
 // Auto[ClassBegin]--->

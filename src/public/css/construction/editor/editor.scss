@@ -44,3 +44,22 @@ html, body {
 div, span, label {
 	cursor: inherit;
 }
+
+// Placeholders
+// -------------------------
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #cccccc !important;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #cccccc !important;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #cccccc !important;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #cccccc !important;
+}
+::placeholder {
+	color: #cccccc !important;
+}

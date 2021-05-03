@@ -1,4 +1,6 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper';
 
 let cachedElementTreeNodes = null;
 
@@ -106,6 +108,38 @@ var SchemaHelper = {
       }
     }
     
+    const pseudoSchemata = {};
+    
+    for (const info of InternalProjectSettings.pages) {
+    	if (info.state == 'delete') continue;
+    	
+    	const page = WorkspaceHelper.getPageData(info.id);
+    	
+    	if (page && page.automaticSchemata && page.automaticSchemata['version'] == '1.1') {
+    		const schemata = SchemaHelper.generatePseudoSchemata(page);
+    		
+    		for (const group in schemata) {
+    			if (schemata.hasOwnProperty(group)) {
+    				if (!pseudoSchemata[group]) {
+    					pseudoSchemata[group] = schemata[group];
+    				} else {
+    					pseudoSchemata[group].keys = Object.assign(pseudoSchemata[group].keys, schemata[group].keys);
+    					pseudoSchemata[group].columns = Object.assign(pseudoSchemata[group].columns, schemata[group].columns);
+    					pseudoSchemata[group].relations = Object.assign(pseudoSchemata[group].relations, schemata[group].relations);
+    				}
+    			}
+    		}
+	    }
+    }
+    
+    for (const group in pseudoSchemata) {
+    	if (pseudoSchemata.hasOwnProperty(group)) {
+    		if (!tables[group]) {
+    			tables[group] = pseudoSchemata[group];
+    		}
+    	}
+    }
+    
     return tables;
   },
   generatePermission: (element: HTMLElement, prefix: string): any => {
@@ -157,92 +191,22 @@ var SchemaHelper = {
   },
   recursiveAccumulateFields: (schemata: any={}, current: HTMLElement=document.body): any => {
     const sourceType = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-type');
-    let sourceName = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-name') || '';
-    let sourceColumn = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-column') || '';
-    const valueSource = HTMLHelper.getAttribute(current, 'internal-fsb-data-value-source');
+    const sourceName = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-name') || '';
+    const sourceColumn = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-column') || '';
     const required = HTMLHelper.getAttribute(current, 'required');
     const validationFormat = HTMLHelper.getAttribute(current, 'internal-fsb-data-validation-format');
     
-    if (['document', 'volatile-memory'].indexOf(sourceType) != -1) {
-    	sourceName = sourceName.trim();
-    	sourceColumn = sourceColumn.trim();
-    	
-    	const splited = sourceColumn.split('.');
-    	sourceColumn = splited.pop();
-    	
-    	if (valueSource == null && !!sourceName && !!sourceColumn && sourceColumn != 'id') {
-    		schemata[sourceName] = {
-          source: sourceType,
-          group: sourceName,
-          guid: `automatic-table-${sourceName}`,
-          keys: {
-          	'id': {
-          		name: 'id',
-		        	guid: `automatic-column-${sourceName}-id`,
-		        	fieldType: 'auto',
-		        	required: true,
-		        	unique: true,
-		        	verb: null,
-		        	url: null,
-		          modifyingPermission: null,
-		          retrievingPermission: null
-          	}
-          },
-          columns: {},
-          relations: {},
-          modifyingPermission: null,
-          retrievingPermission: null
-        };
-    		
-    		let fieldType = null;
-    		
-    		switch (validationFormat) {
-    			case 'integer':
-    			case 'float':
-    				fieldType = 'number';
-    				break;
-    			case 'boolean':
-    				fieldType = 'boolean';
-    				break;
-    			case 'string':
-    			case 'title':
-    			case 'email':
-    			case 'password':
-    			case 'phone':
-    			case 'zipcode':
-    			case 'custom':
-    				fieldType = null;
-    				break;
-    		}
-    		
-    		const column = {
-    			name: sourceColumn,
-        	guid: `automatic-column-${sourceName}-${sourceColumn}`,
-        	fieldType: fieldType,
-        	required: (required == 'true'),
-        	unique: (sourceColumn == 'id'),
-        	verb: null,
-        	url: null,
-          modifyingPermission: null,
-          retrievingPermission: null
-        };
-        
-        schemata[sourceName].columns[sourceColumn] = column;
-        
-        const targetName = splited.pop();
-        if (targetName) {
-        	const relation = {
-	  				name: null,
-	        	guid: `automatic-relation-${sourceName}-${targetName}`,
-	          sourceGroup: sourceName,
-	          sourceEntity: sourceColumn,
-	          targetGroup: targetName,
-	          targetEntity: (sourceColumn == 'id') ? `${sourceName}_id` : sourceColumn
-	        };
-	        
-	        schemata[sourceName].relations[targetName] = relation;
-        }
-    	}
+    const valueSource = HTMLHelper.getAttribute(current, 'internal-fsb-data-value-source');
+    
+    if (valueSource == null && ['document', 'volatile-memory'].indexOf(sourceType) != -1) {
+    	const hash = RandomHelper.generateHash([sourceType, sourceName, sourceColumn, required, validationFormat].join('-'));
+    	schemata[hash] = {
+    		sourceType: sourceType,
+    		sourceName: sourceName,
+    		sourceColumn: sourceColumn,
+    		required: required,
+    		validationFormat: validationFormat
+    	};
     }
     
     for (let element of [...current.children]) {
@@ -252,6 +216,114 @@ var SchemaHelper = {
     }
     
     return schemata;
+  },
+  generatePseudoSchemata: (page: any) => {
+		const schemata = {};
+		
+  	for (const key in page.automaticSchemata) {
+			if (page.automaticSchemata.hasOwnProperty(key)) {
+				if (key == 'version') continue;
+				
+	  		const sourceType = page.automaticSchemata[key].sourceType;
+		    const required = page.automaticSchemata[key].required;
+		    const validationFormat = page.automaticSchemata[key].validationFormat;
+		    
+				let splited = page.automaticSchemata[key].sourceName.trim().split('.');
+				const sourceName = splited.pop();
+				const targetName = splited.pop();
+				
+				splited = page.automaticSchemata[key].sourceColumn.trim().split('.');
+		  	const sourceColumn = splited.pop();
+		  	
+		  	if (!schemata[sourceName]) {
+		  		schemata[sourceName] = {
+		        source: sourceType,
+		        group: sourceName,
+		        guid: RandomHelper.generateHash(`automatic-table-${sourceName}`),
+		        keys: {
+		        	'id': {
+		        		name: 'id',
+			        	guid: RandomHelper.generateHash(`automatic-column-${sourceName}-id`),
+			        	fieldType: 'auto',
+			        	required: true,
+			        	unique: true,
+			        	verb: null,
+			        	url: null,
+			          modifyingPermission: null,
+			          retrievingPermission: null
+		        	}
+		        },
+		        columns: {},
+		        relations: {},
+		        modifyingPermission: null,
+		        retrievingPermission: null,
+		        pseudo: true
+		      };
+		    }
+		  	
+	  		let fieldType = null;
+	  		
+	  		switch (validationFormat) {
+	  			case 'integer':
+	  			case 'float':
+	  				fieldType = 'number';
+	  				break;
+	  			case 'boolean':
+	  				fieldType = 'boolean';
+	  				break;
+	  			case 'string':
+	  			case 'title':
+	  			case 'email':
+	  			case 'password':
+	  			case 'phone':
+	  			case 'zipcode':
+	  			case 'custom':
+	  				fieldType = null;
+	  				break;
+	  		}
+		  	
+	  		schemata[sourceName].columns[sourceColumn] = {
+	  			name: sourceColumn,
+	      	guid: RandomHelper.generateHash(`automatic-column-${sourceName}-${sourceColumn}`),
+	      	fieldType: fieldType,
+	      	required: (required == 'true'),
+	      	unique: (sourceColumn == 'id'),
+	      	verb: null,
+	      	url: null,
+	        modifyingPermission: null,
+	        retrievingPermission: null
+		    };
+	      
+	      if (targetName) {
+	      	const referenceColumn = `${targetName.toLowerCase()}_id`;
+	      	
+	      	schemata[sourceName].columns[referenceColumn] = {
+		  			name: referenceColumn,
+		      	guid: RandomHelper.generateHash(`automatic-column-${sourceName}-${referenceColumn}`),
+		      	fieldType: 'string',
+		      	required: true,
+		      	unique: true,
+		      	verb: null,
+		      	url: null,
+		        modifyingPermission: null,
+		        retrievingPermission: null
+			    };
+	      	
+	      	const relation = {
+	  				name: null,
+	        	guid: RandomHelper.generateHash(`automatic-relation-${sourceName}-${targetName}`),
+	          sourceGroup: sourceName,
+	          sourceEntity: referenceColumn,
+	          targetGroup: targetName,
+	          targetEntity: 'id'
+	        };
+	        
+	        schemata[sourceName].relations[targetName] = relation;
+		  	}
+	    }
+	  }
+	  
+	  return schemata;
   },
   declareNamespace: (tree: any, path: string) => {
     let splited = path.split('.');
@@ -278,6 +350,7 @@ var SchemaHelper = {
   },
   generateAutomaticSchemata: (): any => {
     let schemata = SchemaHelper.recursiveAccumulateFields();
+    schemata['version'] = '1.1';
     
     return schemata;
   },
@@ -296,7 +369,7 @@ var SchemaHelper = {
 	  		
 	  		nodes.push({
 					id: null,
-					customClassName: 'title',
+					customClassName: 'title' + ((table.pseudo) ? ' pseudo' : ''),
 					name: table.group,
 					selectable: false,
 					dropable: false,

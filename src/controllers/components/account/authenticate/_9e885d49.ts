@@ -23,7 +23,10 @@ import {UserDocument, User} from "../../../../models/User";
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
 }
 enum ActionType {
   Insert,
@@ -32,12 +35,8 @@ enum ActionType {
   Delete,
   Retrieve,
   Popup,
-  Navigate
-}
-enum ValidationInfo {
-  name: string;
-  required: boolean;
-  customMessage: string;
+  Navigate,
+  Test
 }*/
 // <---Auto[Declare]
 
@@ -55,6 +54,7 @@ interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
 }
 interface Input {
   target: SourceType;
@@ -62,7 +62,16 @@ interface Input {
   name: string;
   value: any;
   guid: string;
+  premise: string;
   validation: ValidationInfo;
+  division?: number[];
+}
+interface ValidationInfo {
+  name: string;
+  required: boolean;
+  customMessage: string;
+  format?: string;
+  regex?: string;
 }*/
 // <---Auto[Interface]
 
@@ -325,7 +334,7 @@ class Controller extends Base {
     RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
     RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
 		RequestHelper.registerInput('1b650e66', "document", "User", "email");
-		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email");
+		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '1b650e66')) {
     
       // Override data parsing and manipulation of Textbox 1 here:
@@ -334,7 +343,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('22d343bd', "document", "User", "password");
-		ValidationHelper.registerInput('22d343bd', "Textbox 2", true, "Please enter your password");
+		ValidationHelper.registerInput('22d343bd', "Textbox 2", true, "Please enter your password", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '22d343bd')) {
     
       // Override data parsing and manipulation of Textbox 2 here:
@@ -343,7 +352,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('d3de6c93', "Textbox 3", true, "Please confirm your password");
+		ValidationHelper.registerInput('d3de6c93', "Textbox 3", true, "Please confirm your password", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'd3de6c93')) {
     
       // Override data parsing and manipulation of Textbox 3 here:

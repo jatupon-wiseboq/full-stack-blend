@@ -12,7 +12,7 @@ declare let ReactDOM: any;
 declare let window: any;
 declare let DataManipulationHelper: any;
 
-let expandingPlaceholders = [...document.querySelectorAll('[internal-fsb-init-class]')];
+let expandingPlaceholders = Array.from(document.querySelectorAll('[internal-fsb-init-class]'));
 for (let expandingPlaceholder of expandingPlaceholders) {
   let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
   ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);

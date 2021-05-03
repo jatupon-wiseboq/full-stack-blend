@@ -70,7 +70,7 @@ class CustomCodePicker extends Base<Props, State> {
     render() {
         return (
             <div className="input-group inline custom-code-picker" internal-fsb-event-no-propagate="click">
-                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} preRegExp=".*" postRegExp=".*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                <FullStackBlend.Controls.Textbox ref="input" value={this.state.value} placeholder="return (statement) ? 'abc' : null;" preRegExp=".*" postRegExp=".*" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-code m-0" internal-fsb-event-always-propagate="click" />

@@ -180,7 +180,7 @@ class ExternalLibrariesManager extends Base<Props, State> {
                     <div className="section-title">{(this.state.isAdding) ? "New External Library" : "Update an External Library"}</div>
                     <div className="section-subtitle">Source</div>
                     <div className="section-body">
-                        <FullStackBlend.Controls.Textbox ref="src" value={this.state.src} preRegExp='[^# ]*' postRegExp='[^# ]*' onUpdate={this.srcOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="src" value={this.state.src} placeholder="URL" preRegExp='[^# ]*' postRegExp='[^# ]*' onUpdate={this.srcOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle">Insertion</div>
                     <div className="section-body">

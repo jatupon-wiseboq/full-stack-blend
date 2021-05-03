@@ -292,7 +292,7 @@ class HTMLManager extends Base<Props, State> {
                     </div>
                     <div className="section-subtitle" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>Path</div>
                     <div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
-                        <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} placeholder="/path/name/:a/:b" preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-subtitle">Description</div>
                     <div className="section-body">
@@ -302,11 +302,11 @@ class HTMLManager extends Base<Props, State> {
                     	<div>
 		                    <div className="section-subtitle">Keywords</div>
 		                    <div className="section-body">
-		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} multiline={true}></FullStackBlend.Controls.Textbox>
+		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} multiline={true}></FullStackBlend.Controls.Textbox>
 		                    </div>
 		                    <div className="section-subtitle">Image</div>
 		                    <div className="section-body">
-		                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+		                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} placeholder="URL" preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
 		                    </div>
 		                  </div>
                     )}
