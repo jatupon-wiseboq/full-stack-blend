@@ -997,4 +997,4 @@ ${rootScript}`;
   }
 };
 
-export {FrontEndDOMHelper};ndDOMHelper};
+export {FrontEndDOMHelper};
