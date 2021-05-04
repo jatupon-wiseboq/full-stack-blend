@@ -440,7 +440,10 @@ ${rootScript}`;
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
           
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: manipulateInto});`);
+	        if (manipulateInto) manipulateInto = '"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]') + '"';
+	        else manipulateInto = 'null';
+          
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${manipulateInto}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
@@ -532,8 +535,6 @@ ${rootScript}`;
         // 
         if (reactAccumulateNotation == 'reset') cumulatedDotNotation = '';
         if (reactData) reactData = reactData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
-        if (manipulateInto) manipulateInto = '"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]') + '"';
-        else manipulateInto = 'null';
         
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
@@ -996,4 +997,4 @@ ${rootScript}`;
   }
 };
 
-export {FrontEndDOMHelper};
+export {FrontEndDOMHelper};ndDOMHelper};
