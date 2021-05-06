@@ -444,8 +444,8 @@ ${rootScript}`;
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
           
-	        if (manipulateInto) manipulateInto = '"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]') + '"';
-	        else manipulateInto = 'null';
+	        if (manipulateInto) manipulateInto = '(() => { return "' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]') + '"; }).bind(this)';
+	        else manipulateInto = '() => { return null; }';
           
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${manipulateInto}});`);
           
