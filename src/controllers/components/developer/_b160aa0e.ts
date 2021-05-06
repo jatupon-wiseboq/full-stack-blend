@@ -150,9 +150,9 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.retrieve(RequestHelper.createInputs({
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
           this.request.session,   // session variables
           false,                  // real-time updates
@@ -173,9 +173,9 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.update(RequestHelper.createInputs({
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
           false,                  // recusive upsert in sub-collection
           this.request.session,   // session variables
@@ -192,9 +192,9 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.insert(RequestHelper.createInputs({
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
           false,                  // recusive upsert in sub-collection
           this.request.session,   // session variables
@@ -205,9 +205,9 @@ class Controller extends Base {
       } */
       /* try {
         resolve(await DatabaseHelper.upsert(RequestHelper.createInputs({
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
           this.request.session,   // session variables
           false                   // skip permission settings
@@ -223,9 +223,9 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
       /* try {
         resolve(await DatabaseHelper.delete(RequestHelper.createInputs({
-            'collectionA.column1': 'abc',
-            'collectionA.column2': 123,
-            'collectionA.collectionB.id': null
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
           }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
           this.request.session,   // session variables
           false                   // leavePermission

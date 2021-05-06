@@ -169,6 +169,7 @@ ${rootScript}`;
         let reactID = null;
         let reactData = null;
         let reactFieldDivision = null;
+        let reactFieldDivisionStatement = null;
         let reactAccumulateNotation = null;
         let reactDisplayLogic = null;
         let reactDisplayStatement = null;
@@ -356,6 +357,9 @@ ${rootScript}`;
             case 'internal-fsb-react-division':
               if (!!attribute.value) reactFieldDivision = attribute.value;
               break;
+            case 'internal-fsb-react-division-statement':
+              if (!!attribute.value) reactFieldDivisionStatement = attribute.value;
+              break;
             case 'internal-fsb-react-accumulate':
               if (!!attribute.value) reactAccumulateNotation = attribute.value;
               break;
@@ -440,7 +444,10 @@ ${rootScript}`;
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl));
           
-          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${JSON.stringify(manipulateInto)}});`);
+	        if (manipulateInto) manipulateInto = '"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]') + '"';
+	        else manipulateInto = 'null';
+          
+          executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${manipulateInto}});`);
           
           let notation = cumulatedDotNotation.split('[')[0];
           let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
@@ -550,7 +557,7 @@ ${rootScript}`;
           }
         }
         
-        // Render Logic
+        // Rendering Logic
         // 
         if (reactDisplayLogic == 'statement') {
         	lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
@@ -569,7 +576,7 @@ ${rootScript}`;
           }
           
           let _attributes = _props || [];
-          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
+          if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + ((reactFieldDivision == 'statement') ? (reactFieldDivisionStatement || '0') : dotNotationChar) : ''));
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
           if (reactData) _attributes.push('row=' + _nodeData);
@@ -585,7 +592,7 @@ ${rootScript}`;
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
-          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + dotNotationChar : ''));
+          attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + ((reactFieldDivision == 'statement') ? (reactFieldDivisionStatement || '0') : dotNotationChar) : ''));
         }
         
         if (reactData !== null || (reactMode && !isFirstElement)) {

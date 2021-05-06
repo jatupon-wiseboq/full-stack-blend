@@ -71,7 +71,7 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
         .section-subtitle
           | Manipulate Into
         .section-body
-          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false, placeholder: 'collection.collection'}")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false, placeholder: 'collection.collection[i]'}")
       .section-hr
     div
       .section-container(internal-fsb-for="hasParentReactComponent")
@@ -101,6 +101,10 @@ div(internal-fsb-not-for="isTableLayoutRow:true")
           | Group of Fields Division
         .section-body
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-react-division'], inline: true, button: false}")
+        .section-subtitle(internal-fsb-for="internal-fsb-react-division:statement")
+          | Group Indexing Statement
+        .section-body(internal-fsb-for="internal-fsb-react-division:statement")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-division-statement'], inline: true, button: false, placeholder: '0'}")
         .section-note
           | Having an automatic generated hierarchical data, the notation extends from its parent, and non-leaf node makes it repeating.
         .section-hr
