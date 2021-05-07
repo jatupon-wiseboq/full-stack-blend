@@ -34,7 +34,7 @@ const ValidationHelper = {
 	 		if (item.validation.required &&
 	 			(item.value === null || item.value === undefined || item.value === "")) {
 	 			throw new Error(item.validation.customMessage || `${item.validation.name} is required.`);
-	 		} else if (item.validation.format != null && item.value !== null) {
+	 		} else if (item.validation.format != null && item.value !== null && item.value.trim() !== '') {
 	 			const value = item.value.toString().toLowerCase().trim();
 	 			
 	 			switch (item.validation.format) {
@@ -44,7 +44,7 @@ const ValidationHelper = {
 	 					}
  						break;
  					case 'float':
- 						if (!value.match(/^\d+(\.\d{1,})?+$/)) {
+ 						if (!value.match(/^\d+(\.\d{1,})?$/)) {
 	 						throw new Error(item.validation.customMessage || `${item.validation.name} isn\'t a decimal.`);
 	 					}
  						break;
