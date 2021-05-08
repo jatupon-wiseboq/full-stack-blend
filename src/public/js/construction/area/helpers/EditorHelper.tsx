@@ -217,6 +217,7 @@ var EditorHelper = {
     		attributes: HTMLHelper.getAttributes(document.body, false),
 	      extensions: Object.assign({}, InternalProjectSettings, {
 	        isSelectingElement: false,
+      		isFirstElementOfComponent: false,
 	        hasParentReactComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
 	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
@@ -262,6 +263,7 @@ var EditorHelper = {
       attributes: attributes,
       extensions: Object.assign({}, InternalProjectSettings, {
       	isSelectingElement: true,
+      	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
       	isTableLayoutRow: (element.tagName == 'TR'),
 	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
@@ -446,6 +448,9 @@ var EditorHelper = {
   },
   hasParentReactComponent: (element: HTMLElement) => {
   	return HTMLHelper.findAllParentValuesInAttributeName("internal-fsb-react-mode", element, document.body, true).length != 0;
+  },
+  getIsFirstElement: (element: HTMLElement) => {
+  	return element && HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout') || false;
   }
 };
 
