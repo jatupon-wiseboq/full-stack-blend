@@ -1310,7 +1310,7 @@ const DatabaseHelper = {
 							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, {}, session) : null
 	  					};
 	  					
-	  					results[baseSchema.group].rows = [...results[baseSchema.group].rows, rows];
+	  					results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
@@ -1494,9 +1494,11 @@ const DatabaseHelper = {
 							results[baseSchema.group] = results[baseSchema.group] || {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
-							  rows: rows,
+							  rows: [],
 							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, keys, session) : null
 							};
+	  					
+							results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
 							
 							for (const _row of rows) {
 								for (const key in row.relations) {
