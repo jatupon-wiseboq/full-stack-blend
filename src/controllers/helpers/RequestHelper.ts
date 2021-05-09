@@ -247,7 +247,16 @@ const RequestHelper = {
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
-				if (values[key] != null && typeof values[key] == 'object') {
+				if (Array.isArray(values[key])) {
+					const splited = key.split('[');
+					const _key = splited[0];
+					const indexes = JSON.parse('[' + (splited[1] && splited[1].split(']')[0] || '0') + ']');
+					
+					for (const [i, value] of values[key].entries()) {
+						_values[`${_key}[${[...indexes, i].join(',')}]`] = value;
+					}
+				}
+				else if (values[key] != null && typeof values[key] == 'object') {
 					const firstKey = Object.keys(values[key])[0];
 					if (firstKey.match(/^[0-9,]+$/)) {
 						_values[key + '[' + firstKey + ']'] = values[key][firstKey];
