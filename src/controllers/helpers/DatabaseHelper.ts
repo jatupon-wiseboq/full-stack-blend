@@ -1306,9 +1306,11 @@ const DatabaseHelper = {
 	  					results[baseSchema.group] = results[baseSchema.group] || {
 	  					  source: baseSchema.source,
 	  					  group: baseSchema.group,
-	  					  rows: rows,
+	  					  rows: [],
 							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, {}, session) : null
 	  					};
+	  					
+	  					results[baseSchema.group].rows = [...results[baseSchema.group].rows, rows];
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
