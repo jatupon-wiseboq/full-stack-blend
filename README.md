@@ -14,19 +14,20 @@ You might clone the repository and run it on your local machine for advanced deb
 4. run "cd boilerplate".
 5. run "git remote rename origin boilerplate".
 6. run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
-7. run "git checkout -b staging".
-8. run "git push --set-upstream origin staging --force".
-7. run "git checkout -b develop".
-8. run "git push --set-upstream origin develop --force".
-9. run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
-10. run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
-11. run "npm install".
-12. Copy "dev.env" as ".env" and config the file.
-13. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
-14. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
-15. From the terminal, run "git reset --hard & git pull".
-16. run "npm run build".
-17. run "npm run watch".
+7. run "git checkout 1.3".
+8. run "git checkout -b staging".
+9. run "git push --set-upstream origin staging --force".
+10. run "git checkout -b develop".
+11. run "git push --set-upstream origin develop --force".
+12. run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
+13. run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
+14. run "npm install".
+15. Copy "dev.env" as ".env" and config the file.
+16. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
+17. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
+18. From the terminal, run "git reset --hard & git pull".
+19. run "npm run build".
+20. run "npm run watch".
 
 ## Running boilerplate on Heroku
 
@@ -45,7 +46,7 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org.
 
 1. run "git stash".
-2. run "git pull boilerplate master".
+2. run "git pull boilerplate 1.3".
 3. run "git stash apply".
 
 ## Connect the repository with StackBlend
