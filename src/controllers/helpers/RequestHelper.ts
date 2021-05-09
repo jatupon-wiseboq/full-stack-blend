@@ -361,9 +361,6 @@ const RequestHelper = {
       if (_a.length != _b.length) {
         const max = Math.max(_a.length, _b.length);
         
-        if (_a.length < _b.length) _a[_a.length - 1] = -1;
-        else _b[_b.length - 1] = -1;
-        
         for (let i=_a.length; i<=max; i++) {
           _a.push(-1);
         }
