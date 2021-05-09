@@ -248,9 +248,8 @@ const RequestHelper = {
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
 				if (values[key] != null && typeof values[key] == 'object') {
-					const firstKey = Object.keys(values[key])[0];
-					if (firstKey.match(/^[0-9,]+$/)) {
-						_values[key + '[' + firstKey + ']'] = values[key][firstKey];
+					for (const indexes in values[key]) {
+						_values[`${key}[${indexes}]`] = values[key][indexes];
 					}
 				}
 				else _values[key] = values[key];
