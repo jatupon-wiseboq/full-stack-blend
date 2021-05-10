@@ -809,7 +809,7 @@ ${rootScript}`;
                   
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
                   	if (attribute.name == 'onfsbready') {
-                  		_globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
+                  		_globalEvents.push("ready(controller." + FUNCTION_NAME + ".bind(controller));");
                   	} else {
                   		_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
                   	}
