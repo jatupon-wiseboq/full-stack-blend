@@ -35,7 +35,7 @@ const ValidationHelper = {
 	 			(item.value === null || item.value === undefined || item.value === "")) {
 	 			throw new Error(item.validation.customMessage || `${item.validation.name} is required.`);
 	 		} else if (item.validation.format != null && item.value !== null && item.value.trim() !== '') {
-	 			const value = item.value.toString().toLowerCase().trim();
+	 			const value = item.value.toString().trim();
 	 			
 	 			switch (item.validation.format) {
 	 				case 'integer':
@@ -49,7 +49,7 @@ const ValidationHelper = {
 	 					}
  						break;
  					case 'boolean':
- 						if (["true", "false", "1", "0"].indexOf(value) == -1) {
+ 						if (["true", "false", "1", "0"].indexOf(value.toLowerCase()) == -1) {
 	 						throw new Error(item.validation.customMessage || `${item.validation.name} isn\'t a boolean.`);
 	 					}
  						break;
