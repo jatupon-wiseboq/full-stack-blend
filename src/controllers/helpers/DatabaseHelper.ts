@@ -634,7 +634,7 @@ const DatabaseHelper = {
 			    let type;
 			    let autoIncrement = false;
 			    const unique = schema.columns[key].unique;
-			    const primaryKey = true;
+			    const primaryKey = false;
 			    const allowNull = !schema.columns[key].required;
 			    
 			    switch (schema.columns[key].fieldType) {
@@ -672,7 +672,7 @@ const DatabaseHelper = {
 			    let type;
 			    let autoIncrement = false;
 			    const unique = schema.keys[key].unique;
-			    const primaryKey = false;
+			    const primaryKey = true;
 			    const allowNull = !schema.keys[key].required;
 			    
 			    switch (schema.keys[key].fieldType) {
