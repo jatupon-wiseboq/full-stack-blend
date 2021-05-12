@@ -26,7 +26,7 @@ const TestHelper = {
   	guid = _guid || guid;
   	
   	if (_guid) {
-	  	const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', _guid, element.parentNode);
+	  	const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', _guid, element.parentNode));
 	  	const index = elements.indexOf(element);
 	  	
 	  	if (index == 0) suffix = '-first';
@@ -39,7 +39,7 @@ const TestHelper = {
   	const children = element.children;
   	
   	for (let i=0; i<children.length; i++) {
-  		TestHelper.recursiveAssignId(children[i], `${guid}-${i}`);
+  		TestHelper.recursiveAssignId(children[i], `${guid}-${suffix || i}`);
   	}
   }
 }

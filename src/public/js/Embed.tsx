@@ -1,4 +1,5 @@
 import {DataManipulationHelper} from './helpers/DataManipulationHelper';
+import {TestHelper} from './helpers/TestHelper';
 
 declare let window: any;
 
@@ -31,4 +32,5 @@ declare let window: any;
   });
   window.addEventListener('update', update);
   window.DataManipulationHelper = DataManipulationHelper;
+  window.TestHelper = TestHelper;
 })();
