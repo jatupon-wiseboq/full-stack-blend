@@ -3,9 +3,12 @@
 
 import {HTMLHelper} from './HTMLHelper';
 
+let timerId = null;
+
 const TestHelper = {
   identify: (delay: number=1000) => {
-  	window.setTimeout(() => {
+  	window.clearTimeout(timerId);
+  	timerId = window.setTimeout(() => {
   		if (!HTMLHelper.getElementById('selenium-ide-indicator')) return;
   		
   		const elements = HTMLHelper.getElementsByAttribute('internal-fsb-guid');
