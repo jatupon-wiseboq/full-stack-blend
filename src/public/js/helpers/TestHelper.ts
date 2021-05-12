@@ -9,7 +9,7 @@ const TestHelper = {
   identify: (delay: number=1000) => {
   	window.clearTimeout(timerId);
   	timerId = window.setTimeout(() => {
-  		if (!HTMLHelper.getElementById('selenium-ide-indicator')) return;
+  		if (!TestHelper.checkIfSeleniumExists()) return;
   		
   		const elements = HTMLHelper.getElementsByAttribute('internal-fsb-guid');
   		
@@ -48,6 +48,19 @@ const TestHelper = {
   	for (let i=0; i<children.length; i++) {
   		TestHelper.recursiveAssignId(children[i], `${guid}${suffix}${'-' + i}`);
   	}
+  },
+  checkIfSeleniumExists: (): boolean => {
+  	if (HTMLHelper.getElementById('selenium-ide-indicator')) return true;
+  	
+  	const children = Array.from(document.head.children);
+  	
+  	for (const child of children) {
+  		if (child.tagName == 'SCRIPT' && child.getAttribute('src').indexOf('/assets/prompt.js') != -1) {
+  			return true;
+  		}
+  	}
+  	
+  	return false;
   }
 }
 
