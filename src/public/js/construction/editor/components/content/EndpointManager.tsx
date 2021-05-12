@@ -416,7 +416,6 @@ ${this.replaceShortcuts(tokens[1])}
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
 import {HTMLHelper} from './helpers/HTMLHelper';
 import {EventHelper} from './helpers/EventHelper';
-import {TestHelper} from './helpers/TestHelper';
 ${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}';`).join('\n')}
 
 declare let React: any;
