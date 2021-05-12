@@ -506,6 +506,8 @@ const DatabaseHelper = {
 	  
 	  RequestHelper.sortInputs(data);
 	  
+	  const original = [...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name + '[' + item.division.join(',') + ']'))].join(', ');
+	  
 	  const results: {[Identifier: string]: HierarchicalDataTable} = {};
 	  let length = 0;
 	  let count = 0;
@@ -515,7 +517,7 @@ const DatabaseHelper = {
 	  	DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert, [count++]);
 	  }
 	  
-	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name))].join(', ')}).`);
+	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name + '[' + item.division.join(',') + ']'))].join(', ')}\n\nfrom:\n${original}.)`);
 	  
 	  return results;
 	},
