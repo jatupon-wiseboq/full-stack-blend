@@ -15,7 +15,7 @@ const TestHelper = {
   		}
   	}, delay);
   },
-  recursiveAssignId: (element: any, guid: string='_', suffix: string='') => {
+  recursiveAssignId: (element: any, guid: string='_') => {
   	if (!element.tagName) return;
   	
   	let currentId = HTMLHelper.getAttribute(element, 'id') || '';
@@ -25,13 +25,17 @@ const TestHelper = {
   	const _guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   	guid = _guid || guid;
   	
+  	let suffix = '';
+  	
   	if (_guid) {
 	  	const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', _guid, element.parentNode));
 	  	const index = elements.indexOf(element);
 	  	
-	  	if (index == 0) suffix = '-first';
-	  	else if (index == elements.length-1) suffix = '-last';
-	  	else if (index != -1) suffix = `-${index}`;
+	  	if (elements.length > 1 && index == elements.length-1) suffix = '-last';
+	  	else if (index % 10 == 0) suffix = `-${index + 1}st`;
+	  	else if (index % 10 == 1) suffix = `-${index + 1}nd`;
+	  	else if (index % 10 == 2) suffix = `-${index + 1}rd`;
+	  	else suffix = `-${index + 1}th`;
 	  }
   	
   	if (!currentId) HTMLHelper.setAttribute(element, 'id', `internal-fsb-${guid}${suffix}`);
@@ -39,7 +43,7 @@ const TestHelper = {
   	const children = element.children;
   	
   	for (let i=0; i<children.length; i++) {
-  		TestHelper.recursiveAssignId(children[i], `${guid}-${suffix || i}`);
+  		TestHelper.recursiveAssignId(children[i], `${guid}${suffix}${'-' + i}`);
   	}
   }
 }
