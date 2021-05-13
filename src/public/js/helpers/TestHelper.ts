@@ -17,18 +17,21 @@ const TestHelper = {
   		TestHelper.installTestingConsole();
   		
   		const elements = HTMLHelper.getElementsByAttribute('internal-fsb-guid');
+  		const assigned = [];
   		
   		for (const element of elements) {
-  			TestHelper.recursiveAssignId(element);
+  			TestHelper.recursiveAssignId(element, assigned);
   		}
+  	
+	  	for (const element of assigned) {
+	  		HTMLHelper.setAttribute(element, 'internal-fsb-visited', '1');
+	  	}
   	}, delay);
   },
-  recursiveAssignId: (element: any, guid: string='_') => {
+  recursiveAssignId: (element: any, assigned: any[], guid: string='_') => {
   	if (!element.tagName) return;
   	
   	let currentId = HTMLHelper.getAttribute(element, 'id') || '';
-  	
-  	if (currentId.indexOf('internal-fsb-') == 0) currentId = '';
   	
   	const _guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
   	guid = _guid || guid;
@@ -36,22 +39,32 @@ const TestHelper = {
   	let suffix = '';
   	
   	if (_guid) {
-	  	const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', _guid, element.parentNode));
-	  	const index = elements.indexOf(element);
-	  	
-	  	if (elements.length > 1 && index == elements.length-1) suffix = '-last';
-	  	else if (index % 10 == 0) suffix = `-${index + 1}st`;
-	  	else if (index % 10 == 1) suffix = `-${index + 1}nd`;
-	  	else if (index % 10 == 2) suffix = `-${index + 1}rd`;
-	  	else suffix = `-${index + 1}th`;
+  		const previousSiblingId = element.previousSibling && HTMLHelper.getAttribute(element.previousSibling, 'id') || null;
+  		const previousSiblingVisited = element.previousSibling && HTMLHelper.getAttribute(element.previousSibling, 'internal-fsb-visited') || null;
+  		
+  		if (!previousSiblingVisited || !previousSiblingId || previousSiblingId.indexOf('internal-fsb-') == -1) {
+		  	const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', _guid, element.parentNode));
+		  	const index = elements.indexOf(element);
+		  	
+		  	if (elements.length > 1 && index == elements.length-1) suffix = '-last';
+		  	else if (index % 10 == 0) suffix = `-${index + 1}st`;
+		  	else if (index % 10 == 1) suffix = `-${index + 1}nd`;
+		  	else if (index % 10 == 2) suffix = `-${index + 1}rd`;
+		  	else suffix = `-${index + 1}th`;
+		  } else {
+		  	suffix = `${previousSiblingId.match(/-(last|(\d+)(st|nd|rd|th))(-new)*/)[0]}-new`;
+		  }
 	  }
   	
-  	if (!currentId) HTMLHelper.setAttribute(element, 'id', `internal-fsb-${guid}${suffix}`);
+  	if (!currentId) {
+  		HTMLHelper.setAttribute(element, 'id', `internal-fsb-${guid}${suffix}`);
+  		assigned.push(element);
+  	}
   	
   	const children = element.children;
   	
   	for (let i=0; i<children.length; i++) {
-  		TestHelper.recursiveAssignId(children[i], `${guid}${suffix}${'-' + i}`);
+  		TestHelper.recursiveAssignId(children[i], assigned, `${guid}${suffix}${'-' + i}`);
   	}
   },
   checkIfSeleniumExists: (): boolean => {
