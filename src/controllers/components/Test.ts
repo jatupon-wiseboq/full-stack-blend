@@ -17,6 +17,10 @@ class TestController extends Base {
 	  }
   }
   
+  protected validate(data: Input[]): void {
+  	void(0);
+  }
+  
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       reject(new Error("Not Implemented Error"));
