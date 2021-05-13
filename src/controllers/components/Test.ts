@@ -48,8 +48,7 @@ class TestController extends Base {
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
-        resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session, true));
+        resolve(await DatabaseHelper.insert(data, schema, false, this.request.session, true));
       } catch(error) {
         reject(error);
       }
@@ -59,8 +58,7 @@ class TestController extends Base {
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
     	try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
-        resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session, true));
+        resolve(await DatabaseHelper.update(data, schema, false, this.request.session, true));
       } catch(error) {
         reject(error);
       }
