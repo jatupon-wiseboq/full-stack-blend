@@ -2,8 +2,10 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HTMLHelper} from './HTMLHelper';
+import {RequestHelper} from './RequestHelper';
 
 let timerId = null;
+let installed = false;
 
 const TestHelper = {
   identify: (delay: number=1000) => {
@@ -61,6 +63,51 @@ const TestHelper = {
   	}
   	
   	return false;
+  },
+  installTestingConsole: () => {
+  	if (installed) return;
+  	installed = true;
+  	
+  	let element = document.createElement('div');
+  	element.innerHTML = '<div id="internal-fsb-test-expand" style="position: fixed;right: 0px;top: 50%;margin-top: -150px;width: 250px;background-color:#ffffff;border:solid 2px #0066ff;border-right:0;font-size: 13px;font-family: Courier;border-radius: 3px 0 0 3px;box-shadow:rgba(0,0,0,0.25) 0 0 10px;display:none;"><div style="background-color: #0066ff;color: #ffffff;text-align: center;cursor: pointer;padding:2px;">Test Console</div><div style="font-size: 11px; padding: 10px; color: #aaaaaa;"><label style="width: 100%; margin: 0 0 5px;"><div style="padding: 3px 0;">Action</div><select type="text" style="width: 100%; font-size: 13px; padding: 3px; height: 25px; border: solid 1px #0066ff; color: #0066ff;border-radius: 3px 3px 3px 3px;" id="internal-fsb-test-action"><option value="insert">Insert</option><option value="update">Update</option><option value="upsert">Upsert</option><option value="delete">Delete</option></select></label><label style="width: 100%; margin: 0 0 5px;"><div style="padding: 3px 0;">Premise Schema</div><input type="text" style="width: 100%; font-size: 13px; padding: 3px; height: 25px; border: solid 1px #0066ff; color: #0066ff;border-radius: 3px 3px 3px 3px;" id="internal-fsb-test-schema"></label><label style="width: 100%; margin: 0 0 5px;"><div style="padding: 3px 0;">Notations</div><textarea style="width: 100%; font-size: 13px; padding: 3px; border: solid 1px #0066ff; color: #0066ff;border-radius: 3px 3px 3px 3px;" rows="5" id="internal-fsb-test-notations"></textarea></label><button id="internal-fsb-test-submit" style="background-color: #0066ff; color: #ffffff; padding: 5px 15px; border: none;border-radius: 3px 3px 3px 3px;font-size:11px;margin-right: 5px;">Submit</button><button style="background-color: #0066ff; color: #ffffff; padding: 5px 15px; border: none;border-radius: 3px 3px 3px 3px;font-size:11px;" id="internal-fsb-test-toggle-off">Close</button></div></div><div id="internal-fsb-test-collapse" style="position: fixed;right: 0px;top: 50%;margin-top: -75px;height: 150px;background-color: #0066ff;font-size: 13px;font-family: Courier;border-radius: 3px 0 0 3px;box-shadow:rgba(0,0,0,0.25) 0 0 10px;"><span style="writing-mode: vertical-rl;color: #ffffff;text-align: center;height: 100%;cursor: pointer;padding:2px;">Test Console</span></div>';
+  	
+  	document.body.appendChild(element);
+  	
+  	const expand = document.getElementById('internal-fsb-test-expand');
+  	const collapse = document.getElementById('internal-fsb-test-collapse');
+  	const on = document.getElementById('internal-fsb-test-collapse');
+  	const off = document.getElementById('internal-fsb-test-toggle-off');
+  	const submit = document.getElementById('internal-fsb-test-submit');
+  	const action = document.getElementById('internal-fsb-test-action') as HTMLSelectElement;
+  	const schema = document.getElementById('internal-fsb-test-schema') as HTMLInputElement;
+  	const notations = document.getElementById('internal-fsb-test-notations') as HTMLTextAreaElement;
+  	
+  	on.addEventListener('click', () => {
+  		expand.style.display = 'block';
+  		collapse.style.display = 'none';
+  	});
+  	off.addEventListener('click', () => {
+  		expand.style.display = 'none';
+  		collapse.style.display = 'block';
+  	});
+  	submit.addEventListener('click', async () => {
+  		let json = null;
+	  	try {
+	  		json = JSON.parse(notations.value);
+	  	} catch (error) {
+	  		alert('Cannot parse notations into JSON object.');
+	  		return;
+	  	}
+  	
+  		const data = await RequestHelper.post('/test/api', {
+  			action: action.value,
+  			schema: schema.value,
+  			fields: json
+  		}, 'json');
+  		
+  		if (data.success) alert('Success');
+  		else alert(`Error: ${data.error}.`);
+  	});
   }
 }
 
