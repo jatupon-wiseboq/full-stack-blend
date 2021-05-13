@@ -109,7 +109,7 @@ class TestController extends Base {
 		
 		const schema = ProjectConfigurationHelper.getDataSchema().tables[json['schema']];
 		
-		if (!action) throw new Error('Invalid Operation');
+		if (action == null) throw new Error('Invalid Operation');
 		if (!schema) throw new Error("The specify premise schema doesn't exist.");
 		
 		const data = RequestHelper.createInputs(json['fields']);
