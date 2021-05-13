@@ -43,7 +43,7 @@ const ProjectConfigurationHelper = {
 	  };
 	},
 	getDotNotationPossibilities: (page: string): any => {
-	  return data.sites[page].notations;
+	  return data.sites[page] && data.sites[page].notations || [];
 	}
 };
 
