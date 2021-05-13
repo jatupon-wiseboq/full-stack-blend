@@ -108,7 +108,7 @@ const TestHelper = {
   			fields: json
   		}, 'json');
   		
-  		if (data.success) alert('Success');
+  		if (data.success) window.location.reload();
   		else alert(`Error: ${data.error}.`);
   	}, true);
   }
