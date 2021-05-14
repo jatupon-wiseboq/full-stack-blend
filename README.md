@@ -14,7 +14,7 @@ You might clone the repository and run it on your local machine for advanced deb
 4. run "cd boilerplate".
 5. run "git remote rename origin boilerplate".
 6. run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
-7. run "git checkout 1.3".
+7. run "git checkout 1.4".
 8. run "git checkout -b staging".
 9. run "git push --set-upstream origin staging --force".
 10. run "git checkout -b develop".
@@ -46,7 +46,7 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org. Please note that for all of the old versions, you must perform "git cherry-pick COMMIT" for all of hotfixes, beginning with a prefix "Hotfix:" in the message, that may apply to your current using version.
 
 1. run "git stash".
-2. run "git pull boilerplate 1.3".
+2. run "git pull boilerplate 1.4".
 3. run "git stash apply".
 
 ## Connect the repository with StackBlend
