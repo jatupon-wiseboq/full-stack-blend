@@ -107,7 +107,7 @@ const TestHelper = {
     for (let j = 0; j < elements.length; j++) {
     	if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
     	
-    	const attributes = [];
+    	let attributes = [];
     	if (elements[j].hasAttributes()) {
         let attrs = elements[j].attributes;
         for (let attr of attrs) {
