@@ -66,6 +66,7 @@ import {CodeHelper} from '../helpers/CodeHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
+import {TestHelper} from '../helpers/TestHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
 // <---Auto[Import]// Auto[Declare]--->
 
@@ -105,6 +106,7 @@ class KlassA extends Base {
   
   // Auto[ClassEnd]--->
   protected render(): any {
+    TestHelper.identify();
     return pug \`
     \`
   }
@@ -136,6 +138,7 @@ const LOAD_END = `
   // <---Auto[ClassBegin]`;
 
 const RENDER_BEGIN = `protected render(): any {
+    TestHelper.identify();
     return pug \``;
 const RENDER_END = `
     \`
