@@ -46,11 +46,7 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org. Please note that for all of the old versions, you must perform "git cherry-pick COMMIT" for all of hotfixes, beginning with a prefix "Hotfix:" in the message, that may apply to your current using version.
 
 1. run "git stash".
-<<<<<<< HEAD
 2. run "git pull boilerplate 1.3 --allow-unrelated-histories".
-=======
-2. run "git pull boilerplate 1.3".
->>>>>>> cf25007e46ff3919e1cd8c291b5bec83fdf32120
 3. run "git stash apply".
 
 ## Connect the repository with StackBlend
