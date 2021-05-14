@@ -44,4 +44,15 @@ try {
 	endpoint.addRecentError(error);
 }
 
+// StackBlend test console
+// 
+if (["production"].indexOf(process.env.NODE_ENV) == -1) {
+	const controller = require("./controllers/components/Test");
+
+	app.get("/test/api", controller.index);
+	app.post("/test/api", controller.index);
+	app.put("/test/api", controller.index);
+	app.delete("/test/api", controller.index);
+}
+
 export {server, socket};

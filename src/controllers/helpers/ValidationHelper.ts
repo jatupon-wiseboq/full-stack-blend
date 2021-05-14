@@ -35,7 +35,7 @@ const ValidationHelper = {
 	 			(item.value === null || item.value === undefined || item.value === "")) {
 	 			throw new Error(item.validation.customMessage || `${item.validation.name} is required.`);
 	 		} else if (item.validation.format != null && item.value !== null && item.value.trim() !== '') {
-	 			const value = item.value.toString().toLowerCase().trim();
+	 			const value = item.value.toString().trim();
 	 			
 	 			switch (item.validation.format) {
 	 				case 'integer':
@@ -49,7 +49,7 @@ const ValidationHelper = {
 	 					}
  						break;
  					case 'boolean':
- 						if (["true", "false", "1", "0"].indexOf(value) == -1) {
+ 						if (["true", "false", "1", "0"].indexOf(value.toLowerCase()) == -1) {
 	 						throw new Error(item.validation.customMessage || `${item.validation.name} isn\'t a boolean.`);
 	 					}
  						break;
@@ -67,7 +67,7 @@ const ValidationHelper = {
  						if (value.length < 8 || value.length > 32) {
 	 						throw new Error(item.validation.customMessage || `Please enter a password having the length from 8 to 32 characters.`);
 	 					}
- 						else if (!value.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?\/~_+-=|\]).{8,32}$/)) {
+ 						else if (!value.match(/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&\(\){}\[\]:;<>,\.?\/~_+\-=|\\]).{8,32}$/)) {
 	 						throw new Error(item.validation.customMessage || `Please enter a password containing at least one digit, one lowercase, one uppercase, and one special character.`);
 	 					}
  						break;

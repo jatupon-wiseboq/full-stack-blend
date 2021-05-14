@@ -247,19 +247,9 @@ const RequestHelper = {
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
-				if (Array.isArray(values[key])) {
-					const splited = key.split('[');
-					const _key = splited[0];
-					const indexes = JSON.parse('[' + (splited[1] && splited[1].split(']')[0] || '0') + ']');
-					
-					for (const [i, value] of values[key].entries()) {
-						_values[`${_key}[${[...indexes, i].join(',')}]`] = value;
-					}
-				}
-				else if (values[key] != null && typeof values[key] == 'object') {
-					const firstKey = Object.keys(values[key])[0];
-					if (firstKey.match(/^[0-9,]+$/)) {
-						_values[key + '[' + firstKey + ']'] = values[key][firstKey];
+				if (values[key] != null && typeof values[key] == 'object') {
+					for (const indexes in values[key]) {
+						_values[`${key}[${indexes}]`] = values[key][indexes];
 					}
 				}
 				else _values[key] = values[key];
@@ -370,9 +360,6 @@ const RequestHelper = {
       if (_a.length != _b.length) {
         const max = Math.max(_a.length, _b.length);
         
-        if (_a.length < _b.length) _a[_a.length - 1] = -1;
-        else _b[_b.length - 1] = -1;
-        
         for (let i=_a.length; i<=max; i++) {
           _a.push(-1);
         }
@@ -381,7 +368,11 @@ const RequestHelper = {
         }
       }
       
-      return (_a < _b) ? -1 : 1;
+      for (let i=0; i<_a.length; i++) {
+        if (_a[i] != _b[i]) return (_a[i] < _b[i]) ? -1 : 1;
+      }
+      
+      return 0;
     });
     
     const registers = [];

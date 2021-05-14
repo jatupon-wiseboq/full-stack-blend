@@ -506,6 +506,8 @@ const DatabaseHelper = {
 	  
 	  RequestHelper.sortInputs(data);
 	  
+	  const original = [...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name + '[' + item.division.join(',') + ']'))].join(', ');
+	  
 	  const results: {[Identifier: string]: HierarchicalDataTable} = {};
 	  let length = 0;
 	  let count = 0;
@@ -515,7 +517,7 @@ const DatabaseHelper = {
 	  	DatabaseHelper.recursivePrepareData(results, data, action, baseSchema, crossRelationUpsert, [count++]);
 	  }
 	  
-	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name))].join(', ')}).`);
+	  if (data.length != 0) throw new Error(`There was an error preparing data for manipulation (unrelated field(s) left after preparing data: ${[...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name + '[' + item.division.join(',') + ']'))].join(', ')}\n\nfrom:\n${original})`);
 	  
 	  return results;
 	},
@@ -634,7 +636,7 @@ const DatabaseHelper = {
 			    let type;
 			    let autoIncrement = false;
 			    const unique = schema.columns[key].unique;
-			    const primaryKey = true;
+			    const primaryKey = false;
 			    const allowNull = !schema.columns[key].required;
 			    
 			    switch (schema.columns[key].fieldType) {
@@ -672,7 +674,7 @@ const DatabaseHelper = {
 			    let type;
 			    let autoIncrement = false;
 			    const unique = schema.keys[key].unique;
-			    const primaryKey = false;
+			    const primaryKey = true;
 			    const allowNull = !schema.keys[key].required;
 			    
 			    switch (schema.keys[key].fieldType) {
@@ -1242,6 +1244,7 @@ const DatabaseHelper = {
   },
 	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
+		  const connectionInfos: {[Identifier: string]: any} = {};
 		  try {
 		  	if (data != null) {
 	  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
@@ -1252,7 +1255,7 @@ const DatabaseHelper = {
 		  		  	const input = list[key];
 		  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		  		  	
-		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session, notifyUpdates, leavePermission);
+		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session, notifyUpdates, leavePermission, connectionInfos);
 		  		  }
 	  		  }
 			  	
@@ -1321,9 +1324,9 @@ const DatabaseHelper = {
 	        	case SourceType.Document:
 	        		if (!DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
-	        		const connection = await DocumentDatabaseClient.connect();
+	        		if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
 							records = await new Promise(async (resolve, reject) => {
-								await connection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find().toArray((error: any, results: any) => {
+								await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find().toArray((error: any, results: any) => {
 									if (error) {
 										reject(error);
 									} else {
@@ -1397,10 +1400,12 @@ const DatabaseHelper = {
       	console.log(error);
       	
         reject(error);
+      } finally {
+      	// if (connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'].close();
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission=false): Promise<void> => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission=false, connectionInfos: {[Identifier: string]: any}={}): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1451,9 +1456,9 @@ const DatabaseHelper = {
 							if (input.source == SourceType.Relational) {
 								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
 							} else if (input.source == SourceType.Document) {
-								const connection = await DocumentDatabaseClient.connect();
+								if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
 								records = await new Promise(async (resolve, reject) => {
-									await connection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
+									await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -1521,7 +1526,7 @@ const DatabaseHelper = {
 							  			}
 							  		}
 									  
-									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission);
+									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission, connectionInfos);
 							  	}
 							  }
 							}
