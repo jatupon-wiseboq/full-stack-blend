@@ -168,7 +168,6 @@ const DatabaseHelper = {
         }
         break;
       case ActionType.Update:
-      case ActionType.Delete:
         for (const key in schema.keys) {
           if (schema.keys.hasOwnProperty(key)) {
             if (schema.keys[key].fieldType != FieldType.AutoNumber) {
@@ -177,6 +176,7 @@ const DatabaseHelper = {
           }
         }
         break;
+      case ActionType.Delete:
       case ActionType.Retrieve:
         if (inputs.length == 0) return false;
         break;
@@ -344,7 +344,6 @@ const DatabaseHelper = {
 		          }
 			        break;
 			      case ActionType.Update:
-			      case ActionType.Delete:
 		          if (row.keys[key] === undefined || row.keys[key] === null) {
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
@@ -367,6 +366,7 @@ const DatabaseHelper = {
 		            }
 		          }
 			        break;
+			      case ActionType.Delete:
 			      case ActionType.Retrieve:
 			     	 	if (row.keys[key]) {
 				      	switch (schema.keys[key].fieldType) {
@@ -1618,96 +1618,122 @@ const DatabaseHelper = {
 							const keys = {};
 		      		const query = {};
 						
+							for (const key in schema.columns) {
+							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+							    keys[key] = row.columns[key];
+							    if (input.source == SourceType.Document) {
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
+							    }
+							  }
+							}
 							for (const key in schema.keys) {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document && key == 'id') {
-						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-						      } else {
-						      	query[key] = {$eq: row.keys[key]};
-						      }
+							    if (input.source == SourceType.Document) {
+							    	if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      } else {
+							      	query[key] = {$eq: row.keys[key]};
+							      }
+							    }
 							  }
 							}
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, keys, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
-						  let record;
+							let records;
 							if (input.source == SourceType.Relational) {
-								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
-								await record.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
+								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+		  				  await records.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query) || {};
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne(query);
+								records = await new Promise(async (resolve, reject) => {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
+										if (error) {
+											reject(error);
+										} else {
+											resolve(results);
+										}
+									});
+								});
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteMany(query);
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								const record = await VolatileMemoryClient.get(_key);
+								records = record && [JSON.parse(record)] || [];
 								await VolatileMemoryClient.del(_key);
 							}
+							
+							for (const record of records) {
+							  const row = {
+		  				    keys: {},
+		  				    columns: {},
+		  				    relations: {}
+		  				  };
 						  
-						  const result = {
-						    keys: {},
-						    columns: {},
-						    relations: {}
-						  };
-						  
-						  if (record['_id']) record['id'] = record['_id'].toString();
-						  
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
-							  }
+						  	if (record['_id']) record['id'] = record['_id'].toString();
+						  	
+							  for (const key in schema.columns) {
+		  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+		  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+		  					  }
+		  					}
+		  					for (const key in schema.keys) {
+		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+		  					  }
+		  					}
+		  					
+		  					results.push(row);
 							}
-						  
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-							  }
-							}
-						
-							results.push(result);
 							
 							NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 							
-							for (const key in row.relations) {
-								if (row.relations.hasOwnProperty(key)) {
-									const relation = schema.relations[key];
-									const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+							for (const result of results) {
+								for (const key in row.relations) {
+									if (row.relations.hasOwnProperty(key)) {
+										const relation = schema.relations[key];
+										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										
+							  		for (const nextRow of row.relations[key].rows) {
+							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			} else {
+								  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			}
+							  			} else {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+							  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+								  			} else {
+								  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+								  			}
+							  			}
+							  		}
+							  		
+							  		result.relations[nextSchema.group] = {
+				  					  source: SourceType.Relational,
+											group: nextSchema.group,
+										  rows: []
+									  };
 									
-						  		for (const nextRow of row.relations[key].rows) {
-						  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			}
-						  			} else {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-							  			}
-						  			}
-						  		}
-						  		
-						  		result.relations[nextSchema.group] = {
-			  					  source: SourceType.Relational,
-										group: nextSchema.group,
-									  rows: []
-								  };
-								
-									await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+										await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+									}
 								}
-							}
-						
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
-							  }
+								
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+								  }
+								}
 							}
 						}
 						break;
