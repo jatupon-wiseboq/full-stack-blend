@@ -56,24 +56,37 @@ const DataManipulationHelper = {
   		const options = optionsManipulatorsInfoDict[guid];
   		
   		let current = EventHelper.getOriginalElement(event);
+  		current = current.parentNode;
+  		
+  		let lastOneUnderIndexing = null;
+  		let firstOneOfContainer = null;
   		let foundAll = false;
-  		let foundRadio = {};
+  		const foundRadio = {};
   		
   		while (!foundAll && current != null && current != document) {
         foundAll = true;
+        
+        if (HTMLHelper.hasAttribute(current, 'data-fsb-index')) {
+        	lastOneUnderIndexing = current;
+        }
         
         for (const field of fields) {
           const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-guid', field, current) as any;
           
           if (elements.length == 0) {
             foundAll = false;
-            break;
+          } else if (!firstOneOfContainer) {
+          	firstOneOfContainer = current;
           }
         }
         
         if (foundAll) break;
         
         current = current.parentNode;
+      }
+      
+      if (firstOneOfContainer && HTMLHelper.getElementsByAttribute('data-fsb-index', firstOneOfContainer, true).length != 0) {
+      	current = lastOneUnderIndexing || firstOneOfContainer;
       }
       
       for (const field of fields) {

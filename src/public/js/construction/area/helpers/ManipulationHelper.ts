@@ -11,6 +11,7 @@ import {LayoutHelper} from './LayoutHelper';
 import {TimelineHelper} from './TimelineHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {StyleHelper} from './StyleHelper';
+import {StatusHelper} from './StatusHelper';
 import {StylesheetHelper} from './StylesheetHelper';
 import {AnimationHelper} from './AnimationHelper';
 import {CapabilityHelper} from './CapabilityHelper';
@@ -433,7 +434,7 @@ var ManipulationHelper = {
 	              	}
               	}
               	
-    						LayoutHelper.invalidate();
+    						StatusHelper.invalidate(selectingElement);
               } else if (attribute.name == 'data-title-name') {
               	let titleElement = HTMLHelper.getElementsByClassName('internal-fsb-title', selectingElement, false)[0];
               	if (titleElement) {
@@ -704,6 +705,7 @@ var ManipulationHelper = {
     	if (found) TimelineHelper.invalidate();
     	if (found) SchemaHelper.invalidate();
     	if (found) Accessories.guide.invalidate();
+    	if (found) StatusHelper.invalidate(selectingElement);
       
       if (remember && !found) {
         remember = false;
@@ -898,8 +900,8 @@ var ManipulationHelper = {
       
           EditorHelper.deselect();
           
-    			LayoutHelper.invalidate();
     			TimelineHelper.invalidate();
+    			StatusHelper.invalidate(selectingElement);
         }
         break;
       case 9:
@@ -911,8 +913,8 @@ var ManipulationHelper = {
           
           EditorHelper.selectNextElement();
           
-          LayoutHelper.invalidate();
     			TimelineHelper.invalidate();
+    			StatusHelper.invalidate(selectingElement);
         }
         break;
       case 16:
@@ -1012,9 +1014,9 @@ var ManipulationHelper = {
       EditorHelper.deselect();
     }
     
-    LayoutHelper.invalidate();
     TimelineHelper.invalidate();
     StyleHelper.invalidate();
+    StatusHelper.invalidate(selectingElement);
     
     if (selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'TextElement') {
     	ManipulationHelper.updateComponentData(selectingElement);

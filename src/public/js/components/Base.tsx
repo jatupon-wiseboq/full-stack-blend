@@ -104,7 +104,7 @@ class Base extends React.Component {
     
     switch (action) {
       case 'insert':
-	    	data = this.getDataFromNotation(notation);
+	    	data = notation && this.getDataFromNotation(notation) || null;
 	    	if (data == null) return;
 	    	
         for (let result of results) {
@@ -129,7 +129,7 @@ class Base extends React.Component {
         }
         break;
       case 'update':
-	    	data = this.getDataFromNotation(notation);
+	    	data = notation && this.getDataFromNotation(notation) || null;
 	    	if (data == null) return;
 	    	
         for (let result of results) {
@@ -163,7 +163,7 @@ class Base extends React.Component {
       	}
         break;
       case 'upsert':
-	    	data = this.getDataFromNotation(notation);
+	    	data = notation && this.getDataFromNotation(notation) || null;
 	    	if (data == null) return;
 	    	
         for (let result of results) {
@@ -199,7 +199,7 @@ class Base extends React.Component {
         }
         break;
       case 'delete':
-	    	data = this.getDataFromNotation(notation);
+	    	data = notation && this.getDataFromNotation(notation) || null;
 	    	if (data == null) return;
 	    	
         for (let result of results) {

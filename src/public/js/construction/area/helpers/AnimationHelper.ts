@@ -4,6 +4,7 @@ import {InternalProjectSettings} from './WorkspaceHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 import {TimelineHelper} from './TimelineHelper';
 import {StylesheetHelper} from './StylesheetHelper';
+import {StatusHelper} from './StatusHelper';
 import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT} from '../../Constants';
 
 let stylesheetDefinitions = {};
@@ -87,6 +88,7 @@ var AnimationHelper = {
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
     AnimationHelper.renderStylesheetElement();
+    StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
   },
   setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
@@ -103,6 +105,7 @@ var AnimationHelper = {
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
     AnimationHelper.renderStylesheetElement();
+    StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
     
   	console.log(JSON.stringify(stylesheetDefinitions));
   },
@@ -314,6 +317,30 @@ var AnimationHelper = {
   			time: hashMap['-fsb-animation-keyframe-time'] || 0
   		};
   	});
+  },
+  hasKeyframes: function(presetId: string) {
+  	for (const key in stylesheetDefinitions) {
+  		if (stylesheetDefinitions.hasOwnProperty(key)) {
+  			let definitions, keyframes;
+  			
+  			if (stylesheetDefinitions[key].hasOwnProperty(presetId)) {
+	  			definitions = stylesheetDefinitions[key][presetId] || {};
+	  			keyframes = Object.keys(definitions).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1);
+	  			
+	  			if (keyframes.length != 0) return true;
+	  		}
+	  		
+	  		for (const selector of [':active', ':focus', ':hover', ':visited']) {
+	  			if (stylesheetDefinitions[key].hasOwnProperty(presetId + selector)) {
+		  			definitions = stylesheetDefinitions[key][presetId + selector] || {};
+		  			keyframes = Object.keys(definitions).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1);
+		  			
+		  			if (keyframes.length != 0) return true;
+		  		}
+	  		}
+  		}
+  	}
+  	return false;
   },
   extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
   	if (Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;

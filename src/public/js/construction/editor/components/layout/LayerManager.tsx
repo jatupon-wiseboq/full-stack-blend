@@ -24,7 +24,7 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
 	watchingAttributeNames: ['internal-fsb-name'],
-	watchingExtensionNames: ['elementTreeNodes']
+	watchingExtensionNames: ['elementTreeNodes', 'elementAuthoringStatuses', 'elementAuthoringRevision']
 });
 
 class LayerManager extends Base<Props, State> {
@@ -38,6 +38,10 @@ class LayerManager extends Base<Props, State> {
     
     public update(properties: any) {
         if (!super.update(properties)) return;
+        
+        if (this.recursiveAssignAuthoringStatuses(this.state.extensionValues[this.props.watchingExtensionNames[0]])) {
+        	this.forceUpdate();
+        }
     }
     
     private onUpdate(node: ITreeNode) {
@@ -57,6 +61,41 @@ class LayerManager extends Base<Props, State> {
   				node.selected = false;
   				this.recursiveUnselectAllOfNodes(node.nodes);
   			}
+    }
+    
+    private recursiveAssignAuthoringStatuses(nodes: [ITreeNode]): boolean {
+    		let found = false;
+    		
+    		for (let node of nodes) {
+  				if (node.tag && node.tag.guid) {
+  					const status = this.state.extensionValues[this.props.watchingExtensionNames[1]][node.tag.guid];
+  					
+  					let changeInto: string;
+  					if (status) {
+  						changeInto = status;
+	  				} else {
+	  					changeInto = '';
+	  				}
+	  				
+	  				if (node.customClassName != changeInto) {
+	  					node.customClassName = changeInto;
+	  					found = true;
+	  				}
+	  				
+	  				if (status) {
+	  					let selecting = status.indexOf('-fsb-selecting') != -1;
+	  					if (node.selected != selecting) {
+	  						node.selected = selecting;
+	  						found = true;
+	  					}
+	  				}
+  				}
+  				
+  				const result = this.recursiveAssignAuthoringStatuses(node.nodes);
+  				found = found || result;
+  			}
+  			
+  			return found;
     }
     
     private onStartDragging(node: ITreeNode) {

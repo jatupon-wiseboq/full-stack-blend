@@ -132,6 +132,7 @@ const CreateTransaction = async (options) => {
 				if (documentDatabaseSession) documentDatabaseSession.commitTransaction();
 			} finally {
 				if (documentDatabaseSession) documentDatabaseSession.endSession();
+				if (documentDatabaseConnection) documentDatabaseConnection.close();
 			}
 		},
 		rollback: async () => {
@@ -140,6 +141,7 @@ const CreateTransaction = async (options) => {
 				if (documentDatabaseSession) documentDatabaseSession.abortTransaction();
 			} finally {
 				if (documentDatabaseSession) documentDatabaseSession.endSession();
+				if (documentDatabaseConnection) documentDatabaseConnection.close();
 			}
 		},
 		relationalDatabaseTransaction: relationalDatabaseTransaction,

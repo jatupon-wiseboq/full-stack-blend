@@ -368,7 +368,11 @@ const RequestHelper = {
         }
       }
       
-      return (_a < _b) ? -1 : 1;
+      for (let i=0; i<_a.length; i++) {
+        if (_a[i] != _b[i]) return (_a[i] < _b[i]) ? -1 : 1;
+      }
+      
+      return 0;
     });
     
     const registers = [];

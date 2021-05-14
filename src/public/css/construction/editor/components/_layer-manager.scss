@@ -131,6 +131,69 @@
 		}
 	}
 	
+	.treenode-outer-container {
+		&.has-design, &.has-animation, &.has-coding {
+			> .treenode-container .treenode-title {
+				&::before {
+					display: 'block';
+					margin-right: 5px;
+					font-weight: 900;
+					font-family: "Font Awesome 5 Free";
+					opacity: 0.5;
+				}
+			}
+		}
+		&.has-design {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f1fc';
+				}
+			}
+		}
+		&.has-animation {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f0e7';
+				}
+			}
+		}
+		&.has-coding {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f121';
+				}
+			}
+		}
+		&.has-design.has-animation {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f1fc \f0e7';
+				}
+			}
+		}
+		&.has-animation.has-coding {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f0e7 \f121';
+				}
+			}
+		}
+		&.has-design.has-coding {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f1fc \f121';
+				}
+			}
+		}
+		&.has-design.has-animation.has-coding {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f1fc \f0e7 \f121';
+				}
+			}
+		}
+	}
+	
 	.treenode-outer-container.is-react-component {
 		> .treenode-container {
 			> .treenode-body {

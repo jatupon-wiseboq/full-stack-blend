@@ -13,6 +13,7 @@ import {BackEndDOMHelper} from './BackEndDOMHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {LayoutHelper} from './LayoutHelper';
 import {TimelineHelper} from './TimelineHelper';
+import {StatusHelper} from './StatusHelper';
 import {MalformationRepairHelper} from './MalformationRepairHelper';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS} from '../../Constants';
 
@@ -337,6 +338,7 @@ var WorkspaceHelper = {
     LayoutHelper.invalidate();
     TimelineHelper.invalidate();
     SchemaHelper.invalidate();
+    StatusHelper.invalidate();
   },
   saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
   	HTMLHelper.sortAttributes();
