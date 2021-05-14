@@ -8,6 +8,7 @@ import {StylesheetHelper} from '../StylesheetHelper';
 import {CapabilityHelper} from '../CapabilityHelper';
 import {ManipulationHelper} from '../ManipulationHelper';
 import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
+import {StatusHelper} from '../StatusHelper';
 import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants';
 
 let composedUntitledNameCount: any = {};
@@ -275,6 +276,7 @@ var FrontEndManipulationHelper = {
     LayoutHelper.invalidate();
     TimelineHelper.invalidate();
     FrontEndDOMHelper.invalidate();
+    StatusHelper.invalidate(element);
     
     return [accessory, remember, link];
   }

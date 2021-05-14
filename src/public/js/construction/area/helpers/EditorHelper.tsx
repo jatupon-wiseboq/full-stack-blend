@@ -7,6 +7,7 @@ import {ManipulationHelper} from './ManipulationHelper';
 import {StylesheetHelper} from './StylesheetHelper';
 import {AnimationHelper} from './AnimationHelper';
 import {StyleHelper} from './StyleHelper';
+import {StatusHelper} from './StatusHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper';
 import {BackEndDOMHelper} from './BackEndDOMHelper';
@@ -38,6 +39,7 @@ let Accessories = {
 let editorCurrentMode: string = 'design';
 let cachedUpdateEditorProperties = {};
 let updateEditorPropertiesTimer = null;
+let elementAuthoringStatuses = {};
 
 var EditorHelper = {
   setup: () => {
@@ -221,6 +223,8 @@ var EditorHelper = {
 	        hasParentReactComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
 	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
+	        elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
+	        elementAuthoringRevision: StatusHelper.getElementAuthoringRevision(),
 	        timelineTreeNodes: TimelineHelper.getElementTreeNodes(),
 	        schemataTreeNodes: InternalProjectSettings.currentMode == 'data' && SchemaHelper.getElementTreeNodes() || [],
 	        elementComputedStyleNodes: [],
@@ -273,6 +277,8 @@ var EditorHelper = {
         animationDefinitionRevision: AnimationHelper.getStylesheetDefinitionRevision(),
         elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
         elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
+        elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
+        elementAuthoringRevision: StatusHelper.getElementAuthoringRevision(),
 	      timelineTreeNodes: TimelineHelper.getElementTreeNodes(),
         schemataTreeNodes: InternalProjectSettings.currentMode == 'data' && SchemaHelper.getElementTreeNodes() || [],
         elementComputedStyleNodes: StyleHelper.getElementComputedStyleNodes(element),

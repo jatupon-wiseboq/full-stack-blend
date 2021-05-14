@@ -41,8 +41,6 @@ var LayoutHelper = {
   		let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
   		let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
   		let guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-  		let reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
-  		let presetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name');
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let isTableLayoutRow = (element.tagName == 'TR');
@@ -52,7 +50,7 @@ var LayoutHelper = {
   			nodes.push({
   				id: (isTableLayoutCell) ? id + ':' + [...element.parentNode.parentNode.childNodes].indexOf(element.parentNode) +
   					',' + [...element.parentNode.childNodes].indexOf(element) : ((isTableLayoutRow) ? id + ':' + [...element.parentNode.childNodes].indexOf(element) : id),
-  				customClassName: (reactMode) ? 'is-react-component' : ((presetName) ? 'is-containing-preset' : ''),
+  				customClassName: '',
   				name: (isTableLayoutCell) ? 'cell' : ((isTableLayoutRow) ? 'row' : name),
   				selectable: !isTableLayoutCell,
   				dropable: !isTableLayoutRow && (isTableLayoutCell ||
@@ -61,7 +59,7 @@ var LayoutHelper = {
   				insertable: !isTableLayoutRow,
   				dragable: !isTableLayoutRow,
 					disabled: false,
-					selected: (HTMLHelper.hasClass(element, 'internal-fsb-selecting')) ? true : false,
+					selected: false,
   				nodes: this.getElementTreeNodes(includeInheriting, [], element),
   				tag: {
   				  class: klass,
