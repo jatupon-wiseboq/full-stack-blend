@@ -1648,7 +1648,7 @@ const DatabaseHelper = {
 							let records;
 							if (input.source == SourceType.Relational) {
 								records = await map.findAll({where: keys}) || [];
-		  				  await records.destroy({force: true, transaction: transaction.relationalDatabaseTransaction});
+		  				  await map.destroy({where: keys}, {force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
 									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
