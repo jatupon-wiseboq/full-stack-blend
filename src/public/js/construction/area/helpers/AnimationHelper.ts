@@ -451,12 +451,14 @@ var AnimationHelper = {
 					  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
 					  			}
 				  			}
+				  			
+				  			const animationContent = `${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''}`.replace(/;/g, ' !important;');
 			  				
-			  				animationKeyframes.push(`${current * 100}% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+			  				animationKeyframes.push(`${current * 100}% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
 			  			
 				  			if (repeatMode == 'time' && i == keyframes.length - 1) {
-				  				endOfAnimationKeyframes.push(`0% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-				  				endOfAnimationKeyframes.push(`100% { ${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  				endOfAnimationKeyframes.push(`0% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  				endOfAnimationKeyframes.push(`100% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
 				  			}
 			  			}
 			  			
