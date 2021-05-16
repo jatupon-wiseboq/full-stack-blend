@@ -364,7 +364,7 @@ var ManipulationHelper = {
                 }
               }
               
-              if (found) AnimationHelper.renderStylesheetElement();
+              if (found) AnimationHelper.renderStylesheetAndExtensionElement();
               
               if (nextReusablePresetName) {
                 HTMLHelper.setAttribute(selectingElement, 'internal-fsb-reusable-preset-name', nextReusablePresetName);

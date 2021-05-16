@@ -5,12 +5,16 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {TimelineHelper} from './TimelineHelper';
 import {StylesheetHelper} from './StylesheetHelper';
 import {StatusHelper} from './StatusHelper';
+import * as ClientAnimationHelper from '../../../helpers/AnimationHelper';
 import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
+
+declare let window: any;
+window.AnimationHelper = ClientAnimationHelper.AnimationHelper;
 
 const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
 for (const property of ANIMATABLE_CSS_PROPERTIES) {
@@ -45,7 +49,7 @@ var AnimationHelper = {
     cachedPrioritizedKeys = null;
     cachedPrioritizedKeysRevision = -1;
     
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
   },
   setStyle: function(element: HTMLElement, style: string) {
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -92,7 +96,7 @@ var AnimationHelper = {
     
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
   },
   setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
@@ -109,7 +113,7 @@ var AnimationHelper = {
     
     stylesheetDefinitionRevision++;
     TimelineHelper.invalidate();
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
     
   	console.log(JSON.stringify(stylesheetDefinitions));
@@ -182,7 +186,7 @@ var AnimationHelper = {
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState = groupState;
   	
-  	AnimationHelper.renderStylesheetElement();
+  	AnimationHelper.renderStylesheetAndExtensionElement();
   },
   setAnimationGroupMode: function(groupMode: string) {
   	if (!InternalProjectSettings.editingAnimationID) return;
@@ -192,7 +196,7 @@ var AnimationHelper = {
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode = groupMode;
     
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
   },
   setAnimationRepeatMode: function(presetId: string, repeatMode: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
@@ -205,7 +209,7 @@ var AnimationHelper = {
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatMode = repeatMode;
     
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
   },
   setAnimationRepeatTime: function(presetId: string, repeatTime: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
@@ -218,7 +222,7 @@ var AnimationHelper = {
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatTime = repeatTime;
     
-    AnimationHelper.renderStylesheetElement();
+    AnimationHelper.renderStylesheetAndExtensionElement();
   },
   getAnimationGroup: function() {
   	return InternalProjectSettings.editingAnimationID;
@@ -359,29 +363,56 @@ var AnimationHelper = {
   	}
   	else return presetIdOrSelector;
   },
-  renderStylesheetElement: function() {
-    let element = document.getElementById('internal-fsb-animation');
-    if (!element) {
-      element = document.createElement('style');
-      HTMLHelper.setAttribute(element, 'type', 'text/css');
-      HTMLHelper.setAttribute(element, 'id', 'internal-fsb-animation');
-      element.className = 'internal-fsb-accessory';
-      document.body.appendChild(element);
+  renderStylesheetAndExtensionElement: function() {
+    let style = document.getElementById('internal-fsb-animation');
+    
+    if (!style) {
+      style = document.createElement('style');
+      HTMLHelper.setAttribute(style, 'type', 'text/css');
+      HTMLHelper.setAttribute(style, 'id', 'internal-fsb-animation');
+      style.className = 'internal-fsb-accessory';
+    	document.body.appendChild(style);
     }
     
-    element.innerText = AnimationHelper.renderStylesheet();
+    let script = document.getElementById('internal-fsb-animation-extension');
+    script && script.remove();
+    script = null;
+    
+    if (!script) {
+      script = document.createElement('script');
+      HTMLHelper.setAttribute(script, 'type', 'text/javascript');
+      HTMLHelper.setAttribute(script, 'id', 'internal-fsb-animation-extension');
+      script.className = 'internal-fsb-accessory';
+    }
+    
+    [style.innerText, script.innerText] = AnimationHelper.renderStylesheetAndExtension();
+    
+    document.body.appendChild(script);
   },
-  renderStylesheet: function(production: boolean=false, startOver: boolean=true) {
+  renderStylesheetAndExtension: function(production: boolean=false, startOver: boolean=true): [string, string] {
   	let animationGroups = [];
   	let activeAnimationGroup = [];
+  	let extensionScript = [];
   	
   	for (let animationId in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
-  			let animationAssignments = [];
+  			let lowPriorityAnimationAssignments = [];
+  			let highPriorityAnimationAssignments = [];
   			let animationElements = [];
+  			
+  			const extensionInfo = {
+  				tracks: []
+  			};
   			
   			for (let presetId in stylesheetDefinitions[animationId]) {
 		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
+						const track = {
+							keyframes: [],
+							delay: 0,
+							repeat: 0,
+							total: 0
+						};
+				
 		  			let animationKeyframes = [];
 		  			let endOfAnimationKeyframes = [];
 		  			
@@ -409,17 +440,17 @@ var AnimationHelper = {
 		  				if (repeatMode != 'disabled') {
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
-				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
 				  				} else {
-				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
 				  				}
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
 				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
-				  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
 				  				} else {
-				  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
 				  				}
 				  			}
 				  		}
@@ -436,79 +467,95 @@ var AnimationHelper = {
 			  			
 			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
 			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || 1;
-			  			
-				  		const inanimatableHashMap = {};
 				  		
-			  			for (let i=0; i<keyframes.length; i++) {
-			  				let currentKeyframe = keyframes[i];
-			  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
-			  				
-			  				let current = (total == 0) ? 0 : (parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']) - delay) / total;
-			  				let timing = [];
-			  				
-			  				if (nextKeyframe != null) {
-				  				let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
-				  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
-				  				let easing2 = 0;
-				  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
-				  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
-				  				let easing4 = 0;
-			  				
-				  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
-					  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
+				  		if (repeatMode != 'disabled') {
+					  		const combinedInanimatableHashmap = {};
+					  		
+				  			for (let i=0; i<keyframes.length; i++) {
+				  				let currentKeyframe = keyframes[i];
+				  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
+				  				
+				  				let time = parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']);
+				  				let current = (total == 0) ? 0 : (time - delay) / total;
+				  				let timing = [];
+				  				
+				  				if (nextKeyframe != null) {
+					  				let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+					  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+					  				let easing2 = 0;
+					  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+					  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+					  				let easing4 = 0;
+				  				
+					  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
+						  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
+						  			}
 					  			}
+					  			
+					  			const hashMap = currentKeyframe.hashMap;
+					  			const animatableHashMap = {};
+					  			const inanimatableHashMap = {};
+					  			
+					  			for (const key in hashMap) {
+					  				if (key.indexOf('-fsb-animation-') == 0) continue;
+					  				if (hashMap.hasOwnProperty(key) && ANIMATABLE_CSS_PROPERTIES_DICTIONARY[key] !== true) {
+					  					inanimatableHashMap[key] = hashMap[key] + ' !important';
+					  					combinedInanimatableHashmap[key] = hashMap[key] + ' !important';
+					  				} else {
+					  					animatableHashMap[key] = hashMap[key];
+					  				}
+					  			}
+					  			
+					  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap);
+					  			const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap);
+				  				
+				  				if (animatableInlineStyle) {
+					  				animationKeyframes.push(`${current * 100}% { ${animatableInlineStyle}${animatableInlineStyle && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+					  				
+						  			if (repeatMode == 'time' && i == keyframes.length - 1) {
+						  				endOfAnimationKeyframes.push(`0% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+						  				endOfAnimationKeyframes.push(`100% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+						  			}
+						  		}
+					  			
+					  			if (animationId != 'selector' && inanimatableInlineStyle) {
+					  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-preset-${presetId} { ${inanimatableInlineStyle} }`);
+					  				} else {
+					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
+					  				}
+					  			}
+					  			
+					  			track.keyframes.push({
+					  				id: currentKeyframe.id,
+					  				time: time
+					  			});
 				  			}
 				  			
-				  			const hashMap = HTMLHelper.getHashMapFromInlineStyle(currentKeyframe.raw);
-				  			const animatableHashMap = {};
+				  			track.delay = delay;
+				  			track.repeat = (repeatMode == 'time') ? repeatTime : -1;
+				  			track.total = total;
+					  		
+					  		const combinedInanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(combinedInanimatableHashmap);
 				  			
-				  			for (const key in hashMap) {
-				  				if (hashMap.hasOwnProperty(key) && ANIMATABLE_CSS_PROPERTIES_DICTIONARY[key] !== true) {
-				  					inanimatableHashMap[key] = hashMap[key] + ' !important';
+				  			if (animationId == 'selector' && combinedInanimatableInlineStyle) {
+				  				const splited = presetId.split(':');
+				  				
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  					highPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
 				  				} else {
-				  					animatableHashMap[key] = hashMap[key];
+				  					highPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
 				  				}
 				  			}
 				  			
-				  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap);
-			  				
-			  				animationKeyframes.push(`${current * 100}% { ${animatableInlineStyle}${animatableInlineStyle && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-			  				
-				  			if (repeatMode == 'time' && i == keyframes.length - 1) {
-				  				endOfAnimationKeyframes.push(`0% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-				  				endOfAnimationKeyframes.push(`100% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
+				  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
+				  				
+				  				if (repeatMode == 'time') {
+				  					animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')}-end { ${endOfAnimationKeyframes.join(' ')} }`);
+				  				}
 				  			}
-			  			}
-			  			
-				  		const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap);
-			  			
-			  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
-			  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
-			  				
-			  				if (repeatMode == 'time') {
-			  					animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')}-end { ${endOfAnimationKeyframes.join(' ')} }`);
-			  				}
-			  			}
-			  			
-			  			if (repeatMode != 'disabled') {
-			  				if (inanimatableInlineStyle) {
-				  				if (animationId != 'selector') {
-					  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
-					  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${inanimatableInlineStyle} }`);
-					  				} else {
-					  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
-					  				}
-					  			} else {
-					  				const splited = presetId.split(':');
-					  				
-					  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
-					  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${inanimatableInlineStyle} }`);
-					  				} else {
-					  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${inanimatableInlineStyle} }`);
-					  				}
-					  			}
-					  		}
-					  		
+				  			
 			  				let animations = [];
 			  				
 			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
@@ -521,29 +568,34 @@ var AnimationHelper = {
 				  			
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
-				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
 				  				} else {
-				  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
 				  				}
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
 				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
-				  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
 				  				} else {
-				  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);
 				  				}
 				  			}
 				  		}
-				  	}
+					  }
+					  
+					  extensionInfo.tracks.push(track);
 		  		}
 		  	}
 		  	
 		  	animationGroups.push(animationElements.join(' '));
-		  	animationGroups.push(animationAssignments.join(' '));
+		  	animationGroups.push(lowPriorityAnimationAssignments.join(' '));
+		  	animationGroups.push(highPriorityAnimationAssignments.join(' '));
+		  	
+  			extensionScript.push(`AnimationHelper.register('${animationId}', ${JSON.stringify(extensionInfo)});`);
 		  	
 		  	if (animationId != 'selector') {
-		  		if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`animation-group-${animationId}`);
+		  		if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
 		  	}
   		}
   	}
@@ -552,15 +604,16 @@ var AnimationHelper = {
   	
   	if (startOver) {
 	  	HTMLHelper.setAttribute(begin, 'internal-fsb-animation', '');
-	  	window.setTimeout(() => {
-	  		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
-	  	}, 0);
+	  	extensionScript.push(`AnimationHelper.reset();`);
+	  	extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
 	 	} else {
-	 		HTMLHelper.setAttribute(begin, 'internal-fsb-animation', activeAnimationGroup.join(' '));
+	 		extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
 	 	}
   	
   	let source = animationGroups.join(' ');
-    return source;
+  	let script = extensionScript.join(' ');
+  	
+    return [source, script];
   }
 };
 
