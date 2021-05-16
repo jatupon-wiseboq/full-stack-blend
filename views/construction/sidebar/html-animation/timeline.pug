@@ -60,6 +60,24 @@ div(internal-fsb-for="editingAnimationID")
       .section-body
         +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingStyleNames: ['-fsb-animation-keyframe-time'], float: true, inline: true, button: false}")
       .section-hr
+  .section-container
+    .section-title
+      | Presets
+    .section-subtitle
+      | Reusable Name
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
+    .section-subtitle
+      | Priority
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{inline: true, button: false, watchingStyleNames: ['-fsb-priority']}")
+    .section-subtitle
+      | Inheritance
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.CSSPresets')
+    .section-note
+      | The styles of animation take precedence over coding, and coding over design. You may use the priority of preset or !important to override these.
+    .section-hr(internal-fsb-not-for="isTableLayoutRow:true")
   .section-container.internal-fsb-selecting-on
     .section-title
       | Animation Events Binding
