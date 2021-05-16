@@ -225,6 +225,8 @@ let cachedUpdateEditorProperties = {};
 	      	}
 	      }
 	      if (content && content['extensions']) {
+	      	if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
+	      	
 	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {

@@ -15,6 +15,11 @@ import '../code/StatePicker';
 import '../code/CustomCodePicker';
 import * as CONSTANTS from '../../../Constants';
 
+const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
+for (const property of CONSTANTS.ANIMATABLE_CSS_PROPERTIES) {
+	ANIMATABLE_CSS_PROPERTIES_DICTIONARY[property] = true;
+}
+
 let options = {
     "object-fit": CONSTANTS.OBJECT_FIT_OPTIONS,
     "object-position[0,2]": CONSTANTS.OBJECT_POSITION_OPTIONS,
@@ -326,8 +331,9 @@ class DropDownPicker extends Base<Props, State> {
             <span>
                 {(() => {
                     if (this.props.watchingStyleNames.length != 0) {
+                    		const isSupportAnimatable = (ANIMATABLE_CSS_PROPERTIES_DICTIONARY[this.props.watchingStyleNames[0].split('[')[0]] === true);
                         return (
-                            <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-not-for="editorCurrentMode:coding">
+                            <div className={"btn-group btn-group-sm mr-1 mb-1 dropdown-picker" + (!isSupportAnimatable ? ' is-not-animatable' : '')} role="group" internal-fsb-not-for="editorCurrentMode:coding">
                                 <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width}>
                                     <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
                                 </FullStackBlend.Controls.DropDownList>

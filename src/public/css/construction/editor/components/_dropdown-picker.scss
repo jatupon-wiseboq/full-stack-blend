@@ -12,3 +12,9 @@
     font-size: 11px;
   }
 }
+
+body[mode="animation"] .dropdown-picker {
+	&.is-not-animatable {
+  	border-bottom: #ff0000 solid 1px;
+  }
+}
