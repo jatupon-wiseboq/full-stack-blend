@@ -5,12 +5,17 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {TimelineHelper} from './TimelineHelper';
 import {StylesheetHelper} from './StylesheetHelper';
 import {StatusHelper} from './StatusHelper';
-import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT} from '../../Constants';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
+
+const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
+for (const property of ANIMATABLE_CSS_PROPERTIES) {
+	ANIMATABLE_CSS_PROPERTIES_DICTIONARY[property] = true;
+}
 
 var AnimationHelper = {
   generateStylesheetData: () => {
@@ -432,6 +437,8 @@ var AnimationHelper = {
 			  			let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
 			  			let repeatTime = stylesheetDefinitions[animationId][presetId].repeatTime || 1;
 			  			
+				  		const inanimatableHashMap = {};
+				  		
 			  			for (let i=0; i<keyframes.length; i++) {
 			  				let currentKeyframe = keyframes[i];
 			  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
@@ -452,15 +459,28 @@ var AnimationHelper = {
 					  			}
 				  			}
 				  			
-				  			const animationContent = `${currentKeyframe.raw}${currentKeyframe.raw && ';' || ''}`.replace(/;/g, ' !important;');
+				  			const hashMap = HTMLHelper.getHashMapFromInlineStyle(currentKeyframe.raw);
+				  			const animatableHashMap = {};
+				  			
+				  			for (const key in hashMap) {
+				  				if (hashMap.hasOwnProperty(key) && ANIMATABLE_CSS_PROPERTIES_DICTIONARY[key] !== true) {
+				  					inanimatableHashMap[key] = hashMap[key] + ' !important';
+				  				} else {
+				  					animatableHashMap[key] = hashMap[key];
+				  				}
+				  			}
+				  			
+				  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap);
 			  				
-			  				animationKeyframes.push(`${current * 100}% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-			  			
+			  				animationKeyframes.push(`${current * 100}% { ${animatableInlineStyle}${animatableInlineStyle && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+			  				
 				  			if (repeatMode == 'time' && i == keyframes.length - 1) {
-				  				endOfAnimationKeyframes.push(`0% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
-				  				endOfAnimationKeyframes.push(`100% { ${animationContent} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  				endOfAnimationKeyframes.push(`0% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
+				  				endOfAnimationKeyframes.push(`100% { ${animatableInlineStyle} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
 				  			}
 			  			}
+			  			
+				  		const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap);
 			  			
 			  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
 			  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
@@ -471,6 +491,24 @@ var AnimationHelper = {
 			  			}
 			  			
 			  			if (repeatMode != 'disabled') {
+			  				if (inanimatableInlineStyle) {
+				  				if (animationId != 'selector') {
+					  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+					  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${inanimatableInlineStyle} }`);
+					  				} else {
+					  					animationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
+					  				}
+					  			} else {
+					  				const splited = presetId.split(':');
+					  				
+					  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+					  					animationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${inanimatableInlineStyle} }`);
+					  				} else {
+					  					animationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${inanimatableInlineStyle} }`);
+					  				}
+					  			}
+					  		}
+					  		
 			  				let animations = [];
 			  				
 			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
