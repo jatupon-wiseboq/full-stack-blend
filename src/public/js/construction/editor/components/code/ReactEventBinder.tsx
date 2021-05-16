@@ -158,6 +158,8 @@ class ReactEventBinder extends Base<Props, State> {
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-subtitle">Custom Code</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"disabled-custom-code": true}', ["fa-power-off", "disable"]]]}/></div>
+			                        <div className="section-subtitle">Execute at First</div>
+			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-subtitle">No Propagation</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
@@ -180,7 +182,11 @@ class ReactEventBinder extends Base<Props, State> {
 				                        <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'remove-animation-tracks'} /></div>
 				                        <div className="section-subtitle">Perform at Element</div>
 				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-at-element": true}', ["fa-power-off", "enable"]]]}/></div>
-				                      </div>
+					                      <div className="section-subtitle">Execute at First</div>
+				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
+				                        <div className="section-subtitle">No Propagation</div>
+				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
+			                        </div>
 			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
 			                    </div>
 		                    </FullStackBlend.Controls.DropDownControl>

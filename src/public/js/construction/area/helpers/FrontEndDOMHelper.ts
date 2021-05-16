@@ -47,19 +47,20 @@ var FrontEndDOMHelper = {
   
   ${functionDeclarations}
   
-  public register(guid, eventName, functionName) {
+  public register(guid, eventName, functionName, capturing) {
     if (!this.dictionary[guid]) this.dictionary[guid] = {};
-    this.dictionary[guid][eventName] = functionName;
+    this.dictionary[guid][eventName] = [functionName, capturing];
   }
   public listen(guid) {
     if (this.dictionary[guid]) {
       for (let key in this.dictionary[guid]) {
         if (this.dictionary[guid].hasOwnProperty(key)) {
           const eventName = key;
-          const functionName = this.dictionary[guid][key];
+          const functionName = this.dictionary[guid][key][0];
+          const capturing = !!this.dictionary[guid][key][1];
           const element = this.getElementUsingGUID(guid);
           
-          element.addEventListener(eventName, this[functionName].bind(this), false);
+          element.addEventListener(eventName, this[functionName].bind(this), capturing);
         }
       }
     }
@@ -415,10 +416,10 @@ ${rootScript}`;
                   	if (attribute.name == 'onfsbready') {
                     	_globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
                     } else {
-                    	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                    	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this), " + !!value.capture + ");");
                     }
                   } else {
-                    _localEvents.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + '=this.' + FUNCTION_NAME + '.bind(this)');
+                    _localEvents.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + (value.capture ? 'Capture' : '') + '=this.' + FUNCTION_NAME + '.bind(this)');
                   }
                 }
               } else {
@@ -813,10 +814,10 @@ ${rootScript}`;
                   	if (attribute.name == 'onfsbready') {
                   		_globalEvents.push("ready(controller." + FUNCTION_NAME + ".bind(controller));");
                   	} else {
-                  		_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this));");
+                  		_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase() + "', controller." + FUNCTION_NAME + ".bind(controller), " + !!value.capture + ");");
                   	}
                   } else {
-                    _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME]);
+                    _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME, !!value.capture]);
                   }
                 }
               } else {

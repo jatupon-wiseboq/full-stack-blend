@@ -297,7 +297,7 @@ ${MERGE_END_BEGIN}`);
                 }
                 
                 if (executions) {
-                		executions.push(`controller.register('${info['internal-fsb-guid']}', '${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '').toLowerCase()}', '${FUNCTION_NAME}');`);
+                		executions.push(`controller.register('${info['internal-fsb-guid']}', '${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '').toLowerCase()}', '${FUNCTION_NAME}', ${!!value['capture']});`);
                 }
             } else {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
