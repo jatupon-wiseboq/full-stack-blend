@@ -142,7 +142,7 @@ const TestHelper = {
   	const children = Array.from(document.head.children);
   	
   	for (const child of children) {
-  		if (child.tagName == 'SCRIPT' && child.getAttribute('src').indexOf('/assets/prompt.js') != -1) {
+  		if (child.tagName == 'SCRIPT' && (child.getAttribute('src') || '').indexOf('/assets/prompt.js') != -1) {
   			return true;
   		}
   	}
