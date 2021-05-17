@@ -136,14 +136,14 @@ if (window.__animationHelperDelayedRegisterings !== undefined) {
 		AnimationHelper.register.apply(null, args);
 	}
 	
-	delete window.__animationHelperDelayedRegisterings;
+	window.__animationHelperDelayedRegisterings = undefined;
 }
 if (window.__animationHelperDelayedAddings !== undefined) {
 	for (const args of window.__animationHelperDelayedAddings) {
 		AnimationHelper.add.apply(null, args);
 	}
 	
-	delete window.__animationHelperDelayedAddings;
+	window.__animationHelperDelayedAddings = undefined;
 }
 
 export {AnimationHelper};
