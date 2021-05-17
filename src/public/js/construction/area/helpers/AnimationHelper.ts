@@ -392,7 +392,7 @@ var AnimationHelper = {
   renderStylesheetAndExtension: function(production: boolean=false, startOver: boolean=true): [string, string] {
   	let animationGroups = [];
   	let activeAnimationGroup = [];
-  	let extensionScript = ['if (window.AnimationHelper === undefined) return;'];
+  	let extensionScript = ['window.AnimationHelper !== undefined && (function() {'];
   	
   	for (let animationId in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
@@ -609,6 +609,8 @@ var AnimationHelper = {
 	 	} else {
 	 		extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
 	 	}
+	 	
+	 	extensionScript.push('})();');
   	
   	let source = animationGroups.join(' ');
   	let script = extensionScript.join(' ');
