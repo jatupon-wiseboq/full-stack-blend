@@ -524,12 +524,12 @@ var AnimationHelper = {
 					  				} else {
 					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
 					  				}
-					  			}
 					  			
-					  			track.keyframes.push({
-					  				id: currentKeyframe.id,
-					  				time: time
-					  			});
+						  			track.keyframes.push({
+						  				id: currentKeyframe.id,
+						  				time: time
+						  			});
+					  			}
 				  			}
 				  			
 				  			track.delay = delay;
@@ -584,7 +584,7 @@ var AnimationHelper = {
 				  		}
 					  }
 					  
-					  extensionInfo.tracks.push(track);
+					  if (track.keyframes.length != 0) extensionInfo.tracks.push(track);
 		  		}
 		  	}
 		  	
