@@ -4,6 +4,8 @@
 import {HTMLHelper} from './HTMLHelper';
 
 const extensions = {};
+const extensionRenderingLoopDictionary = {};
+
 let resetCount = 0;
 
 declare let window: any;
@@ -15,11 +17,28 @@ const AnimationHelper = {
     if (container) {
     	if (container.tagName != 'DIV') container = container.parentNode;
     	
-    	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
+    	let currentAnimations = Array.from((HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' '));
     	
     	for (let animation of animations) {
-    		if (currentAnimations.indexOf('animation-group-' + animation) == -1) {
+    		const index = currentAnimations.indexOf('animation-group-' + animation);
+    		
+    		if (index == -1) {
     			currentAnimations.push('animation-group-' + animation);
+    		} else if (!extensionRenderingLoopDictionary[animation]) {
+    			currentAnimations.splice(index, 1);
+    			
+    			window.setTimeout(() => {
+    				const currentFlattenAnimations = HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '';
+    				const currentAnimations = Array.from(currentFlattenAnimations.split(' '));
+    				
+    				currentAnimations.push('animation-group-' + animation);
+    				
+    				HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
+    			}, 0);
+    		}
+	    	
+	    	if (!extensionRenderingLoopDictionary[animation]) {
+	    		extensionRenderingLoopDictionary[animation] = true;
 	    		
 	    		(() => {
 		    		const extensionInfo = extensions[animation];
@@ -101,6 +120,8 @@ const AnimationHelper = {
     	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
     	
     	for (let animation of animations) {
+    		extensionRenderingLoopDictionary[animation] = false;
+    		
     		let index = currentAnimations.indexOf('animation-group-' + animation);
     		if (index != -1) {
     			currentAnimations.splice(index, 1);
