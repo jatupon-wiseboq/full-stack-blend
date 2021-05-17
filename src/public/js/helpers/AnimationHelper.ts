@@ -6,6 +6,8 @@ import {HTMLHelper} from './HTMLHelper';
 const extensions = {};
 let resetCount = 0;
 
+declare let window: any;
+
 const AnimationHelper = {
 	// Document Object Model (DOM) Queries
 	// 
@@ -127,6 +129,21 @@ const AnimationHelper = {
   reset: () => {
   	resetCount++;
   }
+}
+
+if (window.__animationHelperDelayedRegisterings !== undefined) {
+	for (const args of window.__animationHelperDelayedRegisterings) {
+		AnimationHelper.register.apply(null, args);
+	}
+	
+	delete window.__animationHelperDelayedRegisterings;
+}
+if (window.__animationHelperDelayedAddings !== undefined) {
+	for (const args of window.__animationHelperDelayedAddings) {
+		AnimationHelper.add.apply(null, args);
+	}
+	
+	delete window.__animationHelperDelayedAddings;
 }
 
 export {AnimationHelper};
