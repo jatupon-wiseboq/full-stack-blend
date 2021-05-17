@@ -151,11 +151,12 @@ class EndpointManager extends Base<Props, State> {
       
       let combinedHTMLPageDict = {};
       let globalCombinedStylesheet = '';
+      let globalCombinedStylesheetExtension = '';
       let arrayOfCombinedExpandingFeatureScripts = [];
       for (let key in frontEndCodeInfoDict) {
         if (frontEndCodeInfoDict.hasOwnProperty(key)) {
-          let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-          [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = frontEndCodeInfoDict[key];
+          let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension;
+          [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension] = frontEndCodeInfoDict[key];
           
           let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
           
@@ -168,6 +169,7 @@ class EndpointManager extends Base<Props, State> {
           if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
           if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
           if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
+          if (combinedStylesheetExtension) globalCombinedStylesheetExtension = combinedStylesheetExtension;
           
           if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
           else combinedInlineBodyStyle = '';
@@ -236,6 +238,17 @@ ${customHeaderExternalStylesheets.join('\n')}
 ${customHeaderExternalScripts.join('\n')}
 style(type="text/css").
   ${globalCombinedStylesheet}
+script(type="text/javascript").
+  var __animationHelperDelayedRegisterings = [], __animationHelperDelayedAddings = [];
+  var AnimationHelper = {
+    register: function(animationId, extensionInfo) {
+    	__animationHelperDelayedRegisterings.push(arguments);
+    },
+    add: function(activeAnimationGroups) {
+    	__animationHelperDelayedAddings.push(arguments);
+    }
+  };
+  ${globalCombinedStylesheetExtension}
 `;
   let combinedFooterScripts = `
 ${externalScripts.join('\n')}
