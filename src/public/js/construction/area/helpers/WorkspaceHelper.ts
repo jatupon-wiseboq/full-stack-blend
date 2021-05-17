@@ -714,7 +714,8 @@ var WorkspaceHelper = {
   		
   		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
   		
-  		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0], stylesheetAndExtension[1]].join(' '));
+  		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0]].join(' '));
+  		results.push(stylesheetAndExtension[1]);
   	} else if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
   		WorkspaceHelper.plugComponentInputs();
   		WorkspaceHelper.updateInPageComponents();
@@ -728,7 +729,8 @@ var WorkspaceHelper = {
   		
   		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
   		
-  		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0], stylesheetAndExtension[1]].join(' '));
+  		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0]].join(' '));
+  		results.push(stylesheetAndExtension[1]);
   	}
   	
   	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
