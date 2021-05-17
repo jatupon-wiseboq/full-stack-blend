@@ -4,6 +4,7 @@ import {WorkspaceHelper} from './helpers/WorkspaceHelper';
 import {CursorHelper} from './helpers/CursorHelper';
 import {CapabilityHelper} from './helpers/CapabilityHelper';
 import {EditorHelper} from './helpers/EditorHelper';
+import {AnimationHelper} from './helpers/AnimationHelper';
 
 (() => {
   let isLoaded: boolean = false;
