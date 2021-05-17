@@ -5,6 +5,8 @@ import {HTMLHelper} from './HTMLHelper';
 import {RequestHelper} from './RequestHelper';
 
 let timerId = null;
+let allocatedIds = {};
+
 declare let window: any;
 
 if (window.installedTestingConsole === undefined) window.installedTestingConsole = false;
@@ -26,6 +28,8 @@ const TestHelper = {
 	  	for (const element of assigned) {
 	  		HTMLHelper.setAttribute(element, 'internal-fsb-visited', '1');
 	  	}
+  		
+  		TestHelper.recursiveSortAttributes(assigned);
   	}, delay);
   },
   recursiveAssignId: (element: any, assigned: any[], guid: string='_') => {
@@ -57,16 +61,81 @@ const TestHelper = {
 	  }
   	
   	if (!currentId) {
-  		HTMLHelper.setAttribute(element, 'id', `internal-fsb-${guid}${suffix}`);
+  		let indexing = '';
+  		if (_guid) {
+	  		let indexes = [];
+	      let parent = element.parentNode;
+	      
+	      while (parent != document) {
+	        if (HTMLHelper.hasAttribute(parent, 'data-fsb-index')) {
+	          indexes.push(HTMLHelper.getAttribute(parent, 'data-fsb-index'));
+	        }
+	        
+	        parent = parent.parentNode;
+	      }
+	      
+	      indexes.reverse();
+	      
+	      indexing = `[${indexes.join(',')}]`;
+	  	}
+	  	if (indexing == '[]') indexing = '';
+	  	
+	  	const key = `internal-fsb-${guid}${indexing}${suffix}`;
+  		if (allocatedIds[key] === undefined) allocatedIds[key] = 0;
+  		else allocatedIds[key]++;
+	  	
+	  	let middle = `-${allocatedIds[key]}`;
+	  	if (middle == '-0') middle = '';
+	  	
+  		HTMLHelper.setAttribute(element, 'id', `internal-fsb-${guid}${indexing}${middle}${suffix}`);
   		assigned.push(element);
-  	}
   	
-  	const children = element.children;
-  	
-  	for (let i=0; i<children.length; i++) {
-  		TestHelper.recursiveAssignId(children[i], assigned, `${guid}${suffix}${'-' + i}`);
+	  	const children = element.children;
+	  	
+	  	for (let i=0; i<children.length; i++) {
+	  		TestHelper.recursiveAssignId(children[i], assigned, `${guid}${indexing}${middle}${suffix}${'-' + i}`);
+	  	}
+  	} else {
+	  	const children = element.children;
+	  	
+	  	for (let i=0; i<children.length; i++) {
+	  		TestHelper.recursiveAssignId(children[i], assigned, `${currentId.replace('internal-fsb-', '')}${'-' + i}`);
+	  	}
   	}
   },
+	recursiveSortAttributes: (elements: any) => {
+    for (let j = 0; j < elements.length; j++) {
+    	if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
+    	
+    	let attributes = [];
+    	if (elements[j].hasAttributes()) {
+        let attrs = elements[j].attributes;
+        for (let attr of attrs) {
+          attributes.push({
+            name: attr.name,
+            value: attr.value
+          });
+        }
+      }
+			
+      for (let i = 0; i < attributes.length; i++) {
+        elements[j].removeAttribute(attributes[i].name);
+      }
+      
+      attributes = attributes.sort((a: any, b: any) => {
+      	if (a.name == 'id') return -1;
+      	if (b.name == 'id') return 1;
+      	
+      	return 0;
+      });
+
+      for (let i = 0; i < attributes.length; i++) {
+        elements[j].setAttribute(attributes[i].name, attributes[i].value);
+      }
+      
+      elements[j].children && TestHelper.recursiveSortAttributes(elements[j].children);
+    }
+	},
   checkIfSeleniumExists: (): boolean => {
   	if (HTMLHelper.getElementById('selenium-ide-indicator')) return true;
   	
