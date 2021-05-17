@@ -4142,16 +4142,16 @@
         "</div>",
         "</div>",
         "<div",
-        "    class=\"-fsb-preset-d2a8edc9 col-12 internal-fsb-element\"",
+        "    class=\"-fsb-preset-d2a8edc9 col-12 internal-fsb-element internal-fsb-selecting\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"c6b46e93\"",
         "    internal-fsb-name=\"TextElement 14\"",
-        "    style=\"-fsb-inherited-presets: d2a8edc9\">Your designers can retouch the user interface and user experience with a light of touch which they can preview and deploy it without needs from developers.<div>",
+        "    style=\"-fsb-inherited-presets: d2a8edc9\">Your designer can retouch the user interface and user experience with a light of touch which they can preview and deploy it without needs from a developer.<div>",
         "<br>",
         "</div>",
-        "<div>Furthermore, your developers can convert any parent of elements to become a reusable component that your designer can placed them on any page, too.</div>",
+        "<div>Furthermore, a developer can convert any parent of elements to become a reusable component that your designer can placed them on any page, too.</div>",
         "</div>",
         "</div>",
         "</div>",
@@ -4420,6 +4420,6 @@
     "3cb10a6e": "fd1d1b5adb946b191a850c251787e1777245ba74#-444633186",
     "9e885d49": "b705916abe1ca4414cdd3db484728bbcca682728#-1917790072",
     "b160aa0e": "04f3f53408a6e7fe73f40f4a45a4a9a43f2959e4#-878780597",
-    "index": "5a2db31e747d68e9d34494ef1680e33d7ffc0d21#67642131"
+    "index": "b3d5f0a787bc899cc8d42b4ece2c6c4450c75f33#2048097607"
   }
 }
