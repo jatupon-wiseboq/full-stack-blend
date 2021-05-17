@@ -392,7 +392,7 @@ var AnimationHelper = {
   renderStylesheetAndExtension: function(production: boolean=false, startOver: boolean=true): [string, string] {
   	let animationGroups = [];
   	let activeAnimationGroup = [];
-  	let extensionScript = [];
+  	let extensionScript = ['if (window.AnimationHelper === undefined) return;'];
   	
   	for (let animationId in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
