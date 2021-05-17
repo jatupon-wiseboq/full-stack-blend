@@ -7,6 +7,7 @@ import {CodeHelper} from '../helpers/CodeHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
+import {TestHelper} from '../helpers/TestHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
 // <---Auto[Import]
 
@@ -68,10 +69,11 @@ class FlowLayout_4d816ba8 extends Base {
   }
   
   register() {
+    TestHelper.identify();
     function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         
-    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: null});
-    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: null});
+    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
+    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
   }
   // <---Auto[ClassBegin]
   
@@ -145,6 +147,7 @@ class FlowLayout_4d816ba8 extends Base {
   
   // Auto[ClassEnd]--->
   protected render(): any {
+    TestHelper.identify();
     return pug `
       div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), className="-fsb-preset-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .container-fluid

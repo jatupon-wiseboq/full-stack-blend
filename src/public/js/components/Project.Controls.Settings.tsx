@@ -7,6 +7,7 @@ import {CodeHelper} from '../helpers/CodeHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
+import {TestHelper} from '../helpers/TestHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
 // <---Auto[Import]
 
@@ -68,9 +69,10 @@ class Settings extends Base {
   }
   
   register() {
+    TestHelper.identify();
     function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         
-    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: null});
+    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
   }
   // <---Auto[ClassBegin]
   
@@ -184,6 +186,7 @@ class Settings extends Base {
   
   // Auto[ClassEnd]--->
   protected render(): any {
+    TestHelper.identify();
     return pug `
       div(style=Object.assign({}, this.props.forward && this.props.forward.styles || {}), className="-fsb-self-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="245bc127")
         .container-fluid

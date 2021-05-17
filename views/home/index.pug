@@ -23,7 +23,7 @@ html
     include _header.pug
   body(style="font-family: Roboto")
     
-    .container-fluid.internal-fsb-begin(internal-fsb-animation="animation-group-d0e675b7", internal-fsb-guid="0")
+    .container-fluid.internal-fsb-begin(internal-fsb-animation="animation-group-d0e675b7 animation-group-a3e754b1 animation-extension-9cbea9b1 animation-extension-3b195d8d animation-extension-0c789e46", internal-fsb-guid="0")
       .internal-fsb-begin-layout.internal-fsb-strict-layout.row
         .col-12.col-lg-10.internal-fsb-element.offset-0.offset-lg-1(style={'padding-left': '0px', 'padding-right': '0px'}, internal-fsb-guid="e90dbe28")
           .container-fluid
@@ -196,19 +196,20 @@ html
               // 
               window.location = 'https://www.softenstorm.com/stackblend-policy-and-terms';
           };
-          Controller.prototype.register = function (guid, eventName, functionName) {
+          Controller.prototype.register = function (guid, eventName, functionName, capturing) {
               if (!this.dictionary[guid])
                   this.dictionary[guid] = {};
-              this.dictionary[guid][eventName] = functionName;
+              this.dictionary[guid][eventName] = [functionName, capturing];
           };
           Controller.prototype.listen = function (guid) {
               if (this.dictionary[guid]) {
                   for (var key in this.dictionary[guid]) {
                       if (this.dictionary[guid].hasOwnProperty(key)) {
                           var eventName = key;
-                          var functionName = this.dictionary[guid][key];
+                          var functionName = this.dictionary[guid][key][0];
+                          var capturing = !!this.dictionary[guid][key][1];
                           var element = this.getElementUsingGUID(guid);
-                          element.addEventListener(eventName, this[functionName].bind(this), false);
+                          element.addEventListener(eventName, this[functionName].bind(this), capturing);
                       }
                   }
               }
@@ -219,9 +220,10 @@ html
           return Controller;
       }());
       var controller = new Controller();
-      controller.register('651393e4', 'click', 'onButtonClick_651393e4');
-      controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4');
-      controller.register('57bd398a', 'click', 'onButtonClick_57bd398a');
+      controller.register('651393e4', 'click', 'onButtonClick_651393e4', false);
+      controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4', false);
+      controller.register('57bd398a', 'click', 'onButtonClick_57bd398a', false);
+      TestHelper.identify();
       function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
       ;
       controller.listen('651393e4');
