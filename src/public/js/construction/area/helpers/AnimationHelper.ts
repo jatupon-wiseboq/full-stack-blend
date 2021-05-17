@@ -592,7 +592,7 @@ var AnimationHelper = {
 		  	animationGroups.push(lowPriorityAnimationAssignments.join(' '));
 		  	animationGroups.push(highPriorityAnimationAssignments.join(' '));
 		  	
-  			extensionScript.push(`AnimationHelper.register('${animationId}', ${JSON.stringify(extensionInfo)});`);
+  			if (extensionInfo.tracks.length != 0) extensionScript.push(`AnimationHelper.register('${animationId}', ${JSON.stringify(extensionInfo)});`);
 		  	
 		  	if (animationId != 'selector') {
 		  		if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
