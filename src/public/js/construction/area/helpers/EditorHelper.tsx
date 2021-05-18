@@ -269,6 +269,7 @@ var EditorHelper = {
       	isSelectingElement: true,
       	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
       	isTableLayoutRow: (element.tagName == 'TR'),
+      	isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
 	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),
