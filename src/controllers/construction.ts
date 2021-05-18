@@ -5,13 +5,15 @@ import {Request, Response} from "express";
  * Editor page.
  */
 export const index = (req: Request, res: Response) => {
-    
     const user = req.user as UserDocument;
     
-    res.render("construction/index", {
-        user: user
-    });
-    
+    if (!user) {
+    	res.redirect('/account/authenticate');
+    } else {
+	    res.render("construction/index", {
+	        user: user
+	    });
+    }
 };
 
 /**
@@ -19,11 +21,13 @@ export const index = (req: Request, res: Response) => {
  * Construction area page.
  */
 export const html = (req: Request, res: Response) => {
-
     const user = req.user as UserDocument;
-
-    res.render("construction/area/html/index", {
-        user: user
-    });
-
+		
+		if (!user) {
+    	res.redirect('/account/authenticate');
+    } else {
+	    res.render("construction/area/html/index", {
+	        user: user
+	    });
+		}
 };
