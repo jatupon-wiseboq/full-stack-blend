@@ -20,6 +20,7 @@ interface State extends IState {
   name: string;
   value: string;
   nameInputFailedValidationMessage: string;
+  disabled: boolean;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -28,12 +29,14 @@ Object.assign(ExtendedDefaultState, {
   isAdding: false,
   name: '',
   value: '',
-  nameInputFailedValidationMessage: null
+  nameInputFailedValidationMessage: null,
+  disabled: false
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingAttributeNames: [/^((?!^class$|^style$|^contenteditable|^internal-fsb-[a-zA-Z0-9\-]+$).)*$/]
+  watchingAttributeNames: [/^((?!^class$|^style$|^contenteditable|^internal-fsb-[a-zA-Z0-9\-]+$).)*$/],
+  watchingExtensionNames: ['isInheritingComponent']
 });
 
 class AttributeManager extends Base<Props, State> {
@@ -58,6 +61,9 @@ class AttributeManager extends Base<Props, State> {
             customClassName: 'delete',
             nodes: []
         }];
+        
+        let disabled = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+        this.setState({disabled: disabled});
         
         let hash = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         for (let name in hash) {
@@ -189,7 +195,7 @@ class AttributeManager extends Base<Props, State> {
     
     render() {
         return (
-            <FullStackBlend.Components.ListManager customClassName="non-selectable non-insertable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
+            <FullStackBlend.Components.ListManager customClassName={"non-selectable non-insertable" + (this.state.disabled ? " disabled" : "")} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update an Attribute"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Name</div>
