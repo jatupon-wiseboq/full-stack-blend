@@ -72,7 +72,7 @@ const ValidationHelper = {
 	 					}
  						break;
  					case 'phone':
- 						if (!value.match(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$/)) {
+ 						if (!value.match(/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/)) {
 	 						throw new Error(item.validation.customMessage || `${item.validation.name} is an incorrect phone number.`);
 	 					}
  						break;
