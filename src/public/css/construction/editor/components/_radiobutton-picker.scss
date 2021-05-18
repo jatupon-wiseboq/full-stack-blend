@@ -1,7 +1,7 @@
 // Dropdown Picker
 // -------------------------
-/*body[mode="animation"] .btn-group {
+body[mode="animation"][selector="true"] .btn-group {
 	&.is-not-animatable {
   	border-bottom: #ff0000 solid 1px;
   }
-}*/
+}
