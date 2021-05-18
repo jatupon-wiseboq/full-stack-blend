@@ -174,9 +174,9 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
     .section-hr
   .section-container.internal-fsb-selecting-on
-    .section-title[internal-fsb-for="isInheritingComponent:false"]
+    .section-title(internal-fsb-not-for="isInheritingComponent")
       | Front-End Custom Attributes
-    .section-title[internal-fsb-not-for="isInheritingComponent:true"]
+    .section-title(internal-fsb-for="isInheritingComponent")
       | Front-End Plugging-In Information
     .section-body
       +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
@@ -328,9 +328,9 @@ div(internal-fsb-for="internal-fsb-inheriting")
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-data'], inline: true, button: false, placeholder: 'collection.collection[i].column'}")
       .section-hr
     .section-container.internal-fsb-selecting-on
-      .section-title[internal-fsb-for="isInheritingComponent:false"]
+      .section-title(internal-fsb-not-for="isInheritingComponent")
         | Front-End Custom Attributes
-      .section-title[internal-fsb-not-for="isInheritingComponent:true"]
+      .section-title(internal-fsb-for="isInheritingComponent")
         | Front-End Plugging-In Information
       .section-body
         +CreateReactComponent('FullStackBlend.Components.AttributeManager', "{}")
