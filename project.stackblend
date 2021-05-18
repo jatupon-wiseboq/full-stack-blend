@@ -1414,7 +1414,7 @@
       "    style=\"height: 100%;\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor internal-fsb-begin-layout row\"",
-      "    style=\"height: 100%; min-height: 1220px;\"",
+      "    style=\"height: 100%; min-height: 1240px;\"",
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-element\"",
@@ -1970,7 +1970,7 @@
       "    internal-fsb-name=\"VolatileMemory 1\"",
       "    internal-fsb-event-no-propagate=\"1\"",
       "    internal-fsb-class=\"VolatileMemory\"",
-      "    style=\"left: 53px; top: 1068px; width: 150px;\"",
+      "    style=\"left: 54px; top: 1090px; width: 150px;\"",
       "    data-title-name=\"VolatileTesting\">",
       "<div",
       "    class=\"internal-fsb-dragging-handle internal-fsb-title\">VolatileTesting</div>",
@@ -1993,12 +1993,12 @@
       "</div>",
       "</div>",
       "<div",
-      "    class=\"internal-fsb-element\"",
+      "    class=\"internal-fsb-element internal-fsb-selecting\"",
       "    internal-fsb-guid=\"dc7d3cee\"",
       "    internal-fsb-name=\"RESTful 1\"",
       "    internal-fsb-event-no-propagate=\"1\"",
       "    internal-fsb-class=\"RESTful\"",
-      "    style=\"left: 354px; top: 1070px; width: 150px;\"",
+      "    style=\"left: 354px; top: 1092px; width: 150px;\"",
       "    data-title-name=\"RESTfulTesting\">",
       "<div",
       "    class=\"internal-fsb-dragging-handle internal-fsb-title\">RESTfulTesting</div>",
@@ -2059,7 +2059,6 @@
       "</div>",
       "</div>",
       "</div>",
-      "",
       "</body>"
     ],
     "schema": {
@@ -2676,7 +2675,7 @@
     ],
     "popups": []
   },
-  "headerBlobSHA": "e56c485f67ea891a9801ffd19124d0379ae82d48#-2020162171",
+  "headerBlobSHA": "e302908e8a29be634803b733b435d64cb2e838ff#772118848",
   "popups": {},
   "routeBlobSHA": "13575ac5090269503bf43366f4067b7d3300720a#1089952362",
   "services": {
@@ -3669,7 +3668,7 @@
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-ad445a62\"",
+        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-0aa0c364\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -4420,6 +4419,6 @@
     "3cb10a6e": "fd1d1b5adb946b191a850c251787e1777245ba74#-444633186",
     "9e885d49": "b705916abe1ca4414cdd3db484728bbcca682728#-1917790072",
     "b160aa0e": "04f3f53408a6e7fe73f40f4a45a4a9a43f2959e4#-878780597",
-    "index": "b3d5f0a787bc899cc8d42b4ece2c6c4450c75f33#2048097607"
+    "index": "0e1d12b4785d4bac86f562fee7e2c67f3b690249#807675652"
   }
 }
