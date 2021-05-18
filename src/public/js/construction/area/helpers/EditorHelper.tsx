@@ -221,6 +221,7 @@ var EditorHelper = {
 	        isSelectingElement: false,
       		isFirstElementOfComponent: false,
 	        hasParentReactComponent: false,
+	        isInheritingComponent: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
 	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
 	        elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
