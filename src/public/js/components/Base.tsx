@@ -100,7 +100,7 @@ class Base extends React.Component {
     let {action, options} = DataManipulationHelper.getInfo(guid);
     let data = null;
     
-    if (options.manipulateInto) notation = (typeof options.manipulateInto === 'function') ? options.manipulateInto() : options.manipulateInto;
+    if (options.manipulateInto) notation = (typeof options.manipulateInto === 'function') ? options.manipulateInto.apply(this) : options.manipulateInto;
     
     switch (action) {
       case 'insert':
@@ -218,7 +218,7 @@ class Base extends React.Component {
         }
         break;
       case 'retrieve':
-        this.update(results, (typeof options.manipulateInto === 'function') ? options.manipulateInto() : options.manipulateInto);
+        this.update(results, (typeof options.manipulateInto === 'function') ? options.manipulateInto.apply(this) : options.manipulateInto);
         break;
       case 'popup':
         let container = document.createElement('div');

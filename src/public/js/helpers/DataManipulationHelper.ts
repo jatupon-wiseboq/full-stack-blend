@@ -114,7 +114,7 @@ const DataManipulationHelper = {
           }
           
           indexes.reverse();
-          indexes.push(index);
+          if (indexes.length == 0) indexes.push(index);
           
           const name = (elements.length > 1) ? `${field}[${indexes.join(',')}]` : field;
         
