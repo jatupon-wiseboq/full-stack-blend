@@ -225,9 +225,10 @@ let cachedUpdateEditorProperties = {};
 	      	}
 	      }
 	      if (content && content['extensions']) {
+	      	document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
 	      	if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
 	      	
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent']) {
+	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent']) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
 		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
@@ -296,10 +297,14 @@ let cachedUpdateEditorProperties = {};
   });
   
   window.addEventListener("message", (event) => {
-    let data = JSON.parse(event.data);
-  	if (data.target == 'editor') {
-    	synchronize(data.name, data.content);
-    }
+  	try {
+	    let data = JSON.parse(event.data);
+	  	if (data.target == 'editor') {
+	    	synchronize(data.name, data.content);
+	    }
+	  } catch (error) {
+	  	/* void */
+	  }
   });
   
   window.addEventListener("beforeunload", (event: any) => {
