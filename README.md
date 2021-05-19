@@ -44,6 +44,8 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 3. On the pipeline page, add an app for staging environment.
 4. On the app's resource page, create a new add-on "MySQL".
 5. On the app's settings page, add a config variable "RELATIONAL_DATABASE_KEY" and assign the key name to its value.
+5. Add a config variable "SESSION_SECRET" and assign the random string.
+5. Add a config variable "NODE_ENV" and assign "staging".
 6. Configure an automatic deploy or deploy a staging branch.
 7. Please take a note of the running URL.
 
