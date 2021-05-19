@@ -59,7 +59,7 @@ var StatusHelper = {
 		  	
 		  	if (info.hasOwnProperty(name)) {
 				  for (const key of ['SETTING', 'PROPERTY', 'STATE', 'CODE']) {
-			    	if (info[name].indexOf(key) == 0) {
+			    	if (info[name] && info[name].indexOf(key) == 0) {
 			    		found = true;
 	    				break;
 			    	}
