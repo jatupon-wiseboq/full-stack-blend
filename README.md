@@ -58,8 +58,9 @@ This boilerplate is designed for incremental update for any underlying supports 
 To list all of hotfixes:
 
 1. Run "git checkout 1.5".
-2. Run "git log --oneline | grep Hotfix".
-3. For each of hotfix, run "git cherry-pick COMMIT_ID".
+2. Run "git pull".
+3. Run "git log --oneline | grep Hotfix".
+4. For each of hotfix, run "git cherry-pick COMMIT_ID".
 
 ## Connect the repository with StackBlend
 
