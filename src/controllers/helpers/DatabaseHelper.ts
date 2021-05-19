@@ -1579,7 +1579,7 @@ const DatabaseHelper = {
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);
   		  const results = [];
-  		  
+	  		
   		  for (const key in list) {
   		  	if (list.hasOwnProperty(key)) {
 	  		  	const input = list[key];
@@ -1617,16 +1617,15 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 		      		const query = {};
+		      		const data = {};
 						
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    keys[key] = row.columns[key];
 							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
+							      /* use manual filtering */
+							    	data[key] = row.columns[key];
+							    } else {
+							    	query[key] = row.columns[key];
 							    }
 							  }
 							}
@@ -1636,9 +1635,13 @@ const DatabaseHelper = {
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
 							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							    		data['_id'] = row.keys[key];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
+							    		data[key] = row.keys[key];
 							      }
+							    } else {
+							    	query[key] = row.keys[key];
 							    }
 							  }
 							}
@@ -1647,8 +1650,8 @@ const DatabaseHelper = {
 							
 							let records;
 							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: keys}) || [];
-		  				  await map.destroy({where: keys}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+								records = await map.findAll({where: query}) || [];
+		  				  await map.destroy({where: query}, {force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
 									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
@@ -1659,7 +1662,19 @@ const DatabaseHelper = {
 										}
 									});
 								});
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteMany(query);
+								
+								records = records.filter((record) => {
+									for (const key in query) {
+										if (data[key] != record[key]) return false;
+									}
+									return true;
+								});
+								
+								for (const record of records) {
+									transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne({
+										'_id': {$eq: new ObjectID(record['_id'])}
+									});
+								}
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 								const record = await VolatileMemoryClient.get(_key);
@@ -1714,7 +1729,7 @@ const DatabaseHelper = {
 							  			}
 							  		}
 							  		
-							  		result.relations[nextSchema.group] = {
+							  		result.relations[nextSchema.group] = result.relations[nextSchema.group] || {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: []
