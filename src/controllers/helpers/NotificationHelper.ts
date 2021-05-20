@@ -100,8 +100,10 @@ socket.sockets.on("connection", (socket) => {
 	sessionLookupTable[sessionId] = socket;
   
   socket.on("disconnect", (socket) => {
-  	setSocket(null);
-  	sessionLookupTable[sessionId] = null;
+  	if (sessionLookupTable[sessionId] == socket && !sessionLookupTable[sessionId].connected) {
+	  	setSocket(null);
+	  	sessionLookupTable[sessionId] = null;
+	  }
   });
   
   socket.on("reconnect", (socket) => {
