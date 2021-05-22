@@ -91,6 +91,7 @@ const NotificationHelper = {
           	table.rows.push(result);
           }
         }
+        NotificationHelper.notifyTableUpdates(message);
   		}
     });
   	socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
