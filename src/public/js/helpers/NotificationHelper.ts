@@ -91,6 +91,10 @@ const NotificationHelper = {
           	table.rows.push(result);
           }
         }
+        
+        NotificationHelper.registerTableUpdates({
+          collection: table
+        });
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
@@ -108,8 +112,11 @@ const NotificationHelper = {
           for (let item of collection) {
           	let index = table.rows.indexOf(item);
           	table.rows.splice(index, 1);
+          	
+          	NotificationHelper.unregisterTableUpdates(item.relations);
           }
         }
+        
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
@@ -144,6 +151,10 @@ const NotificationHelper = {
             }
           }
         }
+        
+        NotificationHelper.registerTableUpdates({
+          collection: table
+        });
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
@@ -180,6 +191,10 @@ const NotificationHelper = {
           	table.rows.push(result);
           }
         }
+        
+        NotificationHelper.registerTableUpdates({
+          collection: table
+        });
         NotificationHelper.notifyTableUpdates(message);
   		}
     });
