@@ -4,7 +4,7 @@
 import {CodeHelper} from '../helpers/CodeHelper';
 import {NotificationHelper} from '../helpers/NotificationHelper';
 import {Project, DeclarationHelper} from '../helpers/DeclarationHelper';
-import {HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
+import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from '../helpers/DataManipulationHelper';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -127,6 +127,14 @@ class Base extends React.Component {
           	data.push(result);
           }
         }
+        
+        NotificationHelper.registerTableUpdates({
+          collection: {
+            source: SourceType.Collection,
+            group: 'collection',
+            rows: data
+          }
+        });
         break;
       case 'update':
 	    	data = notation && this.getDataFromNotation(notation) || null;
@@ -161,6 +169,14 @@ class Base extends React.Component {
             }
           }
       	}
+        
+        NotificationHelper.registerTableUpdates({
+          collection: {
+            source: SourceType.Collection,
+            group: 'collection',
+            rows: data
+          }
+        });
         break;
       case 'upsert':
 	    	data = notation && this.getDataFromNotation(notation) || null;
@@ -197,6 +213,14 @@ class Base extends React.Component {
           	data.push(result);
           }
         }
+        
+        NotificationHelper.registerTableUpdates({
+          collection: {
+            source: SourceType.Collection,
+            group: 'collection',
+            rows: data
+          }
+        });
         break;
       case 'delete':
 	    	data = notation && this.getDataFromNotation(notation) || null;
@@ -214,6 +238,8 @@ class Base extends React.Component {
           for (let item of collection) {
           	let index = data.indexOf(item);
           	data.splice(index, 1);
+          	
+          	NotificationHelper.unregisterTableUpdates(item.relations);
           }
         }
         break;

@@ -12,7 +12,10 @@ enum SourceType {
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
 }
 interface HierarchicalDataTable {
 	source: SourceType;
@@ -301,7 +304,7 @@ const DataManipulationHelper = {
   }
 };
 
-export {HierarchicalDataTable, HierarchicalDataRow, DataManipulationHelper};
+export {HierarchicalDataTable, HierarchicalDataRow, SourceType, DataManipulationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
