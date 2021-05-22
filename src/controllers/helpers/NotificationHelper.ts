@@ -2,7 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {CodeHelper} from "./CodeHelper";
-import {DataTableSchema} from "./SchemaHelper";
+import {DataTableSchema, SchemaHelper} from "./SchemaHelper";
 import {ActionType, HierarchicalDataRow} from "./DatabaseHelper";
 import {socket} from "../../server";
 import {Md5} from "md5-typescript";
@@ -154,7 +154,7 @@ const NotificationHelper = {
   	
   	return md5OfClientTableUpdatingIdentity;
   },
-  getUniqueListOfIdentities: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {listeners: any; results: HierarchicalDataRow[]}} => {
+  getUniqueListOfIdentities: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {sessions: string[]; listeners: any; results: HierarchicalDataRow[]}} => {
   	const notificationInfo = notificationInfos[schema.group] || {};
   	const identities = {};
   	
@@ -198,6 +198,7 @@ const NotificationHelper = {
   				
   				if (combinations[md5OfClientTableUpdatingIdentity]) {
   					identities[md5OfClientTableUpdatingIdentity] = identities[md5OfClientTableUpdatingIdentity] || {
+  						sessions: [],
   						listeners: [],
   						results: []
   					};
@@ -212,6 +213,7 @@ const NotificationHelper = {
   								//
   							}
   							else if (combinationInfo[sessionId] != null && !Array.isArray(combinationInfo[sessionId])) {
+  								identitiesInfo.sessions.push(sessionId);
   								identitiesInfo.listeners.push(combinationInfo[sessionId]);
   							} else {
   								// For socket initializing delay
@@ -236,10 +238,43 @@ const NotificationHelper = {
   	
   	return identities;
   },
+  recursiveTagDerivableSubsequenceNotification: (baseSchema: DataTableSchema, results: any, sessionId: string) => {
+  	for (const result of results) {
+			for (const group in result.relations) {
+				if (result.relations.hasOwnProperty(group)) {
+					const firstRow = result.relations[group].rows[0];
+					if (!firstRow) continue;
+					
+					const nextSchema = SchemaHelper.getDataTableSchemaFromNotation(group);
+					const query = {};
+					const targetEntity = baseSchema.relations[nextSchema.group].targetEntity;
+					
+					if (firstRow.columns[targetEntity]) query[targetEntity] = firstRow.columns[targetEntity];
+					if (firstRow.keys[targetEntity]) query[targetEntity] = firstRow.keys[targetEntity];
+					
+					console.log(baseSchema.group, nextSchema.group, targetEntity, sessionId);
+					
+					if (Object.keys(query).length != 0) {
+						result.relations[group].notification = NotificationHelper.getTableUpdatingIdentity(nextSchema, query, {id: sessionId});
+					}
+					
+					NotificationHelper.recursiveTagDerivableSubsequenceNotification(nextSchema, result.relations[group].rows, sessionId);
+				}
+			}
+		}
+  },
   notifyUpdates: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): string => {
   	if (socket == null) return;
   	
   	const identities = NotificationHelper.getUniqueListOfIdentities(action, schema, results);
+  	
+  	for (const identity in identities) {
+			if (identities.hasOwnProperty(identity)) {
+				for (const sessionId of identities[identity].sessions) {
+					NotificationHelper.recursiveTagDerivableSubsequenceNotification(schema, identities[identity].results, sessionId);
+		  	}
+			}
+  	}
   	
   	switch (action) {
   		case ActionType.Insert:
