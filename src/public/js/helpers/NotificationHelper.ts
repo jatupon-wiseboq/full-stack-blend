@@ -72,9 +72,25 @@ const NotificationHelper = {
   	socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
   		if (message.id == identity) {
   			for (let result of message.results) {
-          table.rows.push(result);
+        	let found = null;
+        	
+        	for (let row of table.rows) {
+        		found = row;
+        		for (let key in result.keys) {
+              if (result.keys.hasOwnProperty(key)) {
+                if (row.keys[key] != result.keys[key]) {
+                  found = null;
+                  break;
+                }
+              }
+            }
+            if (found) break;
+          }
+          
+          if (!found) {
+          	table.rows.push(result);
+          }
         }
-        NotificationHelper.notifyTableUpdates(message);
   		}
     });
   	socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
