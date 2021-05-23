@@ -117,7 +117,7 @@ const AnimationHelper = {
     if (container) {
     	if (container.tagName != 'DIV') container = container.parentNode;
     	
-    	let currentAnimations = [...(HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' ')];
+    	let currentAnimations = Array.from((HTMLHelper.getAttribute(container, 'internal-fsb-animation') || '').split(' '));
     	
     	for (let animation of animations) {
     		extensionRenderingLoopDictionary[animation] = false;
