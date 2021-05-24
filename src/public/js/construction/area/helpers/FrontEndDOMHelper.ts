@@ -570,13 +570,14 @@ ${rootScript}`;
         // Include Another React Class Feature
         // 
         if (reactMode && !isFirstElement) {
-          let composed = indent;
-          composed += `- const ${(reactNamespace + '.' + reactClass).split('.').join('_')}_ = ${reactNamespace + '.' + reactClass};`
+        	const namespace = reactNamespace + '.' + reactClass;
           
-          if (!context[composed]) {
-          	context[composed] = true;
-          	lines.push(composed);
-          }
+          if (context[namespace] === undefined) context[namespace] = 0;
+          else context[namespace]++;
+          
+          let composed = indent;
+          composed += `- const ${(namespace).split('.').join('_')}_${context[namespace]}_ = ${namespace};`
+          lines.push(composed);
           
           let _attributes = _props || [];
           if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + ((reactFieldDivision == 'statement') ? (reactFieldDivisionStatement || '0') : dotNotationChar) : ''));
@@ -588,7 +589,7 @@ ${rootScript}`;
           _attributes = Array.from(new Set(_attributes));
           
           composed = indent;
-          composed += '_' + (reactNamespace + '.' + reactClass).split('.').join('_') + '_(' + _attributes.join(', ') + ')';
+          composed += '_' + (namespace).split('.').join('_') + '_' + context[namespace] + '_(' + _attributes.join(', ') + ')';
           lines.push(composed);
         }
         
@@ -642,7 +643,7 @@ ${rootScript}`;
             lines.push(composed);
             
             for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactData !== null && !_leafNode) ? {} : context);
+              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactMode && !isFirstElement) ? {} : context);
             }
           } else {
             lines.push(composed);
