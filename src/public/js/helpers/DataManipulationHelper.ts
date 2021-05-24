@@ -161,7 +161,10 @@ const DataManipulationHelper = {
 					},
 					cancelable: true
 				});
+				const disabled = HTMLHelper.getAttribute(button, 'disabled');
+				HTMLHelper.removeAttribute(button, 'disabled');
 				button.dispatchEvent(event);
+				if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 				if (event.defaultPrevented) return;
 	  	}
 	  	
@@ -175,7 +178,10 @@ const DataManipulationHelper = {
 							},
 							cancelable: true
 						});
+						const disabled = HTMLHelper.getAttribute(button, 'disabled');
+						HTMLHelper.removeAttribute(button, 'disabled');
 						button.dispatchEvent(event);
+						if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 						if (event.defaultPrevented) return;
 					}
 	  			
@@ -188,7 +194,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
+							const disabled = HTMLHelper.getAttribute(button, 'disabled');
+							HTMLHelper.removeAttribute(button, 'disabled');
 							button.dispatchEvent(event);
+							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 							if (event.defaultPrevented) return;
 						}
 	  				
@@ -210,7 +219,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
+							const disabled = HTMLHelper.getAttribute(button, 'disabled');
+							HTMLHelper.removeAttribute(button, 'disabled');
 							button.dispatchEvent(event);
+							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 							if (event.defaultPrevented) return;
 						}
 	  				
