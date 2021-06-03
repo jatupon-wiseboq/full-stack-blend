@@ -697,6 +697,7 @@ var ManipulationHelper = {
             
             selectingElement.firstElementChild.appendChild(optionElement);
           }
+          LayoutHelper.invalidate();
         }
       }
       

@@ -31,7 +31,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ['elementTreeNodes']
+  watchingExtensionNames: ['elementTreeNodes', 'elementAuthoringStatuses', 'elementAuthoringRevision']
 });
 
 class OptionManager extends Base<Props, State> {
@@ -194,6 +194,11 @@ class OptionManager extends Base<Props, State> {
     private recursiveWalkExtractingNodes(nodes: [ITreeNode], output: [ITreeNode]=[]) {
         for (let node of nodes) {
             if (['Select'].indexOf(node.tag.class) != -1) {
+            		const status = this.state.extensionValues[this.props.watchingExtensionNames[1]][node.tag.guid];
+            		const selecting = status.indexOf('-fsb-selecting') != -1;
+            		
+            		node.selected = selecting;
+            		
                 output.push(node);
             }
             this.recursiveWalkExtractingNodes(node.nodes, output);
