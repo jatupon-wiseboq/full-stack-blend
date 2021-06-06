@@ -12,7 +12,10 @@ enum SourceType {
   Relational,
   PrioritizedWorker,
   Document,
-  VolatileMemory
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
 }
 interface HierarchicalDataTable {
 	source: SourceType;
@@ -158,7 +161,10 @@ const DataManipulationHelper = {
 					},
 					cancelable: true
 				});
+				const disabled = HTMLHelper.getAttribute(button, 'disabled');
+				HTMLHelper.removeAttribute(button, 'disabled');
 				button.dispatchEvent(event);
+				if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 				if (event.defaultPrevented) return;
 	  	}
 	  	
@@ -172,7 +178,10 @@ const DataManipulationHelper = {
 							},
 							cancelable: true
 						});
+						const disabled = HTMLHelper.getAttribute(button, 'disabled');
+						HTMLHelper.removeAttribute(button, 'disabled');
 						button.dispatchEvent(event);
+						if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 						if (event.defaultPrevented) return;
 					}
 	  			
@@ -185,7 +194,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
+							const disabled = HTMLHelper.getAttribute(button, 'disabled');
+							HTMLHelper.removeAttribute(button, 'disabled');
 							button.dispatchEvent(event);
+							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 							if (event.defaultPrevented) return;
 						}
 	  				
@@ -207,7 +219,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
+							const disabled = HTMLHelper.getAttribute(button, 'disabled');
+							HTMLHelper.removeAttribute(button, 'disabled');
 							button.dispatchEvent(event);
+							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 							if (event.defaultPrevented) return;
 						}
 	  				
@@ -301,7 +316,7 @@ const DataManipulationHelper = {
   }
 };
 
-export {HierarchicalDataTable, HierarchicalDataRow, DataManipulationHelper};
+export {HierarchicalDataTable, HierarchicalDataRow, SourceType, DataManipulationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

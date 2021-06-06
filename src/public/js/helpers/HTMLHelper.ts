@@ -18,7 +18,7 @@ const HTMLHelper = {
     if (notToBeUnder === null) {
       return elements;
     } else {
-      return [...elements].filter((element) => {
+      return (Array.from(elements) as HTMLElement[]).filter((element) => {
         let current = element.parentNode;
         while (current != null && current != container) {
           if (HTMLHelper.hasClass(current, notToBeUnder)) return false;
@@ -35,7 +35,7 @@ const HTMLHelper = {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]');
   },
   getElementsByAttribute: (attributeName: string, container: any=document, includingSelf: boolean=false): any[] => {
-    let results = [...container.querySelectorAll('[' + attributeName + ']')];
+    let results = Array.from(container.querySelectorAll('[' + attributeName + ']')) as HTMLElement[];
     if (includingSelf && HTMLHelper.hasAttribute(container, attributeName)) {
       results.splice(0, 0, container);
     }

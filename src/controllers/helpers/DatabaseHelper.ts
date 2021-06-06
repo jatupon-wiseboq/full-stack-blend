@@ -808,8 +808,6 @@ const DatabaseHelper = {
 							
 							results.push(result);
 							
-							NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
-							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -853,6 +851,8 @@ const DatabaseHelper = {
 							  }
 							}
 						}
+						
+						NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
 		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
@@ -993,8 +993,6 @@ const DatabaseHelper = {
 							
 							results.push(result);
 							
-							NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
-							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -1037,6 +1035,8 @@ const DatabaseHelper = {
 							  }
 							}
 						}
+						
+						NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
 		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
@@ -1170,8 +1170,6 @@ const DatabaseHelper = {
 						
 							results.push(result);
 							
-							NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
-							
 							for (const key in row.relations) {
 								if (row.relations.hasOwnProperty(key)) {
 									const relation = schema.relations[key];
@@ -1215,6 +1213,8 @@ const DatabaseHelper = {
 							  }
 							}
 						}
+						
+						NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
 						break;
 		    	case SourceType.PrioritizedWorker:
 		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
@@ -1704,8 +1704,6 @@ const DatabaseHelper = {
 		  					results.push(row);
 							}
 							
-							NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
-							
 							for (const result of results) {
 								for (const key in row.relations) {
 									if (row.relations.hasOwnProperty(key)) {
@@ -1750,6 +1748,8 @@ const DatabaseHelper = {
 								}
 							}
 						}
+						
+						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 						break;
 					case SourceType.PrioritizedWorker:
 						if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');

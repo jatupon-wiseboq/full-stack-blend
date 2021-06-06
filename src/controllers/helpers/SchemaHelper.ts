@@ -158,7 +158,7 @@ const SchemaHelper = {
 		
 		return true;
 	},
-	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema, searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
+	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
 		if (!searchForDataTableSchema) {
 			// Search DataTableSchema
 			// 
@@ -202,7 +202,7 @@ const SchemaHelper = {
     
     return notations;
   },
-	verifyNotations: (tree: any, data: DataSchema) => {
+	verifyNotations: (tree: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
 		return;
 		
 	  const notations = SchemaHelper.findAllPossibleNotations(tree || {});
@@ -219,7 +219,7 @@ const SchemaHelper = {
   		if (current == null) throw new Error(`There was an error verifying dot notation (disconnected: ${notation}).`);
 	  }
 	},
-	getDataTableSchemaFromNotation: (notation: string, data: DataSchema): DataTableSchema => {
+	getDataTableSchemaFromNotation: (notation: string, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
 	  if (!notation) return null;
 	  
     const splited = notation.split(".");
