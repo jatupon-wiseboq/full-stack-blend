@@ -123,7 +123,11 @@ var StylesheetHelper = {
     let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
     	'.internal-fsb-absolute-layout > .internal-fsb-element',
     	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
-    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element'];
+    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element',
+    	'.internal-fsb-element > .internal-fsb-element',
+    	'.internal-fsb-element > .internal-fsb-inheriting-element',
+    	'.internal-fsb-inheriting-element > .internal-fsb-element',
+    	'.internal-fsb-inheriting-element > .internal-fsb-inheriting-element'];
     
   	for (let info of prioritizedKeys) {
   		let references = info.inheritances.filter(token => token != '');
