@@ -187,20 +187,20 @@ var CodeHelper = {
   recursivePreparePastingContent: (current: any, cut: boolean=false, isContainingInComponent: boolean=false) => {
   	if (!cut && HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
   		const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
-  		
   		const classes = (current.className || '').split(' ');
+  		
   		for (let classname of classes) {
-  			if (classname.indexOf('-fsb-preset-') == 0) {
-  				HTMLHelper.removeClass(current, '-fsb-preset-' + guid);
+  			if (classname.indexOf('-fsb-self-') == 0) {
+  				HTMLHelper.removeClass(current, classname);
   			}
   		}
   		
-  		HTMLHelper.addClass(current, '-fsb-preset-' + guid);
+			HTMLHelper.addClass(current, '-fsb-preset-' + guid);
+			
+			let _inlineStyle = HTMLHelper.getAttribute(current, 'style') || '';
+  		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, '-fsb-inherited-presets', guid);
   		
-  		let _inlineStyle = HTMLHelper.getAttribute(current, 'style') || '';
-  		_inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, '-fsb-inherited-presets', '');
       HTMLHelper.setAttribute(current, 'style', _inlineStyle);
-      
   		HTMLHelper.removeAttribute(current, 'internal-fsb-reusable-preset-name');
   	}
   	
