@@ -88,18 +88,7 @@ var FontHelper = {
     
     let token = name.split(' ').join('+');
     
-    let normals = FontHelper.getAllItalics(info);
-    if (normals.length != 0) {
-      let link = document.createElement('link');
-      HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
-      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
-      HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
-      link.className = 'internal-fsb-accessory internal-fsb-font';
-      
-      document.body.appendChild(link);
-    }
-    
-    let italics = FontHelper.getAllNormals(info);
+    let italics = FontHelper.getAllItalics(info);
     if (italics.length != 0) {
       for (let i=0; i<italics.length; i++) {
         italics[i] = '1,' + italics[i];
@@ -108,6 +97,17 @@ var FontHelper = {
       let link = document.createElement('link');
       HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
       HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
+      HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
+      link.className = 'internal-fsb-accessory internal-fsb-font';
+      
+      document.body.appendChild(link);
+    }
+    
+    let normals = FontHelper.getAllNormals(info);
+    if (normals.length != 0) {
+      let link = document.createElement('link');
+      HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
+      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
       HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
       link.className = 'internal-fsb-accessory internal-fsb-font';
       
