@@ -46,13 +46,14 @@ var BackEndDOMHelper = {
     		let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     		let submitType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-type');
     		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls');
+    		let submitName = HTMLHelper.getAttribute(element, 'internal-fsb-name');
     		let reactClassForPopup = HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class');
     		let submitCrossType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-cross-operation') == 'upsert';
         let realTimeUpdate = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-real-time-update') == 'true';
     		
     		if (submitControls) submitControls = submitControls.trim();
     		
-    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(InternalProjectSettings.editingPageID)}, ${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate)}});`);
+    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(InternalProjectSettings.editingPageID)}, ${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(submitControls && submitControls.split(' ') || [])}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate)}, name: ${JSON.stringify(submitName)}});`);
     	}
     	
     	let children = [...element.childNodes];
