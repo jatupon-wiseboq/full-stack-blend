@@ -174,7 +174,7 @@ const DataManipulationHelper = {
 						const event = new CustomEvent('submitted', {
 							detail: {
 								params: params,
-								results: json
+								response: json
 							},
 							cancelable: true
 						});
@@ -190,7 +190,7 @@ const DataManipulationHelper = {
 							const event = new CustomEvent('success', {
 								detail: {
 									params: params,
-									results: json
+									response: json
 								},
 								cancelable: true
 							});
@@ -215,7 +215,7 @@ const DataManipulationHelper = {
 							const event = new CustomEvent('failed', {
 								detail: {
 									params: params,
-									results: json
+									response: json
 								},
 								cancelable: true
 							});
