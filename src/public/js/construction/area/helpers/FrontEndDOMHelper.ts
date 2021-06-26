@@ -454,6 +454,7 @@ ${rootScript}`;
           
           let notation = cumulatedDotNotation.split('[')[0];
           let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
+          let assigned = false;
           
           for (let submitControl of splited) {
             let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl);
@@ -464,6 +465,11 @@ ${rootScript}`;
                 if (numberOfDots < minimumNumberOfDots) {
                   minimumNumberOfDots = numberOfDots;
                   notation = dataSourceName.split('.')[0];
+                }
+                if (!assigned) 
+                {
+                  notation = dataSourceName.split('.')[0];
+                  assigned = true;
                 }
               }
             }
