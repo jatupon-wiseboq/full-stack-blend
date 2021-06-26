@@ -1,4 +1,4 @@
-import {CAMEL_OF_EVENTS_DICTIONARY, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
 
 const DEFAULTS = {
   Import: `
@@ -175,6 +175,13 @@ var FrontEndReactHelper = {
             
             let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + '_' + info['internal-fsb-guid'];
             let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + ' (' + info['internal-fsb-name'] + ')';
+            let FUNCTION_EVENT_TYPE = (CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS.indexOf(name) == -1) ? 'Event' : 'CustomEvent';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // const params = event.detail.params;                  /* manipulation parameters */
+    // const response = event.detail.response;              /* manipulation response */` : '';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // return EventHelper.cancel(event);                    /* cancelling this manipulation */
+    // ` : '';
             let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
             let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
             let FUNCTION_END_BEGIN = `// Auto[${FUNCTION_NAME}:End]--->`;
@@ -182,10 +189,11 @@ var FrontEndReactHelper = {
             let FUNCTION_BODY = `
 
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
-    // 
-    // const element = EventHelper.getCurrentElement(event);
-    // const control = ReactDOM.findDOMNode(this.refs.ID);
-    // 
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1}
+    // const target = EventHelper.getCurrentElement(event); /* current invoking element */
+    // const element1 = HTMLHelper.getElementById('ID');    /* accessing an element */
+    // const control1 = ReactDOM.findDOMNode(this.refs.ID); /* accessing a component */
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2}
     
     `;
             
@@ -193,7 +201,7 @@ var FrontEndReactHelper = {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
@@ -258,6 +266,13 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             let FUNCTION_COMPREHEND_NAME = (info['internal-fsb-class']) ?
             	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + ' (' + info['internal-fsb-name'] + ')' :
             	CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'onDocument');
+            let FUNCTION_EVENT_TYPE = (CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS.indexOf(name) == -1) ? 'Event' : 'CustomEvent';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // const params = event.detail.params;                  /* manipulation parameters */
+    // const response = event.detail.response;              /* manipulation response */` : '';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // return EventHelper.cancel(event);                    /* cancelling this manipulation */
+    // ` : '';
             let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
             let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
             let FUNCTION_END_BEGIN = `// Auto[${FUNCTION_NAME}:End]--->`;
@@ -265,10 +280,11 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             let FUNCTION_BODY = `
 
     // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
-    // 
-    // const element = EventHelper.getCurrentElement(event);
-    // const control = ReactDOM.findDOMNode(this.refs.ID);
-    // 
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1}
+    // const target = EventHelper.getCurrentElement(event); /* current invoking element */
+    // const element1 = HTMLHelper.getElementById('ID');    /* accessing an element */
+    // const control1 = ReactDOM.findDOMNode(this.refs.ID); /* accessing a component */
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2}
     
     `;
             
@@ -288,7 +304,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(MERGE_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: Event) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${ACTIVE_ANIMATION}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${ACTIVE_ANIMATION}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${MERGE_END_BEGIN}`);
                 } else {
