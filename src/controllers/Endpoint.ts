@@ -95,7 +95,7 @@ export const resetContent = async (request: Request, response: Response) => {
 };
 export const pullContent = async (request: Request, response: Response) => {
 		try {
-			const {stdout, stderr} = await child.exec("git pull");
+			const {stdout, stderr} = await child.exec("npm run reset && git pull");
 			if (stderr && stderr["_hadError"]) throw stderr;
 			
 			response.json({
