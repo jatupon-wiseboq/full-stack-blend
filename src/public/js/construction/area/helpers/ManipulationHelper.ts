@@ -1676,4 +1676,4 @@ var ManipulationHelper = {
   }
 };
 
-export {ManipulationHelper};
+export {isShiftKeyActive, isCtrlKeyActive, isCommandKeyActive, ManipulationHelper};
