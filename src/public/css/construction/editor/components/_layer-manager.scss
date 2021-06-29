@@ -18,7 +18,8 @@
 		
 		.treenode-body {
 			padding: 0 3px;
-			background-color: #fbfbfb;
+			background: #fbfbfb;
+			background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(247,247,247,1) 100%);
 			border: solid 1px #cccccc;
 			border-left: solid 4px #cccccc;
 			position: relative;
@@ -60,7 +61,7 @@
 		
 		&.selected {
 			.treenode-body {
-				background-color: rgba(0, 144, 255, 0.75);
+				background: rgba(0, 144, 255, 0.75);
 				border-color: rgba(0, 144, 255, 1.0);
 				color: #ffffff;
 			}
@@ -76,7 +77,7 @@
 			pointer-events: none;
 			
 			.treenode-body {
-				background-color: #f0f0f0;
+				background: #f0f0f0;
 				border-left-color: #eaeaea;
 				color: #999999;
 			}
@@ -86,7 +87,7 @@
 			pointer-events: none;
 			
 			.treenode-body {
-				background-color: transparent;
+				background: transparent;
 				color: transparent;
 				border: dashed 1px #999999;
 			}
@@ -102,14 +103,14 @@
 				right: 0;
 				z-index: 100;
 				height: 5px;
-				background-color: rgba(0, 200, 255, 1.0);
+				background: rgba(0, 200, 255, 1.0);
 				flex: 0 0 100%;
 			}
 		}
 		
 		&.insert-inside {
 			.treenode-body {
-				background-color: rgba(0, 200, 255, 0.75);
+				background: rgba(0, 200, 255, 0.75);
 				border-color: rgba(0, 200, 255, 1.0);
 				color: #ffffff;
 			}
@@ -125,7 +126,7 @@
 				right: 0;
 				z-index: 100;
 				height: 5px;
-				background-color: rgba(0, 200, 255, 1.0);
+				background: rgba(0, 200, 255, 1.0);
 				flex: 0 0 100%;
 			}
 		}
