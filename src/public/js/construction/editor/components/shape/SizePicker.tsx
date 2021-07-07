@@ -76,6 +76,9 @@ class SizePicker extends Base<Props, State> {
         if (index == -1) {
             index = 0;
         }
+        if (index == 7) {
+            value = null;
+        }
         
         this.setState({
           value: value,
@@ -91,7 +94,7 @@ class SizePicker extends Base<Props, State> {
             perform('update', {
                 styles: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: this.composeValue(this.state.value, index)
+                    value: (index == 7) ? 'auto' : this.composeValue(this.state.value, index)
                 }],
                 replace: this.props.watchingStyleNames[0]
             });
@@ -104,7 +107,7 @@ class SizePicker extends Base<Props, State> {
             perform('update', {
                 styles: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: this.composeValue(value, this.state.index)
+                    value: (this.state.index == 7) ? 'auto' : this.composeValue(value, this.state.index)
                 }],
                 replace: this.props.watchingStyleNames[0]
             });
