@@ -112,7 +112,7 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
-  protected onButtonSubmitting_954a291a(event: Event) {
+  protected onButtonSubmitting_954a291a(event: CustomEvent) {
 
     // Handle the event of onButtonSubmitting (Button 3) here:
     // 
@@ -120,7 +120,7 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
-  protected onButtonFailed_954a291a(event: Event) {
+  protected onButtonFailed_954a291a(event: CustomEvent) {
 
     // Handle the event of onButtonFailed (Button 3) here:
     // 
@@ -128,7 +128,7 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
-  protected onButtonSubmitting_b2b66792(event: Event) {
+  protected onButtonSubmitting_b2b66792(event: CustomEvent) {
 
     // Handle the event of onButtonSubmitting (Button 1) here:
     // 
@@ -136,7 +136,7 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
-  protected onButtonFailed_b2b66792(event: Event) {
+  protected onButtonFailed_b2b66792(event: CustomEvent) {
 
     // Handle the event of onButtonFailed (Button 1) here:
     // 
