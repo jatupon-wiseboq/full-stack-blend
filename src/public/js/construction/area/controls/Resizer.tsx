@@ -136,7 +136,7 @@ class Resizer extends React.Component<Props, State> {
         }
         
         this.draggingArea.style.left = (originalRect.x + diff.dx - document.body.scrollLeft) + 'px';
-        // this.draggingArea.style.top = (originalRect.y + diff.dy) + 'px';
+        this.draggingArea.style.top = (originalRect.y + diff.dy) + 'px';
         this.draggingArea.style.width = (originalRect.w + diff.dw) + 'px';
         this.draggingArea.style.height = (originalRect.h + diff.dh) + 'px';
     }
