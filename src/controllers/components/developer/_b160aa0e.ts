@@ -244,7 +244,9 @@ class Controller extends Base {
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -254,8 +256,10 @@ class Controller extends Base {
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -265,7 +269,10 @@ class Controller extends Base {
   
   protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -275,7 +282,10 @@ class Controller extends Base {
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -285,8 +295,10 @@ class Controller extends Base {
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-    	try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
@@ -296,9 +308,11 @@ class Controller extends Base {
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-    	try {
-      	throw new Error("Not Implemented Error");
-        // resolve('/');
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        resolve('/');
       } catch(error) {
         reject(error);
       }

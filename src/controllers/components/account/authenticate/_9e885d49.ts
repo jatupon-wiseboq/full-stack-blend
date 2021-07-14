@@ -329,10 +329,10 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("9e885d49", "d7d59dd2", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("9e885d49", "875ac000", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("9e885d49", "d7d59dd2", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
+    RequestHelper.registerSubmit("9e885d49", "875ac000", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 4"});
+    RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 3"});
+    RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
 		RequestHelper.registerInput('1b650e66', "document", "User", "email");
 		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '1b650e66')) {
