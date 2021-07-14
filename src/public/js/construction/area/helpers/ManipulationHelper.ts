@@ -729,6 +729,17 @@ var ManipulationHelper = {
       let origin = HTMLHelper.getPosition(selectingElement.parentNode);
       let position = HTMLHelper.getPosition(selectingElement);
       let size = HTMLHelper.getSize(selectingElement);
+      let computedStyle = window.getComputedStyle(selectingElement, null);
+      
+      position[0] -= parseInt(computedStyle.borderLeftWidth || '0px');
+      position[1] -= parseInt(computedStyle.borderTopWidth || '0px');
+      
+      const parentNode = HTMLHelper.findTheParentInClassName('internal-fsb-element', selectingElement);
+      if (parentNode) {
+        let parentComputedStyle = window.getComputedStyle(parentNode, null);
+        position[0] += parseInt(parentComputedStyle.paddingLeft || '0px');
+        position[1] += parseInt(parentComputedStyle.paddingTop || '0px');
+      }
       
       accessory = {
         dx: -content.dx,
