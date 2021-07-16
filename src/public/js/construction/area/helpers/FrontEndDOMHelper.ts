@@ -568,7 +568,7 @@ ${rootScript}`;
         
         // Rendering Logic
         // 
-        if (reactDisplayLogic == 'statement') {
+        if (reactDisplayLogic == 'statement' && (!reactMode || isFirstElement)) {
         	lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
         	indent += '  ';
         }
