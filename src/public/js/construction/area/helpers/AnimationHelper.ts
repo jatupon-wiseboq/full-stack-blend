@@ -28,7 +28,7 @@ var AnimationHelper = {
   	for (let animationId in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
   			for (let presetId in stylesheetDefinitions[animationId]) {
-		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
 		  			for (let keyframeId in stylesheetDefinitions[animationId][presetId]) {
   						if (stylesheetDefinitions[animationId][presetId].hasOwnProperty(keyframeId) && ['repeatMode', 'repeatTime'].indexOf(keyframeId) == -1) {
   							if (stylesheetDefinitions[animationId][presetId][keyframeId]) {
@@ -126,7 +126,7 @@ var AnimationHelper = {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
     		let found = false;
   			for (let presetId in stylesheetDefinitions[animationId]) {
-  				if (['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) != -1) continue;
+  				if (['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) != -1) continue;
   				if (stylesheetDefinitions[animationId].hasOwnProperty(presetId)) {
   					if (Object.keys(stylesheetDefinitions[animationId][presetId]).length != 0) {
   						found = true;
@@ -198,6 +198,16 @@ var AnimationHelper = {
     
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
+  setAnimationSynchronizeMode: function(synchronizeMode: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].synchronizeMode = synchronizeMode;
+    
+    AnimationHelper.renderStylesheetAndExtensionElement();
+  },
   setAnimationRepeatMode: function(presetId: string, repeatMode: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	
@@ -256,6 +266,12 @@ var AnimationHelper = {
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode || null;
+  },
+  getAnimationSynchronizeMode: function(synchronizeMode: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].synchronizeMode || null;
   },
   getAnimationRepeatMode: function(presetId: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
@@ -405,7 +421,7 @@ var AnimationHelper = {
   			};
   			
   			for (let presetId in stylesheetDefinitions[animationId]) {
-		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode'].indexOf(presetId) == -1) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
 						const track = {
 							keyframes: [],
 							delay: 0,
@@ -439,7 +455,7 @@ var AnimationHelper = {
 		  				
 		  				if (repeatMode != 'disabled') {
 				  			if (animationId != 'selector') {
-				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
 				  				} else {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
@@ -447,7 +463,7 @@ var AnimationHelper = {
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
-				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
 				  				} else {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
@@ -519,7 +535,7 @@ var AnimationHelper = {
 						  		}
 					  			
 					  			if (animationId != 'selector' && inanimatableInlineStyle) {
-					  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+					  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-preset-${presetId} { ${inanimatableInlineStyle} }`);
 					  				} else {
 					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
@@ -541,7 +557,7 @@ var AnimationHelper = {
 				  			if (animationId == 'selector' && combinedInanimatableInlineStyle) {
 				  				const splited = presetId.split(':');
 				  				
-				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					highPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
 				  				} else {
 				  					highPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
@@ -567,7 +583,7 @@ var AnimationHelper = {
 				  			}
 				  			
 				  			if (animationId != 'selector') {
-				  				if (StylesheetHelper.getStylesheetDefinition(presetId)) {
+				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
 				  				} else {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
@@ -575,7 +591,7 @@ var AnimationHelper = {
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
-				  				if (StylesheetHelper.getStylesheetDefinition(splited[0])) {
+				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
 				  				} else {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);

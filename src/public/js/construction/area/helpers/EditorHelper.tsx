@@ -238,6 +238,7 @@ var EditorHelper = {
         	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
         	animationGroupState: AnimationHelper.getAnimationGroupState(),
         	animationGroupMode: AnimationHelper.getAnimationGroupMode(),
+        	animationSynchronizeMode: AnimationHelper.getAnimationSynchronizeMode(),
 	        animationRepeatMode: null,
 	        animationRepeatTime: null
 	      }),
@@ -295,6 +296,7 @@ var EditorHelper = {
       	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
       	animationGroupState: AnimationHelper.getAnimationGroupState(),
         animationGroupMode: AnimationHelper.getAnimationGroupMode(),
+        animationSynchronizeMode: AnimationHelper.getAnimationSynchronizeMode(),
         animationRepeatMode: AnimationHelper.getAnimationRepeatMode(presetId),
         animationRepeatTime: AnimationHelper.getAnimationRepeatTime(presetId)
       }, Accessories.cellFormater.getInfo()),

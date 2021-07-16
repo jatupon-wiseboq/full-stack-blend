@@ -64,6 +64,10 @@ div(internal-fsb-for="editingAnimationID")
     .section-title
       | Presets
     .section-subtitle
+      | Preset Mode
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['animation-synchronize', 'animationSynchronizeMode'], todoOverriding: true}")
+    .section-subtitle
       | Reusable Name
     .section-body
       +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
