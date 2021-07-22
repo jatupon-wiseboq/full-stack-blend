@@ -205,6 +205,9 @@ var CursorHelper = {
     return [referenceElementGUID, indexOfAllowCursorElement, positionXInTheAllowCursorElement, positionYInTheAllowCursorElement];
   },
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
+    let element = HTMLHelper.getElementByClassName('internal-fsb-walking');
+    if (element) HTMLHelper.removeClass(element, 'internal-fsb-walking');
+    
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
     	let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
@@ -230,6 +233,9 @@ var CursorHelper = {
           HTMLHelper.setAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode', 'absolute');
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstElementChild);
         }
+    
+        element = HTMLHelper.findTheParentInClassName('internal-fsb-element', theAllowCursorElement, true);
+        if (element) HTMLHelper.addClass(element, 'internal-fsb-walking');
       }
     }
   }
