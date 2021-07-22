@@ -302,12 +302,12 @@ html.internal-fsb-guide-on {
   .internal-fsb-inheriting-element,
   .internal-fsb-element {
     &.internal-fsb-walking {
-    	outline: dashed 2px rgba(255, 0, 255, 0.75);
+    	outline: solid 1px rgba(255, 0, 255, 0.75);
       
     > .container-fluid > .internal-fsb-strict-layout > .internal-fsb-element,
     > .container-fluid > .internal-fsb-absolute-layout > .internal-fsb-element,
     > .internal-fsb-element {
-    	  outline: dashed 2px rgba(255, 0, 255, 0.75);
+    	  outline: solid 1px rgba(255, 0, 255, 0.75);
     	  
     	  &.internal-fsb-selecting {
       		outline: dashed 2px rgba(0, 0, 255, 0.5);
