@@ -498,6 +498,9 @@ var WorkspaceHelper = {
     const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting', holder);
     if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     
+    const walking = HTMLHelper.getElementByClassName('internal-fsb-walking', holder);
+    if (walking) HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+    
     return holder.innerHTML;
   },
   cleanupPageHTMLData: (html: string, preview: boolean=false) => {
@@ -532,6 +535,9 @@ var WorkspaceHelper = {
     
     const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting', holder);
     if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+    
+    const walking = HTMLHelper.getElementByClassName('internal-fsb-walking', holder);
+    if (walking) HTMLHelper.removeClass(selecting, 'internal-fsb-walking');
     
     document.body.removeChild(holder);
     

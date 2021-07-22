@@ -293,15 +293,24 @@ body.internal-fsb-mode-coding {
 
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
-	&.internal-fsb-selecting {
-		outline: dashed 2px rgba(0, 0, 255, 0.5);
-	}
 	&.internal-fsb-walking {
-		outline: dashed 2px rgba(255, 0, 255, 0.5) !important;
+		outline: dashed 2px rgba(255, 0, 255, 0.5);
 	  
 	  .internal-fsb-element {
-		  outline: dashed 2px rgba(255, 0, 255, 0.5) !important;
+		  outline: dashed 2px rgba(255, 0, 255, 0.5);
+		  
+		  &.internal-fsb-selecting {
+    		outline: dashed 2px rgba(0, 0, 255, 0.5);
+    	}
 	  }
+	  
+  	&.internal-fsb-selecting {
+  		outline: dashed 2px rgba(0, 0, 255, 0.5);
+  	}
+	}
+	
+	&.internal-fsb-selecting {
+		outline: dashed 2px rgba(0, 0, 255, 0.5);
 	}
 }
 

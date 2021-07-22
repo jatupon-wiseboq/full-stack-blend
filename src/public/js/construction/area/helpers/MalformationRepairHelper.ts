@@ -26,6 +26,10 @@ var MalformationRepairHelper = {
     		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-selecting')) {
     			HTMLHelper.removeClass(elements[j], 'internal-fsb-selecting');
     		}
+    		
+    		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-walking')) {
+    			HTMLHelper.removeClass(elements[j], 'internal-fsb-walking');
+    		}
     	}
       
       elements[j].children && MalformationRepairHelper.recursiveRepair(elements[j].children);

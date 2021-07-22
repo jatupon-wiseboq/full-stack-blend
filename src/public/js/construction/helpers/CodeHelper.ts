@@ -212,6 +212,10 @@ var CodeHelper = {
   		HTMLHelper.removeClass(current, 'internal-fsb-selecting');
   	}
   	
+  	if (HTMLHelper.hasClass(current, 'internal-fsb-walking')) {
+  		HTMLHelper.removeClass(current, 'internal-fsb-walking');
+  	}
+  	
   	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
   		current.remove();
   		return; 
