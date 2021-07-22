@@ -379,6 +379,11 @@ var EditorHelper = {
       
       element.parentNode.insertBefore(Accessories.cursor.getDOMNode(), element.nextSibling);
       
+      let previous = HTMLHelper.getElementByClassName('internal-fsb-walking');
+      if (previous) HTMLHelper.removeClass(previous, 'internal-fsb-walking');
+      
+      if (element) HTMLHelper.addClass(element, 'internal-fsb-walking');
+      
       EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
     } else if (element.tagName == 'TR') {
