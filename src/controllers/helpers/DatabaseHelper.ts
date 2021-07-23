@@ -1520,9 +1520,17 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  					nextRow.columns[relation.targetEntity] = _row.keys[relation.sourceEntity];
+							  					if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  						nextRow.columns[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.columns[relation.targetEntity] = _row.keys[relation.sourceEntity];
+							  					}
 								  			} else {
-								  				nextRow.keys[relation.targetEntity] = _row.keys[relation.sourceEntity];
+								  				if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  						nextRow.keys[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
+							  					} else {
+								  					nextRow.keys[relation.targetEntity] = _row.keys[relation.sourceEntity];
+								  				}
 								  			}
 							  			}
 							  		}
