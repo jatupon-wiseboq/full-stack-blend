@@ -822,13 +822,13 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 						  					}
 							  			} else {
-							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -1016,13 +1016,13 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 						  					}
 							  			} else {
-							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -1201,13 +1201,13 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 						  					}
 							  			} else {
-							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 						  					} else {
 						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -1544,13 +1544,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  					if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  					if (ObjectID.isValid(_row.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 							  						nextRow.columns[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.columns[relation.targetEntity] = _row.keys[relation.sourceEntity];
 							  					}
 								  			} else {
-								  				if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+								  				if (ObjectID.isValid(_row.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
 							  						nextRow.keys[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
 							  					} else {
 								  					nextRow.keys[relation.targetEntity] = _row.keys[relation.sourceEntity];
@@ -1752,13 +1752,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+							  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
   						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
   						  					} else {
   						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
   						  					}
 								  			} else {
-								  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+								  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
   						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
   						  					} else {
   						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
