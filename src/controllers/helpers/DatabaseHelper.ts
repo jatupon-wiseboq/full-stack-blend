@@ -822,9 +822,17 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			}
 						  			}
 						  		}
@@ -1008,9 +1016,17 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			}
 						  			}
 						  		}
@@ -1185,9 +1201,17 @@ const DatabaseHelper = {
 							  			}
 						  			} else {
 						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+						  					} else {
+						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+						  					}
 							  			}
 						  			}
 						  		}
@@ -1728,9 +1752,17 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  					nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  				  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+  						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+  						  					} else {
+  						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+  						  					}
 								  			} else {
-								  				nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+								  			  if (relation.sourceEntity == 'id' && input.source == SourceType.Document) {
+  						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+  						  					} else {
+  						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+  						  					}
 								  			}
 							  			}
 							  		}
