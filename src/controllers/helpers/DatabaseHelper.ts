@@ -312,7 +312,11 @@ const DatabaseHelper = {
 			                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                row.keys[key] = row.keys[key].toString();
+			                if (ObjectID.isValid(row.keys[key].toString()) && schema.source == SourceType.Document) {
+			                  row.keys[key] = new ObjectID(row.keys[key].toString());
+			                } else {
+			                  row.keys[key] = row.keys[key].toString();
+			                }
 			                break;
 			              case FieldType.DateTime:
 			                row.keys[key] = new Date(row.keys[key].toString());
@@ -335,7 +339,11 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                if (ObjectID.isValid(row.keys[key].toString()) && schema.source == SourceType.Document) {
+		                  row.keys[key] = new ObjectID(row.keys[key].toString());
+		                } else {
+		                  row.keys[key] = row.keys[key].toString();
+		                }
 		                break;
 		              case FieldType.DateTime:
 		                row.keys[key] = new Date(row.keys[key].toString());
@@ -358,7 +366,11 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                if (ObjectID.isValid(row.keys[key].toString()) && schema.source == SourceType.Document) {
+		                  row.keys[key] = new ObjectID(row.keys[key].toString());
+		                } else {
+		                  row.keys[key] = row.keys[key].toString();
+		                }
 		                break;
 		              case FieldType.DateTime:
 		                row.keys[key] = new Date(row.keys[key].toString());
@@ -380,7 +392,11 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.keys[key] = row.keys[key].toString();
+		                if (ObjectID.isValid(row.keys[key].toString()) && schema.source == SourceType.Document) {
+		                  row.keys[key] = new ObjectID(row.keys[key].toString());
+		                } else {
+		                  row.keys[key] = row.keys[key].toString();
+		                }
 		                break;
 		              case FieldType.DateTime:
 		                row.keys[key] = new Date(row.keys[key].toString());
@@ -411,7 +427,11 @@ const DatabaseHelper = {
 				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+  				              if (ObjectID.isValid(row.columns[key].toString()) && schema.source == SourceType.Document) {
+    		                  row.columns[key] = new ObjectID(row.columns[key].toString());
+    		                } else {
+    		                  row.columns[key] = row.columns[key].toString();
+    		                }
 				                break;
 				              case FieldType.DateTime:
 				                row.columns[key] = new Date(row.columns[key].toString());
@@ -436,7 +456,11 @@ const DatabaseHelper = {
 			                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                row.columns[key] = row.columns[key].toString();
+			                if (ObjectID.isValid(row.columns[key].toString()) && schema.source == SourceType.Document) {
+  		                  row.columns[key] = new ObjectID(row.columns[key].toString());
+  		                } else {
+  		                  row.columns[key] = row.columns[key].toString();
+  		                }
 			                break;
 			              case FieldType.DateTime:
 			                row.columns[key] = new Date(row.columns[key].toString());
@@ -462,7 +486,11 @@ const DatabaseHelper = {
 				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-				                row.columns[key] = row.columns[key].toString();
+				                if (ObjectID.isValid(row.columns[key].toString()) && schema.source == SourceType.Document) {
+    		                  row.columns[key] = new ObjectID(row.columns[key].toString());
+    		                } else {
+    		                  row.columns[key] = row.columns[key].toString();
+    		                }
 				                break;
 				              case FieldType.DateTime:
 				                row.columns[key] = new Date(row.columns[key].toString());
@@ -486,7 +514,11 @@ const DatabaseHelper = {
 		                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                row.columns[key] = row.columns[key].toString();
+		                if (ObjectID.isValid(row.columns[key].toString()) && schema.source == SourceType.Document) {
+		                  row.columns[key] = new ObjectID(row.columns[key].toString());
+		                } else {
+		                  row.columns[key] = row.columns[key].toString();
+		                }
 		                break;
 		              case FieldType.DateTime:
 		                row.columns[key] = new Date(row.columns[key].toString());
