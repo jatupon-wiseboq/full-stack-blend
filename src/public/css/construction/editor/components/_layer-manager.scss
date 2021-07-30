@@ -195,18 +195,18 @@
 		}
 	}
 	
-	.treenode-outer-container.is-react-component {
-		> .treenode-container {
-			> .treenode-body {
-				border-color: #7f20ff;
-			}
-		}
-	}
-	
 	.treenode-outer-container.is-containing-preset {
 		> .treenode-container {
 			> .treenode-body {
 				border-color: #ff00ff;
+			}
+		}
+	}
+	
+	.treenode-outer-container.is-react-component {
+		> .treenode-container {
+			> .treenode-body {
+				border-color: #7f20ff;
 			}
 		}
 	}
