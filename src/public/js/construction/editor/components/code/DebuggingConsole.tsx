@@ -41,9 +41,9 @@ class DebuggingConsole extends Base<Props, State> {
     }
     
     componentDidMount() {
-        this.repl = new Console(document.getElementById(this.state.containerId), {mode: "javascript", theme: "eclipse"});
+        const repl = new Console(document.getElementById(this.state.containerId), {mode: "javascript", theme: "eclipse"});
         
-        this.repl.simpleFormatter = ((msg, ...args) => {
+        repl.simpleFormatter = ((msg, ...args) => {
           let output = [msg && msg.toString() || ''];
           for (let arg of args) {
             output.push(arg && arg.toString() || '');
@@ -77,7 +77,7 @@ class DebuggingConsole extends Base<Props, State> {
           output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
           document.body.append(output);
         
-          this.props.window.repl = this.repl;
+          this.props.window.repl = repl;
           this.props.window.repl.on('entry', (event) => {
             this.props.window.setTimeout(() => {
               $('#codingButton')[0].click();
@@ -110,7 +110,7 @@ class DebuggingConsole extends Base<Props, State> {
                 break;
             }
             
-            this.props.window.repl.on('entry', (event) => {
+            repl.on('entry', (event) => {
               this.props.window.postMessage(JSON.stringify({
           	    type: 'execute',
           	    statement: event.detail
