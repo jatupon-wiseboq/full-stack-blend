@@ -34,6 +34,9 @@ class SitePreview extends Base<Props, State> {
     constructor(props) {
         super(props);
         Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
+        window.setTimeout(() => {
+          HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
+        }, 1000);
     }
     
     public update(properties: any) {
@@ -79,6 +82,9 @@ class SitePreview extends Base<Props, State> {
     
     render() {
       let endpoint = (<FullStackBlend.Components.EndpointManager ref="endpoint"></FullStackBlend.Components.EndpointManager>);
+      let Console = FullStackBlend.Components.DebuggingConsole;
+      let _window = document.getElementById('preview');
+      _window = _window && _window.contentWindow || null;
       return pug `
         .site-preview
           .close-button.btn.btn-sm.btn-light.px-3(onClick=this.close.bind(this))
@@ -86,7 +92,10 @@ class SitePreview extends Base<Props, State> {
           .iframe-container
             .iframe-navigation-bar
             .iframe-body
-              iframe(ref="preview", onLoad=this.load.bind(this), src=this.state.location)
+              iframe(ref="preview", id="preview", onLoad=this.load.bind(this), src=this.state.location)
+            .iframe-console
+              if _window != null
+                Console(window=_window)
           .loading-container(style={display: this.state.loading ? 'block' : 'none'})
             .linear-background
               .inter-left

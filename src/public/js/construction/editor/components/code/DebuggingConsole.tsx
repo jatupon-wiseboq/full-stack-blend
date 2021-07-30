@@ -9,10 +9,12 @@ declare let Console: any;
 declare let window: any;
 
 interface Props extends IProps {
+    window: any
 }
 
 interface State extends IState {
-    value: any
+    value: any,
+    containerId: string
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -21,6 +23,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
+    window: window
 });
 
 class DebuggingConsole extends Base<Props, State> {
@@ -32,10 +35,12 @@ class DebuggingConsole extends Base<Props, State> {
     constructor(props) {
         super(props);
         Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
+        
+        this.state.containerId = 'console-' + Math.random();
     }
     
     componentDidMount() {
-        this.repl = new Console(document.getElementById('console'), {mode: "javascript", theme: "eclipse"});
+        this.repl = new Console(document.getElementById(this.state.containerId), {mode: "javascript", theme: "eclipse"});
         
         this.repl.simpleFormatter = ((msg, ...args) => {
           let output = [msg && msg.toString() || ''];
@@ -45,45 +50,47 @@ class DebuggingConsole extends Base<Props, State> {
           return output.join(', ');
         });
         
-        window.error = ((msg, url, line, col, error) => {
-          window.setTimeout(() => {
+        this.props.window.error = ((msg, url, line, col, error) => {
+          this.props.window.setTimeout(() => {
             $('#codingButton')[0].click();
             $('#footerConsole')[0].click();
           }, 0);
-          window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
+          this.props.window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
         });
-        window.onerror = window.error;
+        this.props.window.onerror = this.props.window.error;
         
-        window.console.log = ((...args) => {
-        	window.repl.print(window.repl.simpleFormatter(...args), 'message');
+        this.props.window.console.log = ((...args) => {
+        	this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
         });
-        window.console.error = ((...args) => {
-          window.setTimeout(() => {
+        this.props.window.console.error = ((...args) => {
+          this.props.window.setTimeout(() => {
             $('#codingButton')[0].click();
             $('#footerConsole')[0].click();
           }, 0);
-	        window.repl.print(window.repl.simpleFormatter(...args), 'type-error');
+	        this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
         });
         
-        let output = document.createElement('div');
-        output.className = 'jsconsole eclipse';
-        output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
-        document.body.append(output);
+        if (this.props.window == window) {
+          let output = document.createElement('div');
+          output.className = 'jsconsole eclipse';
+          output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
+          document.body.append(output);
         
-        window.repl = this.repl;
-        window.repl.on('entry', (event) => {
-          window.setTimeout(() => {
-            $('#codingButton')[0].click();
-            $('#footerConsole')[0].click();
-          }, 0);
-        });
-        window.setTimeout(() => {
-          window.repl.output.focus();
-        }, 10);
-        window.setTimeout(() => {
-          window.repl.input.focus();
-          window.repl.resetInput();
-        }, 20);
+          this.props.window.repl = this.repl;
+          this.props.window.repl.on('entry', (event) => {
+            this.props.window.setTimeout(() => {
+              $('#codingButton')[0].click();
+              $('#footerConsole')[0].click();
+            }, 0);
+          });
+          this.props.window.setTimeout(() => {
+            this.props.window.repl.output.focus();
+          }, 10);
+          this.props.window.setTimeout(() => {
+            this.props.window.repl.input.focus();
+            this.props.window.repl.resetInput();
+          }, 20);
+        }
     }
     
     public update(properties: any) {
@@ -92,8 +99,8 @@ class DebuggingConsole extends Base<Props, State> {
     
     render() {
         return (
-            <div id="console-container">
-                <div id="console">
+            <div class="console-container">
+                <div class="console" id={this.state.containerId}>
                 </div>
             </div>
         )
