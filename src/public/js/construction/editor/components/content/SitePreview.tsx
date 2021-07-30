@@ -34,9 +34,6 @@ class SitePreview extends Base<Props, State> {
     constructor(props) {
         super(props);
         Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
-        window.setTimeout(() => {
-          HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
-        }, 1000);
     }
     
     public update(properties: any) {
