@@ -13,6 +13,8 @@ if (window.installedTestingConsole === undefined) window.installedTestingConsole
 
 const TestHelper = {
   identify: (delay: number=1000) => {
+    TestHelper.installConsoleDebugger();
+    
   	window.clearTimeout(timerId);
   	timerId = window.setTimeout(() => {
   		if (!TestHelper.checkIfSeleniumExists()) return;
@@ -148,6 +150,52 @@ const TestHelper = {
   	}
   	
   	return false;
+  },
+  installConsoleDebugger: () => {
+    if (window.installConsoleDebugger === true) return;
+  	window.installConsoleDebugger = true;
+  	
+  	if (window.location.href.indexOf('://localhost') == -1) return;
+  	
+  	const _error = window.error;
+  	const error = ((msg, url, line, col, error) => {
+  	  top.postMessage(JSON.stringify({
+  	    type: 'error',
+  	    msg: msg,
+  	    url: url,
+  	    line: line,
+  	    col: col,
+  	    error: error
+  	  }), '*');
+  	  _error(msg, url, line, col, error);
+    });
+    window.onerror = error;
+    
+    window.console.log = ((...args) => {
+      top.postMessage(JSON.stringify({
+  	    type: 'console.log',
+  	    args: args
+  	  }), '*');
+    });
+    window.console.error = ((...args) => {
+      top.postMessage(JSON.stringify({
+  	    type: 'console.error',
+  	    args: args
+  	  }), '*');
+    });
+    
+    window.addEventListener("message", ((event: any) => {
+      let data = null;
+      try {
+        data = JSON.parse(event.data);
+      } catch { /*void*/ }
+      
+      switch (data.type) {
+        case 'execute':
+          eval(data.statement);
+          break;
+      }
+    }).bind(this));
   },
   installTestingConsole: () => {
   	if (window.installedTestingConsole === true) return;
