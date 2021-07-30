@@ -1,5 +1,6 @@
 import {CodeHelper} from '../../../helpers/CodeHelper';
 import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 
@@ -50,27 +51,27 @@ class DebuggingConsole extends Base<Props, State> {
           return output.join(', ');
         });
         
-        this.props.window.error = ((msg, url, line, col, error) => {
-          this.props.window.setTimeout(() => {
-            $('#codingButton')[0].click();
-            $('#footerConsole')[0].click();
-          }, 0);
-          this.props.window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
-        });
-        this.props.window.onerror = this.props.window.error;
-        
-        this.props.window.console.log = ((...args) => {
-        	this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
-        });
-        this.props.window.console.error = ((...args) => {
-          this.props.window.setTimeout(() => {
-            $('#codingButton')[0].click();
-            $('#footerConsole')[0].click();
-          }, 0);
-	        this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
-        });
-        
         if (this.props.window == window) {
+          this.props.window.error = ((msg, url, line, col, error) => {
+            this.props.window.setTimeout(() => {
+              $('#codingButton')[0].click();
+              $('#footerConsole')[0].click();
+            }, 0);
+            this.props.window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
+          });
+          this.props.window.onerror = this.props.window.error;
+          
+          this.props.window.console.log = ((...args) => {
+          	this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
+          });
+          this.props.window.console.error = ((...args) => {
+            this.props.window.setTimeout(() => {
+              $('#codingButton')[0].click();
+              $('#footerConsole')[0].click();
+            }, 0);
+  	        this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
+          });
+          
           let output = document.createElement('div');
           output.className = 'jsconsole eclipse';
           output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
@@ -90,6 +91,33 @@ class DebuggingConsole extends Base<Props, State> {
             this.props.window.repl.input.focus();
             this.props.window.repl.resetInput();
           }, 20);
+        } else {
+          top.addEventListener("message", ((event: any) => {
+            let data = null;
+            try {
+              data = JSON.parse(event.data);
+            } catch { /*void*/ }
+            
+            switch (data.type) {
+              case 'error':
+                this.props.window.repl.print(`${data.msg} (line: ${data.line}, col: ${data.col}) ${data.url}`, 'type-error');
+                break;
+              case 'console.log':
+                this.props.window.repl.print(this.props.window.repl.simpleFormatter(...data.args), 'message');
+                break;
+              case 'console.error':
+                this.props.window.repl.print(this.props.window.repl.simpleFormatter(...data.args), 'type-error');
+                break;
+            }
+            
+            this.props.window.repl.on('entry', (event) => {
+              this.props.window.postMessage(JSON.stringify({
+          	    type: 'execute',
+          	    statement: event.detail
+          	  }), '*');
+              return EventHelper.cancel(event);
+            });
+          }).bind(this));
         }
     }
     
