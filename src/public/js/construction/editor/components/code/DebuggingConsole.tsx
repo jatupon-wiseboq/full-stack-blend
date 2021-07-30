@@ -113,9 +113,8 @@ class DebuggingConsole extends Base<Props, State> {
             repl.on('entry', (event) => {
               this.props.window.postMessage(JSON.stringify({
           	    type: 'execute',
-          	    statement: event.detail
+          	    statement: event.input
           	  }), '*');
-              return EventHelper.cancel(event);
             });
           }).bind(this));
         }
