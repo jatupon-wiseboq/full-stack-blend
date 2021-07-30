@@ -21,7 +21,7 @@ import '../controls/Guide';
 import '../controls/LayoutInfo';
 import '../controls/Dragger';
 import '../controls/Overlay';
-import {LIBRARIES} from '../../Constants';
+import {LIBRARIES, INPUT_ELEMENT_TAGS} from '../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -219,6 +219,7 @@ var EditorHelper = {
     		attributes: HTMLHelper.getAttributes(document.body, false),
 	      extensions: Object.assign({}, InternalProjectSettings, {
 	        isSelectingElement: false,
+	        isInputElement: false,
       		isFirstElementOfComponent: false,
 	        hasParentReactComponent: false,
 	        isInheritingComponent: false,
@@ -269,6 +270,7 @@ var EditorHelper = {
       attributes: attributes,
       extensions: Object.assign({}, InternalProjectSettings, {
       	isSelectingElement: true,
+      	isInputElement: (INPUT_ELEMENT_TAGS.indexOf(element.firstElementChild && element.firstElementChild.tagName || null) != -1),
       	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
       	isTableLayoutRow: (element.tagName == 'TR'),
       	isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
