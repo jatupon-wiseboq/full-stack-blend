@@ -19,7 +19,7 @@ class PageManager extends HTMLManager {
     }
     
     protected getDisplay(item: any) {
-        return `<div class="name">${item.name}</div><div class="path">${item.path}</div>`;
+        return `<div className="name">${item.name}</div><div className="path">${item.path}</div>`;
     }
 }
 

@@ -18,7 +18,7 @@ class PopupManager extends HTMLManager {
     }
     
     protected getDisplay(item: any) {
-        return `<div class="name">${item.name}</div>`;
+        return `<div className="name">${item.name}</div>`;
     }
 }
 

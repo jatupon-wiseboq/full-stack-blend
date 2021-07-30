@@ -127,8 +127,8 @@ class DebuggingConsole extends Base<Props, State> {
     
     render() {
         return (
-            <div class="console-container">
-                <div class="console" id={this.state.containerId}>
+            <div className="console-container">
+                <div className="console" id={this.state.containerId}>
                 </div>
             </div>
         )
