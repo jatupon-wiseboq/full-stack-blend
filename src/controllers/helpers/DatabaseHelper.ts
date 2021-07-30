@@ -298,6 +298,7 @@ const DatabaseHelper = {
 			  if (schema.keys.hasOwnProperty(key)) {
 			    switch (action) {
 			      case ActionType.Insert:
+			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
 			        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
 			          if (row.keys[key] === undefined || row.keys[key] === null) {
 			            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
@@ -326,6 +327,7 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Upsert:
+			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
 		          if (schema.keys[key].fieldType != FieldType.AutoNumber && (row.keys[key] === undefined || row.keys[key] === null)) {
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
