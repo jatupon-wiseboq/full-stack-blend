@@ -7,6 +7,10 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Name
     .section-body(internal-fsb-not-for="isTableLayoutRow:true")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-not-for="isTableLayoutRow:true")
+      | Globally Unique Identifier
+    .section-body(internal-fsb-not-for="isTableLayoutRow:true")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-guid'], inline: true, button: false, disabled: true}")
     .section-subtitle
       | Note
     .section-body

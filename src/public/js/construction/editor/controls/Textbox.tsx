@@ -11,6 +11,7 @@ interface Props extends IProps {
     spellCheck: boolean;
     failedValidationMessage: String;
     multiline: Boolean;
+    disabled: Boolean;
     placeholder: String;
     maxLength: Number;
     rows: Number;
@@ -129,11 +130,11 @@ class Textbox extends React.Component<Props, State> {
         pug `
           div(style={width: '100%'})
             if !this.props.multiline
-              input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder, maxLength=this.props.maxLength, style={borderRadius: this.props.borderRadiusOnLeft ? '0 0.2rem 0.2rem 0' : ''})
+              input.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder, maxLength=this.props.maxLength, style={borderRadius: this.props.borderRadiusOnLeft ? '0 0.2rem 0.2rem 0' : ''}, disabled=this.props.disabled)
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
             else
-              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows=(this.props.rows || 5), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder, maxLength=this.props.maxLength, style={borderRadius: this.props.borderRadiusOnLeft ? '0 0.2rem 0.2rem 0' : ''})
+              textarea.form-control.form-control-sm(className=((!!this.props.failedValidationMessage) ? "is-invalid" : ""), rows=(this.props.rows || 5), ref="input", type="text", onKeyUp=this.inputOnKeyUp, spellCheck=this.props.spellCheck.toString(), placeholder=this.props.placeholder, maxLength=this.props.maxLength, style={borderRadius: this.props.borderRadiusOnLeft ? '0 0.2rem 0.2rem 0' : ''}, disabled=this.props.disabled)
               if this.props.failedValidationMessage
                 span.invalid-feedback ${this.props.failedValidationMessage}
         `
