@@ -157,7 +157,7 @@ const TestHelper = {
   	
   	if (window.location.href.indexOf('://localhost') == -1) return;
   	
-  	const _error = window.error;
+  	const _error = window.onerror;
   	const error = ((msg, url, line, col, error) => {
   	  top.postMessage(JSON.stringify({
   	    type: 'error',
@@ -167,7 +167,7 @@ const TestHelper = {
   	    col: col,
   	    error: error
   	  }), '*');
-  	  _error(msg, url, line, col, error);
+  	  if (_error) _error(msg, url, line, col, error);
     });
     window.onerror = error;
     
