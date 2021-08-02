@@ -502,7 +502,7 @@ var AnimationHelper = {
 					  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
 					  					(EASING_COEFFICIENT[nextKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
 					  				let easing4 = 0;
-				  				
+				  				  
 					  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
 						  				timing.push(`${prefix}animation-timing-function: cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`);
 						  			}
@@ -565,10 +565,10 @@ var AnimationHelper = {
 				  			}
 				  			
 				  			for (let prefix of ['@-webkit-keyframes', '@-moz-keyframes', '@-ms-keyframes', '@-o-keyframes', '@keyframes']) {
-				  				animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
+				  				animationElements.push(`${prefix} fsb-animation-${animationId}-${presetId.replace(':', '-')} { ${animationKeyframes.join(' ')} }`);
 				  				
 				  				if (repeatMode == 'time') {
-				  					animationElements.push(`${prefix} fsb-animation-${presetId.replace(':', '-')}-end { ${endOfAnimationKeyframes.join(' ')} }`);
+				  					animationElements.push(`${prefix} fsb-animation-${animationId}-${presetId.replace(':', '-')}-end { ${endOfAnimationKeyframes.join(' ')} }`);
 				  				}
 				  			}
 				  			
@@ -576,9 +576,9 @@ var AnimationHelper = {
 			  				
 			  				for (let prefix of ['-webkit-', '-moz-', '-ms-', '-o-', '']) {
 			  					if (repeatMode == 'time') {
-			  						animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}, fsb-animation-${presetId.replace(':', '-')}-end; ${prefix}animation-delay: ${delay}s, ${delay + total * repeatTime}s; ${prefix}animation-duration: ${total}s, 1s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime}, infinite;`);
+			  						animations.push(`${prefix}animation-name: fsb-animation-${animationId}-${presetId.replace(':', '-')}, fsb-animation-${animationId}-${presetId.replace(':', '-')}-end; ${prefix}animation-delay: ${delay}s, ${delay + total * repeatTime}s; ${prefix}animation-duration: ${total}s, 1s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime}, infinite;`);
 			  					} else {
-				  					animations.push(`${prefix}animation-name: fsb-animation-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime};`);
+				  					animations.push(`${prefix}animation-name: fsb-animation-${animationId}-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime};`);
 				  				}
 				  			}
 				  			
