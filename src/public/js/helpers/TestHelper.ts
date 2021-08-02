@@ -192,7 +192,11 @@ const TestHelper = {
       
       switch (data.type) {
         case 'execute':
-          eval(data.statement);
+        	try {
+        		window.console.log(eval(data.statement));
+			  	} catch (error: any) {
+			  		window.console.error(error);
+			  	}
           break;
       }
     }).bind(this));
