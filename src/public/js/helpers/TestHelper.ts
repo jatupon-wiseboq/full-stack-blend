@@ -195,7 +195,7 @@ const TestHelper = {
         	try {
         		window.console.log(eval(data.statement));
 			  	} catch (error: any) {
-			  		window.console.error(error);
+			  		window.console.error(error.message);
 			  	}
           break;
       }
