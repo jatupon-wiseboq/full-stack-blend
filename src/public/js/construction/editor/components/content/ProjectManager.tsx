@@ -662,8 +662,13 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                                       StorageHelper.setCookie('recentCommitMessage', recentCommitMessage);
                                       
                                       this.deleteFiles(repo, deletingPersistingFiles, () => {
-                                        RequestHelper.post(`${window.ENDPOINT}/endpoint/reset/content`, {}).then(() => {
-                                          RequestHelper.post(`${window.ENDPOINT}/endpoint/pull/content`, {}).then(() => {
+																	      let endpoint = window.ENDPOINT;
+																	     	if (endpoint.indexOf('https://localhost') == 0) {
+																	     		endpoint = 'https://localhost.stackblend.org';
+																	     	}
+                                      
+                                        RequestHelper.post(`${endpoint}/endpoint/reset/content`, {}).then(() => {
+                                          RequestHelper.post(`${endpoint}/endpoint/pull/content`, {}).then(() => {
                                             alert('Your changes have been saved successfully.');
                                           }).catch(() => {
                                             alert('Your changes have been saved successfully.');

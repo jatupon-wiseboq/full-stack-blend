@@ -347,7 +347,13 @@ let cachedUpdateEditorProperties = {};
 	      if (success) {
 	      	window.setTimeout(() => {
 		        Accessories.preview.current.start();
-		        RequestHelper.get(`${window.ENDPOINT}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
+		        
+		        let endpoint = window.ENDPOINT;
+		       	if (endpoint.indexOf('https://localhost') == 0) {
+		       		endpoint = 'https://localhost.stackblend.org';
+		       	}
+		        
+		        RequestHelper.get(`${endpoint}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
 		          if (currentRevision == latestRevision) {
 		            if (!results.success) {
 		              console.error(`${results.error}`);

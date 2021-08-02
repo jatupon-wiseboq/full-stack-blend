@@ -510,7 +510,8 @@ var WorkspaceHelper = {
   	let holderWindow = holder.contentWindow || holder.contentDocument.document || holder.contentDocument;
   	
     holderWindow.document.open('text/htmlreplace');
-    holderWindow.document.write(`<html><head></head>${html}</html>`);
+    if (document.domain == 'stackblend.org') holderWindow.document.write(`<html><head><script type="text/javascript">document.domain = '${document.domain}';</script></head>${html}</html>`);
+    else holderWindow.document.write(`<html><head></head>${html}</html>`);
     holderWindow.document.close();
     
     let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', holderWindow.document)];
@@ -539,9 +540,10 @@ var WorkspaceHelper = {
     const walking = HTMLHelper.getElementByClassName('internal-fsb-walking', holder);
     if (walking) HTMLHelper.removeClass(selecting, 'internal-fsb-walking');
     
+    const outerHTML = holderWindow.document.body.outerHTML;
     document.body.removeChild(holder);
     
-    return holderWindow.document.body.outerHTML;
+    return outerHTML;
   },
   migrateCode: () => {
   	let element = document.getElementById('internal-fsb-stylesheet');

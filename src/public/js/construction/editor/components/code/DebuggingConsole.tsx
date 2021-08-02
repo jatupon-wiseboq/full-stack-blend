@@ -30,8 +30,7 @@ Object.assign(ExtendedDefaultProps, {
 class DebuggingConsole extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
-    
-    private repl: Console = null;
+    private repl: any = null;
     
     constructor(props) {
         super(props);
@@ -50,48 +49,56 @@ class DebuggingConsole extends Base<Props, State> {
           }
           return output.join(', ');
         });
+        this.repl = repl;
         
         if (this.props.window == window) {
+        	window.repl = repl;
+        	
           this.props.window.error = ((msg, url, line, col, error) => {
             this.props.window.setTimeout(() => {
               $('#codingButton')[0].click();
               $('#footerConsole')[0].click();
             }, 0);
-            this.props.window.repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
+            repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
           });
           this.props.window.onerror = this.props.window.error;
           
           this.props.window.console.log = ((...args) => {
-          	this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
+          	repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
           });
           this.props.window.console.error = ((...args) => {
             this.props.window.setTimeout(() => {
               $('#codingButton')[0].click();
               $('#footerConsole')[0].click();
             }, 0);
-  	        this.props.window.repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
+  	        repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
           });
           
           let output = document.createElement('div');
           output.className = 'jsconsole eclipse';
           output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
           document.body.append(output);
-        
-          this.props.window.repl = repl;
-          this.props.window.repl.on('entry', (event) => {
+        	
+          repl.on('entry', (event) => {
             this.props.window.setTimeout(() => {
               $('#codingButton')[0].click();
               $('#footerConsole')[0].click();
             }, 0);
           });
           this.props.window.setTimeout(() => {
-            this.props.window.repl.output.focus();
+            repl.output.focus();
           }, 10);
           this.props.window.setTimeout(() => {
-            this.props.window.repl.input.focus();
-            this.props.window.repl.resetInput();
+            repl.input.focus();
+            repl.resetInput();
           }, 20);
         } else {
+        	repl.evaluate = (code: any) => {
+		        var out = {};
+		        out.completionValue = 'executed';
+		        return out;
+		      };
+        
           top.addEventListener("message", ((event: any) => {
             let data = null;
             try {
@@ -100,13 +107,13 @@ class DebuggingConsole extends Base<Props, State> {
             
             switch (data.type) {
               case 'error':
-                this.props.window.repl.print(`${data.msg} (line: ${data.line}, col: ${data.col}) ${data.url}`, 'type-error');
+                repl.print(`${data.msg} (line: ${data.line}, col: ${data.col}) ${data.url}`, 'type-error');
                 break;
               case 'console.log':
-                this.props.window.repl.print(this.props.window.repl.simpleFormatter(...data.args), 'message');
+                repl.print(repl.simpleFormatter(...data.args), 'message');
                 break;
               case 'console.error':
-                this.props.window.repl.print(this.props.window.repl.simpleFormatter(...data.args), 'type-error');
+                repl.print(repl.simpleFormatter(...data.args), 'type-error');
                 break;
             }
             
@@ -118,6 +125,10 @@ class DebuggingConsole extends Base<Props, State> {
             });
           }).bind(this));
         }
+    }
+    
+    public reset() {
+    		this.repl.resetOutput();
     }
     
     public update(properties: any) {

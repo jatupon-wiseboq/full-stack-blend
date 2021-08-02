@@ -13,6 +13,8 @@ lib-cov
 
 *.crt
 *.key
+*.pui
+*.prj
 
 pids
 logs

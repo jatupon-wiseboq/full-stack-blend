@@ -85,7 +85,13 @@ class EndpointManager extends Base<Props, State> {
     private commit() {
       let _files = this.files;
       this.files = [];
-      return RequestHelper.post(`${window.ENDPOINT}/endpoint/update/content`, {
+      
+      let endpoint = window.ENDPOINT;
+     	if (endpoint.indexOf('https://localhost') == 0) {
+     		endpoint = 'https://localhost.stackblend.org';
+     	}
+      
+      return RequestHelper.post(`${endpoint}/endpoint/update/content`, {
         files: _files
       })
     }

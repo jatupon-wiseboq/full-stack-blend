@@ -41,6 +41,7 @@ class SitePreview extends Base<Props, State> {
     }
     
     public open() {
+    		this.refs.console && this.refs.console.reset();
         this.setState({loading: true, location: 'about:blank'});
         HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
     }
@@ -56,8 +57,23 @@ class SitePreview extends Base<Props, State> {
         pages = pages.filter(page => page.id == editingPageID);
         let PATH = pages && pages[0] && pages[0].path || null;
        	
-       	RequestHelper.get(`${ENDPOINT}${PATH}`).then((() => {
-       		this.setState({location: `${ENDPOINT}${PATH}`});
+       	let endpoint = window.ENDPOINT;
+       	if (endpoint.indexOf('https://localhost') == 0) {
+       		endpoint = 'https://localhost.stackblend.org';
+       	}
+       	
+       	RequestHelper.get(`${endpoint}${PATH}`).then((() => {
+	       	if (endpoint.indexOf('https://localhost') == 0) {
+	       		const construction = document.getElementById('area');
+      			let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+      			
+      			constructionWindow = constructionWindow.document || constructionWindow;
+      			
+      			constructionWindow.domain = 'stackblend.org';
+	       		document.domain = 'stackblend.org';
+	       	}
+       	
+       		this.setState({location: `${endpoint}${PATH}`});
        	}).bind(this));
     }
     
@@ -92,7 +108,7 @@ class SitePreview extends Base<Props, State> {
               iframe(ref="preview", id="preview", onLoad=this.load.bind(this), src=this.state.location)
             .iframe-console
               if _window != null
-                Console(window=_window)
+                Console(ref="console", window=_window)
           .loading-container(style={display: this.state.loading ? 'block' : 'none'})
             .linear-background
               .inter-left
