@@ -38,7 +38,7 @@ const AnimationHelper = {
     		}
     	  
   			const extensionInfo = extensions[animation];
-  			AnimationHelper.addPrestartStyles(animation, extensionInfo.selectors, extensionInfo.properties);
+  			extensionInfo && AnimationHelper.addPrestartStyles(animation, extensionInfo.selectors || [], extensionInfo.properties || []);
 	    	
 	    	if (!extensionRenderingLoopDictionary[animation]) {
 	    		extensionRenderingLoopDictionary[animation] = true;
