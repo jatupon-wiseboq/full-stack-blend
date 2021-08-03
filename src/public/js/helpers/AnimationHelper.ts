@@ -38,7 +38,7 @@ const AnimationHelper = {
     		}
     	  
   			const extensionInfo = extensions[animation];
-  			this.addPrestartStyles(animation, extensionInfo.selectors, extensionInfo.properties);
+  			AnimationHelper.addPrestartStyles(animation, extensionInfo.selectors, extensionInfo.properties);
 	    	
 	    	if (!extensionRenderingLoopDictionary[animation]) {
 	    		extensionRenderingLoopDictionary[animation] = true;
@@ -128,7 +128,7 @@ const AnimationHelper = {
     		let index = currentAnimations.indexOf('animation-group-' + animation);
     		if (index != -1) {
     			currentAnimations.splice(index, 1);
-    			this.removePrestartStyles(animation);
+    			AnimationHelper.removePrestartStyles(animation);
     		}
     		
     		const extensionInfo = extensions[animation];
@@ -156,7 +156,7 @@ const AnimationHelper = {
     
     for (const property of properties) {
       for (const selector of selectors) {
-        const style = this.getPrestartStyle(animationId, selector, property);
+        const style = AnimationHelper.getPrestartStyle(animationId, selector, property);
         
         if (style) {
           combinedStyleHashmap[property] = style;
