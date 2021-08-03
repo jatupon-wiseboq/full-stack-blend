@@ -622,7 +622,7 @@ var AnimationHelper = {
 				  		}
 					  }
 					  
-					  if (track.keyframes.length != 0) extensionInfo.tracks.push(track);
+					  if (track.keyframes.length != 0 || track.properties.length != 0) extensionInfo.tracks.push(track);
 		  		}
 		  	}
 		  	
