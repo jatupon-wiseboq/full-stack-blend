@@ -10,7 +10,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 const notificationInfos = {};
-const sessionLookupTable = {};
+const sessionLookupTable: {[Identifier: string]: any[]} = {};
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
@@ -25,7 +25,7 @@ socket.sockets.on("connection", (socket) => {
   const sessionId = req.signedCookies["connect.sid"];
 	if (!sessionId) return;
   
-  const setSocket = (socket: any): boolean => {
+  const setSocket = (sockets: any[]): boolean => {
   	let hasState: boolean = false;
   	
   	for (const group in notificationInfos) {
@@ -41,44 +41,46 @@ socket.sockets.on("connection", (socket) => {
 			  				const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
 			  				
 			  				if (combinationInfo.hasOwnProperty(sessionId)) {
-			  					if (socket != null) {
+			  					if (sockets != null) {
 				  					if (combinationInfo[sessionId] === false) {
 				  						setSocket(null);
 				  						return false;
 				  					} else {
-				  						if (Array.isArray(combinationInfo[sessionId])) {
-					  						for (const item of combinationInfo[sessionId]) {
-					  							switch (item.action) {
-											  		case ActionType.Insert:
-											  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
-											  				id: md5OfClientTableUpdatingIdentity,
-											  				results: item.results
-											  			});
-											  			break;
-											  		case ActionType.Update:
-											  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
-											  				id: md5OfClientTableUpdatingIdentity,
-											  				results: item.results
-											  			});
-											  			break;
-											  		case ActionType.Upsert:
-											  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
-											  				id: md5OfClientTableUpdatingIdentity,
-											  				results: item.results
-											  			});
-											  			break;
-											  		case ActionType.Delete:
-											  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
-											  				id: md5OfClientTableUpdatingIdentity,
-											  				results: item.results
-											  			});
-											  			break;
-											  	}
-					  						}
-					  					}
+				  						for (const socket of sockets) {
+				  							if (Array.isArray(combinationInfo[sessionId])) {
+						  						for (const item of combinationInfo[sessionId]) {
+						  							switch (item.action) {
+												  		case ActionType.Insert:
+												  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
+												  				id: md5OfClientTableUpdatingIdentity,
+												  				results: item.results
+												  			});
+												  			break;
+												  		case ActionType.Update:
+												  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
+												  				id: md5OfClientTableUpdatingIdentity,
+												  				results: item.results
+												  			});
+												  			break;
+												  		case ActionType.Upsert:
+												  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
+												  				id: md5OfClientTableUpdatingIdentity,
+												  				results: item.results
+												  			});
+												  			break;
+												  		case ActionType.Delete:
+												  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
+												  				id: md5OfClientTableUpdatingIdentity,
+												  				results: item.results
+												  			});
+												  			break;
+												  	}
+						  						}
+						  					}
+				  						}
 					  					
 				  						hasState = true;
-							  			combinationInfo[sessionId] = socket;
+							  			combinationInfo[sessionId] = {sockets: [...sockets]};
 				  					}
 				  				} else {
 				  					combinationInfo[sessionId] = null;
@@ -97,18 +99,33 @@ socket.sockets.on("connection", (socket) => {
   if (!setSocket(socket)) {
   	socket.emit("command", "refresh");
   }
-	sessionLookupTable[sessionId] = socket;
+  if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
+  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
+  	sessionLookupTable[sessionId].push(socket);
+  }
   
   socket.on("disconnect", (socket) => {
-  	if (sessionLookupTable[sessionId] == socket && !sessionLookupTable[sessionId].connected) {
-	  	setSocket(null);
-	  	sessionLookupTable[sessionId] = null;
+  	if (!socket.connected) {
+  		const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
+  		if (index != -1) {
+  			sessionLookupTable[sessionId].splice(index, 1);
+  		}
+  		
+  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
+  			sessionLookupTable[sessionId] = null;
+  			setSocket(null);
+  		} else {
+  			setSocket(sessionLookupTable[sessionId]);
+  		}
 	  }
   });
   
   socket.on("reconnect", (socket) => {
-  	setSocket(socket);
-  	sessionLookupTable[sessionId] = socket;
+  	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
+	  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
+  		sessionLookupTable[sessionId].push(socket);
+	  }
+  	setSocket(sessionLookupTable[sessionId]);
   });
 });
 
@@ -214,7 +231,9 @@ const NotificationHelper = {
   							}
   							else if (combinationInfo[sessionId] != null && !Array.isArray(combinationInfo[sessionId])) {
   								identitiesInfo.sessions.push(sessionId);
-  								identitiesInfo.listeners.push(combinationInfo[sessionId]);
+  								for (const socket of combinationInfo[sessionId].sockets) {
+  									identitiesInfo.listeners.push(socket);
+  								}
   							} else {
   								// For socket initializing delay
   								//
