@@ -560,7 +560,7 @@ var AnimationHelper = {
 				  			}
 				  			
 				  			for (const key in combinedNoneAssignmentHashmap) {
-				  			  if (combinedNoneAssignmentHashmap.hasOwnProperty(key)) {
+				  			  if (combinedNoneAssignmentHashmap.hasOwnProperty(key) && combinedNoneAssignmentHashmap[key] === true) {
 				  			    track.properties.push(key);
 				  			  }
 				  			}
