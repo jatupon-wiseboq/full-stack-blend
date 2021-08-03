@@ -10,7 +10,7 @@ let resetCount = 0;
 
 declare let window: any;
 
-const AnimationHelper = window.AnimationHelper || {
+const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset && window.AnimationHelper || {
 	// Document Object Model (DOM) Queries
 	// 
   add: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
