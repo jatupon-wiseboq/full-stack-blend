@@ -96,12 +96,14 @@ socket.sockets.on("connection", (socket) => {
 	  return hasState;
   };
   
-  if (!setSocket(socket)) {
-  	socket.emit("command", "refresh");
-  }
   if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
   	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
   	sessionLookupTable[sessionId].push(socket);
+  }
+  if (!setSocket(sessionLookupTable[sessionId])) {
+  	for (const socket of sessionLookupTable[sessionId]) {
+  		socket.emit("command", "refresh");
+  	}
   }
   
   socket.on("disconnect", (socket) => {
@@ -166,7 +168,7 @@ const NotificationHelper = {
   	const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
   	
   	if (!combinationInfo.hasOwnProperty(session.id)) {
-  		combinationInfo[session.id] = sessionLookupTable[session.id] || null;
+  		combinationInfo[session.id] = [...sessionLookupTable[session.id]] || null;
   	}
   	
   	return md5OfClientTableUpdatingIdentity;
