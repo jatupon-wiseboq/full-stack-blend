@@ -10,7 +10,7 @@ let resetCount = 0;
 
 declare let window: any;
 
-const AnimationHelper = {
+const AnimationHelper = window.AnimationHelper || {
 	// Document Object Model (DOM) Queries
 	// 
   add: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
@@ -214,6 +214,8 @@ if (window.__animationHelperDelayedAddings !== undefined) {
 	
 	window.__animationHelperDelayedAddings = undefined;
 }
+
+window.AnimationHelper = AnimationHelper;
 
 export {AnimationHelper};
 
