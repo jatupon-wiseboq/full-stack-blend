@@ -247,7 +247,7 @@ const RequestHelper = {
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
-				if (values[key] != null && typeof values[key] == 'object') {
+				if (values[key] != null && typeof values[key] == 'object' && !(values[key] instanceof Date)) {
 					for (const indexes in values[key]) {
 						_values[`${key}[${indexes}]`] = values[key][indexes];
 					}

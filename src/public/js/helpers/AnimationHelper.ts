@@ -36,6 +36,9 @@ const AnimationHelper = {
     				HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     			}, 0);
     		}
+    	  
+  			const extensionInfo = extensions[animation];
+  			this.addPrestartStyles(animation, extensionInfo.selectors, extensionInfo.properties);
 	    	
 	    	if (!extensionRenderingLoopDictionary[animation]) {
 	    		extensionRenderingLoopDictionary[animation] = true;
@@ -125,6 +128,7 @@ const AnimationHelper = {
     		let index = currentAnimations.indexOf('animation-group-' + animation);
     		if (index != -1) {
     			currentAnimations.splice(index, 1);
+    			this.removePrestartStyles(animation);
     		}
     		
     		const extensionInfo = extensions[animation];
@@ -143,6 +147,50 @@ const AnimationHelper = {
     	currentAnimations = currentAnimations.filter(currentAnimation => currentAnimation != '');
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
+  },
+  addPrestartStyles: (animationId: string, selectors: any, properties: any) => {
+    const prestartId = `prestart-${animationId}`;
+    if (document.getElementById(prestartId)) return;
+    
+    const combinedStyleHashmap = {};
+    
+    for (const property of properties) {
+      for (const selector of selectors) {
+        const style = this.getPrestartStyle(animationId, selector, property);
+        
+        if (style) {
+          combinedStyleHashmap[property] = style;
+          break;
+        }
+      }
+    }
+    
+    if (Object.keys(combinedStyleHashmap).length != 0) {
+      const element = document.createElement('style');
+      element.setAttribute('type', 'text/css');
+      element.setAttribute('id', prestartId);
+      
+      element.innerText = HTMLHelper.getInlineStyleFromHashMap(combinedStyleHashmap);
+      
+      const firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
+      document.head.insertBefore(element, firstStyleElement);
+    }
+  },
+  removePrestartStyles: (animationId: string) => {
+    const prestartId = `prestart-${animationId}`;
+    const element = document.getElementById(prestartId);
+    
+    element && element.parentNode && element.parentNode.removeChild(element);
+  },
+  getPrestartStyle: (animationId: string, selector: string, property: string): string => {
+    const elements = Array.from(document.querySelectorAll(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}, [internal-fsb-animation*="animation-group-${animationId}"] ${selector}`));
+    
+    if (elements.length != 0) {
+      const computedStyle = window.getComputedStyle(elements[0], null);
+      return computedStyle[property] || null;
+    }
+    
+    return null;
   },
   register: (animationId: string, extensionInfo: any) => {
   	extensions[animationId] = extensionInfo;
