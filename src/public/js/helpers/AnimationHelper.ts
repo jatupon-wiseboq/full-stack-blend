@@ -182,7 +182,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       	lines.push(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}, [internal-fsb-animation*="animation-group-${animationId}"] ${selector} { ${HTMLHelper.getInlineStyleFromHashMap(combinedStyleHashmap)} }`);
       }
       
-      element.innerText = lines.join('\n');
+      element.innerHTML = lines.join(' ');
       
       const firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
       document.head.insertBefore(element, firstStyleElement);
