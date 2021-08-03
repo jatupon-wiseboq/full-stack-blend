@@ -10,7 +10,7 @@ let resetCount = 0;
 
 declare let window: any;
 
-const AnimationHelper = {
+const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset && window.AnimationHelper || {
 	// Document Object Model (DOM) Queries
 	// 
   add: (animations: any, container: any=HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
@@ -36,9 +36,6 @@ const AnimationHelper = {
     				HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     			}, 0);
     		}
-    	  
-  			const extensionInfo = extensions[animation];
-  			extensionInfo && AnimationHelper.addPrestartStyles(animation, extensionInfo.selectors || [], extensionInfo.properties || []);
 	    	
 	    	if (!extensionRenderingLoopDictionary[animation]) {
 	    		extensionRenderingLoopDictionary[animation] = true;
@@ -112,6 +109,16 @@ const AnimationHelper = {
     		}
     	}
     	
+			const guid = HTMLHelper.getAttribute(container, 'internal-fsb-guid');
+    	for (let animation of animations) {
+				const extensionInfo = extensions[animation];
+				if (extensionInfo) {
+	  			for (let i=0; i<extensionInfo.tracks.length; i++) {
+	  				AnimationHelper.addPrestartStyles(animation, guid, extensionInfo.tracks[i].selectors || [], extensionInfo.tracks[i].properties || []);
+	  			}
+	  		}
+	  	}
+    	
     	currentAnimations = currentAnimations.filter(currentAnimation => currentAnimation != '');
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
@@ -148,7 +155,7 @@ const AnimationHelper = {
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
   },
-  addPrestartStyles: (animationId: string, selectors: any, properties: any) => {
+  addPrestartStyles: (animationId: string, guid: string, selectors: any, properties: any) => {
     const prestartId = `prestart-${animationId}`;
     if (document.getElementById(prestartId)) return;
     
@@ -156,7 +163,7 @@ const AnimationHelper = {
     
     for (const property of properties) {
       for (const selector of selectors) {
-        const style = AnimationHelper.getPrestartStyle(animationId, selector, property);
+        const style = AnimationHelper.getPrestartStyle(guid, selector, property);
         
         if (style) {
           combinedStyleHashmap[property] = style;
@@ -170,7 +177,12 @@ const AnimationHelper = {
       element.setAttribute('type', 'text/css');
       element.setAttribute('id', prestartId);
       
-      element.innerText = HTMLHelper.getInlineStyleFromHashMap(combinedStyleHashmap);
+      const lines = [];
+      for (const selector of selectors) {
+      	lines.push(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}, [internal-fsb-animation*="animation-group-${animationId}"] ${selector} { ${HTMLHelper.getInlineStyleFromHashMap(combinedStyleHashmap)} }`);
+      }
+      
+      element.innerText = lines.join('\n');
       
       const firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
       document.head.insertBefore(element, firstStyleElement);
@@ -182,8 +194,8 @@ const AnimationHelper = {
     
     element && element.parentNode && element.parentNode.removeChild(element);
   },
-  getPrestartStyle: (animationId: string, selector: string, property: string): string => {
-    const elements = Array.from(document.querySelectorAll(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}, [internal-fsb-animation*="animation-group-${animationId}"] ${selector}`));
+  getPrestartStyle: (guid: string, selector: string, property: string): string => {
+    const elements = Array.from(document.querySelectorAll(`[internal-fsb-guid="${guid}"]${selector}, [internal-fsb-guid="${guid}"] ${selector}`));
     
     if (elements.length != 0) {
       const computedStyle = window.getComputedStyle(elements[0], null);
@@ -214,6 +226,8 @@ if (window.__animationHelperDelayedAddings !== undefined) {
 	
 	window.__animationHelperDelayedAddings = undefined;
 }
+
+window.AnimationHelper = AnimationHelper;
 
 export {AnimationHelper};
 
