@@ -80,7 +80,7 @@ socket.sockets.on("connection", (socket) => {
 				  						}
 					  					
 				  						hasState = true;
-							  			combinationInfo[sessionId] = {sockets: [...sockets]};
+							  		combinationInfo[sessionId] = sockets && {sockets: [...sockets]} || null;
 				  					}
 				  				} else {
 				  					combinationInfo[sessionId] = null;
@@ -168,7 +168,7 @@ const NotificationHelper = {
   	const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
   	
   	if (!combinationInfo.hasOwnProperty(session.id)) {
-  		combinationInfo[session.id] = [...sessionLookupTable[session.id]] || null;
+  		combinationInfo[session.id] = sessionLookupTable[session.id] && [...sessionLookupTable[session.id]] || null;
   	}
   	
   	return md5OfClientTableUpdatingIdentity;
