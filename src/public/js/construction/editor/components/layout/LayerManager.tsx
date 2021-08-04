@@ -67,6 +67,8 @@ class LayerManager extends Base<Props, State> {
     		let found = false;
     		
     		for (let node of nodes) {
+    		  node.selected = false;
+    		  
   				if (node.tag && node.tag.guid) {
   					const status = this.state.extensionValues[this.props.watchingExtensionNames[1]][node.tag.guid];
   					

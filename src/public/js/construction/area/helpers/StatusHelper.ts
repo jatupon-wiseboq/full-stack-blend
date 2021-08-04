@@ -11,8 +11,6 @@ var StatusHelper = {
 	invalidate: function(element: HTMLElement) {
 		cachedElementAuthoringStatuses = null;
 		cachedElementAuthoringRevision++;
-		
-		if (element != null) EditorHelper.updateEditorProperties();
 	},
   getElementAuthoringStatuses: () => {
   	if (cachedElementAuthoringStatuses != null) return cachedElementAuthoringStatuses;
@@ -77,7 +75,9 @@ var StatusHelper = {
 		if (reactMode) statuses.push('is-react-component');
 		if (presetName) statuses.push('is-containing-preset');
   	
-  	if (HTMLHelper.hasClass(element, 'internal-fsb-selecting')) statuses.push('-fsb-selecting');
+  	if (HTMLHelper.hasClass(element, 'internal-fsb-selecting')) {
+  	  statuses.push('-fsb-selecting');
+  	}
   	
   	return statuses.join(' ').trim();
   },
