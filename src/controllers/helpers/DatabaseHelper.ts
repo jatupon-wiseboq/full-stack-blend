@@ -555,7 +555,7 @@ const DatabaseHelper = {
 	  
 	  return results;
 	},
-	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null) => {
+	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null, root: boolean=true) => {
 		const tables = [];
 		
     DatabaseHelper.distinct(data);
@@ -563,7 +563,7 @@ const DatabaseHelper = {
 		if (baseSchema == null) {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
-		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division)) {
+		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, root)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		        
 		        const matches = [];
@@ -580,7 +580,7 @@ const DatabaseHelper = {
 		      }
 		    }
 	    }
-	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division)) {
+	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, root)) {
 		  const matches = [];
 	  	const current = {
 	      source: baseSchema.source,
@@ -641,20 +641,20 @@ const DatabaseHelper = {
         }
 	      
         for (const row of table.rows) {
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division, root)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
-            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise);
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise, false);
           }
           
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division, root)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
-            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise);
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise, false);
           }
         }
 	    }
