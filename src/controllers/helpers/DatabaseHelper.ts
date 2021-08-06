@@ -793,7 +793,7 @@ const DatabaseHelper = {
 	  
 	  return RelationalDatabaseORMClient.models[schema.group];
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -806,7 +806,7 @@ const DatabaseHelper = {
 	  		  	const input = list[key];
 	  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 	  		  	
-	  		  	await DatabaseHelper.performRecursiveInsert(input, schema, results, transaction, crossRelationUpsert, session, leavePermission);
+	  		  	await DatabaseHelper.performRecursiveInsert(input, schema, results, transaction, crossRelationUpsert, session, leavePermission, innerCircleTags);
 	  		  }
   		  }
 	      
@@ -822,7 +822,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -942,12 +942,12 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
 									  };
 									
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
-										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
 								}
 							  
@@ -997,7 +997,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1010,7 +1010,7 @@ const DatabaseHelper = {
 	  		  	const input = list[key];
 	  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 	  		  	
-	  		  	await DatabaseHelper.performRecursiveUpsert(input, schema, results, transaction, session, leavePermission);
+	  		  	await DatabaseHelper.performRecursiveUpsert(input, schema, results, transaction, session, leavePermission, innerCircleTags);
 	  		  }
   		  }
 	      
@@ -1026,7 +1026,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1158,11 +1158,11 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
 								}
 							
@@ -1207,7 +1207,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1220,7 +1220,7 @@ const DatabaseHelper = {
 	  		  	const input = list[key];
 	  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 	  		  	
-  		  		await DatabaseHelper.performRecursiveUpdate(input, schema, results, transaction, crossRelationUpsert, session, leavePermission);
+  		  		await DatabaseHelper.performRecursiveUpdate(input, schema, results, transaction, crossRelationUpsert, session, leavePermission, innerCircleTags);
   		  	}
   		  }
 	      
@@ -1236,7 +1236,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1366,12 +1366,12 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
-										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
 								}
 							
@@ -1416,7 +1416,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  const connectionInfos: {[Identifier: string]: any} = {};
 		  try {
@@ -1429,7 +1429,7 @@ const DatabaseHelper = {
 		  		  	const input = list[key];
 		  		  	const schema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		  		  	
-		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session, notifyUpdates, leavePermission, connectionInfos);
+		  		  	await DatabaseHelper.performRecursiveRetrieve(input, schema, results, session, notifyUpdates, leavePermission, connectionInfos, innerCircleTags);
 		  		  }
 	  		  }
 			  	
@@ -1579,7 +1579,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission: boolean=false, connectionInfos: {[Identifier: string]: any}={}): Promise<void> => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission: boolean=false, connectionInfos: {[Identifier: string]: any}={}, innerCircleTags: string[]=[]): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1676,7 +1676,7 @@ const DatabaseHelper = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: [],
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, keys, session) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, keys, session, innerCircleTags) : null
 							};
 	  					
 							results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
@@ -1711,7 +1711,7 @@ const DatabaseHelper = {
 							  			}
 							  		}
 									  
-									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission, connectionInfos);
+									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission, connectionInfos, innerCircleTags);
 							  	}
 							  }
 							}
