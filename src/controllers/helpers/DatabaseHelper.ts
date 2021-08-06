@@ -149,6 +149,8 @@ const DatabaseHelper = {
     let inputs = data.filter(item => (item.target == null || item.target == schema.source) && item.group == schema.group && item.premise == premise);
     const requiredKeys = {};
     
+    if (inputs.length == 0) return false;
+    
     switch (action) {
       case ActionType.Insert:
       case ActionType.Upsert:
@@ -646,7 +648,7 @@ const DatabaseHelper = {
         }
 	      
         for (const row of table.rows) {
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division, root)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division, false)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
@@ -654,7 +656,7 @@ const DatabaseHelper = {
             DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise, false);
           }
           
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division, root)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division, false)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
