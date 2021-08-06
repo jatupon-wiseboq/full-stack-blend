@@ -49,6 +49,7 @@ interface HierarchicalDataTable {
 	group: string;
   rows: HierarchicalDataRow[];
   notification?: string;
+  associate?: boolean;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -71,6 +72,12 @@ interface Input {
   premise: string;
   validation: ValidationInfo;
   division?: number[];
+  associate?: boolean;
+  notify?: boolean;
+}
+
+interface BooleanObject {
+	value: boolean;	
 }
 
 const fixType = (type: FieldType, value: any): any => {
@@ -138,7 +145,7 @@ const DatabaseHelper = {
     	data.splice(data.indexOf(item), 1);
     }
   },
-  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[], root: boolean=true): boolean => {
+  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[], associate: boolean=false): boolean => {
   	if (data.length == 0) return false;
   	
   	data = CodeHelper.clone(data);
@@ -192,7 +199,7 @@ const DatabaseHelper = {
     	existingKeys[input.name] = true;
     }
     
-    if (action != ActionType.Retrieve && root && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
+    if (action != ActionType.Retrieve && !associate && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
       return false;
     } else {
     	data = data.filter(item => (item.group != schema.group || item.premise != premise));
@@ -203,12 +210,13 @@ const DatabaseHelper = {
       
       for (const key of keys) {
       	const current = next.filter(item => item.group == key);
-      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, false)) {
+      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, associate || current[0] && current[0].associate === true)) {
         	return false;
         }
       }
       
     	const schemata = [];
+    	const associates = {};
     	const nextPremise = (premise == null) ? schema.group : `${premise}.${schema.group}`;
       
       next = data.filter(item => item.premise == nextPremise);
@@ -231,10 +239,12 @@ const DatabaseHelper = {
                 value: null,
                 guid: null,
                 division: input.division,
+                associate: input.associate,
 								premise: nextPremise,
                 validation: null
               });
               
+              associates[schema.relations[key].targetGroup] = associates[schema.relations[key].targetGroup] || (input.associate === true);
               found = true;
             }
           }
@@ -246,8 +256,8 @@ const DatabaseHelper = {
       DatabaseHelper.distinct(next);
       
       for (const nextSchema of schemata) {
-        if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division, false) &&
-          !DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [], false)) {
+        if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division, associate || associates[nextSchema.group]) &&
+          !DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [], associate || associates[nextSchema.group])) {
           return false;
         }
       }
@@ -255,7 +265,7 @@ const DatabaseHelper = {
       return true;
     }
   },
-  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[], matches: Input[], root: boolean=true): HierarchicalDataRow[] => {
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[], matches: Input[], associate: boolean=false): HierarchicalDataRow[] => {
   	const results: HierarchicalDataRow[] = [];
   	const map: any = {};
 	  let found = false;
@@ -303,7 +313,7 @@ const DatabaseHelper = {
 			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
 			        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
 			          if (row.keys[key] === undefined || row.keys[key] === null) {
-			          	if (!root) continue;
+			          	if (associate) continue;
 			            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			            switch (schema.keys[key].fieldType) {
@@ -332,7 +342,7 @@ const DatabaseHelper = {
 			      case ActionType.Upsert:
 			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
 		          if (schema.keys[key].fieldType != FieldType.AutoNumber && (row.keys[key] === undefined || row.keys[key] === null)) {
-			          if (!root) continue;
+			          if (associate) continue;
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
@@ -359,7 +369,7 @@ const DatabaseHelper = {
 			        break;
 			      case ActionType.Update:
 		          if (row.keys[key] === undefined || row.keys[key] === null) {
-			          if (!root) continue;
+			          if (associate) continue;
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
@@ -421,7 +431,7 @@ const DatabaseHelper = {
 			      case ActionType.Insert:
 			        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
 			          if (schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
-			          	if (!root) continue;
+			          	if (associate) continue;
 			            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			          	if (row.columns[key]) {
@@ -451,7 +461,7 @@ const DatabaseHelper = {
 			        break;
 			      case ActionType.Upsert:
 		          if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
-		          	if (!root) continue;
+		          	if (associate) continue;
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		          	if (row.columns[key]) {
@@ -562,7 +572,7 @@ const DatabaseHelper = {
 	  
 	  return results;
 	},
-	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null, root: boolean=true) => {
+	recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert=false, division: number[], premise: string=null, associate: boolean=false) => {
 		const tables = [];
 		
     DatabaseHelper.distinct(data);
@@ -570,14 +580,16 @@ const DatabaseHelper = {
 		if (baseSchema == null) {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
-		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, root)) {
+	    		const _associate = associate || data.some(input => input.group == key && input.associate === true);
+		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, _associate)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		        
 		        const matches = [];
 		        const current = {
 				      source: baseSchema.source,
 				      group: baseSchema.group,
-				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, root)
+				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
+				      associate: _associate
 				    };
 				    tables.push(current);
 	    			
@@ -587,19 +599,23 @@ const DatabaseHelper = {
 		      }
 		    }
 	    }
-	  } else if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, root)) {
-		  const matches = [];
-	  	const current = {
-	      source: baseSchema.source,
-	      group: baseSchema.group,
-	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, root)
-	    };
-	    tables.push(current);
-	    
-	    for (const item of matches) {
-	   		data.splice(data.indexOf(item), 1);
-	    }
-	  }
+	  } else {
+	   	const _associate = associate || data.some(input => input.group == baseSchema.group && input.associate === true);
+	  	if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, _associate)) {
+			  const matches = [];
+		  	const current = {
+		      source: baseSchema.source,
+		      group: baseSchema.group,
+		      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
+				  associate: _associate
+		    };
+		    tables.push(current);
+		    
+		    for (const item of matches) {
+		   		data.splice(data.indexOf(item), 1);
+		    }
+		  }
+		}
 	  
     for (const table of tables) {
     	if (results[table.group]) results[table.group].rows = results[table.group].rows.concat(table.rows);
@@ -638,6 +654,7 @@ const DatabaseHelper = {
             value: '123',
             guid: (input.division.length == 0) ? '' : '[' + input.division.join(',') + ']',
             division: input.division,
+            associate: input.associate,
 						premise: nextPremise,
             validation: null
           };
@@ -647,21 +664,23 @@ const DatabaseHelper = {
           _based.push(input);
         }
 	      
+       	const _associate = associate || _data.some(input => input.group == key && input.associate === true);
+        
         for (const row of table.rows) {
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division, false)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, division, _associate)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
-            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise, false);
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, division, nextPremise, _associate);
           }
           
-          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division, false)) {
+          if (DatabaseHelper.satisfy(_data, action, ProjectConfigurationHelper.getDataSchema().tables[key], nextPremise, row.division, _associate)) {
             for (const i in _appended) {
             	if (data.indexOf(_based[i]) != -1) data.push(_appended[i]);
             }
             
-            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise, false);
+            DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise, _associate);
           }
         }
 	    }
@@ -783,7 +802,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -853,7 +872,7 @@ const DatabaseHelper = {
 							} catch (error) {
 								// Attach beyond information for notifying
 								//
-								if (Object.keys(row.columns).length == 0 && !root) {
+								if (associate) {
 									if (input.source == SourceType.Relational) {
 										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
@@ -933,8 +952,8 @@ const DatabaseHelper = {
 										  rows: []
 									  };
 									
-										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, false);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, row.relations[key].associate);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
 									}
 								}
 							  
@@ -1013,7 +1032,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1087,7 +1106,7 @@ const DatabaseHelper = {
 							} catch (error) {
 								// Attach beyond information for notifying
 								//
-								if (Object.keys(row.columns).length == 0 && !root) {
+								if (associate) {
 									if (input.source == SourceType.Relational) {
 										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
@@ -1175,7 +1194,7 @@ const DatabaseHelper = {
 										  rows: []
 									  };
 									
-										await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+										await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
 									}
 								}
 							
@@ -1249,7 +1268,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1329,7 +1348,7 @@ const DatabaseHelper = {
 							} catch (error) {
 								// Attach beyond information for notifying
 								//
-								if (Object.keys(row.columns).length == 0 && !root) {
+								if (associate) {
 									if (input.source == SourceType.Relational) {
 										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
@@ -1409,8 +1428,8 @@ const DatabaseHelper = {
 										  rows: []
 									  };
 										
-										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, row.relations[key].associate);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
 									}
 								}
 							

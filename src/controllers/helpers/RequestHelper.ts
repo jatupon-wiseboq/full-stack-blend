@@ -207,12 +207,14 @@ const RequestHelper = {
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: group,
+  		group: group.replace(/@/g, ''),
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
   		premise: premise || null,
   		division: indexes,
+  		associate: group.indexOf('!') <= 1,
+  		notify: group.indexOf('@') <= 1,
   		validation: null
 		};
 		
@@ -264,7 +266,8 @@ const RequestHelper = {
 				const splited = namespace.split('.');
 				const indexes = JSON.parse('[' + (key.split('[')[1] || ']'));
 				const name = splited.pop() || null;
-				const group = splited.pop() || null;
+				const _group = splited.pop() || null;
+				const group = _group.replace(/@/g, '');
 				const premise = splited.join('.') || null;
 				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
@@ -295,6 +298,8 @@ const RequestHelper = {
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
+  					associate: _group.indexOf('!') <= 1,
+  					notify: _group.indexOf('@') <= 1,
 			  		validation: null
 					};
 					
@@ -310,6 +315,8 @@ const RequestHelper = {
 				  		guid: `${namespace}[${index++}]`,
 				  		premise: premise,
 		  				division: indexes,
+  						associate: _group.indexOf('!') <= 1,
+  						notify: _group.indexOf('@') <= 1,
 				  		validation: null
 						};
 						
@@ -324,6 +331,8 @@ const RequestHelper = {
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise,
 		  			division: indexes,
+  					associate: _group.indexOf('!') <= 1,
+  					notify: _group.indexOf('@') <= 1,
 			  		validation: null
 					};
 					
