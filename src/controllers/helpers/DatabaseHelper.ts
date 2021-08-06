@@ -930,7 +930,8 @@ const DatabaseHelper = {
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
-										  rows: []
+										  rows: [],
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 									
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
@@ -1145,7 +1146,8 @@ const DatabaseHelper = {
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
-										  rows: []
+										  rows: [],
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
@@ -1352,7 +1354,8 @@ const DatabaseHelper = {
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
-										  rows: []
+										  rows: [],
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
