@@ -154,7 +154,7 @@ const DatabaseHelper = {
       case ActionType.Upsert:
         for (const key in schema.columns) {
           if (schema.columns.hasOwnProperty(key)) {
-            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && !root) {
+            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && root) {
               requiredKeys[key] = schema.columns[key];
             }
           }
@@ -792,11 +792,21 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 							const data = {};
+		      		const query = {};
 							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
 							      data[key] = row.columns[key];
+							    }
+							    if (input.source == SourceType.Document) {
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
+							    } else {
+							    	query[key] = row.columns[key];
 							    }
 							  }
 							}
@@ -804,6 +814,15 @@ const DatabaseHelper = {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
 							      keys[key] = row.keys[key];
+							    }
+							    if (input.source == SourceType.Document) {
+							    	if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      } else {
+							      	query[key] = {$eq: row.keys[key]};
+							      }
+							    } else {
+							    	query[key] = row.keys[key];
 							    }
 							  }
 							}
@@ -829,10 +848,10 @@ const DatabaseHelper = {
 								//
 								if (Object.keys(row.columns).length == 0 && !root) {
 									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
 										records = await new Promise(async (resolve, reject) => {
-											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(keys).toArray((error: any, results: any) => {
+											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
 												if (error) {
 													reject(error);
 												} else {
@@ -1003,12 +1022,21 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 							const data = {};
-							const query = {};
-						
+		      		const query = {};
+							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
 							      data[key] = row.columns[key];
+							    }
+							    if (input.source == SourceType.Document) {
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
+							    } else {
+							    	query[key] = row.columns[key];
 							    }
 							  }
 							}
@@ -1016,11 +1044,15 @@ const DatabaseHelper = {
 							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
 							      keys[key] = row.keys[key];
-							      if (input.source == SourceType.Document && key == 'id') {
+							    }
+							    if (input.source == SourceType.Document) {
+							    	if (key == 'id') {
 							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
+							    } else {
+							    	query[key] = row.keys[key];
 							    }
 							  }
 							}
@@ -1046,7 +1078,7 @@ const DatabaseHelper = {
 								//
 								if (Object.keys(row.columns).length == 0 && !root) {
 									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
 										records = await new Promise(async (resolve, reject) => {
 											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
@@ -1222,21 +1254,34 @@ const DatabaseHelper = {
 						for (const row of input.rows) {
 							const keys = {};
 							const data = {};
-							const query = {};
-						
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document && key == 'id') {
-						      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-						      } else {
-						      	query[key] = {$eq: row.keys[key]};
-						      }
-							  }
-							}
+		      		const query = {};
+							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    data[key] = row.columns[key];
+							    if (input.source == SourceType.Document) {
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
+							    } else {
+							    	query[key] = row.columns[key];
+							    }
+							  }
+							}
+							for (const key in schema.keys) {
+							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+							    keys[key] = row.keys[key];
+							    if (input.source == SourceType.Document) {
+							    	if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      } else {
+							      	query[key] = {$eq: row.keys[key]};
+							      }
+							    } else {
+							    	query[key] = row.keys[key];
+							    }
 							  }
 							}
 							
@@ -1271,7 +1316,7 @@ const DatabaseHelper = {
 								//
 								if (Object.keys(row.columns).length == 0 && !root) {
 									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+										records = await map.findAll({where: query}) || [];
 									} else if (input.source == SourceType.Document) {
 										records = await new Promise(async (resolve, reject) => {
 											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
@@ -1572,20 +1617,21 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(baseSchema) : null;
 						
 						for (const row of input.rows) {
-		      		const keys = {};
-		      		const data = {};
+							const keys = {};
+							const data = {};
 		      		const query = {};
 							
 							for (const key in baseSchema.columns) {
 							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 							    data[key] = row.columns[key];
-							    keys[key] = row.columns[key];
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
 							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
+							    } else {
+							    	query[key] = row.columns[key];
 							    }
 							  }
 							}
@@ -1598,6 +1644,8 @@ const DatabaseHelper = {
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
+							    } else {
+							    	query[key] = row.keys[key];
 							    }
 							  }
 							}
@@ -1776,14 +1824,18 @@ const DatabaseHelper = {
 						
 						for (const row of input.rows) {
 							const keys = {};
+							const data = {};
 		      		const query = {};
-		      		const data = {};
-						
+							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+							    data[key] = row.columns[key];
 							    if (input.source == SourceType.Document) {
-							      /* use manual filtering */
-							    	data[key] = row.columns[key];
+							      if (key == 'id') {
+							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      } else {
+							      	query[key] = {$eq: row.columns[key]};
+							      }
 							    } else {
 							    	query[key] = row.columns[key];
 							    }
@@ -1795,10 +1847,8 @@ const DatabaseHelper = {
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
 							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-							    		data['_id'] = row.keys[key];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
-							    		data[key] = row.keys[key];
 							      }
 							    } else {
 							    	query[key] = row.keys[key];
