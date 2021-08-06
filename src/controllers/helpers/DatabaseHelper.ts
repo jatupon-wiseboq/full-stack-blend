@@ -138,7 +138,7 @@ const DatabaseHelper = {
     	data.splice(data.indexOf(item), 1);
     }
   },
-  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[]): boolean => {
+  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[]=[], root: boolean=true): boolean => {
   	if (data.length == 0) return false;
   	
   	data = CodeHelper.clone(data);
@@ -154,7 +154,7 @@ const DatabaseHelper = {
       case ActionType.Upsert:
         for (const key in schema.columns) {
           if (schema.columns.hasOwnProperty(key)) {
-            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required) {
+            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && !root) {
               requiredKeys[key] = schema.columns[key];
             }
           }
@@ -201,7 +201,7 @@ const DatabaseHelper = {
       
       for (const key of keys) {
       	const current = next.filter(item => item.group == key);
-      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise, division)) {
+      	if (!DatabaseHelper.satisfy(current, action,  ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, false)) {
         	return false;
         }
       }
@@ -244,8 +244,8 @@ const DatabaseHelper = {
       DatabaseHelper.distinct(next);
       
       for (const nextSchema of schemata) {
-        if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division) &&
-          !DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [])) {
+        if (!DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, division, false) &&
+          !DatabaseHelper.satisfy(next, action, nextSchema, nextPremise, next[0] && next[0].division || [], false)) {
           return false;
         }
       }
