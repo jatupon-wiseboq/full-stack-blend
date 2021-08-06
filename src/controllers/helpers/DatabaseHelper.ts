@@ -597,11 +597,6 @@ const DatabaseHelper = {
 				      notify: _notify
 				    };
 				    tables.push(current);
-				    
-				    tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
-				   		if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
-				   		else return 0;
-				    });
 	    			
 				  	for (const item of matches) {
 				   		data.splice(data.indexOf(item), 1);
@@ -623,11 +618,6 @@ const DatabaseHelper = {
 				  notify: _notify
 		    };
 		    tables.push(current);
-		    
-		    tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
-		   		if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
-		   		else return 0;
-		    });
 		    
 		    for (const item of matches) {
 		   		data.splice(data.indexOf(item), 1);
@@ -701,6 +691,17 @@ const DatabaseHelper = {
             
             DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise, _associate);
           }
+          
+          const _tables = Object.keys(row.relations).map((key: string) => { return row.relations[key]; });
+			    _tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
+			   		if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
+			   		else return 0;
+			    });
+			    
+			    row.relations = {};
+			    for (const table of _tables) {
+			    	row.relations[table.group] = table;
+			    }
         }
 	    }
 		}
