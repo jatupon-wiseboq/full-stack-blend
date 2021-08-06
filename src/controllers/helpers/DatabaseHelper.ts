@@ -50,6 +50,7 @@ interface HierarchicalDataTable {
   rows: HierarchicalDataRow[];
   notification?: string;
   associate?: boolean;
+  notify?: boolean;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -240,6 +241,7 @@ const DatabaseHelper = {
                 guid: null,
                 division: input.division,
                 associate: input.associate,
+                notify: input.notify,
 								premise: nextPremise,
                 validation: null
               });
@@ -581,6 +583,8 @@ const DatabaseHelper = {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
 	    		const _associate = associate || data.some(input => input.group == key && input.associate === true);
+	    		const _notify = data.some(input => input.group == key && input.notify === true);
+	    		
 		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, _associate)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 		        
@@ -589,7 +593,8 @@ const DatabaseHelper = {
 				      source: baseSchema.source,
 				      group: baseSchema.group,
 				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
-				      associate: _associate
+				      associate: _associate,
+				      notify: _notify
 				    };
 				    tables.push(current);
 	    			
@@ -601,13 +606,16 @@ const DatabaseHelper = {
 	    }
 	  } else {
 	   	const _associate = associate || data.some(input => input.group == baseSchema.group && input.associate === true);
+	   	const _notify = data.some(input => input.group == baseSchema.group && input.notify === true);
+	    
 	  	if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, _associate)) {
 			  const matches = [];
 		  	const current = {
 		      source: baseSchema.source,
 		      group: baseSchema.group,
 		      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
-				  associate: _associate
+				  associate: _associate,
+				  notify: _notify
 		    };
 		    tables.push(current);
 		    
@@ -655,6 +663,7 @@ const DatabaseHelper = {
             guid: (input.division.length == 0) ? '' : '[' + input.division.join(',') + ']',
             division: input.division,
             associate: input.associate,
+            notify: input.notify,
 						premise: nextPremise,
             validation: null
           };
@@ -802,7 +811,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -857,42 +866,14 @@ const DatabaseHelper = {
 							
 							let records = [];
 							
-							try {
-								// Manipulate
-								// 
-								if (input.source == SourceType.Relational) {
-									records[0] = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
-								} else if (input.source == SourceType.Document) {
-									records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
-								} else if (input.source == SourceType.VolatileMemory) {
-									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
-									records[0] = Object.assign({}, data, keys);
-								}
-							} catch (error) {
-								// Attach beyond information for notifying
-								//
-								if (associate) {
-									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: query}) || [];
-									} else if (input.source == SourceType.Document) {
-										records = await new Promise(async (resolve, reject) => {
-											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
-												if (error) {
-													reject(error);
-												} else {
-													resolve(results);
-												}
-											});
-										});
-									} else if (input.source == SourceType.VolatileMemory) {
-										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-										const record = await VolatileMemoryClient.get(_key);
-										records = record && [JSON.parse(record)] || [];
-									}
-								} else {
-									throw error;
-								}
+							if (input.source == SourceType.Relational) {
+								records[0] = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
+							} else if (input.source == SourceType.VolatileMemory) {
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
+								records[0] = Object.assign({}, data, keys);
 							}
 							
 							for (const record of records) {
@@ -952,8 +933,9 @@ const DatabaseHelper = {
 										  rows: []
 									  };
 									
-										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, row.relations[key].associate);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
 								}
 							  
@@ -1032,7 +1014,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1089,44 +1071,16 @@ const DatabaseHelper = {
 							
 							let records = [];
 							
-							try {
-								// Manipulate
-								// 
-								if (input.source == SourceType.Relational) {
-									records[0] = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
-								} else if (input.source == SourceType.Document) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpsert, {$set: data}, {upsert: true});
-									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpsert);
-								} else if (input.source == SourceType.VolatileMemory) {
-									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
-									records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
-								}
-							} catch (error) {
-								// Attach beyond information for notifying
-								//
-								if (associate) {
-									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: query}) || [];
-									} else if (input.source == SourceType.Document) {
-										records = await new Promise(async (resolve, reject) => {
-											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
-												if (error) {
-													reject(error);
-												} else {
-													resolve(results);
-												}
-											});
-										});
-									} else if (input.source == SourceType.VolatileMemory) {
-										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-										const record = await VolatileMemoryClient.get(_key);
-										records = record && [JSON.parse(record)] || [];
-									}
-								} else {
-									throw error;
-								}
+							if (input.source == SourceType.Relational) {
+								records[0] = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
+							} else if (input.source == SourceType.Document) {
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpsert, {$set: data}, {upsert: true});
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpsert);
+							} else if (input.source == SourceType.VolatileMemory) {
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
 							
 							for (const record of records) {
@@ -1193,8 +1147,9 @@ const DatabaseHelper = {
 											group: nextSchema.group,
 										  rows: []
 									  };
-									
-										await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
+										
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
 								}
 							
@@ -1268,7 +1223,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, associate: boolean=false): Promise<void> => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1323,53 +1278,25 @@ const DatabaseHelper = {
 							
 							let records = [];
 							
-							try {
-								// Manipulate
-								// 
-								if (input.source == SourceType.Relational) {
-									await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
-									records[0] = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
-								} else if (input.source == SourceType.Document) {
-									if (Object.keys(data).length != 0) {
-										await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpdate, {$set: data});
-									}
-									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpdate);
-								} else if (input.source == SourceType.VolatileMemory) {
-									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
-									records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
+							if (input.source == SourceType.Relational) {
+								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
+								records[0] = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
+							} else if (input.source == SourceType.Document) {
+								if (Object.keys(data).length != 0) {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpdate, {$set: data});
 								}
-								
-							  if (!records[0]) {
-							  	resolve();
-							  	return;
-							  }
-							} catch (error) {
-								// Attach beyond information for notifying
-								//
-								if (associate) {
-									if (input.source == SourceType.Relational) {
-										records = await map.findAll({where: query}) || [];
-									} else if (input.source == SourceType.Document) {
-										records = await new Promise(async (resolve, reject) => {
-											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
-												if (error) {
-													reject(error);
-												} else {
-													resolve(results);
-												}
-											});
-										});
-									} else if (input.source == SourceType.VolatileMemory) {
-										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-										const record = await VolatileMemoryClient.get(_key);
-										records = record && [JSON.parse(record)] || [];
-									}
-								} else {
-									throw error;
-								}
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpdate);
+							} else if (input.source == SourceType.VolatileMemory) {
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
+							
+						  if (!records[0]) {
+						  	resolve();
+						  	return;
+						  }
 							
 							for (const record of records) {
 							  const result = {
@@ -1428,8 +1355,9 @@ const DatabaseHelper = {
 										  rows: []
 									  };
 										
-										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, row.relations[key].associate);
-										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, row.relations[key].associate);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
 								}
 							
