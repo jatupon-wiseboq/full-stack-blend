@@ -747,7 +747,7 @@ const DatabaseHelper = {
 	  
 	  return RelationalDatabaseORMClient.models[schema.group];
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -776,7 +776,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<void> => {
+	performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -810,87 +810,118 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
-							let record = null;
-							if (input.source == SourceType.Relational) {
-								record = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
-							} else if (input.source == SourceType.Document) {
-								record = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
-							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
-								record = Object.assign({}, data, keys);
-							}
+							let records = [];
 							
-						  const result = {
-						    keys: {},
-						    columns: {},
-						    relations: {}
-						  };
-						  
-						  if (record['_id']) record['id'] = record['_id'].toString();
-						  
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-							  }
-							}
-							
-							results.push(result);
-							
-							for (const key in row.relations) {
-								if (row.relations.hasOwnProperty(key)) {
-									const relation = schema.relations[key];
-									const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-									
-						  		for (const nextRow of row.relations[key].rows) {
-						  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			}
-						  			} else {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			} else {
-							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			}
-						  			}
-						  		}
-						  		
-						  		result.relations[nextSchema.group] = {
-			  					  source: SourceType.Relational,
-										group: nextSchema.group,
-									  rows: []
-								  };
-								
-									if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
-									else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+							try {
+								// Manipulate
+								// 
+								if (input.source == SourceType.Relational) {
+									records[0] = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
+								} else if (input.source == SourceType.Document) {
+									records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
+								} else if (input.source == SourceType.VolatileMemory) {
+									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
+									records[0] = Object.assign({}, data, keys);
+								}
+							} catch (error) {
+								// Attach beyond information for notifying
+								//
+								if (Object.keys(row.columns).length == 0 && !root) {
+									if (input.source == SourceType.Relational) {
+										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+									} else if (input.source == SourceType.Document) {
+										records = await new Promise(async (resolve, reject) => {
+											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(keys).toArray((error: any, results: any) => {
+												if (error) {
+													reject(error);
+												} else {
+													resolve(results);
+												}
+											});
+										});
+									} else if (input.source == SourceType.VolatileMemory) {
+										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+										const record = await VolatileMemoryClient.get(_key);
+										records = record && [JSON.parse(record)] || [];
+									}
+								} else {
+									throw error;
 								}
 							}
-						  
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
-							  }
+							
+							for (const record of records) {
+							  const result = {
+							    keys: {},
+							    columns: {},
+							    relations: {}
+							  };
+							  
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								  }
+								}
+								
+								results.push(result);
+								
+								for (const key in row.relations) {
+									if (row.relations.hasOwnProperty(key)) {
+										const relation = schema.relations[key];
+										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										
+							  		for (const nextRow of row.relations[key].rows) {
+							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			} else {
+								  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			}
+							  			} else {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+							  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			} else {
+								  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			}
+							  			}
+							  		}
+							  		
+							  		result.relations[nextSchema.group] = {
+				  					  source: SourceType.Relational,
+											group: nextSchema.group,
+										  rows: []
+									  };
+									
+										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, false);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+									}
+								}
+							  
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+								  }
+								}
 							}
 						}
 						
@@ -927,7 +958,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
+	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -956,7 +987,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission=false): Promise<void> => {
+	performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -994,96 +1025,127 @@ const DatabaseHelper = {
 							  }
 							}
 							
-							let record = null;
-							if (input.source == SourceType.Relational) {
-								record = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
-							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
-								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
-							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
-								record = JSON.parse(await VolatileMemoryClient.get(_key));
-							}
+							let records = [];
 							
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    keys[key] = record[key];
-							  }
-							}
-							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
-							
-						  const result = {
-						    keys: {},
-						    columns: {},
-						    relations: {}
-						  };
-						  
-						  if (record['_id']) record['id'] = record['_id'].toString();
-						  
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-							  }
-							}
-							
-							results.push(result);
-							
-							for (const key in row.relations) {
-								if (row.relations.hasOwnProperty(key)) {
-									const relation = schema.relations[key];
-									const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-									
-						  		for (const nextRow of row.relations[key].rows) {
-						  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			}
-						  			} else {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			} else {
-							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			}
-						  			}
-						  		}
-						  		
-						  		result.relations[nextSchema.group] = {
-			  					  source: SourceType.Relational,
-										group: nextSchema.group,
-									  rows: []
-								  };
-								
-									await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+							try {
+								// Manipulate
+								// 
+								if (input.source == SourceType.Relational) {
+									records[0] = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
+								} else if (input.source == SourceType.Document) {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
+									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
+								} else if (input.source == SourceType.VolatileMemory) {
+									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+									records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
+								}
+							} catch (error) {
+								// Attach beyond information for notifying
+								//
+								if (Object.keys(row.columns).length == 0 && !root) {
+									if (input.source == SourceType.Relational) {
+										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+									} else if (input.source == SourceType.Document) {
+										records = await new Promise(async (resolve, reject) => {
+											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
+												if (error) {
+													reject(error);
+												} else {
+													resolve(results);
+												}
+											});
+										});
+									} else if (input.source == SourceType.VolatileMemory) {
+										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+										const record = await VolatileMemoryClient.get(_key);
+										records = record && [JSON.parse(record)] || [];
+									}
+								} else {
+									throw error;
 								}
 							}
-						
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
-							  }
+							
+							for (const record of records) {
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    keys[key] = record[key];
+								  }
+								}
+								
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+								
+							  const result = {
+							    keys: {},
+							    columns: {},
+							    relations: {}
+							  };
+							  
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								  }
+								}
+								
+								results.push(result);
+								
+								for (const key in row.relations) {
+									if (row.relations.hasOwnProperty(key)) {
+										const relation = schema.relations[key];
+										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										
+							  		for (const nextRow of row.relations[key].rows) {
+							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			} else {
+								  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			}
+							  			} else {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+							  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			} else {
+								  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			}
+							  			}
+							  		}
+							  		
+							  		result.relations[nextSchema.group] = {
+				  					  source: SourceType.Relational,
+											group: nextSchema.group,
+										  rows: []
+									  };
+									
+										await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+									}
+								}
+							
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+								  }
+								}
 							}
 						}
 						
@@ -1115,7 +1177,7 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1144,7 +1206,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission=false): Promise<void> => {
+	performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, root: boolean=true): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1180,96 +1242,128 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
-							let record = null;
-							if (input.source == SourceType.Relational) {
-								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
-								record = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
-							} else if (input.source == SourceType.Document) {
-								if (Object.keys(data).length != 0) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data});
+							let records = [];
+							
+							try {
+								// Manipulate
+								// 
+								if (input.source == SourceType.Relational) {
+									await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
+									records[0] = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
+								} else if (input.source == SourceType.Document) {
+									if (Object.keys(data).length != 0) {
+										await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data});
+									}
+									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
+								} else if (input.source == SourceType.VolatileMemory) {
+									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
+									await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+									records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
 								}
-								record = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
-							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								record = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, record, data, keys)));
-								record = JSON.parse(await VolatileMemoryClient.get(_key));
-							}
-							
-						  const result = {
-						    keys: {},
-						    columns: {},
-						    relations: {}
-						  };
-						  
-						  if (!record) {
-						  	resolve();
-						  	return;
-						  }
-						  if (record['_id']) record['id'] = record['_id'].toString();
-						  
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key)) {
-							    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+								
+							  if (!records[0]) {
+							  	resolve();
+							  	return;
 							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key)) {
-							    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-							  }
-							}
-						
-							results.push(result);
-							
-							for (const key in row.relations) {
-								if (row.relations.hasOwnProperty(key)) {
-									const relation = schema.relations[key];
-									const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
-									
-						  		for (const nextRow of row.relations[key].rows) {
-						  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			} else {
-							  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
-							  			}
-						  			} else {
-						  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-						  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			} else {
-							  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
-						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-						  					} else {
-						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
-						  					}
-							  			}
-						  			}
-						  		}
-						  		
-						  		result.relations[nextSchema.group] = {
-			  					  source: SourceType.Relational,
-										group: nextSchema.group,
-									  rows: []
-								  };
-									
-									if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
-									else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
+							} catch (error) {
+								// Attach beyond information for notifying
+								//
+								if (Object.keys(row.columns).length == 0 && !root) {
+									if (input.source == SourceType.Relational) {
+										records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+									} else if (input.source == SourceType.Document) {
+										records = await new Promise(async (resolve, reject) => {
+											await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
+												if (error) {
+													reject(error);
+												} else {
+													resolve(results);
+												}
+											});
+										});
+									} else if (input.source == SourceType.VolatileMemory) {
+										const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+										const record = await VolatileMemoryClient.get(_key);
+										records = record && [JSON.parse(record)] || [];
+									}
+								} else {
+									throw error;
 								}
 							}
-						
-						  for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-							    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
-							  }
+							
+							for (const record of records) {
+							  const result = {
+							    keys: {},
+							    columns: {},
+							    relations: {}
+							  };
+							  
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key)) {
+								    result.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key)) {
+								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								  }
+								}
+							
+								results.push(result);
+								
+								for (const key in row.relations) {
+									if (row.relations.hasOwnProperty(key)) {
+										const relation = schema.relations[key];
+										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										
+							  		for (const nextRow of row.relations[key].rows) {
+							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				nextRow.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			} else {
+								  				nextRow.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+								  			}
+							  			} else {
+							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+							  				  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			} else {
+								  			  if (ObjectID.isValid(result.keys[relation.sourceEntity]) && input.source == SourceType.Document) {
+							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+							  					} else {
+							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+							  					}
+								  			}
+							  			}
+							  		}
+							  		
+							  		result.relations[nextSchema.group] = {
+				  					  source: SourceType.Relational,
+											group: nextSchema.group,
+										  rows: []
+									  };
+										
+										if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
+										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, false);
+									}
+								}
+							
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete result.columns[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete result.keys[key];
+								  }
+								}
 							}
 						}
 						
@@ -1301,7 +1395,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  const connectionInfos: {[Identifier: string]: any} = {};
 		  try {
@@ -1464,7 +1558,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission=false, connectionInfos: {[Identifier: string]: any}={}): Promise<void> => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission: boolean=false, connectionInfos: {[Identifier: string]: any}={}): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1638,7 +1732,7 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission=false): Promise<HierarchicalDataRow[]> => {
+	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
   		
@@ -1667,7 +1761,7 @@ const DatabaseHelper = {
       }
     });
 	},
-	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission=false): Promise<void> => {
+	performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any=null, leavePermission: boolean=false): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
