@@ -253,7 +253,7 @@ const DatabaseHelper = {
       return true;
     }
   },
-  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[], matches: Input[]): HierarchicalDataRow[] => {
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string=null, division: number[], matches: Input[], root: boolean=true): HierarchicalDataRow[] => {
   	const results: HierarchicalDataRow[] = [];
   	const map: any = {};
 	  let found = false;
@@ -300,7 +300,7 @@ const DatabaseHelper = {
 			      case ActionType.Insert:
 			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
 			        if (schema.keys[key].fieldType != FieldType.AutoNumber) {
-			          if (row.keys[key] === undefined || row.keys[key] === null) {
+			          if (root && (row.keys[key] === undefined || row.keys[key] === null)) {
 			            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			            switch (schema.keys[key].fieldType) {
@@ -328,7 +328,7 @@ const DatabaseHelper = {
 			        break;
 			      case ActionType.Upsert:
 			      	if (schema.source == SourceType.Document && row.keys[key] === null) row.keys[key] = '';
-		          if (schema.keys[key].fieldType != FieldType.AutoNumber && (row.keys[key] === undefined || row.keys[key] === null)) {
+		          if (root && (schema.keys[key].fieldType != FieldType.AutoNumber && (row.keys[key] === undefined || row.keys[key] === null))) {
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
@@ -354,7 +354,7 @@ const DatabaseHelper = {
 		          }
 			        break;
 			      case ActionType.Update:
-		          if (row.keys[key] === undefined || row.keys[key] === null) {
+		          if (root && (row.keys[key] === undefined || row.keys[key] === null)) {
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a key ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		            switch (schema.keys[key].fieldType) {
@@ -415,7 +415,7 @@ const DatabaseHelper = {
 			    switch (action) {
 			      case ActionType.Insert:
 			        if (schema.columns[key].fieldType != FieldType.AutoNumber) {
-			          if (schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
+			          if (root && (schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null))) {
 			            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
 			          } else {
 			          	if (row.columns[key]) {
@@ -444,7 +444,7 @@ const DatabaseHelper = {
 			        }
 			        break;
 			      case ActionType.Upsert:
-		          if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null)) {
+		          if (root && (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && (row.columns[key] === undefined || row.columns[key] === null))) {
 		            throw new Error(`There was an error preparing data for manipulation (required the value of a column ${schema.group}.${key} for manipulate ${schema.group}).`);
 		          } else {
 		          	if (row.columns[key]) {
@@ -570,7 +570,7 @@ const DatabaseHelper = {
 		        const current = {
 				      source: baseSchema.source,
 				      group: baseSchema.group,
-				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches)
+				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, root)
 				    };
 				    tables.push(current);
 	    			
@@ -585,7 +585,7 @@ const DatabaseHelper = {
 	  	const current = {
 	      source: baseSchema.source,
 	      group: baseSchema.group,
-	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches)
+	      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, root)
 	    };
 	    tables.push(current);
 	    
