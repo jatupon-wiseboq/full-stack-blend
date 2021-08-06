@@ -207,7 +207,7 @@ const RequestHelper = {
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: group.replace(/@/g, ''),
+  		group: group.replace(/[@!]/g, ''),
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
@@ -267,7 +267,7 @@ const RequestHelper = {
 				const indexes = JSON.parse('[' + (key.split('[')[1] || ']'));
 				const name = splited.pop() || null;
 				const _group = splited.pop() || null;
-				const group = _group.replace(/@/g, '');
+				const group = _group.replace(/[@!]/g, '');
 				const premise = splited.join('.') || null;
 				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
