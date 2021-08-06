@@ -942,7 +942,7 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
 									  };
 									
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
@@ -1158,7 +1158,7 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
 									  };
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
@@ -1366,7 +1366,7 @@ const DatabaseHelper = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
+							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, true) : undefined
 									  };
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);

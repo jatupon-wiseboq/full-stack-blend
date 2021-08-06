@@ -132,7 +132,7 @@ socket.sockets.on("connection", (socket) => {
 });
 
 const NotificationHelper = {
-  getTableUpdatingIdentity: (schema: DataTableSchema, query: any, session: any): string => {
+  getTableUpdatingIdentity: (schema: DataTableSchema, query: any, session: any, discoverClients: boolean=false): string => {
   	if (!session) return null;
   	
   	notificationInfos[schema.group] = notificationInfos[schema.group] || {};
