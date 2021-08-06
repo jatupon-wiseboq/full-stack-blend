@@ -13,7 +13,7 @@ import {FieldType, DataTableSchema} from './SchemaHelper';
 import {DataTypes} from 'sequelize';
 import {ObjectID} from 'mongodb';
 
-const DEFAULT_DOCUMENT_DATABASE_NAME = 'stackblend';
+const DEFAULT_DOCUMENT_DATABASE_NAME = process.env.MONGODB_DEFAULT_DATABASE_NAME;
 
 enum SourceType {
   Relational,
@@ -1030,6 +1030,7 @@ const DatabaseHelper = {
 							const keys = {};
 							const data = {};
 		      		const query = {};
+		      		const queryForUpsert = {};
 							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
@@ -1055,11 +1056,14 @@ const DatabaseHelper = {
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
 							      	query['_id'] = {$eq: ObjectID.isValid(row.keys[key]) && new ObjectID(row.keys[key]) || null};
+							      	queryForUpsert['_id'] = query['_id'];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
+							      	queryForUpsert[key] = query[key];
 							      }
 							    } else {
 							    	query[key] = row.keys[key];
+							    	queryForUpsert[key] = query[key];
 							    }
 							  }
 							}
@@ -1072,8 +1076,8 @@ const DatabaseHelper = {
 								if (input.source == SourceType.Relational) {
 									records[0] = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 								} else if (input.source == SourceType.Document) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data}, {upsert: true});
-									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpsert, {$set: data}, {upsert: true});
+									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpsert);
 								} else if (input.source == SourceType.VolatileMemory) {
 									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1262,6 +1266,7 @@ const DatabaseHelper = {
 							const keys = {};
 							const data = {};
 		      		const query = {};
+		      		const queryForUpdate = {};
 							
 							for (const key in schema.columns) {
 							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
@@ -1283,11 +1288,14 @@ const DatabaseHelper = {
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
 							      	query['_id'] = {$eq: ObjectID.isValid(row.keys[key]) && new ObjectID(row.keys[key]) || null};
+							      	queryForUpdate['id'] = query['_id'];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
+							      	queryForUpdate[key] = query[key];
 							      }
 							    } else {
 							    	query[key] = row.keys[key];
+							      queryForUpdate[key] = query[key];
 							    }
 							  }
 							}
@@ -1304,9 +1312,9 @@ const DatabaseHelper = {
 									records[0] = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
 								} else if (input.source == SourceType.Document) {
 									if (Object.keys(data).length != 0) {
-										await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(query, {$set: data});
+										await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpdate, {$set: data});
 									}
-									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(query);
+									records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpdate);
 								} else if (input.source == SourceType.VolatileMemory) {
 									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
 									records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
