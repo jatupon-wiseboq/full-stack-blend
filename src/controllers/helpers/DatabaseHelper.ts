@@ -154,7 +154,7 @@ const DatabaseHelper = {
       case ActionType.Upsert:
         for (const key in schema.columns) {
           if (schema.columns.hasOwnProperty(key)) {
-            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required && root) {
+            if (schema.columns[key].fieldType != FieldType.AutoNumber && schema.columns[key].required) {
               requiredKeys[key] = schema.columns[key];
             }
           }
@@ -190,7 +190,7 @@ const DatabaseHelper = {
     	existingKeys[input.name] = true;
     }
     
-    if (action != ActionType.Retrieve && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
+    if (action != ActionType.Retrieve && !root && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
       return false;
     } else {
     	data = data.filter(item => (item.group != schema.group || item.premise != premise));
