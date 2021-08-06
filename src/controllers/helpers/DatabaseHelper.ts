@@ -597,6 +597,11 @@ const DatabaseHelper = {
 				      notify: _notify
 				    };
 				    tables.push(current);
+				    
+				    tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
+				   		if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
+				   		else return 0;
+				    });
 	    			
 				  	for (const item of matches) {
 				   		data.splice(data.indexOf(item), 1);
@@ -618,6 +623,11 @@ const DatabaseHelper = {
 				  notify: _notify
 		    };
 		    tables.push(current);
+		    
+		    tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
+		   		if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
+		   		else return 0;
+		    });
 		    
 		    for (const item of matches) {
 		   		data.splice(data.indexOf(item), 1);
