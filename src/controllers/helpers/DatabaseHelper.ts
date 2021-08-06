@@ -934,7 +934,7 @@ const DatabaseHelper = {
 							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 									
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
@@ -1150,7 +1150,7 @@ const DatabaseHelper = {
 							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
 								}
@@ -1358,7 +1358,7 @@ const DatabaseHelper = {
 							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, {documentDatabaseConnection: transaction.documentDatabaseConnection});
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
