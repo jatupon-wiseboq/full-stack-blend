@@ -806,7 +806,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      	query['_id'] = {$eq: row.columns[key] && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -822,7 +822,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      	query['_id'] = {$eq: row.keys[key] && new ObjectID(row.keys[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
@@ -1036,7 +1036,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      	query['_id'] = {$eq: row.columns[key] && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -1052,7 +1052,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      	query['_id'] = {$eq: row.keys[key] && new ObjectID(row.keys[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
@@ -1266,7 +1266,7 @@ const DatabaseHelper = {
 							    data[key] = row.columns[key];
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
+							      	query['_id'] = {$eq: row.columns[key] && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -1280,7 +1280,7 @@ const DatabaseHelper = {
 							    keys[key] = row.keys[key];
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
+							      	query['_id'] = {$eq: row.keys[key] && new ObjectID(row.keys[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
