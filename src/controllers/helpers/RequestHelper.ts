@@ -363,6 +363,10 @@ const RequestHelper = {
     }
     
     inputs.sort((a, b) => {
+    	if (a.associate != b.associate) {
+    		return (a.associate === true) 1 : -1;
+    	}
+    	
       const _a = [].concat(a.division);
       const _b = [].concat(b.division);
       
