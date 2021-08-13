@@ -270,7 +270,7 @@ var EditorHelper = {
       attributes: attributes,
       extensions: Object.assign({}, InternalProjectSettings, {
       	isSelectingElement: true,
-      	isInputElement: (INPUT_ELEMENT_TAGS.indexOf(element.firstElementChild && element.firstElementChild.tagName || null) != -1),
+      	isInputElement: (INPUT_ELEMENT_TAGS.indexOf(element.firstElementChild && element.firstElementChild.tagName || null) != -1 || INPUT_ELEMENT_TAGS.indexOf(element && element.tagName || null) != -1),
       	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
       	isTableLayoutRow: (element.tagName == 'TR'),
       	isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
