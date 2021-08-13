@@ -50,7 +50,7 @@ interface HierarchicalDataTable {
   rows: HierarchicalDataRow[];
   notification?: string;
   associate?: boolean;
-  notify?: boolean;
+  notify?: string[];
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -583,7 +583,7 @@ const DatabaseHelper = {
 			for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
 	    	if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
 	    		const _associate = associate || data.some(input => input.group == key && input.associate === true);
-	    		const _notify = data.some(input => input.group == key && input.notify === true);
+	    		const _notify = data.filter(input => input.group == key && input.notify === true).map((input) => { return input.name; });
 	    		
 		      if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, _associate)) {
 		        baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
@@ -594,7 +594,7 @@ const DatabaseHelper = {
 				      group: baseSchema.group,
 				      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
 				      associate: _associate,
-				      notify: _notify
+				      notify: (_notify.length != 0) ? _notify : undefined
 				    };
 				    tables.push(current);
 	    			
@@ -606,7 +606,7 @@ const DatabaseHelper = {
 	    }
 	  } else {
 	   	const _associate = associate || data.some(input => input.group == baseSchema.group && input.associate === true);
-	   	const _notify = data.some(input => input.group == baseSchema.group && input.notify === true);
+	   	const _notify = data.filter(input => input.group == baseSchema.group && input.notify === true).map((input) => { return input.name; });
 	    
 	  	if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, _associate)) {
 			  const matches = [];
@@ -615,7 +615,7 @@ const DatabaseHelper = {
 		      group: baseSchema.group,
 		      rows: DatabaseHelper.getRows(data, action, baseSchema, premise, division, matches, _associate),
 				  associate: _associate,
-				  notify: _notify
+				  notify: (_notify.length != 0) ? _notify : undefined
 		    };
 		    tables.push(current);
 		    
@@ -904,7 +904,6 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-								    keys[key] = result.keys[key];
 								  }
 								}
 								
@@ -914,6 +913,7 @@ const DatabaseHelper = {
 									if (row.relations.hasOwnProperty(key)) {
 										const relation = schema.relations[key];
 										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										const _nextKeys = {};
 										
 							  		for (const nextRow of row.relations[key].rows) {
 							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
@@ -939,14 +939,24 @@ const DatabaseHelper = {
 							  			}
 							  		}
 							  		
+							  		if (row.relations[key].notify !== undefined) {
+							  		  for (const _key of row.relations[key].notify) {
+							  		    if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				_nextKeys[_key] = row.relations[key].rows[0].columns[_key];
+								  			} else {
+								  				_nextKeys[_key] = row.relations[key].rows[0].keys[_key];
+								  			}
+							  		  }
+							  		}
+							  		
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
+							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
 									
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
@@ -1121,7 +1131,6 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-								    keys[key] = result.keys[key];
 								  }
 								}
 								
@@ -1131,6 +1140,7 @@ const DatabaseHelper = {
 									if (row.relations.hasOwnProperty(key)) {
 										const relation = schema.relations[key];
 										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										const _nextKeys = {};
 										
 							  		for (const nextRow of row.relations[key].rows) {
 							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
@@ -1156,14 +1166,24 @@ const DatabaseHelper = {
 							  			}
 							  		}
 							  		
+							  		if (row.relations[key].notify !== undefined) {
+							  		  for (const _key of row.relations[key].notify) {
+							  		    if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				_nextKeys[_key] = row.relations[key].rows[0].columns[_key];
+								  			} else {
+								  				_nextKeys[_key] = row.relations[key].rows[0].keys[_key];
+								  			}
+							  		  }
+							  		}
+							  		
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
+							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
 								}
@@ -1330,7 +1350,6 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key)) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-								    keys[key] = result.keys[key];
 								  }
 								}
 							
@@ -1340,6 +1359,7 @@ const DatabaseHelper = {
 									if (row.relations.hasOwnProperty(key)) {
 										const relation = schema.relations[key];
 										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+										const _nextKeys = {};
 										
 							  		for (const nextRow of row.relations[key].rows) {
 							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
@@ -1365,14 +1385,24 @@ const DatabaseHelper = {
 							  			}
 							  		}
 							  		
+							  		if (row.relations[key].notify !== undefined) {
+							  		  for (const _key of row.relations[key].notify) {
+							  		    if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+								  				_nextKeys[_key] = row.relations[key].rows[0].columns[_key];
+								  			} else {
+								  				_nextKeys[_key] = row.relations[key].rows[0].keys[_key];
+								  			}
+							  		  }
+							  		}
+							  		
 							  		result.relations[nextSchema.group] = {
 				  					  source: SourceType.Relational,
 											group: nextSchema.group,
 										  rows: [],
-							  			notification: (row.relations[key].notify === true) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, keys, session, innerCircleTags) : undefined
+							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
 										
-										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify === true, leavePermission, transaction, innerCircleTags);
+										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
 									}
@@ -1669,7 +1699,6 @@ const DatabaseHelper = {
 		  					for (const key in baseSchema.keys) {
 		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 		  					    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
-								    keys[key] = row.keys[key];
 		  					  }
 		  					}
 		  					
@@ -1680,7 +1709,7 @@ const DatabaseHelper = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: [],
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, keys, session, innerCircleTags) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, query, session, innerCircleTags) : null
 							};
 	  					
 							results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
@@ -1889,7 +1918,6 @@ const DatabaseHelper = {
 		  					for (const key in schema.keys) {
 		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-								    keys[key] = row.keys[key];
 		  					  }
 		  					}
 		  					
