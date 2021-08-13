@@ -1709,7 +1709,7 @@ const DatabaseHelper = {
 							  source: baseSchema.source,
 							  group: baseSchema.group,
 							  rows: [],
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, query, session, innerCircleTags) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, Object.assign({}, data, keys), session, innerCircleTags) : null
 							};
 	  					
 							results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
