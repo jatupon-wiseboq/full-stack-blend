@@ -904,6 +904,7 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								    keys[key] = result.keys[key];
 								  }
 								}
 								
@@ -1120,6 +1121,7 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								    keys[key] = result.keys[key];
 								  }
 								}
 								
@@ -1328,6 +1330,7 @@ const DatabaseHelper = {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key)) {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								    keys[key] = result.keys[key];
 								  }
 								}
 							
@@ -1666,6 +1669,7 @@ const DatabaseHelper = {
 		  					for (const key in baseSchema.keys) {
 		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 		  					    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
+								    keys[key] = row.keys[key];
 		  					  }
 		  					}
 		  					
@@ -1885,6 +1889,7 @@ const DatabaseHelper = {
 		  					for (const key in schema.keys) {
 		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+								    keys[key] = row.keys[key];
 		  					  }
 		  					}
 		  					
