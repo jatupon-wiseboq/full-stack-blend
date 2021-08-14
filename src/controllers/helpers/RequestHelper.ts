@@ -207,12 +207,14 @@ const RequestHelper = {
 		
 		const input: Input = {
 		  target: paramInfo.target,
-  		group: group,
+  		group: group.replace(/[@!]/g, ''),
   		name: paramInfo.name,
   		value: json[guid],
   		guid: guid,
-  		premise: premise || null,
+  		premise: premise && premise.replace(/[@!]/g, '') || null,
   		division: indexes,
+  		associate: [0, 1].indexOf(group.indexOf('@')) != -1,
+  		notify: [0, 1].indexOf(group.indexOf('!')) != -1,
   		validation: null
 		};
 		
@@ -264,7 +266,8 @@ const RequestHelper = {
 				const splited = namespace.split('.');
 				const indexes = JSON.parse('[' + (key.split('[')[1] || ']'));
 				const name = splited.pop() || null;
-				const group = splited.pop() || null;
+				const _group = splited.pop() || null;
+				const group = _group.replace(/[@!]/g, '');
 				const premise = splited.join('.') || null;
 				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
@@ -293,8 +296,10 @@ const RequestHelper = {
 			  		name: name,
 			  		value: value,
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
-			  		premise: premise,
+			  		premise: premise && premise.replace(/[@!]/g, ''),
 		  			division: indexes,
+  					associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
+  					notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
 			  		validation: null
 					};
 					
@@ -308,8 +313,10 @@ const RequestHelper = {
 				  		name: name,
 				  		value: _value,
 				  		guid: `${namespace}[${index++}]`,
-				  		premise: premise,
+				  		premise: premise && premise.replace(/[@!]/g, ''),
 		  				division: indexes,
+  						associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
+  						notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
 				  		validation: null
 						};
 						
@@ -322,8 +329,10 @@ const RequestHelper = {
 			  		name: name,
 			  		value: value,
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
-			  		premise: premise,
+			  		premise: premise && premise.replace(/[@!]/g, ''),
 		  			division: indexes,
+  					associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
+  					notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
 			  		validation: null
 					};
 					

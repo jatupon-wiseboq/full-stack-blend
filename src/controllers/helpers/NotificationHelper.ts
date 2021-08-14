@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 const notificationInfos = {};
+const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
 const sessionLookupTable: {[Identifier: string]: any[]} = {};
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
@@ -132,7 +133,25 @@ socket.sockets.on("connection", (socket) => {
 });
 
 const NotificationHelper = {
-  getTableUpdatingIdentity: (schema: DataTableSchema, query: any, session: any): string => {
+	associateInnerCircles: (session: any, innerCircleTags: string[]) => {
+		for (const innerCircleTag of innerCircleTags) {
+			innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
+			if (innerCircleLookupTable[innerCircleTag].indexOf(session.id) != -1) {
+				innerCircleLookupTable[innerCircleTag].push(session.id);
+			}
+		}
+	},
+	disassociateInnerCircles: (session: any, innerCircleTags: string[]) => {
+		for (const innerCircleTag of innerCircleTags) {
+			innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
+			
+			const index = innerCircleLookupTable[innerCircleTag].indexOf(session.id);
+			if (index != -1) {
+				innerCircleLookupTable[innerCircleTag].splice(index, 1);
+			}
+		}
+	},
+  getTableUpdatingIdentity: (schema: DataTableSchema, query: any, session: any, innerCircleTags: string[]=[]): string => {
   	if (!session) return null;
   	
   	notificationInfos[schema.group] = notificationInfos[schema.group] || {};
@@ -169,6 +188,14 @@ const NotificationHelper = {
   	
   	if (!combinationInfo.hasOwnProperty(session.id)) {
   		combinationInfo[session.id] = sessionLookupTable[session.id] && [...Array.from(sessionLookupTable[session.id])] || null;
+  	}
+  	
+  	for (const innerCircleTag of innerCircleTags) {
+  		const members = innerCircleLookupTable[innerCircleTag] || [];
+  		
+  		for (const sessionId of members) {
+  			combinationInfo[sessionId] = sessionLookupTable[sessionId] && [...Array.from(sessionLookupTable[sessionId])] || null;
+  		}
   	}
   	
   	return md5OfClientTableUpdatingIdentity;
