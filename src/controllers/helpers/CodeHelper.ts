@@ -67,7 +67,7 @@ const CodeHelper = {
     const lines = data.split('\n');
     
     for (let i=0; i<lines.length; i++) {
-      const starting = lines[i].match(/^    "([0-9a-f][8,])": {/);
+      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/);
       const ending = (lines[i] == '    }' || lines[i] == '    },');
       
       if (starting != null) {
@@ -88,7 +88,7 @@ const CodeHelper = {
     const lines = data.split('\n');
     
     for (let i=0; i<lines.length; i++) {
-      const matched = lines[i].match(/^([0-9a-f][8,]) (.*)/);
+      const matched = lines[i].match(/^([0-9a-f]{8,8}) (.*)/);
       if (matched) {
         lines[i] = ` ${matched[2]}`;
       }
