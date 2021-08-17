@@ -118,6 +118,28 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
 	  			}
 	  		}
 	  	}
+	  	
+	  	for (let animation of animations) {
+	  		const extensionInfo = extensions[animation];
+	  		if (extensionInfo) {
+			  	const end = () => {
+						AnimationHelper.removePrestartStyles(animation);
+						for (let i=0; i<extensionInfo.tracks.length; i++) {
+							AnimationHelper.addPrestartStyles(animation, guid, extensionInfo.tracks[i].selectors || [], extensionInfo.tracks[i].properties || []);
+						}
+			  		
+			  		container.removeEventListener('animationend', end, false);
+				  	container.removeEventListener('webkitAnimationEndalert', end, false);
+				  	container.removeEventListener('oAnimationEnd', end, false);
+				  	container.removeEventListener('MSAnimationEnd', end, false);
+			  	};
+		  		
+			  	container.addEventListener('animationend', end, false);
+			  	container.addEventListener('webkitAnimationEndalert', end, false);
+			  	container.addEventListener('oAnimationEnd', end, false);
+			  	container.addEventListener('MSAnimationEnd', end, false);
+			  }
+		  }
     	
     	currentAnimations = currentAnimations.filter(currentAnimation => currentAnimation != '');
     	HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
@@ -157,7 +179,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
   },
   addPrestartStyles: (animationId: string, guid: string, selectors: any, properties: any) => {
     const prestartId = `prestart-${animationId}`;
-    if (document.getElementById(prestartId)) return;
+    const existing = document.getElementById(prestartId);
     
     const combinedStyleHashmap = {};
     
@@ -177,12 +199,14 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       element.setAttribute('type', 'text/css');
       element.setAttribute('id', prestartId);
       
-      const lines = [];
+      const lines = existing && existing.innerHTML.split('/**/') || [];
       for (const selector of selectors) {
+      	if (existing && existing.innerHTML.indexOf(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}`) != -1) continue;
+      	
       	lines.push(`[internal-fsb-animation*="animation-group-${animationId}"]${selector}, [internal-fsb-animation*="animation-group-${animationId}"] ${selector} { ${HTMLHelper.getInlineStyleFromHashMap(combinedStyleHashmap)} }`);
       }
       
-      element.innerHTML = lines.join(' ');
+      element.innerHTML = lines.join('/**/');
       
       const firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
       document.head.insertBefore(element, firstStyleElement);
