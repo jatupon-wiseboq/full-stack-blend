@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import {DataSchema, SchemaHelper} from "./SchemaHelper";
 import {DatabaseHelper} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
 
 let file, data;
 let cachedSchema = null;
@@ -12,7 +13,7 @@ let cachedSchema = null;
 const ProjectConfigurationHelper = {
 	reload: () => {
 		file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
-		data = JSON.parse(file);
+		data = JSON.parse(CodeHelper.unlabel(file));
 	},
   convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
