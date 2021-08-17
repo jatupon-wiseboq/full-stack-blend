@@ -84,7 +84,6 @@ const CodeHelper = {
     return lines.join('\n');
   },
   unlabel: (data: string): string => {
-    let current = null;
     const lines = data.split('\n');
     
     for (let i=0; i<lines.length; i++) {
