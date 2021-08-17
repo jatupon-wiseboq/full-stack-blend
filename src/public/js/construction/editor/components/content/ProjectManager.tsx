@@ -402,11 +402,60 @@ style(type="text/css").
 script(type="text/javascript").
   var __animationHelperDelayedRegisterings = [], __animationHelperDelayedAddings = [];
   var AnimationHelper = {
+    extensions: {},
     register: function(animationId, extensionInfo) {
-    	__animationHelperDelayedRegisterings.push(arguments);
+      __animationHelperDelayedRegisterings.push(arguments);
+      AnimationHelper.extensions[animationId] = extensionInfo;
     },
     add: function(activeAnimationGroups) {
-    	__animationHelperDelayedAddings.push(arguments);
+      __animationHelperDelayedAddings.push(arguments);
+      
+      for (let animation of activeAnimationGroups) {
+        var extensionInfo = AnimationHelper.extensions[animation];
+        if (extensionInfo) {
+          for (let i=0; i<extensionInfo.tracks.length; i++) {
+            AnimationHelper.addPrestartStyles(animation, '0', extensionInfo.tracks[i].selectors || [], extensionInfo.tracks[i].properties || []);
+          }
+        }
+      }
+    },
+    addPrestartStyles: (animationId, guid, selectors, properties) => {
+      var prestartId = \`prestart-\${animationId}\`;
+      if (document.getElementById(prestartId)) return;
+      
+      var combinedStyleHashmap = {};
+      
+      for (var property of properties) {
+        for (var selector of selectors) {
+          combinedStyleHashmap[property] = 0;
+          break;
+        }
+      }
+      
+      if (Object.keys(combinedStyleHashmap).length != 0) {
+        var element = document.createElement('style');
+        element.setAttribute('type', 'text/css');
+        element.setAttribute('id', prestartId);
+        
+        var lines = [];
+        for (var selector of selectors) {
+          lines.push(\`[internal-fsb-animation*="animation-group-\${animationId}"]\${selector}, [internal-fsb-animation*="animation-group-\${animationId}"] \${selector} { \${AnimationHelper.getInlineStyleFromHashMap(combinedStyleHashmap)} }\`);
+        }
+        
+        element.innerHTML = lines.join(' ');
+        
+        var firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
+        document.head.insertBefore(element, firstStyleElement);
+      }
+    },
+    getInlineStyleFromHashMap: (hash) => {
+      var results = [];
+      for (var key in hash) {
+        if (hash.hasOwnProperty(key) && hash[key] != null) {
+          results.push(key + ': ' + hash[key]);
+        }
+      }
+      return results.sort().join('; ');
     }
   };
   ${globalCombinedStylesheetExtension}
