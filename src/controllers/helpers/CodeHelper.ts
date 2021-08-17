@@ -73,7 +73,7 @@ const CodeHelper = {
       if (starting != null) {
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
-      } else if (ending) {
+      } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
         current = null;
       } else if (current) {
