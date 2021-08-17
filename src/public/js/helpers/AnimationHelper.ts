@@ -195,7 +195,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
     }
     
     if (Object.keys(combinedStyleHashmap).length != 0) {
-      const element = document.createElement('style');
+      const element = existing || document.createElement('style');
       element.setAttribute('type', 'text/css');
       element.setAttribute('id', prestartId);
       
