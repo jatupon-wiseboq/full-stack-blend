@@ -224,6 +224,39 @@ var CodeHelper = {
   	for (let element of current.children) {
   		CodeHelper.recursivePreparePastingContent(element, cut, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
   	}
+  },
+  label: (data: string): string => {
+    let current = null;
+    const lines = data.split('\n');
+    
+    for (let i=0; i<lines.length; i++) {
+      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/);
+      const ending = (lines[i] == '    }' || lines[i] == '    },');
+      
+      if (starting != null) {
+        current = starting[1];
+        lines[i] = `${current}${lines[i]}`;
+      } else if (current && ending) {
+        lines[i] = `${current}${lines[i]}`;
+        current = null;
+      } else if (current) {
+        lines[i] = `${current}${lines[i]}`;
+      }
+    }
+    
+    return lines.join('\n');
+  },
+  unlabel: (data: string): string => {
+    const lines = data.split('\n');
+    
+    for (let i=0; i<lines.length; i++) {
+      const matched = lines[i].match(/^([0-9a-f]{8,8}) (.*)/);
+      if (matched) {
+        lines[i] = ` ${matched[2]}`;
+      }
+    }
+    
+    return lines.join('\n');
   }
 };
 

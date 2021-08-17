@@ -330,7 +330,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                     Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
                 
                     this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
-                      this.create('../../project.stackblend', JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)).then(() => {
+                      this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
                         this.commit().then(() => {
                           cb(true);
                         }).catch(() => {

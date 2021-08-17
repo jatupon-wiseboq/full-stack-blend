@@ -208,11 +208,17 @@ class ProjectManager extends Base<Props, State> {
           });
           
           if (previousProjectDataSHA) {
-            repo.getBlob(previousProjectDataSHA, (error, result, request) => {
+            repo.getBlob(previousProjectDataSHA, (error, result, response) => {
              if (error) {
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
               }
+              
+              try {
+                if (typeof result === 'string') {
+                  result = JSON.parse(CodeHelper.unlabel(result));
+                }
+              } catch(ex) { /* void */ }
               
               if (typeof result !== 'object') {
                 alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
@@ -732,7 +738,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                               });
                             };
                             
-                            repo.createBlob(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2), null, createTree);
+                            repo.createBlob(CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)), null, createTree);
                           });
                         });
                       });
@@ -744,11 +750,17 @@ script(type="text/javascript" src="/js/Site.bundle.js")
           });
           
           if (previousProjectDataSHA) {
-            repo.getBlob(previousProjectDataSHA, (error, result, request) => {
+            repo.getBlob(previousProjectDataSHA, (error, result, response) => {
              if (error) {
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
               }
+              
+              try {
+                if (typeof result === 'string') {
+                  result = JSON.parse(CodeHelper.unlabel(result));
+                }
+              } catch(ex) { /* void */ }
               
               if (typeof result !== 'object') {
                 alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
