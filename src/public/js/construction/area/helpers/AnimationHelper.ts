@@ -403,6 +403,11 @@ var AnimationHelper = {
     
     [style.innerText, script.innerText] = AnimationHelper.renderStylesheetAndExtension();
     
+    let stylesheets = document.getElementsByTagName('link');
+    for (const stylesheet of stylesheets) {
+    	stylesheet.onload = AnimationHelper.renderStylesheetAndExtensionElement.bind(AnimationHelper);
+    }
+    
     document.body.appendChild(script);
   },
   renderStylesheetAndExtension: function(production: boolean=false, startOver: boolean=true): [string, string] {
@@ -640,13 +645,14 @@ var AnimationHelper = {
   	
   	let begin = HTMLHelper.getElementByClassName('internal-fsb-begin');
   	
-  	if (startOver) {
-	  	HTMLHelper.setAttribute(begin, 'internal-fsb-animation', '');
-	  	extensionScript.push(`AnimationHelper.reset();`);
-	  	extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
-	 	} else {
-	 		extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
-	 	}
+    if (startOver) {
+      extensionScript.push(`AnimationHelper.reset();`);
+      extensionScript.push(`AnimationHelper.remove(${JSON.stringify(activeAnimationGroup)});`);
+      extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
+    } else {
+      extensionScript.push(`AnimationHelper.remove(${JSON.stringify(activeAnimationGroup)});`);
+      extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
+    }
 	 	
 	 	extensionScript.push('})();');
   	
