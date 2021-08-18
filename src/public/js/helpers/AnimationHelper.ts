@@ -245,6 +245,7 @@ if (window.__animationHelperDelayedRegisterings !== undefined) {
 }
 if (window.__animationHelperDelayedAddings !== undefined) {
 	for (const args of window.__animationHelperDelayedAddings) {
+		AnimationHelper.remove.apply(null, args);
 		AnimationHelper.add.apply(null, args);
 	}
 	
