@@ -74,9 +74,12 @@ const CodeHelper = {
       
       if (starting != null) {
       	category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
-      	if (category == 2) i -= 2;
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
+      	if (category == 2) {
+      		lines[i-1] = `${current}${lines[i-1]}`;
+      		lines[i-2] = `${current}${lines[i-2]}`;
+      	}
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
         current = null;
