@@ -650,7 +650,6 @@ var AnimationHelper = {
       extensionScript.push(`AnimationHelper.remove(${JSON.stringify(activeAnimationGroup)});`);
       extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
     } else {
-      extensionScript.push(`AnimationHelper.remove(${JSON.stringify(activeAnimationGroup)});`);
       extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
     }
 	 	
