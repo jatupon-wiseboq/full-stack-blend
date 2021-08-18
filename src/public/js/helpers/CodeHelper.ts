@@ -52,19 +52,24 @@ const CodeHelper = {
   	}
   },
   label: (data: string): string => {
-    let current = null;
+    let current: string = null;
+    let category: number = 0;
     const lines = data.split('\n');
     
     for (let i=0; i<lines.length; i++) {
-      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/);
-      const ending = (lines[i] == '    }' || lines[i] == '    },');
+      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})": {/);
+      const ending = ((category == 1 && (lines[i] == '    }' || lines[i] == '    },')) ||
+      								(category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
       
       if (starting != null) {
+      	category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
+      	if (category == 2) i -= 2;
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
         current = null;
+        category = 0;
       } else if (current) {
         lines[i] = `${current}${lines[i]}`;
       }
