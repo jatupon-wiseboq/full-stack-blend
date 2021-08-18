@@ -156,6 +156,7 @@ const TestHelper = {
   	window.installConsoleDebugger = true;
   	
   	if (window.location.href.indexOf('://localhost') == -1) return;
+  	if (top === window) return;
   	
   	const _error = window.onerror;
   	const error = ((msg, url, line, col, error) => {
