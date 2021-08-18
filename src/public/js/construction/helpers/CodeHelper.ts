@@ -113,6 +113,13 @@ var CodeHelper = {
   },
   recursiveSortHashtable: (object: any) => {
   	if (Array.isArray(object)) {
+  		if (object[0] && !!object[0].id) {
+	  		object.sort((a, b) => {
+	  			if (a.id && b.id) return (a.id < b.id) ? -1 : 1;
+	  			else return null;
+	  		});
+	  	}
+  		
   		for (let i=0; i<object.length; i++) {
   			object[i] = CodeHelper.recursiveSortHashtable(object[i]);
   		}
