@@ -403,7 +403,7 @@ ${rootScript}`;
             case 'contenteditable':
               continue;
             default:
-              if (attribute.name.indexOf('internal-fsb-') == 0 && ['internal-fsb-animation'].indexOf(attribute.name) == -1) continue;
+              if (attribute.name.indexOf('internal-fsb-') == 0 && ['internal-fsb-animation', 'internal-fsb-ratio-fit', 'internal-fsb-ratio-expand'].indexOf(attribute.name) == -1) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
                 let value = null;
                 if (attribute.value) value = JSON.parse(attribute.value);
@@ -424,7 +424,7 @@ ${rootScript}`;
                 }
               } else {
                 if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
-                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                  _props.push(attribute.name.replace('internal-fsb-ratio-fit', 'internalFsbRatioFit').replace('internal-fsb-ratio-expand', 'internalFsbRatioExpand') + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 } else {
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
