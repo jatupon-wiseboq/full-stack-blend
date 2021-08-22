@@ -9,6 +9,7 @@ import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from '../helpers
 declare let React: any;
 declare let ReactDOM: any;
 declare let DataManipulationHelper: any;
+declare let window: any;
 
 interface IBaseProps {
 	row: HierarchicalDataRow;
@@ -34,6 +35,8 @@ const update = (data: any) => {
       control.update(data);
     } catch { /* void */ }
   }
+  
+  window.RufflePlayer && window.RufflePlayer.polyfill();
 };
 
 class Base extends React.Component {

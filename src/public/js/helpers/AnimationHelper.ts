@@ -208,7 +208,8 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       
       element.innerHTML = lines.join('/**/');
       
-      const firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
+      const firstStyleElement = Array.from(document.head.getElementsByTagName('STYLE'))
+      	.filter(style => style.getAttribute('id') && style.getAttribute('id').indexOf('prestart-') != 0)[0] || null;
       document.head.insertBefore(element, firstStyleElement);
     }
   },
