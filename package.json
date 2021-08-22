@@ -59,6 +59,7 @@
     "polyfill-library": "^3.104.0",
     "pug": "^2.0.4",
     "redis": "^3.0.2",
+    "ruffle-mirror": "^2021.8.22",
     "sequelize": "^6.3.3",
     "sidekiq": "^1.1.1",
     "socket.io": "^2.3.0",
