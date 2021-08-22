@@ -6,6 +6,7 @@ shell.cp("-R", "src/public/images", "dist/public/");
 shell.mkdir("dist/public/js/");
 shell.mkdir("dist/public/css/");
 shell.cp("-R", "src/public/js/*", "dist/public/js/");
+shell.cp("-R", "node_modules/ruffle-mirror/*", "dist/public/js/");
 shell.cp("-R", "src/public/css/*", "dist/public/css/");
 
 if (shell.ls("localhost.crt").length == 0) {
