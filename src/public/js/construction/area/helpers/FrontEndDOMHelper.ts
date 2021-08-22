@@ -151,7 +151,7 @@ ${rootScript}`;
           }
         }
       } else {
-        let tag = element.tagName.toLowerCase();
+        let tag = element.tagName.toLowerCase().replace('ruffle-embed', 'embed');
         if (tag === 'button') tag = 'Button';
         
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
@@ -678,7 +678,7 @@ ${rootScript}`;
           }
         }
       } else {
-        let tag = element.tagName.toLowerCase();
+        let tag = element.tagName.toLowerCase().replace('ruffle-embed', 'embed');
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let classes = '';
         let styles = null;

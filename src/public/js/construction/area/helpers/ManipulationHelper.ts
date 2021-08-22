@@ -508,6 +508,8 @@ var ManipulationHelper = {
               		selectingElement.firstElementChild.removeAttribute('internal-fsb-ratio-fit');
                 	selectingElement.removeChild(selectingElement.firstElementChild.nextSibling);
                 }
+                
+                window.RufflePlayer && window.RufflePlayer.polyfill();
               }
             }
           }
