@@ -31,6 +31,7 @@ let options = {
     "float": CONSTANTS.FLOAT_OPTIONS,
     "cursor": CONSTANTS.CURSOR_OPTIONS,
     "display": CONSTANTS.DISPLAY_OPTIONS,
+    "ratio": CONSTANTS.RATIO_OPTIONS,
     "image-rendering": CONSTANTS.IMAGE_RENDERING_OPTIONS,
     "pointer-events": CONSTANTS.POINTER_EVENTS_OPTIONS,
     "z-index": CONSTANTS.Z_INDEX_OPTIONS,

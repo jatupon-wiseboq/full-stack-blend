@@ -443,6 +443,20 @@ var ManipulationHelper = {
               } else if (attribute.name == 'internal-fsb-name') {
     						LayoutHelper.invalidate();
     						TimelineHelper.invalidate();
+              } else if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'Flash') {
+    						switch (attribute.name) {
+    						  case 'src':
+    						    selectingElement.firstElementChild.firstElementChild.setAttribute('value', attribute.value);
+    						    selectingElement.firstElementChild.lastElementChild.setAttribute('src', attribute.value);
+    						    break;
+    						  case 'class':
+    						  case 'width':
+    						  case 'height':
+    						    break;
+    						  default:
+    						    selectingElement.firstElementChild.lastElementChild.setAttribute(attribute.name, attribute.value);
+    						    break;
+    						}
               }
               
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
@@ -474,6 +488,26 @@ var ManipulationHelper = {
               
               if (aStyle.name == 'font-family') {
                 FontHelper.load(aStyle.value);
+              }
+              
+              if (aStyle.name == 'ratio') {
+              	if (!selectingElement.firstElementChild.nextSibling || !HTMLHelper.hasAttribute(selectingElement.firstElementChild.nextSibling, 'internal-fsb-ratio-expand')) {
+              		const element = document.createElement('img');
+              		element.setAttribute('style', 'display: none');
+              		element.setAttribute('internal-fsb-ratio-expand', true);
+              		selectingElement.insertBefore(element, selectingElement.firstElementChild.nextSibling);
+              	}
+              	
+              	const splited = aStyle.value && aStyle.value.split(':') || [];
+              	const w = splited[0] && parseInt(splited[0]) || NaN;
+              	const h = splited[1] && parseInt(splited[1]) || NaN;
+              	if (!isNaN(w) && !isNaN(h)) {
+              		selectingElement.firstElementChild.setAttribute('internal-fsb-ratio-fit', true);
+                	selectingElement.firstElementChild.nextSibling.setAttribute('src', FrontEndDOMHelper.generateImageDataURLWithRatio(w, h));
+                } else {
+              		selectingElement.firstElementChild.removeAttribute('internal-fsb-ratio-fit');
+                	selectingElement.removeChild(selectingElement.firstElementChild.nextSibling);
+                }
               }
             }
           }

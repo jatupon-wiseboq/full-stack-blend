@@ -12,6 +12,10 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         | Minimum & Maximum Size
       .section-body
         +CreateReactComponent('FullStackBlend.Components.BoundaryPicker')
+      .section-subtitle(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video, internal-fsb-class:Flash", internal-fsb-not-for="editorCurrentMode:animation, editorCurrentMode:coding")
+        | Media Extension
+      .section-body(internal-fsb-for="internal-fsb-class:Image, internal-fsb-class:Video, internal-fsb-class:Flash", internal-fsb-not-for="editorCurrentMode:animation, editorCurrentMode:coding")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['ratio'], watchingAttributeNames: ['internal-fsb-react-style-ratio']}")
       .section-hr
     .section-container
       .section-title

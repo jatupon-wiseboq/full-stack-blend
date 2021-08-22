@@ -1,0 +1,12 @@
+.section-container(internal-fsb-for="internal-fsb-class:Flash")
+  .section-title
+    | Flash Options
+  .section-subtitle
+    | Source
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['src'], inline: true, button: false, placeholder: 'URL'}")
+  .section-subtitle
+    | Upload
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.FilePicker', "{watchingAttributeNames: ['src'], inline: true, button: false}")
+  .section-hr

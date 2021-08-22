@@ -179,15 +179,27 @@ var FrontEndManipulationHelper = {
       case 'Image':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-4(style={display: 'block', width: '100%'}, width: '100%')
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', height: '100%', padding: '0px'})
             img
         `, element);
         break;
       case 'Video':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-4(style={display: 'block', width: '100%', minHeight: '300px'})
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', height: '100%', padding: '0px'})
             video
+        `, element);
+        break;
+      case 'Flash':
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element.col-4(style={display: 'block', width: '100%', height: '100%', padding: '0px'})
+            object(classID='clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', codebase='http://fpdownload.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=8,0,0,0', align='middle')
+              param(name='movie')
+              param(name='allowScriptAccess', value='sameDomain')
+              param(name='quality', value='high')
+              param(name='wmode', value='transparent')
+              embed(quality='high', wmode='transparent', align='middle', allowscriptaccess='sameDomain', type='application/x-shockwave-flash', pluginspage='http://www.macromedia.com/go/getflashplayer', style={width: '100%', height: '100%', padding: '0px'})
         `, element);
         break;
       case 'Component':

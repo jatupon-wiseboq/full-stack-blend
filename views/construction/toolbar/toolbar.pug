@@ -142,6 +142,9 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='perform("insert", "Video")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Video</b></p><p>Upload or choose an existing video file, which will be automatically encoded into different sizes and formats, so that it will be playable on all major browsers and operating systems.</p>")
             i.fa.fa-file-movie-o
             | Video
+          a.dropdown-item(onclick='perform("insert", "Flash")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Shockwave Flash</b></p><p>Upload or choose an existing swf file, which StackBlend will handle support on legacy and modern systems for you. Using Ruffle for ones which support WebAssembly, it'll work on modern systems without installing any additional plugin.</p>")
+            i.fa.fa-file-movie-o
+            | Flash
       .dropdown(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 70px;')
           i.fa.fa-puzzle-piece.m-0

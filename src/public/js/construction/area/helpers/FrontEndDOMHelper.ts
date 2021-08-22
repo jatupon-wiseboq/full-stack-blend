@@ -808,7 +808,7 @@ ${rootScript}`;
             case 'contenteditable':
               continue;
             default:
-              if (attribute.name.indexOf('internal-fsb-') == 0 && ['internal-fsb-animation'].indexOf(attribute.name) == -1) continue;
+              if (attribute.name.indexOf('internal-fsb-') == 0 && ['internal-fsb-animation', 'internal-fsb-ratio-fit', 'internal-fsb-ratio-expand'].indexOf(attribute.name) == -1) continue;
               if (CAMEL_OF_EVENTS_DICTIONARY[attribute.name]) {
                 let value = null;
                 if (attribute.value) value = JSON.parse(attribute.value);
@@ -1008,6 +1008,12 @@ ${rootScript}`;
     } while (current && shifted);
     
     return (current == null);
+  },
+  generateImageDataURLWithRatio: (width: number, height: number): string => {
+  	const canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		return canvas.toDataURL();
   }
 };
 
