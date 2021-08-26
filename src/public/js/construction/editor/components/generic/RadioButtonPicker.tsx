@@ -52,6 +52,8 @@ let options = {
 		"data-rendering-condition-mode-1": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE_1,
 		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
 		"data-verb": CONSTANTS.BACKEND_VERB,
+		"data-forward-option": CONSTANTS.BACKEND_FORWARD_OPTIONS,
+		"data-forward-recursive": CONSTANTS.BACKEND_FORWARD_RECURSIVE_OPTIONS,
 
 		// Animations
 		// 
