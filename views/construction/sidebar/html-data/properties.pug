@@ -41,11 +41,15 @@ include ../../mixin/CreateReactComponent
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-table'], inline: true, button: false, placeholder: 'collection, collection'}")
     .section-subtitle
-      | Forwarding Prefix
+      | Forwarding Mode
     .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-mode']}")
+    .section-subtitle(internal-fsb-for="data-forward-mode:prefix")
+      | Forwarding Prefix
+    .section-body(internal-fsb-for="data-forward-mode:prefix")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-prefix'], inline: true, button: false, placeholder: 'prefix'}")
     .section-note
-      | Forward option will duplicate the data of all configured fields from this table to the forwarded one with or without a prefix.
+      | Forward option will duplicate the data of all configured fields from this table to the forwarded one using collection or columns with a prefix.
   .section-container(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalColumn")
       | Relational Column Options
@@ -84,7 +88,7 @@ include ../../mixin/CreateReactComponent
       .section-body(internal-fsb-for="data-forward-option:single, data-forward-option:multiple")
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-recursive']}")
     .section-note(internal-fsb-not-for="internal-fsb-class:RelationalColumn")
-      | Forward option will duplicate and forward the data of this field to the configuring table with or without a prefix.
+      | Forward option will duplicate and forward the data of this field to the configuring table using collection or columns with a prefix.
   .section-container(internal-fsb-for="internal-fsb-class:WorkerQueue")
     .section-title
       | Worker Queue Options
