@@ -36,13 +36,13 @@ include ../../mixin/CreateReactComponent
       | Name
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
-    .section-subtitle
+    .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
       | Forwarding Mode
-    .section-body
+    .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-mode']}")
-    .section-subtitle
+    .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
       | Forwarded Table
-    .section-body
+    .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-table'], inline: true, button: false, placeholder: 'collection, collection'}")
     .section-subtitle(internal-fsb-for="data-forward-mode:prefix")
       | Forwarding Prefix
