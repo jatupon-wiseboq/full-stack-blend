@@ -40,9 +40,9 @@ include ../../mixin/CreateReactComponent
       | Forwarding Mode
     .section-body
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-mode']}")
-    .section-subtitle(internal-fsb-for="data-forward-mode:prefix, data-forward-mode:collection")
+    .section-subtitle
       | Forwarded Table
-    .section-body(internal-fsb-for="data-forward-mode:prefix, data-forward-mode:collection")
+    .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-table'], inline: true, button: false, placeholder: 'collection, collection'}")
     .section-subtitle(internal-fsb-for="data-forward-mode:prefix")
       | Forwarding Prefix
