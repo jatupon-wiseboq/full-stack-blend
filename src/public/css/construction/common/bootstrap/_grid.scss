@@ -32,6 +32,6 @@
 @if $enable-grid-classes {
 	.internal-fsb-inverse > .container > .row, 
 	.internal-fsb-inverse > .container-fluid > .row {
-  	@include make-grid-rows();
+  	@include make-grid-inverse-columns();
   }
 }
