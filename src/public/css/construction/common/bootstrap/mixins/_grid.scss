@@ -19,12 +19,12 @@
   padding-left: $gutter / 2;
 }
 
-@mixin make-col($size, $columns: $grid-columns) {
+@mixin make-col-for-none-inverse($size, $columns: $grid-columns) {
   flex: 0 0 percentage($size / $columns);
   // Add a `max-width` to ensure content within each column does not blow out
   // the width of the column. Applies to IE10+ and Firefox. Chrome and Safari
   // do not appear to require this.
-  max-width: percentage($size / $columns);
+  max-width: none; // percentage($size / $columns);
 }
 
 @mixin make-col-auto() {
@@ -99,7 +99,7 @@
 
       @for $i from 1 through $columns {
         .col#{$infix}-#{$i} {
-          @include make-col($i, $columns);
+          @include make-col-for-none-inverse($i, $columns);
         }
       }
 
@@ -108,6 +108,114 @@
         @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
           .offset#{$infix}-#{$i} {
             @include make-col-offset($i, $columns);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Generate semantic grid rows with these mixins.
+
+@mixin make-row-for-inverse($size, $rows: $grid-columns) {
+  flex: 0 0 percentage($size / $rows);
+  // Add a `max-height` to ensure content within each row does not blow out
+  // the height of the row. Applies to IE10+ and Firefox. Chrome and Safari
+  // do not appear to require this.
+  max-width: none;
+  max-height: none;
+}
+
+@mixin make-row-auto() {
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  max-width: none;
+  max-height: 100%; // Reset earlier grid tiers
+}
+
+@mixin make-row-offset($size, $rows: $grid-columns) {
+  $num: $size / $rows;
+  margin-left: 0;
+  margin-top: if($num == 0, 0, percentage($num));
+}
+
+// Row rows
+//
+// Specify on a parent element(e.g., .col) to force immediate children into NN
+// numberof rows. Supports wrapping to new lines, but does not do a Masonry
+// style grid.
+@mixin row-rows($count) {
+  & > * {
+    flex: 0 0 100% / $count;
+    max-width: none;
+    max-height: 100% / $count;
+  }
+}
+
+// Framework grid generation
+//
+// Used only by Bootstrap to generate the correct number of grid classes given
+// any value of `$grid-columns`.
+
+@mixin make-grid-rows($rows: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+  // Common properties for all breakpoints
+  %grid-row {
+    position: relative;
+    width: auto;
+    height: 100%;
+    padding-right: 0;
+    padding-bottom: $gutter / 2;
+    padding-left: 0;
+    padding-top: $gutter / 2;
+  }
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    // Allow rows to stretch full height below their breakpoints
+    @for $i from 1 through $rows {
+      .col#{$infix}-#{$i} {
+        @extend %grid-row;
+      }
+    }
+    .col#{$infix},
+    .col#{$infix}-auto {
+      @extend %grid-row;
+    }
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      // Provide basic `.col-{bp}` classes for equal-height flexbox rows
+      .col#{$infix} {
+        flex-basis: 0;
+        flex-grow: 1;
+        min-width: 0;
+        min-height: 0; // See https://github.com/twbs/bootstrap/issues/25410
+        max-width: none;
+        max-height: 100%;
+      }
+
+      @for $i from 1 through $grid-row-columns {
+        .col-rows#{$infix}-#{$i} {
+          @include row-rows($i);
+        }
+      }
+
+      .col#{$infix}-auto {
+        @include make-row-auto();
+      }
+
+      @for $i from 1 through $rows {
+        .col#{$infix}-#{$i} {
+          @include make-row-for-inverse($i, $rows);
+        }
+      }
+
+      // `$rows - 1` because offsetting by the height of an entire row isn't possible
+      @for $i from 0 through ($rows - 1) {
+        @if not ($infix == "" and $i == 0) { // Avoid emitting useless .offset-0
+          .offset#{$infix}-#{$i} {
+            @include make-row-offset($i, $rows);
           }
         }
       }

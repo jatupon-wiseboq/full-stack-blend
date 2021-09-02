@@ -28,3 +28,10 @@
 @if $enable-grid-classes {
   @include make-grid-columns();
 }
+
+@if $enable-grid-classes {
+	.internal-fsb-inverse > .container > .row, 
+	.internal-fsb-inverse > .container-fluid > .row {
+  	@include make-grid-rows();
+  }
+}

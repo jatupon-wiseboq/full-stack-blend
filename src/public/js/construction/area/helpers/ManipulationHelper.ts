@@ -511,6 +511,16 @@ var ManipulationHelper = {
                 
                 window.RufflePlayer && window.RufflePlayer.polyfill();
               }
+              
+              if (aStyle.name == 'flex-direction') {
+              	if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'FlowLayout') {
+              		if (aStyle.value == 'column' || aStyle.value == 'column-reverse') {
+              			HTMLHelper.addClass(selectingElement, 'internal-fsb-inverse');
+              		} else {
+              			HTMLHelper.removeClass(selectingElement, 'internal-fsb-inverse');
+              		}
+              	}
+              }
             }
           }
           

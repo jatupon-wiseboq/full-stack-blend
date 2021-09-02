@@ -33,6 +33,16 @@ html, body {
 	    align-content: inherit;
   	}
 	}
+	
+	&.internal-fsb-inverse {
+		> .container,
+  	> .container-fluid {
+  		> .row.internal-fsb-strict-layout {
+  			height: 100%;
+  			min-height: inherit;
+  		}
+  	}
+	}
 }
 
 // Layout

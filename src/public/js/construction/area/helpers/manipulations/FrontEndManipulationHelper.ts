@@ -46,7 +46,7 @@ var FrontEndManipulationHelper = {
       case 'FlowLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(style={paddingLeft: '0px', paddingRight: '0px'})
             .container-fluid
               .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
         `, element);
@@ -54,7 +54,7 @@ var FrontEndManipulationHelper = {
       case 'TableLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed'}, internal-fsb-table-collapse="false")
+          table.internal-fsb-element.internal-fsb-table-layout(style={tableLayout: 'fixed', paddingLeft: '0px', paddingRight: '0px'}, internal-fsb-table-collapse="false")
             tbody
               tr
                 td.internal-fsb-strict-layout.internal-fsb-allow-cursor
@@ -79,7 +79,7 @@ var FrontEndManipulationHelper = {
       case 'AbsoluteLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(style={paddingLeft: '0px', paddingRight: '0px'})
             .container-fluid
               .row.internal-fsb-absolute-layout.internal-fsb-allow-cursor
         `, element);
@@ -102,7 +102,7 @@ var FrontEndManipulationHelper = {
       case 'Rectangle':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.internal-fsb-allow-cursor.col-2
+          .internal-fsb-element.internal-fsb-allow-cursor(style={paddingLeft: '0px', paddingRight: '0px'})
         `, element);
         break;
       case 'Iframe':
