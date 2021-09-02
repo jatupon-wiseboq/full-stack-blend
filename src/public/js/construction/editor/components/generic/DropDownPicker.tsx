@@ -31,6 +31,7 @@ let options = {
     "float": CONSTANTS.FLOAT_OPTIONS,
     "cursor": CONSTANTS.CURSOR_OPTIONS,
     "display": CONSTANTS.DISPLAY_OPTIONS,
+    "display-for-flexbox": CONSTANTS.DISPLAY_FOR_FLEXBOX_OPTIONS,
     "ratio": CONSTANTS.RATIO_OPTIONS,
     "image-rendering": CONSTANTS.IMAGE_RENDERING_OPTIONS,
     "pointer-events": CONSTANTS.POINTER_EVENTS_OPTIONS,
@@ -123,7 +124,8 @@ let map = {
     "box-shadow[0,4]": "left",
     "box-shadow[1,4]": "top",
     "box-shadow[2,4]": "blur",
-    "box-shadow[3,4]": "color"
+    "box-shadow[3,4]": "color",
+    "display-for-flexbox": "display"
 }
 let reject = {
     "font-weight": function(scope) {

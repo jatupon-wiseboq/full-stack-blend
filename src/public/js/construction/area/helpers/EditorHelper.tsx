@@ -223,6 +223,7 @@ var EditorHelper = {
       		isFirstElementOfComponent: false,
 	        hasParentReactComponent: false,
 	        isInheritingComponent: false,
+	        isContainingInFlexbox: false,
 	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
 	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
 	        elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
@@ -265,6 +266,10 @@ var EditorHelper = {
 	      attributes = HTMLHelper.getAttributes(element, false);
 	    }
 	  }
+	  
+	  const parentElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', element);
+	  const displayStyle = parentElement && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(parentElement, 'style'), 'display') || null;
+	  const isFlexContainer = HTMLHelper.getAttribute(parentElement, 'internal-fsb-class') == 'FlowLayout' || displayStyle == 'flex';
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
@@ -274,6 +279,7 @@ var EditorHelper = {
       	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
       	isTableLayoutRow: (element.tagName == 'TR'),
       	isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
+	      isContainingInFlexbox: isFlexContainer,
 	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),

@@ -24,11 +24,15 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
       .section-subtitle
         | Container
       .section-body
-        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
+        span(internal-fsb-not-for="isContainingInFlexbox:true")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
+        span(internal-fsb-for="isContainingInFlexbox:true")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display-for-flexbox'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['z-index'], watchingAttributeNames: ['internal-fsb-react-style-z-index']}")
-        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['float'], watchingAttributeNames: ['internal-fsb-react-style-float']}")
-        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['clear'], watchingAttributeNames: ['internal-fsb-react-style-clear']}")
+        span(internal-fsb-not-for="isContainingInFlexbox:true")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['float'], watchingAttributeNames: ['internal-fsb-react-style-float']}")
+          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['clear'], watchingAttributeNames: ['internal-fsb-react-style-clear']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['visibility'], watchingAttributeNames: ['internal-fsb-react-style-visibility']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-x'], watchingAttributeNames: ['internal-fsb-react-style-overflow-x']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['overflow-y'], watchingAttributeNames: ['internal-fsb-react-style-overflow-y']}")
@@ -42,7 +46,7 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         span(internal-fsb-for="editorCurrentMode:coding")
           +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-object-position']}")
       .section-note
-        | Float:, clear:, and display: inline options don't work inside any flexbox container, including FlowLayout.
+        | Float:, clear:, display: inline, and position: absolute options don't work inside any flexbox container, including FlowLayout.
       .section-hr
     .section-container
       .section-title

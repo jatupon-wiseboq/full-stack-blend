@@ -16,6 +16,7 @@ export const CLEAR_OPTIONS = [null, "none", "left", "right", "both"];
 export const FLOAT_OPTIONS = [null, "none", "left", "right"];
 export const CURSOR_OPTIONS = [null, "alias", "all-scroll", "auto", "cell", "context-menu", "col-resize", "copy", "crosshair", "default", "e-resize", "ew-resize", "grab", "grabbing", "help", "move", "n-resize", "ne-resize", "nesw-resize", "ns-resize", "nw-resize", "nwse-resize", "no-drop", "none", "not-allowed", "pointer", "progress", "row-resize", "s-resize", "se-resize", "sw-resize", "text", "vertical-text", "w-resize", "wait", "zoom-in", "zoom-out"];
 export const DISPLAY_OPTIONS = [null, "inline", "block", "contents", "flex", "grid", "inline-block", "inline-flex", "inline-grid", "inline-table", "list-item", "run-in", "table", "table-caption", "table-column-group", "table-header-group", "table-footer-group", "table-row-group", "table-cell", "table-column", "table-row", "none"];
+export const DISPLAY_FOR_FLEXBOX_OPTIONS = [null, "block", "contents", "flex", "grid", "inline-block", "inline-flex", "inline-grid", "inline-table", "list-item", "run-in", "table", "table-caption", "table-column-group", "table-header-group", "table-footer-group", "table-row-group", "table-cell", "table-column", "table-row", "none"];
 export const RATIO_OPTIONS = [null, "{TEXT}", "1:1", "3:2", "4:1", "4:3", "5:4", "16:9", "16:10", "17:9", "21:9", "32:9"];
 export const FLEX_ORDER_OPTIONS = [null, "{NUMBER}", 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 export const FLEX_DIRECTION_OPTIONS = [null, "row", "row-reverse", "column", "column-reverse"];
