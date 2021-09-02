@@ -102,7 +102,7 @@ var FrontEndManipulationHelper = {
       case 'Rectangle':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.internal-fsb-allow-cursor(style={paddingLeft: '0px', paddingRight: '0px'})
+          .internal-fsb-element.internal-fsb-allow-cursor(style={paddingLeft: '0px', paddingRight: '0px', width: '100%'})
         `, element);
         break;
       case 'Iframe':
