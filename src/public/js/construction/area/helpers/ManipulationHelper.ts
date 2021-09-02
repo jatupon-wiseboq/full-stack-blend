@@ -522,12 +522,12 @@ var ManipulationHelper = {
               	}
               }
               
-              if (aStyle.name == 'flex-wrap') {
+              if (['flex-wrap', 'justify-content', 'align-items', 'align-content'].indexOf(aStyle.name) != -1) {
               	if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'FlowLayout') {
-              		if (aStyle.value == 'wrap' || aStyle.value == 'wrap-reverse') {
-              			HTMLHelper.addClass(selectingElement, 'internal-fsb-wrap');
+              		if (hash['flex-wrap'] || hash['justify-content'] || hash['align-items'] || hash['align-content']) {
+              			HTMLHelper.addClass(selectingElement, 'internal-fsb-stretch');
               		} else {
-              			HTMLHelper.removeClass(selectingElement, 'internal-fsb-wrap');
+              			HTMLHelper.removeClass(selectingElement, 'internal-fsb-stretch');
               		}
               	}
               }
