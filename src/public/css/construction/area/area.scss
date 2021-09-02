@@ -369,6 +369,11 @@ html.internal-fsb-guide-on {
   	}
 	}
 	
+	&.internal-fsb-wrap > .container > .row,
+	&.internal-fsb-wrap > .container-fluid > .row {
+		height: 100%;
+	}
+	
 	&.internal-fsb-inverse {
 		> .container,
   	> .container-fluid {

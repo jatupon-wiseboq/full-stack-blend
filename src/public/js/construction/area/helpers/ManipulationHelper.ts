@@ -521,6 +521,16 @@ var ManipulationHelper = {
               		}
               	}
               }
+              
+              if (aStyle.name == 'flex-wrap') {
+              	if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'FlowLayout') {
+              		if (aStyle.value == 'wrap' || aStyle.value == 'wrap-reverse') {
+              			HTMLHelper.addClass(selectingElement, 'internal-fsb-wrap');
+              		} else {
+              			HTMLHelper.removeClass(selectingElement, 'internal-fsb-wrap');
+              		}
+              	}
+              }
             }
           }
           
