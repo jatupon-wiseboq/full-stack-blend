@@ -8418,18 +8418,18 @@ html, body {
       justify-content: inherit;
       align-items: inherit;
       align-content: inherit; }
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container > .row,
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container-fluid > .row,
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container-sm > .row,
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container-md > .row,
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container-lg > .row,
-  .internal-fsb-inheriting-element.internal-fsb-wrap > .container-xl > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container-fluid > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container-sm > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container-md > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container-lg > .row,
-  .internal-fsb-element.internal-fsb-wrap > .container-xl > .row {
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container > .row,
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-fluid > .row,
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-sm > .row,
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-md > .row,
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-lg > .row,
+  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-xl > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container-fluid > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container-sm > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container-md > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container-lg > .row,
+  .internal-fsb-element.internal-fsb-stretch > .container-xl > .row {
     height: 100%; }
   .internal-fsb-inheriting-element.internal-fsb-inverse > .container > .row.internal-fsb-strict-layout,
   .internal-fsb-inheriting-element.internal-fsb-inverse > .container-fluid > .row.internal-fsb-strict-layout,
