@@ -63,8 +63,8 @@ let version = 1.3;
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
-const DEFAULT_COMPONENT_HTML = `<div class="col-4 internal-fsb-element" internal-fsb-name="Container" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" internal-fsb-react-mode="Site"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
-const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class="Popup" style="height: 100vh; left: 0px; position: fixed; top: 0px; width: 100vw" internal-fsb-event-no-propagate="1" internal-fsb-name="Container" internal-fsb-react-mode="Site"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="internal-fsb-allow-cursor internal-fsb-strict-layout row"></div></div></div>`.split('\n');
+const DEFAULT_COMPONENT_HTML = `<div class="col-4 internal-fsb-element" internal-fsb-name="Component" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" internal-fsb-react-mode="Site" style="padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div>`.split('\n');
+const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class="Popup" style="height: 100vh; left: 0px; position: fixed; top: 0px; width: 100vw" internal-fsb-event-no-propagate="1" internal-fsb-name="Screen" internal-fsb-react-mode="Site" style="padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="internal-fsb-allow-cursor internal-fsb-strict-layout row"><div class="col-8 internal-fsb-element internal-fsb-inverse offset-2" internal-fsb-name="Center" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" style="-ms-flex-direction: column; -webkit-flex-direction: column; -webkit-justify-content: center; flex-direction: column; height: 100vh; justify-content: center; padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"><div class="internal-fsb-element" internal-fsb-name="Dialog" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" style="min-height: 400px; padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div></div></div></div></div></div></div>`.split('\n');
 const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
@@ -316,6 +316,14 @@ var WorkspaceHelper = {
       document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
       
       HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID);
+      
+      if (!popup.html) {
+      	const elements = HTMLHelper.getElementsByClassName('internal-fsb-element', document.body.firstElementChild.firstElementChild.firstElementChild);
+      	
+      	Array.from(elements).forEach((element) => {
+      		HTMLHelper.setAttribute(element, 'internal-fsb-guid', RandomHelper.generateGUID());
+      	});
+      }
       
       WorkspaceHelper.updateInPageComponents();
       WorkspaceHelper.updateInheritingComponents();
