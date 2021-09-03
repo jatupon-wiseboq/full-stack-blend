@@ -459,6 +459,7 @@ var HTMLHelper = {
   			}
   			break;
   		case 'internal-fsb-data-controls':
+  		case 'internal-fsb-animation':
   			if (attribute.value) {
   				attribute.value = attribute.value.trim().split(' ').sort().join(' ');
   			}

@@ -9,13 +9,13 @@ var FontHelper = {
   generateFontData: () => {
     return setupFont;
   },
-  initializeFontData: (data: any) => {
+  initializeFontData: (data: any, _window: any=window) => {
     if (data == null) return;
     
     setupFont = {};
     fontInfoCache = {};
     
-    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-font')];
+    let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-font', _window.document.body)];
     for (let element of elements) {
       if (element.parentNode) {
         element.parentNode.removeChild(element);
@@ -24,7 +24,7 @@ var FontHelper = {
     
     for (let name in data) {
       if (data.hasOwnProperty(name)) {
-        FontHelper.load(name);
+        FontHelper.load(name, _window);
       }
     }
   },
@@ -80,7 +80,7 @@ var FontHelper = {
     
     return variants;
   },
-  load: function(name: string) {
+  load: function(name: string, _window: any=window) {
     if (!name || setupFont[name]) return;
     
     let info = FontHelper.getFontInfo(name);
@@ -94,24 +94,24 @@ var FontHelper = {
         italics[i] = '1,' + italics[i];
       }
     
-      let link = document.createElement('link');
+      let link = _window.document.createElement('link');
       HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
       HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
       HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
       link.className = 'internal-fsb-accessory internal-fsb-font';
       
-      document.body.appendChild(link);
+      _window.document.body.appendChild(link);
     }
     
     let normals = FontHelper.getAllNormals(info);
     if (normals.length != 0) {
-      let link = document.createElement('link');
+      let link = _window.document.createElement('link');
       HTMLHelper.setAttribute(link, 'internal-fsb-link', 'true');
       HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
       HTMLHelper.setAttribute(link, 'rel', 'stylesheet');
       link.className = 'internal-fsb-accessory internal-fsb-font';
       
-      document.body.appendChild(link);
+      _window.document.body.appendChild(link);
     }
     
     setupFont[name] = true;
