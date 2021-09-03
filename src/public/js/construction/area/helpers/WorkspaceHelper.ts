@@ -60,6 +60,11 @@ let controllerBlobSHA = null;
 let siteBundleBlobSHA = null;
 let version = 1.3;
 
+let temp = document.createElement('iframe');
+HTMLHelper.setAttribute(temp, 'style', 'visibility: hidden; pointer-events: none;');
+HTMLHelper.setAttribute(temp, 'width', '100');
+HTMLHelper.setAttribute(temp, 'height', '100');
+
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0"><div class="row internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="container-fluid internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="row internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
@@ -231,27 +236,9 @@ var WorkspaceHelper = {
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
       
+      if (!WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, InternalProjectSettings.editingPageID)) return;
+      
       let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
-      if (page == null) return;
-      
-      WorkspaceHelper.replaceBodyOuterHTML(page.body.join('\n'));
-      
-      for (let key of BACKEND_DATA_EXTENSIONS) {
-      	delete InternalProjectSettings[key];
-      	if (page.extensions[key]) {
-      		InternalProjectSettings[key] = page.extensions[key];
-      	}
-      }
-      
-      for (let key of BACKEND_DATA_EXTENSIONS) {
-      	if (page.extensions.hasOwnProperty(key)) {
-        	InternalProjectSettings[key] = page.extensions[key] && page.extensions[key].join('\n') || null;
-        }
-      }
-      
-      WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-      MalformationRepairHelper.repair();
       
       FontHelper.initializeFontData(page.head.fonts);
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -264,7 +251,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
-    	WorkspaceHelper.replaceBodyOuterHTML((InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
+      WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
@@ -273,7 +260,7 @@ var WorkspaceHelper = {
       
       EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
-    	WorkspaceHelper.replaceBodyOuterHTML((InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
+      WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
@@ -284,17 +271,9 @@ var WorkspaceHelper = {
     } else if (InternalProjectSettings.currentMode == 'components') {
     	if (InternalProjectSettings.editingComponentID == null) return;
       
-      let component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
-      if (component == null) return;
-      
-      WorkspaceHelper.replaceBodyOuterHTML((DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
-      document.body.firstElementChild.firstElementChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
+      if (!WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, InternalProjectSettings.editingComponentID)) return;
       
       HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingComponentID);
-      
-      WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-      MalformationRepairHelper.repair();
       
       FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -309,11 +288,9 @@ var WorkspaceHelper = {
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
       
-      let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
-      if (popup == null) return;
+      if (!WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, InternalProjectSettings.editingPopupID)) return;
       
-      WorkspaceHelper.replaceBodyOuterHTML((DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
-      document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
+      let popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
       
       HTMLHelper.setAttribute(document.body.firstElementChild.firstElementChild.firstElementChild, 'internal-fsb-guid', InternalProjectSettings.editingPopupID);
       
@@ -324,10 +301,6 @@ var WorkspaceHelper = {
       		HTMLHelper.setAttribute(element, 'internal-fsb-guid', RandomHelper.generateGUID());
       	});
       }
-      
-      WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-      MalformationRepairHelper.repair();
       
       FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -347,6 +320,63 @@ var WorkspaceHelper = {
     TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     StatusHelper.invalidate();
+  },
+  loadPageData: (mode: string, editingID: string, _window: any=window) => {
+  	HTMLHelper.sortAttributes(_window.document);
+  	
+    if (mode == 'site') {
+      let page = WorkspaceHelper.getPageData(editingID);
+      if (page == null) return false;
+      
+      WorkspaceHelper.replaceBodyOuterHTML(_window, page.body.join('\n'));
+      
+      for (let key of BACKEND_DATA_EXTENSIONS) {
+      	delete InternalProjectSettings[key];
+      	if (page.extensions[key]) {
+      		InternalProjectSettings[key] = page.extensions[key];
+      	}
+      }
+      
+      for (let key of BACKEND_DATA_EXTENSIONS) {
+      	if (page.extensions.hasOwnProperty(key)) {
+        	InternalProjectSettings[key] = page.extensions[key] && page.extensions[key].join('\n') || null;
+        }
+      }
+      
+      WorkspaceHelper.updateInPageComponents(_window.document.body);
+      WorkspaceHelper.updateInheritingComponents(_window.document.body);
+      MalformationRepairHelper.repair(_window.document.body);
+      
+      FontHelper.initializeFontData(page.head.fonts, _window);
+    } else if (mode == 'data') {
+    	WorkspaceHelper.replaceBodyOuterHTML(_window, (InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
+    } else if (mode == 'services') {
+    	WorkspaceHelper.replaceBodyOuterHTML(_window, (InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
+    } else if (mode == 'components') {
+      let component = WorkspaceHelper.getComponentData(editingID);
+      if (component == null) return false;
+      
+      WorkspaceHelper.replaceBodyOuterHTML(_window, (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
+      
+      _window.document.body.firstElementChild.firstElementChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
+      
+      WorkspaceHelper.updateInPageComponents();
+      WorkspaceHelper.updateInheritingComponents();
+      MalformationRepairHelper.repair();
+    } else if (mode == 'popups') {
+      let popup = WorkspaceHelper.getPopupData(editingID);
+      if (popup == null) return false;
+      
+      WorkspaceHelper.replaceBodyOuterHTML(_window, (DEFAULT_SINGLE_ITEM_EDITING_HTML).join('\n'));
+      
+      _window.document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
+      
+      WorkspaceHelper.updateInPageComponents();
+      WorkspaceHelper.updateInheritingComponents();
+      MalformationRepairHelper.repair();
+    }
+    
+    return true;
   },
   saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
   	HTMLHelper.sortAttributes();
@@ -375,6 +405,7 @@ var WorkspaceHelper = {
       
       page.notations = SchemaHelper.generateTreeOfDotNotations();
       page.automaticSchemata = SchemaHelper.generateAutomaticSchemata();
+      page.references = WorkspaceHelper.getAllReferencingKlasses();
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -417,6 +448,7 @@ var WorkspaceHelper = {
       component.namespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
       component.klass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class') ||
       	(HTMLHelper.getAttribute(element, 'internal-fsb-class') + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
+      component.references = WorkspaceHelper.getAllReferencingKlasses();
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -428,6 +460,8 @@ var WorkspaceHelper = {
       
       if (force || component.html != previous) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+        WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
+      	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
       }
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
@@ -441,6 +475,7 @@ var WorkspaceHelper = {
       popup.namespace = HTMLHelper.getAttribute(element, 'internal-fsb-react-namespace') || 'Project.Controls';
       popup.klass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class') ||
       	(HTMLHelper.getAttribute(element, 'internal-fsb-class') + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
+      popup.references = WorkspaceHelper.getAllReferencingKlasses();
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -452,10 +487,14 @@ var WorkspaceHelper = {
       
       if (force || popup.html != previous) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
+      	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
       }
     }
   },
-  replaceBodyOuterHTML: (html: string) => {
+  replaceBodyOuterHTML: (window: any, html: string) => {
+  	const document = window.document;
+  
     while(document.body.attributes.length > 0) document.body.removeAttribute(document.body.attributes[0].name);
     
     const container = document.createElement('div');
@@ -557,6 +596,23 @@ var WorkspaceHelper = {
   	let element = document.getElementById('internal-fsb-stylesheet');
   	if (element) element.className = 'internal-fsb-accessory';
   },
+  getAllReferencingKlasses: () => {
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', document.body)].map((element: any) => {
+      return HTMLHelper.getAttribute(element, 'internal-fsb-inheriting');
+    });
+    let inPageComponents = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-react-mode', 'Site', document.body)]
+      .filter((element: any) => {
+        return HTMLHelper.getAttribute(element, 'internal-fsb-inheriting') == null;
+      })
+      .map((element: any) => {
+        return HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+      });
+    let popups = [...HTMLHelper.getElementsByAttribute('internal-fsb-popup-init-class', document.body)].map((element: any) => {
+      return WorkspaceHelper.getPopupKeyFromPath(HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class'));
+    });
+    
+    return Array.from(new Set([...components, ...inPageComponents, ...popups]));
+  },
   recursiveCleanupComponentPreviewDOM: (element: HTMLElement, first: boolean=false) => {
   	if (!first) {
 	    if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
@@ -584,9 +640,9 @@ var WorkspaceHelper = {
     	WorkspaceHelper.recursiveCleanupComponentPreviewDOM(_element);
 	  }
   },
-  updateInPageComponents: () => {
+  updateInPageComponents: (container: HTMLElement=document.body) => {
     for (let _component of InternalProjectSettings.components) {
-      let component = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', _component.id);
+      let component = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', _component.id, container);
       if (component && (InternalProjectSettings.currentMode != 'components' || component != document.body.firstElementChild.firstElementChild.firstElementChild)) {
 	      let componentInfo = WorkspaceHelper.getComponentData(_component.id);
 	      if (componentInfo) {
@@ -719,25 +775,96 @@ var WorkspaceHelper = {
   	const previousMode = InternalProjectSettings.currentMode;
   	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode('site');
   	
+    const results = WorkspaceHelper.generateFrontEndCodeForID();
+    
+    if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
+    
+    return results;
+  },
+  generateFrontEndCodeForAnyReferencingComponentsOrPopups: () => {
+    if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '')];
+    	let refreshed = [];
+    	
+    	while (referencing.length != 0) {
+    		const reference = referencing[0];
+    		referencing.splice(0, 1);
+    		refreshed.push(reference);
+    		
+    		for (let key in InternalComponents) {
+	        if (InternalComponents.hasOwnProperty(key)) {
+	          if (InternalComponents[key].references) {
+	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages['__' + key] = WorkspaceHelper.generateFrontEndCodeForID('components', key);
+	          	}
+	          }
+	        }
+	      }
+	      for (let key in InternalPopups) {
+	        if (InternalPopups.hasOwnProperty(key)) {
+	          if (InternalPopups[key].references) {
+	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages['__' + key] = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
+	          	}
+	          }
+	        }
+	      }
+	      for (let key in InternalSites) {
+	        if (InternalSites.hasOwnProperty(key)) {
+	          if (InternalSites[key].references) {
+	          	if (InternalSites[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages[key] = WorkspaceHelper.generateFrontEndCodeForID('site', key);
+	          	}
+	          }
+	        }
+	      }
+	    }
+    }
+  },
+  generateFrontEndCodeForID: (mode: string='site', id: string=InternalProjectSettings.editingPageID) => {
+    if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '') == id) {
+    	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
+    } else {
+	    document.body.appendChild(temp);
+		  
+	    const _document = temp.contentDocument || temp.contentWindow.document;
+	    const _window = _document.defaultView;
+	    
+	    WorkspaceHelper.loadPageData(mode, id, _window);
+	    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+	    
+	    return results;
+    }
+  },
+  generateFrontEndCodeForPage: (mode: string='site', container: any=document.body) => {
     let results = null;
     
-  	if (InternalProjectSettings.currentMode == 'site') {
-  		WorkspaceHelper.plugComponentInputs();
-  		WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-  		results = FrontEndDOMHelper.generateFrontEndCode();
-  		WorkspaceHelper.unplugComponentInputs();
+  	if (mode == 'site') {
+  		WorkspaceHelper.plugComponentInputs(container);
+  		WorkspaceHelper.updateInPageComponents(container);
+      WorkspaceHelper.updateInheritingComponents(container);
+  		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
+  		WorkspaceHelper.unplugComponentInputs(container);
   		
   		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
   		
   		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0]].join(' '));
   		results.push(stylesheetAndExtension[1]);
-  	} else if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
-  		WorkspaceHelper.plugComponentInputs();
-  		WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-  		results = FrontEndDOMHelper.generateFrontEndCode();
-  		WorkspaceHelper.unplugComponentInputs();
+  	} else if (['components', 'popups'].indexOf(mode) != -1) {
+  		WorkspaceHelper.plugComponentInputs(container);
+  		WorkspaceHelper.updateInPageComponents(container);
+      WorkspaceHelper.updateInheritingComponents(container);
+  		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
+  		WorkspaceHelper.unplugComponentInputs(container);
   		results[0] = false;
   		results[1] = false;
   		results[3] = false;
@@ -749,26 +876,89 @@ var WorkspaceHelper = {
   		results.push(stylesheetAndExtension[1]);
   	}
   	
-  	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
-  	
   	return results;
   },
   generateBackEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
   	const previousMode = InternalProjectSettings.currentMode;
   	if (autoSwitch === true) WorkspaceHelper.setMode('site');
   	
+    const results = WorkspaceHelper.generateBackEndCodeForID();
+  	
+  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
+  	
+  	return results;
+  },
+  generateBackEndCodeForAnyReferencingComponentsOrPopups: () => {
+    if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '')];
+    	let refreshed = [];
+    	
+    	while (referencing.length != 0) {
+    		const reference = referencing[0];
+    		referencing.splice(0, 1);
+    		refreshed.push(reference);
+    		
+    		for (let key in InternalComponents) {
+	        if (InternalComponents.hasOwnProperty(key)) {
+	          if (InternalComponents[key].references) {
+	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          	}
+	          }
+	        }
+	      }
+	      for (let key in InternalPopups) {
+	        if (InternalPopups.hasOwnProperty(key)) {
+	          if (InternalPopups[key].references) {
+	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          	}
+	          }
+	        }
+	      }
+	      for (let key in InternalSites) {
+	        if (InternalSites.hasOwnProperty(key)) {
+	          if (InternalSites[key].references) {
+	          	if (InternalSites[key].references.indexOf(reference) != -1) {
+	          		referencing.push(key);
+	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		
+	          		cacheOfGeneratedBackEndCodeForAllPages[key] = WorkspaceHelper.generateBackEndCodeForID(key);
+	          	}
+	          }
+	        }
+	      }
+	    }
+    }
+  },
+  generateBackEndCodeForID: (id: string=InternalProjectSettings.editingPageID) => {
+  	if ('site' == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndCodeKey() == id) {
+    	return WorkspaceHelper.generateBackEndCodeForPage('site', HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
+    } else {
+	  	document.body.appendChild(temp);
+		  
+	    const _document = temp.contentDocument || temp.contentWindow.document;
+	    const _window = _document.defaultView;
+	    
+	    WorkspaceHelper.loadPageData('site', id, _window);
+	    const results = WorkspaceHelper.generateBackEndCodeForPage('site', HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+	    
+	    return results;
+	  }
+  },
+  generateBackEndCodeForPage: (mode: string='site', container: any=document.body) => {
     let results;
-  	if (InternalProjectSettings.currentMode == 'site') {
-  		WorkspaceHelper.plugComponentInputs();
-  		WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-  		results = BackEndDOMHelper.generateBackEndCode();
-  		WorkspaceHelper.unplugComponentInputs();
+  	if (mode == 'site') {
+  		WorkspaceHelper.plugComponentInputs(container);
+  		WorkspaceHelper.updateInPageComponents(container);
+      WorkspaceHelper.updateInheritingComponents(container);
+  		results = BackEndDOMHelper.generateBackEndCode(container);
+  		WorkspaceHelper.unplugComponentInputs(container);
   	} else {
   		results = null;
   	}
-  	
-  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
   	
   	return results;
   },
@@ -847,7 +1037,7 @@ var WorkspaceHelper = {
   	WorkspaceHelper.updateInPageComponents();
     WorkspaceHelper.updateInheritingComponents();
   	let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet;
-  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateFrontEndCode(container);
+  	[combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet] = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
   	WorkspaceHelper.unplugComponentInputs(container);
   	
   	return combinedExpandingFeatureScripts || '';
