@@ -963,8 +963,8 @@ var WorkspaceHelper = {
   			return '__' + (key || RandomHelper.generateGUID());
   	}
   },
-  getCurrentGenerateFrontEndKey: (mode: string=InternalProjectSettings.currentMode, key: string=null) => {
-  	return WorkspaceHelper.getCurrentGenerateFrontEndKey();
+  getCurrentGenerateFrontEndKey: () => {
+  	return WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '');
   },
   generateFrontEndCodeForAllPages: () => {
     const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
