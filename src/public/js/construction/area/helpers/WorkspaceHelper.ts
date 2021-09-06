@@ -846,17 +846,31 @@ var WorkspaceHelper = {
     let results = null;
     
   	if (mode == 'site') {
+  		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
+  		
+  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container);
+  		const currentAnimationGroup = element && HTMLHelper.getAttribute(element, 'internal-fsb-animation') || '';
+  		
+  		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
+  		
   		WorkspaceHelper.plugComponentInputs(container);
   		WorkspaceHelper.updateInPageComponents(container);
       WorkspaceHelper.updateInheritingComponents(container);
   		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
   		WorkspaceHelper.unplugComponentInputs(container);
   		
-  		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
+  		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', currentAnimationGroup);
   		
   		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0]].join(' '));
   		results.push(stylesheetAndExtension[1]);
   	} else if (['components', 'popups'].indexOf(mode) != -1) {
+  		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
+  		
+  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container);
+  		const currentAnimationGroup = element && HTMLHelper.getAttribute(element, 'internal-fsb-animation') || '';
+  		
+  		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
+  		
   		WorkspaceHelper.plugComponentInputs(container);
   		WorkspaceHelper.updateInPageComponents(container);
       WorkspaceHelper.updateInheritingComponents(container);
@@ -867,7 +881,7 @@ var WorkspaceHelper = {
   		results[3] = false;
   		results[4] = false;
   		
-  		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
+  		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', currentAnimationGroup);
   		
   		results.push([StylesheetHelper.renderStylesheet(true), stylesheetAndExtension[0]].join(' '));
   		results.push(stylesheetAndExtension[1]);

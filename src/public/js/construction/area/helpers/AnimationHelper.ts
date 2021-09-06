@@ -417,7 +417,9 @@ var AnimationHelper = {
       script.className = 'internal-fsb-accessory';
     }
     
-    [style.innerText, script.innerText] = AnimationHelper.renderStylesheetAndExtension();
+    let defaultClasses;
+    
+    [style.innerText, script.innerText, defaultClasses] = AnimationHelper.renderStylesheetAndExtension();
     
     let stylesheets = document.getElementsByTagName('link');
     for (const stylesheet of stylesheets) {
@@ -686,7 +688,7 @@ var AnimationHelper = {
   	let source = animationGroups.join(' ');
   	let script = extensionScript.join(' ');
   	
-    return [source, script];
+    return [source, script, activeAnimationGroup];
   }
 };
 
