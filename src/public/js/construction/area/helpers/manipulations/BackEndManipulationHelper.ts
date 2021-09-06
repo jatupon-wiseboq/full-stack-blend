@@ -49,7 +49,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Database
             .container-fluid
@@ -65,7 +65,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Table
             .container-fluid
@@ -81,7 +81,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-12
+          .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Relational Column
         `, element);
@@ -94,7 +94,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Document Database
             .container-fluid
@@ -110,7 +110,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Document Table
             .container-fluid
@@ -126,7 +126,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-12
+          .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Document Column
         `, element);
@@ -139,7 +139,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Worker Instance
             .container-fluid
@@ -155,7 +155,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-12
+          .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Worker Queue
         `, element);
@@ -168,7 +168,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Volatile Memory
             .container-fluid
@@ -184,7 +184,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-12
+          .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Volatile Prefix
         `, element);
@@ -199,7 +199,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.internal-fsb-dragging-handle
+          .internal-fsb-element.internal-fsb-dragging-handle(data-title-name='')
         `, element);
         break;
       case 'RESTful':
@@ -210,7 +210,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element
+          .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | RESTful
             .container-fluid
@@ -226,7 +226,7 @@ var BackEndManipulationHelper = {
       	
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.col-12
+          .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | name
         `, element);
