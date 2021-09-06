@@ -923,7 +923,7 @@ var WorkspaceHelper = {
     }
   },
   generateBackEndCodeForID: (id: string=InternalProjectSettings.editingPageID) => {
-  	if ('site' == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndKey() == InternalProjectSettings.editingPageID) {
+  	if ('site' == InternalProjectSettings.currentMode && id == InternalProjectSettings.editingPageID) {
     	return WorkspaceHelper.generateBackEndCodeForPage('site', HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
     } else {
 	  	document.body.appendChild(temp);
