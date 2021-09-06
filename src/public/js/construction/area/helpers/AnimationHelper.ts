@@ -413,6 +413,7 @@ var AnimationHelper = {
   renderStylesheetAndExtension: function(production: boolean=false, startOver: boolean=true): [string, string] {
   	let animationGroups = [];
   	let activeAnimationGroup = [];
+  	let inactiveAnimationGroup = [];
   	let extensionScript = ['window.AnimationHelper !== undefined && (function() {'];
   	
   	for (let animationId in stylesheetDefinitions) {
@@ -639,6 +640,7 @@ var AnimationHelper = {
 		  	
 		  	if (animationId != 'selector') {
 		  		if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
+		  		else inactiveAnimationGroup.push(`${animationId}`);
 		  	}
   		}
   	}
@@ -647,6 +649,7 @@ var AnimationHelper = {
   	
     if (startOver) {
       extensionScript.push(`AnimationHelper.reset();`);
+      extensionScript.push(`AnimationHelper.remove(${JSON.stringify(inactiveAnimationGroup)});`);
       extensionScript.push(`AnimationHelper.remove(${JSON.stringify(activeAnimationGroup)});`);
       extensionScript.push(`AnimationHelper.add(${JSON.stringify(activeAnimationGroup)});`);
     } else {
