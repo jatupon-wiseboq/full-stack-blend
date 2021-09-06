@@ -775,7 +775,8 @@ var WorkspaceHelper = {
   	return InternalDataFlows.schema;
  	},
   generateFrontEndCodeForCurrentPage: () => {
-  	return WorkspaceHelper.generateFrontEndCodeForID();
+  	if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) return WorkspaceHelper.generateFrontEndCodeForID();
+  	else return null;
   },
   generateFrontEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
@@ -875,7 +876,8 @@ var WorkspaceHelper = {
   	return results;
   },
   generateBackEndCodeForCurrentPage: () => {
-    return WorkspaceHelper.generateBackEndCodeForID();
+  	if ('site' == InternalProjectSettings.currentMode) return WorkspaceHelper.generateBackEndCodeForID();
+  	else return null;
   },
   generateBackEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
