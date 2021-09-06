@@ -64,6 +64,7 @@ let options = {
 		"animation-easing-fn-1": CONSTANTS.ANIMATION_EASING_FN_1,
 		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE,
 		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE,
+		"animation-test-state": CONSTANTS.ANIMATION_DEFAULT_TEST_STATE,
 		"animation-synchronize": CONSTANTS.ANIMATION_SYNCHRONIZE_MODE
 }
 let map = {

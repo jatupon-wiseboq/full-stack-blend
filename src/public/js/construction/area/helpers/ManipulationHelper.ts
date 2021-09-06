@@ -614,7 +614,7 @@ var ManipulationHelper = {
       {
         if (content.extensions !== undefined) {
           for (let extension of content.extensions) {
-          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID', 'editingAnimationSelector', 'animationSynchronizeMode'].indexOf(extension.name) != -1) {
+          	if (['animationGroupName', 'animationGroupNote', 'animationGroupState', 'animationGroupTestState', 'animationGroupMode', 'animationRepeatMode', 'animationRepeatTime', 'editingAnimationID', 'editingKeyframeID', 'editingAnimationSelector', 'animationSynchronizeMode'].indexOf(extension.name) != -1) {
               switch (extension.name) {
               	case 'animationGroupName':
 		          		accessory = {
@@ -645,6 +645,16 @@ var ManipulationHelper = {
 		              };
               		if (AnimationHelper.getAnimationGroupState() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupState(extension.value || null);
+		              break;
+		            case 'animationGroupTestState':
+		          		accessory = {
+		                extensions: [{
+		                  name: extension.name,
+		                  value: AnimationHelper.getAnimationGroupTestState()
+		                }]
+		              };
+              		if (AnimationHelper.getAnimationGroupTestState() != (extension.value || null)) found = true;
+		            	AnimationHelper.setAnimationGroupTestState(extension.value || null);
 		              break;
 		            case 'animationGroupMode':
 		          		accessory = {

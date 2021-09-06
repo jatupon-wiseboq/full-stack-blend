@@ -399,6 +399,7 @@ export const EASING_COEFFICIENT = {
 };
 export const ANIMATION_REPEATING_MODE = [["animationRepeatMode", null, ["fa-hourglass", "Infinite"]], ["animationRepeatMode", "time", ["fa-hourglass-1", "Time"]], ["animationRepeatMode", "disabled", ["fa-hourglass-o", "Disabled"]]];
 export const ANIMATION_DEFAULT_STATE = [["animationGroupState", null, ["fa-circle", "Add"]], ["animationGroupState", "off", ["fa-circle-o", "Remove"]]];
+export const ANIMATION_DEFAULT_TEST_STATE = [["animationGroupTestState", "on", ["fa-circle", "Add"]], ["animationGroupTestState", "off", ["fa-circle-o", "Remove"]], ["animationGroupTestState", null, ["d-none", "Default"]]];
 export const ANIMATION_SYNCHRONIZE_MODE = [["animationSynchronizeMode", null, ["fa-circle", "Synchronize"]], ["animationSynchronizeMode", "off", ["fa-circle-o", "Off"]]];
 export const SECOND_SPAN_SIZE = 40;
 export const MAXIMUM_OF_SECONDS = 500;

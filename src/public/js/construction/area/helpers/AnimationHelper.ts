@@ -28,7 +28,7 @@ var AnimationHelper = {
   	for (let animationId in stylesheetDefinitions) {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
   			for (let presetId in stylesheetDefinitions[animationId]) {
-		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupTestState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
 		  			for (let keyframeId in stylesheetDefinitions[animationId][presetId]) {
   						if (stylesheetDefinitions[animationId][presetId].hasOwnProperty(keyframeId) && ['repeatMode', 'repeatTime'].indexOf(keyframeId) == -1) {
   							if (stylesheetDefinitions[animationId][presetId][keyframeId]) {
@@ -126,7 +126,7 @@ var AnimationHelper = {
   		if (stylesheetDefinitions.hasOwnProperty(animationId)) {
     		let found = false;
   			for (let presetId in stylesheetDefinitions[animationId]) {
-  				if (['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) != -1) continue;
+  				if (['groupName', 'groupNote', 'groupState', 'groupTestState', 'groupMode', 'synchronizeMode'].indexOf(presetId) != -1) continue;
   				if (stylesheetDefinitions[animationId].hasOwnProperty(presetId)) {
   					if (Object.keys(stylesheetDefinitions[animationId][presetId]).length != 0) {
   						found = true;
@@ -188,6 +188,16 @@ var AnimationHelper = {
   	
   	AnimationHelper.renderStylesheetAndExtensionElement();
   },
+  setAnimationGroupTestState: function(groupTestState: string) {
+  	if (!InternalProjectSettings.editingAnimationID) return;
+  	
+  	stylesheetDefinitionRevision++;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupTestState = groupTestState;
+  	
+  	AnimationHelper.renderStylesheetAndExtensionElement();
+  },
   setAnimationGroupMode: function(groupMode: string) {
   	if (!InternalProjectSettings.editingAnimationID) return;
   	
@@ -243,31 +253,37 @@ var AnimationHelper = {
   getCurrentKeyframe: function() {
   	return InternalProjectSettings.editingKeyframeID;
   },
-  getAnimationGroupName: function(groupName: string) {
+  getAnimationGroupName: function() {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupName || 'Untitled';
   },
-  getAnimationGroupNote: function(groupNote: string) {
+  getAnimationGroupNote: function() {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupNote || '';
   },
-  getAnimationGroupState: function(groupState: string) {
+  getAnimationGroupState: function() {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState || null;
   },
-  getAnimationGroupMode: function(groupMode: string) {
+  getAnimationGroupTestState: function() {
+  	if (!InternalProjectSettings.editingAnimationID) return null;
+  	
+  	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+  	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupTestState || null;
+  },
+  getAnimationGroupMode: function() {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
   	return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupMode || null;
   },
-  getAnimationSynchronizeMode: function(synchronizeMode: string) {
+  getAnimationSynchronizeMode: function() {
   	if (!InternalProjectSettings.editingAnimationID) return null;
   	
   	stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
@@ -427,7 +443,7 @@ var AnimationHelper = {
   			};
   			
   			for (let presetId in stylesheetDefinitions[animationId]) {
-		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
+		  		if (stylesheetDefinitions[animationId].hasOwnProperty(presetId) && ['groupName', 'groupNote', 'groupState', 'groupTestState', 'groupMode', 'synchronizeMode'].indexOf(presetId) == -1) {
 						const track = {
 							keyframes: [],
 							selectors: [],
@@ -639,8 +655,17 @@ var AnimationHelper = {
   			if (extensionInfo.tracks.length != 0) extensionScript.push(`AnimationHelper.register('${animationId}', ${JSON.stringify(extensionInfo)});`);
 		  	
 		  	if (animationId != 'selector') {
-		  		if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
-		  		else inactiveAnimationGroup.push(`${animationId}`);
+		  		if (production) {
+		  			if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
+		  			else inactiveAnimationGroup.push(`${animationId}`);
+		  		} else {
+		  			if (stylesheetDefinitions[animationId].groupTestState === 'on') activeAnimationGroup.push(`${animationId}`);
+		  			else if (stylesheetDefinitions[animationId].groupTestState === 'off') inactiveAnimationGroup.push(`${animationId}`);
+		  			else {
+		  				if (stylesheetDefinitions[animationId].groupState != 'off') activeAnimationGroup.push(`${animationId}`);
+		  				else inactiveAnimationGroup.push(`${animationId}`);
+		  			}
+		  		}
 		  	}
   		}
   	}
