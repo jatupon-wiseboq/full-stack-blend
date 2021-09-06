@@ -89,10 +89,10 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   window.generateFrontEndCodeForCurrentPage = (() => {
   	return WorkspaceHelper.generateFrontEndCodeForCurrentPage();
   });
-  window.generateFrontEndCodeForAllPages = ((autoSwitch) => {
+  window.generateFrontEndCodeForAllPages = (() => {
     return WorkspaceHelper.generateFrontEndCodeForAllPages();
   });
-  window.generateBackEndCodeForAllPages = ((autoSwitch) => {
+  window.generateBackEndCodeForAllPages = (() => {
     return WorkspaceHelper.generateBackEndCodeForAllPages();
   });
   window.getCommonExpandingFeatureScripts = (() => {

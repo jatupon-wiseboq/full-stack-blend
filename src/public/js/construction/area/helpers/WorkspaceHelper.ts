@@ -416,7 +416,8 @@ var WorkspaceHelper = {
       }
       
       if (force || !CodeHelper.equals(clonedPage, page)) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
+      		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
       }
     } else if (InternalProjectSettings.currentMode == 'data') {
@@ -459,7 +460,8 @@ var WorkspaceHelper = {
       }
       
       if (force || component.html != previous) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
+      		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
         WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
       }
@@ -486,7 +488,8 @@ var WorkspaceHelper = {
       }
       
       if (force || popup.html != previous) {
-      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+      	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
+      		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
       }
@@ -771,19 +774,12 @@ var WorkspaceHelper = {
   getDataFlows: () => {
   	return InternalDataFlows.schema;
  	},
-  generateFrontEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
-  	const previousMode = InternalProjectSettings.currentMode;
-  	if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode('site');
-  	
-    const results = WorkspaceHelper.generateFrontEndCodeForID();
-    
-    if (autoSwitch === true && ['data', 'services'].indexOf(previousMode) == -1) WorkspaceHelper.setMode(previousMode);
-    
-    return results;
+  generateFrontEndCodeForCurrentPage: () => {
+  	return WorkspaceHelper.generateFrontEndCodeForID();
   },
   generateFrontEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
-    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '')];
+    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndKey()];
     	let refreshed = [];
     	
     	while (referencing.length != 0) {
@@ -798,7 +794,7 @@ var WorkspaceHelper = {
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages['__' + key] = WorkspaceHelper.generateFrontEndCodeForID('components', key);
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = WorkspaceHelper.generateFrontEndCodeForID('components', key);
 	          	}
 	          }
 	        }
@@ -810,7 +806,7 @@ var WorkspaceHelper = {
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages['__' + key] = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
 	          	}
 	          }
 	        }
@@ -822,7 +818,7 @@ var WorkspaceHelper = {
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages[key] = WorkspaceHelper.generateFrontEndCodeForID('site', key);
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = WorkspaceHelper.generateFrontEndCodeForID('site', key);
 	          	}
 	          }
 	        }
@@ -830,8 +826,8 @@ var WorkspaceHelper = {
 	    }
     }
   },
-  generateFrontEndCodeForID: (mode: string='site', id: string=InternalProjectSettings.editingPageID) => {
-    if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '') == id) {
+  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=InternalProjectSettings.editingPageID) => {
+    if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndKey() == id) {
     	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
     } else {
 	    document.body.appendChild(temp);
@@ -878,19 +874,12 @@ var WorkspaceHelper = {
   	
   	return results;
   },
-  generateBackEndCodeForCurrentPage: (autoSwitch: boolean=false) => {
-  	const previousMode = InternalProjectSettings.currentMode;
-  	if (autoSwitch === true) WorkspaceHelper.setMode('site');
-  	
-    const results = WorkspaceHelper.generateBackEndCodeForID();
-  	
-  	if (autoSwitch === true) WorkspaceHelper.setMode(previousMode);
-  	
-  	return results;
+  generateBackEndCodeForCurrentPage: () => {
+    return WorkspaceHelper.generateBackEndCodeForID();
   },
   generateBackEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
-    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndCodeKey().replace('__', '')];
+    	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndKey()];
     	let refreshed = [];
     	
     	while (referencing.length != 0) {
@@ -925,7 +914,7 @@ var WorkspaceHelper = {
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          		
-	          		cacheOfGeneratedBackEndCodeForAllPages[key] = WorkspaceHelper.generateBackEndCodeForID(key);
+	          		cacheOfGeneratedBackEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = WorkspaceHelper.generateBackEndCodeForID(key);
 	          	}
 	          }
 	        }
@@ -962,20 +951,23 @@ var WorkspaceHelper = {
   	
   	return results;
   },
-  getCurrentGenerateFrontEndCodeKey: () => {
-  	switch (InternalProjectSettings.currentMode) {
+  getCurrentGenerateFrontEndCodeKey: (mode: string=InternalProjectSettings.currentMode, key: string=null) => {
+  	switch (mode) {
   		case 'site':
-  			return InternalProjectSettings.editingPageID;
+  			return key || InternalProjectSettings.editingPageID;
   		case 'components':
-  			return '__' + InternalProjectSettings.editingComponentID;
+  			return '__' + (key || InternalProjectSettings.editingComponentID);
   		case 'popups':
-  			return '__' + InternalProjectSettings.editingPopupID;
+  			return '__' + (key || InternalProjectSettings.editingPopupID);
   		default:
-  			return '__' + RandomHelper.generateGUID();
+  			return '__' + (key || RandomHelper.generateGUID());
   	}
   },
-  generateFrontEndCodeForAllPages: (autoSwitch: boolean=false) => {
-    const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage(autoSwitch);
+  getCurrentGenerateFrontEndKey: (mode: string=InternalProjectSettings.currentMode, key: string=null) => {
+  	return WorkspaceHelper.getCurrentGenerateFrontEndKey();
+  },
+  generateFrontEndCodeForAllPages: () => {
+    const result = WorkspaceHelper.generateFrontEndCodeForCurrentPage();
     if (result != null) cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = result;
     
     for (let key in cacheOfGeneratedFrontEndCodeForAllPages) {
@@ -988,8 +980,8 @@ var WorkspaceHelper = {
     
     return CodeHelper.sortHashtable(cacheOfGeneratedFrontEndCodeForAllPages);
   },
-  generateBackEndCodeForAllPages: (autoSwitch: boolean=false) => {
-  	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage(autoSwitch);
+  generateBackEndCodeForAllPages: () => {
+  	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage();
     if (result != null) cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
     
     for (let key in cacheOfGeneratedBackEndCodeForAllPages) {
