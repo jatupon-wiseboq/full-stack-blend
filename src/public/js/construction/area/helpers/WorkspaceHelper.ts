@@ -848,7 +848,7 @@ var WorkspaceHelper = {
   	if (mode == 'site') {
   		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
   		
-  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container);
+  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container.ownerDocument);
   		const currentAnimationGroup = element && HTMLHelper.getAttribute(element, 'internal-fsb-animation') || '';
   		
   		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
@@ -866,7 +866,7 @@ var WorkspaceHelper = {
   	} else if (['components', 'popups'].indexOf(mode) != -1) {
   		const stylesheetAndExtension = AnimationHelper.renderStylesheetAndExtension(true, false);
   		
-  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container);
+  		const element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0', container.ownerDocument);
   		const currentAnimationGroup = element && HTMLHelper.getAttribute(element, 'internal-fsb-animation') || '';
   		
   		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
