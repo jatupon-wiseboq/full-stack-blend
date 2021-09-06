@@ -827,7 +827,7 @@ var WorkspaceHelper = {
 	    }
     }
   },
-  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=InternalProjectSettings.editingPageID) => {
+  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
     if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndKey() == id) {
     	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
     } else {
