@@ -76,7 +76,7 @@ var TimelineHelper = {
 	  				tag: {
 	  					key: key,
 	  					root: false,
-	  					keyframes: (key == InternalProjectSettings.editingAnimationID) ? AnimationHelper.getKeyframes(guid) : []
+	  					keyframes: AnimationHelper.getKeyframes(guid)
 	  				}
 	  			});
 	  		} else {
