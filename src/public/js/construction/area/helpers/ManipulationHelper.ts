@@ -1502,13 +1502,16 @@ var ManipulationHelper = {
   		}
   	}
   	
+  	let parents = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', destination), destination];
   	let foundNestButtons = false;
-  	for (let element of elements) {
-  		if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button' && HTMLHelper.findAllParentsInClassName('internal-fsb-element', element).some(element => element.getAttribute('internal-fsb-class') == 'Button')) {
-  			foundNestButtons = true;
-  			break;
-  		}
-  	}
+  	if (HTMLHelper.getAttribute(target, 'internal-fsb-class') == 'Button') {
+	  	for (let element of parents) {
+	  		if (element.getAttribute('internal-fsb-class') == 'Button') {
+	  			foundNestButtons = true;
+	  			break;
+	  		}
+	  	}
+	  }
   	
   	if (foundNestComponents) {
   		alert("The editor doesn't allow nest of components.");
