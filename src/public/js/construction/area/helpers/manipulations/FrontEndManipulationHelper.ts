@@ -268,6 +268,9 @@ var FrontEndManipulationHelper = {
       if (LayoutHelper.isNestedComponent(Accessories.cursor.getDOMNode().parentNode, content.id)) {
         alert("The editor doesn't allow nest of components.");
         remember = false;
+      } if (content.klass == 'Button' && HTMLHelper.findAllParentsInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()).some(element => element.getAttribute('internal-fsb-class') == 'Button')) {
+      	alert("The editor doesn't allow nest of buttons.");
+        remember = false;
       } else {
         if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
           if (!isComponentInsertion && !isForwardingStyleToChildren && SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(content.klass) == -1) HTMLHelper.addClass(element, 'col-12');
