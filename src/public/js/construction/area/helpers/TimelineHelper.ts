@@ -45,6 +45,8 @@ var TimelineHelper = {
   	return cachedElementTreeNodes;
   },
   recursiveGetElementTreeNodes: function(nodes: array=[], container: any=document.body, key: string=null) {
+  	if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
+  	
   	for (let element of container.childNodes) {
   		if (!element.getAttribute) continue;
   		
