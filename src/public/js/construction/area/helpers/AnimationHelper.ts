@@ -383,10 +383,8 @@ var AnimationHelper = {
   	}
   	return false;
   },
-  isDisplaying: function(presetId: string, animationID: string=InternalProjectSettings.editingAnimationID) {
-  	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
-  	
-		if (!animationID) return false;
+  isDisplaying: function(animationID: string=InternalProjectSettings.editingAnimationID) {
+  	if (!animationID) return false;
 		
 		stylesheetDefinitions[animationID] = stylesheetDefinitions[animationID] || {};
 		
