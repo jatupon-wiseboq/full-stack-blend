@@ -6,6 +6,10 @@ include ../../mixin/CreateReactComponent
     | Name
   .section-body(internal-fsb-not-for="isTableLayoutRow:true")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
+  .section-subtitle
+    | Type
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-class'], inline: true, button: false, disabled: true}")
   .section-subtitle(internal-fsb-not-for="isTableLayoutRow:true")
     | Globally Unique Identifier
   .section-body(internal-fsb-not-for="isTableLayoutRow:true")
