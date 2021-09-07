@@ -342,16 +342,16 @@ var AnimationHelper = {
   getStylesheetDefinitionRevision: function() {
     return stylesheetDefinitionRevision;
   },
-  getKeyframes: function(presetId: string) {
+  getKeyframes: function(presetId: string, animationID: string=InternalProjectSettings.editingAnimationID) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	
-		if (!InternalProjectSettings.editingAnimationID) return [];
+		if (!animationID) return [];
 		
-		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
-    stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId] || {};
+		stylesheetDefinitions[animationID] = stylesheetDefinitions[animationID] || {};
+    stylesheetDefinitions[animationID][presetId] = stylesheetDefinitions[animationID][presetId] || {};
 		
-  	return Object.keys(stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId]).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1).map((keyframeID: string) => {
-  		let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][keyframeID]);
+  	return Object.keys(stylesheetDefinitions[animationID][presetId]).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1).map((keyframeID: string) => {
+  		let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[animationID][presetId][keyframeID]);
   		
   		return {
   			id: keyframeID,
@@ -383,20 +383,20 @@ var AnimationHelper = {
   	}
   	return false;
   },
-  isDisplaying: function(presetId: string) {
+  isDisplaying: function(presetId: string, animationID: string=InternalProjectSettings.editingAnimationID) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	
-		if (!InternalProjectSettings.editingAnimationID) return false;
+		if (!animationID) return false;
 		
-		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+		stylesheetDefinitions[animationID] = stylesheetDefinitions[animationID] || {};
 		
-  	switch (stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupTestState) {
+  	switch (stylesheetDefinitions[animationID].groupTestState) {
   		case 'off':
   			return false;
   		case 'on':
   			return true;
   		default:
-  			return (stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState != 'off');
+  			return (stylesheetDefinitions[animationID].groupState != 'off');
   	}
   },
   extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
