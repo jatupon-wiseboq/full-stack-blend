@@ -17,7 +17,6 @@ interface Props extends IProps {
 	time: number;
 	tag: any;
 	selected: boolean;
-	display: boolean;
 }
 
 interface State extends IState {
@@ -83,6 +82,9 @@ class Keyframe extends Base<Props, State> {
 	  });
   	perform('update', {
   		extensions: [{
+  			name: 'editingAnimationID',
+  			value: this.props.tag.tag.key
+  		}, {
   			name: 'editingKeyframeID',
   			value: this.props.keyframe
   		}],
@@ -141,6 +143,9 @@ class Keyframe extends Base<Props, State> {
 		  });
 	  	perform('update', {
 	  		extensions: [{
+	  			name: 'editingAnimationID',
+	  			value: this.props.tag.tag.key
+	  		}, {
 	  			name: 'editingKeyframeID',
 	  			value: this.props.keyframe
 	  		}],
@@ -169,7 +174,7 @@ class Keyframe extends Base<Props, State> {
   render() {
     return (
     	<div ref="container" className={"keyframe-container " + (this.props.selected ? 'selected' : '')}
-    		style={{left: (this.props.time * SECOND_SPAN_SIZE) + 'px', opacity: (!this.props.display) ? 0.5 : null}} onClick={this.mouseClick.bind(this)} onMouseDown={this.mouseDown.bind(this)}></div>
+    		style={{left: (this.props.time * SECOND_SPAN_SIZE) + 'px', opacity: (!this.props.tag.tag.display) ? 0.5 : null}} onClick={this.mouseClick.bind(this)} onMouseDown={this.mouseDown.bind(this)}></div>
     );
   }
 }
