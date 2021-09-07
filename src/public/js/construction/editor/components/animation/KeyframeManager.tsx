@@ -78,7 +78,7 @@ class KeyframeManager extends Base<Props, State> {
   	else {
 	    return (
 	    	<div ref="container" className="keyframe-manager-container" onClick={this.onClick.bind(this)} style={{width: MAXIMUM_OF_SECONDS * SECOND_SPAN_SIZE + 'px'}}>
-	    		<div style={{position: "relative", left: "-7.5px", opacity: (this.props.tag.tag.display) ? 1.0 : 0.5}}>
+	    		<div style={{position: "relative", left: "-7.5px", opacity: (this.props.tag.tag.display) ? 1.0 : 0.65}}>
 		    		{this.props.tag.tag.keyframes.map((value, index) => {
 	  					return (
 	  						<FullStackBlend.Components.Keyframe key={'keyframe-' + value.id}
