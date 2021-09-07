@@ -476,6 +476,8 @@ ${rootScript}`;
           }
           
           attributes.push(`onClick=((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)`);
+        } else if (reactClassForPopup) {
+        	attributes.push(`onClick=((event) => { window.internalFsbOpen('${reactClassForPopup}', this.state.data || this.props.data); }).bind(this)`);
         }
         
         for (let key in bindingStyles) {
@@ -851,6 +853,8 @@ ${rootScript}`;
           executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
           
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
+        } else if (reactClassForPopup) {
+        	attributes.push(`onClick="internalFsbOpen('${reactClassForPopup}')"`);
         }
         
         for (let key in bindingStyles) {
