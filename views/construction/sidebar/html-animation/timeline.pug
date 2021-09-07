@@ -7,6 +7,10 @@ div(internal-fsb-for="editingAnimationID")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupName'], inline: true, button: false}")
     .section-subtitle
+      | Globally Unique Identifier
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['editingAnimationID'], inline: true, button: false, disabled: true}")
+    .section-subtitle
       | Note
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['animationGroupNote'], inline: true, button: false, multiline: true}")
