@@ -383,6 +383,22 @@ var AnimationHelper = {
   	}
   	return false;
   },
+  isDisplaying: function(presetId: string) {
+  	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
+  	
+		if (!InternalProjectSettings.editingAnimationID) return false;
+		
+		stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
+		
+  	switch (stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupTestState) {
+  		case 'off':
+  			return false;
+  		case 'on':
+  			return true;
+  		default:
+  			return (stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupState != 'off');
+  	}
+  },
   extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
   	if (Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;
   	

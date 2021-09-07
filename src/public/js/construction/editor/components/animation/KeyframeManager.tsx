@@ -84,6 +84,7 @@ class KeyframeManager extends Base<Props, State> {
 	  						<FullStackBlend.Components.Keyframe key={'keyframe-' + value.id}
 	  							keyframe={value.id} tag={this.props.tag}
 	  							selected={value.id == this.state.extensionValues[this.props.watchingExtensionNames[0]]}
+	  							display={value.display}
 	  							time={value.time}></FullStackBlend.Components.Keyframe>
 	  					)
 	  				})}

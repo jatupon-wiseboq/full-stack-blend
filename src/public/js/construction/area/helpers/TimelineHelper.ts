@@ -76,7 +76,8 @@ var TimelineHelper = {
 	  				tag: {
 	  					key: key,
 	  					root: false,
-	  					keyframes: AnimationHelper.getKeyframes(guid)
+	  					keyframes: AnimationHelper.getKeyframes(guid),
+	  					display:  AnimationHelper.isDisplaying(guid)
 	  				}
 	  			});
 	  		} else {
