@@ -56,7 +56,9 @@ class SizePicker extends Base<Props, State> {
     
     private getRepresentedValue() {
         let status = this.state.styleValues[this.props.watchingStyleNames[0]];
-        if (status) {
+        if (status && status.indexOf('auto') != -1) {
+            return 'auto';
+        } else if (status) {
             return parseFloat(status);
         } else {
             return null;
