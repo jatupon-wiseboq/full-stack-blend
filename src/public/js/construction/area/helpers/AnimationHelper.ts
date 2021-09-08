@@ -483,7 +483,7 @@ var AnimationHelper = {
 		  				return {
 		  					id: keyframeId,
 		  					hashMap: hashMap,
-		  					raw: HTMLHelper.getInlineStyleFromHashMap(clonedHashMap)
+		  					raw: HTMLHelper.getInlineStyleFromHashMap(clonedHashMap, true)
 		  				};
 		  			});
 		  			
@@ -527,10 +527,12 @@ var AnimationHelper = {
 				  		if (repeatMode != 'disabled') {
 					  		const combinedInanimatableHashmap = {};
 					  		const combinedNoneAssignmentHashmap = {};
+					  		const combinedTransitionHashmap = {};
 					  		
 				  			for (let i=0; i<keyframes.length; i++) {
 				  				let currentKeyframe = keyframes[i];
 				  				let nextKeyframe = (i + 1 < keyframes.length) ? keyframes[i + 1] : null;
+				  				let previousKeyframe = (i - 1 < keyframes.length) ? keyframes[i - 1] : null;
 				  				
 				  				let time = parseFloat(currentKeyframe.hashMap['-fsb-animation-keyframe-time']);
 				  				let current = (total == 0) ? 0 : (time - delay) / total;
@@ -571,8 +573,26 @@ var AnimationHelper = {
 					  				}
 					  			}
 					  			
-					  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap);
-					  			const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap);
+					  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap, true);
+					  			const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap, true);
+					  			const internalStyleKeys = Array.from(new Set([...HTMLHelper.getInternalStyleKeyFromHashMap(animatableHashMap), ...HTMLHelper.getInternalStyleKeyFromHashMap(inanimatableHashMap)]));
+				  				
+				  				if (previousKeyframe && previousKeyframe != currentKeyframe && internalStyleKeys.length != 0) {
+				  					let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[previousKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+					  					(EASING_COEFFICIENT[previousKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+					  				let easing2 = 0;
+					  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+					  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+					  				let easing4 = 0;
+					  				
+				  					for (const key of internalStyleKeys) {
+				  						combinedTransitionHashmap[key] = {
+				  							delay: delay,
+				  							duration: total - delay,
+				  							timing: `cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`
+				  						};
+				  					}
+				  				}
 				  				
 				  				if (animatableInlineStyle) {
 					  				animationKeyframes.push(`${current * 100}% { ${animatableInlineStyle}${animatableInlineStyle && ';' || ''} ${timing.join('; ')}${timing.length != 0 && ';' || ''} }`);
@@ -607,7 +627,7 @@ var AnimationHelper = {
 				  			track.repeat = (repeatMode == 'time') ? repeatTime : -1;
 				  			track.total = total;
 					  		
-					  		const combinedInanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(combinedInanimatableHashmap);
+					  		const combinedInanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(combinedInanimatableHashmap, true);
 				  			
 				  			if (animationId == 'selector' && combinedInanimatableInlineStyle) {
 				  				const splited = presetId.split(':');
@@ -636,6 +656,17 @@ var AnimationHelper = {
 				  					animations.push(`${prefix}animation-name: fsb-animation-${animationId}-${presetId.replace(':', '-')}; ${prefix}animation-delay: ${delay}s; ${prefix}animation-duration: ${total}s; ${prefix}animation-iteration-count: ${(repeatMode != 'time') ? 'infinite' : repeatTime};`);
 				  				}
 				  			}
+				  			
+				  			let transitions = [];
+				  				
+			  				for (const key in combinedTransitionHashmap) {
+			  					if (combinedTransitionHashmap.hasOwnProperty(key)) {
+			  						const transition = combinedTransitionHashmap[key];
+			  						transitions.push(`${key} ${transition.duration}s ${transition.timing} ${transition.delay}s`);
+			  					}
+			  				}
+			  				
+				  			if (transitions.length != 0) animations.push(`transition: ${transitions.join(', ')};`);
 				  			
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {

@@ -340,14 +340,26 @@ var HTMLHelper = {
     
     return hashMap;
   },
-  getInlineStyleFromHashMap: (hash: any) => {
+  getInlineStyleFromHashMap: (hash: any, rejectInternalStyle: boolean=false) => {
     let results = [];
     for (var key in hash) {
       if (hash.hasOwnProperty(key) && hash[key] != null) {
+    		if (rejectInternalStyle && hash[key].indexOf('coding') != -1) continue;
         results.push(key + ': ' + hash[key]);
       }
     }
     return results.sort().join('; ');
+  },
+  getInternalStyleKeyFromHashMap: (hash: any) => {
+    let results = [];
+    for (var key in hash) {
+      if (hash.hasOwnProperty(key) && hash[key] != null) {
+    		if (hash[key].indexOf('coding') != -1) {
+        	results.push(key);
+    		}
+      }
+    }
+    return results.sort();
   },
   
   getPosition: (object: HTMLElement, ofDocument: boolean=true, ofOrigin: boolean=false) => {
