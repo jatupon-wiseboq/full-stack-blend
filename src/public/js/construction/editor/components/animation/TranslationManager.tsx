@@ -193,4 +193,4 @@ class TranslationManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.OptionManager', OptionManager);
 
-export {OptionManager};
+export {TranslationManager};
