@@ -108,7 +108,8 @@ var TimelineHelper = {
 				tag: {
 					key: 'selector',
 					root: false,
-					keyframes: AnimationHelper.getKeyframes(selectorId)
+					keyframes: AnimationHelper.getKeyframes(selectorId),
+					display: true
 				}
 			}
   	});
