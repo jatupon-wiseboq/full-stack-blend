@@ -495,6 +495,7 @@ var AnimationHelper = {
 		  				let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
 		  				
 		  				if (repeatMode != 'disabled') {
+			  				const combinedTransitionHashmap = {};
 		  					const internalStyleKeys = HTMLHelper.getInternalStyleKeyFromHashMap(keyframes[0].hashMap);
 			  				
 			  				if (internalStyleKeys.length != 0) {
@@ -512,6 +513,17 @@ var AnimationHelper = {
 			  						};
 			  					}
 			  				}
+			  				
+			  				let transitions = [];
+				  				
+			  				for (const key in combinedTransitionHashmap) {
+			  					if (combinedTransitionHashmap.hasOwnProperty(key)) {
+			  						const transition = combinedTransitionHashmap[key];
+			  						transitions.push(`${key} ${transition.duration}s ${transition.timing} ${transition.delay}s`);
+			  					}
+			  				}
+			  				
+				  			if (transitions.length != 0) content = `${content} transition: ${transitions.join(', ')};`;
 			  				
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
