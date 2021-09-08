@@ -490,7 +490,7 @@ var AnimationHelper = {
 		  			
 		  			if (keyframes.length == 0) continue;
 		  			if (keyframes.length == 1) {
-		  				const content = `${keyframes[0].raw}${keyframes[0].raw && ';' || ''}`.replace(/;/g, ' !important;');
+		  				let content = `${keyframes[0].raw}${keyframes[0].raw && ';' || ''}`.replace(/;/g, ' !important;');
 		  				
 		  				let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
 		  				
