@@ -355,7 +355,8 @@ var AnimationHelper = {
   		
   		return {
   			id: keyframeID,
-  			time: hashMap['-fsb-animation-keyframe-time'] || 0
+  			time: hashMap['-fsb-animation-keyframe-time'] || 0,
+  			containingTransition: HTMLHelper.getInternalStyleKeyFromHashMap(stylesheetDefinitions[animationID][presetId][keyframeID]).length != 0
   		};
   	});
   },
