@@ -495,6 +495,24 @@ var AnimationHelper = {
 		  				let repeatMode = stylesheetDefinitions[animationId][presetId].repeatMode || null;
 		  				
 		  				if (repeatMode != 'disabled') {
+		  					const internalStyleKeys = HTMLHelper.getInternalStyleKeyFromHashMap(keyframes[0].hashMap);
+			  				
+			  				if (internalStyleKeys.length != 0) {
+			  					let easing1 = 0;
+				  				let easing2 = 0;
+				  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[keyframes[0].hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+				  					(EASING_COEFFICIENT[keyframes[0].hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+				  				let easing4 = 0;
+				  				
+			  					for (const key of internalStyleKeys) {
+			  						combinedTransitionHashmap[key] = {
+			  							delay: 0,
+			  							duration: parseFloat(keyframes[0].hashMap['-fsb-animation-keyframe-time']),
+			  							timing: `cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`
+			  						};
+			  					}
+			  				}
+			  				
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
 				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
@@ -590,6 +608,20 @@ var AnimationHelper = {
 				  						combinedTransitionHashmap[key] = {
 				  							delay: delay,
 				  							duration: total - delay,
+				  							timing: `cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`
+				  						};
+				  					}
+				  				} else if (internalStyleKeys.length != 0) {
+				  					let easing1 = 0;
+					  				let easing2 = 0;
+					  				let easing3 = (['in', null].indexOf(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
+					  					(EASING_COEFFICIENT[currentKeyframe.hashMap['-fsb-animation-easing-fn']] || 0) : 0;
+					  				let easing4 = 0;
+					  				
+				  					for (const key of internalStyleKeys) {
+				  						combinedTransitionHashmap[key] = {
+				  							delay: 0,
+				  							duration: delay,
 				  							timing: `cubic-bezier(${easing1}, ${easing2}, ${(1.0 - easing3).toFixed(4)}, ${(1.0 - easing4).toFixed(4)})`
 				  						};
 				  					}
