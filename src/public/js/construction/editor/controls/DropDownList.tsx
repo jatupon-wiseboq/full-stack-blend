@@ -106,7 +106,7 @@ class DropDownList extends React.Component<Props, State> {
             dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
-            dropdown.className = 'fsb-dropdown-menu dropdown-menu show' + ((!this.props.isSupportAnimatable) ? ' is-not-animatable' : '');
+            dropdown.className = 'fsb-dropdown-menu dropdown-menu show' + ((this.props.isSupportAnimatable === false) ? ' is-not-animatable' : '');
             
             // Handling Events
             //
