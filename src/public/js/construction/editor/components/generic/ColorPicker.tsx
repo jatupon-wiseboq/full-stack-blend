@@ -195,7 +195,7 @@ class ColorPicker extends Base<Props, State> {
 		                                		<div className="section-body">
 			                             				<div role="group" className="btn-group btn-group-sm radio-button mr-1 mb-1">
 			                             					<div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.colorPickerOnUnset.bind(this)}>Solid</div>
-			                             					<div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.onColorPicked.bind(this, 'coding')}><i className="m-0 fa fa-code"></i></div>
+			                             					<div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.onColorPicked.bind(this, 'coding')}>Coding</div>
 			                             				</div>
 			                             			</div>
 			                             		</div>
