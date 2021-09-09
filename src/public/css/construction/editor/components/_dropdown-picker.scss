@@ -18,3 +18,11 @@ body[mode="animation"][selector="true"] .dropdown-picker {
   	border-bottom: #ff0000 solid 1px;
   }
 }
+
+.dropdown-menu {
+	&.is-not-animatable {
+		.dropdown-item[value='coding'] {
+  		text-decoration: underline #ff0000 2px;
+  	}
+  }
+}

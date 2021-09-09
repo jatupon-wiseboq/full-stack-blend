@@ -18,6 +18,7 @@ interface Props extends IProps {
     width: number;
     optionPadding: number;
     tag: any;
+    isSupportAnimatable: boolean;
 }
 
 interface State extends IState {
@@ -105,7 +106,7 @@ class DropDownList extends React.Component<Props, State> {
             dropdown.style.overflowY = (overflowY) ? 'auto' : 'hidden';
             
             dropdown.className = 'fsb-dropdown-menu dropdown-menu hide';
-            dropdown.className = 'fsb-dropdown-menu dropdown-menu show';
+            dropdown.className = 'fsb-dropdown-menu dropdown-menu show' + ((!this.props.isSupportAnimatable) ? ' is-not-animatable' : '');
             
             // Handling Events
             //
@@ -195,7 +196,7 @@ class DropDownList extends React.Component<Props, State> {
                 .fsb-content-area-body
                   .fsb-content-area-scrollable
                     each value, index in filtered
-                      .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click" style={padding: (this.props.optionPadding !== null) ? this.props.optionPadding : ''}, internal-fsb-for=(value === 'coding' ? 'editorCurrentMode:animation' : null))
+                      .dropdown-item(key="item-" + value, value=value, index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click" style={padding: (this.props.optionPadding !== null) ? this.props.optionPadding : ''}, internal-fsb-for=(value === 'coding' ? 'editorCurrentMode:animation' : null))
                         if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
                           = this.props.controls[value]
                         else
