@@ -5,7 +5,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import '../../controls/ColorPicker';
 import '../../controls/DropDownList';
 import '../../controls/DropDownControl';
-import {BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE} from '../../../Constants';
+import {BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE, BORDER_STYLES_IN_REPRESENTING} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -145,7 +145,7 @@ class BorderStylePicker extends Base<Props, State> {
 		    } else {
 		    		return (
 		            <div className={"style-picker " + this.props.additionalClassName}>
-		                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_VALUE[this.state.borderStyleIndex]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+		                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_REPRESENTING[this.state.borderStyleIndex]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
 		                    <div className="section-container">
 		                        <div className="section-title">Border</div>
 		                        <div className="section-subtitle">Border Style</div>

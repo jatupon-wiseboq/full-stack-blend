@@ -164,7 +164,7 @@ class DropDownControl extends React.Component<Props, State> {
               if (this.props.representing == null)
                 span &nbsp;
               else if (typeof this.props.representing == 'string' && this.props.representing.indexOf('ICON:') == 0)
-                i(className=this.props.representing.split('ICON:')[1])
+                i(className=this.props.representing.split('ICON:')[1], style={fontSize: '10px'})
               else
                 span(dangerouslySetInnerHTML={__html: this.props.representing})
             .fsb-dropdown-menu.dropdown-menu.hide(ref="dropdown", internal-fsb-event-no-propagate="click")

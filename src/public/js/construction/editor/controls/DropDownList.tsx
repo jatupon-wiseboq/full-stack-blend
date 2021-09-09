@@ -195,7 +195,7 @@ class DropDownList extends React.Component<Props, State> {
                 .fsb-content-area-body
                   .fsb-content-area-scrollable
                     each value, index in filtered
-                      .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click" style={padding: (this.props.optionPadding !== null) ? this.props.optionPadding : ''})
+                      .dropdown-item(key="item-" + value, value=value index=index onClick=this.dropdownItemOnClick.bind(this) internal-fsb-event-no-propagate="click" style={padding: (this.props.optionPadding !== null) ? this.props.optionPadding : ''}, internal-fsb-for=(value === 'coding' ? 'editorCurrentMode:animation' : null))
                         if typeof value === 'string' && value[0] === '{' && value[value.length - 1] === '}'
                           = this.props.controls[value]
                         else

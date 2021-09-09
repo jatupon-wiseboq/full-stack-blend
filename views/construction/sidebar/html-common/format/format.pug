@@ -7,7 +7,7 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
       .section-body
         span(internal-fsb-not-for="editorCurrentMode:coding")
           +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['font-family'], searchBox: true, useMaximumHeight: true}")
-          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['color']}")
+          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['color'], watchingExtensionNames: ['editorCurrentMode']}")
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['font-style', 'font-weight', 'text-decoration-line', 'font-family'], isSupportAnimatable: false}")
           +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingStyleNames: ['text-align'], isSupportAnimatable: false}")
         span(internal-fsb-for="editorCurrentMode:coding")
@@ -39,7 +39,7 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
         | Decoration
       .section-body
         span(internal-fsb-not-for="editorCurrentMode:coding")
-          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['text-decoration-color']}")
+          +CreateReactComponent('FullStackBlend.Components.ColorPicker', "{watchingStyleNames: ['text-decoration-color'], watchingExtensionNames: ['editorCurrentMode']}")
         span(internal-fsb-for="editorCurrentMode:coding")
           +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingAttributeNames: ['internal-fsb-react-style-text-decoration-color']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['text-decoration-line'], watchingAttributeNames: ['internal-fsb-react-style-text-decoration-line']}")

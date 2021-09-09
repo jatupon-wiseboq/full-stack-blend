@@ -313,6 +313,7 @@ class DropDownPicker extends Base<Props, State> {
         
         if (this.props.watchingStyleNames.length != 0) {
             filteredOptions = options[this.props.watchingStyleNames[0]];
+            filteredOptions = [...filteredOptions, 'coding'];
             
             if (reject[this.props.watchingStyleNames[0]]) {
                 let list = reject[this.props.watchingStyleNames[0]](this);
@@ -338,7 +339,18 @@ class DropDownPicker extends Base<Props, State> {
                         return (
                             <div className={"btn-group btn-group-sm mr-1 mb-1 dropdown-picker" + (!isSupportAnimatable ? ' is-not-animatable' : '')} role="group" internal-fsb-not-for="editorCurrentMode:coding">
                                 <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width}>
-                                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span><span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                                    <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span>
+                                    {(() => {
+                    									if (this.state.styleValues[this.props.watchingStyleNames[0]] != 'coding') {
+                    										return (
+                    											<span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                    										);
+                    									} else {
+                    										return (
+                    											<span><i className='fa fa-code m-0' /></span>
+                    										);
+                    									}
+                    								})()}
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
                         )
@@ -349,7 +361,18 @@ class DropDownPicker extends Base<Props, State> {
                         return (
                             <div className="btn-group btn-group-sm mr-1 mb-1 dropdown-picker" role="group" internal-fsb-for="editorCurrentMode:coding">
                                 <FullStackBlend.Controls.DropDownList customClassName={this.state.attributeValues[this.props.watchingAttributeNames[0]] ? 'btn-primary' : ''} options={["{SETTING}", "{PROPERTY}", "{STATE}", "{CODE}"]} controls={this.state.controls} width={Math.max(500, this.props.width)} optionPadding={0}>
-                                    <span>{(map[this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')] || this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')).replace(/(border|background|object|text|list)\-/, '')}: </span><span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
+                                    <span>{(map[this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')] || this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')).replace(/(border|background|object|text|list)\-/, '')}: </span>
+                                    {(() => {
+                    									if (this.state.attributeValues[this.props.watchingAttributeNames[0]] != 'coding') {
+                    										return (
+                    											<span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
+                    										);
+                    									} else {
+                    										return (
+                    											<span><i className='fa fa-code m-0' /></span>
+                    										);
+                    									}
+                    								})()}
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
                         )

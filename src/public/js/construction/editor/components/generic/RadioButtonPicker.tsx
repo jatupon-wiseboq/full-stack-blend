@@ -352,13 +352,23 @@ class RadioButtonPicker extends Base<Props, State> {
     }
     
     private getOptions() {
+    		let _options = null
+    		
         if (this.props.watchingStyleNames[0]) {
-            return options[this.props.watchingStyleNames[0]] || this.props.options;
+            _options = options[this.props.watchingStyleNames[0]] || this.props.options;
         } else if (this.props.watchingAttributeNames[0]) {
-            return options[this.props.watchingAttributeNames[0]] || this.props.options;
+            _options = options[this.props.watchingAttributeNames[0]] || this.props.options;
         } else if (this.props.watchingExtensionNames[0]) {
-            return options[this.props.watchingExtensionNames[0]] || this.props.options;
+            _options = options[this.props.watchingExtensionNames[0]] || this.props.options;
         }
+        
+        if (_options) {
+        		if (this.state.extensionValues['editorCurrentMode'] !== 'animation') {
+        				_options = _options.slice(0, 3);
+        		}
+        }
+        
+        return _options;
     }
     
     render() {
@@ -367,23 +377,23 @@ class RadioButtonPicker extends Base<Props, State> {
             .btn-group.btn-group-sm.mr-1.mb-1(role="group", className=((this.props.isSupportAnimatable === false) ? 'is-not-animatable' : ''))
               if this.props.watchingStyleNames[0]
                 each value, index in this.getOptions()
-                  button.btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE) style={fontSize: '12px'})
+                  .btn.text-center(key="item-style-" + index, className=(this.getState(value, Mode.STYLE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.STYLE) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else
                       i.m-0(className="fa "+ value[2][0])
                       = ' ' + value[2][1]
-              if this.props.watchingAttributeNames[0]
+              else if this.props.watchingAttributeNames[0]
                 each value, index in this.getOptions()
-                  button.btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE) style={fontSize: '12px'})
+                  .btn.text-center(key="item-attribute-" + index, className=(this.getState(value, Mode.ATTRIBUTE) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.ATTRIBUTE) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else
                       i.m-0(className="fa "+ value[2][0])
                       = ' ' + value[2][1]
-              if this.props.watchingExtensionNames[0]
+              else if this.props.watchingExtensionNames[0]
                 each value, index in this.getOptions()
-                  button.btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION) style={fontSize: '12px'})
+                  .btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else

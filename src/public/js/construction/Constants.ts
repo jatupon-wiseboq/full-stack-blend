@@ -4,10 +4,11 @@ export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col
 export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/, /offset\-xl\-([0-9]+)/];
 export const ALL_RESPONSIVE_SIZE_REGEX = /col\-((sm|md|lg|xl)\-)?[0-9]+/g;
 export const ALL_RESPONSIVE_OFFSET_REGEX = /offset\-((sm|md|lg|xl)\-)?[0-9]+/g;
-export const SIZES_IN_DESCRIPTION = ["px: pixels", "pt: points", "em: scale of font-size", "rem: scale of font-size at root", "vw: % of viewport width", "vh: % of viewport height", "%: % of parent size", "auto"];
-export const SIZES_IN_UNIT = ["px", "pt", "em", "rem", "vw", "vh", "%", "auto"];
-export const BORDER_STYLES_IN_DESCRIPTION = ['default', 'none', '<div style="margin: 5px 0; padding: 3px; border: 4px dotted #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px dashed #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px solid #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px double #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px groove #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px ridge #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px inset #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px outset #999;" />'];
-export const BORDER_STYLES_IN_VALUE = [null, "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset"];
+export const SIZES_IN_DESCRIPTION = ["px: pixels", "pt: points", "em: scale of font-size", "rem: scale of font-size at root", "vw: % of viewport width", "vh: % of viewport height", "%: % of parent size", "auto", "coding"];
+export const SIZES_IN_UNIT = ["px", "pt", "em", "rem", "vw", "vh", "%", "auto", "coding"];
+export const BORDER_STYLES_IN_DESCRIPTION = ['default', 'none', '<div style="margin: 5px 0; padding: 3px; border: 4px dotted #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px dashed #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px solid #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px double #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px groove #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px ridge #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px inset #999;" />', '<div style="margin: 5px 0; padding: 3px; border: 4px outset #999;" />', 'coding'];
+export const BORDER_STYLES_IN_VALUE = [null, "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset", "coding"];
+export const BORDER_STYLES_IN_REPRESENTING = [null, "none", "dotted", "dashed", "solid", "double", "groove", "ridge", "inset", "outset", "ICON:fa fa-code"];
 export const OBJECT_FIT_OPTIONS = [null, "fill", "contain", "cover", "none", "scale-down"];
 export const OBJECT_POSITION_OPTIONS = [null, "{SIZE}", "top", "right", "bottom", "left"];
 export const OVERFLOW_OPTIONS = [null, "visible", "hidden", "scroll", "auto"];
@@ -348,7 +349,7 @@ export const TEXTBOX_MODE_OPTIONS = [["internal-fsb-textbox-mode", null, ["fa-mi
 export const REQUIRE_FULL_CLOSING_TAGS = ["select", "textarea", "div"];
 export const CONTAIN_TEXT_CONTENT_TAGS = ["textarea"];
 export const INPUT_ELEMENT_TAGS = ["SELECT", "TEXTAREA", "INPUT"];
-export const BACKGROUND_TYPE_OPTIONS = [["-fsb-background-type", null, ["d-none", "Solid"]], ["-fsb-background-type", "linear", ["d-none", "Linear Gradient"]], ["-fsb-background-type", "radial", ["d-none", "Radial Gradient"]]];
+export const BACKGROUND_TYPE_OPTIONS = [["-fsb-background-type", null, ["d-none", "Solid"]], ["-fsb-background-type", "linear", ["d-none", "Linear Gradient"]], ["-fsb-background-type", "radial", ["d-none", "Radial Gradient"]], ["-fsb-background-type", "coding", ["fa fa-code", ""]]];
 export const TEXT_INPUT_TYPE_OPTIONS = [["type", "text", ["fa-font", "Text"]], ["type", "password", ["fa-ellipsis-h", "Password"]]];
 export const CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/g;
 export const CELL_STYLE_ATTRIBUTE_REGEX_LOCAL = /-fsb-cell-([0-9]+)-([0-9]+)-(top|right|left|bottom)\: ([^;]+)/;

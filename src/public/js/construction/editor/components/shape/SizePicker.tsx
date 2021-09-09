@@ -57,7 +57,9 @@ class SizePicker extends Base<Props, State> {
     private getRepresentedValue() {
         let status = this.state.styleValues[this.props.watchingStyleNames[0]];
         if (status && status.indexOf('auto') != -1) {
-            return 'auto';
+            return 'ICON:fa fa-asterisk m-0';
+        } else if (status && status.indexOf('coding') != -1) {
+            return 'ICON:fa fa-code m-0';
         } else if (status) {
             return parseFloat(status);
         } else {
@@ -96,7 +98,7 @@ class SizePicker extends Base<Props, State> {
             perform('update', {
                 styles: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: (index == 7) ? 'auto' : this.composeValue(this.state.value, index)
+                    value: (index == 7) ? 'auto' : ((index == 8) ? 'coding coding coding coding' : this.composeValue(this.state.value, index))
                 }],
                 replace: this.props.watchingStyleNames[0]
             });
@@ -109,7 +111,7 @@ class SizePicker extends Base<Props, State> {
             perform('update', {
                 styles: [{
                     name: this.props.watchingStyleNames[0].split('[')[0],
-                    value: (this.state.index == 7) ? 'auto' : this.composeValue(value, this.state.index)
+                    value: (this.state.index == 7) ? 'auto' : ((index == 8) ? 'coding coding coding coding' : this.composeValue(value, this.state.index))
                 }],
                 replace: this.props.watchingStyleNames[0]
             });
@@ -134,10 +136,20 @@ class SizePicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*)|([0]))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*)|([0]))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     <div className="input-group-append">
                         <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                            <span>{SIZES_IN_UNIT[this.state.index]}</span>
+                        		{(() => {
+                        				if (SIZES_IN_UNIT[this.state.index] !== 'coding') {
+                        						return (
+                        								<span>{SIZES_IN_UNIT[this.state.index]}</span>
+                        						);
+                        				} else {
+                        						return (
+                        								<i className="fa fa-code m-0" />
+                        						);
+                        				}
+                        		})()}
                         </FullStackBlend.Controls.DropDownList>
                         <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
                             <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
@@ -154,10 +166,20 @@ class SizePicker extends Base<Props, State> {
                                 <div className={"size-picker " + this.props.additionalClassName} internal-fsb-not-for="editorCurrentMode:coding">
                                     <FullStackBlend.Controls.DropDownControl representing={this.getRepresentedValue()}>
                                         <div className="input-group">
-                                            <FullStackBlend.Controls.Textbox value={this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*)|([0]))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                                            <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} preRegExp="([\-])?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*)|([0]))?" postRegExp="([\-])?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                                             <div className="input-group-append">
                                                 <FullStackBlend.Controls.DropDownList ref="dropdown" value={SIZES_IN_UNIT[this.state.index]} customClassName="btn-secondary" options={SIZES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                                                    <span>{SIZES_IN_UNIT[this.state.index]}</span>
+		                                                {(() => {
+												                        				if (SIZES_IN_UNIT[this.state.index] !== 'coding') {
+												                        						return (
+												                        								<span>{SIZES_IN_UNIT[this.state.index]}</span>
+												                        						);
+												                        				} else {
+												                        						return (
+												                        								<i className="fa fa-code m-0" />
+												                        						);
+												                        				}
+												                        		})()}
                                                 </FullStackBlend.Controls.DropDownList>
                                             </div>
                                         </div>

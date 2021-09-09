@@ -98,7 +98,7 @@ class ColorPicker extends React.Component<IProps, IState> {
                 let pickerContainer = ReactDOM.findDOMNode(this.refs.pickerContainer);
                 pickerContainer.appendChild(picker);
                 
-                if (this.props.value != null) {
+                if (this.props.value != null && this.props.value != 'coding') {
                     let rgba = this.convertRgbaToHash(this.props.value);
                     setOpacityValue(rgba.a);
                     jQuery(picker).colpickSetColor(rgba, true);

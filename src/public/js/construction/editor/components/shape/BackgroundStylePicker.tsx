@@ -136,6 +136,15 @@ class BackgroundStylePicker extends Base<Props, State> {
                     replace: this.props.watchingStyleNames[0] + ':' + this.props.watchingStyleNames[1]
                 });
                 break;
+            case 'coding':
+                perform('update', {
+                    styles: [{
+                        name: this.props.watchingStyleNames[0],
+                        value: 'coding'
+                    }],
+                    replace: this.props.watchingStyleNames[0] + ':' + this.props.watchingStyleNames[1]
+                });
+                break;
             default:
                 perform('update', {
                     styles: [{
@@ -162,23 +171,23 @@ class BackgroundStylePicker extends Base<Props, State> {
         let backgroundType = this.state.styleValues[this.props.watchingStyleNames[1]];
         return (
             <div className={"style-picker " + this.props.additionalClassName}>
-                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.styleValues[this.props.watchingStyleNames[0]] ? 'ICON:fa fa-paint-brush' : ''} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.styleValues[this.props.watchingStyleNames[0]] ? (this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding' ? 'ICON:fa fa-paint-brush' : 'ICON:fa fa-code') : ''} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                     <div className="section-container">
                         <div className="section-title">Background</div>
                         <div className="section-subtitle">Type</div>
                         <div className="section-body">
-                            <FullStackBlend.Components.RadioButtonPicker onValueChange={this.onTypeValueChange.bind(this)} watchingStyleNames={['-fsb-background-type']}></FullStackBlend.Components.RadioButtonPicker>
+                            <FullStackBlend.Components.RadioButtonPicker onValueChange={this.onTypeValueChange.bind(this)} watchingStyleNames={['-fsb-background-type']} watchingExtensionNames={['editorCurrentMode']}></FullStackBlend.Components.RadioButtonPicker>
                         </div>
-                        <div className="section-subtitle" style={{display: (!!backgroundType) ? 'block' : 'none'}}>Gradient</div>
-                        <div className="section-body" style={{display: (!!backgroundType) ? 'block' : 'none'}}>
+                        <div className="section-subtitle" style={{display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none'}}>Gradient</div>
+                        <div className="section-body" style={{display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none'}}>
                             <FullStackBlend.Components.GradientPicker ref="gradientPicker" onSelectionChange={this.gradientOnSelectionChange.bind(this)} onValueChange={this.gradientOnValueChange.bind(this)} watchingStyleNames={['background', '-fsb-background-type']} watchingAttributeNames={['internal-fsb-guid']}></FullStackBlend.Components.GradientPicker>
                         </div>
-                        <div className="section-subtitle">Swatches</div>
-                        <div className="section-body">
+                        <div className="section-subtitle" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>Swatches</div>
+                        <div className="section-body" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>
                             <FullStackBlend.Components.SwatchPicker ref="swatchPicker" onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
                         </div>
-                        <div className="section-subtitle">Color</div>
-                        <div className="section-body">
+                        <div className="section-subtitle" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>Color</div>
+                        <div className="section-body" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>
                             <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
                         </div>
                     </div>
