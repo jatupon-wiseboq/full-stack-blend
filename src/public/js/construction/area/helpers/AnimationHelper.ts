@@ -99,6 +99,31 @@ var AnimationHelper = {
     AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
   },
+  getPreset: function(animationID: string) {
+  	return stylesheetDefinitions[animationID];
+  },
+  addPreset: function(animationID: string, data: any) {
+    stylesheetDefinitions[animationID] = data;
+    
+    AnimationHelper.setCurrentKeyframe(null);
+    
+    stylesheetDefinitionRevision++;
+    TimelineHelper.invalidate();
+    AnimationHelper.renderStylesheetAndExtensionElement();
+    StatusHelper.invalidate();
+  },
+  removePreset: function(animationID: string) {
+  	if (!confirm('Are you sure you want to delete this animation?')) return;
+  	
+    delete stylesheetDefinitions[animationID];
+    
+    AnimationHelper.setCurrentKeyframe(null);
+    
+    stylesheetDefinitionRevision++;
+    TimelineHelper.invalidate();
+    AnimationHelper.renderStylesheetAndExtensionElement();
+    StatusHelper.invalidate();
+  },
   setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
   	presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
   	

@@ -36,7 +36,8 @@ var TimelineHelper = {
 				tag: {
 					key: info.id,
 					root: true,
-					keyframes: null
+					keyframes: null,
+					display: AnimationHelper.isDisplaying(info.id)
 				}
 			});
   	}

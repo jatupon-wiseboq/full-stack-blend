@@ -232,11 +232,34 @@ class TimelineManager extends Base<Props, State> {
 				}
 			}
 		}
+    private onNodeVisibleToggled(node: ITreeNode) {
+    	perform('update', {
+    		extensions: [{
+    			name: 'editingAnimationID',
+    			value: node.tag.key
+    		}, {
+    			name: 'animationGroupTestState',
+    			value: node.tag.display ? 'off' : 'on'
+    		}]
+    	});
+    }
+    private onNodeRemoved(node: ITreeNode) {
+    	let link = Math.random().toString();
+    	
+    	perform('update', {
+    		extensions: [{
+    			name: 'editingAnimationID',
+    			value: node.tag.key
+    		}],
+	  		link: link
+    	});
+    	perform('removePreset', node.tag.key, link);
+    }
     
     render() {
       return (
       	<div className="timeline-manager-container">
-        	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} extendingControl={FullStackBlend.Components.KeyframeManager} />
+        	<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} extendingControl={FullStackBlend.Components.KeyframeManager} visibility={true} removability={true} onNodeVisibleToggled={this.onNodeVisibleToggled.bind(this)} onNodeRemoved={this.onNodeRemoved.bind(this)} />
       		<span className="btn btn-light add" onClick={this.addOnClick.bind(this)}>+</span>
       		<div className="slider-outer-container">
       			<div className="slider-inner-container">

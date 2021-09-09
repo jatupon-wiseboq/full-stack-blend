@@ -38,10 +38,14 @@ interface IProps {
   onDragging(point: Point);
   onEndDragging();
   onUpdateOptionVisibleChanged(value: boolean, tag: any);
+  onNodeVisibleToggled(node: ITreeNode);
+  onNodeRemoved(node: ITreeNode);
   draggableAfterSelected: boolean;
   customDraggerClassName: string;
   editingControl: any;
   extendingControl: any;
+  visibility: boolean;
+  removability: boolean;
 }
 
 interface IState {
@@ -214,6 +218,16 @@ class TreeNode extends React.Component<IProps, IState> {
             this.props.onUpdateOptionVisibleChanged(value, tag);
         }
     }
+    private onNodeVisibleToggled(node: ITreeNode) {
+    		if (this.props.onNodeVisibleToggled) {
+            this.props.onNodeVisibleToggled(node);
+        }
+    }
+    private onNodeRemoved(node: ITreeNode) {
+    		if (this.props.onNodeRemoved) {
+            this.props.onNodeRemoved(node);
+        }
+    }
     private recursiveCheckForContaining(node: ITreeNode): boolean {
     	if (node.selected) return true;
     	else {
@@ -233,6 +247,18 @@ class TreeNode extends React.Component<IProps, IState> {
             return (
               <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '') + (this.recursiveCheckForContaining(node) ? ' contained' : '')} id={node.id}>
                 <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "") + (node.dragable ? " dragable" : "")}>
+					    		{(() => {
+					    			if (node.id !== 'selector' && this.props.visibility === true)
+					    			return (
+					    				<i className={(node.tag.display) ? "fa fa-eye" : "fa fa-eye-slash"} style={{position: "absolute", left: "215px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeVisibleToggled.bind(this, node)} />
+					    			);
+					    		})()}
+					    		{(() => {
+					    			if (node.id !== 'selector' && this.props.removability === true)
+					    			return (
+					    				<i className="fa fa-remove" style={{position: "absolute", left: "234px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeRemoved.bind(this, node)} />
+					    			);
+					    		})()}
                 	{(() => {
                     if (this.props.extendingControl) {
                     	const ExtendingControl = this.props.extendingControl;

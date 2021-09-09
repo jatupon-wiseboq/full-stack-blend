@@ -209,6 +209,9 @@ var ManipulationHelper = {
       case 'swap':
       	[accessory, content, remember] = ManipulationHelper.handleToggleEditorPanel(name, content, remember, promise);
         break;
+      case 'removePreset':
+      	[accessory, content, remember] = ManipulationHelper.handleRemovePreset(name, content, remember, promise);
+      	break;
     }
     
     if (content && typeof content === 'object') {
@@ -1682,6 +1685,10 @@ var ManipulationHelper = {
               break;
           }
           break;
+        case 'removePreset':
+        	AnimationHelper.addPreset(accessory.key, accessory.data);
+        	done = true;
+        	break;
         default:
         	content = accessory;
         	break;
@@ -1771,6 +1778,16 @@ var ManipulationHelper = {
     }
     
     return [accessory, content, remember];
+  },
+  handleRemovePreset: (name: string, content: any, remember: boolean, promise: Promise) => {
+  	let accessory = {
+  		key: content,
+	    data: AnimationHelper.getPreset(content)
+  	}
+  	
+  	AnimationHelper.removePreset(content);
+  	
+  	return [accessory, content, remember];
   }
 };
 
