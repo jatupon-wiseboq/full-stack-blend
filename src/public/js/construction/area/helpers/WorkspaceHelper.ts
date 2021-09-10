@@ -930,7 +930,7 @@ var WorkspaceHelper = {
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          		
-	          		cacheOfGeneratedBackEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = WorkspaceHelper.generateBackEndCodeForID(key);
+	          		cacheOfGeneratedBackEndCodeForAllPages[key] = WorkspaceHelper.generateBackEndCodeForID(key);
 	          	}
 	          }
 	        }
@@ -940,7 +940,7 @@ var WorkspaceHelper = {
   },
   generateBackEndCodeForID: (id: string=InternalProjectSettings.editingPageID) => {
   	if ('site' == InternalProjectSettings.currentMode && id == InternalProjectSettings.editingPageID) {
-    	return WorkspaceHelper.generateBackEndCodeForPage('site', HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
+    	return WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
     } else {
 	  	document.body.appendChild(temp);
 		  
@@ -948,18 +948,18 @@ var WorkspaceHelper = {
 	    const _window = _document.defaultView;
 	    
 	    WorkspaceHelper.loadPageData('site', id, _window);
-	    const results = WorkspaceHelper.generateBackEndCodeForPage('site', HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+	    const results = WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
 	    
 	    return results;
 	  }
   },
-  generateBackEndCodeForPage: (mode: string='site', container: any=document.body) => {
+  generateBackEndCodeForPage: (mode: string='site', key: string=InternalProjectSettings.editingPageID, container: any=document.body) => {
     let results;
   	if (mode == 'site') {
   		WorkspaceHelper.plugComponentInputs(container);
   		WorkspaceHelper.updateInPageComponents(container);
       WorkspaceHelper.updateInheritingComponents(container);
-  		results = BackEndDOMHelper.generateBackEndCode(container);
+  		results = BackEndDOMHelper.generateBackEndCode(key, container);
   		WorkspaceHelper.unplugComponentInputs(container);
   	} else {
   		results = null;
