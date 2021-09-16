@@ -362,7 +362,7 @@ class RadioButtonPicker extends Base<Props, State> {
             _options = options[this.props.watchingExtensionNames[0]] || this.props.options;
         }
         
-        if (_options) {
+        if (_options && _options[0] && _options[0][0] == '-fsb-background-type') {
         		if (this.state.extensionValues['editorCurrentMode'] !== 'animation') {
         				_options = _options.slice(0, 3);
         		}
