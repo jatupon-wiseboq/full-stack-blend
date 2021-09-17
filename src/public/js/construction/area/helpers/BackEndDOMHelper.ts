@@ -26,6 +26,9 @@ var BackEndDOMHelper = {
   	let lines: string[] = [];
   	BackEndDOMHelper.recursiveGenerateCodeForMergingSection(key, element, executions, lines);
     
+    executions = executions.filter((v, i, a) => a.indexOf(v) === i);
+    lines = lines.filter((v, i, a) => a.indexOf(v) === i);
+    
     return [executions.join('\n'), lines.join('\n')];
   },
   recursiveGenerateCodeForMergingSection: function(key: string, element: HTMLElement, executions: string[], lines: string[]) {
