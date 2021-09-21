@@ -360,9 +360,9 @@ var WorkspaceHelper = {
       
       _window.document.body.firstElementChild.firstElementChild.innerHTML = (component.html || DEFAULT_COMPONENT_HTML).join('\n');
       
-      WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-      MalformationRepairHelper.repair();
+      WorkspaceHelper.updateInPageComponents(_window.document.body);
+      WorkspaceHelper.updateInheritingComponents(_window.document.body);
+      MalformationRepairHelper.repair(_window.document.body);
     } else if (mode == 'popups') {
       let popup = WorkspaceHelper.getPopupData(editingID);
       if (popup == null) return false;
@@ -371,9 +371,9 @@ var WorkspaceHelper = {
       
       _window.document.body.firstElementChild.firstElementChild.innerHTML = (popup.html || DEFAULT_POPUP_HTML).join('\n');
       
-      WorkspaceHelper.updateInPageComponents();
-      WorkspaceHelper.updateInheritingComponents();
-      MalformationRepairHelper.repair();
+      WorkspaceHelper.updateInPageComponents(_window.document.body);
+      WorkspaceHelper.updateInheritingComponents(_window.document.body);
+      MalformationRepairHelper.repair(_window.document.body);
     }
     
     return true;
