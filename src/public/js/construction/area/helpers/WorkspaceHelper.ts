@@ -248,8 +248,6 @@ var WorkspaceHelper = {
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
-      
-      EditorHelper.init(true, updateUI);
     } else if (InternalProjectSettings.currentMode == 'data') {
       WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
@@ -257,8 +255,6 @@ var WorkspaceHelper = {
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
       Accessories.overlay.setEnable(true);
-      
-      EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'services') {
       WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
@@ -266,8 +262,6 @@ var WorkspaceHelper = {
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
       Accessories.overlay.setEnable(false);
-      
-      EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'components') {
     	if (InternalProjectSettings.editingComponentID == null) return;
       
@@ -283,8 +277,6 @@ var WorkspaceHelper = {
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
-      
-      EditorHelper.init(false, updateUI);
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
       
@@ -310,8 +302,6 @@ var WorkspaceHelper = {
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
       HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
-      
-      EditorHelper.init(false, updateUI);
     }
     
     WorkspaceHelper.migrateCode();
@@ -320,6 +310,8 @@ var WorkspaceHelper = {
     TimelineHelper.invalidate();
     SchemaHelper.invalidate();
     StatusHelper.invalidate();
+    
+    EditorHelper.init(['site'].indexOf(InternalProjectSettings.currentMode) != -1, updateUI);
   },
   loadPageData: (mode: string, editingID: string, _window: any=window) => {
   	HTMLHelper.sortAttributes(_window.document);
