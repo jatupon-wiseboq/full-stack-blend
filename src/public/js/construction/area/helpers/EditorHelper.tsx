@@ -340,12 +340,14 @@ var EditorHelper = {
         if (selectedLibraries.indexOf(library.id) != -1) {
             if (library.development.stylesheets) {
                 for (let stylesheet of library.development.stylesheets) {
-                    let element = document.createElement('link');
-                    element.setAttribute('rel', 'stylesheet');
-                    element.setAttribute('type', 'text/css');
-                    element.setAttribute('href', stylesheet);
-                    element.setAttribute('internal-stylesheet-element', library.id);
-                    document.head.appendChild(element);
+                		if (HTMLHelper.getElementByAttributeNameAndValue('href', stylesheet) == null) {
+	                      let element = document.createElement('link');
+	                      element.setAttribute('rel', 'stylesheet');
+	                      element.setAttribute('type', 'text/css');
+	                      element.setAttribute('href', stylesheet);
+	                      element.setAttribute('internal-stylesheet-element', library.id);
+	                      document.head.appendChild(element);
+	                  }
                 }
             }
         } else {
