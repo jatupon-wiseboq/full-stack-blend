@@ -76,8 +76,6 @@ let cachedUpdateEditorProperties = {};
       name: name,
       content: content
     }), '*');
-		
-		window.preview(true);
   };
   
   window.toggle = (name: string, iconSelector: string) => {

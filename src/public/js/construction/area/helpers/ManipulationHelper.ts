@@ -76,6 +76,7 @@ var ManipulationHelper = {
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
     let recentSelectingElement = null;
+    let preview = true;
     
     if (content && (typeof content === 'object') && content.link !== undefined) {
     	link = content.link;
@@ -106,6 +107,8 @@ var ManipulationHelper = {
       	} else {
       		remember = false;
       	}
+      	
+      	preview = false;
         break;
       case 'select[cursor]':
       	recentSelectingElement = EditorHelper.getSelectingElement();
@@ -156,6 +159,8 @@ var ManipulationHelper = {
 		    } else {
 		    	remember = false;
 		    }
+      	
+      	preview = false;
       	break;
       case 'insert':
         if (InternalProjectSettings.currentMode != 'data') {
@@ -175,6 +180,8 @@ var ManipulationHelper = {
         break;
       case 'move[cursor]':
       	[accessory, remember, link] = ManipulationHelper.handleMoveCursor(name, content, remember, promise, link);
+      	
+      	preview = false;
         break;
       case 'move[element]':
       	[accessory, remember, link] = ManipulationHelper.handleMoveElement(name, content, remember, promise, link);
@@ -193,12 +200,18 @@ var ManipulationHelper = {
         break;
       case 'keydown':
       	[accessory, remember, link] = ManipulationHelper.handleKeyDown(name, content, remember, promise, link);
+      	
+      	preview = false;
         break;
       case 'keyup':
       	[accessory, remember, link] = ManipulationHelper.handleKeyUp(name, content, remember, promise, link);
+      	
+      	preview = false;
       	break;
       case 'toggle':
       	[accessory, remember, link] = ManipulationHelper.handleToggleDesignMode(name, content, remember, promise, link);
+      	
+      	preview = false;
         break;
       case 'undo':
       	[accessory, remember] = ManipulationHelper.handleUndo(name, content, remember, promise);
@@ -208,6 +221,8 @@ var ManipulationHelper = {
         break;
       case 'swap':
       	[accessory, content, remember] = ManipulationHelper.handleToggleEditorPanel(name, content, remember, promise);
+      	
+      	preview = false;
         break;
       case 'removePreset':
       	[accessory, content, remember] = ManipulationHelper.handleRemovePreset(name, content, remember, promise);
@@ -246,6 +261,10 @@ var ManipulationHelper = {
     
     Accessories.overlay && Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
+    
+    if (preview) {
+    	window.parent.preview(true);
+    }
   },
   updateComponentData: (node: any) => {
     if (node) {
