@@ -74,7 +74,7 @@ const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
-    WorkspaceHelper.saveWorkspaceData(false, true);
+    WorkspaceHelper.saveWorkspaceData(true, true);
     
     let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
     for (let key of BACKEND_DATA_EXTENSIONS) {
@@ -400,8 +400,6 @@ var WorkspaceHelper = {
       page.references = WorkspaceHelper.getAllReferencingKlasses();
       
       if (reinit) {
-        EditorHelper.init(true, false);
-        
         FontHelper.initializeFontData(page.head.fonts);
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
@@ -411,6 +409,10 @@ var WorkspaceHelper = {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+      }
+      
+      if (reinit) {
+        EditorHelper.init(true, false);
       }
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
@@ -448,8 +450,6 @@ var WorkspaceHelper = {
       component.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       if (reinit) {
-        EditorHelper.init(true, false);
-        
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
@@ -460,6 +460,10 @@ var WorkspaceHelper = {
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
         WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
+      }
+      
+      if (reinit) {
+        EditorHelper.init(true, false);
       }
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
@@ -480,8 +484,6 @@ var WorkspaceHelper = {
       popup.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       if (reinit) {
-        EditorHelper.init(true, false);
-        
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
@@ -492,6 +494,10 @@ var WorkspaceHelper = {
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
+      }
+      
+      if (reinit) {
+        EditorHelper.init(true, false);
       }
     }
   },
