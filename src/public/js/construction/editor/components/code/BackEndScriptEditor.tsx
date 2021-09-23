@@ -233,8 +233,6 @@ class BackEndScriptEditor extends Base<Props, State> {
 		                replace: (willUpdateExtensions.length != 1) ? null : willUpdateExtensions[0].name + '+text',
 		                tag: 'user-action'
 		            });
-		            
-		            window.preview(true);
 		        }
         }
     }

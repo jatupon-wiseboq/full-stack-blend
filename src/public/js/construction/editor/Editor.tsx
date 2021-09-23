@@ -76,6 +76,8 @@ let cachedUpdateEditorProperties = {};
       name: name,
       content: content
     }), '*');
+		
+		window.preview(true);
   };
   
   window.toggle = (name: string, iconSelector: string) => {
@@ -339,7 +341,7 @@ let cachedUpdateEditorProperties = {};
   		window.clearTimeout(timerIncrementalUpdate);
   		timerIncrementalUpdate = window.setTimeout(() => {
   			 Accessories.endpointManager.current.save(() => {}, true);
-  		}, 1000);
+  		}, 2500);
   	} else {
 	    latestRevision += 1;
 	    currentRevision = latestRevision;

@@ -74,7 +74,7 @@ const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean=false) => {
-    WorkspaceHelper.saveWorkspaceData(false, true);
+    WorkspaceHelper.saveWorkspaceData(true, true);
     
     let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
     for (let key of BACKEND_DATA_EXTENSIONS) {
