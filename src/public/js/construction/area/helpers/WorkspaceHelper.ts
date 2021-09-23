@@ -839,7 +839,7 @@ var WorkspaceHelper = {
   },
   generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
     if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndKey() == id) {
-    	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
+    	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body), false);
     } else {
 	    document.body.appendChild(temp);
 		  
@@ -847,12 +847,12 @@ var WorkspaceHelper = {
 	    const _window = _document.defaultView;
 	    
 	    WorkspaceHelper.loadPageData(mode, id, _window);
-	    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+	    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
 	    
 	    return results;
     }
   },
-  generateFrontEndCodeForPage: (mode: string='site', container: any=document.body) => {
+  generateFrontEndCodeForPage: (mode: string='site', container: any=document.body, update: boolean=true) => {
     let results = null;
     
   	if (mode == 'site') {
@@ -863,11 +863,17 @@ var WorkspaceHelper = {
   		
   		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
   		
-  		WorkspaceHelper.plugComponentInputs(container);
-  		WorkspaceHelper.updateInPageComponents(container);
-      WorkspaceHelper.updateInheritingComponents(container);
+  		if (update) {
+	  		WorkspaceHelper.plugComponentInputs(container);
+	  		WorkspaceHelper.updateInPageComponents(container);
+	      WorkspaceHelper.updateInheritingComponents(container);
+	    }
+  		
   		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
-  		WorkspaceHelper.unplugComponentInputs(container);
+  		
+  		if (update) {
+  			WorkspaceHelper.unplugComponentInputs(container);
+  		}
   		
   		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', currentAnimationGroup);
   		
@@ -881,11 +887,18 @@ var WorkspaceHelper = {
   		
   		element && HTMLHelper.setAttribute(element, 'internal-fsb-animation', stylesheetAndExtension[2]);
   		
-  		WorkspaceHelper.plugComponentInputs(container);
-  		WorkspaceHelper.updateInPageComponents(container);
-      WorkspaceHelper.updateInheritingComponents(container);
+  		if (update) {
+	  		WorkspaceHelper.plugComponentInputs(container);
+	  		WorkspaceHelper.updateInPageComponents(container);
+	      WorkspaceHelper.updateInheritingComponents(container);
+	    }
+	    
   		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
-  		WorkspaceHelper.unplugComponentInputs(container);
+  		
+  		if (update) {
+  			WorkspaceHelper.unplugComponentInputs(container);
+  		}
+  		
   		results[0] = false;
   		results[1] = false;
   		results[3] = false;
@@ -949,19 +962,15 @@ var WorkspaceHelper = {
     }
   },
   generateBackEndCodeForID: (id: string=InternalProjectSettings.editingPageID) => {
-  	if ('site' == InternalProjectSettings.currentMode && id == InternalProjectSettings.editingPageID) {
-    	return WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body));
-    } else {
-	  	document.body.appendChild(temp);
-		  
-	    const _document = temp.contentDocument || temp.contentWindow.document;
-	    const _window = _document.defaultView;
-	    
-	    WorkspaceHelper.loadPageData('site', id, _window);
-	    const results = WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
-	    
-	    return results;
-	  }
+  	document.body.appendChild(temp);
+		
+    const _document = temp.contentDocument || temp.contentWindow.document;
+    const _window = _document.defaultView;
+    
+    WorkspaceHelper.loadPageData('site', id, _window);
+    const results = WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+    
+    return results;
   },
   generateBackEndCodeForPage: (mode: string='site', key: string=InternalProjectSettings.editingPageID, container: any=document.body) => {
     let results;

@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from './../helpers/DatabaseHelper';
@@ -328,9 +329,7 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("index", "651393e4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
-    RequestHelper.registerSubmit("index", "d85b2bd4", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 3"});
-    RequestHelper.registerSubmit("index", "57bd398a", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 2"});
+
 
 	  // <---Auto[Merging]
 	  
@@ -348,6 +347,7 @@ class Controller extends Base {
 // Export variables here:
 //
 export default Controller;
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

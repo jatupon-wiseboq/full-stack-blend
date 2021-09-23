@@ -1001,6 +1001,7 @@ d0e675b7    }
 245bc127      "state": "create"
 245bc127    },
 4d816ba8    "4d816ba8": {
+4d816ba8      "accessories": {},
 4d816ba8      "html": [
 4d816ba8        "<div",
 4d816ba8        "    class=\"-fsb-preset-245bc127 col-12 internal-fsb-element\"",
@@ -1052,7 +1053,13 @@ d0e675b7    }
 4d816ba8        "  }",
 4d816ba8        "  ",
 4d816ba8        "  \"",
-4d816ba8        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
+4d816ba8        "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\"",
+4d816ba8        "    internal-fsb-react-code-import=\"",
+4d816ba8        "",
+4d816ba8        "// Import additional modules here:",
+4d816ba8        "// ",
+4d816ba8        "",
+4d816ba8        "\">",
 4d816ba8        "<div",
 4d816ba8        "    class=\"container-fluid\"",
 4d816ba8        "    internal-fsb-event-no-propagate=\"1\">",
@@ -1384,23 +1391,14 @@ d0e675b7    }
 4d816ba8        "</div>",
 4d816ba8        "</div>"
 4d816ba8      ],
+4d816ba8      "id": "4d816ba8",
 4d816ba8      "klass": "FlowLayout_4d816ba8",
-4d816ba8      "namespace": "Project.Controls"
+4d816ba8      "name": "Authenticator",
+4d816ba8      "namespace": "Project.Controls",
+4d816ba8      "state": "create"
 4d816ba8    }
   },
   "controllerBlobSHA": "412073fbb81cba1ed429a2aaeb557a9cd42cc8d7#39405662",
-  "currentPersistingFiles": [
-    "src/controllers/components/account/settings/_3cb10a6e.ts",
-    "src/controllers/components/account/authenticate/_9e885d49.ts",
-    "src/controllers/components/developer/_b160aa0e.ts",
-    "src/controllers/components/index.ts",
-    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
-    "src/public/js/components/Project.Controls.Settings.tsx",
-    "views/home/account/settings/_3cb10a6e.pug",
-    "views/home/account/authenticate/_9e885d49.pug",
-    "views/home/developer/_b160aa0e.pug",
-    "views/home/index.pug"
-  ],
   "flows": {
     "default": [
       "<body",
@@ -2061,83 +2059,83 @@ d0e675b7    }
     "schema": {
       "Business": {
         "columns": {
-          "name": {
-            "fieldType": null,
-            "guid": "41d99dce",
-            "modifyingPermission": null,
-            "name": "name",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": true,
-            "url": null,
-            "verb": null
-          }
+41d99dce          "name": {
+41d99dce            "fieldType": null,
+41d99dce            "guid": "41d99dce",
+41d99dce            "modifyingPermission": null,
+41d99dce            "name": "name",
+41d99dce            "required": true,
+41d99dce            "retrievingPermission": null,
+41d99dce            "unique": true,
+41d99dce            "url": null,
+41d99dce            "verb": null
+41d99dce          }
         },
         "group": "Business",
         "guid": "3b8deba4",
         "keys": {
-          "bid": {
-            "fieldType": "auto",
-            "guid": "2e4450b7",
-            "modifyingPermission": null,
-            "name": "bid",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+2e4450b7          "bid": {
+2e4450b7            "fieldType": "auto",
+2e4450b7            "guid": "2e4450b7",
+2e4450b7            "modifyingPermission": null,
+2e4450b7            "name": "bid",
+2e4450b7            "required": false,
+2e4450b7            "retrievingPermission": null,
+2e4450b7            "unique": false,
+2e4450b7            "url": null,
+2e4450b7            "verb": null
+2e4450b7          }
         },
         "modifyingPermission": null,
-        "relations": {
-          "Redis": {
-            "guid": "c8aebb0e",
-            "name": null,
-            "sourceEntity": "name",
-            "sourceGroup": "Business",
-            "targetEntity": "prefix-abc-",
-            "targetGroup": "Redis"
-          },
-          "User": {
-            "guid": "394a7806",
-            "name": "",
-            "sourceEntity": "bid",
-            "sourceGroup": "Business",
-            "targetEntity": "bid",
-            "targetGroup": "User"
-          }
+c8aebb0e        "relations": {
+c8aebb0e          "Redis": {
+c8aebb0e            "guid": "c8aebb0e",
+c8aebb0e            "name": null,
+c8aebb0e            "sourceEntity": "name",
+c8aebb0e            "sourceGroup": "Business",
+c8aebb0e            "targetEntity": "prefix-abc-",
+c8aebb0e            "targetGroup": "Redis"
+c8aebb0e          },
+394a7806          "User": {
+394a7806            "guid": "394a7806",
+394a7806            "name": "",
+394a7806            "sourceEntity": "bid",
+394a7806            "sourceGroup": "Business",
+394a7806            "targetEntity": "bid",
+394a7806            "targetGroup": "User"
+394a7806          }
         },
         "retrievingPermission": null,
         "source": "relational"
       },
       "DocumentTesting": {
         "columns": {
-          "data": {
-            "fieldType": null,
-            "guid": "8560799b",
-            "modifyingPermission": null,
-            "name": "data",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+8560799b          "data": {
+8560799b            "fieldType": null,
+8560799b            "guid": "8560799b",
+8560799b            "modifyingPermission": null,
+8560799b            "name": "data",
+8560799b            "required": false,
+8560799b            "retrievingPermission": null,
+8560799b            "unique": false,
+8560799b            "url": null,
+8560799b            "verb": null
+8560799b          }
         },
         "group": "DocumentTesting",
         "guid": "9930c17b",
         "keys": {
-          "tid": {
-            "fieldType": "number",
-            "guid": "41483b43",
-            "modifyingPermission": null,
-            "name": "tid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+41483b43          "tid": {
+41483b43            "fieldType": "number",
+41483b43            "guid": "41483b43",
+41483b43            "modifyingPermission": null,
+41483b43            "name": "tid",
+41483b43            "required": true,
+41483b43            "retrievingPermission": null,
+41483b43            "unique": false,
+41483b43            "url": null,
+41483b43            "verb": null
+41483b43          }
         },
         "modifyingPermission": null,
         "relations": {},
@@ -2146,215 +2144,215 @@ d0e675b7    }
       },
       "Employee": {
         "columns": {
-          "name": {
-            "fieldType": null,
-            "guid": "c086cd1c",
-            "modifyingPermission": null,
-            "name": "name",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "uid": {
-            "fieldType": "number",
-            "guid": "41c70b7c",
-            "modifyingPermission": null,
-            "name": "uid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+c086cd1c          "name": {
+c086cd1c            "fieldType": null,
+c086cd1c            "guid": "c086cd1c",
+c086cd1c            "modifyingPermission": null,
+c086cd1c            "name": "name",
+c086cd1c            "required": false,
+c086cd1c            "retrievingPermission": null,
+c086cd1c            "unique": false,
+c086cd1c            "url": null,
+c086cd1c            "verb": null
+c086cd1c          },
+41c70b7c          "uid": {
+41c70b7c            "fieldType": "number",
+41c70b7c            "guid": "41c70b7c",
+41c70b7c            "modifyingPermission": null,
+41c70b7c            "name": "uid",
+41c70b7c            "required": true,
+41c70b7c            "retrievingPermission": null,
+41c70b7c            "unique": false,
+41c70b7c            "url": null,
+41c70b7c            "verb": null
+41c70b7c          }
         },
         "group": "Employee",
         "guid": "517603ad",
         "keys": {
-          "eid": {
-            "fieldType": "auto",
-            "guid": "867c32ab",
-            "modifyingPermission": null,
-            "name": "eid",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+867c32ab          "eid": {
+867c32ab            "fieldType": "auto",
+867c32ab            "guid": "867c32ab",
+867c32ab            "modifyingPermission": null,
+867c32ab            "name": "eid",
+867c32ab            "required": false,
+867c32ab            "retrievingPermission": null,
+867c32ab            "unique": false,
+867c32ab            "url": null,
+867c32ab            "verb": null
+867c32ab          }
         },
         "modifyingPermission": null,
-        "relations": {
-          "Note": {
-            "guid": "d879d69e",
-            "name": null,
-            "sourceEntity": "eid",
-            "sourceGroup": "Employee",
-            "targetEntity": "eid",
-            "targetGroup": "Note"
-          },
-          "Sidekiq": {
-            "guid": "02699134",
-            "name": null,
-            "sourceEntity": "eid",
-            "sourceGroup": "Employee",
-            "targetEntity": "write",
-            "targetGroup": "Sidekiq"
-          },
-          "User": {
-            "guid": "48a97452",
-            "name": "",
-            "sourceEntity": "uid",
-            "sourceGroup": "Employee",
-            "targetEntity": "uid",
-            "targetGroup": "User"
-          }
+d879d69e        "relations": {
+d879d69e          "Note": {
+d879d69e            "guid": "d879d69e",
+d879d69e            "name": null,
+d879d69e            "sourceEntity": "eid",
+d879d69e            "sourceGroup": "Employee",
+d879d69e            "targetEntity": "eid",
+d879d69e            "targetGroup": "Note"
+d879d69e          },
+02699134          "Sidekiq": {
+02699134            "guid": "02699134",
+02699134            "name": null,
+02699134            "sourceEntity": "eid",
+02699134            "sourceGroup": "Employee",
+02699134            "targetEntity": "write",
+02699134            "targetGroup": "Sidekiq"
+02699134          },
+48a97452          "User": {
+48a97452            "guid": "48a97452",
+48a97452            "name": "",
+48a97452            "sourceEntity": "uid",
+48a97452            "sourceGroup": "Employee",
+48a97452            "targetEntity": "uid",
+48a97452            "targetGroup": "User"
+48a97452          }
         },
         "retrievingPermission": null,
         "source": "relational"
       },
       "Log": {
         "columns": {
-          "id": {
-            "fieldType": "auto",
-            "guid": "bb9ae5e2",
-            "modifyingPermission": null,
-            "name": "id",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "message": {
-            "fieldType": null,
-            "guid": "a9a1e789",
-            "modifyingPermission": null,
-            "name": "message",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "uid": {
-            "fieldType": "number",
-            "guid": "a3c71980",
-            "modifyingPermission": null,
-            "name": "uid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+bb9ae5e2          "id": {
+bb9ae5e2            "fieldType": "auto",
+bb9ae5e2            "guid": "bb9ae5e2",
+bb9ae5e2            "modifyingPermission": null,
+bb9ae5e2            "name": "id",
+bb9ae5e2            "required": false,
+bb9ae5e2            "retrievingPermission": null,
+bb9ae5e2            "unique": false,
+bb9ae5e2            "url": null,
+bb9ae5e2            "verb": null
+bb9ae5e2          },
+a9a1e789          "message": {
+a9a1e789            "fieldType": null,
+a9a1e789            "guid": "a9a1e789",
+a9a1e789            "modifyingPermission": null,
+a9a1e789            "name": "message",
+a9a1e789            "required": true,
+a9a1e789            "retrievingPermission": null,
+a9a1e789            "unique": false,
+a9a1e789            "url": null,
+a9a1e789            "verb": null
+a9a1e789          },
+a3c71980          "uid": {
+a3c71980            "fieldType": "number",
+a3c71980            "guid": "a3c71980",
+a3c71980            "modifyingPermission": null,
+a3c71980            "name": "uid",
+a3c71980            "required": true,
+a3c71980            "retrievingPermission": null,
+a3c71980            "unique": false,
+a3c71980            "url": null,
+a3c71980            "verb": null
+a3c71980          }
         },
         "group": "Log",
         "guid": "49b8ae39",
         "keys": {},
         "modifyingPermission": null,
-        "relations": {
-          "User": {
-            "guid": "8b473440",
-            "name": null,
-            "sourceEntity": "uid",
-            "sourceGroup": "Log",
-            "targetEntity": "uid",
-            "targetGroup": "User"
-          }
+8b473440        "relations": {
+8b473440          "User": {
+8b473440            "guid": "8b473440",
+8b473440            "name": null,
+8b473440            "sourceEntity": "uid",
+8b473440            "sourceGroup": "Log",
+8b473440            "targetEntity": "uid",
+8b473440            "targetGroup": "User"
+8b473440          }
         },
         "retrievingPermission": null,
         "source": "worker"
       },
       "Note": {
         "columns": {
-          "eid": {
-            "fieldType": "number",
-            "guid": "9715a5d4",
-            "modifyingPermission": null,
-            "name": "eid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "note": {
-            "fieldType": null,
-            "guid": "9728cc26",
-            "modifyingPermission": null,
-            "name": "note",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+9715a5d4          "eid": {
+9715a5d4            "fieldType": "number",
+9715a5d4            "guid": "9715a5d4",
+9715a5d4            "modifyingPermission": null,
+9715a5d4            "name": "eid",
+9715a5d4            "required": true,
+9715a5d4            "retrievingPermission": null,
+9715a5d4            "unique": false,
+9715a5d4            "url": null,
+9715a5d4            "verb": null
+9715a5d4          },
+9728cc26          "note": {
+9728cc26            "fieldType": null,
+9728cc26            "guid": "9728cc26",
+9728cc26            "modifyingPermission": null,
+9728cc26            "name": "note",
+9728cc26            "required": true,
+9728cc26            "retrievingPermission": null,
+9728cc26            "unique": false,
+9728cc26            "url": null,
+9728cc26            "verb": null
+9728cc26          }
         },
         "group": "Note",
         "guid": "52160ba0",
         "keys": {},
         "modifyingPermission": null,
-        "relations": {
-          "Employee": {
-            "guid": "d879d69e",
-            "name": null,
-            "sourceEntity": "eid",
-            "sourceGroup": "Note",
-            "targetEntity": "eid",
-            "targetGroup": "Employee"
-          }
+d879d69e        "relations": {
+d879d69e          "Employee": {
+d879d69e            "guid": "d879d69e",
+d879d69e            "name": null,
+d879d69e            "sourceEntity": "eid",
+d879d69e            "sourceGroup": "Note",
+d879d69e            "targetEntity": "eid",
+d879d69e            "targetGroup": "Employee"
+d879d69e          }
         },
         "retrievingPermission": null,
         "source": "relational"
       },
       "RESTfulTesting": {
         "columns": {
-          "delete": {
-            "fieldType": null,
-            "guid": "3a6390a8",
-            "modifyingPermission": null,
-            "name": "delete",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": "https:///www.stackblend.org",
-            "verb": "DELETE"
-          },
-          "get": {
-            "fieldType": null,
-            "guid": "7ed3e267",
-            "modifyingPermission": null,
-            "name": "get",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": "https:///www.stackblend.org",
-            "verb": null
-          },
-          "post": {
-            "fieldType": null,
-            "guid": "47456582",
-            "modifyingPermission": null,
-            "name": "post",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": "https:///www.stackblend.org",
-            "verb": "POST"
-          },
-          "put": {
-            "fieldType": null,
-            "guid": "c52cd70e",
-            "modifyingPermission": null,
-            "name": "put",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": "https:///www.stackblend.org",
-            "verb": "PUT"
-          }
+3a6390a8          "delete": {
+3a6390a8            "fieldType": null,
+3a6390a8            "guid": "3a6390a8",
+3a6390a8            "modifyingPermission": null,
+3a6390a8            "name": "delete",
+3a6390a8            "required": false,
+3a6390a8            "retrievingPermission": null,
+3a6390a8            "unique": false,
+3a6390a8            "url": "https:///www.stackblend.org",
+3a6390a8            "verb": "DELETE"
+3a6390a8          },
+7ed3e267          "get": {
+7ed3e267            "fieldType": null,
+7ed3e267            "guid": "7ed3e267",
+7ed3e267            "modifyingPermission": null,
+7ed3e267            "name": "get",
+7ed3e267            "required": false,
+7ed3e267            "retrievingPermission": null,
+7ed3e267            "unique": false,
+7ed3e267            "url": "https:///www.stackblend.org",
+7ed3e267            "verb": null
+7ed3e267          },
+47456582          "post": {
+47456582            "fieldType": null,
+47456582            "guid": "47456582",
+47456582            "modifyingPermission": null,
+47456582            "name": "post",
+47456582            "required": false,
+47456582            "retrievingPermission": null,
+47456582            "unique": false,
+47456582            "url": "https:///www.stackblend.org",
+47456582            "verb": "POST"
+47456582          },
+c52cd70e          "put": {
+c52cd70e            "fieldType": null,
+c52cd70e            "guid": "c52cd70e",
+c52cd70e            "modifyingPermission": null,
+c52cd70e            "name": "put",
+c52cd70e            "required": false,
+c52cd70e            "retrievingPermission": null,
+c52cd70e            "unique": false,
+c52cd70e            "url": "https:///www.stackblend.org",
+c52cd70e            "verb": "PUT"
+c52cd70e          }
         },
         "group": "RESTfulTesting",
         "guid": "dc7d3cee",
@@ -2366,63 +2364,63 @@ d0e675b7    }
       },
       "Redis": {
         "columns": {
-          "prefix-abc-": {
-            "fieldType": null,
-            "guid": "e3184980",
-            "modifyingPermission": null,
-            "name": "prefix-abc-",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+e3184980          "prefix-abc-": {
+e3184980            "fieldType": null,
+e3184980            "guid": "e3184980",
+e3184980            "modifyingPermission": null,
+e3184980            "name": "prefix-abc-",
+e3184980            "required": false,
+e3184980            "retrievingPermission": null,
+e3184980            "unique": false,
+e3184980            "url": null,
+e3184980            "verb": null
+e3184980          }
         },
         "group": "Redis",
         "guid": "41aecdb8",
         "keys": {},
         "modifyingPermission": null,
-        "relations": {
-          "Business": {
-            "guid": "c8aebb0e",
-            "name": null,
-            "sourceEntity": "prefix-abc-",
-            "sourceGroup": "Redis",
-            "targetEntity": "name",
-            "targetGroup": "Business"
-          }
+c8aebb0e        "relations": {
+c8aebb0e          "Business": {
+c8aebb0e            "guid": "c8aebb0e",
+c8aebb0e            "name": null,
+c8aebb0e            "sourceEntity": "prefix-abc-",
+c8aebb0e            "sourceGroup": "Redis",
+c8aebb0e            "targetEntity": "name",
+c8aebb0e            "targetGroup": "Business"
+c8aebb0e          }
         },
         "retrievingPermission": null,
         "source": "volatile-memory"
       },
       "RelationalTesting": {
         "columns": {
-          "data": {
-            "fieldType": null,
-            "guid": "40924d0d",
-            "modifyingPermission": null,
-            "name": "data",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+40924d0d          "data": {
+40924d0d            "fieldType": null,
+40924d0d            "guid": "40924d0d",
+40924d0d            "modifyingPermission": null,
+40924d0d            "name": "data",
+40924d0d            "required": false,
+40924d0d            "retrievingPermission": null,
+40924d0d            "unique": false,
+40924d0d            "url": null,
+40924d0d            "verb": null
+40924d0d          }
         },
         "group": "RelationalTesting",
         "guid": "e06babea",
         "keys": {
-          "tid": {
-            "fieldType": "auto",
-            "guid": "a5975b33",
-            "modifyingPermission": null,
-            "name": "tid",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+a5975b33          "tid": {
+a5975b33            "fieldType": "auto",
+a5975b33            "guid": "a5975b33",
+a5975b33            "modifyingPermission": null,
+a5975b33            "name": "tid",
+a5975b33            "required": false,
+a5975b33            "retrievingPermission": null,
+a5975b33            "unique": false,
+a5975b33            "url": null,
+a5975b33            "verb": null
+a5975b33          }
         },
         "modifyingPermission": null,
         "relations": {},
@@ -2431,140 +2429,140 @@ d0e675b7    }
       },
       "Sidekiq": {
         "columns": {
-          "write": {
-            "fieldType": null,
-            "guid": "5405e3c1",
-            "modifyingPermission": null,
-            "name": "write",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+5405e3c1          "write": {
+5405e3c1            "fieldType": null,
+5405e3c1            "guid": "5405e3c1",
+5405e3c1            "modifyingPermission": null,
+5405e3c1            "name": "write",
+5405e3c1            "required": false,
+5405e3c1            "retrievingPermission": null,
+5405e3c1            "unique": false,
+5405e3c1            "url": null,
+5405e3c1            "verb": null
+5405e3c1          }
         },
         "group": "Sidekiq",
         "guid": "95570e10",
         "keys": {},
         "modifyingPermission": null,
-        "relations": {
-          "Employee": {
-            "guid": "02699134",
-            "name": null,
-            "sourceEntity": "write",
-            "sourceGroup": "Sidekiq",
-            "targetEntity": "eid",
-            "targetGroup": "Employee"
-          }
+02699134        "relations": {
+02699134          "Employee": {
+02699134            "guid": "02699134",
+02699134            "name": null,
+02699134            "sourceEntity": "write",
+02699134            "sourceGroup": "Sidekiq",
+02699134            "targetEntity": "eid",
+02699134            "targetGroup": "Employee"
+02699134          }
         },
         "retrievingPermission": null,
         "source": "document"
       },
       "User": {
         "columns": {
-          "bid": {
-            "fieldType": "number",
-            "guid": "456cc264",
-            "modifyingPermission": null,
-            "name": "bid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "email": {
-            "fieldType": null,
-            "guid": "d3e002ad",
-            "modifyingPermission": null,
-            "name": "email",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": true,
-            "url": null,
-            "verb": null
-          },
-          "md5_password": {
-            "fieldType": null,
-            "guid": "3abb5a32",
-            "modifyingPermission": null,
-            "name": "md5_password",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
-          "name": {
-            "fieldType": null,
-            "guid": "e3ecd260",
-            "modifyingPermission": null,
-            "name": "name",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+456cc264          "bid": {
+456cc264            "fieldType": "number",
+456cc264            "guid": "456cc264",
+456cc264            "modifyingPermission": null,
+456cc264            "name": "bid",
+456cc264            "required": true,
+456cc264            "retrievingPermission": null,
+456cc264            "unique": false,
+456cc264            "url": null,
+456cc264            "verb": null
+456cc264          },
+d3e002ad          "email": {
+d3e002ad            "fieldType": null,
+d3e002ad            "guid": "d3e002ad",
+d3e002ad            "modifyingPermission": null,
+d3e002ad            "name": "email",
+d3e002ad            "required": true,
+d3e002ad            "retrievingPermission": null,
+d3e002ad            "unique": true,
+d3e002ad            "url": null,
+d3e002ad            "verb": null
+d3e002ad          },
+3abb5a32          "md5_password": {
+3abb5a32            "fieldType": null,
+3abb5a32            "guid": "3abb5a32",
+3abb5a32            "modifyingPermission": null,
+3abb5a32            "name": "md5_password",
+3abb5a32            "required": true,
+3abb5a32            "retrievingPermission": null,
+3abb5a32            "unique": false,
+3abb5a32            "url": null,
+3abb5a32            "verb": null
+3abb5a32          },
+e3ecd260          "name": {
+e3ecd260            "fieldType": null,
+e3ecd260            "guid": "e3ecd260",
+e3ecd260            "modifyingPermission": null,
+e3ecd260            "name": "name",
+e3ecd260            "required": false,
+e3ecd260            "retrievingPermission": null,
+e3ecd260            "unique": false,
+e3ecd260            "url": null,
+e3ecd260            "verb": null
+e3ecd260          }
         },
         "group": "User",
         "guid": "3a8aa8e0",
         "keys": {
-          "uid": {
-            "fieldType": "auto",
-            "guid": "0ae2920c",
-            "modifyingPermission": null,
-            "name": "uid",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+0ae2920c          "uid": {
+0ae2920c            "fieldType": "auto",
+0ae2920c            "guid": "0ae2920c",
+0ae2920c            "modifyingPermission": null,
+0ae2920c            "name": "uid",
+0ae2920c            "required": false,
+0ae2920c            "retrievingPermission": null,
+0ae2920c            "unique": false,
+0ae2920c            "url": null,
+0ae2920c            "verb": null
+0ae2920c          }
         },
         "modifyingPermission": null,
-        "relations": {
-          "Business": {
-            "guid": "394a7806",
-            "name": "",
-            "sourceEntity": "bid",
-            "sourceGroup": "User",
-            "targetEntity": "bid",
-            "targetGroup": "Business"
-          },
-          "Employee": {
-            "guid": "48a97452",
-            "name": "",
-            "sourceEntity": "uid",
-            "sourceGroup": "User",
-            "targetEntity": "uid",
-            "targetGroup": "Employee"
-          },
-          "Log": {
-            "guid": "8b473440",
-            "name": null,
-            "sourceEntity": "uid",
-            "sourceGroup": "User",
-            "targetEntity": "uid",
-            "targetGroup": "Log"
-          }
+394a7806        "relations": {
+394a7806          "Business": {
+394a7806            "guid": "394a7806",
+394a7806            "name": "",
+394a7806            "sourceEntity": "bid",
+394a7806            "sourceGroup": "User",
+394a7806            "targetEntity": "bid",
+394a7806            "targetGroup": "Business"
+394a7806          },
+48a97452          "Employee": {
+48a97452            "guid": "48a97452",
+48a97452            "name": "",
+48a97452            "sourceEntity": "uid",
+48a97452            "sourceGroup": "User",
+48a97452            "targetEntity": "uid",
+48a97452            "targetGroup": "Employee"
+48a97452          },
+8b473440          "Log": {
+8b473440            "guid": "8b473440",
+8b473440            "name": null,
+8b473440            "sourceEntity": "uid",
+8b473440            "sourceGroup": "User",
+8b473440            "targetEntity": "uid",
+8b473440            "targetGroup": "Log"
+8b473440          }
         },
         "retrievingPermission": null,
         "source": "relational"
       },
       "VolatileTesting": {
         "columns": {
-          "prefix": {
-            "fieldType": null,
-            "guid": "ce8b8488",
-            "modifyingPermission": null,
-            "name": "prefix",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          }
+ce8b8488          "prefix": {
+ce8b8488            "fieldType": null,
+ce8b8488            "guid": "ce8b8488",
+ce8b8488            "modifyingPermission": null,
+ce8b8488            "name": "prefix",
+ce8b8488            "required": false,
+ce8b8488            "retrievingPermission": null,
+ce8b8488            "unique": false,
+ce8b8488            "url": null,
+ce8b8488            "verb": null
+ce8b8488          }
         },
         "group": "VolatileTesting",
         "guid": "31e6a8b1",
@@ -2576,7 +2574,6 @@ d0e675b7    }
       }
     }
   },
-  "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "bb80f9240dec8835fff9fb3303638def0ee31370#283181565",
     "Project.Controls.Settings": "262794a2dd5dfb4559de877d36a3f7389329037a#1995362511"
@@ -2614,13 +2611,13 @@ d0e675b7    }
     ],
     "components": [
       {
-        "id": "4d816ba8",
-        "name": "Authenticator",
+        "id": "245bc127",
+        "name": "Settings",
         "state": "create"
       },
       {
-        "id": "245bc127",
-        "name": "Settings",
+        "id": "4d816ba8",
+        "name": "Authenticator",
         "state": "create"
       }
     ],
@@ -2634,12 +2631,12 @@ d0e675b7    }
     "externalLibraries": "bootstrap@4 react@16",
     "pages": [
       {
-        "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
-        "id": "index",
-        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png",
-        "keywords": "full-stack, front-end, back-end, editor, wysiwyg, heroku, cloudflare, drag&drop, drag and drop, automatic generate, auto-generate, auto-generated, boilerplate, node.js, react.js, typescript, ready to deploy, easy to deploy, cheap, cheapest, inexpensive, free",
-        "name": "StackBlend - Full-Stack Application Editor",
-        "path": "/",
+        "description": null,
+        "id": "3cb10a6e",
+        "image": null,
+        "keywords": null,
+        "name": "StackBlend - Settings",
+        "path": "/account/settings",
         "state": "update"
       },
       {
@@ -2653,26 +2650,25 @@ d0e675b7    }
       },
       {
         "description": null,
-        "id": "3cb10a6e",
-        "image": null,
-        "keywords": null,
-        "name": "StackBlend - Settings",
-        "path": "/account/settings",
-        "state": "update"
-      },
-      {
-        "description": null,
         "id": "b160aa0e",
         "image": null,
         "keywords": null,
         "name": "StackBlend - Developer Notes",
         "path": "/developer",
         "state": "update"
+      },
+      {
+        "description": "StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.",
+        "id": "index",
+        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png",
+        "keywords": "full-stack, front-end, back-end, editor, wysiwyg, heroku, cloudflare, drag&drop, drag and drop, automatic generate, auto-generate, auto-generated, boilerplate, node.js, react.js, typescript, ready to deploy, easy to deploy, cheap, cheapest, inexpensive, free",
+        "name": "StackBlend - Full-Stack Application Editor",
+        "path": "/",
+        "state": "update"
       }
     ],
     "popups": []
   },
-  "headerBlobSHA": "418c0632cef1807bdb8a4dc176cec2e9d807b8bb#-793959519",
   "popups": {},
   "routeBlobSHA": "13575ac5090269503bf43366f4067b7d3300720a#1089952362",
   "services": {
@@ -3152,7 +3148,7 @@ d0e675b7    }
 9e885d49        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/federa_lake.jpg); background-position: center center; background-size: cover\">",
 9e885d49        "<div",
 9e885d49        "    class=\"container-fluid internal-fsb-begin\"",
-9e885d49        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-243eaa41\"",
+9e885d49        "    internal-fsb-animation=\"animation-group-243eaa41 animation-group-d0e675b7\"",
 9e885d49        "    internal-fsb-guid=\"0\">",
 9e885d49        "<div",
 9e885d49        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3441,6 +3437,9 @@ d0e675b7    }
 9e885d49      "name": "StackBlend - Authenticate",
 9e885d49      "notations": {},
 9e885d49      "path": "/account/authenticate",
+9e885d49      "references": [
+9e885d49        "4d816ba8"
+9e885d49      ],
 9e885d49      "state": "update"
 9e885d49    },
 b160aa0e    "b160aa0e": {
@@ -3666,7 +3665,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"container-fluid internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-08ac50cc\"",
+        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-d0e675b7\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -4391,6 +4390,7 @@ b351d3a2    },
       "name": "StackBlend - Full-Stack Application Editor",
       "notations": {},
       "path": "/",
+      "references": [],
       "state": "update"
     }
   },

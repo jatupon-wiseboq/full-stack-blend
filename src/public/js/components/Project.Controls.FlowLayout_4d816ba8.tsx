@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
 import {CodeHelper} from '../helpers/CodeHelper';
@@ -12,7 +13,7 @@ import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $B
 // <---Auto[Import]
 
 // Import additional modules here:
-//
+// 
 
 // Auto[Declare]--->
 
@@ -95,6 +96,8 @@ class FlowLayout_4d816ba8 extends Base {
     return super.getDataFromNotation(notation, inArray);
   }
   
+  
+  
   // Auto[Merging]--->
   protected onButtonClick_d7d59dd2(event: Event) {
 
@@ -104,6 +107,7 @@ class FlowLayout_4d816ba8 extends Base {
     
   }
 
+
   protected onButtonClick_875ac000(event: Event) {
 
     // Handle the event of onButtonClick (Button 4) here:
@@ -111,6 +115,7 @@ class FlowLayout_4d816ba8 extends Base {
     this.setState({currentTab: 1});
     
   }
+
 
   protected onButtonSubmitting_954a291a(event: CustomEvent) {
 
@@ -127,6 +132,7 @@ class FlowLayout_4d816ba8 extends Base {
     this.setState({submitting: false});
     
   }
+
 
   protected onButtonSubmitting_b2b66792(event: CustomEvent) {
 
@@ -199,6 +205,7 @@ DeclarationHelper.declare('Site', 'Controls.FlowLayout_4d816ba8', FlowLayout_4d8
 // Export variables here:
 //
 export {IProps, IState, DefaultProps, DefaultState};
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

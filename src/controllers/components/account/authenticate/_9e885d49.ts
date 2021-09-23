@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../../../helpers/DatabaseHelper';
@@ -17,6 +18,7 @@ import {Base} from '../../Base';
 //
 import passport from "passport";
 import {UserDocument, User} from "../../../../models/User";
+
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -42,6 +44,7 @@ enum ActionType {
 
 // Declare private static variables here:
 //
+
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
@@ -77,6 +80,7 @@ interface ValidationInfo {
 
 // Declare or extend interfaces here:
 //
+
 
 // Auto[ClassBegin]--->
 class Controller extends Base {
@@ -320,6 +324,8 @@ class Controller extends Base {
     });
   }
  	
+  
+ 	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
@@ -329,8 +335,6 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("9e885d49", "d7d59dd2", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
-    RequestHelper.registerSubmit("9e885d49", "875ac000", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 4"});
     RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 3"});
     RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
 		RequestHelper.registerInput('1b650e66', "document", "User", "email");
@@ -377,6 +381,7 @@ class Controller extends Base {
 // Export variables here:
 //
 export default Controller;
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

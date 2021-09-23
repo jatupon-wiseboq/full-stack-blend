@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
 import {CodeHelper} from '../helpers/CodeHelper';
@@ -94,6 +95,8 @@ class Settings extends Base {
     return super.getDataFromNotation(notation, inArray);
   }
   
+  
+  
   // Auto[Merging]--->
   protected onRectangleClick_14382c35(event: Event) {
 
@@ -103,6 +106,7 @@ class Settings extends Base {
     
   }
 
+
   protected onRectangleClick_5b9e63bb(event: Event) {
 
     // Handle the event of onRectangleClick (Repository Menu) here:
@@ -110,6 +114,7 @@ class Settings extends Base {
     this.setState({currentTab: 1});
     
   }
+
 
   protected onRectangleClick_dbcddce6(event: Event) {
 
@@ -119,7 +124,8 @@ class Settings extends Base {
     
   }
 
-  protected onButtonSubmitting_ea9268d1(event: Event) {
+
+  protected onButtonSubmitting_ea9268d1(event: CustomEvent) {
 
     // Handle the event of onButtonSubmitting (Button 2) here:
     // 
@@ -127,13 +133,14 @@ class Settings extends Base {
     
   }
 
-  protected onButtonSubmitted_ea9268d1(event: Event) {
+  protected onButtonSubmitted_ea9268d1(event: CustomEvent) {
 
     // Handle the event of onButtonSubmitted (Button 2) here:
     // 
     this.setState({submitting: false});
     
   }
+
 
   protected onButtonClick_68840b17(event: Event) {
 
@@ -143,6 +150,7 @@ class Settings extends Base {
     
   }
 
+
   protected onButtonClick_b391283e(event: Event) {
 
     // Handle the event of onButtonClick (Button 3) here:
@@ -150,6 +158,7 @@ class Settings extends Base {
     window.location = '/account/delete';
     
   }
+
 
   protected onButtonClick_187c250b(event: Event) {
 
@@ -159,6 +168,7 @@ class Settings extends Base {
     
   }
 
+
   protected onButtonClick_551c67a8(event: Event) {
 
     // Handle the event of onButtonClick (Button 5) here:
@@ -167,6 +177,7 @@ class Settings extends Base {
     
   }
 
+
   protected onButtonClick_82975b43(event: Event) {
 
     // Handle the event of onButtonClick (Button 6) here:
@@ -174,6 +185,7 @@ class Settings extends Base {
     window.location = '/account/unlink/facebook';
     
   }
+
 
   protected onButtonClick_4e677128(event: Event) {
 
@@ -351,6 +363,7 @@ DeclarationHelper.declare('Site', 'Controls.Settings', Settings);
 // Export variables here:
 //
 export {IProps, IState, DefaultProps, DefaultState};
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

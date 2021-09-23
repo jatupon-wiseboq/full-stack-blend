@@ -1,6 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
+
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../../../helpers/DatabaseHelper';
@@ -16,6 +17,7 @@ import {Base} from '../../Base';
 // Import additional modules here:
 //
 import {UserDocument, User} from "../../../../models/User";
+
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -41,6 +43,7 @@ enum ActionType {
 
 // Declare private static variables here:
 //
+
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
@@ -76,6 +79,7 @@ interface ValidationInfo {
 
 // Declare or extend interfaces here:
 //
+
 
 // Auto[ClassBegin]--->
 class Controller extends Base {
@@ -355,6 +359,8 @@ class Controller extends Base {
     });
   }
  	
+  
+ 	
   // Auto[MergingBegin]--->  
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
@@ -364,13 +370,7 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "68840b17", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "b391283e", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "187c250b", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "551c67a8", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "82975b43", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
-    RequestHelper.registerSubmit("3cb10a6e", "4e677128", null, [], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false});
+    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 2"});
 		RequestHelper.registerInput('27d35136', "document", "User", "email");
 		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '27d35136')) {
@@ -478,6 +478,7 @@ class Controller extends Base {
 // Export variables here:
 //
 export default Controller;
+
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
