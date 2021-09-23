@@ -110,7 +110,7 @@ class EndpointManager extends Base<Props, State> {
       let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages(true);
       let nextProjectData = {};
       
-      if (increment) {
+      if (incremental) {
       	const _incrementalUpdatingFrontEndCodeInfoDict = incrementalUpdatingFrontEndCodeInfoDict;
       	const _incrementalUpdatingBackEndControllerInfoDict = incrementalUpdatingBackEndControllerInfoDict;
       	
