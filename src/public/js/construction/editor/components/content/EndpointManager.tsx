@@ -112,23 +112,23 @@ class EndpointManager extends Base<Props, State> {
       let nextProjectData = {};
       
       if (incremental) {
-      	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
-      	const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
+      	const _incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(this.incrementalUpdatingFrontEndCodeInfoDict);
+      	const _incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(this.incrementalUpdatingBackEndControllerInfoDict);
       	
       	this.incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
       	this.incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
       	
-      	for (const key in frontEndCodeInfoDict) {
+      	for (const key of Object.keys(frontEndCodeInfoDict)) {
       		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
-      			if (CodeHelper.equals(_incrementalUpdatingFrontEndCodeInfoDict[key], frontEndCodeInfoDict[key])) {
+      			if (JSON.stringify(_incrementalUpdatingFrontEndCodeInfoDict[key]) == JSON.stringify(frontEndCodeInfoDict[key])) {
       				delete frontEndCodeInfoDict[key];
       			}
       		}
       	}
       	
-      	for (const key in backEndControllerInfoDict) {
+      	for (const key of Object.keys(backEndControllerInfoDict)) {
       		if (backEndControllerInfoDict.hasOwnProperty(key)) {
-      			if (CodeHelper.equals(_incrementalUpdatingBackEndControllerInfoDict[key], backEndControllerInfoDict[key])) {
+      			if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
       				delete backEndControllerInfoDict[key];
       			}
       		}
