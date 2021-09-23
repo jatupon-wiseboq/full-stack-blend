@@ -9,6 +9,8 @@ import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
 declare let React: any;
 declare let ReactDOM: any;
 declare let ts: any;
+declare let incrementalUpdatingFrontEndCodeInfoDict: any = {};
+declare let incrementalUpdatingBackEndControllerInfoDict: any = {};
 
 interface Props extends IProps {
 }
@@ -82,7 +84,7 @@ class EndpointManager extends Base<Props, State> {
         resolve();
       });
     }
-    private commit() {
+    private commit(incremental: boolean=false) {
       let _files = this.files;
       this.files = [];
       
@@ -96,7 +98,7 @@ class EndpointManager extends Base<Props, State> {
       })
     }
     
-    public save(cb) {
+    public save(cb: any, incremental: boolean=false) {
       if (!window.ENDPOINT) return cb();
       
       let construction = document.getElementById('area');
@@ -107,6 +109,30 @@ class EndpointManager extends Base<Props, State> {
       let frontEndCodeInfoDict = constructionWindow.generateFrontEndCodeForAllPages(true);
       let backEndControllerInfoDict = constructionWindow.generateBackEndCodeForAllPages(true);
       let nextProjectData = {};
+      
+      if (increment) {
+      	const _incrementalUpdatingFrontEndCodeInfoDict = incrementalUpdatingFrontEndCodeInfoDict;
+      	const _incrementalUpdatingBackEndControllerInfoDict = incrementalUpdatingBackEndControllerInfoDict;
+      	
+      	incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
+      	incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
+      	
+      	for (const key in frontEndCodeInfoDict) {
+      		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
+      			if (CodeHelper.equals(_incrementalUpdatingFrontEndCodeInfoDict[key], frontEndCodeInfoDict[key])) {
+      				delete frontEndCodeInfoDict[key];
+      			}
+      		}
+      	}
+      	
+      	for (const key in backEndControllerInfoDict) {
+      		if (backEndControllerInfoDict.hasOwnProperty(key)) {
+      			if (CodeHelper.equals(_incrementalUpdatingBackEndControllerInfoDict[key], backEndControllerInfoDict[key])) {
+      				delete backEndControllerInfoDict[key];
+      			}
+      		}
+      	}
+      }
       
       Object.assign(nextProjectData, {});
       Object.assign(nextProjectData, constructionAreaHTMLData);
@@ -331,10 +357,10 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                 
                     this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
                       this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
-                        this.commit().then(() => {
+                        this.commit(incremental).then(() => {
                           cb(true);
                         }).catch(() => {
-                          cb(false);
+                          cb(incremental);
                         });
                       });
                     });

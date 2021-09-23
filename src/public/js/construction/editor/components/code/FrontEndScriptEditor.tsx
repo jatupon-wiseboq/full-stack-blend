@@ -220,6 +220,8 @@ class FrontEndScriptEditor extends Base<Props, State> {
 		                replace: (willUpdateAttributes.length != 1) ? null : willUpdateAttributes[0].name + '+text',
 		                tag: 'user-action'
 		            });
+		            
+		            window.preview(true);
 		        }
         }
     }

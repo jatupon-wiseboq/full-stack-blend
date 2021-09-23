@@ -332,43 +332,51 @@ let cachedUpdateEditorProperties = {};
   
   let latestRevision = 0;
   let currentRevision = null;
+  let timerIncrementalUpdate = null;
   
-  window.preview = (() => {
-    latestRevision += 1;
-    currentRevision = latestRevision;
-    
-    Accessories.preview.current.open();
-    
-    $('#siteButton')[0].click();
-    
-    window.setTimeout(() => {
-	    Accessories.endpointManager.current.save((success) => {
-	    	if (!Accessories.preview.current.isOpening()) return;
-	      if (success) {
-	      	window.setTimeout(() => {
-		        Accessories.preview.current.start();
-		        
-		        let endpoint = window.ENDPOINT;
-		       	if (endpoint.indexOf('https://localhost') == 0) {
-		       		endpoint = 'https://localhost.stackblend.org';
-		       	}
-		        
-		        RequestHelper.get(`${endpoint}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
-		          if (currentRevision == latestRevision) {
-		            if (!results.success) {
-		              console.error(`${results.error}`);
-		              Accessories.preview.current.close();
-		            }
-		          }
-		        }).catch(() => {
-		        });
-	      	}, 3000);
-	      } else {
-	        console.error('There was an error trying to update content at endpoint.');
-	        Accessories.preview.current.close();
-	      }
-	    });
-    }, 1000);
+  window.preview = ((incremental: boolean=false) => {
+  	if (incremental) {
+  		window.clearTimeout(timerIncrementalUpdate);
+  		timerIncrementalUpdate = window.setTimeout(() => {
+  			 Accessories.endpointManager.current.save(() => {}, true);
+  		}, 1000);
+  	} else {
+	    latestRevision += 1;
+	    currentRevision = latestRevision;
+	    
+	    Accessories.preview.current.open();
+	    
+	    $('#siteButton')[0].click();
+	    
+	    window.setTimeout(() => {
+		    Accessories.endpointManager.current.save((success) => {
+		    	if (!Accessories.preview.current.isOpening()) return;
+		      if (success) {
+		      	window.setTimeout(() => {
+			        Accessories.preview.current.start();
+			        
+			        let endpoint = window.ENDPOINT;
+			       	if (endpoint.indexOf('https://localhost') == 0) {
+			       		endpoint = 'https://localhost.stackblend.org';
+			       	}
+			        
+			        RequestHelper.get(`${endpoint}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
+			          if (currentRevision == latestRevision) {
+			            if (!results.success) {
+			              console.error(`${results.error}`);
+			              Accessories.preview.current.close();
+			            }
+			          }
+			        }).catch(() => {
+			        });
+		      	}, 3000);
+		      } else {
+		        console.error('There was an error trying to update content at endpoint.');
+		        Accessories.preview.current.close();
+		      }
+		    });
+	    }, 1000);
+	  }
  	});
  	
  	let setup = (() => {
