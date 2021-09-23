@@ -9,8 +9,6 @@ import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
 declare let React: any;
 declare let ReactDOM: any;
 declare let ts: any;
-declare let incrementalUpdatingFrontEndCodeInfoDict: any = {};
-declare let incrementalUpdatingBackEndControllerInfoDict: any = {};
 
 interface Props extends IProps {
 }
@@ -30,6 +28,9 @@ Object.assign(ExtendedDefaultState, {
 class EndpointManager extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
+    
+		private incrementalUpdatingFrontEndCodeInfoDict: any = {};
+		private incrementalUpdatingBackEndControllerInfoDict: any = {};
 
     constructor(props) {
       super(props);
@@ -111,11 +112,11 @@ class EndpointManager extends Base<Props, State> {
       let nextProjectData = {};
       
       if (incremental) {
-      	const _incrementalUpdatingFrontEndCodeInfoDict = incrementalUpdatingFrontEndCodeInfoDict;
-      	const _incrementalUpdatingBackEndControllerInfoDict = incrementalUpdatingBackEndControllerInfoDict;
+      	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
+      	const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
       	
-      	incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
-      	incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
+      	this.incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
+      	this.incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
       	
       	for (const key in frontEndCodeInfoDict) {
       		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
