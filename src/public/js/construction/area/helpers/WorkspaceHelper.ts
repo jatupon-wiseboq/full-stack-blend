@@ -443,6 +443,10 @@ var WorkspaceHelper = {
       	(HTMLHelper.getAttribute(element, 'internal-fsb-class') + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
       component.references = WorkspaceHelper.getAllReferencingKlasses();
       
+      let selectingElement = EditorHelper.getSelectingElement();
+      component.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
+      component.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
+      
       if (reinit) {
         EditorHelper.init(true, false);
         
@@ -470,6 +474,10 @@ var WorkspaceHelper = {
       popup.klass = HTMLHelper.getAttribute(element, 'internal-fsb-react-class') ||
       	(HTMLHelper.getAttribute(element, 'internal-fsb-class') + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
       popup.references = WorkspaceHelper.getAllReferencingKlasses();
+      
+      let selectingElement = EditorHelper.getSelectingElement();
+      popup.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
+      popup.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
       if (reinit) {
         EditorHelper.init(true, false);
@@ -724,6 +732,8 @@ var WorkspaceHelper = {
     
     Object.assign(InternalComponents[id], existingComponentInfo);
     
+    InternalComponents[id].accessories = InternalComponents[id].accessories || {};
+    
     return InternalComponents[id];
   },
   getPopupData: (id: string) => {
@@ -733,6 +743,8 @@ var WorkspaceHelper = {
     InternalPopups[id] = InternalPopups[id] || CodeHelper.clone(existingPopupInfo) || {};
     
     Object.assign(InternalPopups[id], existingPopupInfo);
+    
+    InternalPopups[id].accessories = InternalPopups[id].accessories || {};
     
     return InternalPopups[id];
   },

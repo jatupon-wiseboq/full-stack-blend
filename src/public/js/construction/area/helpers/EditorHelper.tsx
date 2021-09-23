@@ -137,15 +137,34 @@ var EditorHelper = {
     // Restore element selecting and cursor placement.
     // 
     if (restoreAccessoryStates) {
-      let page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
+    	let selectingElementGUID = null;
+    	let currentCursorWalkPath = null;
+    	
+    	switch (InternalProjectSettings.currentMode) {
+    		case 'site':
+    			const page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
+    			selectingElementGUID = page.accessories.selectingElementGUID;
+    			currentCursorWalkPath = page.accessories.currentCursorWalkPath;
+    			break;
+    		case 'components':
+    			const component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+    			selectingElementGUID = component.accessories.selectingElementGUID;
+    			currentCursorWalkPath = component.accessories.currentCursorWalkPath;
+    			break;
+    		case 'popups':
+    			const popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+    			selectingElementGUID = popup.accessories.selectingElementGUID;
+    			currentCursorWalkPath = popup.accessories.currentCursorWalkPath;
+    			break;
+    	}
       
-      if (page.accessories.selectingElementGUID) {
-        let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', page.accessories.selectingElementGUID);
+      if (selectingElementGUID) {
+        let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', selectingElementGUID);
         EditorHelper.select(element);
       }
       
-      if (page.accessories.currentCursorWalkPath) {
-        CursorHelper.placingCursorUsingWalkPath(page.accessories.currentCursorWalkPath);
+      if (currentCursorWalkPath) {
+        CursorHelper.placingCursorUsingWalkPath(currentCursorWalkPath);
       } else {
         CursorHelper.moveCursorToTheEndOfDocument(false);
       }
