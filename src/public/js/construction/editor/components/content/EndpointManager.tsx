@@ -102,6 +102,8 @@ class EndpointManager extends Base<Props, State> {
     public save(cb: any, incremental: boolean=false) {
       if (!window.ENDPOINT) return cb();
       
+      const $this = this;
+      
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       
@@ -114,9 +116,6 @@ class EndpointManager extends Base<Props, State> {
       if (incremental) {
       	const _incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(this.incrementalUpdatingFrontEndCodeInfoDict);
       	const _incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(this.incrementalUpdatingBackEndControllerInfoDict);
-      	
-      	this.incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
-      	this.incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
       	
       	for (const key of Object.keys(frontEndCodeInfoDict)) {
       		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
@@ -359,6 +358,11 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                     this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
                       this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
                         this.commit(incremental).then(() => {
+                          if (incremental) {
+	                          $this.incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
+	      										$this.incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
+                          }
+                          
                           cb(true);
                         }).catch(() => {
                           cb(incremental);
