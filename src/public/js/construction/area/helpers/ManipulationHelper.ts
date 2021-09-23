@@ -760,9 +760,9 @@ var ManipulationHelper = {
                   }]
                 };
                 
-                WorkspaceHelper.saveWorkspaceData();
+                WorkspaceHelper.saveWorkspaceData(false);
                 InternalProjectSettings[extension.name] = extension.value;
-                WorkspaceHelper.loadWorkspaceData();
+                WorkspaceHelper.loadWorkspaceData(true);
               } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{

@@ -101,6 +101,17 @@ var FontHelper = {
       link.className = 'internal-fsb-accessory internal-fsb-font';
       
       _window.document.body.appendChild(link);
+    	
+    	if (_window.document.head.getElementById('font-' + token + '-ital') == null) {
+	      link = _window.document.createElement('link');
+	      HTMLHelper.setAttribute(link, 'id', 'font-' + token + '-ital');
+	      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
+	      HTMLHelper.setAttribute(link, 'rel', 'preload');
+	      HTMLHelper.setAttribute(link, 'as', 'style');
+	      link.className = 'internal-fsb-accessory internal-fsb-font';
+	      
+	      _window.document.head.appendChild(link);
+	    }
     }
     
     let normals = FontHelper.getAllNormals(info);
@@ -112,6 +123,17 @@ var FontHelper = {
       link.className = 'internal-fsb-accessory internal-fsb-font';
       
       _window.document.body.appendChild(link);
+      
+      if (_window.document.head.getElementById('font-' + token + '-wght') == null) {
+	      link = _window.document.createElement('link');
+	      HTMLHelper.setAttribute(link, 'id', 'font-' + token + '-wght');
+	      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
+	      HTMLHelper.setAttribute(link, 'rel', 'preload');
+	      HTMLHelper.setAttribute(link, 'as', 'style');
+	      link.className = 'internal-fsb-accessory internal-fsb-font';
+	      
+	      _window.document.head.appendChild(link);
+	    }
     }
     
     setupFont[name] = true;
