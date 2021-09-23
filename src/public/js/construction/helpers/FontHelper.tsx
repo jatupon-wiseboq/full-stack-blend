@@ -102,7 +102,7 @@ var FontHelper = {
       
       _window.document.body.appendChild(link);
     	
-    	if (_window.document.head.getElementById('font-' + token + '-ital') == null) {
+    	if (_window.document.getElementById('font-' + token + '-ital') == null) {
 	      link = _window.document.createElement('link');
 	      HTMLHelper.setAttribute(link, 'id', 'font-' + token + '-ital');
 	      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':ital,wght@' + italics.join(';') + '&display=swap');
@@ -124,7 +124,7 @@ var FontHelper = {
       
       _window.document.body.appendChild(link);
       
-      if (_window.document.head.getElementById('font-' + token + '-wght') == null) {
+      if (_window.document.getElementById('font-' + token + '-wght') == null) {
 	      link = _window.document.createElement('link');
 	      HTMLHelper.setAttribute(link, 'id', 'font-' + token + '-wght');
 	      HTMLHelper.setAttribute(link, 'href', 'https://fonts.googleapis.com/css2?family=' + token + ':wght@' + normals.join(';') + '&display=swap');
