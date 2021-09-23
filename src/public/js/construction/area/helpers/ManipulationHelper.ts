@@ -170,7 +170,7 @@ var ManipulationHelper = {
       	}
         break;
       case 'update':
-        [accessory, remember, link] = ManipulationHelper.handleUpdate(name, content, remember, promise, link);
+        [accessory, remember, link, preview] = ManipulationHelper.handleUpdate(name, content, remember, promise, link);
         break;
       case 'update[size]':
       	[accessory, remember, link] = ManipulationHelper.handleUpdateElementSize(name, content, remember, promise, link);
@@ -304,6 +304,7 @@ var ManipulationHelper = {
   handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
 		let accessory = null;
 		let selectingElement = EditorHelper.getSelectingElement() || document.body;
+		let preview = true;
 		
     if (selectingElement) {
       let previousReusablePresetName = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-reusable-preset-name') || null;
@@ -399,6 +400,8 @@ var ManipulationHelper = {
 						  	});
               }
               previousReusablePresetName = nextReusablePresetName;
+		          
+		          preview = false;
               break;
             case 'style':
               if (previousReusablePresetName) {
@@ -465,6 +468,8 @@ var ManipulationHelper = {
               } else if (attribute.name == 'internal-fsb-name') {
     						LayoutHelper.invalidate();
     						TimelineHelper.invalidate();
+		            
+		            preview = false;
               } else if (HTMLHelper.getAttribute(selectingElement, 'internal-fsb-class') == 'Flash') {
     						switch (attribute.name) {
     						  case 'src':
@@ -647,6 +652,8 @@ var ManipulationHelper = {
 		              };
               		if (AnimationHelper.getAnimationGroupName() != (extension.value || 'Untitled')) found = true;
 		            	AnimationHelper.setAnimationGroupName(extension.value || 'Untitled');
+		            	
+		            	preview = false;
 		              break;
 		            case 'animationGroupNote':
 		          		accessory = {
@@ -657,6 +664,8 @@ var ManipulationHelper = {
 		              };
               		if (AnimationHelper.getAnimationGroupNote() != (extension.value || '')) found = true;
 		            	AnimationHelper.setAnimationGroupNote(extension.value || '');
+		            	
+		            	preview = false;
 		              break;
 		            case 'animationGroupState':
 		          		accessory = {
@@ -677,6 +686,8 @@ var ManipulationHelper = {
 		              };
               		if (AnimationHelper.getAnimationGroupTestState() != (extension.value || null)) found = true;
 		            	AnimationHelper.setAnimationGroupTestState(extension.value || null);
+		            	
+		            	preview = false;
 		              break;
 		            case 'animationGroupMode':
 		          		accessory = {
@@ -727,6 +738,8 @@ var ManipulationHelper = {
 	                };
 	                if (AnimationHelper.getAnimationGroup() != (extension.value || null)) found = true;
 	              	AnimationHelper.setAnimationGroup(extension.value);
+		            	
+		            	preview = false;
 		            	break;
 		            case 'editingAnimationSelector':
 			            accessory = {
@@ -737,6 +750,8 @@ var ManipulationHelper = {
 	                };
 	                if (AnimationHelper.getAnimationSelector() != (extension.value || null)) found = true;
 	              	AnimationHelper.setAnimationSelector(extension.value);
+		            	
+		            	preview = false;
 		            	break;
 		            case 'editingKeyframeID':
 			            accessory = {
@@ -747,6 +762,8 @@ var ManipulationHelper = {
 	                };
 	                if (AnimationHelper.getCurrentKeyframe() != (extension.value || null)) found = true;
 	              	AnimationHelper.setCurrentKeyframe(extension.value);
+		            	
+		            	preview = false;
 		            	break;
               }
           	} else if (InternalProjectSettings[extension.name] != extension.value) {
@@ -763,6 +780,8 @@ var ManipulationHelper = {
                 WorkspaceHelper.saveWorkspaceData(false);
                 InternalProjectSettings[extension.name] = extension.value;
                 WorkspaceHelper.loadWorkspaceData(true);
+		            
+		            preview = false;
               } else if (['pages', 'components', 'popups'].indexOf(extension.name) != -1) {
                 accessory = {
                   extensions: [{
@@ -815,7 +834,7 @@ var ManipulationHelper = {
     
     ManipulationHelper.updateComponentData(selectingElement);
     
-    return [accessory, remember, link];
+    return [accessory, remember, link, preview];
   },
   handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	if (EditorHelper.getEditorCurrentMode() == 'animation') return;
