@@ -114,8 +114,8 @@ class EndpointManager extends Base<Props, State> {
       let nextProjectData = {};
       
       if (incremental) {
-      	const _incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(this.incrementalUpdatingFrontEndCodeInfoDict);
-      	const _incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(this.incrementalUpdatingBackEndControllerInfoDict);
+      	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
+      	const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
       	
       	for (const key of Object.keys(frontEndCodeInfoDict)) {
       		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
@@ -359,8 +359,8 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                       this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
                         this.commit(incremental).then(() => {
                           if (incremental) {
-	                          $this.incrementalUpdatingFrontEndCodeInfoDict = frontEndCodeInfoDict;
-	      										$this.incrementalUpdatingBackEndControllerInfoDict = backEndControllerInfoDict;
+	                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
+	      										$this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
                           }
                           
                           cb(true);
