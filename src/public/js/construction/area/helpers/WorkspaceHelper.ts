@@ -838,19 +838,15 @@ var WorkspaceHelper = {
     }
   },
   generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
-    if (mode == InternalProjectSettings.currentMode && WorkspaceHelper.getCurrentGenerateFrontEndKey() == id) {
-    	return WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", window.document.body), false);
-    } else {
-	    document.body.appendChild(temp);
-		  
-	    const _document = temp.contentDocument || temp.contentWindow.document;
-	    const _window = _document.defaultView;
-	    
-	    WorkspaceHelper.loadPageData(mode, id, _window);
-	    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
-	    
-	    return results;
-    }
+    document.body.appendChild(temp);
+		
+    const _document = temp.contentDocument || temp.contentWindow.document;
+    const _window = _document.defaultView;
+    
+    WorkspaceHelper.loadPageData(mode, id, _window);
+    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
+    
+    return results;
   },
   generateFrontEndCodeForPage: (mode: string='site', container: any=document.body, update: boolean=true) => {
     let results = null;
