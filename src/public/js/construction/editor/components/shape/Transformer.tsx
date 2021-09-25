@@ -11,6 +11,8 @@ declare let ReactDOM: any;
 declare let perform: any;
 declare let THREE: any;
 
+const ZERO: number = 0.00001;
+
 interface Props extends IProps {
 }
 
@@ -57,9 +59,7 @@ class Transformer extends Base<Props, State> {
         Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
     }
     
-    protected recentGuid: string = null;
     protected currentTransform: string = null;
-    protected currentMode: string = null;
     
     componentDidMount() {
         this.init();
@@ -70,8 +70,8 @@ class Transformer extends Base<Props, State> {
         let previousMode = this.state.styleValues['-fsb-mode'];
         super.update(properties);
         
-        if (this.recentGuid != properties.elementGuid || previousMode != this.state.styleValues['-fsb-mode']) {
-            this.recentGuid = properties.elementGuid;
+        if (this.state.styleValues['transform'] != this.currentTransform) {
+            this.currentTransform = this.state.styleValues['transform'];
             
             if (!this.state.styleValues['transform']) {
                 this.reset();
@@ -92,10 +92,7 @@ class Transformer extends Base<Props, State> {
                 this.webGLMesh.scale.setFromMatrixScale(m);
             }
             
-            this.currentTransform = null;
-            this.currentMode = null;
             this.render3D();
-            
             this.forceUpdate();
         }
     }
@@ -142,7 +139,7 @@ class Transformer extends Base<Props, State> {
         let plane = new PlaneGeometry(50, 50, 8);
         let material = new MeshBasicMaterial({color: 0xf5f5f5, side: DoubleSide});
         let mesh = new Mesh(plane, material);
-        mesh.position.z = -50/2;
+        mesh.position.z = 50/2;
         this.webGLMesh.add(mesh);
         
         this.reset();
@@ -200,7 +197,7 @@ class Transformer extends Base<Props, State> {
     
     reset() {
         this.webGLMesh.position.set(0, 0, 0);
-        this.webGLMesh.quaternion.set(0, 0, 0, 0);
+        this.webGLMesh.quaternion.set(-1, ZERO, ZERO, ZERO);
         this.webGLMesh.scale.set(1, 1, 1);
     }
     
@@ -220,6 +217,10 @@ class Transformer extends Base<Props, State> {
         if (this.state.rotateY != this.webGLMesh.quaternion.y) updatingState.rotateY = this.webGLMesh.quaternion.y;
         if (this.state.rotateZ != this.webGLMesh.quaternion.z) updatingState.rotateZ = this.webGLMesh.quaternion.z;
         
+        if (updatingState.rotateX == ZERO) updatingState.rotateX = 0;
+        if (updatingState.rotateY == ZERO) updatingState.rotateY = 0;
+        if (updatingState.rotateZ == ZERO) updatingState.rotateZ = 0;
+        
         if (this.state.scaleX != this.webGLMesh.scale.x) updatingState.scaleX = this.webGLMesh.scale.x;
         if (this.state.scaleY != this.webGLMesh.scale.y) updatingState.scaleY = this.webGLMesh.scale.y;
         if (this.state.scaleZ != this.webGLMesh.scale.z) updatingState.scaleZ = this.webGLMesh.scale.z;
@@ -238,10 +239,10 @@ class Transformer extends Base<Props, State> {
         
         let transform = (isPerspectiveCamera || isOrthographicCamera) ? null : objectTransform;
         if (!!transform) {
-            transform = transform.split(';')[0] + 'scaleY(-1)';
+            transform = transform.split(';')[0];
         }
         
-        if (this.currentTransform != transform || this.currentMode != this.state.styleValues['-fsb-mode']) {
+        if (this.currentTransform != transform) {
             this.currentTransform = transform;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
@@ -305,6 +306,7 @@ class Transformer extends Base<Props, State> {
     textboxOnUpdateRotateX(value: string) {
     	let number = parseFloat(value);    	
     	if (isNaN(number)) number = 0;
+    	if (number == 0) number = ZERO;
     	
     	this.webGLMesh.quaternion.x = number;
     	
@@ -314,6 +316,7 @@ class Transformer extends Base<Props, State> {
     textboxOnUpdateRotateY(value: string) {
     	let number = parseFloat(value);    	
     	if (isNaN(number)) number = 0;
+    	if (number == 0) number = ZERO;
     	
     	this.webGLMesh.quaternion.y = number;
     	
@@ -323,6 +326,7 @@ class Transformer extends Base<Props, State> {
     textboxOnUpdateRotateZ(value: string) {
     	let number = parseFloat(value);    	
     	if (isNaN(number)) number = 0;
+    	if (number == 0) number = ZERO;
     	
     	this.webGLMesh.quaternion.z = number;
     	
@@ -358,8 +362,8 @@ class Transformer extends Base<Props, State> {
     
     render() {
     	const Textbox = FullStackBlend.Controls.Textbox;
-    	const floatingPointPreRegex = "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?";
-    	const floatingPointPostRegex = "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))";
+    	const floatingPointPreRegex = "-?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?";
+    	const floatingPointPostRegex = "-?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))";
     	
       return (
         pug `
