@@ -36,7 +36,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingStyleNames: ['transform', '-fsb-mode']
+    watchingStyleNames: ['-fsb-transform', '-fsb-mode']
 });
 
 class Transformer extends Base<Props, State> {
@@ -70,26 +70,27 @@ class Transformer extends Base<Props, State> {
         let previousMode = this.state.styleValues['-fsb-mode'];
         super.update(properties);
         
-        if (this.state.styleValues['transform'] != this.currentTransform || this.state.styleValues['-fsb-mode'] != previousMode) {
-            this.currentTransform = this.state.styleValues['transform'];
+        if (this.state.styleValues['-fsb-transform'] != this.currentTransform || this.state.styleValues['-fsb-mode'] != previousMode) {
+            this.currentTransform = this.state.styleValues['-fsb-transform'];
             
-            if (!this.state.styleValues['transform']) {
+            if (!this.state.styleValues['-fsb-transform']) {
                 this.reset();
             } else {
-                let splited = this.state.styleValues['transform'].split('matrix3d(')[1].split(')')[0].split(',');
+                let splited = this.state.styleValues['-fsb-transform'].split(' ');
                 let f = [];
-                for (let i=0; i<16; i++) {
+                for (let i=0; i<9; i++) {
                     f.push(parseFloat(splited[i]));
                 }
                 
-                var m = new Matrix4();
-                m.set(f[0], f[1], f[2], f[3], -f[4], -f[5], -f[6], -f[7], f[8], f[9], f[10], f[11], f[12], f[13], f[14], f[15]);
-                
-                this.webGLMesh.position.set(f[12], f[13], f[14]);
-                this.webGLMesh.position.negate();
-                this.webGLMesh.quaternion.setFromRotationMatrix(m);
-                this.webGLMesh.quaternion.inverse();
-                this.webGLMesh.scale.setFromMatrixScale(m);
+                this.webGLMesh.position.x = f[0];
+                this.webGLMesh.position.y = f[1]; 
+                this.webGLMesh.position.z = f[2];
+                this.webGLMesh.quaternion.x = f[3];
+                this.webGLMesh.quaternion.y = f[4]; 
+                this.webGLMesh.quaternion.z = f[5];
+                this.webGLMesh.scale.x = f[6];
+                this.webGLMesh.scale.y = f[7]; 
+                this.webGLMesh.scale.z = f[8];
             }
             
             this.render3D();
@@ -106,7 +107,7 @@ class Transformer extends Base<Props, State> {
         this.initControl();
         
         window.setTimeout(this.render3D.bind(this), 1000);
-	}
+		}
     initWebGLRenderer(width: number, height: number) {
         // WebGL Renderer
         //
@@ -242,8 +243,14 @@ class Transformer extends Base<Props, State> {
             transform = transform.split(';')[0];
         }
         
-        if (this.currentTransform != transform) {
-            this.currentTransform = transform;
+        let fsbTransform = [
+        	this.webGLMesh.position.x.toFixed(8), this.webGLMesh.position.y.toFixed(8), this.webGLMesh.position.z.toFixed(8),
+        	this.webGLMesh.quaternion.x.toFixed(8), this.webGLMesh.quaternion.y.toFixed(8), this.webGLMesh.quaternion.z.toFixed(8),
+        	this.webGLMesh.scale.x.toFixed(8), this.webGLMesh.scale.y.toFixed(8), this.webGLMesh.scale.z.toFixed(8)
+        ].join(' ');
+        
+        if (this.currentTransform != fsbTransform) {
+            this.currentTransform = fsbTransform;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
             perform('update', {
@@ -267,9 +274,13 @@ class Transformer extends Base<Props, State> {
                     {
                         name: 'transform',
                         value: transform
+                    },
+                    {
+                        name: '-fsb-transform',
+                        value: fsbTransform
                     }
                 ],
-                replace: 'transform'
+                replace: '-fsb-transform'
             });
         }
         
