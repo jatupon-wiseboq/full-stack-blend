@@ -176,8 +176,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
@@ -192,8 +195,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
@@ -208,8 +214,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
@@ -224,8 +233,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
@@ -240,8 +252,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
@@ -256,8 +271,11 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve('/');
       } catch(error) {

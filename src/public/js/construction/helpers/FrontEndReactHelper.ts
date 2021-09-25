@@ -50,6 +50,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     //   ...]
     // };
     // this.state.data['collection'] = staticCollection;
+    //
   }
   
   protected componentDidMount(): void {
@@ -75,6 +76,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     //   })
     // };
     // this.state.data['collection'] = dynamicCollection;
+    //
   }
   
   // Providing data array base on dot notation:
@@ -83,6 +85,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     // Redirect the target by overriding the notation value, for example:
     // 
     // notation = \`collection[\${notation.split(',')[1]}].collection\`;
+    //
     
     return super.getDataFromNotation(notation, inArray, always);
   }
