@@ -350,11 +350,11 @@ var HTMLHelper = {
     }
     return results.sort().join('; ');
   },
-  getInternalStyleKeyFromHashMap: (hash: any) => {
+  getInternalStyleKeyFromHashMap: (hash: any, strip: boolean=false) => {
     let results = [];
     for (var key in hash) {
       if (hash.hasOwnProperty(key) && hash[key] != null) {
-    		if (hash[key].indexOf('coding') != -1) {
+    		if (hash[key].indexOf('coding') != -1 && (!strip || key.indexOf('-fsb-') == -1)) {
         	results.push(key);
     		}
       }

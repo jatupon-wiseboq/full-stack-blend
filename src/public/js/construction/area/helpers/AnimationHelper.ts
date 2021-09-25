@@ -521,7 +521,7 @@ var AnimationHelper = {
 		  				
 		  				if (repeatMode != 'disabled') {
 			  				const combinedTransitionHashmap = {};
-		  					const internalStyleKeys = HTMLHelper.getInternalStyleKeyFromHashMap(keyframes[0].hashMap);
+		  					const internalStyleKeys = HTMLHelper.getInternalStyleKeyFromHashMap(keyframes[0].hashMap, true);
 			  				
 			  				if (internalStyleKeys.length != 0) {
 			  					let easing1 = 0;
@@ -631,7 +631,7 @@ var AnimationHelper = {
 					  			
 					  			const animatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(animatableHashMap, true);
 					  			const inanimatableInlineStyle = HTMLHelper.getInlineStyleFromHashMap(inanimatableHashMap, true);
-					  			const internalStyleKeys = Array.from(new Set([...HTMLHelper.getInternalStyleKeyFromHashMap(animatableHashMap), ...HTMLHelper.getInternalStyleKeyFromHashMap(inanimatableHashMap)]));
+					  			const internalStyleKeys = Array.from(new Set([...HTMLHelper.getInternalStyleKeyFromHashMap(animatableHashMap, true), ...HTMLHelper.getInternalStyleKeyFromHashMap(inanimatableHashMap, true)]));
 				  				
 				  				if (previousKeyframe && previousKeyframe != currentKeyframe && internalStyleKeys.length != 0) {
 				  					let easing1 = (['out', null].indexOf(EASING_COEFFICIENT[previousKeyframe.hashMap['-fsb-animation-easing-mode']] || null) != -1) ?
