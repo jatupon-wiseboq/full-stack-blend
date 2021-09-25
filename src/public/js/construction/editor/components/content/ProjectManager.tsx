@@ -433,8 +433,12 @@ script(type="text/javascript").
       
       for (var property of properties) {
         for (var selector of selectors) {
-          combinedStyleHashmap[property] = 0;
-          break;
+          var style = AnimationHelper.getPrestartStyle(guid, selector, property);
+        
+          if (style) {
+            combinedStyleHashmap[property] = style;
+            break;
+          }
         }
       }
       
@@ -453,6 +457,16 @@ script(type="text/javascript").
         var firstStyleElement = document.head.getElementsByTagName('STYLE')[0] || null;
         document.head.insertBefore(element, firstStyleElement);
       }
+    },
+    getPrestartStyle: (guid, selector, property) => {
+      var elements = Array.from(document.querySelectorAll(\`[internal-fsb-guid="\${guid}"]\${selector}, [internal-fsb-guid="\${guid}"] \${selector}\`));
+      
+      if (elements.length != 0) {
+        var computedStyle = window.getComputedStyle(elements[0], null);
+        return computedStyle[property] || null;
+      }
+      
+      return null;
     },
     getInlineStyleFromHashMap: (hash) => {
       var results = [];
