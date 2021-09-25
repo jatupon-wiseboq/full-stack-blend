@@ -70,7 +70,7 @@ class Transformer extends Base<Props, State> {
         let previousMode = this.state.styleValues['-fsb-mode'];
         super.update(properties);
         
-        if (this.state.styleValues['transform'] != this.currentTransform) {
+        if (this.state.styleValues['transform'] != this.currentTransform || this.state.styleValues['-fsb-mode'] != previousMode) {
             this.currentTransform = this.state.styleValues['transform'];
             
             if (!this.state.styleValues['transform']) {
