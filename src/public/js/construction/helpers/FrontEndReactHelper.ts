@@ -68,7 +68,7 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     //       columns: {...}
     //       relations: {...}
     //     };
-    //   )
+    //   })
     // };
     // this.state.data['collection'] = dynamicCollection;
   }
