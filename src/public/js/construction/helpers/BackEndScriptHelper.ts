@@ -176,6 +176,9 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -188,6 +191,9 @@ const DEFAULTS = {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
         
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
@@ -202,6 +208,9 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -214,6 +223,9 @@ const DEFAULTS = {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
         
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
@@ -228,6 +240,9 @@ const DEFAULTS = {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
@@ -240,6 +255,9 @@ const DEFAULTS = {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
         
         resolve('/');
       } catch(error) {
@@ -263,8 +281,12 @@ import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helper
 import {ValidationInfo, ValidationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ValidationHelper';
 import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper';
 import {RenderHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RenderHelper';
-import {DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
-import {Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
+import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
 
 // <---Auto[Import]
 // Auto[Declare]--->

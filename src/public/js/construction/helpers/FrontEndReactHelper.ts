@@ -36,6 +36,19 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   // Declare class variables and functions here:
   //
   protected initialize(): void {
+  	this.state.data = this.state.data || {};
+    
+    // const staticCollection: HierarchicalDataTable = {
+    //   source: SourceType.Collection,
+    //   group: 'collection',
+    //   rows: [{
+    //     keys: {...}
+    //     columns: {...}
+    //     relations: {...}
+    //   },
+    //   ...]
+    // };
+    // this.state.data['collection'] = staticCollection;
   }
   
   protected componentDidMount(): void {
@@ -45,9 +58,27 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   protected componentWillUnmount(): void {
   }
   
+  protected componentWillReceiveProps(nextProps: any): void {
+    // const dynamicCollection: HierarchicalDataTable = {
+    //   source: SourceType.Collection,
+    //   group: 'collection',
+    //   rows: nextProps.items.map((item) => {
+    //     return {
+    //       keys: {...}
+    //       columns: {...}
+    //       relations: {...}
+    //     };
+    //   )
+    // };
+    // this.state.data['collection'] = dynamicCollection;
+  }
+  
   // Providing data array base on dot notation:
   // 
   protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
+    // Redirect the target by overriding the notation value, for example:
+    // notation = \`collection[\${notation.split(',')[1]}].collection\`;
+    
     return super.getDataFromNotation(notation, inArray, always);
   }
   `,
@@ -67,7 +98,8 @@ import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
 import {TestHelper} from '../helpers/TestHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
+import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;
@@ -79,7 +111,30 @@ declare let pug: any;
 let Button = $Button;
 let Project = $Project;
 
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}*/
 // <---Auto[Declare]// Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+}*/
 interface IAutoBaseProps extends IBaseProps {
   forward: {classes: String, styles: any};
 }
