@@ -151,7 +151,7 @@ class ReactEventBinder extends Base<Props, State> {
                 	{(() => {
                 		if (this.props.mode == 'coding') {
                 			return (
-		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
+		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
 	                        <div className="section-container" style={{width: '225px'}}>
 			                        <div className="section-title">Customize Binding</div>
 			                        <div className="section-subtitle">Binding</div>
@@ -168,7 +168,7 @@ class ReactEventBinder extends Base<Props, State> {
                 			)
                 		} else {
                 			return (
-		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace('onfsb', '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
+		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
 	                        <div className="section-container" style={{width: '225px'}}>
 			                        <div className="section-title">Customize Binding</div>
 			                        <div className="section-subtitle">Binding</div>
