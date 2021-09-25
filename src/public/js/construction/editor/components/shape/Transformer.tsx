@@ -210,21 +210,21 @@ class Transformer extends Base<Props, State> {
         
         const updatingState = {};
         
-        if (this.state.translateX != this.webGLMesh.position.x) updatingState.translateX = this.webGLMesh.position.x;
-        if (this.state.translateY != this.webGLMesh.position.y) updatingState.translateY = this.webGLMesh.position.y;
-        if (this.state.translateZ != this.webGLMesh.position.z) updatingState.translateZ = this.webGLMesh.position.z;
+        if (this.state.translateX != this.webGLMesh.position.x) updatingState.translateX = this.webGLMesh.position.x.toFixed(8);
+        if (this.state.translateY != this.webGLMesh.position.y) updatingState.translateY = this.webGLMesh.position.y.toFixed(8);
+        if (this.state.translateZ != this.webGLMesh.position.z) updatingState.translateZ = this.webGLMesh.position.z.toFixed(8);
         
-        if (this.state.rotateX != this.webGLMesh.quaternion.x) updatingState.rotateX = this.webGLMesh.quaternion.x;
-        if (this.state.rotateY != this.webGLMesh.quaternion.y) updatingState.rotateY = this.webGLMesh.quaternion.y;
-        if (this.state.rotateZ != this.webGLMesh.quaternion.z) updatingState.rotateZ = this.webGLMesh.quaternion.z;
+        if (this.state.rotateX != this.webGLMesh.quaternion.x) updatingState.rotateX = this.webGLMesh.quaternion.x.toFixed(8);
+        if (this.state.rotateY != this.webGLMesh.quaternion.y) updatingState.rotateY = this.webGLMesh.quaternion.y.toFixed(8);
+        if (this.state.rotateZ != this.webGLMesh.quaternion.z) updatingState.rotateZ = this.webGLMesh.quaternion.z.toFixed(8);
         
         if (updatingState.rotateX == ZERO) updatingState.rotateX = 0;
         if (updatingState.rotateY == ZERO) updatingState.rotateY = 0;
         if (updatingState.rotateZ == ZERO) updatingState.rotateZ = 0;
         
-        if (this.state.scaleX != this.webGLMesh.scale.x) updatingState.scaleX = this.webGLMesh.scale.x;
-        if (this.state.scaleY != this.webGLMesh.scale.y) updatingState.scaleY = this.webGLMesh.scale.y;
-        if (this.state.scaleZ != this.webGLMesh.scale.z) updatingState.scaleZ = this.webGLMesh.scale.z;
+        if (this.state.scaleX != this.webGLMesh.scale.x) updatingState.scaleX = this.webGLMesh.scale.x.toFixed(8);
+        if (this.state.scaleY != this.webGLMesh.scale.y) updatingState.scaleY = this.webGLMesh.scale.y.toFixed(8);
+        if (this.state.scaleZ != this.webGLMesh.scale.z) updatingState.scaleZ = this.webGLMesh.scale.z.toFixed(8);
         
         if (Object.keys(updatingState).length != 0) {
         	this.setState(updatingState);
