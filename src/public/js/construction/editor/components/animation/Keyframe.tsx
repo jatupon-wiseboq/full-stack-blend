@@ -92,6 +92,8 @@ class Keyframe extends Base<Props, State> {
   		link: link
   	});
   	
+  	document.activeElement && document.activeElement.blur();
+  	
 		return EventHelper.cancel(event);
 	}
   private mouseDown(event) {
