@@ -36,9 +36,9 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   // Declare class variables and functions here:
   //
   protected initialize(): void {
-    // This is an example of creating a static collection and use in data binding.
+    // This is an example of creating a static collection and use in data binding:
     // 
-    // this.state.data = this.state.data || {};
+    // this.state.data = this.state.data || this.props.data || window.data || {};
     // const staticCollection: HierarchicalDataTable = {
     //   source: SourceType.Collection,
     //   group: 'collection',
@@ -60,9 +60,9 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   }
   
   protected componentWillReceiveProps(nextProps: any): void {
-    // This is an example of creating a dynamic collection and use in data binding.
+    // This is an example of creating a dynamic collection and use in data binding:
     // 
-    // this.state.data = this.state.data || {};
+    // this.state.data = this.state.data || this.props.data || window.data || {};
     // const dynamicCollection: HierarchicalDataTable = {
     //   source: SourceType.Collection,
     //   group: 'collection',
