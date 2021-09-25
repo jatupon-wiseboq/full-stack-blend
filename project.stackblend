@@ -16,13 +16,14 @@ d0e675b7      "groupState": null
 d0e675b7    }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "541f9636c684def5488a88412591b1c78d07ab8b#-306252438",
-    "9e885d49": "74b3486e425ef684dddbe1926c84f3195f9ee169#1820124890",
+    "3cb10a6e": "4efbfed87f76848c53ff94371eab2db966f96c62#1472078542",
+    "9e885d49": "e2969224341d375368007aca2fcecc429e52b6d9#-48132296",
     "b160aa0e": "9a95648f8f8b25a473cb1a3860677c2cadb809b8#1936859572",
-    "index": "e6abc1be493a9590897d0e8ed2a2309f893eec1f#1667126765"
+    "index": "4ae482cfedb922c16ef806fefbb870ba6dc4ba93#-1869209610"
   },
   "components": {
 245bc127    "245bc127": {
+245bc127      "accessories": {},
 245bc127      "html": [
 245bc127        "<div",
 245bc127        "    class=\"-fsb-self-245bc127 col-12 internal-fsb-element\"",
@@ -1398,7 +1399,19 @@ d0e675b7    }
 4d816ba8      "state": "create"
 4d816ba8    }
   },
-  "controllerBlobSHA": "412073fbb81cba1ed429a2aaeb557a9cd42cc8d7#39405662",
+  "controllerBlobSHA": "cd92c846c90726e02eb6a2ffbe1647416beb2d42#-2104013774",
+  "currentPersistingFiles": [
+    "src/controllers/components/account/settings/_3cb10a6e.ts",
+    "src/controllers/components/account/authenticate/_9e885d49.ts",
+    "src/controllers/components/developer/_b160aa0e.ts",
+    "src/controllers/components/index.ts",
+    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
+    "src/public/js/components/Project.Controls.Settings.tsx",
+    "views/home/account/settings/_3cb10a6e.pug",
+    "views/home/account/authenticate/_9e885d49.pug",
+    "views/home/developer/_b160aa0e.pug",
+    "views/home/index.pug"
+  ],
   "flows": {
     "default": [
       "<body",
@@ -2574,9 +2587,10 @@ ce8b8488          }
       }
     }
   },
+  "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "bb80f9240dec8835fff9fb3303638def0ee31370#283181565",
-    "Project.Controls.Settings": "262794a2dd5dfb4559de877d36a3f7389329037a#1995362511"
+    "Project.Controls.FlowLayout_4d816ba8": "687aadb2e5ff8c03bae3467891d90dfa507b71b5#-1757316929",
+    "Project.Controls.Settings": "fa33e32b6eb130cd316dcfe941914b89d93daf6a#1319621617"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -2669,8 +2683,9 @@ ce8b8488          }
     ],
     "popups": []
   },
+  "headerBlobSHA": "6e3107e09e8505e1cfe566c275ccf75355d99fef#1076111875",
   "popups": {},
-  "routeBlobSHA": "13575ac5090269503bf43366f4067b7d3300720a#1089952362",
+  "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
     "default": [
       "<body class=\"internal-fsb-disabled-guide\">",
@@ -2680,7 +2695,7 @@ ce8b8488          }
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "d20600a8d7a530429562c0db9ce19eaa04dc6730#-745819560",
+  "siteBundleBlobSHA": "82748cc8f71a25a47e56ea84b0cc79917281e983#1349027604",
   "sites": {
 3cb10a6e    "3cb10a6e": {
 3cb10a6e      "accessories": {},
@@ -2763,7 +2778,7 @@ ce8b8488          }
 3cb10a6e        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy_full.jpg); background-position: center center; background-size: cover; position: relative\">",
 3cb10a6e        "<div",
 3cb10a6e        "    class=\"container-fluid internal-fsb-begin\"",
-3cb10a6e        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-ad445a62\"",
+3cb10a6e        "    internal-fsb-animation=\"animation-group-ad445a62 animation-group-d0e675b7\"",
 3cb10a6e        "    internal-fsb-guid=\"0\">",
 3cb10a6e        "<div",
 3cb10a6e        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3114,6 +3129,9 @@ ce8b8488          }
 3cb10a6e        }
 3cb10a6e      },
 3cb10a6e      "path": "/account/settings",
+3cb10a6e      "references": [
+3cb10a6e        "245bc127"
+3cb10a6e      ],
 3cb10a6e      "state": "update"
 3cb10a6e    },
 9e885d49    "9e885d49": {
@@ -3154,7 +3172,7 @@ ce8b8488          }
 9e885d49        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
 9e885d49        "    internal-fsb-event-no-propagate=\"1\">",
 9e885d49        "<div",
-9e885d49        "    class=\"-fsb-preset-245bc127 col-12 internal-fsb-element internal-fsb-selecting\"",
+9e885d49        "    class=\"-fsb-preset-245bc127 col-12 internal-fsb-element\"",
 9e885d49        "    internal-fsb-guid=\"4d816ba8\"",
 9e885d49        "    internal-fsb-name=\"Authenticator\"",
 9e885d49        "    style=\"-fsb-inherited-presets: 245bc127\"",
@@ -3453,7 +3471,7 @@ b160aa0e        "    class=\"\"",
 b160aa0e        "    style=\"font-family: Courier Prime; font-size: 18px\">",
 b160aa0e        "<div",
 b160aa0e        "    class=\"container-fluid internal-fsb-begin\"",
-b160aa0e        "    internal-fsb-animation=\"animation-group-d0e675b7 animation-group-243eaa41\"",
+b160aa0e        "    internal-fsb-animation=\"animation-group-243eaa41 animation-group-d0e675b7\"",
 b160aa0e        "    internal-fsb-guid=\"0\">",
 b160aa0e        "<div",
 b160aa0e        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout row\"",
@@ -3553,6 +3571,7 @@ b160aa0e      "keywords": null,
 b160aa0e      "name": "StackBlend - Developer Notes",
 b160aa0e      "notations": {},
 b160aa0e      "path": "/developer",
+b160aa0e      "references": [],
 b160aa0e      "state": "update"
 b160aa0e    },
 b351d3a2    "b351d3a2": {
@@ -4414,9 +4433,9 @@ b351d3a2    },
   },
   "version": 1.3,
   "viewBlobSHADict": {
-    "3cb10a6e": "fd1d1b5adb946b191a850c251787e1777245ba74#-444633186",
-    "9e885d49": "4d3d838c2ad43092261a3aa9206ca2799ea64d3b#-813977842",
-    "b160aa0e": "d4dd5fa8fe70e1a6e9d72eb708c688fe1d04c3a3#-1664966137",
-    "index": "bbcae0ec1e7078a8e307b997538b78d453ae923f#-1482056608"
+    "3cb10a6e": "7561b26ef48cbcb03c173ffdf741e2af9024d4cd#2047198329",
+    "9e885d49": "08366e695dea039b12bd2dc31a54cbfe55902d19#-1485863699",
+    "b160aa0e": "d4420b3edeb8badb75bdb3257e1109dffaf7d03b#826260104",
+    "index": "4ed1789c1977a018754620bc4ab343aa97bca4e9#1786695579"
   }
 }
