@@ -518,11 +518,13 @@ var ManipulationHelper = {
               }
               
               if (aStyle.name == 'ratio') {
-              	if (!selectingElement.firstElementChild.nextSibling || !HTMLHelper.hasAttribute(selectingElement.firstElementChild.nextSibling, 'internal-fsb-ratio-expand')) {
-              		const element = document.createElement('img');
-              		element.setAttribute('style', 'display: none');
-              		element.setAttribute('internal-fsb-ratio-expand', true);
-              		selectingElement.insertBefore(element, selectingElement.firstElementChild.nextSibling);
+              	let expander = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-ratio-expand', 'true', selectingElement);
+              	
+              	if (!expander) {
+              		expander = document.createElement('img');
+              		expander.setAttribute('style', 'display: none');
+              		expander.setAttribute('internal-fsb-ratio-expand', 'true');
+              		selectingElement.insertBefore(expander, selectingElement.firstElementChild.nextSibling);
               	}
               	
               	const splited = aStyle.value && aStyle.value.split(':') || [];
@@ -530,10 +532,10 @@ var ManipulationHelper = {
               	const h = splited[1] && parseInt(splited[1]) || NaN;
               	if (!isNaN(w) && !isNaN(h)) {
               		selectingElement.firstElementChild.setAttribute('internal-fsb-ratio-fit', true);
-                	selectingElement.firstElementChild.nextSibling.setAttribute('src', FrontEndDOMHelper.generateImageDataURLWithRatio(w, h));
+                	expander.setAttribute('src', FrontEndDOMHelper.generateImageDataURLWithRatio(w, h));
                 } else {
               		selectingElement.firstElementChild.removeAttribute('internal-fsb-ratio-fit');
-                	selectingElement.removeChild(selectingElement.firstElementChild.nextSibling);
+                	selectingElement.removeChild(expander);
                 }
                 
                 window.RufflePlayer && window.RufflePlayer.polyfill();
