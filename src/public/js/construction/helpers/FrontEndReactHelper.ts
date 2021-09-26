@@ -51,6 +51,8 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     // };
     // this.state.data['collection'] = staticCollection;
     //
+    // Don't forget to create the mockup's schemata in Explore / Data.
+    // 
   }
   
   protected componentDidMount(): void {
@@ -77,6 +79,8 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
     // };
     // this.state.data['collection'] = dynamicCollection;
     //
+    // Don't forget to create the mockup's schemata in Explore / Data.
+    // 
   }
   
   // Providing data array base on dot notation:
