@@ -552,17 +552,17 @@ var AnimationHelper = {
 			  				
 				  			if (animationId != 'selector') {
 				  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-self-${presetId} > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-preset-${presetId} > :first-child { ${content} }`);
 				  				} else {
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child { ${content} }`);
 				  				}
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
 				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
-				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-preset-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-self-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]}, .-fsb-preset-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]} { ${content} }`);
 				  				} else {
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${content} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:not([style="-fsb-empty"]):${splited[1]}, [internal-fsb-guid="${splited[0]}"][style="-fsb-empty"] > :first-child:${splited[1]} { ${content} }`);
 				  				}
 				  			}
 				  		}
@@ -675,9 +675,9 @@ var AnimationHelper = {
 					  			
 					  			if (animationId != 'selector' && inanimatableInlineStyle) {
 					  				if (StylesheetHelper.getStylesheetDefinition(presetId) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
-					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"].-fsb-preset-${presetId} { ${inanimatableInlineStyle} }`);
+					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-self-${presetId} > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-preset-${presetId} > :first-child { ${inanimatableInlineStyle} }`);
 					  				} else {
-					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-extension-${currentKeyframe.id}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-extension-${currentKeyframe.id}"][internal-fsb-guid="${presetId}"] { ${inanimatableInlineStyle} }`);
+					  					highPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child { ${inanimatableInlineStyle} }`);
 					  				}
 					  			
 						  			track.keyframes.push({
@@ -703,9 +703,9 @@ var AnimationHelper = {
 				  				const splited = presetId.split(':');
 				  				
 				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
-				  					highPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
+				  					highPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-preset-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-self-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]}, .-fsb-preset-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
 				  				} else {
-				  					highPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
+				  					highPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:not([style="-fsb-empty"]):${splited[1]}, [internal-fsb-guid="${splited[0]}"][style="-fsb-empty"] > :first-child:${splited[1]} { ${combinedInanimatableInlineStyle} }`);
 				  				}
 				  			}
 				  			
@@ -743,19 +743,19 @@ var AnimationHelper = {
 				  				  track.selectors.push(`.-fsb-self-${presetId}`);
 				  				  track.selectors.push(`.-fsb-preset-${presetId}`);
 				  				  
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}, [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-self-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"].-fsb-preset-${presetId}:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-self-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"] .-fsb-preset-${presetId}[style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-self-${presetId} > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][style="-fsb-empty"].-fsb-preset-${presetId} > :first-child { ${animations.join(' ')} }`);
 				  				} else {
 				  				  track.selectors.push(`[internal-fsb-guid="${presetId}"]`);
 				  				  
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"], [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"] { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"]:not([style="-fsb-empty"]), [internal-fsb-animation*="animation-group-${animationId}"] [internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child, [internal-fsb-animation*="animation-group-${animationId}"][internal-fsb-guid="${presetId}"][style="-fsb-empty"] > :first-child { ${animations.join(' ')} }`);
 				  				}
 				  			} else {
 				  				const splited = presetId.split(':');
 				  				
 				  				if (StylesheetHelper.getStylesheetDefinition(splited[0]) && stylesheetDefinitions[animationId].synchronizeMode != 'off') {
-				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:${splited[1]}, .-fsb-preset-${splited[0]}:${splited[1]} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`.-fsb-self-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-preset-${splited[0]}:not([style="-fsb-empty"]):${splited[1]}, .-fsb-self-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]}, .-fsb-preset-${splited[0]}[style="-fsb-empty"] > :first-child:${splited[1]} { ${animations.join(' ')} }`);
 				  				} else {
-				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:${splited[1]} { ${animations.join(' ')} }`);
+				  					lowPriorityAnimationAssignments.push(`[internal-fsb-guid="${splited[0]}"]:not([style="-fsb-empty"]):${splited[1]}, [internal-fsb-guid="${splited[0]}"][style="-fsb-empty"] > :first-child:${splited[1]} { ${animations.join(' ')} }`);
 				  				}
 				  			}
 				  		}
