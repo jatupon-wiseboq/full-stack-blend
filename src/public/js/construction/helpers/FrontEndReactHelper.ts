@@ -112,6 +112,11 @@ import {AnimationHelper} from '../helpers/AnimationHelper';
 import {TestHelper} from '../helpers/TestHelper';
 import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
 // <---Auto[Import]// Auto[Declare]--->
 
 declare let React: any;
@@ -122,10 +127,6 @@ declare let pug: any;
 
 let Button = $Button;
 let Project = $Project;
-
-// Assign to an another one to override the base class.
-// 
-let Base: any = $Base;
 
 /*enum SourceType {
   Relational,
