@@ -250,7 +250,9 @@ class Transformer extends Base<Props, State> {
         ].join(' ');
         
         if (this.currentTransform != fsbTransform) {
-            this.currentTransform = fsbTransform;
+            const Default = '0.00000000 0.00000000 0.00000000 -1.00000000 0.00001000 0.00001000 1.00000000 1.00000000 1.00000000';
+            
+            this.currentTransform = (fsbTransform != Default) ? fsbTransform : null;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
             perform('update', {
@@ -273,11 +275,11 @@ class Transformer extends Base<Props, State> {
                     },
                     {
                         name: 'transform',
-                        value: transform
+                        value: (fsbTransform != Default) ? transform : null
                     },
                     {
                         name: '-fsb-transform',
-                        value: fsbTransform
+                        value: (fsbTransform != Default) ? fsbTransform : null
                     }
                 ],
                 replace: '-fsb-transform'
