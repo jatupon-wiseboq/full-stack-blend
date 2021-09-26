@@ -38,18 +38,18 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   protected initialize(): void {
     // This is an example of creating a static collection and use in data binding:
     // 
-    // this.state.data = this.state.data || this.props.data || window.data || {};
-    // const staticCollection: HierarchicalDataTable = {
-    //   source: SourceType.Collection,
-    //   group: 'collection',
-    //   rows: [{
-    //     keys: {...}
-    //     columns: {...}
-    //     relations: {...}
-    //   },
-    //   ...]
-    // };
-    // this.state.data['collection'] = staticCollection;
+    /* this.state.data = this.state.data || this.props.data || window.data || {};
+    const staticCollection: HierarchicalDataTable = {
+      source: SourceType.Collection,
+      group: 'collection',
+      rows: [{
+        keys: {...}
+        columns: {...}
+        relations: {...}
+      },
+      ...]
+    };
+    this.state.data['collection'] = staticCollection; */
     //
     // Don't forget to create the mockup's schemata in Explore / Data.
     // 
@@ -65,19 +65,19 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
   protected componentWillReceiveProps(nextProps: any): void {
     // This is an example of creating a dynamic collection and use in data binding:
     // 
-    // this.state.data = this.state.data || this.props.data || window.data || {};
-    // const dynamicCollection: HierarchicalDataTable = {
-    //   source: SourceType.Collection,
-    //   group: 'collection',
-    //   rows: nextProps.items.map((item) => {
-    //     return {
-    //       keys: {...}
-    //       columns: {...}
-    //       relations: {...}
-    //     };
-    //   })
-    // };
-    // this.state.data['collection'] = dynamicCollection;
+    /* this.state.data = this.state.data || this.props.data || window.data || {};
+    const dynamicCollection: HierarchicalDataTable = {
+      source: SourceType.Collection,
+      group: 'collection',
+      rows: nextProps.items.map((item) => {
+        return {
+          keys: {...}
+          columns: {...}
+          relations: {...}
+        };
+      })
+    };
+    this.state.data['collection'] = dynamicCollection; */
     //
     // Don't forget to create the mockup's schemata in Explore / Data.
     // 
