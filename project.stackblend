@@ -695,7 +695,7 @@ d0e675b7    }
 245bc127        "    internal-fsb-event-no-propagate=\"1\"",
 245bc127        "    internal-fsb-guid=\"eaad3e05\"",
 245bc127        "    internal-fsb-name=\"TextElement 6\"",
-245bc127        "    style=\"-fsb-inherited-presets: c8d71ae6\">Endpoint Root URL:</div>",
+245bc127        "    style=\"-fsb-inherited-presets: c8d71ae6\">Endpoint root URL:</div>",
 245bc127        "<div",
 245bc127        "    class=\"col-7 internal-fsb-element\"",
 245bc127        "    internal-fsb-class=\"Textbox\"",
@@ -2642,7 +2642,7 @@ ce8b8488          }
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "33fe4dfa3a6fd4b2dc683de95030076b36f85218#36060661",
-    "Project.Controls.Settings": "39100c1e1220384bc64849d4675ac89e80a9a3d5#-787269446"
+    "Project.Controls.Settings": "65f2aa5ac343b1e1c35086ffde646e46e97bbf25#-990149478"
   },
   "globalSettings": {
     "colorSwatches": [

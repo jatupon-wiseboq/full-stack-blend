@@ -322,7 +322,7 @@ class Settings extends Base {
                           .container-fluid
                             .internal-fsb-strict-layout.row
                               .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="eaad3e05")
-                                | Endpoint Root URL:
+                                | Endpoint root URL:
                               .col-7.internal-fsb-element(style={padding: '0px'}, internal-fsb-guid="74d68ec6")
                                 input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="text", disabled=this.state.submitting, defaultValue=this.getDataFromNotation("User.endpoint"))
                         label.-fsb-preset-24bc9bae.col-12.internal-fsb-element(style={'FsbInheritedPresets': '24bc9bae', display: (()=>{return (this.getDataFromNotation('User.github')) ? 'block' : 'none';})()}, internal-fsb-guid="2b429b9b")
