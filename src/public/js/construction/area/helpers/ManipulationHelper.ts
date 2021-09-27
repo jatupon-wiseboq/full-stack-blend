@@ -262,7 +262,7 @@ var ManipulationHelper = {
     Accessories.overlay && Accessories.overlay.renderAllRelations();
     EditorHelper.update(tag);
     
-    if (preview) {
+    if (preview && window.parent.PROGRESSIVE) {
     	window.parent.preview(true);
     }
   },

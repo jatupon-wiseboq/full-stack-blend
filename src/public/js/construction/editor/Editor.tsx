@@ -320,6 +320,9 @@ let cachedUpdateEditorProperties = {};
     });
     Accessories.projectManager.current.load();
   });
+  window.update = (() => {
+    Accessories.endpointManager.current.save(() => {}, true);
+  });
   window.save = (() => {
     Accessories.projectManager.current.save();
   });
