@@ -8,8 +8,12 @@ import {ProjectConfigurationHelper} from '../../../helpers/ProjectConfigurationH
 import {ValidationInfo, ValidationHelper} from '../../../helpers/ValidationHelper';
 import {RequestHelper} from '../../../helpers/RequestHelper';
 import {RenderHelper} from '../../../helpers/RenderHelper';
-import {DataTableSchema} from '../../../helpers/SchemaHelper';
-import {Base} from '../../Base';
+import {SchemaHelper, DataTableSchema} from '../../../helpers/SchemaHelper';
+import {Base as $Base} from '../../Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
 
 // <---Auto[Import]
 

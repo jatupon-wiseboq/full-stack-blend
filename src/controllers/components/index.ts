@@ -3,13 +3,13 @@
 
 // Auto[Import]--->
 import {Request, Response} from "express";
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '../../../helpers/DatabaseHelper';
-import {ProjectConfigurationHelper} from '../../../helpers/ProjectConfigurationHelper';
-import {ValidationInfo, ValidationHelper} from '../../../helpers/ValidationHelper';
-import {RequestHelper} from '../../../helpers/RequestHelper';
-import {RenderHelper} from '../../../helpers/RenderHelper';
-import {SchemaHelper, DataTableSchema} from '../../../helpers/SchemaHelper';
-import {Base as $Base} from '../../Base';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from './../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from './../helpers/ProjectConfigurationHelper';
+import {ValidationInfo, ValidationHelper} from './../helpers/ValidationHelper';
+import {RequestHelper} from './../helpers/RequestHelper';
+import {RenderHelper} from './../helpers/RenderHelper';
+import {SchemaHelper, DataTableSchema} from './../helpers/SchemaHelper';
+import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 
@@ -19,8 +19,6 @@ let Base: any = $Base;
 
 // Import additional modules here:
 //
-import passport from "passport";
-import {UserDocument, User} from "../../../../models/User";
 
 // Auto[Declare]--->
 /*enum SourceType {
@@ -100,29 +98,11 @@ class Controller extends Base {
   	// The message of thrown error will be the validation message.
   	//
  		ValidationHelper.validate(data);
-        
-    let email, password, confirmPassword;
-  	
-  	for (let input of data) {
-    	switch (input.name) {
-    	  case 'email':
-    	    email = input.value;
-    	    break;
-    	  case 'password':
-    	    password = input.value;
-    	    break;
-    	  case 'confirmPassword':
-    	    confirmPassword = input.value;
-    	    break;
-    	}
-  	}
-  	
-  	if (email && !email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-  	  throw new Error("You have entered a wrong email."); 
-  	}
-  	
-  	if ((!!password && !!confirmPassword) && password !== confirmPassword) throw new Error("Password confirmation doesn't match password."); 
   }
+  
+  // ---------------------------------------------------------------
+  // Metadata (SEO)
+  // ---------------------------------------------------------------
   
   protected async accessories(data: Input[]): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -146,16 +126,47 @@ class Controller extends Base {
     });
   }
   
+  // ---------------------------------------------------------------
+  // Example Code of Express Parameters
+  // ---------------------------------------------------------------
+  // 
+  // Access path parameters of "/path/:a/:b" using:
+  // this.request.params['a'], this.request.params['b']
+  // 
+  // Access query-string parameters of "/path/a/b?c=123" using:
+  // this.request.query['c']
+  // 
+  // Access session variables "token" using:
+  // this.request.session.token
+  // 
+  // Saving session variables "token" using:
+  // this.request.session.token = 'abc';
+  // this.request.session.save(() => {
+  //   resolve(...);
+  // });
+  // ---------------------------------------------------------------
+
+  // ---------------------------------------------------------------
+  // Traditional HTTP Request Methods
+  // ---------------------------------------------------------------
+  
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
+      /* try {
+        resolve(await DatabaseHelper.retrieve(RequestHelper.createInputs({
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
+          }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
+          this.request.session,   // session variables
+          false,                  // real-time updates
+          false                   // skip permission settings
+        ));
+      } catch(error) {
+        reject(error);
+      } */
       try {
-        const user = this.request.user as UserDocument;
-        if (user) {
-          this.response.redirect('/account/settings');
-          resolve({});
-        } else {
-          resolve(await super.get(data));
-        }
+        resolve(await super.get(data));
       } catch(error) {
         reject(error);
       }
@@ -165,7 +176,15 @@ class Controller extends Base {
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.post(data));
+        resolve(await DatabaseHelper.update(RequestHelper.createInputs({
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
+          }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
+          false,                  // recusive upsert in sub-collection
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
       } catch(error) {
         reject(error);
       } */
@@ -176,7 +195,27 @@ class Controller extends Base {
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.put(data));
+        resolve(await DatabaseHelper.insert(RequestHelper.createInputs({
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
+          }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
+          false,                  // recusive upsert in sub-collection
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
+      } catch(error) {
+        reject(error);
+      } */
+      /* try {
+        resolve(await DatabaseHelper.upsert(RequestHelper.createInputs({
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
+          }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
+          this.request.session,   // session variables
+          false                   // skip permission settings
+        ));
       } catch(error) {
         reject(error);
       } */
@@ -187,7 +226,14 @@ class Controller extends Base {
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
       /* try {
-        resolve(await super.delete(data));
+        resolve(await DatabaseHelper.delete(RequestHelper.createInputs({
+            'collection.column': 'abc',
+            'collection.column': 123,
+            'collection.collection.column': null
+          }), ProjectConfigurationHelper.getDataSchema().tables['collection'],
+          this.request.session,   // session variables
+          false                   // leavePermission
+        ));
       } catch(error) {
         reject(error);
       } */
@@ -195,10 +241,22 @@ class Controller extends Base {
     });
   }
   
+  // ---------------------------------------------------------------
+  // StackBlend Button Request Actions
+  // ---------------------------------------------------------------
+  
   protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
       try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -208,8 +266,16 @@ class Controller extends Base {
   
   protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -219,7 +285,16 @@ class Controller extends Base {
   
   protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -229,7 +304,16 @@ class Controller extends Base {
   
   protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     return new Promise(async (resolve, reject) => {
-    	try {
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -239,8 +323,16 @@ class Controller extends Base {
   
   protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-    	try {
-      	let options = RequestHelper.getOptions(this.pageId, this.request);
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
@@ -250,74 +342,17 @@ class Controller extends Base {
   
   protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     return new Promise(async (resolve, reject) => {
-    	try {
-    	  let email, password, confirmPassword;
-      	
-      	for (let input of data) {
-        	switch (input.name) {
-        	  case 'email':
-        	    email = input.value;
-        	    break;
-        	  case 'password':
-        	    password = input.value;
-        	    break;
-        	  case 'confirmPassword':
-        	    confirmPassword = input.value;
-        	    break;
-        	}
-      	}
-      	
-      	if (!!password && !!confirmPassword) {
-      	  const user = new User({
-            email: email,
-            password: password
-          });
-
-          User.findOne({email: email}, (err, existingUser) => {
-            if (err) {
-              reject(new Error('There was an internal server error, please try again. (1001)'));
-              return;
-            }
-            if (existingUser) {
-              reject(new Error('Account with that email address already exists.'));
-              return;
-            }
-            
-            user.save((err) => {
-              if (err) {
-                reject(new Error('There was an internal server error, please try again. (1002)'));
-                return;
-              }
-              
-              this.request.logIn(user, (err) => {
-                if (err) {
-                  reject(new Error('There was an internal server error, please try again. (1003)'));
-                  return;
-                }
-                resolve('/editor');
-              });
-            });
-          });
-      	} else {
-      	  User.findOne({email: email}, (err, existingUser) => {
-            if (err) {
-              reject(new Error('There was an internal server error, please try again. (1101)'));
-              return;
-            }
-            if (!existingUser) {
-              reject(new Error('An account with the email address doesn\'t exist.'));
-              return;
-            }
-            
-            this.request.logIn(existingUser, (err) => {
-              if (err) {
-                reject(new Error('There was an internal server error, please try again. (1103)'));
-                return;
-              }
-              resolve('/editor');
-            });
-          });
-      	}
+      try {
+        const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
+        const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
+        resolve('/');
       } catch(error) {
         reject(error);
       }
@@ -333,35 +368,6 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 3"});
-    RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 1"});
-		RequestHelper.registerInput('1b650e66', "document", "User", "email");
-		ValidationHelper.registerInput('1b650e66', "Textbox 1", true, "Please enter your email", undefined, null);
-    for (let input of RequestHelper.getInputs(this.pageId, request, '1b650e66')) {
-    
-      // Override data parsing and manipulation of Textbox 1 here:
-      // 
-      
-      if (input != null) data.push(input);
-    }
-		RequestHelper.registerInput('22d343bd', "document", "User", "password");
-		ValidationHelper.registerInput('22d343bd', "Textbox 2", true, "Please enter your password", undefined, null);
-    for (let input of RequestHelper.getInputs(this.pageId, request, '22d343bd')) {
-    
-      // Override data parsing and manipulation of Textbox 2 here:
-      // 
-      
-      if (input != null) data.push(input);
-    }
-		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('d3de6c93', "Textbox 3", true, "Please confirm your password", undefined, null);
-    for (let input of RequestHelper.getInputs(this.pageId, request, 'd3de6c93')) {
-    
-      // Override data parsing and manipulation of Textbox 3 here:
-      // 
-      
-      if (input != null) data.push(input);
-    }
 
 	  // <---Auto[Merging]
 	  

@@ -8,8 +8,12 @@ import {ProjectConfigurationHelper} from '../../helpers/ProjectConfigurationHelp
 import {ValidationInfo, ValidationHelper} from '../../helpers/ValidationHelper';
 import {RequestHelper} from '../../helpers/RequestHelper';
 import {RenderHelper} from '../../helpers/RenderHelper';
-import {DataTableSchema} from '../../helpers/SchemaHelper';
-import {Base} from '../Base';
+import {SchemaHelper, DataTableSchema} from '../../helpers/SchemaHelper';
+import {Base as $Base} from '../Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
 
 // <---Auto[Import]
 
@@ -247,6 +251,12 @@ class Controller extends Base {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
         reject(error);
@@ -259,6 +269,12 @@ class Controller extends Base {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.update(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
@@ -273,6 +289,12 @@ class Controller extends Base {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.upsert(data, schema, this.request.session));
       } catch(error) {
         reject(error);
@@ -285,6 +307,12 @@ class Controller extends Base {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve(await DatabaseHelper.delete(data, schema, this.request.session));
       } catch(error) {
@@ -299,6 +327,12 @@ class Controller extends Base {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
         
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
+        
         resolve(await DatabaseHelper.retrieve(data, schema, this.request.session, options.enabledRealTimeUpdate));
       } catch(error) {
         reject(error);
@@ -311,6 +345,12 @@ class Controller extends Base {
       try {
         const options = RequestHelper.getOptions(this.pageId, this.request); /* submit options */
         const name = options.name;                                           /* button name */
+        
+        // You may generate data and schema on the fly using:
+        //
+        // data = RequestHelper.createInputs({...});
+        // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
+        // 
         
         resolve('/');
       } catch(error) {
