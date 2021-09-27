@@ -331,7 +331,7 @@ class Settings extends Base {
                               .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="75639b3d")
                                 | Progressively Update:
                               .internal-fsb-element(style={padding: '0px'}, internal-fsb-guid="49da134d")
-                                input(style={'display': 'block', 'marginTop': '10px'}, checked="true", type="checkbox", defaultChecked=this.getDataFromNotation("User.progressivelyUpdate") === true)
+                                input(style={'display': 'block', 'marginTop': '10px'}, type="checkbox", defaultChecked=this.getDataFromNotation("User.progressivelyUpdate") === true)
                   .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 2) ? 'block' : 'none';})()}, internal-fsb-guid="d7b6b2c3")
                     .container-fluid
                       .internal-fsb-strict-layout.row
