@@ -273,6 +273,7 @@ class Controller extends Base {
         	    break;
         	  case 'progressivelyUpdate':
         	    progressivelyUpdate = input.value;
+        	    throw new Error(progressivelyUpdate);
         	    break;
         	}
       	}
