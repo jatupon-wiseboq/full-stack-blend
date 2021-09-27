@@ -737,8 +737,15 @@ d0e675b7    }
 245bc127        "    internal-fsb-event-no-propagate=\"1\"",
 245bc127        "    internal-fsb-guid=\"75639b3d\"",
 245bc127        "    internal-fsb-name=\"TextElement 6\"",
-245bc127        "    style=\"-fsb-inherited-presets: c8d71ae6\">Progressively Update:</div>",
+245bc127        "    style=\"-fsb-inherited-presets: c8d71ae6\">Progressively update:</div>",
 245bc127        "",
+245bc127        "<div",
+245bc127        "    class=\"col-8 internal-fsb-allow-cursor internal-fsb-element\"",
+245bc127        "    internal-fsb-guid=\"1c5273a4\"",
+245bc127        "    internal-fsb-name=\"Rectangle 1\"",
+245bc127        "    internal-fsb-event-no-propagate=\"1\"",
+245bc127        "    internal-fsb-class=\"Rectangle\"",
+245bc127        "    style=\"padding-left: 0px; padding-right: 0px; width: 100%\">",
 245bc127        "<div",
 245bc127        "    class=\"internal-fsb-element\"",
 245bc127        "    internal-fsb-guid=\"49da134d\"",
@@ -749,11 +756,12 @@ d0e675b7    }
 245bc127        "    internal-fsb-react-data=\"User.progressivelyUpdate\">",
 245bc127        "<input",
 245bc127        "    type=\"checkbox\"",
-245bc127        "    style=\"-fsb-for-children: true; display: block; margin-top: 10px\"",
-245bc127        "    class=\"\"",
+245bc127        "    style=\"-fsb-for-children: true; display: block; height: 16px; margin-top: 8px; width: 16px\"",
+245bc127        "    class=\"form-control form-control-sm \"",
 245bc127        "    internal-fsb-data-source-type=\"document\"",
 245bc127        "    internal-fsb-data-source-column=\"progressivelyUpdate\"",
 245bc127        "    internal-fsb-data-source-name=\"User\">",
+245bc127        "</div>",
 245bc127        "</div>",
 245bc127        "</div>",
 245bc127        "</div>",
@@ -2642,7 +2650,7 @@ ce8b8488          }
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "33fe4dfa3a6fd4b2dc683de95030076b36f85218#36060661",
-    "Project.Controls.Settings": "65f2aa5ac343b1e1c35086ffde646e46e97bbf25#-990149478"
+    "Project.Controls.Settings": "3562be585e50ea396d140b5c6b043cc4b19d86bb#1186927411"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -2735,7 +2743,7 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "89117f04fa8d41a2c6b6dfc57867f41223748a9f#-1231396580",
+  "headerBlobSHA": "0a27085d048be0c4146fec95c0a3761c7086cc7f#-822192136",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
@@ -2747,7 +2755,7 @@ ce8b8488          }
       "</body>"
     ]
   },
-  "siteBundleBlobSHA": "82748cc8f71a25a47e56ea84b0cc79917281e983#1349027604",
+  "siteBundleBlobSHA": "8365e943771f8c3dce922f3dc62787fb0279a5b5#-1232896559",
   "sites": {
 3cb10a6e    "3cb10a6e": {
 3cb10a6e      "accessories": {},
@@ -4501,6 +4509,6 @@ b351d3a2    },
     "3cb10a6e": "7561b26ef48cbcb03c173ffdf741e2af9024d4cd#2047198329",
     "9e885d49": "08366e695dea039b12bd2dc31a54cbfe55902d19#-1485863699",
     "b160aa0e": "d4420b3edeb8badb75bdb3257e1109dffaf7d03b#826260104",
-    "index": "4ed1789c1977a018754620bc4ab343aa97bca4e9#1786695579"
+    "index": "d095ab27d0fa81ca4eded372cdfd7428297615ed#-353915287"
   }
 }
