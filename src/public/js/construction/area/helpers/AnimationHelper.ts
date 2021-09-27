@@ -803,6 +803,10 @@ var AnimationHelper = {
   	let source = animationGroups.join(' ');
   	let script = extensionScript.join(' ');
   	
+  	if (production) {
+  		source = source.replace(/\[style\=\"\-fsb\-empty\"\]/g, '[internal-fsb-forward]');
+  	}
+  	
     return [source, script, activeAnimationGroup];
   }
 };

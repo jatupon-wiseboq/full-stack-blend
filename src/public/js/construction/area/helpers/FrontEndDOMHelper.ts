@@ -490,6 +490,7 @@ ${rootScript}`;
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
+          attributes.push(`internal-fsb-forward="1"`);
           reactData = null;
         } else if (isForChildren) {
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
@@ -867,6 +868,7 @@ ${rootScript}`;
         
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
+          attributes.push(`internal-fsb-forward="1"`);
         }
         
         if (_globalEvents.length != 0) executions.push(_globalEvents.join('\n'));
