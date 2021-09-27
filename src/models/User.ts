@@ -58,7 +58,7 @@ const userSchema = new mongoose.Schema({
     develop: String,
     staging: String,
     endpoint: String,
-    progressivelyUpdate: boolean,
+    progressivelyUpdate: Boolean,
 
     profile: {
         name: String,
