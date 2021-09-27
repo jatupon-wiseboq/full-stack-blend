@@ -27,7 +27,7 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
 window.internalFsbOpen = (initClass: string, data: any) => {
 	let container = document.createElement('div');
   ReactDOM.render(React.createElement(DeclarationHelper.get(initClass), {data: data || window.data}, null), container);
-  document.body.appendChild(container.firstElementChild);
+  document.getElementByClassName('internal-fsb-begin').appendChild(container.firstElementChild);
 }
 
 // <--- Auto[Generating:V1]
