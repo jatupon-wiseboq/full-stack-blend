@@ -8,7 +8,13 @@ import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
 import {TestHelper} from '../helpers/TestHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
+import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
 // <---Auto[Import]
 
 // Import additional modules here:
@@ -25,12 +31,31 @@ declare let pug: any;
 let Button = $Button;
 let Project = $Project;
 
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}*/
 // <---Auto[Declare]
 
 // Declare private static variables here:
 //
 
 // Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+}*/
 interface IAutoBaseProps extends IBaseProps {
   forward: {classes: String, styles: any};
 }

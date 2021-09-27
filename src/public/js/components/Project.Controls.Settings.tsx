@@ -8,7 +8,13 @@ import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
 import {TestHelper} from '../helpers/TestHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base} from './Base';
+import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
+import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
 // <---Auto[Import]
 
 // Import additional modules here:
@@ -25,12 +31,31 @@ declare let pug: any;
 let Button = $Button;
 let Project = $Project;
 
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}*/
 // <---Auto[Declare]
 
 // Declare private static variables here:
 //
 
 // Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+}*/
 interface IAutoBaseProps extends IBaseProps {
   forward: {classes: String, styles: any};
 }
@@ -72,7 +97,7 @@ class Settings extends Base {
     TestHelper.identify();
     function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         
-    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
+    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","49da134d","74d68ec6","d3e700b6","ece2d619"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
   }
   // <---Auto[ClassBegin]
   
@@ -300,6 +325,13 @@ class Settings extends Base {
                                 | Endpoint Root URL:
                               .col-7.internal-fsb-element(style={padding: '0px'}, internal-fsb-guid="74d68ec6")
                                 input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="text", disabled=this.state.submitting, defaultValue=this.getDataFromNotation("User.endpoint"))
+                        label.-fsb-preset-24bc9bae.col-12.internal-fsb-element(style={'FsbInheritedPresets': '24bc9bae', display: (()=>{return (this.getDataFromNotation('User.github')) ? 'block' : 'none';})()}, internal-fsb-guid="2b429b9b")
+                          .container-fluid
+                            .internal-fsb-strict-layout.row
+                              .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="75639b3d")
+                                | Progressively Update:
+                              .internal-fsb-element(style={padding: '0px'}, internal-fsb-guid="49da134d")
+                                input(style={'display': 'block', 'marginTop': '10px'}, checked="true", type="checkbox", defaultChecked=this.getDataFromNotation("User.progressivelyUpdate") === true)
                   .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 2) ? 'block' : 'none';})()}, internal-fsb-guid="d7b6b2c3")
                     .container-fluid
                       .internal-fsb-strict-layout.row

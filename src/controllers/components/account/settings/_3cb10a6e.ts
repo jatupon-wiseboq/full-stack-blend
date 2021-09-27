@@ -8,8 +8,12 @@ import {ProjectConfigurationHelper} from '../../../helpers/ProjectConfigurationH
 import {ValidationInfo, ValidationHelper} from '../../../helpers/ValidationHelper';
 import {RequestHelper} from '../../../helpers/RequestHelper';
 import {RenderHelper} from '../../../helpers/RenderHelper';
-import {DataTableSchema} from '../../../helpers/SchemaHelper';
-import {Base} from '../../Base';
+import {SchemaHelper, DataTableSchema} from '../../../helpers/SchemaHelper';
+import {Base as $Base} from '../../Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
 
 // <---Auto[Import]
 
@@ -168,7 +172,8 @@ class Controller extends Base {
                         staging: user.staging,
                         endpoint: user.endpoint,
                         facebook: !!user.facebook,
-                        github: !!user.github
+                        github: !!user.github,
+                        progressivelyUpdate: user.progressivelyUpdate !== false
                       },
                       relations: {}
                     }
@@ -235,7 +240,7 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
     	try {
       	let options = RequestHelper.getOptions(this.pageId, this.request);
-      	let email, name, alias, project, feature, develop, staging, endpoint, password, confirmPassword;
+      	let email, name, alias, project, feature, develop, staging, endpoint, password, confirmPassword, progressivelyUpdate;
       	
       	for (let input of data) {
         	switch (input.name) {
@@ -266,6 +271,9 @@ class Controller extends Base {
         	  case 'password':
         	    password = input.value;
         	    break;
+        	  case 'progressivelyUpdate':
+        	    progressivelyUpdate = input.value;
+        	    break;
         	}
       	}
       	
@@ -284,6 +292,7 @@ class Controller extends Base {
               user.develop = develop || "";
               user.staging = staging || "";
               user.endpoint = endpoint || "";
+              user.progressivelyUpdate = progressivelyUpdate !== 'false'
               
               if (!!password) {
                 user.password = password;
@@ -364,7 +373,7 @@ class Controller extends Base {
 	  // <---Auto[MergingBegin]
 	  
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 2"});
+    RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","49da134d","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 2"});
 		RequestHelper.registerInput('27d35136', "document", "User", "email");
 		ValidationHelper.registerInput('27d35136', "Textbox 1", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '27d35136')) {
@@ -433,6 +442,15 @@ class Controller extends Base {
     for (let input of RequestHelper.getInputs(this.pageId, request, '74d68ec6')) {
     
       // Override data parsing and manipulation of Textbox 5 here:
+      // 
+      
+      if (input != null) data.push(input);
+    }
+		RequestHelper.registerInput('49da134d', "document", "User", "progressivelyUpdate");
+		ValidationHelper.registerInput('49da134d', "Checkbox 1", false, undefined, undefined, null);
+    for (let input of RequestHelper.getInputs(this.pageId, request, '49da134d')) {
+    
+      // Override data parsing and manipulation of Checkbox 1 here:
       // 
       
       if (input != null) data.push(input);

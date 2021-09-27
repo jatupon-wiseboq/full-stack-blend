@@ -16,14 +16,22 @@ d0e675b7      "groupState": null
 d0e675b7    }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "4efbfed87f76848c53ff94371eab2db966f96c62#1472078542",
+    "3cb10a6e": "a914466ab29a0a1501892ca86406c2173a1f5fc4#-1593408727",
     "9e885d49": "e2969224341d375368007aca2fcecc429e52b6d9#-48132296",
     "b160aa0e": "9a95648f8f8b25a473cb1a3860677c2cadb809b8#1936859572",
-    "index": "4ae482cfedb922c16ef806fefbb870ba6dc4ba93#-1869209610"
+    "index": "4339efe8394ec83c5fe81b1343e379eac4179088#-2107443872"
   },
   "components": {
 245bc127    "245bc127": {
-245bc127      "accessories": {},
+245bc127      "accessories": {
+245bc127        "currentCursorWalkPath": [
+245bc127          "2b429b9b",
+245bc127          0,
+245bc127          2,
+245bc127          null
+245bc127        ],
+245bc127        "selectingElementGUID": "49da134d"
+245bc127      },
 245bc127      "html": [
 245bc127        "<div",
 245bc127        "    class=\"-fsb-self-245bc127 col-12 internal-fsb-element\"",
@@ -219,7 +227,7 @@ d0e675b7    }
 245bc127        "<button",
 245bc127        "    class=\"btn btn-primary btn-sm col-2 internal-fsb-allow-cursor internal-fsb-element offset-10\"",
 245bc127        "    internal-fsb-class=\"Button\"",
-245bc127        "    internal-fsb-data-controls=\"0762b97d 098c6ea6 1da99335 25254217 27d35136 33832ba7 3478b9ac 74d68ec6 d3e700b6 ece2d619\"",
+245bc127        "    internal-fsb-data-controls=\"0762b97d 098c6ea6 1da99335 25254217 27d35136 33832ba7 3478b9ac 49da134d 74d68ec6 d3e700b6 ece2d619\"",
 245bc127        "    internal-fsb-event-no-propagate=\"1\"",
 245bc127        "    internal-fsb-guid=\"ea9268d1\"",
 245bc127        "    internal-fsb-name=\"Button 2\"",
@@ -717,6 +725,48 @@ d0e675b7    }
 245bc127        "</div>",
 245bc127        "</div>",
 245bc127        "</label>",
+245bc127        "<label",
+245bc127        "    class=\"-fsb-preset-24bc9bae col-12 internal-fsb-element\"",
+245bc127        "    internal-fsb-class=\"Label\"",
+245bc127        "    internal-fsb-event-no-propagate=\"1\"",
+245bc127        "    internal-fsb-guid=\"2b429b9b\"",
+245bc127        "    internal-fsb-name=\"Endpoint\"",
+245bc127        "    style=\"-fsb-inherited-presets: 24bc9bae\"",
+245bc127        "    internal-fsb-react-style-display=\"CODE[return (this.getDataFromNotation('User.github')) ? 'block' : 'none';]\">",
+245bc127        "<div",
+245bc127        "    class=\"container-fluid\"",
+245bc127        "    internal-fsb-event-no-propagate=\"1\">",
+245bc127        "<div",
+245bc127        "    class=\"internal-fsb-allow-cursor internal-fsb-strict-layout row\">",
+245bc127        "<div",
+245bc127        "    class=\"-fsb-preset-c8d71ae6 col-4 internal-fsb-element\"",
+245bc127        "    contenteditable=\"true\"",
+245bc127        "    internal-fsb-class=\"TextElement\"",
+245bc127        "    internal-fsb-event-no-propagate=\"1\"",
+245bc127        "    internal-fsb-guid=\"75639b3d\"",
+245bc127        "    internal-fsb-name=\"TextElement 6\"",
+245bc127        "    style=\"-fsb-inherited-presets: c8d71ae6\">Progressively Update:</div>",
+245bc127        "",
+245bc127        "<div",
+245bc127        "    class=\"internal-fsb-element\"",
+245bc127        "    internal-fsb-guid=\"49da134d\"",
+245bc127        "    internal-fsb-name=\"Checkbox 1\"",
+245bc127        "    internal-fsb-event-no-propagate=\"1\"",
+245bc127        "    style=\"-fsb-empty\"",
+245bc127        "    internal-fsb-class=\"Checkbox\"",
+245bc127        "    internal-fsb-react-data=\"User.progressivelyUpdate\">",
+245bc127        "<input",
+245bc127        "    type=\"checkbox\"",
+245bc127        "    style=\"-fsb-for-children: true; display: block; margin-top: 10px\"",
+245bc127        "    class=\"\"",
+245bc127        "    checked=\"true\"",
+245bc127        "    internal-fsb-data-source-type=\"document\"",
+245bc127        "    internal-fsb-data-source-column=\"progressivelyUpdate\"",
+245bc127        "    internal-fsb-data-source-name=\"User\">",
+245bc127        "</div>",
+245bc127        "</div>",
+245bc127        "</div>",
+245bc127        "</label>",
 245bc127        "</div>",
 245bc127        "</div>",
 245bc127        "</div>",
@@ -882,7 +932,7 @@ d0e675b7    }
 245bc127        "    internal-fsb-name=\"TextElement 3\"",
 245bc127        "    style=\"-fsb-inherited-presets: 12bc19e4\">Linked Accounts</div>",
 245bc127        "<button",
-245bc127        "    class=\" btn btn-primary btn-sm col-6 internal-fsb-allow-cursor internal-fsb-element offset-3\"",
+245bc127        "    class=\"btn btn-primary btn-sm col-6 internal-fsb-allow-cursor internal-fsb-element offset-3\"",
 245bc127        "    internal-fsb-class=\"Button\"",
 245bc127        "    internal-fsb-event-no-propagate=\"1\"",
 245bc127        "    internal-fsb-guid=\"187c250b\"",
@@ -960,7 +1010,7 @@ d0e675b7    }
 245bc127        "    internal-fsb-name=\"TextElement\">Unlink your Facebook account</div>",
 245bc127        "</button>",
 245bc127        "<button",
-245bc127        "    class=\" btn btn-danger btn-sm col-6 internal-fsb-allow-cursor internal-fsb-element offset-3\"",
+245bc127        "    class=\"btn btn-danger btn-sm col-6 internal-fsb-allow-cursor internal-fsb-element offset-3\"",
 245bc127        "    internal-fsb-class=\"Button\"",
 245bc127        "    internal-fsb-event-no-propagate=\"1\"",
 245bc127        "    internal-fsb-guid=\"4e677128\"",
@@ -999,10 +1049,21 @@ d0e675b7    }
 245bc127      "klass": "Settings",
 245bc127      "name": "Settings",
 245bc127      "namespace": "Project.Controls",
+245bc127      "references": [
+245bc127        "245bc127"
+245bc127      ],
 245bc127      "state": "create"
 245bc127    },
 4d816ba8    "4d816ba8": {
-4d816ba8      "accessories": {},
+4d816ba8      "accessories": {
+4d816ba8        "currentCursorWalkPath": [
+4d816ba8          "0",
+4d816ba8          0,
+4d816ba8          1,
+4d816ba8          null
+4d816ba8        ],
+4d816ba8        "selectingElementGUID": null
+4d816ba8      },
 4d816ba8      "html": [
 4d816ba8        "<div",
 4d816ba8        "    class=\"-fsb-preset-245bc127 col-12 internal-fsb-element\"",
@@ -1396,6 +1457,9 @@ d0e675b7    }
 4d816ba8      "klass": "FlowLayout_4d816ba8",
 4d816ba8      "name": "Authenticator",
 4d816ba8      "namespace": "Project.Controls",
+4d816ba8      "references": [
+4d816ba8        "4d816ba8"
+4d816ba8      ],
 4d816ba8      "state": "create"
 4d816ba8    }
   },
@@ -1422,7 +1486,7 @@ d0e675b7    }
       "    style=\"height: 100%;\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor internal-fsb-begin-layout row\"",
-      "    style=\"height: 100%; min-height: 1240px;\"",
+      "    style=\"height: 100%; min-height: 1242px;\"",
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-element\"",
@@ -1467,7 +1531,7 @@ d0e675b7    }
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor row\"",
-      "    style=\"bottom: 0px; left: 0px; min-height: 204px;; position: absolute; right: 0px; top: 0px\">",
+      "    style=\"inset: 0px; min-height: 204px; position: absolute;\">",
       "<div",
       "    class=\"internal-fsb-element\"",
       "    internal-fsb-guid=\"49b8ae39\"",
@@ -1550,7 +1614,7 @@ d0e675b7    }
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor row\"",
-      "    style=\"bottom: 0px; left: 0px; min-height: 494px;; position: absolute; right: 0px; top: 0px\">",
+      "    style=\"inset: 0px; min-height: 494px; position: absolute;\">",
       "<div",
       "    class=\"internal-fsb-element\"",
       "    internal-fsb-guid=\"3a8aa8e0\"",
@@ -1869,7 +1933,7 @@ d0e675b7    }
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor row\"",
-      "    style=\"bottom: 0px; left: 0px; min-height: 182px;; position: absolute; right: 0px; top: 0px\">",
+      "    style=\"inset: 0px; min-height: 182px; position: absolute;\">",
       "<div",
       "    class=\"internal-fsb-element\"",
       "    internal-fsb-guid=\"e06babea\"",
@@ -1927,7 +1991,7 @@ d0e675b7    }
       "    internal-fsb-event-no-propagate=\"1\">",
       "<div",
       "    class=\"internal-fsb-absolute-layout internal-fsb-allow-cursor row\"",
-      "    style=\"bottom: 0px; left: 0px; min-height: 182px;; position: absolute; right: 0px; top: 0px\">",
+      "    style=\"inset: 0px; min-height: 182px; position: absolute;\">",
       "<div",
       "    class=\"internal-fsb-element\"",
       "    internal-fsb-guid=\"9930c17b\"",
@@ -2589,8 +2653,8 @@ ce8b8488          }
   },
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "687aadb2e5ff8c03bae3467891d90dfa507b71b5#-1757316929",
-    "Project.Controls.Settings": "fa33e32b6eb130cd316dcfe941914b89d93daf6a#1319621617"
+    "Project.Controls.FlowLayout_4d816ba8": "33fe4dfa3a6fd4b2dc683de95030076b36f85218#36060661",
+    "Project.Controls.Settings": "25e815d63e6c78810ac8f1e7d13f8dab93347227#-267064682"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -2683,7 +2747,7 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "6e3107e09e8505e1cfe566c275ccf75355d99fef#1076111875",
+  "headerBlobSHA": "89117f04fa8d41a2c6b6dfc57867f41223748a9f#-1231396580",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
@@ -2700,6 +2764,13 @@ ce8b8488          }
 3cb10a6e    "3cb10a6e": {
 3cb10a6e      "accessories": {},
 3cb10a6e      "automaticSchemata": {
+3cb10a6e        "1166620928773320": {
+3cb10a6e          "required": null,
+3cb10a6e          "sourceColumn": "progressivelyUpdate",
+3cb10a6e          "sourceName": "User",
+3cb10a6e          "sourceType": "document",
+3cb10a6e          "validationFormat": null
+3cb10a6e        },
 3cb10a6e        "1373582583047392": {
 3cb10a6e          "required": null,
 3cb10a6e          "sourceColumn": "endpoint",
@@ -2894,7 +2965,8 @@ ce8b8488          }
 3cb10a6e          "                        staging: user.staging,",
 3cb10a6e          "                        endpoint: user.endpoint,",
 3cb10a6e          "                        facebook: !!user.facebook,",
-3cb10a6e          "                        github: !!user.github",
+3cb10a6e          "                        github: !!user.github,",
+3cb10a6e          "                        progressivelyUpdate: user.progressivelyUpdate !== false",
 3cb10a6e          "                      },",
 3cb10a6e          "                      relations: {}",
 3cb10a6e          "                    }",
@@ -2961,7 +3033,7 @@ ce8b8488          }
 3cb10a6e          "    return new Promise(async (resolve, reject) => {",
 3cb10a6e          "    \ttry {",
 3cb10a6e          "      \tlet options = RequestHelper.getOptions(this.pageId, this.request);",
-3cb10a6e          "      \tlet email, name, alias, project, feature, develop, staging, endpoint, password, confirmPassword;",
+3cb10a6e          "      \tlet email, name, alias, project, feature, develop, staging, endpoint, password, confirmPassword, progressivelyUpdate;",
 3cb10a6e          "      \t",
 3cb10a6e          "      \tfor (let input of data) {",
 3cb10a6e          "        \tswitch (input.name) {",
@@ -2992,6 +3064,9 @@ ce8b8488          }
 3cb10a6e          "        \t  case 'password':",
 3cb10a6e          "        \t    password = input.value;",
 3cb10a6e          "        \t    break;",
+3cb10a6e          "        \t  case 'progressivelyUpdate':",
+3cb10a6e          "        \t    progressivelyUpdate = input.value;",
+3cb10a6e          "        \t    break;",
 3cb10a6e          "        \t}",
 3cb10a6e          "      \t}",
 3cb10a6e          "      \t",
@@ -3010,6 +3085,7 @@ ce8b8488          }
 3cb10a6e          "              user.develop = develop || \"\";",
 3cb10a6e          "              user.staging = staging || \"\";",
 3cb10a6e          "              user.endpoint = endpoint || \"\";",
+3cb10a6e          "              user.progressivelyUpdate = progressivelyUpdate !== 'false'",
 3cb10a6e          "              ",
 3cb10a6e          "              if (!!password) {",
 3cb10a6e          "                user.password = password;",
@@ -3124,6 +3200,7 @@ ce8b8488          }
 3cb10a6e          "endpoint": {},
 3cb10a6e          "feature": {},
 3cb10a6e          "name": {},
+3cb10a6e          "progressivelyUpdate": {},
 3cb10a6e          "project": {},
 3cb10a6e          "staging": {}
 3cb10a6e        }
