@@ -1595,22 +1595,6 @@ var ManipulationHelper = {
 		  			direction: 'appendChild'
 		  		};
 		  	}
-		  	
-		  	link = RandomHelper.generateGUID();
-	  		
-		  	if (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(destination, 'internal-fsb-class')) != -1) {
-		  		let elementClassName = HTMLHelper.getAttribute(target, 'class') || '';
-					
-					promise.then(() => {
-			      elementClassName = TextHelper.removeExtraWhitespaces(elementClassName);
-						ManipulationHelper.perform('update', {
-							attributes: [{
-								name: 'class',
-								value: elementClassName
-							}]
-						}, true, false, link);
-					});
-		  	}
 			}
 			
 			switch (content.direction) {
