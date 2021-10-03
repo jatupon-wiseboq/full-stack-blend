@@ -1549,6 +1549,7 @@ var ManipulationHelper = {
   	let foundNestButtons = false;
   	if (HTMLHelper.getAttribute(target, 'internal-fsb-class') == 'Button') {
 	  	for (let element of parents) {
+	  		if (content.direction != 'appendChild' && element == destination) continue;
 	  		if (element.getAttribute('internal-fsb-class') == 'Button') {
 	  			foundNestButtons = true;
 	  			break;
