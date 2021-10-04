@@ -7,7 +7,7 @@ import {UserDocument, User} from "../models/User";
  */
 export const index = async (req: Request, res: Response) => {
     let user = req.user as UserDocument;
-    if (!user || req.query.evaluation === 'true') user = await User.findOne({email: 'evaluation@softenstorm.com'});
+    if (req.query.evaluation === 'true') user = await User.findOne({email: 'evaluation@softenstorm.com'});
     
     if (!user) {
     	res.redirect('/account/authenticate');
