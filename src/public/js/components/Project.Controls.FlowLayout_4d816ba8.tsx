@@ -187,7 +187,7 @@ class FlowLayout_4d816ba8 extends Base {
                 div
                   br
                 div
-                  | By using this StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.
+                  | By using this StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust, for examples:
                 div
                   |   - Defamatory, discriminatory, or mean-spirited content
                 div
@@ -200,6 +200,8 @@ class FlowLayout_4d816ba8 extends Base {
                   |   - inaccurate or misleading quotations of religious
                 div
                   |   - False information and features
+                div
+                  |   - Liquors, beer, narcotic drug, OR tobacco
                 div
                   | Any alleged softwares are subject to local law enforcement and will be removed without any consent.
             .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
