@@ -1051,15 +1051,7 @@ d0e675b7    }
 245bc127      "state": "create"
 245bc127    },
 4d816ba8    "4d816ba8": {
-4d816ba8      "accessories": {
-4d816ba8        "currentCursorWalkPath": [
-4d816ba8          "0",
-4d816ba8          0,
-4d816ba8          1,
-4d816ba8          null
-4d816ba8        ],
-4d816ba8        "selectingElementGUID": null
-4d816ba8      },
+4d816ba8      "accessories": {},
 4d816ba8      "html": [
 4d816ba8        "<div",
 4d816ba8        "    class=\"-fsb-preset-245bc127 col-12 internal-fsb-element\"",
@@ -1153,7 +1145,20 @@ d0e675b7    }
 4d816ba8        "    internal-fsb-event-no-propagate=\"1\"",
 4d816ba8        "    internal-fsb-guid=\"e55072d1\"",
 4d816ba8        "    internal-fsb-name=\"TextElement 3\"",
-4d816ba8        "    style=\"-moz-hyphens: auto; -ms-hyphens: auto; -ms-overflow-y: auto; -ms-word-break: break-word; -webkit-hyphens: auto; color: rgba(255, 255, 255, 1); display: block; font-size: 10px; hyphens: auto; overflow-y: auto; text-align: justify; width: 100%; word-break: break-word\">ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>",
+4d816ba8        "    style=\"-moz-hyphens: auto; -ms-hyphens: auto; -ms-overflow-y: auto; -ms-word-break: break-word; -webkit-hyphens: auto; color: rgba(255, 255, 255, 1); display: block; font-size: 10px; hyphens: auto; overflow-y: auto; text-align: justify; text-transform: uppercase; width: 100%; word-break: break-word\">",
+4d816ba8        "<div>ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</div>",
+4d816ba8        "<div>",
+4d816ba8        "<br>",
+4d816ba8        "</div>",
+4d816ba8        "<div>By using StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.</div>",
+4d816ba8        "<div>&nbsp; - Defamatory, discriminatory, or mean-spirited content</div>",
+4d816ba8        "<div>&nbsp; - encourage violence</div>",
+4d816ba8        "<div>&nbsp; - encourage illegal or reckless use of weapons</div>",
+4d816ba8        "<div>&nbsp; - sexual or pornographic material</div>",
+4d816ba8        "<div>&nbsp; - inaccurate or misleading quotations of religious</div>",
+4d816ba8        "<div>&nbsp; - False information and features</div>",
+4d816ba8        "<div>Any alleged softwares are subject to local law enforcement and will be removed without any consent.</div>",
+4d816ba8        "</div>",
 4d816ba8        "</div>",
 4d816ba8        "",
 4d816ba8        "<div",
@@ -1453,9 +1458,6 @@ d0e675b7    }
 4d816ba8      "klass": "FlowLayout_4d816ba8",
 4d816ba8      "name": "Authenticator",
 4d816ba8      "namespace": "Project.Controls",
-4d816ba8      "references": [
-4d816ba8        "4d816ba8"
-4d816ba8      ],
 4d816ba8      "state": "create"
 4d816ba8    }
   },
@@ -2649,7 +2651,7 @@ ce8b8488          }
   },
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "33fe4dfa3a6fd4b2dc683de95030076b36f85218#36060661",
+    "Project.Controls.FlowLayout_4d816ba8": "e231f6fed68eaff3087c14c8bfb06826dd38c95b#1721993866",
     "Project.Controls.Settings": "3562be585e50ea396d140b5c6b043cc4b19d86bb#1186927411"
   },
   "globalSettings": {
@@ -2743,7 +2745,7 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "fd646a2ae3367cdf1a55f24cef4e84b1b88ea039#-2039291774",
+  "headerBlobSHA": "0a27085d048be0c4146fec95c0a3761c7086cc7f#-822192136",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
@@ -3930,7 +3932,7 @@ b351d3a2    },
         "</div>",
         "</div>",
         "<div",
-        "    class=\"col-12 internal-fsb-element internal-fsb-walking\"",
+        "    class=\"col-12 internal-fsb-element\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ac85eab\"",
