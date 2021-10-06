@@ -1121,7 +1121,7 @@ d0e675b7    }
 4d816ba8        "    internal-fsb-event-no-propagate=\"1\"",
 4d816ba8        "    internal-fsb-guid=\"257894ed\"",
 4d816ba8        "    internal-fsb-name=\"Rectangle 1\"",
-4d816ba8        "    style=\"-ms-flex-direction: column; -ms-overflow-x: hidden; -ms-overflow-y: auto; -webkit-flex-direction: column; background: rgba(3, 115, 252, 1); bottom: 0px; display: flex; flex-direction: column; left: 0px; overflow-x: hidden; overflow-y: auto; padding-bottom: 15px; padding-top: 15px; position: absolute; top: 0px\">",
+4d816ba8        "    style=\"-ms-flex-direction: column; -ms-flex-wrap: nowrap; -ms-overflow-x: hidden; -ms-overflow-y: auto; -webkit-flex-direction: column; -webkit-flex-wrap: nowrap; background: rgba(3, 115, 252, 1); bottom: 0px; display: flex; flex-direction: column; flex-wrap: nowrap; left: 0px; overflow-x: hidden; overflow-y: auto; padding-bottom: 15px; padding-top: 15px; position: absolute; top: 0px\">",
 4d816ba8        "<div",
 4d816ba8        "    class=\"internal-fsb-element\"",
 4d816ba8        "    contenteditable=\"true\"",
@@ -1150,7 +1150,7 @@ d0e675b7    }
 4d816ba8        "<div>",
 4d816ba8        "<br>",
 4d816ba8        "</div>",
-4d816ba8        "<div>By using StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.</div>",
+4d816ba8        "<div>By using this StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.</div>",
 4d816ba8        "<div>&nbsp; - Defamatory, discriminatory, or mean-spirited content</div>",
 4d816ba8        "<div>&nbsp; - encourage violence</div>",
 4d816ba8        "<div>&nbsp; - encourage illegal or reckless use of weapons</div>",
@@ -2651,7 +2651,7 @@ ce8b8488          }
   },
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "e231f6fed68eaff3087c14c8bfb06826dd38c95b#1721993866",
+    "Project.Controls.FlowLayout_4d816ba8": "aba722099b8fb886ebee6ea777249a4c41157a6b#-1976427396",
     "Project.Controls.Settings": "3562be585e50ea396d140b5c6b043cc4b19d86bb#1186927411"
   },
   "globalSettings": {
@@ -2745,7 +2745,7 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "0a27085d048be0c4146fec95c0a3761c7086cc7f#-822192136",
+  "headerBlobSHA": "fd646a2ae3367cdf1a55f24cef4e84b1b88ea039#-2039291774",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
@@ -3256,6 +3256,12 @@ ce8b8488          }
 9e885d49        "",
 9e885d49        "</div>",
 9e885d49        "</div>",
+9e885d49        "<iframe",
+9e885d49        "    style=\"pointer-events: none;; visibility: hidden\"",
+9e885d49        "    width=\"100\"",
+9e885d49        "    height=\"100\"",
+9e885d49        "    data-ruffle-polyfilled=\"\">",
+9e885d49        "</iframe>",
 9e885d49        "</body>"
 9e885d49      ],
 9e885d49      "description": null,

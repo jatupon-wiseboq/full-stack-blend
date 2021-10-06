@@ -177,7 +177,7 @@ class FlowLayout_4d816ba8 extends Base {
       div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), className="-fsb-preset-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .container-fluid
           .internal-fsb-strict-layout.row
-            .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'left': '0px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="257894ed")
+            .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '0px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="257894ed")
               .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, internal-fsb-guid="08a05b72")
                 | StackBlend Studio
               .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1', 'width': '100%'}, internal-fsb-guid="e80dd7c1")
@@ -187,7 +187,7 @@ class FlowLayout_4d816ba8 extends Base {
                 div
                   br
                 div
-                  | By using StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.
+                  | By using this StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust.
                 div
                   |   - Defamatory, discriminatory, or mean-spirited content
                 div
