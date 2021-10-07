@@ -201,7 +201,7 @@ class FlowLayout_4d816ba8 extends Base {
                 div
                   |   - False information and features
                 div
-                  |   - Liquors, beer, narcotic drug, OR tobacco
+                  |   - Liquors, beer, narcotic drug, or tobacco
                 div
                   br
                   | Copyright (c) SoftenStorm Foundation and other contributors. All rights reserved under BSD 4-clause license. 
