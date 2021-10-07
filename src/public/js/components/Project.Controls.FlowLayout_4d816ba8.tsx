@@ -187,7 +187,7 @@ class FlowLayout_4d816ba8 extends Base {
                 div
                   br
                 div
-                  | By using this StackBlend studio you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust, for examples:
+                  | By using this StackBlend studio, you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust, for examples:
                 div
                   |   - Defamatory, discriminatory, or mean-spirited content
                 div
@@ -203,7 +203,10 @@ class FlowLayout_4d816ba8 extends Base {
                 div
                   |   - Liquors, beer, narcotic drug, OR tobacco
                 div
-                  | Any alleged softwares are subject to local law enforcement and will be removed without any consent.
+                  br
+                  | Copyright (c) SoftenStorm Foundation and other contributors. All rights reserved under BSD 4-clause license. 
+                  span(style={'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'})
+                    | ANY ALLEGED SOFTWARES ARE SUBJECT TO LOCAL LAW ENFORCEMENT AND WILL BE REMOVED WITHOUT ANY CONSENT.
             .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
               .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
               .internal-fsb-element(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-guid="35e36a4a")
