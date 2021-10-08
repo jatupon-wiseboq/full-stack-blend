@@ -191,3 +191,14 @@
     | Example of DICTIONARY: {'table.column1': value, 'table.column2': value}, {'table.column3': value, 'table.table.column4': value}
   .section-body
     | Example of TABLE: a table name
+  .section-subtitle
+    | Future Notifiable Descendant
+  .section-body
+    | When you want to send real-time updates to any of future notifiable descendants, which have been notified through the regular option, you must register the inner circle tags for whom to recieve the future updates from the descendants. And for any of manipulation which is broadcastable to any inner circles, you must specify a list of innerCircleTags when performing the manipulation, for example:
+    ol
+      li(style="word-break: break-all;") NotificationHelper.associateInnerCircles(session, ['supervisor', 'manager'])
+      li(style="word-break: break-all;") NotificationHelper.disassociateInnerCircles(session, ['supervisor', 'manager'])
+      li DatabaseHelper.retrieve(..., ..., leavePermission, ['supervisor', 'manager'])
+      li DatabaseHelper.insert(..., ..., leavePermission, ['supervisor', 'manager'])
+      li DatabaseHelper.update(..., ..., leavePermission, ['supervisor', 'manager'])
+      li DatabaseHelper.delete(..., ..., leavePermission, ['supervisor', 'manager'])
