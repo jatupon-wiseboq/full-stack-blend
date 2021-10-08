@@ -180,6 +180,8 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-validation-message'], inline: true, button: false}")
     .section-note
+      | Use @ to attach descendant information, and use ! to make the collection notifiable, for example: collection.@collection, collection.@!collection.
+    .section-note
       | If you want to execute a specific code on server-side, create a custom service and pipe it in data flow.
     .section-hr
   .section-container.internal-fsb-selecting-on
