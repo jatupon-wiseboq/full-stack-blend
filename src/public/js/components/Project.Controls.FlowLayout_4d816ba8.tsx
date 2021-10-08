@@ -177,12 +177,36 @@ class FlowLayout_4d816ba8 extends Base {
       div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), className="-fsb-preset-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .container-fluid
           .internal-fsb-strict-layout.row
-            .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'left': '0px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="257894ed")
+            .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '0px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="257894ed")
               .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, internal-fsb-guid="08a05b72")
                 | StackBlend Studio
               .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1', 'width': '100%'}, internal-fsb-guid="e80dd7c1")
-              .internal-fsb-element(style={'MozHyphens': 'auto', 'MsHyphens': 'auto', 'MsOverflowY': 'auto', 'MsWordBreak': 'break-word', 'WebkitHyphens': 'auto', 'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '10px', 'hyphens': 'auto', 'overflowY': 'auto', 'textAlign': 'justify', 'width': '100%', 'wordBreak': 'break-word'}, internal-fsb-guid="e55072d1")
-                | ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+              .internal-fsb-element(style={'MozHyphens': 'auto', 'MsHyphens': 'auto', 'MsOverflowY': 'auto', 'MsWordBreak': 'break-word', 'WebkitHyphens': 'auto', 'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '10px', 'hyphens': 'auto', 'overflowY': 'auto', 'textAlign': 'justify', 'textTransform': 'uppercase', 'width': '100%', 'wordBreak': 'break-word'}, internal-fsb-guid="e55072d1")
+                div
+                  | ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+                div
+                  br
+                div
+                  | By using this StackBlend studio, you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust, for examples:
+                div
+                  |   - Defamatory, discriminatory, or mean-spirited content
+                div
+                  |   - encourage violence
+                div
+                  |   - encourage illegal or reckless use of weapons
+                div
+                  |   - sexual or pornographic material
+                div
+                  |   - inaccurate or misleading quotations of religious
+                div
+                  |   - False information and features
+                div
+                  |   - Liquors, beer, narcotic drug, or tobacco
+                div
+                  br
+                  | Copyright (c) SoftenStorm Foundation and other contributors. All rights reserved under BSD 4-clause license. 
+                  span(style={'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'})
+                    | ANY ALLEGED SOFTWARES ARE SUBJECT TO LOCAL LAW ENFORCEMENT AND WILL BE REMOVED WITHOUT ANY CONSENT.
             .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
               .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
               .internal-fsb-element(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-guid="35e36a4a")
@@ -199,14 +223,14 @@ class FlowLayout_4d816ba8 extends Base {
                           Button.-fsb-preset-d7d59dd2.col-5.internal-fsb-element.offset-0(style={'FsbInheritedPresets': 'd7d59dd2', 'marginLeft': '15px', background: (()=>{return (this.state.currentTab == 1) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 1) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 1) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_875ac000.bind(this), internal-fsb-guid="875ac000")
                             .internal-fsb-element(internal-fsb-guid="875ac000-text")
                               | Signup
-                    .-fsb-self-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="1b650e66")
+                    .-fsb-self-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="1b650e66")
                       input.form-control.form-control-sm(placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
-                    .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="22d343bd")
+                    .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="22d343bd")
                       input.form-control.form-control-sm(style={'FsbInheritedPresets': '1b650e66', 'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
                     .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-guid="4729c240")
                       .container-fluid
                         .internal-fsb-strict-layout.row
-                          .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-guid="d3de6c93")
+                          .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="d3de6c93")
                             input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Confirm password", type="password", disabled=this.state.submitting, required=true)
                     Button.btn.btn-md.btn-primary.col-6.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 0) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('954a291a', 'User', event, ((results) => { this.manipulate('954a291a', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting, type="button", onFailed=this.onButtonFailed_954a291a.bind(this), onSubmitting=this.onButtonSubmitting_954a291a.bind(this), internal-fsb-guid="954a291a")
                       .internal-fsb-element(internal-fsb-guid="954a291a-text")

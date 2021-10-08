@@ -62,6 +62,9 @@ html
                           button.btn.btn-md.btn-primary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(type="button", internal-fsb-guid="651393e4")
                             .internal-fsb-element(internal-fsb-guid="651393e4-text")
                               | Get Started
+                          button.btn.btn-md.btn-secondary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(style={'margin-top': '5px'}, type="button", internal-fsb-guid="513d8787")
+                            .internal-fsb-element(internal-fsb-guid="a43cbbee")
+                              | Try the Editor
                           button.btn.btn-md.btn-secondary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(style={'margin-top': '5px'}, type="button", internal-fsb-guid="d85b2bd4")
                             .internal-fsb-element(internal-fsb-guid="d85b2bd4-text")
                               | Developer Notes
@@ -186,6 +189,11 @@ html
               // 
               window.location = '/account/authenticate';
           };
+          Controller.prototype.onButtonClick_513d8787 = function (event) {
+              // Handle the event of onButtonClick (Button 1) here:
+              // 
+              window.location = '/editor?evaluation=true';
+          };
           Controller.prototype.onButtonClick_d85b2bd4 = function (event) {
               // Handle the event of onButtonClick (Button 3) here:
               // 
@@ -221,12 +229,14 @@ html
       }());
       var controller = new Controller();
       controller.register('651393e4', 'click', 'onButtonClick_651393e4', false);
+      controller.register('513d8787', 'click', 'onButtonClick_513d8787', false);
       controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4', false);
       controller.register('57bd398a', 'click', 'onButtonClick_57bd398a', false);
       TestHelper.identify();
       function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
       ;
       controller.listen('651393e4');
+      controller.listen('513d8787');
       controller.listen('d85b2bd4');
       controller.listen('57bd398a');
       
