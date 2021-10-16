@@ -96,13 +96,27 @@ var WorkspaceHelper = {
   		}
   	}
     
+    let clonedInternalComponents = CodeHelper.clone(InternalComponents);
+    for (let key in clonedInternalComponents) {
+  		if (clonedInternalComponents.hasOwnProperty(key)) {
+  			clonedInternalComponents[key].accessories = {};
+  		}
+  	}
+    
+    let clonedInternalPopups = CodeHelper.clone(InternalPopups);
+    for (let key in clonedInternalPopups) {
+  		if (clonedInternalPopups.hasOwnProperty(key)) {
+  			clonedInternalPopups[key].accessories = {};
+  		}
+  	}
+    
     return Object.assign(
     	{
 	    	version: version,
 	      globalSettings: clonedInternalProjectSettings,
 	      sites: clonedInternalSites,
-	      components: InternalComponents,
-	      popups: InternalPopups,
+	      components: clonedInternalComponents,
+	      popups: clonedInternalPopups,
 	      flows: InternalDataFlows,
 	      services: InternalServices,
 	      stylesheets: StylesheetHelper.generateStylesheetData(),
