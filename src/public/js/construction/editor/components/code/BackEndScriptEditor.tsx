@@ -74,8 +74,7 @@ class BackEndScriptEditor extends Base<Props, State> {
         if (properties.tag == 'user-action') return;
         
         let code, mapping;
-        if (['site'].indexOf(this.state.extensionValues['editing']) != -1 || (this.state.extensionValues['isInputElement'] &&
-        	['components', 'popups'].indexOf(this.state.extensionValues['editing']) != -1)) {
+        if (['site'].indexOf(this.state.extensionValues['editing']) != -1) {
 	        if (FORM_CONTROL_CLASS_LIST.indexOf(this.state.attributeValues['internal-fsb-class']) == -1) {
 	            let info = this.state.extensionValues;
 	            info['internal-fsb-data-code'] = this.state.attributeValues['internal-fsb-data-code'];
@@ -95,6 +94,16 @@ class BackEndScriptEditor extends Base<Props, State> {
 	            
 	        		[code, mapping] = BackEndScriptHelper.generateMergingCode(info);
 	        }
+	        this.functionNameMapping = mapping;
+	        
+	        if (code) {
+	        	code = TextHelper.removeMultipleBlankLines(code);
+	        }
+	      } else if (['components', 'popups'].indexOf(this.state.extensionValues['editing']) != -1 && this.state.extensionValues['isInputElement']) {
+	      	let info = this.state.attributeValues;
+	            
+	        [code, mapping] = BackEndScriptHelper.generateMergingCode(info);
+	        
 	        this.functionNameMapping = mapping;
 	        
 	        if (code) {
