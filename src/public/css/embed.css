@@ -8463,3 +8463,6 @@ html, body {
     border-bottom: none !important; }
   .internal-fsb-table-layout[internal-fsb-table-collapse="true"] > tbody > tr > td:not(:last-of-type) {
     border-right: none !important; }
+
+.internal-fsb-element > img {
+  width: 100%; }
