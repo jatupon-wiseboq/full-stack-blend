@@ -422,7 +422,7 @@ var WorkspaceHelper = {
       if (force || !CodeHelper.equals(clonedPage, page)) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
-      	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+      	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
       }
       
       if (reinit) {
@@ -922,10 +922,6 @@ var WorkspaceHelper = {
   	
   	return results;
   },
-  generateBackEndCodeForCurrentPage: () => {
-  	if ('site' == InternalProjectSettings.currentMode) return WorkspaceHelper.generateBackEndCodeForID();
-  	else return null;
-  },
   generateBackEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
     	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndKey()];
@@ -1026,7 +1022,7 @@ var WorkspaceHelper = {
     return CodeHelper.sortHashtable(cacheOfGeneratedFrontEndCodeForAllPages);
   },
   generateBackEndCodeForAllPages: () => {
-  	const result = WorkspaceHelper.generateBackEndCodeForCurrentPage();
+  	const result = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
     if (result != null) cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = result;
     
     for (let key in cacheOfGeneratedBackEndCodeForAllPages) {
