@@ -152,7 +152,7 @@ class Controller extends Base {
         if (user) {
           User.findById(user.id, (err, user: UserDocument) => {
             if (err) {
-              this.response.redirect('/account/authenticate');
+              this.response.redirect('/logout');
               resolve({});
             } else {
               resolve({
