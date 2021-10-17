@@ -1466,18 +1466,6 @@ d0e675b7    }
 4d816ba8    }
   },
   "controllerBlobSHA": "cd92c846c90726e02eb6a2ffbe1647416beb2d42#-2104013774",
-  "currentPersistingFiles": [
-    "src/controllers/components/account/settings/_3cb10a6e.ts",
-    "src/controllers/components/account/authenticate/_9e885d49.ts",
-    "src/controllers/components/developer/_b160aa0e.ts",
-    "src/controllers/components/index.ts",
-    "src/public/js/components/Project.Controls.FlowLayout_4d816ba8.tsx",
-    "src/public/js/components/Project.Controls.Settings.tsx",
-    "views/home/account/settings/_3cb10a6e.pug",
-    "views/home/account/authenticate/_9e885d49.pug",
-    "views/home/developer/_b160aa0e.pug",
-    "views/home/index.pug"
-  ],
   "flows": {
     "default": [
       "<body",
@@ -2653,7 +2641,6 @@ ce8b8488          }
       }
     }
   },
-  "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "17b480ba4f45b83c8be4137aa8d41f77991c449a#-2040552264",
     "Project.Controls.Settings": "3562be585e50ea396d140b5c6b043cc4b19d86bb#1186927411"
@@ -2749,7 +2736,6 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "fd646a2ae3367cdf1a55f24cef4e84b1b88ea039#-2039291774",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {

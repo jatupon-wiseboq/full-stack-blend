@@ -43,22 +43,34 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         i.fa.fa-repeat.m-0
         .title
           | Redo
-      a.btn.btn-sm.btn-light.mr-1(onclick="update()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Update</b></p><p>Push code changes to console or terminal for test without saving. To reset the changes, please run &quot;npm run reset&quot;.</p>")
+      a.btn.btn-sm.btn-light.mr-1.update-button(onclick="update()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Update</b></p><p>Push code changes to console or terminal for test without saving. To reset the changes, please run &quot;npm run reset&quot;.</p>")
         i.fa.fa-terminal.m-0
         .title
           | Update
-      a.btn.btn-sm.btn-light.mr-1(onclick="save()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
+        .progress
+          .gradient-1
+          .gradient-2
+      a.btn.btn-sm.btn-light.mr-1.save-button(onclick="save()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Save</b></p><p>This will save your changes, which can do it more frequently using ctrl+s on windows or command+s on mac.</p>")
         i.fa.fa-save.m-0
         .title
           | Save
-      a.btn.btn-sm.btn-light.mr-1(onclick="merge()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Merge</b></p><p>This will merge your changes with other colleagues, and replace your project with the merged one.</p>")
+        .progress
+          .gradient-1
+          .gradient-2
+      a.btn.btn-sm.btn-light.mr-1.merge-button(onclick="merge()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Merge</b></p><p>This will merge your changes with other colleagues, and replace your project with the merged one.</p>")
         i.fa.fa-cloud-upload.m-0
         .title
           | Merge
-      a.btn.btn-sm.btn-light(onclick="deploy()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
+        .progress
+          .gradient-1
+          .gradient-2
+      a.btn.btn-sm.btn-light.deploy-button(onclick="deploy()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Deploy</b></p><p>Publish and deploy your changes on the web so that your clients can use or play it.</p>")
         i.fa.fa-rocket.m-0
         .title
           | Deploy
+        .progress
+          .gradient-1
+          .gradient-2
     .mx-auto.siteToolset.popupsToolset.componentsToolset.toolset.py-1
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')

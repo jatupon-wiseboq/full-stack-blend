@@ -70,3 +70,52 @@
 .tooltip.bs-tooltip-bottom > .arrow::before { border-bottom-color: white; }
 .tooltip.bs-tooltip-left > .arrow::before { border-left-color: white; }
 .tooltip.bs-tooltip-right > .arrow::before { border-right-color: white; }
+
+@keyframes progress-gradient-1 {
+  0%   {left: 0px;}
+  50%  {left: -250px;}
+  50.000001%  {left: 250px;}
+  100% {left: 0px;}
+}
+@keyframes progress-gradient-2 {
+  0%   {left: 250px;}
+  50%  {left: 0px;}
+  100% {left: -250px;}
+}
+
+.navbar .btn {
+	position: relative;
+	
+	.progress {
+		display: none;
+	}
+	
+	&.in-progress {
+		.progress {
+			position: absolute;
+			display: block;
+			left: 0px;
+			right: 0px;
+			bottom: -4px;
+			height: 5px;
+			border-radius: 5px;
+			
+			.gradient-1, .gradient-2 {
+				constent: '';
+				display: block;
+				position: absolute;
+				top: 0px;
+				width: 250px;
+				height: 5px;
+				background: linear-gradient(90deg, rgba(0,212,255,1) 0%, rgba(255,0,243,1) 40%, rgba(255,0,243,1) 60%, rgba(0,212,255,1) 100%);
+			}
+			.gradient-1 {
+				animation: progress-gradient-1 4s linear infinite;
+			}
+			.gradient-2 {
+				animation: progress-gradient-2 4s linear infinite;
+			}
+		}
+	}
+}
+

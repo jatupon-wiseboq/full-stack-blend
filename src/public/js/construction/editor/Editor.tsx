@@ -321,7 +321,11 @@ let cachedUpdateEditorProperties = {};
     Accessories.projectManager.current.load();
   });
   window.update = (() => {
-    Accessories.endpointManager.current.save(() => {}, true);
+  	HTMLHelper.addClass(HTMLHelper.getElementByClassName('update-button'), 'in-progress');
+  
+    Accessories.endpointManager.current.save(() => {
+    	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('update-button'), 'in-progress');
+    }, true);
   });
   window.save = (() => {
     Accessories.projectManager.current.save();
