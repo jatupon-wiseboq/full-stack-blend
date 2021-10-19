@@ -21,6 +21,7 @@ import '../controls/Guide';
 import '../controls/LayoutInfo';
 import '../controls/Dragger';
 import '../controls/Overlay';
+import '../controls/RedLine';
 import {LIBRARIES, INPUT_ELEMENT_TAGS} from '../../Constants';
 
 declare let React: any;
@@ -119,6 +120,11 @@ var EditorHelper = {
     Accessories.overlay = ReactDOM.render(<FullStackBlend.Controls.Overlay />, overlayContainer);
     Accessories.overlay.setDOMNode(overlayContainer.firstElementChild);
     overlayContainer.removeChild(Accessories.overlay.getDOMNode());
+    
+    let redLineContainer = document.createElement('div');
+    Accessories.redLine = ReactDOM.render(<FullStackBlend.Controls.RedLine />, redLineContainer);
+    Accessories.redLine.setDOMNode(redLineContainer.firstElementChild);
+    redLineContainer.removeChild(Accessories.redLine.getDOMNode());
     
     EditorHelper.init(true, true);
   },
@@ -395,6 +401,9 @@ var EditorHelper = {
     	HTMLHelper.addClass(element, 'internal-fsb-selecting');
     	
       element.appendChild(Accessories.resizer.getDOMNode());
+      element.appendChild(Accessories.redLine.getDOMNode());
+      
+      Accessories.redLine.reset();
       
       let current = element;
       while (current != null) {
@@ -438,6 +447,9 @@ var EditorHelper = {
     	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
       Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
+      Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
+      
+      Accessories.redLine.reset();
     }
     EditorHelper.synchronize("click", null);
   },

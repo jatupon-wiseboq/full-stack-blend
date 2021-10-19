@@ -586,3 +586,57 @@ input[type='radio'], input[type='checkbox'] {
 	width: 100% !important;
 	pointer-events: none !important;
 }
+
+.internal-fsb-measuring {
+	outline: solid red 1px !important;
+}
+
+.internal-fsb-top-red-line, .internal-fsb-right-red-line, .internal-fsb-bottom-red-line, .internal-fsb-left-red-line {
+	position: fixed;
+	pointer-events: none;
+	z-index: #{$maximum-z-index - 1};
+	
+	.internal-fsb-red-line-value {
+		position: absolute;
+		background-color: red;
+		color: white;
+		font-family: Arial;
+		font-size: 10px;
+		line-height: 9px;
+		padding: 2px 4px;
+		border-radius: 5px;
+		white-space: nowrap;
+	}
+}
+.internal-fsb-top-red-line {
+	border-left: solid red 1px;
+	
+	.internal-fsb-red-line-value {
+		top: 50%;
+		margin-top: -6.5px;
+	}
+}
+.internal-fsb-right-red-line {
+	border-top: solid red 1px;
+	
+	.internal-fsb-red-line-value {
+		left: 50%;
+		margin-top: -6.5px;
+	}
+}
+.internal-fsb-bottom-red-line {
+	border-left: solid red 1px;
+	
+	.internal-fsb-red-line-value {
+		top: 50%;
+		margin-top: -6.5px;
+	}
+}
+.internal-fsb-left-red-line {
+	border-top: solid red 1px;
+	
+	.internal-fsb-red-line-value {
+		left: 50%;
+		margin-top: -6.5px;
+	}
+}

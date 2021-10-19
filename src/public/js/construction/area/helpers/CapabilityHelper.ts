@@ -209,9 +209,11 @@ var CapabilityHelper = {
       let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
       elements.forEach((element) => {
         CapabilityHelper.installCapabilityOfBeingSelected(element);
+        CapabilityHelper.installCapabilityOfBeingMeasure(element);
       });
       if (HTMLHelper.hasClass(container, 'internal-fsb-element') && !HTMLHelper.hasClass(container, 'internal-fsb-begin')) {
         CapabilityHelper.installCapabilityOfBeingSelected(container);
+        CapabilityHelper.installCapabilityOfBeingMeasure(container);
       }
       
       CapabilityHelper.installCapabilityOfBeingMoveInCursor(container);
@@ -228,6 +230,20 @@ var CapabilityHelper = {
     	style = HTMLHelper.setInlineStyle(style, '-fsb-for-children', 'true');
     	HTMLHelper.setAttribute(container, 'style', style);
     });
+  },
+  installCapabilityOfBeingMeasure: (_container: HTMLElement) => {
+  	HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
+  		container.addEventListener('mouseout', (event: Event) => {
+	    	Accessories.redLine.measure(null);
+	    	
+	    	return EventHelper.cancel(event);
+      }, false);
+	    container.addEventListener('mouseover', (event: Event) => {
+        Accessories.redLine.measure(event);
+        
+        return EventHelper.cancel(event);
+      }, false);
+	  });
   }
 };
 
