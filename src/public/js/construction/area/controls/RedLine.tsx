@@ -22,6 +22,7 @@ class RedLine extends React.Component<Props, State> {
     private redLineOnRight: HTMLElement = null;
     private redLineOnBottom: HTMLElement = null;
     private redLineOnLeft: HTMLElement = null;
+    private redLineInfo: HTMLElement = null;
     
     constructor() {
         super();
@@ -42,6 +43,10 @@ class RedLine extends React.Component<Props, State> {
         this.redLineOnLeft.className = 'internal-fsb-accessory internal-fsb-left-red-line';
         this.redLineOnLeft.innerHTML = '<span class="internal-fsb-red-line-value"></span>';
         
+        this.redLineInfo = document.createElement('div');
+        this.redLineInfo.className = 'internal-fsb-accessory internal-fsb-info-red-line';
+        this.redLineInfo.innerHTML = '<span class="internal-fsb-red-line-value"></span>';
+        
         document.body.addEventListener('scroll', this.reset.bind(this));
     }
     
@@ -59,6 +64,7 @@ class RedLine extends React.Component<Props, State> {
 				this.redLineOnRight.parentNode && this.redLineOnRight.parentNode.removeChild(this.redLineOnRight);
 				this.redLineOnBottom.parentNode && this.redLineOnBottom.parentNode.removeChild(this.redLineOnBottom);
 				this.redLineOnLeft.parentNode && this.redLineOnLeft.parentNode.removeChild(this.redLineOnLeft);
+				this.redLineInfo.parentNode && this.redLineInfo.parentNode.removeChild(this.redLineInfo);
     }
     
     public measure(event: Event) {
@@ -244,7 +250,12 @@ class RedLine extends React.Component<Props, State> {
 	    		}
     		}
     		
-    		if (found) HTMLHelper.addClass(measureTo, 'internal-fsb-measuring');
+    		if (found) {
+    			HTMLHelper.addClass(measureTo, 'internal-fsb-measuring');
+    			
+    			container.appendChild(this.redLineInfo);
+    			this.redLineInfo.firstElementChild.innerText = `${measureFromSize[0]} x ${measureFromSize[1]} px`;
+    		}
     }
     
     render() {
