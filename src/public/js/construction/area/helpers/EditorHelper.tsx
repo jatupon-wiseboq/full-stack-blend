@@ -140,6 +140,9 @@ var EditorHelper = {
     document.body.appendChild(Accessories.cellFormater.getDOMNode());
     document.body.appendChild(Accessories.layoutInfo.getDOMNode());
     
+    Accessories.redLine.reset();
+    Accessories.redLine.detach();
+    
     // Restore element selecting and cursor placement.
     // 
     if (restoreAccessoryStates) {

@@ -65,6 +65,12 @@ class RedLine extends React.Component<Props, State> {
 				this.redLineOnBottom.parentNode && this.redLineOnBottom.parentNode.removeChild(this.redLineOnBottom);
 				this.redLineOnLeft.parentNode && this.redLineOnLeft.parentNode.removeChild(this.redLineOnLeft);
 				this.redLineInfo.parentNode && this.redLineInfo.parentNode.removeChild(this.redLineInfo);
+				
+				this.currentMeasuringToElement = null;
+    }
+    
+    public detach() {
+    		this.getDOMNode().parentNode && this.getDOMNode().parentNode.removeChild(this.getDOMNode());
     }
     
     public measure(event: Event) {

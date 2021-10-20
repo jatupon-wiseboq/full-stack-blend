@@ -325,8 +325,6 @@ var WorkspaceHelper = {
     SchemaHelper.invalidate();
     StatusHelper.invalidate();
     
-    Accessories.redLine.reset();
-    
     EditorHelper.init(['site'].indexOf(InternalProjectSettings.currentMode) != -1, updateUI);
   },
   loadPageData: (mode: string, editingID: string, _window: any=window) => {
