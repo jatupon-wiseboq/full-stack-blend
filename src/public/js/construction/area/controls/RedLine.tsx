@@ -94,11 +94,11 @@ class RedLine extends React.Component<Props, State> {
     		let found = false;
     		let flag = false;
     		
-    		if (FT > TB || FT > TT) {
+    		if (FT >= TB || FT >= TT) {
     			const mid = (Math.max(FL, TL) + Math.min(FR, TR)) / 2;
 	    		const min = Math.min(FT - TB, FT - TT);
     			
-    			if (mid > FL && mid < FR && min > 0) {
+    			if (mid >= FL && mid <= FR && min >= 0) {
 	    			this.redLineOnTop.style.left = mid + 'px';
 	    			this.redLineOnTop.style.top = (FT - min) + 'px';
 	    			this.redLineOnTop.style.height = min + 'px';
@@ -112,11 +112,11 @@ class RedLine extends React.Component<Props, State> {
 	    			flag = true;
     			}
     		}
-    		if (!flag && FT > TT && FT < TB) {
+    		if (!flag && FT >= TT && FT <= TB) {
     			const mid = (Math.max(FL, TL) + Math.min(FR, TR)) / 2;
 	    		const min = FT - TT;
     			
-    			if (mid > FL && mid < FR && min > 0) {
+    			if (mid >= FL && mid <= FR && min >= 0) {
 	    			this.redLineOnTop.style.left = mid + 'px';
 	    			this.redLineOnTop.style.top = (FT - min) + 'px';
 	    			this.redLineOnTop.style.height = min + 'px';
@@ -132,11 +132,11 @@ class RedLine extends React.Component<Props, State> {
     		
     		flag = false;
     		
-    		if (FR < TL || FR < TR) {
+    		if (FR <= TL || FR <= TR) {
     			const mid = (Math.max(FT, TT) + Math.min(FB, TB)) / 2;
 	    		const min = Math.min(TL - FR, TR - FR);
 	    		
-    			if (mid > FT && mid < FB && min > 0) {
+    			if (mid >= FT && mid <= FB && min >= 0) {
 	    			this.redLineOnRight.style.left = FR + 'px';
 	    			this.redLineOnRight.style.top = mid + 'px';
 	    			this.redLineOnRight.style.width = min + 'px';
@@ -150,11 +150,11 @@ class RedLine extends React.Component<Props, State> {
 	    			flag = true;
 	    		}
     		}
-    		if (!flag && FR > TL && FR < TR) {
+    		if (!flag && FR >= TL && FR <= TR) {
     			const mid = (Math.max(FT, TT) + Math.min(FB, TB)) / 2;
 	    		const min = TR - FR;
 	    		
-    			if (mid > FT && mid < FB && min > 0) {
+    			if (mid >= FT && mid <= FB && min >= 0) {
 	    			this.redLineOnRight.style.left = FR + 'px';
 	    			this.redLineOnRight.style.top = mid + 'px';
 	    			this.redLineOnRight.style.width = min + 'px';
@@ -170,11 +170,11 @@ class RedLine extends React.Component<Props, State> {
     		
     		flag = false;
     		
-    		if (FB < TT || FB < TB) {
+    		if (FB <= TT || FB <= TB) {
     			const mid = (Math.max(FL, TL) + Math.min(FR, TR)) / 2;
 	    		const min = Math.min(TT - FB, TB - FB);
     			
-    			if (mid > FL && mid < FR && min > 0) {
+    			if (mid >= FL && mid <= FR && min >= 0) {
 	    			this.redLineOnBottom.style.left = mid + 'px';
 	    			this.redLineOnBottom.style.top = FB + 'px';
 	    			this.redLineOnBottom.style.height = min + 'px';
@@ -188,11 +188,11 @@ class RedLine extends React.Component<Props, State> {
 	    			flag = true;
 	    		}
     		}
-    		if (!flag && FB > TT && FB < TB) {
+    		if (!flag && FB >= TT && FB <= TB) {
     			const mid = (Math.max(FL, TL) + Math.min(FR, TR)) / 2;
 	    		const min = TB - FB;
     			
-    			if (mid > FL && mid < FR && min > 0) {
+    			if (mid >= FL && mid <= FR && min >= 0) {
 	    			this.redLineOnBottom.style.left = mid + 'px';
 	    			this.redLineOnBottom.style.top = FB + 'px';
 	    			this.redLineOnBottom.style.height = min + 'px';
@@ -208,11 +208,11 @@ class RedLine extends React.Component<Props, State> {
     		
     		flag = false;
     		
-    		if (FL > TR || FL > TL) {
+    		if (FL >= TR || FL >= TL) {
     			const mid = (Math.max(FT, TT) + Math.min(FB, TB)) / 2;
 	    		const min = Math.min(FL - TR, FL - TL);
     			
-    			if (mid > FT && mid < FB && min > 0) {
+    			if (mid >= FT && mid <= FB && min >= 0) {
 	    			this.redLineOnLeft.style.left = (FL - min) + 'px';
 	    			this.redLineOnLeft.style.top = mid + 'px';
 	    			this.redLineOnLeft.style.width = min + 'px';
@@ -226,11 +226,11 @@ class RedLine extends React.Component<Props, State> {
 	    			flag = true;
 	    		}
     		}
-    		if (!flag && FL > TL && FL < TR) {
+    		if (!flag && FL >= TL && FL <= TR) {
     			const mid = (Math.max(FT, TT) + Math.min(FB, TB)) / 2;
 	    		const min = FL - TL;
     			
-    			if (mid > FT && mid < FB && min > 0) {
+    			if (mid >= FT && mid <= FB && min >= 0) {
 	    			this.redLineOnLeft.style.left = (FL - min) + 'px';
 	    			this.redLineOnLeft.style.top = mid + 'px';
 	    			this.redLineOnLeft.style.width = min + 'px';
