@@ -3,6 +3,7 @@ import {EventHelper} from '../../helpers/EventHelper';
 import {CursorHelper} from './CursorHelper';
 import {isCtrlKeyActive, isCommandKeyActive, ManipulationHelper} from './ManipulationHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
 import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
 var CapabilityHelper = {
@@ -232,6 +233,8 @@ var CapabilityHelper = {
     });
   },
   installCapabilityOfBeingMeasure: (_container: HTMLElement) => {
+  	if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) == -1) return;
+  	
   	HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
   		container.addEventListener('mouseout', (event: Event) => {
 	    	Accessories.redLine.measure(null);
