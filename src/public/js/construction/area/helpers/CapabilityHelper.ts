@@ -214,10 +214,11 @@ var CapabilityHelper = {
       });
       if (HTMLHelper.hasClass(container, 'internal-fsb-element') && !HTMLHelper.hasClass(container, 'internal-fsb-begin')) {
         CapabilityHelper.installCapabilityOfBeingSelected(container);
-        CapabilityHelper.installCapabilityOfBeingMeasure(container);
       }
       
+      CapabilityHelper.installCapabilityOfBeingMeasure(container);
       CapabilityHelper.installCapabilityOfBeingMoveInCursor(container);
+      
       if (HTMLHelper.getAttribute(container, 'contentEditable') == 'true') {
       	CapabilityHelper.installCapabilityOfBeingPasted(container);
       }
