@@ -49,8 +49,8 @@ var MalformationRepairHelper = {
   				
   				elements[j].removeChild(elements[j].firstElementChild);
   				
-  				HTMLHelper.hasClass(elements[j], 'internal-fsb-strict-layout');
-  				HTMLHelper.hasClass(elements[j], 'internal-fsb-allow-cursor');
+  				HTMLHelper.addClass(elements[j], 'internal-fsb-strict-layout');
+  				HTMLHelper.addClass(elements[j], 'internal-fsb-allow-cursor');
   			}
   		}
   		
