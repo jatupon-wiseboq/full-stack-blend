@@ -22,15 +22,45 @@ var MalformationRepairHelper = {
     		if (currentConcatenatedClasses != internalConcatenatedClasses) {
     			elements[j].setAttribute('class', internalConcatenatedClasses);
     		}
-    		
-    		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-selecting')) {
-    			HTMLHelper.removeClass(elements[j], 'internal-fsb-selecting');
-    		}
-    		
-    		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-walking')) {
-    			HTMLHelper.removeClass(elements[j], 'internal-fsb-walking');
-    		}
+    	
+	  	  if (HTMLHelper.hasClass(elements[j], 'internal-fsb-selecting')) {
+	  			HTMLHelper.removeClass(elements[j], 'internal-fsb-selecting');
+	  		}
+	  		
+	  		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-walking')) {
+	  			HTMLHelper.removeClass(elements[j], 'internal-fsb-walking');
+	  		}
     	}
+  		
+  		if (HTMLHelper.getAttribute(elements[j], 'internal-fsb-class') == 'FlowLayout') {
+  			if (elements[j].firstElementChild &&
+  				HTMLHelper.hasClass(elements[j].firstElementChild, 'container-fluid') &&
+  				HTMLHelper.getAttribute(elements[j].firstElementChild, 'internal-fsb-class') != 'FlowLayout') {
+  				
+  				let current = elements[j].firstElementChild.firstElementChild &&
+  					HTMLHelper.hasClass(elements[j].firstElementChild.firstElementChild, 'row') &&
+  					elements[j].firstElementChild.firstElementChild.firstElementChild || null;
+  					
+  				while (current != null) {
+  					const next = current;
+  					current = current.nextElementSibling;
+  					next && elements[j].appendChild(next);
+  				}
+  				
+  				elements[j].removeChild(elements[j].firstElementChild);
+  				
+  				HTMLHelper.hasClass(elements[j], 'internal-fsb-strict-layout');
+  				HTMLHelper.hasClass(elements[j], 'internal-fsb-allow-cursor');
+  			}
+  		}
+  		
+  		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-begin')) {
+  			HTMLHelper.removeClass(elements[j], 'container-fluid');
+  		}
+  		
+  		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-begin-layout')) {
+  			HTMLHelper.removeClass(elements[j], 'row');
+  		}
       
       elements[j].children && MalformationRepairHelper.recursiveRepair(elements[j].children);
     }

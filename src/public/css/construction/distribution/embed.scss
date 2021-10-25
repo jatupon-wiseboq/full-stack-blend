@@ -12,42 +12,6 @@ html, body {
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
   padding: 0;
-  flex-wrap: wrap;
-  
-	> .container,
-  > .container-fluid {
-  	height: 100%;
-  	min-height: inherit;
-  	
-  	flex-direction: inherit;
-    flex-wrap: inherit;
-    justify-content: inherit;
-    align-items: inherit;
-    align-content: inherit;
-  	
-  	> .row.internal-fsb-strict-layout {
-  		flex-direction: inherit;
-	    flex-wrap: inherit;
-	    justify-content: inherit;
-	    align-items: inherit;
-	    align-content: inherit;
-  	}
-	}
-	
-	&.internal-fsb-stretch > .container > .row,
-	&.internal-fsb-stretch > .container-fluid > .row {
-		height: 100%;
-	}
-	
-	&.internal-fsb-inverse {
-		> .container,
-  	> .container-fluid {
-  		> .row.internal-fsb-strict-layout {
-  			height: 100%;
-  			min-height: inherit;
-  		}
-  	}
-	}
 }
 
 // Layout
@@ -95,4 +59,15 @@ html, body {
 //
 .internal-fsb-element > img {
 	width: 100%;
+}
+
+// Flowlayout
+//
+.internal-fsb-begin-layout,
+[internal-fsb-class="FlowLayout"] {
+	display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+	align-content: flex-start;
+	padding: 0;
 }
