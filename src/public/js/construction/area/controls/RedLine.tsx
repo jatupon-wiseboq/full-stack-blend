@@ -260,7 +260,11 @@ class RedLine extends React.Component<Props, State> {
     			HTMLHelper.addClass(measureTo, 'internal-fsb-measuring');
     			
     			container.appendChild(this.redLineInfo);
+    			
+    			this.redLineInfo.style.top = ((FT + FB) / 2) + 'px';
+    			this.redLineInfo.style.left = ((FL + FR) / 2) + 'px';
     			this.redLineInfo.firstElementChild.innerText = `${measureFromSize[0]} x ${measureFromSize[1]} px`;
+    			this.redLineInfo.firstElementChild.style.marginLeft = (this.redLineInfo.firstElementChild.offsetWidth / -2) + 'px';
     		}
     }
     

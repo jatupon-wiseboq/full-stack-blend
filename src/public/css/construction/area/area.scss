@@ -261,7 +261,7 @@ body.internal-fsb-mode-coding {
         content: '';
         display: block;
         position: absolute;
-        z-index: #{$maximum-z-index - 2};
+        z-index: #{$maximum-z-index - 3};
         top: -#{$selected-element-resizer-size/2}px;
         left: -#{$selected-element-resizer-size/2}px;
         background-color: white;
@@ -597,12 +597,9 @@ input[type='radio'], input[type='checkbox'] {
 	}
 }
 .internal-fsb-info-red-line {
-	padding: 10px;
-	right: 15px;
-	bottom: 0;
+	z-index: #{$maximum-z-index - 2};
 
 	.internal-fsb-red-line-value {
-		position: relative;
-		margin-left: 10px;
+		margin-top: -6.5px;
 	}
 }
