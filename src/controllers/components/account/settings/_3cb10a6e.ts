@@ -173,7 +173,7 @@ class Controller extends Base {
                         endpoint: user.endpoint,
                         facebook: !!user.facebook,
                         github: !!user.github,
-                        progressivelyUpdate: user.progressivelyUpdate !== false
+                        progressivelyUpdate: user.progressivelyUpdate === true
                       },
                       relations: {}
                     }
