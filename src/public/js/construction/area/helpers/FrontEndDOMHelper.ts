@@ -390,7 +390,7 @@ ${rootScript}`;
             	break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
-              if (['FlowLayout'].indexOf(attribute.value) != -1) attributes.push('internal-fsb-class="' + attribute.value + '"');
+              if (['FlowLayout'].indexOf(attribute.value) != -1) _props.push('internal-fsb-class="' + attribute.value + '"');
               break;
             case 'internal-fsb-guid':
               if (!!attribute.value) reactClassComposingInfoGUID = attribute.value;
