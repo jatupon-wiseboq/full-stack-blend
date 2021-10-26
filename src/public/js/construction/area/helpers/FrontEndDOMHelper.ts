@@ -539,7 +539,9 @@ ${rootScript}`;
         
         if (isFirstElement) {
           reactData = null;
-          attributes = [];
+          attributes = attributes.filter(token => token.indexOf('internal-fsb-class') == 0);
+        } else if (reactMode) {
+          attributes = attributes.filter(token => token.indexOf('internal-fsb-class') != 0);
         }
         
         // For react rendering method:
