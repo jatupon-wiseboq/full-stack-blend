@@ -31,7 +31,9 @@ html {
     .container {
       max-width: 1140px; } }
 
-.container-fluid, .container-sm, .container-md, .container-lg, .container-xl {
+.internal-fsb-guide,
+.internal-fsb-begin-layout,
+[internal-fsb-class="FlowLayout"] {
   width: 100%;
   padding-right: 15px;
   padding-left: 15px;
@@ -54,11 +56,11 @@ html {
   .container, .container-sm, .container-md, .container-lg, .container-xl {
     max-width: 1140px; } }
 
-.row {
+.internal-fsb-guide,
+.internal-fsb-begin-layout,
+[internal-fsb-class="FlowLayout"] {
   display: flex;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px; }
+  flex-wrap: wrap; }
 
 .no-gutters {
   margin-right: 0;
@@ -8380,71 +8382,7 @@ html, body {
 
 .internal-fsb-inheriting-element,
 .internal-fsb-element {
-  padding: 0;
-  flex-wrap: wrap; }
-  .internal-fsb-inheriting-element > .container,
-  .internal-fsb-inheriting-element > .container-fluid,
-  .internal-fsb-inheriting-element > .container-sm,
-  .internal-fsb-inheriting-element > .container-md,
-  .internal-fsb-inheriting-element > .container-lg,
-  .internal-fsb-inheriting-element > .container-xl,
-  .internal-fsb-element > .container,
-  .internal-fsb-element > .container-fluid,
-  .internal-fsb-element > .container-sm,
-  .internal-fsb-element > .container-md,
-  .internal-fsb-element > .container-lg,
-  .internal-fsb-element > .container-xl {
-    height: 100%;
-    min-height: inherit;
-    flex-direction: inherit;
-    flex-wrap: inherit;
-    justify-content: inherit;
-    align-items: inherit;
-    align-content: inherit; }
-    .internal-fsb-inheriting-element > .container > .row.internal-fsb-strict-layout,
-    .internal-fsb-inheriting-element > .container-fluid > .row.internal-fsb-strict-layout,
-    .internal-fsb-inheriting-element > .container-sm > .row.internal-fsb-strict-layout,
-    .internal-fsb-inheriting-element > .container-md > .row.internal-fsb-strict-layout,
-    .internal-fsb-inheriting-element > .container-lg > .row.internal-fsb-strict-layout,
-    .internal-fsb-inheriting-element > .container-xl > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container-fluid > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container-sm > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container-md > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container-lg > .row.internal-fsb-strict-layout,
-    .internal-fsb-element > .container-xl > .row.internal-fsb-strict-layout {
-      flex-direction: inherit;
-      flex-wrap: inherit;
-      justify-content: inherit;
-      align-items: inherit;
-      align-content: inherit; }
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container > .row,
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-fluid > .row,
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-sm > .row,
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-md > .row,
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-lg > .row,
-  .internal-fsb-inheriting-element.internal-fsb-stretch > .container-xl > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container-fluid > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container-sm > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container-md > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container-lg > .row,
-  .internal-fsb-element.internal-fsb-stretch > .container-xl > .row {
-    height: 100%; }
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container > .row.internal-fsb-strict-layout,
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container-fluid > .row.internal-fsb-strict-layout,
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container-sm > .row.internal-fsb-strict-layout,
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container-md > .row.internal-fsb-strict-layout,
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container-lg > .row.internal-fsb-strict-layout,
-  .internal-fsb-inheriting-element.internal-fsb-inverse > .container-xl > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container-fluid > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container-sm > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container-md > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container-lg > .row.internal-fsb-strict-layout,
-  .internal-fsb-element.internal-fsb-inverse > .container-xl > .row.internal-fsb-strict-layout {
-    height: 100%;
-    min-height: inherit; }
+  padding: 0; }
 
 .internal-fsb-strict-layout > .internal-fsb-inheriting-element,
 .internal-fsb-strict-layout > .internal-fsb-element {
@@ -8466,3 +8404,13 @@ html, body {
 
 .internal-fsb-element > img {
   width: 100%; }
+
+.internal-fsb-guide,
+.internal-fsb-begin-layout,
+[internal-fsb-class="FlowLayout"] {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  align-content: flex-start;
+  padding: 0;
+  margin: 0; }
