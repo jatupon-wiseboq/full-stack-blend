@@ -80,6 +80,12 @@ To get started:
 8. From Staging Branch, enter "staging".
 9. From Endpoint, enter "https://localhost".
 
+## Restoring malformed project files from regular updates
+
+Because we often release regular updates on stackblend.org, which right now is version 1.13. If you preferred one that you were working with, please run the editor cloned from the releases of full-stack-blend instead. Where you may find out the current version that you are using from README.md file.
+
+You might also reset the project files by cloning a boilerplate from the releases with the same version as the editor. Copy only project.stackblend file from your old project to the new one, open it using the editor and navigate to each of pages, components, and popups.
+
 ## Questions?
 
 For any questions, please send an email to [jatupon@softenstorm.com](mailto:jatupon@softenstorm.com).
