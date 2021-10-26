@@ -406,6 +406,7 @@ var EditorHelper = {
       element.appendChild(Accessories.resizer.getDOMNode());
       element.appendChild(Accessories.redLine.getDOMNode());
       
+      Accessories.guide.getDOMNode().remove();
       Accessories.redLine.reset();
       
       let current = element;
