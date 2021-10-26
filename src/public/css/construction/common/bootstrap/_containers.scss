@@ -10,6 +10,7 @@
   }
 
   // 100% wide container at all breakpoints
+  .internal-fsb-guide,
   .internal-fsb-begin-layout,
   [internal-fsb-class="FlowLayout"] {
     @include make-container();

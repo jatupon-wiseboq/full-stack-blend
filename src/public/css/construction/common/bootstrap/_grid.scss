@@ -3,7 +3,8 @@
 // Rows contain your columns.
 
 @if $enable-grid-classes {
-	internal-fsb-begin-layout,
+	.internal-fsb-guide,
+	.internal-fsb-begin-layout,
   [internal-fsb-class="FlowLayout"] {
     @include make-row();
   }

@@ -61,6 +61,14 @@ var MalformationRepairHelper = {
   		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-begin-layout')) {
   			HTMLHelper.removeClass(elements[j], 'row');
   		}
+  		
+  		if (elements[j].tagName != 'HTML' && HTMLHelper.hasClass(elements[j], 'internal-fsb-guide-on')) {
+  			HTMLHelper.removeClass(elements[j], 'internal-fsb-guide-on');
+  		}
+  		
+  		if (elements[j].tagName != 'HTML' && HTMLHelper.hasClass(elements[j], 'internal-fsb-guide-off')) {
+  			HTMLHelper.removeClass(elements[j], 'internal-fsb-guide-off');
+  		}
       
       elements[j].children && MalformationRepairHelper.recursiveRepair(elements[j].children);
     }

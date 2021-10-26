@@ -67,19 +67,19 @@ class Guide extends React.Component<Props, State> {
     render() {
         return (
             pug `
-              .internal-fsb-guide.container-fluid.internal-fsb-accessory(id='internal-fsb-guide', style={left: this.state.paddingLeft + 'px', right: this.state.paddingRight + 'px'})
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
-	              .col-1.p-0
+              .internal-fsb-guide.internal-fsb-accessory(id='internal-fsb-guide', style={paddingLeft: this.state.paddingLeft + 'px', paddingRight: this.state.paddingRight + 'px'})
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
+                .col-1.p-0
             `
         )
     }
