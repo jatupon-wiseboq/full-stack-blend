@@ -6,7 +6,7 @@ script(type="text/javascript").
   window.GITHUB_DEVELOP_BRANCH = "!{user.develop}";
   window.GITHUB_STAGING_BRANCH = "!{user.staging}";
   window.ENDPOINT = "!{user.endpoint}";
-  window.PROGRESSIVE = !{user.progressivelyUpdate !== false};
+  window.PROGRESSIVE = {user.progressivelyUpdate === true};
 div(internal-fsb-for="editing", style="display: none;")
   iframe.construction(id='area', src='/editor/construction/area/html')
 div(internal-fsb-not-for="editing")
