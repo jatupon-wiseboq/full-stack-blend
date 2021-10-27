@@ -111,6 +111,12 @@ const fixType = (type: FieldType, value: any): any => {
 	
 	return value;
 };
+const isObjectID = (value: string): boolean => {
+	if (value && value.length != 24) return false;
+	if (value && value.indexOf('.') != -1) return false;
+	
+	return ObjectID.isValid(value);
+};
 
 const DatabaseHelper = {
 	getSourceType: (value: string): SourceType => {
@@ -328,7 +334,7 @@ const DatabaseHelper = {
 			                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                if (ObjectID.isValid(`${row.keys[key]}`) && schema.source == SourceType.Document) {
+			                if (isObjectID(`${row.keys[key]}`) && schema.source == SourceType.Document) {
 			                  row.keys[key] = new ObjectID(row.keys[key].toString());
 			                } else {
 			                  row.keys[key] = row.keys[key].toString();
@@ -357,7 +363,7 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                if (ObjectID.isValid(`${row.keys[key]}`) && schema.source == SourceType.Document) {
+		                if (isObjectID(`${row.keys[key]}`) && schema.source == SourceType.Document) {
 		                  row.keys[key] = new ObjectID(row.keys[key].toString());
 		                } else {
 		                  row.keys[key] = row.keys[key].toString();
@@ -385,7 +391,7 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                if (ObjectID.isValid(`${row.keys[key]}`) && schema.source == SourceType.Document) {
+		                if (isObjectID(`${row.keys[key]}`) && schema.source == SourceType.Document) {
 		                  row.keys[key] = new ObjectID(row.keys[key].toString());
 		                } else {
 		                  row.keys[key] = row.keys[key].toString();
@@ -411,7 +417,7 @@ const DatabaseHelper = {
 		                row.keys[key] = (row.keys[key].toString() === 'true' || row.keys[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                if (ObjectID.isValid(`${row.keys[key]}`) && schema.source == SourceType.Document) {
+		                if (isObjectID(`${row.keys[key]}`) && schema.source == SourceType.Document) {
 		                  row.keys[key] = new ObjectID(row.keys[key].toString());
 		                } else {
 		                  row.keys[key] = row.keys[key].toString();
@@ -447,7 +453,7 @@ const DatabaseHelper = {
 				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-  				              if (ObjectID.isValid(`${row.columns[key]}`) && schema.source == SourceType.Document) {
+  				              if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
     		                  row.columns[key] = new ObjectID(row.columns[key].toString());
     		                } else {
     		                  row.columns[key] = row.columns[key].toString();
@@ -477,7 +483,7 @@ const DatabaseHelper = {
 			                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 			                break;
 			              case FieldType.String:
-			                if (ObjectID.isValid(`${row.columns[key]}`) && schema.source == SourceType.Document) {
+			                if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
   		                  row.columns[key] = new ObjectID(row.columns[key].toString());
   		                } else {
   		                  row.columns[key] = row.columns[key].toString();
@@ -507,7 +513,7 @@ const DatabaseHelper = {
 				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 				                break;
 				              case FieldType.String:
-				                if (ObjectID.isValid(`${row.columns[key]}`) && schema.source == SourceType.Document) {
+				                if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
     		                  row.columns[key] = new ObjectID(row.columns[key].toString());
     		                } else {
     		                  row.columns[key] = row.columns[key].toString();
@@ -535,7 +541,7 @@ const DatabaseHelper = {
 		                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
 		                break;
 		              case FieldType.String:
-		                if (ObjectID.isValid(`${row.columns[key]}`) && schema.source == SourceType.Document) {
+		                if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
 		                  row.columns[key] = new ObjectID(row.columns[key].toString());
 		                } else {
 		                  row.columns[key] = row.columns[key].toString();
@@ -847,7 +853,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -863,7 +869,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
 							      }
@@ -924,13 +930,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+							  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 							  					}
 								  			} else {
-								  			  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+								  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -990,7 +996,6 @@ const DatabaseHelper = {
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'PUT');
-		    		
 		    		if (_column.length == 0) throw new Error(`Cannot perform PUT on RESTful group "${schema.group}".`);
 		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
@@ -1063,7 +1068,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -1079,7 +1084,7 @@ const DatabaseHelper = {
 							    }
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
 							      	queryForUpsert['_id'] = query['_id'];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
@@ -1151,13 +1156,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+							  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 							  					}
 								  			} else {
-								  			  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+								  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -1282,7 +1287,7 @@ const DatabaseHelper = {
 							    data[key] = row.columns[key];
 							    if (input.source == SourceType.Document) {
 							      if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
 							      } else {
 							      	query[key] = {$eq: row.columns[key]};
 							      }
@@ -1296,7 +1301,7 @@ const DatabaseHelper = {
 							    keys[key] = row.keys[key];
 							    if (input.source == SourceType.Document) {
 							    	if (key == 'id') {
-							      	query['_id'] = {$eq: ObjectID.isValid(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
+							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
 							      	queryForUpdate['id'] = query['_id'];
 							      } else {
 							      	query[key] = {$eq: row.keys[key]};
@@ -1370,13 +1375,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+							  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
 							  					}
 								  			} else {
-								  			  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+								  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
@@ -1729,13 +1734,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  					if (ObjectID.isValid(`${_row.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+							  					if (isObjectID(`${_row.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.columns[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
 							  					} else {
 							  						nextRow.columns[relation.targetEntity] = _row.keys[relation.sourceEntity];
 							  					}
 								  			} else {
-								  				if (ObjectID.isValid(`${_row.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+								  				if (isObjectID(`${_row.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
 							  						nextRow.keys[relation.targetEntity] = new ObjectID(_row.keys[relation.sourceEntity]);
 							  					} else {
 								  					nextRow.keys[relation.targetEntity] = _row.keys[relation.sourceEntity];
@@ -1939,13 +1944,13 @@ const DatabaseHelper = {
 								  			}
 							  			} else {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-							  				  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+							  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
   						  						nextRow.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
   						  					} else {
   						  						nextRow.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
   						  					}
 								  			} else {
-								  			  if (ObjectID.isValid(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
+								  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && input.source == SourceType.Document) {
   						  						nextRow.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
   						  					} else {
   						  						nextRow.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
