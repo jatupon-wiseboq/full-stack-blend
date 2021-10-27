@@ -1887,13 +1887,6 @@ const DatabaseHelper = {
 									});
 								});
 								
-								records = records.filter((record) => {
-									for (const key in query) {
-										if (data[key] != record[key]) return false;
-									}
-									return true;
-								});
-								
 								for (const record of records) {
 									transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne({
 										'_id': {$eq: new ObjectID(record['_id'])}
