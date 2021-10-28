@@ -497,35 +497,33 @@ const DatabaseHelper = {
 		          }
 			        break;
 			      case ActionType.Update:
-			        if (schema.columns[key].required) {
-			          if (row.columns[key] === undefined || row.columns[key] === null) {
-			            /* void */
-			          } else {
-			          	if (row.columns[key]) {
-				            switch (schema.columns[key].fieldType) {
-				              case FieldType.AutoNumber:
-				              case FieldType.Number:
-				                if (isNaN(parseFloat(row.columns[key].toString())))
-				                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
-				                row.columns[key] = parseFloat(row.columns[key].toString());
-				                break;
-				              case FieldType.Boolean:
-				                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
-				                break;
-				              case FieldType.String:
-				                if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
-    		                  row.columns[key] = new ObjectID(row.columns[key].toString());
-    		                } else {
-    		                  row.columns[key] = row.columns[key].toString();
-    		                }
-				                break;
-				              case FieldType.DateTime:
-				                row.columns[key] = new Date(row.columns[key].toString());
-				                break;
-				            }
-				          }
+		          if (row.columns[key] === undefined || row.columns[key] === null) {
+		            /* void */
+		          } else {
+		          	if (row.columns[key]) {
+			            switch (schema.columns[key].fieldType) {
+			              case FieldType.AutoNumber:
+			              case FieldType.Number:
+			                if (isNaN(parseFloat(row.columns[key].toString())))
+			                  throw new Error(`There was an error preparing data for manipulation (the value of ${schema.group}.${key} isn\'t a number).`);
+			                row.columns[key] = parseFloat(row.columns[key].toString());
+			                break;
+			              case FieldType.Boolean:
+			                row.columns[key] = (row.columns[key].toString() === 'true' || row.columns[key].toString() === '1');
+			                break;
+			              case FieldType.String:
+			                if (isObjectID(`${row.columns[key]}`) && schema.source == SourceType.Document) {
+  		                  row.columns[key] = new ObjectID(row.columns[key].toString());
+  		                } else {
+  		                  row.columns[key] = row.columns[key].toString();
+  		                }
+			                break;
+			              case FieldType.DateTime:
+			                row.columns[key] = new Date(row.columns[key].toString());
+			                break;
+			            }
 			          }
-			        }
+		          }
 			        break;
 			      case ActionType.Delete:
 			      case ActionType.Retrieve:
