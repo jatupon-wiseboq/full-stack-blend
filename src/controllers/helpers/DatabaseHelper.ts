@@ -806,6 +806,7 @@ const DatabaseHelper = {
 		for (const key in schema.columns) {
 		  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
 		    if (skipAutoNumber == true && schema.columns[key].fieldType == FieldType.AutoNumber) continue;
+		    if (skipAutoNumber == true && schema.source == SourceType.Document && key == 'id') continue;
 		    if (schema.source == SourceType.Document) {
 		      queryColumns[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key]};
 		    	dataColumns[(key == 'id') ? '_id' : key] = isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key];
@@ -818,6 +819,7 @@ const DatabaseHelper = {
 		for (const key in schema.keys) {
 		  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
 		    if (skipAutoNumber == true && schema.keys[key].fieldType == FieldType.AutoNumber) continue;
+		    if (skipAutoNumber == true && schema.source == SourceType.Document && key == 'id') continue;
 		    if (schema.source == SourceType.Document) {
 		      queryKeys[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key]};
 		    	dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
