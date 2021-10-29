@@ -797,6 +797,39 @@ const DatabaseHelper = {
 	  
 	  return RelationalDatabaseORMClient.models[schema.group];
 	},
+	formatKeysAndColumns: (row: HierarchicalDataRow, schema: DataTableSchema, skipAutoNumber=false): [{[Identifier: string]: any}, {[Identifier: string]: any}, {[Identifier: string]: any}, {[Identifier: string]: any}] => {
+		const queryKeys: {[Identifier: string]: any} = {};
+		const queryColumns: {[Identifier: string]: any} = {};
+		const dataKeys: {[Identifier: string]: any} = {};
+		const dataColumns: {[Identifier: string]: any} = {};
+		
+		for (const key in schema.columns) {
+		  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
+		    if (skipAutoNumber == true && schema.columns[key].fieldType == FieldType.AutoNumber) continue;
+		    if (schema.source == SourceType.Document) {
+		      queryColumns[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key]};
+		    	dataColumns[(key == 'id') ? '_id' : key] = isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key];
+		    } else {
+		    	queryColumns[key] = row.columns[key];
+		    	dataColumns[key] = row.columns[key];
+		    }
+		  }
+		}
+		for (const key in schema.keys) {
+		  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
+		    if (skipAutoNumber == true && schema.keys[key].fieldType == FieldType.AutoNumber) continue;
+		    if (schema.source == SourceType.Document) {
+		      queryKeys[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key]};
+		    	dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
+		    } else {
+		    	queryKeys[key] = row.keys[key];
+		    	dataKeys[key] = row.keys[key];
+		    }
+		  }
+		}
+							
+		return [queryKeys, queryColumns, dataKeys, dataColumns];
+	},
 	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
@@ -840,55 +873,25 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const keys = {};
-							const data = {};
-		      		const query = {};
+							let queryKeys: {[Identifier: string]: any} = {};
+							let queryColumns: {[Identifier: string]: any} = {};
+							let dataKeys: {[Identifier: string]: any} = {};
+							let dataColumns: {[Identifier: string]: any} = {};
 							
-							for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-							      data[key] = row.columns[key];
-							    }
-							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
-							    } else {
-							    	query[key] = row.columns[key];
-							    }
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-							      keys[key] = row.keys[key];
-							    }
-							    if (input.source == SourceType.Document) {
-							    	if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
-							      } else {
-							      	query[key] = {$eq: row.keys[key]};
-							      }
-							    } else {
-							    	query[key] = row.keys[key];
-							    }
-							  }
-							}
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = await map.create(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction});
+								records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, data, keys)))['ops'][0];
+								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys)))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, data, keys)));
-								records[0] = Object.assign({}, data, keys);
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, dataColumns, dataKeys)));
+								records[0] = Object.assign({}, dataColumns, dataKeys);
 							}
 							
 							for (const record of records) {
@@ -1054,69 +1057,35 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const keys = {};
-							const data = {};
-		      		const query = {};
-		      		const queryForUpsert = {};
+							let queryKeys: {[Identifier: string]: any} = {};
+							let queryColumns: {[Identifier: string]: any} = {};
+							let dataKeys: {[Identifier: string]: any} = {};
+							let dataColumns: {[Identifier: string]: any} = {};
 							
-							for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    if (schema.columns[key].fieldType !== FieldType.AutoNumber) {
-							      data[key] = row.columns[key];
-							    }
-							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
-							    } else {
-							    	query[key] = row.columns[key];
-							    }
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    if (schema.keys[key].fieldType !== FieldType.AutoNumber) {
-							      keys[key] = row.keys[key];
-							    }
-							    if (input.source == SourceType.Document) {
-							    	if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
-							      	queryForUpsert['_id'] = query['_id'];
-							      } else {
-							      	query[key] = {$eq: row.keys[key]};
-							      	queryForUpsert[key] = query[key];
-							      }
-							    } else {
-							    	query[key] = row.keys[key];
-							    	queryForUpsert[key] = query[key];
-							    }
-							  }
-							}
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 							
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = (await map.upsert(Object.assign({}, data, keys), {transaction: transaction.relationalDatabaseTransaction}))[0];
+								records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpsert, {$set: data}, {upsert: true});
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpsert);
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true});
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
 							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], dataColumns, dataKeys)));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
 							
 							for (const record of records) {
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-								    keys[key] = record[key];
+								    dataKeys[key] = record[key];
 								  }
 								}
 								
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 								
 							  const result = {
 							    keys: {},
@@ -1275,59 +1244,29 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const keys = {};
-							const data = {};
-		      		const query = {};
-		      		const queryForUpdate = {};
+							let queryKeys: {[Identifier: string]: any} = {};
+							let queryColumns: {[Identifier: string]: any} = {};
+							let dataKeys: {[Identifier: string]: any} = {};
+							let dataColumns: {[Identifier: string]: any} = {};
 							
-							for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    data[key] = row.columns[key];
-							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || null};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
-							    } else {
-							    	query[key] = row.columns[key];
-							    }
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document) {
-							    	if (key == 'id') {
-							      	query['_id'] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || null};
-							      	queryForUpdate['id'] = query['_id'];
-							      } else {
-							      	query[key] = {$eq: row.keys[key]};
-							      	queryForUpdate[key] = query[key];
-							      }
-							    } else {
-							    	query[key] = row.keys[key];
-							      queryForUpdate[key] = query[key];
-							    }
-							  }
-							}
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 							
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								await map.update(data, {where: keys, transaction: transaction.relationalDatabaseTransaction});
-								records[0] = await map.findOne({where: keys, transaction: transaction.relationalDatabaseTransaction});
+								await map.update(dataColumns, {where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
+								records[0] = await map.findOne({where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
-								if (Object.keys(data).length != 0) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryForUpdate, {$set: data});
+								if (Object.keys(dataColumns).length != 0) {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns});
 								}
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryForUpdate);
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
 							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], data, keys)));
+								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], dataColumns, dataKeys)));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
 							}
 							
@@ -1615,7 +1554,7 @@ const DatabaseHelper = {
       }
 		});
 	},
-	performRecursiveRetrieve: async (input: HierarchicalDataTable, baseSchema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission: boolean=false, connectionInfos: {[Identifier: string]: any}={}, innerCircleTags: string[]=[]): Promise<void> => {
+	performRecursiveRetrieve: async (input: HierarchicalDataTable, schema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any=null, notifyUpdates=false, leavePermission: boolean=false, connectionInfos: {[Identifier: string]: any}={}, innerCircleTags: string[]=[]): Promise<void> => {
 		return new Promise(async (resolve, reject) => {
 		  try {
 		    switch (input.source) {
@@ -1626,52 +1565,26 @@ const DatabaseHelper = {
 		    		if (input.source == SourceType.Document && !DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
 		    		if (input.source == SourceType.VolatileMemory && !VolatileMemoryClient) throw new Error('There was an error trying to obtain a connection (not found).');
 						
-						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(baseSchema) : null;
+						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const keys = {};
-							const data = {};
-		      		const query = {};
+							let queryKeys: {[Identifier: string]: any} = {};
+							let queryColumns: {[Identifier: string]: any} = {};
+							let dataKeys: {[Identifier: string]: any} = {};
+							let dataColumns: {[Identifier: string]: any} = {};
 							
-							for (const key in baseSchema.columns) {
-							  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    data[key] = row.columns[key];
-							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
-							    } else {
-							    	query[key] = row.columns[key];
-							    }
-							  }
-							}
-							for (const key in baseSchema.keys) {
-							  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document) {
-							    	if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-							      } else {
-							      	query[key] = {$eq: row.keys[key]};
-							      }
-							    } else {
-							    	query[key] = row.keys[key];
-							    }
-							  }
-							}
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, data, keys), session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
 							
 							const rows = [];
 							let records;
 							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: Object.assign({}, data, keys)}) || [];
+								records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
 							} else if (input.source == SourceType.Document) {
 								if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
 								records = await new Promise(async (resolve, reject) => {
-									await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find(query).toArray((error: any, results: any) => {
+									await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -1680,7 +1593,7 @@ const DatabaseHelper = {
 									});
 								});
 							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = baseSchema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(queryKeys));
 								const record = await VolatileMemoryClient.get(_key);
 								records = record && [JSON.parse(record)] || [];
 							}
@@ -1694,37 +1607,37 @@ const DatabaseHelper = {
 						  
 						  	if (record['_id']) record['id'] = record['_id'].toString();
 						  	
-							  for (const key in baseSchema.columns) {
-		  					  if (baseSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.columns[key] = fixType(baseSchema.columns[key].fieldType, record[key]);
+							  for (const key in schema.columns) {
+		  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+		  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
 		  					  }
 		  					}
-		  					for (const key in baseSchema.keys) {
-		  					  if (baseSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.keys[key] = fixType(baseSchema.keys[key].fieldType, record[key]);
+		  					for (const key in schema.keys) {
+		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 		  					  }
 		  					}
 		  					
 		  					rows.push(row);
 							}
 						
-							results[baseSchema.group] = results[baseSchema.group] || {
-							  source: baseSchema.source,
-							  group: baseSchema.group,
+							results[schema.group] = results[schema.group] || {
+							  source: schema.source,
+							  group: schema.group,
 							  rows: [],
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(baseSchema, Object.assign({}, data, keys), session, innerCircleTags) : null
+							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags) : null
 							};
 	  					
-							results[baseSchema.group].rows = [...results[baseSchema.group].rows, ...rows] as HierarchicalDataRow[];
+							results[schema.group].rows = [...results[schema.group].rows, ...rows] as HierarchicalDataRow[];
 							
 							for (const _row of rows) {
 								for (const key in row.relations) {
 									if (row.relations.hasOwnProperty(key)) {
-										const relation = baseSchema.relations[key];
+										const relation = schema.relations[key];
 										const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
 										
 							  		for (const nextRow of row.relations[key].rows) {
-							  			if (baseSchema.columns.hasOwnProperty(relation.sourceEntity)) {
+							  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
 							  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
 								  				nextRow.columns[relation.targetEntity] = _row.columns[relation.sourceEntity];
 								  			} else {
@@ -1753,14 +1666,14 @@ const DatabaseHelper = {
 							}
 							
 							for (const _row of rows) {
-							  for (const key in baseSchema.columns) {
-								  if (baseSchema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, session)) delete _row.columns[key];
+							  for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, session)) delete _row.columns[key];
 								  }
 								}
-								for (const key in baseSchema.keys) {
-								  if (baseSchema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, session)) delete _row.keys[key];
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete _row.keys[key];
 								  }
 								}
 							}
@@ -1773,9 +1686,9 @@ const DatabaseHelper = {
 		    		
 		    		break;
 		    	case SourceType.RESTful:
-		    		const _column = Object.keys(baseSchema.columns).map(key => baseSchema.columns[key]).filter(column => column.verb == null);
+		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == null);
 		    		
-		    		if (_column.length == 0) throw new Error(`Cannot perform GET on RESTful group "${baseSchema.group}".`);
+		    		if (_column.length == 0) throw new Error(`Cannot perform GET on RESTful group "${schema.group}".`);
 		    		
 		    		const _input = DataFormationHelper.convertFromHierarchicalDataTableToJSON(input);
 		    		const _output = RequestHelper.get(_column[0].url, 'json');
@@ -1835,48 +1748,22 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
-							const keys = {};
-							const data = {};
-		      		const query = {};
+							let queryKeys: {[Identifier: string]: any} = {};
+							let queryColumns: {[Identifier: string]: any} = {};
+							let dataKeys: {[Identifier: string]: any} = {};
+							let dataColumns: {[Identifier: string]: any} = {};
 							
-							for (const key in schema.columns) {
-							  if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
-							    data[key] = row.columns[key];
-							    if (input.source == SourceType.Document) {
-							      if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.columns[key])};
-							      } else {
-							      	query[key] = {$eq: row.columns[key]};
-							      }
-							    } else {
-							    	query[key] = row.columns[key];
-							    }
-							  }
-							}
-							for (const key in schema.keys) {
-							  if (schema.keys.hasOwnProperty(key) && row.keys[key] != undefined) {
-							    keys[key] = row.keys[key];
-							    if (input.source == SourceType.Document) {
-							    	if (key == 'id') {
-							      	query['_id'] = {$eq: new ObjectID(row.keys[key])};
-							      } else {
-							      	query[key] = {$eq: row.keys[key]};
-							      }
-							    } else {
-							    	query[key] = row.keys[key];
-							    }
-							  }
-							}
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, keys, session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
 							let records;
 							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: query}) || [];
-		  				  await map.destroy({where: query}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+								records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
+		  				  await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(query).toArray((error: any, results: any) => {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -1891,7 +1778,7 @@ const DatabaseHelper = {
 									});
 								}
 							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(keys));
+								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								const record = await VolatileMemoryClient.get(_key);
 								records = record && [JSON.parse(record)] || [];
 								await VolatileMemoryClient.del(_key);
