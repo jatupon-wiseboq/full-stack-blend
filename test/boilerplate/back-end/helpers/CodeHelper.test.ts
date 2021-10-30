@@ -1,5 +1,40 @@
 import {CodeHelper} from "../../../../src/controllers/helpers/CodeHelper";
+import { strict as assert } from 'assert';
 
+describe('recursiveEvaluate', () => {
+	test('Primitive', () => {
+		const value = 123;
+		expect(() => { CodeHelper.recursiveEvaluate(value, (obj: any) => { assert(obj != 123, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(value, (obj: any) => { assert(obj != 124, 'Error'); }); }).not.toThrow();
+	});
+	test('Structure', () => {
+		const structure = {
+			a: 123,
+			b: 0.45,
+			c: {
+				x: {
+					i: 'Abc',
+					j: /123/,
+					k: [124, false, undefined]
+				},
+				y: NaN
+			},
+			d: Infinity
+		};
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 123, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 0.45, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 'Abc', 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(!(obj instanceof RegExp), 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(!(typeof obj === 'number' && isNaN(obj)), 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != Infinity, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 124, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != undefined, 'Error'); }); }).toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 125, 'Error'); }); }).not.toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 0.451, 'Error'); }); }).not.toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != 'Abc123', 'Error'); }); }).not.toThrow();
+		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != -Infinity, 'Error'); }); }).not.toThrow();
+	});
+});
 describe('clone', () => {
 	describe('Primitive', () => {
 	  test('String', () => {
@@ -16,11 +51,16 @@ describe('clone', () => {
 	  	expect(CodeHelper.clone(-10)).toEqual(-10);
 	  	expect(CodeHelper.clone(0.000012)).toEqual(0.000012);
 	  	expect(CodeHelper.clone(-125.025)).toEqual(-125.025);
+	  	
 	  	//expect(CodeHelper.clone(Infinity)).toEqual(Infinity);
 	  	//expect(CodeHelper.clone(-Infinity)).toEqual(-Infinity);
+	  	expect(() => { CodeHelper.clone(Infinity); }).toThrow();
+	  	
 	  	expect(CodeHelper.clone(Number.MAX_SAFE_INTEGER)).toEqual(Number.MAX_SAFE_INTEGER);
 	  	expect(CodeHelper.clone(Number.MIN_SAFE_INTEGER)).toEqual(Number.MIN_SAFE_INTEGER);
+	  	
 	  	//expect(CodeHelper.clone(NaN)).toEqual(NaN);
+	  	expect(() => { CodeHelper.clone(NaN); }).toThrow();
 	  });
 	  test('Boolean', () => {
 	  	expect(CodeHelper.clone(false)).toEqual(false);
@@ -28,10 +68,12 @@ describe('clone', () => {
 	  });
 	  test('Others', () => {
 	  	//expect(CodeHelper.clone(undefined)).toEqual(undefined);
+	  	expect(() => { CodeHelper.clone(undefined); }).toThrow();
+	  	
 	  	expect(CodeHelper.clone(null)).toEqual(null);
 	  	
-	  	//const time = new Date();
-	  	//expect(CodeHelper.clone(time)).toEqual(time);
+	  	const time = new Date();
+	  	expect(new Date(CodeHelper.clone(time))).toEqual(time);
 	  });
 	});
 	describe('Structure', () => {
@@ -59,11 +101,59 @@ describe('clone', () => {
 	  		},
 	  		d: {
 	  			x: true,
-	  			y: 'Abc',
-	  			z: undefined
+	  			y: 'Abc'
 	  		}
 	  	};
 	  	expect(CodeHelper.clone(structure3)).toEqual(structure3);
+	  	
+	  	const structure4 = {
+	  		a: 123,
+	  		b: -Infinity,
+	  		c: {
+	  			x: 0.45
+	  		}
+	  	};
+	  	//expect(CodeHelper.clone(structure4)).toEqual(structure4);
+	  	expect(() => { CodeHelper.clone(structure4); }).toThrow();
+	  	
+	  	const structure5 = {
+	  		a: 123,
+	  		b: 0.45,
+	  		c: {
+	  			x: Infinity
+	  		}
+	  	};
+	  	//expect(CodeHelper.clone(structure5)).toEqual(structure5);
+	  	expect(() => { CodeHelper.clone(structure5); }).toThrow();
+	  	
+	  	const structure6 = {
+	  		a: 123,
+	  		b: 0.45,
+	  		c: {
+	  			x: NaN
+	  		}
+	  	};
+	  	//expect(CodeHelper.clone(structure6)).toEqual(structure6);
+	  	expect(() => { CodeHelper.clone(structure6); }).toThrow();
+	  	
+	  	const structure7 = {
+	  		a: 123,
+	  		b: 0.45,
+	  		c: {
+	  			x: {
+	  				i: 'Abc',
+	  				j: /123/
+	  			}
+	  		}
+	  	};
+	  	//expect(CodeHelper.clone(structure7)).toEqual(structure7);
+	  	expect(() => { CodeHelper.clone(structure7); }).toThrow();
+	  	
+	  	const structure8 = {
+	  		a: undefined
+	  	};
+	  	//expect(CodeHelper.clone(structure8)).toEqual(structure8);
+	  	expect(() => { CodeHelper.clone(structure8); }).toThrow();
 	  });
 	});
 	describe('Property', () => {
@@ -144,7 +234,10 @@ describe('equals', () => {
 	  	expect(CodeHelper.equals(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER)).toEqual(true);
 	  	expect(CodeHelper.equals(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER+0.00)).toEqual(true);
 	  	expect(CodeHelper.equals(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER-1)).toEqual(false);
+	  	
 	  	//expect(CodeHelper.equals(NaN, NaN)).toEqual(true);
+	  	expect(() => { CodeHelper.equals(NaN, NaN); }).toThrow();
+	  	
 	  	expect(CodeHelper.equals(NaN, 123)).toEqual(false);
 	  });
 	  test('Boolean', () => {
@@ -167,6 +260,9 @@ describe('equals', () => {
 	  	const time2 = new Date(time1.toISOString());
 	  	expect(CodeHelper.equals(time1, time2)).toEqual(true);
 	  	expect(CodeHelper.equals(time1, new Date(1000, 1, 1))).toEqual(false);
+	  	
+	  	expect(CodeHelper.equals(/123/, /123/)).toEqual(true);
+	  	expect(CodeHelper.equals(/123/, /123/g)).toEqual(false);
 	  });
 	});
 	describe('Structure', () => {
