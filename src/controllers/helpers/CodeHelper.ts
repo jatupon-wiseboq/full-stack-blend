@@ -35,7 +35,6 @@ const CodeHelper = {
     // TODO: to support NaN == NaN
     // 
     assert(!(typeof x === 'number' && isNaN(x) && typeof y === 'number' && isNaN(y)), 'Cannot compare NaN with NaN.');
-    assert(!(typeof x === 'number' && isNaN(x) && typeof y === 'number' && isNaN(y)), 'Cannot compare RegEX with RegEX.');
     
     "use strict";
 

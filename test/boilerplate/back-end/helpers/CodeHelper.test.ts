@@ -263,6 +263,8 @@ describe('equals', () => {
 	  	
 	  	expect(CodeHelper.equals(/123/, /123/)).toEqual(true);
 	  	expect(CodeHelper.equals(/123/, /123/g)).toEqual(false);
+	  	expect(CodeHelper.equals(Math.random, Math.random)).toEqual(true);
+	  	expect(CodeHelper.equals(() => {}, () => {})).toEqual(false);
 	  });
 	});
 	describe('Structure', () => {
@@ -296,5 +298,96 @@ describe('escape', () => {
 		expect(CodeHelper.escape(undefined)).toEqual('');
 		expect(CodeHelper.escape(null)).toEqual('');
 		expect(CodeHelper.escape('& > < " \' &><"\' &  > \r\n <  " \t \'')).toEqual('&amp; &gt; &lt; &quot; &#039; &amp;&gt;&lt;&quot;&#039; &amp;  &gt; \r\n &lt;  &quot; \t &#039;');
+	});
+});
+
+describe('sortHashtable', () => {
+	test('Array', () => {
+		expect(CodeHelper.clone([])).toEqual([]);
+		expect(CodeHelper.clone([123, 456.50, false])).toEqual([123, 456.50, false]);
+	});
+  test('Object', () => {
+  	const structure1 = {
+  	};
+  	expect(CodeHelper.clone(structure1)).toEqual(structure1);
+  	
+  	const structure2 = {
+  		a: 123
+  	};
+  	expect(CodeHelper.clone(structure2)).toEqual(structure2);
+  	
+  	const structure3 = {
+  		d: {
+  			x: true,
+  			y: 'Abc'
+  		},
+  		b: 0.45,
+  		a: 123,
+  		c: {
+  			x: false,
+  			z: [false, 1, 2, Infinity],
+  			y: 'Abc',
+  		}
+  	};
+  	const sortedStructure3 = {
+  		a: 123,
+  		b: 0.45,
+  		c: {
+  			x: false,
+  			y: 'Abc',
+  			z: [false, 1, 2, Infinity]
+  		},
+  		d: {
+  			x: true,
+  			y: 'Abc'
+  		}
+  	};
+  	expect(CodeHelper.sortHashtable(structure3)).toEqual(sortedStructure3);
+  	
+  	const structure4 = {
+  		b: [],
+  		a: [false, {
+  				z: 1,
+  				y: 2
+  			}, 2, {
+	  			y: 123,
+	  			z: 456,
+	  			x: [-1, Infinity, {
+	  				j: -2,
+	  				i: -1,
+	  				k: -3
+	  			}, NaN]
+  			}
+  		]
+  	};
+  	const sortedStructure4 = {
+  		a: [false, {
+  				y: 2,
+  				z: 1
+  			}, 2, {
+	  			x: [-1, Infinity, {
+	  				i: -1,
+	  				j: -2,
+	  				k: -3
+	  			}, NaN],
+	  			y: 123,
+	  			z: 456
+  			}
+  		],
+  		b: []
+  	};
+  	expect(CodeHelper.sortHashtable(structure4)).toEqual(sortedStructure4);
+  });
+});
+
+describe('label/unlabel', () => {
+	const fs = require('fs');
+	const path = require('path');
+	const label = fs.readFileSync(path.resolve(__dirname, '../files/label.stackblend'), {encoding:'utf8', flag:'r'});
+	const unlabel = fs.readFileSync(path.resolve(__dirname, '../files/unlabel.stackblend'), {encoding:'utf8', flag:'r'});
+	
+	test('Using project files', () => {
+		expect(CodeHelper.unlabel(label).replace(/\r\n/g, '\n')).toEqual(unlabel.replace(/\r\n/g, '\n'));
+		expect(CodeHelper.label(unlabel.replace(/\r\n/g, '\n'))).toEqual(label.replace(/\r\n/g, '\n'));
 	});
 });
