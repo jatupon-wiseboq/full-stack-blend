@@ -46,6 +46,7 @@
     "express-session": "^1.16.2",
     "express-validator": "^6.2.0",
     "fbgraph": "^1.4.4",
+    "jest": "^26.1.0",
     "lodash": "^4.17.15",
     "lusca": "^1.6.1",
     "md5-typescript": "^1.0.5",
@@ -116,7 +117,6 @@
     "child_process": "^1.0.2",
     "concurrently": "^5.2.0",
     "eslint": "^6.4.0",
-    "jest": "^26.0.1",
     "kill-port": "^1.6.1",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.4",
@@ -125,7 +125,7 @@
     "supertest": "^4.0.2",
     "ts-jest": "^26.1.0",
     "ts-node": "^8.4.1",
-    "typescript": "^3.6.3",
+    "typescript": "^3.8.0",
     "watchify": "^3.11.1"
   }
 }
