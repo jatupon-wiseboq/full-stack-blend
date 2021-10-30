@@ -3,9 +3,15 @@
 
 const CodeHelper = {
   clone: (obj: any) => {
+  	// TODO: to support Infinity, NaN, Date (, undefined)
+    //
+    
     return JSON.parse(JSON.stringify(obj));
   },
   equals: (x: any, y: any) => {
+  	// Credit: https://stackoverflow.com/questions/30476150/javascript-deep-comparison-recursively-objects-and-properties
+    // TODO: to support NaN == NaN
+    // 
     "use strict";
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
