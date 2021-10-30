@@ -40,7 +40,7 @@ describe('clone', () => {
 	  test('String', () => {
 	  	expect(CodeHelper.clone('')).toEqual('');
 	  	expect(CodeHelper.clone('Abc123')).toEqual('Abc123');
-	  	expect(CodeHelper.clone('ÀÒÉÒÍ×è¹æ')).toEqual('ÀÒÉÒÍ×è¹æ');
+	  	expect(CodeHelper.clone('à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™à¹†')).toEqual('à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™à¹†');
 	  	expect(CodeHelper.clone('0.0000125')).toEqual('0.0000125');
 	  	expect(CodeHelper.clone('false')).toEqual('false');
 	  	expect(CodeHelper.clone('\r\n')).toEqual('\r\n');
@@ -201,8 +201,8 @@ describe('equals', () => {
 	  	expect(CodeHelper.equals('', 'Abc')).toEqual(false);
 	  	expect(CodeHelper.equals('Abc123', 'Abc123')).toEqual(true);
 	  	expect(CodeHelper.equals('Abc123', '123')).toEqual(false);
-	  	expect(CodeHelper.equals('ÀÒÉÒÍ×è¹æ', 'ÀÒÉÒÍ×è¹æ')).toEqual(true);
-	  	expect(CodeHelper.equals('ÀÒÉÒÍ×è¹æ', 'ÀÒÉÒÍ×è¹')).toEqual(false);
+	  	expect(CodeHelper.equals('à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™à¹†', 'à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™à¹†')).toEqual(true);
+	  	expect(CodeHelper.equals('à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™à¹†', 'à¸ à¸²à¸©à¸²à¸­à¸·à¹ˆà¸™')).toEqual(false);
 	  	expect(CodeHelper.equals('0.0000125', '0.0000125')).toEqual(true);
 	  	expect(CodeHelper.equals('0.0000125', '0.000012500')).toEqual(false);
 	  	expect(CodeHelper.equals('false', 'false')).toEqual(true);
@@ -288,5 +288,13 @@ describe('equals', () => {
 	  	expect(CodeHelper.equals({a: 123, c: {x: false}}, {a: 123, c: {x: 1}})).toEqual(false);
 	  	expect(CodeHelper.equals({a: 123, c: {x: 1}}, {a: 123, c: {x: false}})).toEqual(false);
 	  });
+	});
+});
+
+describe('escape', () => {
+	test('Simple', () => {
+		expect(CodeHelper.escape(undefined)).toEqual('');
+		expect(CodeHelper.escape(null)).toEqual('');
+		expect(CodeHelper.escape('& > < " \' &><"\' &  > \r\n <  " \t \'')).toEqual('&amp; &gt; &lt; &quot; &#039; &amp;&gt;&lt;&quot;&#039; &amp;  &gt; \r\n &lt;  &quot; \t &#039;');
 	});
 });
