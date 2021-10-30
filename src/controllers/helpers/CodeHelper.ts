@@ -1,10 +1,32 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
+import { strict as assert } from 'assert';
 
 const CodeHelper = {
+	recursiveEvaluate: (obj: any, evaluate: any) => {
+		if (typeof obj === 'object' && obj !== null && obj.constructor === Object) {
+			for (const key in obj) {
+				if (obj.hasOwnProperty(key)) {
+					CodeHelper.recursiveEvaluate(obj[key], evaluate);
+				}
+			}
+		} else if (Array.isArray(obj)) {
+			for (const value of obj) {
+				evaluate(value);
+			}
+		} else {
+			evaluate(obj);
+		}
+	},
   clone: (obj: any) => {
-  	// TODO: to support Infinity, NaN, Date (, undefined)
+  	// TODO: to support Infinity, NaN, RegEX (, undefined)
+  	// TODO to support Date => Date
     //
+    CodeHelper.recursiveEvaluate(obj, (obj: any) => {
+    	assert(['number', 'boolean', 'string'].indexOf(typeof obj) != -1 || obj instanceof Date || obj === null, 'Can cantain only string, number, boolean, date, and null.');
+    	assert(!(typeof obj === 'number' && (obj === Infinity || obj === -Infinity)), 'Can not contain Infinity.');
+    	assert(!(typeof obj === 'number' && isNaN(obj)), 'Can not contain NaN.');
+    });
     
     return JSON.parse(JSON.stringify(obj));
   },
@@ -12,6 +34,9 @@ const CodeHelper = {
   	// Credit: https://stackoverflow.com/questions/30476150/javascript-deep-comparison-recursively-objects-and-properties
     // TODO: to support NaN == NaN
     // 
+    assert(!(typeof x === 'number' && isNaN(x) && typeof y === 'number' && isNaN(y)), 'Cannot compare NaN with NaN.');
+    assert(!(typeof x === 'number' && isNaN(x) && typeof y === 'number' && isNaN(y)), 'Cannot compare RegEX with RegEX.');
+    
     "use strict";
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
@@ -20,7 +45,7 @@ const CodeHelper = {
     // if they are functions, they should exactly refer to same one (because of closures)
     if (x instanceof Function) { return x === y; }
     // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
-    if (x instanceof RegExp) { return x === y; }
+    if (x instanceof RegExp) { return String(x) === String(y); }
     if (x === y || x.valueOf() === y.valueOf()) { return true; }
     if (Array.isArray(x) && x.length !== y.length) { return false; }
 
