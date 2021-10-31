@@ -108,7 +108,11 @@ try {
 	const route = require("./route");
 	route.default(app);
 } catch (error) {
-	console.log("\x1b[31m", error, "\x1b[0m");
+	if (process.env.JEST_WORKER_ID !== undefined) {
+		console.log("\x1b[33m", error, "\x1b[0m");
+	} else {
+		console.log("\x1b[31m", error, "\x1b[0m");
+	}
 	endpoint.addRecentError(error);
 }
 

@@ -12,8 +12,17 @@ let cachedSchema = null;
 
 const ProjectConfigurationHelper = {
 	reload: () => {
-		file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
-		data = JSON.parse(CodeHelper.unlabel(file));
+		try {
+			file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
+			data = JSON.parse(CodeHelper.unlabel(file));
+		} catch(error) {
+			if (process.env.JEST_WORKER_ID !== undefined) {
+				console.log("\x1b[33m", error, "\x1b[0m");
+			} else {
+				console.log("\x1b[31m", error, "\x1b[0m");
+			}
+			data = {};
+		}
 	},
   convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
@@ -37,14 +46,14 @@ const ProjectConfigurationHelper = {
     return tables;
   },
 	getDataSchema: (): DataSchema => {
-	  if (!cachedSchema) cachedSchema = ProjectConfigurationHelper.convertToSchema(data.flows.schema || {});
+	  if (!cachedSchema) cachedSchema = ProjectConfigurationHelper.convertToSchema(data.flows && data.flows.schema || {});
 	  
 	  return {
 	    tables: cachedSchema
 	  };
 	},
 	getDotNotationPossibilities: (page: string): any => {
-	  return data.sites[page] && data.sites[page].notations || [];
+	  return data.sites && data.sites[page] && data.sites[page].notations || [];
 	}
 };
 
