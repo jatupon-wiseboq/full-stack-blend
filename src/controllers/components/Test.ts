@@ -22,6 +22,10 @@ class TestController extends Base {
   }
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+  	if (Math.random() < 0.25) {
+  		this.response.status(500).send('To test retrying');
+  		return;
+  	}
     return new Promise(async (resolve, reject) => {
     	if (!this.request.query['error']) {
     		RenderHelper.json(this.response, {
@@ -46,6 +50,10 @@ class TestController extends Base {
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+  	if (Math.random() < 0.25) {
+  		this.response.status(500).send('To test retrying');
+  		return;
+  	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
     		RenderHelper.json(this.response, {
@@ -70,6 +78,10 @@ class TestController extends Base {
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+  	if (Math.random() < 0.25) {
+  		this.response.status(500).send('To test retrying');
+  		return;
+  	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
     		RenderHelper.json(this.response, {
@@ -94,6 +106,10 @@ class TestController extends Base {
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
+  	if (Math.random() < 0.25) {
+  		this.response.status(500).send('To test retrying');
+  		return;
+  	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
     		RenderHelper.json(this.response, {
