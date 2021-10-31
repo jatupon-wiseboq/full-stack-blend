@@ -39,13 +39,13 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     resave: true,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
-    store: new MongoStore({
+    store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
         url: process.env[process.env.DOCUMENT_DATABASE_KEY],
         autoReconnect: true,
         mongoOptions: {
         	useUnifiedTopology: true
         }
-    }),
+    }) || null,
     cookie: { secure: true }
   }));
 } else {
@@ -53,13 +53,13 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     resave: true,
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
-    store: new MongoStore({
+    store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
 				url: process.env[process.env.DOCUMENT_DATABASE_KEY],
 				autoReconnect: true,
         mongoOptions: {
         	useUnifiedTopology: true
         }
-    }),
+    }) || null,
     cookie: {}
   }));
 }

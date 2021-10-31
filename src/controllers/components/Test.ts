@@ -23,25 +23,97 @@ class TestController extends Base {
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      reject(new Error("Not Implemented Error"));
+    	if (!this.request.query['error']) {
+    		RenderHelper.json(this.response, {
+	      	'Test': {
+	      		source: SourceType.Dictionary,
+						group: 'Test',
+					  rows: [{
+					  	keys: {method: 'GET'},
+						  columns: {
+						  	header: this.request.headers['header'],
+						 		query: this.request.query['query']
+						 	},
+						  relations: {}
+					 	}]
+	      	}
+	      });
+	      resolve({});
+    	} else {
+    		reject(new Error(this.request.query['error']));
+    	}
     });
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      reject(new Error("Not Implemented Error"));
+      if (!this.request.query['error']) {
+    		RenderHelper.json(this.response, {
+	      	'Test': {
+	      		source: SourceType.Dictionary,
+						group: 'Test',
+					  rows: [{
+					  	keys: {method: 'POST'},
+						  columns: {
+						  	header: this.request.headers['header'],
+						 		query: this.request.query['query']
+						 	},
+						  relations: {}
+					 	}]
+	      	}
+	      });
+	      resolve({});
+    	} else {
+    		reject(new Error(this.request.query['error']));
+    	}
     });
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      reject(new Error("Not Implemented Error"));
+      if (!this.request.query['error']) {
+    		RenderHelper.json(this.response, {
+	      	'Test': {
+	      		source: SourceType.Dictionary,
+						group: 'Test',
+					  rows: [{
+					  	keys: {method: 'PUT'},
+						  columns: {
+						  	header: this.request.headers['header'],
+						 		query: this.request.query['query']
+						 	},
+						  relations: {}
+					 	}]
+	      	}
+	      });
+	      resolve({});
+    	} else {
+    		reject(new Error(this.request.query['error']));
+    	}
     });
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise(async (resolve, reject) => {
-      reject(new Error("Not Implemented Error"));
+      if (!this.request.query['error']) {
+    		RenderHelper.json(this.response, {
+	      	'Test': {
+	      		source: SourceType.Dictionary,
+						group: 'Test',
+					  rows: [{
+					  	keys: {method: 'DELETE'},
+						  columns: {
+						  	header: this.request.headers['header'],
+						 		query: this.request.query['query']
+						 	},
+						  relations: {}
+					 	}]
+	      	}
+	      });
+	      resolve({});
+    	} else {
+    		reject(new Error(this.request.query['error']));
+    	}
     });
   }
   
@@ -87,6 +159,9 @@ class TestController extends Base {
  	
   private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	const json: any = request.body;
+  	
+  	if (!json) return [null, null, []]; 
+  	
   	let action: ActionType;
 		
 		switch (json['action']) {
