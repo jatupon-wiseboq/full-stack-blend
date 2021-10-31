@@ -48,6 +48,8 @@ const RequestHelper = {
   					} else {
   					  setTimeout((() => {
   					    if (--retryCount >= 0) {
+  					    	console.log(`\x1b[35mRetrying...\x1b[0m`);
+  					    	
   					      process();
   					    } else {
   						    reject(xmlhttp.status);
