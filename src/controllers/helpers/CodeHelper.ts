@@ -6,7 +6,7 @@ const CodeHelper = {
 	recursiveEvaluate: (obj: any, evaluate: any) => {
 		if (Array.isArray(obj)) {
 			for (const value of obj) {
-				evaluate(value);
+				CodeHelper.recursiveEvaluate(value, evaluate);
 			}
 		} else if (typeof obj === 'object' && obj !== null && obj.constructor === Object) {
 			for (const key in obj) {
