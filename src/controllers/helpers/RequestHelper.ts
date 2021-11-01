@@ -165,6 +165,15 @@ const RequestHelper = {
 				return null;
 		}
 	},
+	getFields: (pageId: string, request: Request): any => {
+		const json: any = request.body;
+		
+		if (json == null) {
+			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
+		}
+		
+		return requestSubmitInfoDict[pageId + json.guid].fields;
+	},
 	getOptions: (pageId: string, request: Request): any => {
 		const json: any = request.body;
 		
@@ -173,6 +182,9 @@ const RequestHelper = {
 		}
 		
 		return requestSubmitInfoDict[pageId + json.guid].options;
+	},
+	getParamInfos: (guid: string): any => {
+		return requestParamInfoDict[guid.split('[')[0]];
 	},
 	getSchema: (pageId: string, request: Request): DataTableSchema => {
 		const json: any = request.body;
@@ -194,8 +206,8 @@ const RequestHelper = {
 		  return null;
 		}
 		
-		const paramInfo = requestParamInfoDict[guid.split('[')[0]];
-		const submitInfo = requestSubmitInfoDict[pageId + json.guid];
+		const paramInfo = RequestHelper.getParamInfos(guid);
+		const submitInfo = RequestHelper.getFields(pageId, request);
 		
 		if (submitInfo.fields.indexOf(guid.split('[')[0]) == -1) {
 			throw new Error('There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).');

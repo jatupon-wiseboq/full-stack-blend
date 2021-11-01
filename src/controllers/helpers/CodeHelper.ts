@@ -4,15 +4,15 @@ import { strict as assert } from 'assert';
 
 const CodeHelper = {
 	recursiveEvaluate: (obj: any, evaluate: any) => {
-		if (typeof obj === 'object' && obj !== null && obj.constructor === Object) {
+		if (Array.isArray(obj)) {
+			for (const value of obj) {
+				evaluate(value);
+			}
+		} else if (typeof obj === 'object' && obj !== null && obj.constructor === Object) {
 			for (const key in obj) {
 				if (obj.hasOwnProperty(key)) {
 					CodeHelper.recursiveEvaluate(obj[key], evaluate);
 				}
-			}
-		} else if (Array.isArray(obj)) {
-			for (const value of obj) {
-				evaluate(value);
 			}
 		} else {
 			evaluate(obj);

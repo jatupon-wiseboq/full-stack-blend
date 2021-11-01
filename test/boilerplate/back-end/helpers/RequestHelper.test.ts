@@ -112,3 +112,11 @@ describe('HTTP(s) Requests', () => {
 		});
 	});
 });
+
+describe('Ingress Gate', () => {
+	describe('registerSubmit', () => {
+		test('GET', async () => {
+			
+		});
+	});
+});
