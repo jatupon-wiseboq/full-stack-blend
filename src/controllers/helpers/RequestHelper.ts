@@ -207,9 +207,9 @@ const RequestHelper = {
 		}
 		
 		const paramInfo = RequestHelper.getParamInfos(guid);
-		const submitInfo = RequestHelper.getFields(pageId, request);
+		const fields = RequestHelper.getFields(pageId, request);
 		
-		if (submitInfo.fields.indexOf(guid.split('[')[0]) == -1) {
+		if (fields.indexOf(guid.split('[')[0]) == -1) {
 			throw new Error('There was an error trying to obtain requesting parameters (found a prohibited requesting parameter).');
 		}
 		
