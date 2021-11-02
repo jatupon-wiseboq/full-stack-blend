@@ -6,7 +6,9 @@ import {SourceType, ActionType, Input} from './DatabaseHelper';
 import {DataTableSchema, DataSchema, SchemaHelper, FieldType} from './SchemaHelper';
 import {ValidationHelper} from './ValidationHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {CodeHelper} from "./CodeHelper";
 import {XMLHttpRequest} from 'xmlhttprequest-ts';
+import { strict as assert } from 'assert';
 
 interface RequestParamInfo {
   target: SourceType;
@@ -129,6 +131,17 @@ const RequestHelper = {
 		};
 	},
 	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(action !== null && action !== undefined, 'action cannot be null or undefined.');
+		assert(fields !== null, 'fields cannot be null or undefined.');
+		assert(typeof options === 'object' && (options == null || options.constructor === Object), 'options must be a simple object.');
+		assert(requestSubmitInfoDict[pageId + guid] === undefined, 'The submit information is already existed.');
+		
+		CodeHelper.recursiveEvaluate(fields, (value: any) => {
+    	assert(value !== null && value !== undefined, 'fields cannot contain any null or undefined.');
+    });
+		
 		requestSubmitInfoDict[pageId + guid] = {
 			action: action,
 			fields: fields,
@@ -136,11 +149,15 @@ const RequestHelper = {
 		};
 	},
 	getAction: (pageId: string, request: Request): ActionType => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
 		const json: any = request.body;
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
-		}
+		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
+		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
 		
 		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
 		
@@ -166,20 +183,28 @@ const RequestHelper = {
 		}
 	},
 	getFields: (pageId: string, request: Request): any => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
 		const json: any = request.body;
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
-		}
+		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
+		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
 		
 		return requestSubmitInfoDict[pageId + json.guid].fields;
 	},
 	getOptions: (pageId: string, request: Request): any => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
 		const json: any = request.body;
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
-		}
+		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
+		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
 		
 		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
