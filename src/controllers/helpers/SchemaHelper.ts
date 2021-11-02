@@ -231,7 +231,7 @@ const SchemaHelper = {
 		  shifted = splited.shift();
 		} while (current && shifted);
 		
-		if (current == null) throw new Error("There was an error retreiving data schema (invalid of dot notation).");
+		if (current == null) throw new Error(`There was an error retreiving data schema ${notation} (invalid of dot notation).`);
 		if ("fieldType" in current) throw new Error("There was an error retreiving data schema (dot notation gave a column instead of a table).");
 		
 		return current;

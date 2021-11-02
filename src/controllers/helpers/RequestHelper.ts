@@ -100,8 +100,15 @@ const RequestHelper = {
   	
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
-	registerInput: (guid: string, target: string, group: string, name: string): void => {
-		if (!guid || !target || !group || !name) return;
+	registerInput: (guid: string, target: string, group: string, name: string): void => {
+		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(guid !== '', 'guid cannot be an empty string.');
+		assert(target !== null && target !== undefined, 'target cannot be null or undefined.');
+		assert(target !== '', 'target cannot be an empty string.');
+		assert(group !== null && group !== undefined, 'group cannot be null or undefined.');
+		assert(group !== '', 'group cannot be an empty string.');
+		assert(name !== null && name !== undefined, 'name cannot be null or undefined.');
+		assert(name !== '', 'name cannot be an empty string.');
 		
 		let _target: SourceType;
 		switch (target) {
@@ -124,16 +131,25 @@ const RequestHelper = {
 				throw new Error('There was an error trying to retrieve input info (target value isn\'t in the predefined set).');
 		}
 		
-		requestParamInfoDict[guid] = {
+		const info = {
 			target: _target,
 			group: group,
 			name: name
 		};
+		
+		if (requestParamInfoDict[guid] && !CodeHelper.equals(requestParamInfoDict[guid], info)) {
+			throw new Error('There is a conflict of difference input definition of the same guid.');
+		}
+		
+		requestParamInfoDict[guid] = info;
 	},
 	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
 		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
 		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(guid !== '', 'guid cannot be an empty string.');
 		assert(action !== null && action !== undefined, 'action cannot be null or undefined.');
+		assert(action !== '', 'action cannot be an empty string.');
 		assert(fields !== null, 'fields cannot be null or undefined.');
 		assert(typeof options === 'object' && (options == null || options.constructor === Object), 'options must be a simple object.');
 		assert(requestSubmitInfoDict[pageId + guid] === undefined, 'The submit information is already existed.');
@@ -150,6 +166,7 @@ const RequestHelper = {
 	},
 	getAction: (pageId: string, request: Request): ActionType => {
 		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
 		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
 		
 		const json: any = request.body;
@@ -184,6 +201,7 @@ const RequestHelper = {
 	},
 	getFields: (pageId: string, request: Request): any => {
 		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
 		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
 		
 		const json: any = request.body;
@@ -197,6 +215,7 @@ const RequestHelper = {
 	},
 	getOptions: (pageId: string, request: Request): any => {
 		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
 		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
 		
 		const json: any = request.body;
@@ -209,16 +228,29 @@ const RequestHelper = {
 		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
 	getParamInfos: (guid: string): any => {
-		return requestParamInfoDict[guid.split('[')[0]];
-	},
-	getSchema: (pageId: string, request: Request): DataTableSchema => {
-		const json: any = request.body;
+		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(guid !== '', 'guid cannot be an empty string.');
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
+		const info = requestParamInfoDict[guid.split('[')[0]];
+		
+		if (info === undefined || info === null) {
+			throw new Error(`There was an error trying to retrieve param info (target ${guid} doesn\'t exist).`);
 		}
 		
-		return SchemaHelper.getDataTableSchemaFromNotation(json.notation, ProjectConfigurationHelper.getDataSchema());
+		return info;
+	},
+	getSchema: (pageId: string, request: Request, schemata: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
+		const fields = RequestHelper.getFields(pageId, request);
+		
+		if (fields.length == 0) return null;
+		
+		const info = RequestHelper.getParamInfos(fields[0]);
+		
+		return SchemaHelper.getDataTableSchemaFromNotation(info.group.split('.')[0], schemata);
 	},
 	getInput: (pageId: string, request: Request, guid: string): Input => {
 		const json: any = request.body;
