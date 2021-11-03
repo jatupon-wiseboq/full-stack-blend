@@ -103,6 +103,9 @@ const RequestHelper = {
 	registerInput: (guid: string, target: string, group: string, name: string): void => {
 		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
 		assert(guid !== '', 'guid cannot be an empty string.');
+		
+		if (target == null && group = '' && name == '') return;
+		
 		assert(target !== null && target !== undefined, 'target cannot be null or undefined.');
 		assert(target !== '', 'target cannot be an empty string.');
 		assert(group !== null && group !== undefined, 'group cannot be null or undefined.');
@@ -148,6 +151,9 @@ const RequestHelper = {
 		assert(pageId !== '', 'pageId cannot be an empty string.');
 		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
 		assert(guid !== '', 'guid cannot be an empty string.');
+		
+		if (action === null) return;
+		
 		assert(action !== null && action !== undefined, 'action cannot be null or undefined.');
 		assert(action !== '', 'action cannot be an empty string.');
 		assert(fields !== null, 'fields cannot be null or undefined.');
