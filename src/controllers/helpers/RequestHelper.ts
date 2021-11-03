@@ -185,7 +185,7 @@ const RequestHelper = {
 		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
 		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
 		
-		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return null;
+		if (typeof json.guid === 'undefined') return null;
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
@@ -223,7 +223,7 @@ const RequestHelper = {
 		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
 		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
 		
-		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return [];
+		if (typeof json.guid === 'undefined') return [];
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
@@ -240,7 +240,7 @@ const RequestHelper = {
 		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
 		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
 		
-		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return null;
+		if (typeof json.guid === 'undefined') return null;
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
