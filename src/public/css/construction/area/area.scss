@@ -485,6 +485,19 @@ html.internal-fsb-guide-on {
 		display: table !important;
 		visibility: visible !important;
 	}
+  [internal-fsb-class="FlowLayout"].internal-fsb-inheriting-element.d-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-inheriting-element.d-sm-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-inheriting-element.d-md-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-inheriting-element.d-lg-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-inheriting-element.d-xl-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-element.d-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-element.d-sm-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-element.d-md-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-element.d-lg-none,
+  [internal-fsb-class="FlowLayout"].internal-fsb-element.d-xl-none {
+		display: flex !important;
+		visibility: visible !important;
+	}
 }
 
 input[type='radio'], input[type='checkbox'] {
