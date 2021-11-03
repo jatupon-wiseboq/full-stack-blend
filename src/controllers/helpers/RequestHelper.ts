@@ -152,17 +152,22 @@ const RequestHelper = {
 		assert(action !== '', 'action cannot be an empty string.');
 		assert(fields !== null, 'fields cannot be null or undefined.');
 		assert(typeof options === 'object' && (options == null || options.constructor === Object), 'options must be a simple object.');
-		assert(requestSubmitInfoDict[pageId + guid] === undefined, 'The submit information is already existed.');
 		
 		CodeHelper.recursiveEvaluate(fields, (value: any) => {
     	assert(value !== null && value !== undefined, 'fields cannot contain any null or undefined.');
     });
-		
-		requestSubmitInfoDict[pageId + guid] = {
+    
+    const info = {
 			action: action,
 			fields: fields,
 			options: options
 		};
+    
+    if (requestSubmitInfoDict[pageId + guid] && !CodeHelper.equals(requestSubmitInfoDict[pageId + guid], info)) {
+			throw new Error('There is a conflict of difference submit definition of the same page and guid.');
+		}
+		
+		requestSubmitInfoDict[pageId + guid] = info;
 	},
 	getAction: (pageId: string, request: Request): ActionType => {
 		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
