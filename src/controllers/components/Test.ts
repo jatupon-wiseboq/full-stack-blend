@@ -44,7 +44,7 @@ class TestController extends Base {
 	      });
 	      resolve({});
     	} else {
-    		reject(new Error(this.request.query['error']));
+    		reject(new Error(this.request.query['error'] as string));
     	}
     });
   }
@@ -72,7 +72,7 @@ class TestController extends Base {
 	      });
 	      resolve({});
     	} else {
-    		reject(new Error(this.request.query['error']));
+    		reject(new Error(this.request.query['error'] as string));
     	}
     });
   }
@@ -100,7 +100,7 @@ class TestController extends Base {
 	      });
 	      resolve({});
     	} else {
-    		reject(new Error(this.request.query['error']));
+    		reject(new Error(this.request.query['error'] as string));
     	}
     });
   }
@@ -128,7 +128,7 @@ class TestController extends Base {
 	      });
 	      resolve({});
     	} else {
-    		reject(new Error(this.request.query['error']));
+    		reject(new Error(this.request.query['error'] as string));
     	}
     });
   }
