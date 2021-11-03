@@ -104,14 +104,14 @@ const RequestHelper = {
 		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
 		assert(guid !== '', 'guid cannot be an empty string.');
 		
-		if (target == null && group == '' && name == '') return;
+		if (!target && !group && !name) return;
 		
-		assert(target !== null && target !== undefined, 'target cannot be null or undefined.');
-		assert(target !== '', 'target cannot be an empty string.');
-		assert(group !== null && group !== undefined, 'group cannot be null or undefined.');
-		assert(group !== '', 'group cannot be an empty string.');
-		assert(name !== null && name !== undefined, 'name cannot be null or undefined.');
-		assert(name !== '', 'name cannot be an empty string.');
+		assert(target !== null && target !== undefined, `target cannot be null or undefined (${guid}).`);
+		assert(target !== '', `target cannot be an empty string (${guid}).`);
+		assert(group !== null && group !== undefined, `group cannot be null or undefined (${guid}).`);
+		assert(group !== '', `group cannot be an empty string (${guid}).`);
+		assert(name !== null && name !== undefined, `name cannot be null or undefined (${guid}).`);
+		assert(name !== '', `name cannot be an empty string (${guid}).`);
 		
 		let _target: SourceType;
 		switch (target) {
@@ -131,7 +131,7 @@ const RequestHelper = {
 				_target = SourceType.RESTful;
 				break;
 			default:
-				throw new Error('There was an error trying to retrieve input info (target value isn\'t in the predefined set).');
+				throw new Error(`target "${target}" isn\'t fall within the predefined set (${guid}).`);
 		}
 		
 		const info = {
@@ -141,26 +141,26 @@ const RequestHelper = {
 		};
 		
 		if (requestParamInfoDict[guid] && !CodeHelper.equals(requestParamInfoDict[guid], info)) {
-			throw new Error('There is a conflict of difference input definition of the same guid.');
+			throw new Error(`There is a conflict of difference input definition of the same guid (${guid}).`);
 		}
 		
 		requestParamInfoDict[guid] = info;
 	},
 	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
-		assert(guid !== '', 'guid cannot be an empty string.');
+		assert(pageId !== null && pageId !== undefined, `pageId cannot be null or undefined (${guid}).`);
+		assert(pageId !== '', `pageId cannot be an empty string (${guid}).`);
+		assert(guid !== null && guid !== undefined, `guid cannot be null or undefined (${guid}).`);
+		assert(guid !== '', `guid cannot be an empty string (${guid}).`);
 		
-		if (action === null) return;
+		if (!action) return;
 		
-		assert(action !== null && action !== undefined, 'action cannot be null or undefined.');
-		assert(action !== '', 'action cannot be an empty string.');
-		assert(fields !== null, 'fields cannot be null or undefined.');
-		assert(typeof options === 'object' && (options == null || options.constructor === Object), 'options must be a simple object.');
+		assert(action !== null && action !== undefined, `action cannot be null or undefined.`);
+		assert(action !== '', `action cannot be an empty string.`);
+		assert(fields !== null, `fields cannot be null or undefined.`);
+		assert(typeof options === 'object' && (options == null || options.constructor === Object), `options must be a simple object (${guid}).`);
 		
 		CodeHelper.recursiveEvaluate(fields, (value: any) => {
-    	assert(value !== null && value !== undefined, 'fields cannot contain any null or undefined.');
+    	assert(value !== null && value !== undefined, `fields cannot contain any null or undefined (${guid}).`);
     });
     
     const info = {
@@ -170,7 +170,7 @@ const RequestHelper = {
 		};
     
     if (requestSubmitInfoDict[pageId + guid] && !CodeHelper.equals(requestSubmitInfoDict[pageId + guid], info)) {
-			throw new Error('There is a conflict of difference submit definition of the same page and guid.');
+			throw new Error(`There is a conflict of difference submit definition of the same page and guid (${pageId}:${guid}).`);
 		}
 		
 		requestSubmitInfoDict[pageId + guid] = info;
@@ -188,7 +188,7 @@ const RequestHelper = {
 		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return null;
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
-		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
+		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (${pageId}).`);
 		
 		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
 		
@@ -226,7 +226,7 @@ const RequestHelper = {
 		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return [];
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
-		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
+		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (${pageId}).`);
 		
 		return requestSubmitInfoDict[pageId + json.guid].fields;
 	},
@@ -243,7 +243,7 @@ const RequestHelper = {
 		if (typeof json.guid !== 'string' || !requestSubmitInfoDict[pageId + json.guid]) return null;
 		
 		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
-		assert(requestSubmitInfoDict[pageId + json.guid], 'The submit information isn\'t available.');
+		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (${pageId}).`);
 		
 		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
