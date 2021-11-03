@@ -104,7 +104,7 @@ const RequestHelper = {
 		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
 		assert(guid !== '', 'guid cannot be an empty string.');
 		
-		if (target == null && group = '' && name == '') return;
+		if (target == null && group == '' && name == '') return;
 		
 		assert(target !== null && target !== undefined, 'target cannot be null or undefined.');
 		assert(target !== '', 'target cannot be an empty string.');
