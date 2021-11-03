@@ -170,7 +170,7 @@ const RequestHelper = {
 		};
     
     if (requestSubmitInfoDict[pageId + guid] && !CodeHelper.equals(requestSubmitInfoDict[pageId + guid], info)) {
-			throw new Error(`There is a conflict of difference submit definition of the same page and guid (page: ${pageId}, guid: ${json.guid}).`);
+			throw new Error(`There is a conflict of difference submit definition of the same page and guid (page: ${pageId}, guid: ${guid}).`);
 		}
 		
 		requestSubmitInfoDict[pageId + guid] = info;
