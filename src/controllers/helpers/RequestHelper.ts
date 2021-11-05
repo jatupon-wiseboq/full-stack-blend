@@ -275,13 +275,10 @@ const RequestHelper = {
 	getInput: (pageId: string, request: Request, guid: string): Input => {
 		const json: any = request.body;
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
-		}
+		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
+		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
 		
-		if (!json.hasOwnProperty(guid)) {
-		  return null;
-		}
+		if (typeof json.guid === 'undefined') return null;
 		
 		const paramInfo = RequestHelper.getParamInfos(guid);
 		const fields = RequestHelper.getFields(pageId, request);
@@ -299,13 +296,13 @@ const RequestHelper = {
 		const input: Input = {
 		  target: paramInfo.target,
   		group: group.replace(/[@!]/g, ''),
-  		name: paramInfo.name,
+  		name: paramInfo.name.replace(/[@!]/g, ''),
   		value: json[guid],
   		guid: guid,
   		premise: premise && premise.replace(/[@!]/g, '') || null,
   		division: indexes,
-  		associate: [0, 1].indexOf(group.indexOf('@')) != -1,
-  		notify: [0, 1].indexOf(group.indexOf('!')) != -1,
+  		associate: paramInfo.group.indexOf('@') != -1,
+  		notify: paramInfo.group.indexOf('!') != -1,
   		validation: null
 		};
 		
@@ -318,14 +315,15 @@ const RequestHelper = {
 	getInputs: (pageId: string, request: Request, guid: string): Input[] => {
 		const json: any = request.body;
 		
-		if (json == null) {
-			throw new Error('There was an error trying to obtain requesting parameters (requesting body is null).');
-		}
+		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
+		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		
+		if (typeof json.guid === 'undefined') [];
 		
 		const inputs = [];
 		
 		for (const key in json) {
-			if (json.hasOwnProperty(key) && key.indexOf(guid) == 0) {
+			if (json.hasOwnProperty(key) && key != 'guid' && key != 'notation') {
 				const input = RequestHelper.getInput(pageId, request, key);
 				
 				if (input) inputs.push(input);
@@ -334,7 +332,7 @@ const RequestHelper = {
 		
 		return inputs;
 	},
-	createInputs: (values: {[Identifier: string]: any}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
+	createInputs: (values: {[Identifier: string]: any}, schemata: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
 		const results = [];
 		const _values = {};
 		
@@ -362,12 +360,12 @@ const RequestHelper = {
 				const premise = splited.join('.') || null;
 				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
-				if (!data.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
-				if (!data.tables[group].keys[name] && !data.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(data.tables[group].keys), ...Object.keys(data.tables[group].columns)].join(', ')}).`);
+				if (!schemata.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
+				if (!schemata.tables[group].keys[name] && !schemata.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(schemata.tables[group].keys), ...Object.keys(schemata.tables[group].columns)].join(', ')}).`);
 				
 				let value = values[key];
-				const type = data.tables[group].keys[name] && data.tables[group].keys[name].fieldType ||
-					data.tables[group].columns[name] && data.tables[group].columns[name].fieldType;
+				const type = schemata.tables[group].keys[name] && schemata.tables[group].keys[name].fieldType ||
+					schemata.tables[group].columns[name] && schemata.tables[group].columns[name].fieldType;
 				
 				if (value === null) value = 'null';
 				if (typeof value === 'string') {
@@ -382,7 +380,7 @@ const RequestHelper = {
 					}
 				
 					const input: Input = {
-					  target: data.tables[group].source,
+					  target: schemata.tables[group].source,
 			  		group: group,
 			  		name: name,
 			  		value: value,
@@ -399,7 +397,7 @@ const RequestHelper = {
 					let index = 0;
 					for (const _value of value) {
 						const input: Input = {
-						  target: data.tables[group].source,
+						  target: schemata.tables[group].source,
 				  		group: group,
 				  		name: name,
 				  		value: _value,
@@ -415,7 +413,7 @@ const RequestHelper = {
 					}
 				} else {
 					const input: Input = {
-					  target: data.tables[group].source,
+					  target: schemata.tables[group].source,
 			  		group: group,
 			  		name: name,
 			  		value: value,
