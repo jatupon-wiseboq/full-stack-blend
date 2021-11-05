@@ -988,7 +988,7 @@ var WorkspaceHelper = {
   		WorkspaceHelper.plugComponentInputs(container);
   		WorkspaceHelper.updateInPageComponents(container);
       WorkspaceHelper.updateInheritingComponents(container);
-  		results = BackEndDOMHelper.generateBackEndCode(key, container);
+  		results = BackEndDOMHelper.generateBackEndCode(container, key);
   		WorkspaceHelper.unplugComponentInputs(container);
   	} else {
   		results = null;
