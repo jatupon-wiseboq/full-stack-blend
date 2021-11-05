@@ -397,3 +397,361 @@ describe('Ingress Gate', () => {
 		});
 	});
 });
+describe('Extract Inputs', () => {
+	const correctRequest1 = ({body: {guid: 'guid1n1', field2n1: '123'}} as any) as Request;
+	RequestHelper.registerSubmit('pageId1n1', 'guid1n1', 'test', [], {});
+	
+	const correctRequest2 = ({body: {guid: 'guid2n1'}} as any) as Request;
+	RequestHelper.registerSubmit('pageId2n1', 'guid2n1', 'test', ['field2n1'], {});
+	RequestHelper.registerInput('field2n1', 'relational', 'collection2n1', 'name2n1');
+	
+	const correctRequest3 = ({body: {guid: 'guid3n1', field3n1: '123', field3n2: 'true', field3n3: '0.00123', field3n4: '!@#$%[^&]*(', field3n5: '2021-11-05T10:28:25.361Z', field3n6: ''}} as any) as Request;
+	RequestHelper.registerSubmit('pageId3n1', 'guid3n1', 'test', ['field3n1', 'field3n2', 'field3n3', 'field3n4', 'field3n5', 'field3n6'], {});
+	RequestHelper.registerInput('field3n1', 'worker', '!collection3n1', 'name3n1');
+	RequestHelper.registerInput('field3n2', 'worker', '@collection3n1', 'name3n2');
+	RequestHelper.registerInput('field3n3', 'worker', '!@collection3n1', 'name3n3');
+	RequestHelper.registerInput('field3n4', 'worker', '@!collection3n1', 'name3n4');
+	
+	const correctRequest4 = ({body: {guid: 'guid4n1'}} as any) as Request;
+	RequestHelper.registerSubmit('pageId4n1', 'guid4n1', 'test', ['field4n1', 'field4n2', 'field4n3', 'field4n4'], {});
+	RequestHelper.registerInput('field4n1', 'document', 'collection4n1.collection4n2', 'name4n1');
+	RequestHelper.registerInput('field4n2', 'document', 'collection4n1', 'name4n2');
+	RequestHelper.registerInput('field4n3', 'document', 'collection4n1.collection4n3.collection4n4', 'name4n3');
+	RequestHelper.registerInput('field4n4', 'document', 'collection4n1.collection4n4', 'name4n4');
+	
+	const correctRequest5 = ({body: {guid: 'guid5n1'}} as any) as Request;
+	const correctRequest6 = ({body: {guid: 'guid6n1'}} as any) as Request;
+	RequestHelper.registerSubmit('pageId5n1', 'guid5n1', 'test', ['field5n1', 'field5n2', 'field5n3', 'field5n4'], {});
+	RequestHelper.registerSubmit('pageId6n1', 'guid6n1', 'test', ['field5n1', 'field5n2', 'field6n1', 'field6n2'], {});
+	RequestHelper.registerInput('field5n1', 'relational', 'collection5n1', 'name5n1');
+	RequestHelper.registerInput('field5n2', 'relational', '!@collection5n1.collection5n2', 'name5n2');
+	RequestHelper.registerInput('field5n3', 'worker', '!collection5n2', 'name5n1');
+	RequestHelper.registerInput('field5n4', 'document', 'collection5n2.collection5n3.@collection5n4', 'name5n2');
+	RequestHelper.registerInput('field6n1', 'volatile-memory', 'collection6n1.!@collection6n2.collection6n3.!collection6n4', 'name5n1');
+	RequestHelper.registerInput('field6n2', 'RESTful', '@!collection6n2', 'name5n2');
+	
+	const correctRequest7 = ({body: {guid: 'guid6n1', field5n1: '1', field5n2: '2', field6n1: '3', field6n2: '4'}} as any) as Request;
+	
+	test('getInput', () => {
+		expect(() => { RequestHelper.getInput('pageId1n1', correctRequest1, 'field1n1[0]'); }).toThrow();
+		
+		// Test division
+		// 
+		expect(RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'name2n1',
+  		value: undefined,
+  		guid: 'field2n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1[0]')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'name2n1',
+  		value: undefined,
+  		guid: 'field2n1[0]',
+  		premise: null,
+  		division: [0],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1[0,2]')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'name2n1',
+  		value: undefined,
+  		guid: 'field2n1[0,2]',
+  		premise: null,
+  		division: [0, 2],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1[0,2,1]')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'name2n1',
+  		value: undefined,
+  		guid: 'field2n1[0,2,1]',
+  		premise: null,
+  		division: [0, 2, 1],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1[0,-2,1]')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'name2n1',
+  		value: undefined,
+  		guid: 'field2n1[0,-2,1]',
+  		premise: null,
+  		division: [0, -2, 1],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		
+		// Test associate, notify, present and absent value
+		// 
+		expect(RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n1')).toEqual({
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'name3n1',
+  		value: '123',
+  		guid: 'field3n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n2')).toEqual({
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'name3n2',
+  		value: 'true',
+  		guid: 'field3n2',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n3')).toEqual({
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'name3n3',
+  		value: '0.00123',
+  		guid: 'field3n3',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n4')).toEqual({
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'name3n4',
+  		value: '!@#$%[^&]*(',
+  		guid: 'field3n4',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(() => { RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n5'); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId3n1', correctRequest3, 'field3n6'); }).toThrow();
+		
+		// Test premise
+		// 
+		expect(RequestHelper.getInput('pageId4n1', correctRequest4, 'field4n1')).toEqual({
+		  target: SourceType.Document,
+  		group: 'collection4n2',
+  		name: 'name4n1',
+  		value: undefined,
+  		guid: 'field4n1',
+  		premise: 'collection4n1',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId4n1', correctRequest4, 'field4n2')).toEqual({
+		  target: SourceType.Document,
+  		group: 'collection4n1',
+  		name: 'name4n2',
+  		value: undefined,
+  		guid: 'field4n2',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId4n1', correctRequest4, 'field4n3')).toEqual({
+		  target: SourceType.Document,
+  		group: 'collection4n4',
+  		name: 'name4n3',
+  		value: undefined,
+  		guid: 'field4n3',
+  		premise: 'collection4n1.collection4n3',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId4n1', correctRequest4, 'field4n4')).toEqual({
+		  target: SourceType.Document,
+  		group: 'collection4n4',
+  		name: 'name4n4',
+  		value: undefined,
+  		guid: 'field4n4',
+  		premise: 'collection4n1',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		
+		// Test SourceType, and sharing of same inputs, advanced associate and notify
+		//
+		expect(RequestHelper.getInput('pageId5n1', correctRequest5, 'field5n1')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection5n1',
+  		name: 'name5n1',
+  		value: undefined,
+  		guid: 'field5n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId5n1', correctRequest5, 'field5n2')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection5n2',
+  		name: 'name5n2',
+  		value: undefined,
+  		guid: 'field5n2',
+  		premise: 'collection5n1',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId5n1', correctRequest5, 'field5n3')).toEqual({
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection5n2',
+  		name: 'name5n1',
+  		value: undefined,
+  		guid: 'field5n3',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId5n1', correctRequest5, 'field5n4')).toEqual({
+		  target: SourceType.Document,
+  		group: 'collection5n4',
+  		name: 'name5n2',
+  		value: undefined,
+  		guid: 'field5n4',
+  		premise: 'collection5n2.collection5n3',
+  		division: [],
+  		associate: true,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId6n1', correctRequest6, 'field5n1')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection5n1',
+  		name: 'name5n1',
+  		value: undefined,
+  		guid: 'field5n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId6n1', correctRequest6, 'field5n2')).toEqual({
+		  target: SourceType.Relational,
+  		group: 'collection5n2',
+  		name: 'name5n2',
+  		value: undefined,
+  		guid: 'field5n2',
+  		premise: 'collection5n1',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId6n1', correctRequest6, 'field6n1')).toEqual({
+		  target: SourceType.VolatileMemory,
+  		group: 'collection6n4',
+  		name: 'name5n1',
+  		value: undefined,
+  		guid: 'field6n1',
+  		premise: 'collection6n1.collection6n2.collection6n3',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+		expect(RequestHelper.getInput('pageId6n1', correctRequest6, 'field6n2')).toEqual({
+		  target: SourceType.RESTful,
+  		group: 'collection6n2',
+  		name: 'name5n2',
+  		value: undefined,
+  		guid: 'field6n2',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		});
+	});
+	test('getInputs', () => {
+		expect(RequestHelper.getInputs('pageId6n1', correctRequest7, 'guid6n1')).toEqual([{
+		  target: SourceType.Relational,
+  		group: 'collection5n1',
+  		name: 'name5n1',
+  		value: '1',
+  		guid: 'field5n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: undefined
+		},{
+		  target: SourceType.Relational,
+  		group: 'collection5n2',
+  		name: 'name5n2',
+  		value: '2',
+  		guid: 'field5n2',
+  		premise: 'collection5n1',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		},{
+		  target: SourceType.VolatileMemory,
+  		group: 'collection6n4',
+  		name: 'name5n1',
+  		value: '3',
+  		guid: 'field6n1',
+  		premise: 'collection6n1.collection6n2.collection6n3',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		},{
+		  target: SourceType.RESTful,
+  		group: 'collection6n2',
+  		name: 'name5n2',
+  		value: '4',
+  		guid: 'field6n2',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: undefined
+		}]);
+	});
+	test('createInputs', () => {
+		
+	});
+	test('sortInputs', () => {
+		
+	});
+});
