@@ -401,8 +401,8 @@ const RequestHelper = {
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise && premise.replace(/[@!]/g, ''),
 		  			division: indexes,
-  					associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
-  					notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
+  					associate: namespace.indexOf('@') != -1,
+  					notify: namespace.indexOf('!') != -1,
 			  		validation: null
 					};
 					
@@ -418,8 +418,8 @@ const RequestHelper = {
 				  		guid: `${namespace}[${index++}]`,
 				  		premise: premise && premise.replace(/[@!]/g, ''),
 		  				division: indexes,
-  						associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
-  						notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
+  						associate: namespace.indexOf('@') != -1,
+  						notify: namespace.indexOf('!') != -1,
 				  		validation: null
 						};
 						
@@ -434,8 +434,8 @@ const RequestHelper = {
 		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
 			  		premise: premise && premise.replace(/[@!]/g, ''),
 		  			division: indexes,
-  					associate: [0, 1].indexOf(_group.indexOf('@')) != -1,
-  					notify: [0, 1].indexOf(_group.indexOf('!')) != -1,
+  					associate: namespace.indexOf('@') != -1,
+  					notify: namespace.indexOf('!') != -1,
 			  		validation: null
 					};
 					
