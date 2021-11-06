@@ -2,9 +2,13 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
+import { strict as assert } from 'assert';
 
 const DataFormationHelper = {
 	convertFromJSONToHierarchicalDataTable: (data: any, group: string="Collection"): HierarchicalDataTable => {
+		assert(data !== null && data !== undefined, 'data cannot be null or undefined.');
+		assert(typeof data === 'object' && (Array.isArray(data) || data.constructor === Object), 'data must be an array or a simple object only.');
+		
 		const table = {
 			source: SourceType.Collection,
 			group: group,
@@ -32,7 +36,7 @@ const DataFormationHelper = {
 				table.rows.push(DataFormationHelper.recursiveExtractNodesIntoDataRow(item));
 			}
 			row.relations['Children'] = table;
-		} else if (typeof data === 'object') {
+		} else if (typeof data === 'object' && data !== null) {
 			for (let key in data) {
 				if (data.hasOwnProperty(key)) {
 					if (Array.isArray(data[key])) {
