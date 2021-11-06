@@ -1,6 +1,6 @@
 import {RequestHelper} from "../../../../src/controllers/helpers/RequestHelper";
 import {ActionType, SourceType} from "../../../../src/controllers/helpers/DatabaseHelper";
-import {DataTableSchema, DataSchema} from "../../../../src/controllers/helpers/SchemaHelper";
+import {DataTableSchema, DataSchema, FieldType} from "../../../../src/controllers/helpers/SchemaHelper";
 
 import {Request} from "express";
 import express from "express";
@@ -770,7 +770,402 @@ describe('Extract Inputs', () => {
 		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest8, 'guid6n1'); }).toThrow();
 	});
 	test('createInputs', () => {
+		const tables: {[Identifier: string]: DataTableSchema} = {};
+		const schemata: DataSchema = {
+			tables: tables
+		};
+		schemata.tables['collection2n1'] = {
+			source: SourceType.Relational,
+			group: 'collection2n1',
+			guid: 'collection2n1',
+		  keys: {},
+		  columns: {
+		  	field2n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection3n1'] = {
+			source: SourceType.PrioritizedWorker,
+			group: 'collection3n1',
+			guid: 'collection3n1',
+		  keys: {},
+		  columns: {
+		  	field3n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+		  	field3n2: {fieldType: FieldType.Boolean, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+		  	field3n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+		  	field3n4: {fieldType: FieldType.String, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection4n1'] = {
+			source: SourceType.Document,
+			group: 'collection4n1',
+			guid: 'collection4n1',
+		  keys: {},
+		  columns: {field4n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection4n2'] = {
+			source: SourceType.Document,
+			group: 'collection4n2',
+			guid: 'collection4n2',
+		  keys: {},
+		  columns: {field4n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection4n3'] = {
+			source: SourceType.Document,
+			group: 'collection4n3',
+			guid: 'collection4n3',
+		  keys: {},
+		  columns: {},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection4n4'] = {
+			source: SourceType.Document,
+			group: 'collection4n4',
+			guid: 'collection4n4',
+		  keys: {},
+		  columns: {
+		  	field4n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+		  	field4n4: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection5n1'] = {
+			source: SourceType.Relational,
+			group: 'collection5n1',
+			guid: 'collection5n1',
+		  keys: {},
+		  columns: {
+		  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection5n2'] = {
+			source: SourceType.Relational,
+			group: 'collection5n2',
+			guid: 'collection5n2',
+		  keys: {},
+		  columns: {
+		  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+		  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection5n3'] = {
+			source: SourceType.PrioritizedWorker,
+			group: 'collection5n3',
+			guid: 'collection5n3',
+		  keys: {},
+		  columns: {},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection5n4'] = {
+			source: SourceType.Document,
+			group: 'collection5n4',
+			guid: 'collection5n4',
+		  keys: {},
+		  columns: {
+		  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection6n1'] = {
+			source: SourceType.Document,
+			group: 'collection6n1',
+			guid: 'collection6n1',
+		  keys: {},
+		  columns: {},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection6n2'] = {
+			source: SourceType.RESTful,
+			group: 'collection6n2',
+			guid: 'collection6n2',
+		  keys: {},
+		  columns: {
+		  	field6n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection6n3'] = {
+			source: SourceType.Document,
+			group: 'collection6n3',
+			guid: 'collection6n3',
+		  keys: {},
+		  columns: {},
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
+		schemata.tables['collection6n4'] = {
+			source: SourceType.VolatileMemory,
+			group: 'collection6n4',
+			guid: 'collection6n4',
+		  keys: {},
+		  columns: {
+		  	field6n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+		  },
+		  relations: {},
+		  modifyingPermission: null,
+		  retrievingPermission: null
+		};
 		
+		expect(RequestHelper.createInputs({
+			'collection2n1.field2n1': undefined,
+			'collection2n1.field2n1[0]': undefined,
+			'collection2n1.field2n1[0,2]': undefined,
+			'collection2n1.field2n1[0,2,1]': undefined,
+			'collection2n1.field2n1[0,-2,1]': undefined,
+			'!collection3n1.field3n1': '123',
+			'@collection3n1.field3n2': 'true',
+			'!@collection3n1.field3n3': '0.00123',
+			'@!collection3n1.field3n4': '!@#$%[^&]*(',
+			'collection4n1.collection4n2.field4n1': undefined,
+			'collection4n1.field4n2': undefined,
+			'collection4n1.collection4n3.collection4n4.field4n3': undefined,
+			'collection4n1.collection4n4.field4n4': undefined,
+			'collection5n1.field5n1': undefined,
+			'!@collection5n1.collection5n2.field5n2': undefined,
+			'!collection5n2.field5n1': undefined,
+			'collection5n2.collection5n3.@collection5n4.field5n2': undefined,
+			'collection6n1.!@collection6n2.collection6n3.!collection6n4.field6n1': undefined,
+			'@!collection6n2.field6n2': undefined
+		}, schemata)).toEqual([{
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: undefined,
+  		guid: 'collection2n1.field2n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: undefined,
+  		guid: 'collection2n1.field2n1[0]',
+  		premise: null,
+  		division: [0],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: undefined,
+  		guid: 'collection2n1.field2n1[0,2]',
+  		premise: null,
+  		division: [0, 2],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: undefined,
+  		guid: 'collection2n1.field2n1[0,2,1]',
+  		premise: null,
+  		division: [0, 2, 1],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: undefined,
+  		guid: 'collection2n1.field2n1[0,-2,1]',
+  		premise: null,
+  		division: [0, -2, 1],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'field3n1',
+  		value: 123,
+  		guid: '!collection3n1.field3n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'field3n2',
+  		value: 'true',
+  		guid: '@collection3n1.field3n2',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'field3n3',
+  		value: 0.00123,
+  		guid: '!@collection3n1.field3n3',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.PrioritizedWorker,
+  		group: 'collection3n1',
+  		name: 'field3n4',
+  		value: '!@#$%[^&]*(',
+  		guid: '@!collection3n1.field3n4',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.Document,
+  		group: 'collection4n2',
+  		name: 'field4n1',
+  		value: undefined,
+  		guid: 'collection4n1.collection4n2.field4n1',
+  		premise: 'collection4n1',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Document,
+  		group: 'collection4n1',
+  		name: 'field4n2',
+  		value: undefined,
+  		guid: 'collection4n1.field4n2',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Document,
+  		group: 'collection4n4',
+  		name: 'field4n3',
+  		value: undefined,
+  		guid: 'collection4n1.collection4n3.collection4n4.field4n3',
+  		premise: 'collection4n1.collection4n3',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Document,
+  		group: 'collection4n4',
+  		name: 'field4n4',
+  		value: undefined,
+  		guid: 'collection4n1.collection4n4.field4n4',
+  		premise: 'collection4n1',
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection5n1',
+  		name: 'field5n1',
+  		value: undefined,
+  		guid: 'collection5n1.field5n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection5n2',
+  		name: 'field5n2',
+  		value: undefined,
+  		guid: '!@collection5n1.collection5n2.field5n2',
+  		premise: 'collection5n1',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection5n2',
+  		name: 'field5n1',
+  		value: undefined,
+  		guid: '!collection5n2.field5n1',
+  		premise: null,
+  		division: [],
+  		associate: false,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.Document,
+  		group: 'collection5n4',
+  		name: 'field5n2',
+  		value: undefined,
+  		guid: 'collection5n2.collection5n3.@collection5n4.field5n2',
+  		premise: 'collection5n2.collection5n3',
+  		division: [],
+  		associate: true,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.VolatileMemory,
+  		group: 'collection6n4',
+  		name: 'field6n1',
+  		value: undefined,
+  		guid: 'collection6n1.!@collection6n2.collection6n3.!collection6n4.field6n1',
+  		premise: 'collection6n1.collection6n2.collection6n3',
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: null
+		}, {
+		  target: SourceType.RESTful,
+  		group: 'collection6n2',
+  		name: 'field6n2',
+  		value: undefined,
+  		guid: '@!collection6n2.field6n2',
+  		premise: null,
+  		division: [],
+  		associate: true,
+  		notify: true,
+  		validation: null
+		}]);
 	});
 	test('sortInputs', () => {
 		
