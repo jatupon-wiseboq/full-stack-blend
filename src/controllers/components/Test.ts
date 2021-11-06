@@ -22,26 +22,30 @@ class TestController extends Base {
   }
   
   protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
-  	if (Math.random() < 0.25) {
+  	if (Math.random() < 0.25 || this.request.query['forever_retry_check']) {
   		this.response.status(500).send('To test retrying');
   		return;
   	}
     return new Promise(async (resolve, reject) => {
     	if (!this.request.query['error']) {
-    		RenderHelper.json(this.response, {
-	      	'Test': {
-	      		source: SourceType.Dictionary,
-						group: 'Test',
-					  rows: [{
-					  	keys: {method: 'GET'},
-						  columns: {
-						  	header: this.request.headers['header'],
-						 		query: this.request.query['query']
-						 	},
-						  relations: {}
-					 	}]
-	      	}
-	      });
+	      if (this.request.query['json_error_check']) {
+	      	this.response.status(200).send('Hello');
+	      } else {
+	    		RenderHelper.json(this.response, {
+		      	'Test': {
+		      		source: SourceType.Dictionary,
+							group: 'Test',
+						  rows: [{
+						  	keys: {method: 'GET'},
+							  columns: {
+							  	header: this.request.headers['header'],
+							 		query: this.request.query['query']
+							 	},
+							  relations: {}
+						 	}]
+		      	}
+		      });
+		    }
 	      resolve({});
     	} else {
     		reject(new Error(this.request.query['error'] as string));
@@ -50,26 +54,30 @@ class TestController extends Base {
   }
   
   protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
-  	if (Math.random() < 0.25) {
+  	if (Math.random() < 0.25 || this.request.query['forever_retry_check']) {
   		this.response.status(500).send('To test retrying');
   		return;
   	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
-    		RenderHelper.json(this.response, {
-	      	'Test': {
-	      		source: SourceType.Dictionary,
-						group: 'Test',
-					  rows: [{
-					  	keys: {method: 'POST'},
-						  columns: {
-						  	header: this.request.headers['header'],
-						 		query: this.request.query['query']
-						 	},
-						  relations: {}
-					 	}]
-	      	}
-	      });
+	      if (this.request.query['json_error_check']) {
+	      	this.response.status(200).send('Hello');
+	      } else {
+	    		RenderHelper.json(this.response, {
+		      	'Test': {
+		      		source: SourceType.Dictionary,
+							group: 'Test',
+						  rows: [{
+						  	keys: {method: 'POST'},
+							  columns: {
+							  	header: this.request.headers['header'],
+							 		query: this.request.query['query']
+							 	},
+							  relations: {}
+						 	}]
+		      	}
+		      });
+		    }
 	      resolve({});
     	} else {
     		reject(new Error(this.request.query['error'] as string));
@@ -78,26 +86,30 @@ class TestController extends Base {
   }
   
   protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
-  	if (Math.random() < 0.25) {
+  	if (Math.random() < 0.25 || this.request.query['forever_retry_check']) {
   		this.response.status(500).send('To test retrying');
   		return;
   	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
-    		RenderHelper.json(this.response, {
-	      	'Test': {
-	      		source: SourceType.Dictionary,
-						group: 'Test',
-					  rows: [{
-					  	keys: {method: 'PUT'},
-						  columns: {
-						  	header: this.request.headers['header'],
-						 		query: this.request.query['query']
-						 	},
-						  relations: {}
-					 	}]
-	      	}
-	      });
+	      if (this.request.query['json_error_check']) {
+	      	this.response.status(200).send('Hello');
+	      } else {
+	    		RenderHelper.json(this.response, {
+		      	'Test': {
+		      		source: SourceType.Dictionary,
+							group: 'Test',
+						  rows: [{
+						  	keys: {method: 'PUT'},
+							  columns: {
+							  	header: this.request.headers['header'],
+							 		query: this.request.query['query']
+							 	},
+							  relations: {}
+						 	}]
+		      	}
+		      });
+		    }
 	      resolve({});
     	} else {
     		reject(new Error(this.request.query['error'] as string));
@@ -106,26 +118,30 @@ class TestController extends Base {
   }
   
   protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
-  	if (Math.random() < 0.25) {
+  	if (Math.random() < 0.25 || this.request.query['forever_retry_check']) {
   		this.response.status(500).send('To test retrying');
   		return;
   	}
     return new Promise(async (resolve, reject) => {
       if (!this.request.query['error']) {
-    		RenderHelper.json(this.response, {
-	      	'Test': {
-	      		source: SourceType.Dictionary,
-						group: 'Test',
-					  rows: [{
-					  	keys: {method: 'DELETE'},
-						  columns: {
-						  	header: this.request.headers['header'],
-						 		query: this.request.query['query']
-						 	},
-						  relations: {}
-					 	}]
-	      	}
-	      });
+	      if (this.request.query['json_error_check']) {
+	      	this.response.status(200).send('Hello');
+	      } else {
+	    		RenderHelper.json(this.response, {
+		      	'Test': {
+		      		source: SourceType.Dictionary,
+							group: 'Test',
+						  rows: [{
+						  	keys: {method: 'DELETE'},
+							  columns: {
+							  	header: this.request.headers['header'],
+							 		query: this.request.query['query']
+							 	},
+							  relations: {}
+						 	}]
+		      	}
+		      });
+		    }
 	      resolve({});
     	} else {
     		reject(new Error(this.request.query['error'] as string));

@@ -371,15 +371,21 @@ const RequestHelper = {
 				const name = splited.pop() || null;
 				const _group = splited.pop() || null;
 				const group = _group.replace(/[@!]/g, '');
-				const premise = splited.join('.') || null;
+				const _premise = splited.join('.') || null;
+				const premise = _premise && _premise.replace(/[@!]/g, '');
+				const associate = namespace.indexOf('@') != -1;
+				const notify = namespace.indexOf('!') != -1;
+				const guid = `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`;
 				
 				if (name == null || group == null) throw new Error('There was an error trying to create a list of inputs (${key}).');
 				if (!schemata.tables[group]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a group, named ${group}).`);
 				if (!schemata.tables[group].keys[name] && !schemata.tables[group].columns[name]) throw new Error(`There was an error trying to create a list of inputs (couldn't find a field, named ${name}; choices are ${[...Object.keys(schemata.tables[group].keys), ...Object.keys(schemata.tables[group].columns)].join(', ')}).`);
 				
-				let value = values[key];
+				const target = schemata.tables[group].source;
 				const type = schemata.tables[group].keys[name] && schemata.tables[group].keys[name].fieldType ||
 					schemata.tables[group].columns[name] && schemata.tables[group].columns[name].fieldType;
+				
+				let value = values[key];
 				
 				if (value === null) value = 'null';
 				if (typeof value === 'string') {
@@ -394,15 +400,15 @@ const RequestHelper = {
 					}
 				
 					const input: Input = {
-					  target: schemata.tables[group].source,
+					  target: target,
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
-			  		premise: premise && premise.replace(/[@!]/g, ''),
+		  			guid: guid,
+			  		premise: premise,
 		  			division: indexes,
-  					associate: namespace.indexOf('@') != -1,
-  					notify: namespace.indexOf('!') != -1,
+  					associate: associate,
+  					notify: notify,
 			  		validation: null
 					};
 					
@@ -411,15 +417,15 @@ const RequestHelper = {
 					let index = 0;
 					for (const _value of value) {
 						const input: Input = {
-						  target: schemata.tables[group].source,
+						  target: target,
 				  		group: group,
 				  		name: name,
 				  		value: _value,
 				  		guid: `${namespace}[${index++}]`,
-				  		premise: premise && premise.replace(/[@!]/g, ''),
+				  		premise: premise,
 		  				division: indexes,
-  						associate: namespace.indexOf('@') != -1,
-  						notify: namespace.indexOf('!') != -1,
+  						associate: associate,
+  						notify: notify,
 				  		validation: null
 						};
 						
@@ -427,15 +433,15 @@ const RequestHelper = {
 					}
 				} else {
 					const input: Input = {
-					  target: schemata.tables[group].source,
+					  target: target,
 			  		group: group,
 			  		name: name,
 			  		value: value,
-		  			guid: `${namespace}${indexes.length != 0 && '[' + indexes.join(',') + ']' || ''}`,
-			  		premise: premise && premise.replace(/[@!]/g, ''),
+		  			guid: guid,
+			  		premise: premise,
 		  			division: indexes,
-  					associate: namespace.indexOf('@') != -1,
-  					notify: namespace.indexOf('!') != -1,
+  					associate: associate,
+  					notify: notify,
 			  		validation: null
 					};
 					
@@ -484,7 +490,7 @@ const RequestHelper = {
         if (_a[i] != _b[i]) return (_a[i] < _b[i]) ? -1 : 1;
       }
       
-      return 0;
+      return (a.name < b.name) ? -1 : 1;
     });
     
     const registers = [];

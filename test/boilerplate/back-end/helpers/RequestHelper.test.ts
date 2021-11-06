@@ -38,7 +38,7 @@ afterAll(async () => {
 	httpServer.close();
 });
 
-/*describe('HTTP(s) Requests', () => {
+describe('HTTP(s) Requests', () => {
 	let perform = async (func: any, protocal: string, port: number, method: string, data: any) => {
 		let output: any;
 		let random: any;
@@ -63,6 +63,16 @@ afterAll(async () => {
 			output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?error=${random}`, 'json');
 			expect(output && output['success']).toEqual(false);
 			expect(output && output['error']).toEqual(random.toString());
+			
+			expect(async () => {
+				random = Math.random();
+				output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?query=${random}&json_error_check=1`, 'json');
+			}).rejects.toThrow();
+			
+			expect(async () => {
+				random = Math.random();
+				output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?query=${random}&forever_retry_check=1`, 'json');
+			}).rejects.toThrow();
 		} else {
 			random = Math.random();
 			output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?query=${random}`, data, 'json');
@@ -83,6 +93,11 @@ afterAll(async () => {
 			output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?error=${random}`, data, 'json');
 			expect(output && output['success']).toEqual(false);
 			expect(output && output['error']).toEqual(random.toString());
+			
+			expect(async () => {
+				random = Math.random();
+				output = await func(`${protocal}//localhost.stackblend.org:${port}/test/api?query=${random}&json_error_check=1`, data, 'json');
+			}).rejects.toThrow();
 		}
 	};
 	
@@ -396,7 +411,7 @@ describe('Ingress Gate', () => {
 			expect(RequestHelper.getSchema('pageId8', correctRequest8, schemata)).toEqual(null);
 		});
 	});
-});*/
+});
 describe('Extract Inputs', () => {
 	const correctRequest1 = ({body: {guid: 'guid1n1', field2n1: '123'}} as any) as Request;
 	RequestHelper.registerSubmit('pageId1n1', 'guid1n1', 'test', [], {});
@@ -404,6 +419,8 @@ describe('Extract Inputs', () => {
 	const correctRequest2 = ({body: {guid: 'guid2n1'}} as any) as Request;
 	RequestHelper.registerSubmit('pageId2n1', 'guid2n1', 'test', ['field2n1'], {});
 	RequestHelper.registerInput('field2n1', 'relational', 'collection2n1', 'name2n1');
+	RequestHelper.registerInput('field2n2', 'relational', 'collection2n1', 'name2n2');
+	RequestHelper.registerInput('field2n3', 'relational', 'collection2n1', 'name2n3');
 	
 	const correctRequest3 = ({body: {guid: 'guid3n1', field3n1: '123', field3n2: 'true', field3n3: '0.00123', field3n4: '!@#$%[^&]*(', field3n5: '2021-11-05T10:28:25.361Z', field3n6: ''}} as any) as Request;
 	RequestHelper.registerSubmit('pageId3n1', 'guid3n1', 'test', ['field3n1', 'field3n2', 'field3n3', 'field3n4', 'field3n5', 'field3n6'], {});
@@ -433,6 +450,186 @@ describe('Extract Inputs', () => {
 	const correctRequest7 = ({body: {guid: 'guid6n1', field5n1: '1', field5n2: '2', field6n1: '3', field6n2: '4'}} as any) as Request;
 	const correctRequest8 = ({body: {guid: 'guid6n1', field5n1: '1', field5n2: '2', field7n1: '3', field7n2: '4'}} as any) as Request;
 	
+	const tables: {[Identifier: string]: DataTableSchema} = {};
+	const schemata: DataSchema = {
+		tables: tables
+	};
+	schemata.tables['collection2n1'] = {
+		source: SourceType.Relational,
+		group: 'collection2n1',
+		guid: 'collection2n1',
+	  keys: {
+	  	field2n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  columns: {
+	  	field2n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field2n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection3n1'] = {
+		source: SourceType.PrioritizedWorker,
+		group: 'collection3n1',
+		guid: 'collection3n1',
+	  keys: {
+	  	field3n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field3n4: {fieldType: FieldType.String, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  columns: {
+	  	field3n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field3n2: {fieldType: FieldType.Boolean, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection4n1'] = {
+		source: SourceType.Document,
+		group: 'collection4n1',
+		guid: 'collection4n1',
+	  keys: {
+	  	field4n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field4n5: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  columns: {
+	  	field4n6: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field4n7: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection4n2'] = {
+		source: SourceType.Document,
+		group: 'collection4n2',
+		guid: 'collection4n2',
+	  keys: {},
+	  columns: {field4n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}},
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection4n3'] = {
+		source: SourceType.Document,
+		group: 'collection4n3',
+		guid: 'collection4n3',
+	  keys: {},
+	  columns: {},
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection4n4'] = {
+		source: SourceType.Document,
+		group: 'collection4n4',
+		guid: 'collection4n4',
+	  keys: {},
+	  columns: {
+	  	field4n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field4n4: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection5n1'] = {
+		source: SourceType.Relational,
+		group: 'collection5n1',
+		guid: 'collection5n1',
+	  keys: {
+	  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field5n5: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  columns: {
+	  	field5n6: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field5n7: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection5n2'] = {
+		source: SourceType.Relational,
+		group: 'collection5n2',
+		guid: 'collection5n2',
+	  keys: {},
+	  columns: {
+	  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
+	  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection5n3'] = {
+		source: SourceType.PrioritizedWorker,
+		group: 'collection5n3',
+		guid: 'collection5n3',
+	  keys: {},
+	  columns: {},
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection5n4'] = {
+		source: SourceType.Document,
+		group: 'collection5n4',
+		guid: 'collection5n4',
+	  keys: {},
+	  columns: {
+	  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection6n1'] = {
+		source: SourceType.Document,
+		group: 'collection6n1',
+		guid: 'collection6n1',
+	  keys: {},
+	  columns: {},
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection6n2'] = {
+		source: SourceType.RESTful,
+		group: 'collection6n2',
+		guid: 'collection6n2',
+	  keys: {},
+	  columns: {
+	  	field6n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection6n3'] = {
+		source: SourceType.Document,
+		group: 'collection6n3',
+		guid: 'collection6n3',
+	  keys: {},
+	  columns: {},
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	schemata.tables['collection6n4'] = {
+		source: SourceType.VolatileMemory,
+		group: 'collection6n4',
+		guid: 'collection6n4',
+	  keys: {},
+	  columns: {
+	  	field6n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
+	  },
+	  relations: {},
+	  modifyingPermission: null,
+	  retrievingPermission: null
+	};
+	
 	test('getInput', () => {
 		expect(() => { RequestHelper.getInput('pageId1n1', correctRequest1, 'field1n1[0]'); }).toThrow();
 		expect(() => { RequestHelper.getInput(null, correctRequest2, 'field2n1'); }).toThrow();
@@ -443,6 +640,7 @@ describe('Extract Inputs', () => {
 		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, null); }).toThrow();
 		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, undefined); }).toThrow();
 		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, ''); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, 'field2n1_1'); }).toThrow();
 		
 		// Test division
 		// 
@@ -770,179 +968,18 @@ describe('Extract Inputs', () => {
 		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest8, 'guid6n1'); }).toThrow();
 	});
 	test('createInputs', () => {
-		const tables: {[Identifier: string]: DataTableSchema} = {};
-		const schemata: DataSchema = {
-			tables: tables
-		};
-		schemata.tables['collection2n1'] = {
-			source: SourceType.Relational,
-			group: 'collection2n1',
-			guid: 'collection2n1',
-		  keys: {},
-		  columns: {
-		  	field2n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection3n1'] = {
-			source: SourceType.PrioritizedWorker,
-			group: 'collection3n1',
-			guid: 'collection3n1',
-		  keys: {},
-		  columns: {
-		  	field3n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
-		  	field3n2: {fieldType: FieldType.Boolean, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
-		  	field3n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
-		  	field3n4: {fieldType: FieldType.String, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection4n1'] = {
-			source: SourceType.Document,
-			group: 'collection4n1',
-			guid: 'collection4n1',
-		  keys: {},
-		  columns: {field4n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection4n2'] = {
-			source: SourceType.Document,
-			group: 'collection4n2',
-			guid: 'collection4n2',
-		  keys: {},
-		  columns: {field4n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection4n3'] = {
-			source: SourceType.Document,
-			group: 'collection4n3',
-			guid: 'collection4n3',
-		  keys: {},
-		  columns: {},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection4n4'] = {
-			source: SourceType.Document,
-			group: 'collection4n4',
-			guid: 'collection4n4',
-		  keys: {},
-		  columns: {
-		  	field4n3: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
-		  	field4n4: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection5n1'] = {
-			source: SourceType.Relational,
-			group: 'collection5n1',
-			guid: 'collection5n1',
-		  keys: {},
-		  columns: {
-		  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection5n2'] = {
-			source: SourceType.Relational,
-			group: 'collection5n2',
-			guid: 'collection5n2',
-		  keys: {},
-		  columns: {
-		  	field5n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null},
-		  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection5n3'] = {
-			source: SourceType.PrioritizedWorker,
-			group: 'collection5n3',
-			guid: 'collection5n3',
-		  keys: {},
-		  columns: {},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection5n4'] = {
-			source: SourceType.Document,
-			group: 'collection5n4',
-			guid: 'collection5n4',
-		  keys: {},
-		  columns: {
-		  	field5n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection6n1'] = {
-			source: SourceType.Document,
-			group: 'collection6n1',
-			guid: 'collection6n1',
-		  keys: {},
-		  columns: {},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection6n2'] = {
-			source: SourceType.RESTful,
-			group: 'collection6n2',
-			guid: 'collection6n2',
-		  keys: {},
-		  columns: {
-		  	field6n2: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection6n3'] = {
-			source: SourceType.Document,
-			group: 'collection6n3',
-			guid: 'collection6n3',
-		  keys: {},
-		  columns: {},
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
-		schemata.tables['collection6n4'] = {
-			source: SourceType.VolatileMemory,
-			group: 'collection6n4',
-			guid: 'collection6n4',
-		  keys: {},
-		  columns: {
-		  	field6n1: {fieldType: FieldType.Number, name: null, guid: null, required: false, unique: false, verb: null, url: null, modifyingPermission: null, retrievingPermission: null}
-		  },
-		  relations: {},
-		  modifyingPermission: null,
-		  retrievingPermission: null
-		};
+		expect(() => { RequestHelper.createInputs({}, schemata); }).not.toThrow();
+		expect(() => { RequestHelper.createInputs({'field2n1': undefined}, schemata); }).toThrow();
+		expect(() => { RequestHelper.createInputs({'collection2n5.field2n1': undefined}, schemata); }).toThrow();
+		expect(() => { RequestHelper.createInputs({'collection2n1.field2n1': undefined}, schemata); }).not.toThrow();
 		
 		expect(RequestHelper.createInputs({
 			'collection2n1.field2n1': undefined,
 			'collection2n1.field2n1[0]': undefined,
 			'collection2n1.field2n1[0,2]': undefined,
 			'collection2n1.field2n1[0,2,1]': undefined,
-			'collection2n1.field2n1[0,-2,1]': undefined,
-			'!collection3n1.field3n1': '123',
+			'collection2n1.field2n1[0,-2,1]': 'null',
+			'!collection3n1.field3n1': null,
 			'@collection3n1.field3n2': 'true',
 			'!@collection3n1.field3n3': '0.00123',
 			'@!collection3n1.field3n4': '!@#$%[^&]*(',
@@ -1004,7 +1041,7 @@ describe('Extract Inputs', () => {
 		  target: SourceType.Relational,
   		group: 'collection2n1',
   		name: 'field2n1',
-  		value: undefined,
+  		value: null,
   		guid: 'collection2n1.field2n1[0,-2,1]',
   		premise: null,
   		division: [0, -2, 1],
@@ -1015,7 +1052,7 @@ describe('Extract Inputs', () => {
 		  target: SourceType.PrioritizedWorker,
   		group: 'collection3n1',
   		name: 'field3n1',
-  		value: 123,
+  		value: null,
   		guid: '!collection3n1.field3n1',
   		premise: null,
   		division: [],
@@ -1166,8 +1203,141 @@ describe('Extract Inputs', () => {
   		notify: true,
   		validation: null
 		}]);
+		
+		expect(RequestHelper.createInputs({
+			'collection2n1.field2n1': [0,1,3]
+		}, schemata)).toEqual([{
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: 0,
+  		guid: 'collection2n1.field2n1[0]',
+  		premise: null,
+  		division: [0],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: 1,
+  		guid: 'collection2n1.field2n1[1]',
+  		premise: null,
+  		division: [1],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}, {
+		  target: SourceType.Relational,
+  		group: 'collection2n1',
+  		name: 'field2n1',
+  		value: 3,
+  		guid: 'collection2n1.field2n1[2]',
+  		premise: null,
+  		division: [2],
+  		associate: false,
+  		notify: false,
+  		validation: null
+		}]);
 	});
 	test('sortInputs', () => {
+		RequestHelper.registerInput('field4n5', 'document', 'collection4n1', 'name4n5');
+		RequestHelper.registerInput('field4n6', 'document', 'collection4n1', 'name4n6');
+		RequestHelper.registerInput('field4n7', 'document', 'collection4n1', 'name4n7');
+		RequestHelper.registerInput('field5n5', 'relational', 'collection5n1', 'name5n5');
+		RequestHelper.registerInput('field5n6', 'relational', 'collection5n1', 'name5n6');
+		RequestHelper.registerInput('field5n7', 'relational', 'collection5n1', 'name5n7');
 		
+		let data: any = null;
+		let expected: any = null;
+		
+		data = RequestHelper.createInputs({
+			'collection2n1.field2n1': undefined,
+			'collection2n1.field2n2': undefined,
+			'collection2n1.field2n3': undefined,
+			'collection3n1.field3n1': undefined,
+			'collection3n1.field3n2': undefined,
+			'collection3n1.field3n3': undefined,
+			'collection2n1.field2n1[0]': undefined,
+			'collection3n1.field3n1[0]': undefined,
+			'collection2n1.field2n2[1]': undefined,
+			'collection3n1.field3n2[1]': undefined,
+			'collection2n1.field2n3[2]': undefined,
+			'collection3n1.field3n3[2]': undefined
+		}, schemata);
+		expected = data.map((input) => input['guid']);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		
+		data = RequestHelper.createInputs({
+			'collection2n1.field2n1': undefined,
+			'collection2n1.field2n2': undefined,
+			'collection2n1.field2n3': undefined,
+			'collection3n1.field3n1': undefined,
+			'collection3n1.field3n2': undefined,
+			'collection3n1.field3n3': undefined,
+			'collection4n1.field4n5': undefined,
+			'collection4n1.field4n6': undefined,
+			'collection4n1.field4n7': undefined,
+			'collection5n1.field5n5': undefined,
+			'collection5n1.field5n6': undefined,
+			'collection5n1.field5n7': undefined,
+			'collection2n1.field2n1[0]': undefined,
+			'collection3n1.field3n1[0,1]': undefined,
+			'collection4n1.field4n5[0,1]': undefined,
+			'collection5n1.field5n5[0,1,0]': undefined,
+			'collection2n1.field2n2[1]': undefined,
+			'collection3n1.field3n2[1,0,0]': undefined,
+			'collection4n1.field4n6[1,0,1]': undefined,
+			'collection5n1.field5n6[1,0,1]': undefined,
+			'collection2n1.field2n3[2,-1,-1]': undefined,
+			'collection3n1.field3n3[2,-1]': undefined,
+			'collection4n1.field4n7[2,0,-2]': undefined,
+			'collection5n1.field5n7[2,0,-1]': undefined,
+			'collection2n1.field2n3[3,-1]': undefined,
+			'collection3n1.field3n3[3]': undefined,
+			'collection4n1.field4n7[3,0,-2]': undefined,
+			'collection5n1.field5n7[3,1]': undefined
+		}, schemata);0
+		expected = data.map((input) => input['guid']);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
+		data.sort(() => .5 - Math.random());
+		expect(data.map((input) => input['guid'])).not.toEqual(expected);
+		RequestHelper.sortInputs(data);
+		expect(data.map((input) => input['guid'])).toEqual(expected);
 	});
 });
