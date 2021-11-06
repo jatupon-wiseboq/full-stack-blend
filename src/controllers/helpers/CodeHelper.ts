@@ -18,14 +18,41 @@ const CodeHelper = {
 			evaluate(obj);
 		}
 	},
+	generateInfo: (obj: any) => {
+		if (!obj) return '';
+		else return ' ' + JSON.stringify(obj);
+	},
+	assertOfSimpleType: (obj: any, name: string='parameter', message: string='can be number, boolean, string, date, simple array, or simple object only.', info: any=null) => {
+		CodeHelper.recursiveEvaluate(obj, (obj: any) => {
+			assert(['number', 'boolean', 'string', 'undefined'].indexOf(typeof obj) != -1 ||
+				obj instanceof Date ||
+				Array.isArray(obj) ||
+				obj === null ||
+				obj && obj.constructor === Object, `${name} ${message}${CodeHelper.generateInfo(info)}`);
+		});
+	},
+	assertOfPresent: (obj: any, name: string='parameter', message: string='cannot be null, undefined, and empty string.', info: any=null) => {
+		assert(obj !== undefined &&
+			obj !== null &&
+			(typeof obj !== 'string' || obj.trim() !== ''), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
+	assertOfNotUndefined: (obj: any, name: string='parameter', message: string='cannot be undefined.', info: any=null) => {
+		assert(obj !== undefined, `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
+	assertOfNotInfinity: (obj: any, name: string='parameter', message: string='cannot be infinity.', info: any=null) => {
+		assert(!(typeof obj === 'number' && (obj === Infinity || obj === -Infinity)), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
+	assertOfNotNaN: (obj: any, name: string='parameter', message: string='cannot be NaN.', info: any=null) => {
+		assert(!(typeof obj === 'number' && isNaN(obj)), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
   clone: (obj: any) => {
   	// TODO: to support Infinity, NaN, RegEX (, undefined)
-  	// TODO to support Date => Date
     //
     CodeHelper.recursiveEvaluate(obj, (obj: any) => {
-    	assert(['number', 'boolean', 'string'].indexOf(typeof obj) != -1 || obj instanceof Date || obj === null, 'Can cantain only string, number, boolean, date, and null.');
-    	assert(!(typeof obj === 'number' && (obj === Infinity || obj === -Infinity)), 'Can not contain Infinity.');
-    	assert(!(typeof obj === 'number' && isNaN(obj)), 'Can not contain NaN.');
+    	CodeHelper.assertOfSimpleType(obj, 'obj');
+    	CodeHelper.assertOfNotUndefined(obj, 'obj');
+    	CodeHelper.assertOfNotInfinity(obj, 'obj');
+    	CodeHelper.assertOfNotNaN(obj, 'obj');
     });
     
     return JSON.parse(JSON.stringify(obj));

@@ -21,6 +21,9 @@ const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
 	request: async (method: string, url: string, body: string, responseType: string=null, retryCount=10): Promise<any> => {
+		CodeHelper.assertOfPresent(method, 'method');
+		CodeHelper.assertOfPresent(url, 'url');
+		
 		return new Promise((resolve, reject) => {
 			const process = (() => {
 			  const xmlhttp = new XMLHttpRequest();
@@ -101,17 +104,13 @@ const RequestHelper = {
   	return RequestHelper.request(method, url, bodyString, responseType);
   },
 	registerInput: (guid: string, target: string, group: string, name: string): void => {
-		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
-		assert(guid !== '', 'guid cannot be an empty string.');
+		CodeHelper.assertOfPresent(guid, 'guid');
 		
 		if (!target && !group && !name) return;
 		
-		assert(target !== null && target !== undefined, `target cannot be null or undefined (guid: ${guid}).`);
-		assert(target !== '', `target cannot be an empty string (guid: ${guid}).`);
-		assert(group !== null && group !== undefined, `group cannot be null or undefined (guid: ${guid}).`);
-		assert(group !== '', `group cannot be an empty string (guid: ${guid}).`);
-		assert(name !== null && name !== undefined, `name cannot be null or undefined (guid: ${guid}).`);
-		assert(name !== '', `name cannot be an empty string (guid: ${guid}).`);
+		CodeHelper.assertOfPresent(target, 'target', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(group, 'group', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(name, 'name', undefined, {guid: guid});
 		
 		let _target: SourceType;
 		switch (target) {
@@ -147,20 +146,16 @@ const RequestHelper = {
 		requestParamInfoDict[guid] = info;
 	},
 	registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
-		assert(pageId !== null && pageId !== undefined, `pageId cannot be null or undefined (guid: ${guid}).`);
-		assert(pageId !== '', `pageId cannot be an empty string (guid: ${guid}).`);
-		assert(guid !== null && guid !== undefined, `guid cannot be null or undefined (guid: ${guid}).`);
-		assert(guid !== '', `guid cannot be an empty string (guid: ${guid}).`);
+		CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
 		
 		if (!action) return;
 		
-		assert(action !== null && action !== undefined, `action cannot be null or undefined.`);
-		assert(action !== '', `action cannot be an empty string.`);
-		assert(fields !== null, `fields cannot be null or undefined.`);
-		assert(typeof options === 'object' && (options == null || options.constructor === Object), `options must be a simple object (guid: ${guid}).`);
+		CodeHelper.assertOfPresent(action, 'action', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(fields, 'fields', undefined, {guid: guid});
 		
-		CodeHelper.recursiveEvaluate(fields, (value: any) => {
-    	assert(value !== null && value !== undefined, `fields cannot contain any null or undefined (guid: ${guid}).`);
+		CodeHelper.recursiveEvaluate(options, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'options', undefined, {guid: guid});
     });
     
     const info = {
@@ -176,14 +171,15 @@ const RequestHelper = {
 		requestSubmitInfoDict[pageId + guid] = info;
 	},
 	getAction: (pageId: string, request: Request): ActionType => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId');
+		CodeHelper.assertOfPresent(request, 'request');
 		
 		const json: any = request.body;
 		
-		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
-		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		CodeHelper.assertOfPresent(json, 'json');
+		CodeHelper.recursiveEvaluate(json, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'json', undefined);
+    });
 		
 		if (typeof json.guid === 'undefined') return null;
 		
@@ -214,14 +210,15 @@ const RequestHelper = {
 		}
 	},
 	getFields: (pageId: string, request: Request): any => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId');
+		CodeHelper.assertOfPresent(request, 'request');
 		
 		const json: any = request.body;
 		
-		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
-		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		CodeHelper.assertOfPresent(json, 'json');
+		CodeHelper.recursiveEvaluate(json, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'json', undefined);
+    });
 		
 		if (typeof json.guid === 'undefined') return [];
 		
@@ -231,14 +228,15 @@ const RequestHelper = {
 		return requestSubmitInfoDict[pageId + json.guid].fields;
 	},
 	getOptions: (pageId: string, request: Request): any => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId');
+		CodeHelper.assertOfPresent(request, 'request');
 		
 		const json: any = request.body;
 		
-		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
-		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		CodeHelper.assertOfPresent(json, 'json');
+		CodeHelper.recursiveEvaluate(json, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'json', undefined);
+    });
 		
 		if (typeof json.guid === 'undefined') return null;
 		
@@ -248,8 +246,7 @@ const RequestHelper = {
 		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
 	getParamInfos: (guid: string): any => {
-		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
-		assert(guid !== '', 'guid cannot be an empty string.');
+		CodeHelper.assertOfPresent(guid, 'guid');
 		
 		const info = requestParamInfoDict[guid.split('[')[0]];
 		
@@ -260,9 +257,8 @@ const RequestHelper = {
 		return info;
 	},
 	getSchema: (pageId: string, request: Request, schemata: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId');
+		CodeHelper.assertOfPresent(request, 'request');
 		
 		const fields = RequestHelper.getFields(pageId, request);
 		
@@ -273,16 +269,16 @@ const RequestHelper = {
 		return SchemaHelper.getDataTableSchemaFromNotation(info.group.split('.')[0], schemata);
 	},
 	getInput: (pageId: string, request: Request, guid: string): Input => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
-		assert(guid !== '', 'guid cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
 		
 		const json: any = request.body;
 		
-		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
-		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		CodeHelper.assertOfPresent(json, 'json');
+		CodeHelper.recursiveEvaluate(json, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'json', undefined, {guid: guid});
+    });
 		
 		if (typeof json.guid === 'undefined') return null;
 		
@@ -319,16 +315,16 @@ const RequestHelper = {
 		return input;
 	},
 	getInputs: (pageId: string, request: Request, guid: string): Input[] => {
-		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
-		assert(pageId !== '', 'pageId cannot be an empty string.');
-		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
-		assert(guid !== '', 'guid cannot be an empty string.');
-		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
+		CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
 		
 		const json: any = request.body;
 		
-		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
-		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
+		CodeHelper.assertOfPresent(json, 'json');
+		CodeHelper.recursiveEvaluate(json, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'json', undefined, {guid: guid});
+    });
 		
 		if (typeof json.guid === 'undefined') [];
 		
@@ -350,6 +346,11 @@ const RequestHelper = {
 		return inputs;
 	},
 	createInputs: (values: {[Identifier: string]: any}, schemata: DataSchema=ProjectConfigurationHelper.getDataSchema()): Input[] => {
+		CodeHelper.assertOfPresent(values, 'values');
+		CodeHelper.recursiveEvaluate(values, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'values', undefined);
+    });
+		
 		const results = [];
 		const _values = {};
 		

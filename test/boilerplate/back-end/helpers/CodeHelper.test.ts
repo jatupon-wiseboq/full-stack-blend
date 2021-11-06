@@ -35,6 +35,97 @@ describe('recursiveEvaluate', () => {
 		expect(() => { CodeHelper.recursiveEvaluate(structure, (obj: any) => { assert(obj != -Infinity, 'Error'); }); }).not.toThrow();
 	});
 });
+describe('Extra Assertion Tools', () => {
+	test('generateInfo', () => {
+		expect(CodeHelper.generateInfo(null)).toEqual('');
+		expect(CodeHelper.generateInfo({a: 1})).toEqual(' {"a":1}');
+	});
+	test('assertOfSimpleType', () => {
+		expect(() => { CodeHelper.assertOfSimpleType(1); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(1.0); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(-Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(NaN); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(false); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(true); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(''); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(' '); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType([]); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType({}); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(/123/); }).toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(null); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfSimpleType(undefined); }).not.toThrow();
+	});
+	test('assertOfPresent', () => {
+		expect(() => { CodeHelper.assertOfPresent(1); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(1.0); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(-Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(NaN); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(false); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(true); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(''); }).toThrow();
+		expect(() => { CodeHelper.assertOfPresent(' '); }).toThrow();
+		expect(() => { CodeHelper.assertOfPresent([]); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent({}); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(/123/); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfPresent(null); }).toThrow();
+		expect(() => { CodeHelper.assertOfPresent(undefined); }).toThrow();
+	});
+	test('assertOfNotUndefined', () => {
+		expect(() => { CodeHelper.assertOfNotUndefined(1); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(1.0); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(-Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(NaN); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(false); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(true); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(''); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(' '); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined([]); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined({}); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(/123/); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(null); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotUndefined(undefined); }).toThrow();
+	});
+	test('assertOfNotInfinity', () => {
+		expect(() => { CodeHelper.assertOfNotInfinity(1); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(1.0); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(Infinity); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(-Infinity); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(NaN); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(false); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(true); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(''); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(' '); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity([]); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity({}); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(/123/); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(null); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotInfinity(undefined); }).not.toThrow();
+	});
+	test('assertOfNotNaN', () => {
+		expect(() => { CodeHelper.assertOfNotNaN(1); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(1.0); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(-Infinity); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(NaN); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(false); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(true); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(''); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(' '); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN([]); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN({}); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(/123/); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(null); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotNaN(undefined); }).not.toThrow();
+	});
+});
 describe('clone', () => {
 	describe('Primitive', () => {
 	  test('String', () => {
