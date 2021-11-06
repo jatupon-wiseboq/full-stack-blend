@@ -2,12 +2,15 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
 import { strict as assert } from 'assert';
 
 const DataFormationHelper = {
 	convertFromJSONToHierarchicalDataTable: (data: any, group: string="Collection"): HierarchicalDataTable => {
-		assert(data !== null && data !== undefined, 'data cannot be null or undefined.');
-		assert(typeof data === 'object' && (Array.isArray(data) || data.constructor === Object), 'data must be an array or a simple object only.');
+		CodeHelper.assertOfPresent(data, 'data');
+		CodeHelper.recursiveEvaluate(data, (obj: any) => {
+    	CodeHelper.assertOfSimpleType(obj, 'data');
+    });
 		
 		const table = {
 			source: SourceType.Collection,
