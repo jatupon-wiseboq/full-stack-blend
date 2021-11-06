@@ -273,6 +273,12 @@ const RequestHelper = {
 		return SchemaHelper.getDataTableSchemaFromNotation(info.group.split('.')[0], schemata);
 	},
 	getInput: (pageId: string, request: Request, guid: string): Input => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
+		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(guid !== '', 'guid cannot be an empty string.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
 		const json: any = request.body;
 		
 		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
@@ -313,12 +319,20 @@ const RequestHelper = {
 		return input;
 	},
 	getInputs: (pageId: string, request: Request, guid: string): Input[] => {
+		assert(pageId !== null && pageId !== undefined, 'pageId cannot be null or undefined.');
+		assert(pageId !== '', 'pageId cannot be an empty string.');
+		assert(guid !== null && guid !== undefined, 'guid cannot be null or undefined.');
+		assert(guid !== '', 'guid cannot be an empty string.');
+		assert(request !== null && request !== undefined, 'request cannot be null or undefined.');
+		
 		const json: any = request.body;
 		
 		assert(json !== null && json !== undefined, 'JSON body cannot be null or undefined.');
 		assert(typeof json === 'object' && json.constructor === Object, 'JSON must be a simple object.');
 		
 		if (typeof json.guid === 'undefined') [];
+		
+		assert(json.guid === guid, `guid doesn't match (guid: ${guid}).`);
 		
 		const inputs = [];
 		
