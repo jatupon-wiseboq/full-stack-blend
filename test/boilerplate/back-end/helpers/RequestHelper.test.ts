@@ -38,7 +38,7 @@ afterAll(async () => {
 	httpServer.close();
 });
 
-describe('HTTP(s) Requests', () => {
+/*describe('HTTP(s) Requests', () => {
 	let perform = async (func: any, protocal: string, port: number, method: string, data: any) => {
 		let output: any;
 		let random: any;
@@ -396,7 +396,7 @@ describe('Ingress Gate', () => {
 			expect(RequestHelper.getSchema('pageId8', correctRequest8, schemata)).toEqual(null);
 		});
 	});
-});
+});*/
 describe('Extract Inputs', () => {
 	const correctRequest1 = ({body: {guid: 'guid1n1', field2n1: '123'}} as any) as Request;
 	RequestHelper.registerSubmit('pageId1n1', 'guid1n1', 'test', [], {});
@@ -431,9 +431,18 @@ describe('Extract Inputs', () => {
 	RequestHelper.registerInput('field6n2', 'RESTful', '@!collection6n2', 'name5n2');
 	
 	const correctRequest7 = ({body: {guid: 'guid6n1', field5n1: '1', field5n2: '2', field6n1: '3', field6n2: '4'}} as any) as Request;
+	const correctRequest8 = ({body: {guid: 'guid6n1', field5n1: '1', field5n2: '2', field7n1: '3', field7n2: '4'}} as any) as Request;
 	
 	test('getInput', () => {
 		expect(() => { RequestHelper.getInput('pageId1n1', correctRequest1, 'field1n1[0]'); }).toThrow();
+		expect(() => { RequestHelper.getInput(null, correctRequest2, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput(undefined, correctRequest2, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput('', correctRequest2, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', null, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', undefined, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, null); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, undefined); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, ''); }).toThrow();
 		
 		// Test division
 		// 
@@ -702,6 +711,15 @@ describe('Extract Inputs', () => {
 		});
 	});
 	test('getInputs', () => {
+		expect(() => { RequestHelper.getInputs(undefined, correctRequest7, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs(null, correctRequest7, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('', correctRequest7, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', null, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', undefined, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest7, undefined); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest7, null); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest7, ''); }).toThrow();
+		
 		expect(RequestHelper.getInputs('pageId6n1', correctRequest7, 'guid6n1')).toEqual([{
 		  target: SourceType.Relational,
   		group: 'collection5n1',
@@ -747,6 +765,9 @@ describe('Extract Inputs', () => {
   		notify: true,
   		validation: undefined
 		}]);
+		
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest7, 'guid6n2'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest8, 'guid6n1'); }).toThrow();
 	});
 	test('createInputs', () => {
 		
