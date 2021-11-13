@@ -1,232 +1,234 @@
-::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 7px;
-    height: 7px;
-}
-::-webkit-scrollbar-thumb {
-    border-radius: 4px;
-    background-color: rgba(0, 0, 0, .5);
-    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
-}
+[mode="data"] {
+	&::-webkit-scrollbar {
+	    -webkit-appearance: none;
+	    width: 7px;
+	    height: 7px;
+	}
+	&::-webkit-scrollbar-thumb {
+	    border-radius: 4px;
+	    background-color: rgba(0, 0, 0, .5);
+	    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+	}
 
-html, body {
-  overflow-x: auto;
-  overflow-y: auto;
-}
+	html, body {
+	  overflow-x: auto;
+	  overflow-y: auto;
+	}
 
-body {
-  -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome, Opera and Firefox */
-  cursor: default;
-  max-width: 5120px;
-  max-height: 5120px;
-}
-body * {
-  cursor: inherit;
-  font-family: 'Roboto';
-}
+	body {
+	  -webkit-touch-callout: none; /* iOS Safari */
+	    -webkit-user-select: none; /* Safari */
+	     -khtml-user-select: none; /* Konqueror HTML */
+	       -moz-user-select: none; /* Old versions of Firefox */
+	        -ms-user-select: none; /* Internet Explorer/Edge */
+	            user-select: none; /* Non-prefixed version, currently
+	                                  supported by Chrome, Opera and Firefox */
+	  cursor: default;
+	  max-width: 5120px;
+	  max-height: 5120px;
+	}
+	body * {
+	  cursor: inherit;
+	  font-family: 'Roboto';
+	}
 
-.internal-fsb-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5120px;
-  height: 5120px;
-  pointer-events: none;
-  z-index: 2000;
-}
+	.internal-fsb-overlay {
+	  position: absolute;
+	  top: 0;
+	  left: 0;
+	  width: 5120px;
+	  height: 5120px;
+	  pointer-events: none;
+	  z-index: 2000;
+	}
 
-.internal-fsb-dragging-handle {
-  z-index: 1000;
-}
+	.internal-fsb-dragging-handle {
+	  z-index: 1000;
+	}
 
-// Data Flows
-//
-.internal-fsb-element[internal-fsb-class="RelationalDatabase"],
-.internal-fsb-element[internal-fsb-class="DocumentDatabase"] {
-  position: absolute !important;
-  border: dashed 1px #aaaaaa !important;
-  border-radius: 5px;
-}
+	// Data Flows
+	//
+	.internal-fsb-element[internal-fsb-class="RelationalDatabase"],
+	.internal-fsb-element[internal-fsb-class="DocumentDatabase"] {
+	  position: absolute !important;
+	  border: dashed 1px #aaaaaa !important;
+	  border-radius: 5px;
+	}
 
-.internal-fsb-element[internal-fsb-class="RelationalDatabase"],
-.internal-fsb-element[internal-fsb-class="RelationalTable"],
-.internal-fsb-element[internal-fsb-class="DocumentDatabase"],
-.internal-fsb-element[internal-fsb-class="DocumentTable"],
-.internal-fsb-element[internal-fsb-class="WorkerInstance"],
-.internal-fsb-element[internal-fsb-class="VolatileMemory"],
-.internal-fsb-element[internal-fsb-class="RESTful"] {
-  position: absolute !important;
-  
-  > .internal-fsb-title {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    right: 0;
-    font-size: 15px;
-    font-weight: bold;
-    color: #444;
-    padding-bottom: 7px;
-    
-    &::before {
-      display: inline-block;
-      font: normal normal normal 14px/1 FontAwesome;
-      font-size: inherit;
-      text-rendering: auto;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      font-style: normal;
-      font-variant: normal;
-      line-height: 1;
-      font-family: "Font Awesome 5 Free";
-      font-weight: 900;
-      color: #444444;
-      margin-right: 5px;
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="RelationalDatabase"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f1e0";
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="RelationalTable"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f0ce";
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="DocumentDatabase"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f15b";
-      font-weight: 400;
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="DocumentTable"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f0ce";
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f162";
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="VolatileMemory"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f08d";
-    }
-  }
-}
-.internal-fsb-element[internal-fsb-class="RESTful"] {
-  > .internal-fsb-title {
-    &::before {
-      content: "\f0ac";
-    }
-  }
-}
+	.internal-fsb-element[internal-fsb-class="RelationalDatabase"],
+	.internal-fsb-element[internal-fsb-class="RelationalTable"],
+	.internal-fsb-element[internal-fsb-class="DocumentDatabase"],
+	.internal-fsb-element[internal-fsb-class="DocumentTable"],
+	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
+	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
+	.internal-fsb-element[internal-fsb-class="RESTful"] {
+	  position: absolute !important;
+	  
+	  > .internal-fsb-title {
+	    position: absolute;
+	    bottom: 100%;
+	    left: 0;
+	    right: 0;
+	    font-size: 15px;
+	    font-weight: bold;
+	    color: #444;
+	    padding-bottom: 7px;
+	    
+	    &::before {
+	      display: inline-block;
+	      font: normal normal normal 14px/1 FontAwesome;
+	      font-size: inherit;
+	      text-rendering: auto;
+	      -webkit-font-smoothing: antialiased;
+	      -moz-osx-font-smoothing: grayscale;
+	      font-style: normal;
+	      font-variant: normal;
+	      line-height: 1;
+	      font-family: "Font Awesome 5 Free";
+	      font-weight: 900;
+	      color: #444444;
+	      margin-right: 5px;
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="RelationalDatabase"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f1e0";
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="RelationalTable"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f0ce";
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="DocumentDatabase"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f15b";
+	      font-weight: 400;
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="DocumentTable"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f0ce";
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f162";
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="VolatileMemory"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f08d";
+	    }
+	  }
+	}
+	.internal-fsb-element[internal-fsb-class="RESTful"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f0ac";
+	    }
+	  }
+	}
 
-.internal-fsb-element[internal-fsb-class="RelationalTable"],
-.internal-fsb-element[internal-fsb-class="DocumentTable"],
-.internal-fsb-element[internal-fsb-class="WorkerInstance"],
-.internal-fsb-element[internal-fsb-class="VolatileMemory"],
-.internal-fsb-element[internal-fsb-class="RESTful"] {
-  width: 225px !important;
-  height: 150px;
-  background-color: #f5f5f5;
-  border: solid 1px #cccccc !important;
-  border-top: solid 5px #cccccc !important;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-}
+	.internal-fsb-element[internal-fsb-class="RelationalTable"],
+	.internal-fsb-element[internal-fsb-class="DocumentTable"],
+	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
+	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
+	.internal-fsb-element[internal-fsb-class="RESTful"] {
+	  width: 225px !important;
+	  height: 150px;
+	  background-color: #f5f5f5;
+	  border: solid 1px #cccccc !important;
+	  border-top: solid 5px #cccccc !important;
+	  border-radius: 5px;
+	  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	}
 
-.internal-fsb-element[internal-fsb-class="RelationalColumn"],
-.internal-fsb-element[internal-fsb-class="DocumentNotation"],
-.internal-fsb-element[internal-fsb-class="WorkerQueue"],
-.internal-fsb-element[internal-fsb-class="VolatilePrefix"],
-.internal-fsb-element[internal-fsb-class="Verb"] {
-  margin-top: 0 !important;
-  margin-left: 0 !important;
-  min-height: auto !important;
-  -ms-flex: 0 0 100% !important;
-  flex: 0 0 100% !important;
-  max-width: 100% !important;
-  
-  font-size: 15px;
-  color: #444;
-  padding: 3px 5px;
-  border: none !important;
-  border-bottom: dashed 1px #cccccc !important;
-}
+	.internal-fsb-element[internal-fsb-class="RelationalColumn"],
+	.internal-fsb-element[internal-fsb-class="DocumentNotation"],
+	.internal-fsb-element[internal-fsb-class="WorkerQueue"],
+	.internal-fsb-element[internal-fsb-class="VolatilePrefix"],
+	.internal-fsb-element[internal-fsb-class="Verb"] {
+	  margin-top: 0 !important;
+	  margin-left: 0 !important;
+	  min-height: auto !important;
+	  -ms-flex: 0 0 100% !important;
+	  flex: 0 0 100% !important;
+	  max-width: 100% !important;
+	  
+	  font-size: 15px;
+	  color: #444;
+	  padding: 3px 5px;
+	  border: none !important;
+	  border-bottom: dashed 1px #cccccc !important;
+	}
 
-.internal-fsb-element[internal-fsb-class="Connection"] {
-  position: absolute !important;
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-style: normal;
-  font-variant: normal;
-  line-height: 1;
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  color: #ffffff;
-  text-align: center;
-  padding-top: 2px;
-  
-  width: 30px !important;
-  height: 20px !important;
-  min-height: 20px !important;
-  background-color: #007bff;
-  border: none !important;
-  border-radius: 5px;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
-  
-  &::before {
-    content: "\f074";
-  }
-}
+	.internal-fsb-element[internal-fsb-class="Connection"] {
+	  position: absolute !important;
+	  display: inline-block;
+	  font: normal normal normal 14px/1 FontAwesome;
+	  font-size: inherit;
+	  text-rendering: auto;
+	  -webkit-font-smoothing: antialiased;
+	  -moz-osx-font-smoothing: grayscale;
+	  font-style: normal;
+	  font-variant: normal;
+	  line-height: 1;
+	  font-family: "Font Awesome 5 Free";
+	  font-weight: 900;
+	  color: #ffffff;
+	  text-align: center;
+	  padding-top: 2px;
+	  
+	  width: 30px !important;
+	  height: 20px !important;
+	  min-height: 20px !important;
+	  background-color: #007bff;
+	  border: none !important;
+	  border-radius: 5px;
+	  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  
+	  &::before {
+	    content: "\f074";
+	  }
+	}
 
-.internal-fsb-element[internal-fsb-class="RelationalTable"] {
-  z-index: 100;
-}
-.internal-fsb-element[internal-fsb-class="DocumentTable"] {
-  z-index: 200;
-}
-.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
-  z-index: 300;
-}
-.internal-fsb-element[internal-fsb-class="VolatileMemory"] {
-  z-index: 400;
-}
-.internal-fsb-element[internal-fsb-class="Connection"] {
-  z-index: 3000;
-}
-.internal-fsb-element[internal-fsb-class="RESTful"] {
-  z-index: 500;
-}
+	.internal-fsb-element[internal-fsb-class="RelationalTable"] {
+	  z-index: 100;
+	}
+	.internal-fsb-element[internal-fsb-class="DocumentTable"] {
+	  z-index: 200;
+	}
+	.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
+	  z-index: 300;
+	}
+	.internal-fsb-element[internal-fsb-class="VolatileMemory"] {
+	  z-index: 400;
+	}
+	.internal-fsb-element[internal-fsb-class="Connection"] {
+	  z-index: 3000;
+	}
+	.internal-fsb-element[internal-fsb-class="RESTful"] {
+	  z-index: 500;
+	}
 
-[data-column-type="primary"] {
-  font-weight: bold;
+	[data-column-type="primary"] {
+	  font-weight: bold;
+	}
 }

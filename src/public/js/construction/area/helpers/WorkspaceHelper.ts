@@ -258,23 +258,17 @@ var WorkspaceHelper = {
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
     } else if (InternalProjectSettings.currentMode == 'data') {
       WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
+      let accessories = [...HTMLHelper.getElementsByClassName('internal-fsb-accessory', document.body)];
+    	accessories.forEach(accessory => accessory.parentNode.removeChild(accessory));
+      
       Accessories.overlay.setEnable(true);
     } else if (InternalProjectSettings.currentMode == 'services') {
       WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = false;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = false;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = false;
       Accessories.overlay.setEnable(false);
     } else if (InternalProjectSettings.currentMode == 'components') {
     	if (InternalProjectSettings.editingComponentID == null) return;
@@ -287,9 +281,6 @@ var WorkspaceHelper = {
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
     } else if (InternalProjectSettings.currentMode == 'popups') {
       if (InternalProjectSettings.editingPopupID == null) return;
@@ -312,9 +303,6 @@ var WorkspaceHelper = {
       StylesheetHelper.initializeStylesheetData(InternalStylesheets);
       AnimationHelper.initializeStylesheetData(InternalAnimations);
       
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-1').disabled = true;
-      HTMLHelper.getElementById('internal-fsb-stylesheet-settings-font-2').disabled = true;
       Accessories.overlay.setEnable(false);
     }
     
@@ -326,6 +314,8 @@ var WorkspaceHelper = {
     StatusHelper.invalidate();
     
     EditorHelper.init(['site'].indexOf(InternalProjectSettings.currentMode) != -1, updateUI);
+		
+  	HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
   },
   loadPageData: (mode: string, editingID: string, _window: any=window) => {
   	HTMLHelper.sortAttributes(_window.document);
@@ -386,6 +376,8 @@ var WorkspaceHelper = {
   },
   saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
   	HTMLHelper.sortAttributes();
+  	
+  	HTMLHelper.removeAttribute(document.body, 'mode');
   	
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
@@ -514,6 +506,8 @@ var WorkspaceHelper = {
         EditorHelper.init(true, false);
       }
     }
+    
+    HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
   },
   replaceBodyOuterHTML: (window: any, html: string) => {
   	const document = window.document;
