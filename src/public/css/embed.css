@@ -36,9 +36,7 @@ html {
 [internal-fsb-class="FlowLayout"] {
   width: 100%;
   padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto; }
+  padding-left: 15px; }
 
 @media (min-width: 576px) {
   .container, .container-sm {
@@ -8445,5 +8443,4 @@ html, body {
   flex-wrap: wrap;
   max-width: 100%;
   align-content: flex-start;
-  padding: 0;
-  margin: 0; }
+  padding: 0; }
