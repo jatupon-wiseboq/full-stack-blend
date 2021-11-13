@@ -7,6 +7,8 @@
   .container {
     @include make-container();
     @include make-container-max-widths();
+    margin-right: auto;
+    margin-left: auto;
   }
 
   // 100% wide container at all breakpoints
