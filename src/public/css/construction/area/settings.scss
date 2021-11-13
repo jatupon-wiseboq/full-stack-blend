@@ -61,7 +61,8 @@
 	.internal-fsb-element[internal-fsb-class="DocumentTable"],
 	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
 	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
-	.internal-fsb-element[internal-fsb-class="RESTful"] {
+	.internal-fsb-element[internal-fsb-class="RESTful"],
+	.internal-fsb-element[internal-fsb-class="Scheduler"] {
 	  position: absolute !important;
 	  
 	  > .internal-fsb-title {
@@ -69,7 +70,7 @@
 	    bottom: 100%;
 	    left: 0;
 	    right: 0;
-	    font-size: 15px;
+	    font-size: 14px;
 	    font-weight: bold;
 	    color: #444;
 	    padding-bottom: 7px;
@@ -141,14 +142,25 @@
 	    }
 	  }
 	}
+	.internal-fsb-element[internal-fsb-class="Scheduler"] {
+	  > .internal-fsb-title {
+	    &::before {
+	      content: "\f017";
+	      font-weight: 500;
+	    }
+	  }
+	}
 
 	.internal-fsb-element[internal-fsb-class="RelationalTable"],
 	.internal-fsb-element[internal-fsb-class="DocumentTable"],
 	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
 	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
-	.internal-fsb-element[internal-fsb-class="RESTful"] {
-	  width: 225px !important;
-	  height: 150px;
+	.internal-fsb-element[internal-fsb-class="RESTful"],
+	.internal-fsb-element[internal-fsb-class="Scheduler"] {
+	  width: 165px !important;
+	  height: auto !important;
+	  min-height: 20px !important;
+	  padding-bottom: 5px;
 	  background-color: #f5f5f5;
 	  border: solid 1px #cccccc !important;
 	  border-top: solid 5px #cccccc !important;
@@ -156,13 +168,18 @@
 	  -webkit-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
 	  -moz-box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
 	  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.15);
+	  
+	  .container-fluid {
+	  	min-height: 20px !important;
+	  }
 	}
 
 	.internal-fsb-element[internal-fsb-class="RelationalColumn"],
 	.internal-fsb-element[internal-fsb-class="DocumentNotation"],
 	.internal-fsb-element[internal-fsb-class="WorkerQueue"],
 	.internal-fsb-element[internal-fsb-class="VolatilePrefix"],
-	.internal-fsb-element[internal-fsb-class="Verb"] {
+	.internal-fsb-element[internal-fsb-class="Verb"],
+	.internal-fsb-element[internal-fsb-class="Timing"] {
 	  margin-top: 0 !important;
 	  margin-left: 0 !important;
 	  min-height: auto !important;
@@ -170,7 +187,7 @@
 	  flex: 0 0 100% !important;
 	  max-width: 100% !important;
 	  
-	  font-size: 15px;
+	  font-size: 14px;
 	  color: #444;
 	  padding: 3px 5px;
 	  border: none !important;
@@ -226,6 +243,9 @@
 	}
 	.internal-fsb-element[internal-fsb-class="RESTful"] {
 	  z-index: 500;
+	}
+	.internal-fsb-element[internal-fsb-class="Scheduler"] {
+	  z-index: 600;
 	}
 
 	[data-column-type="primary"] {

@@ -226,10 +226,18 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='perform("insert", "VolatilePrefix")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Volatile Prefix</b></p><p>Create a prefix on the memory instance for cleaning up.</p>")
             i.fa.fa-columns
             | Prefix
-      a.btn.btn-sm.btn-light.mr-1(onclick='perform("insert", "Scheduler")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Scheduler</b></p><p>Create a scheduler to run a bulk of processing tasks in background which takes place at a particular time.</p>", style='width: 60px;')
-        i.fa.fa-clock-o.m-0
-        .title
-          | Scheduler
+      .dropdown.mr-1(style='display: inline;')
+        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          i.fa.fa-clock-o.m-0
+          .title
+            | Scheduler
+        .dropdown-menu(aria-labelledby='dropdownMenuLink')
+          a.dropdown-item(onclick='perform("insert", "Scheduler")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Scheduler</b></p><p>Create a scheduler to run a bulk of processing tasks in background which takes place at a particular time.</p>")
+            i.fa.fa-clock-o
+            | Instance
+          a.dropdown-item(onclick='perform("insert", "Timing")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Timing</b></p><p>Create a timing to specify any particular time.</p>")
+            i.fa.fa-clock
+            | Timing
       a.btn.btn-sm.btn-light.mr-1(onclick='perform("insert", "Connection")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Relation</b></p><p>Create a relation to allow dot notation across data storages, tables, and workers, for retrieving, updating, and deleting using a button on front-end.</p>", style='width: 50px;')
         i.fa.fa-random.m-0
         .title

@@ -160,9 +160,40 @@ var BackEndManipulationHelper = {
               | Worker Queue
         `, element);
         break;
+      case 'Scheduler':
+      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
+      		alert('Please place a cursor outside any element for cross database scheduling, or inside a database element for cross table scheduling.');
+      		return [accessory, false, link];
+      	}
+      	
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element(data-title-name='')
+            .internal-fsb-title.internal-fsb-dragging-handle
+              | Scheduler Instance
+            .container-fluid
+              .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
+        `, element);
+        break;
+      case 'Timing':
+      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Scheduler') {
+      		alert('Please place a cursor inside a scheduler to insert a scheduler timing.');
+      		return [accessory, false, link];
+      	}
+      	
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element.col-12(data-title-name='')
+            .internal-fsb-title
+              | Timing
+        `, element);
+        break;
       case 'VolatileMemory':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside any element to insert a relational database.');
+      		alert('Please place a cursor outside any element to insert a volatile memory.');
       		return [accessory, false, link];
       	}
       	
@@ -193,7 +224,7 @@ var BackEndManipulationHelper = {
       	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
       		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
-      		alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation, to insert such a relation.');
+      		alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation.');
       		return [accessory, false, link];
       	}
       	

@@ -1,0 +1,100 @@
+include ../../mixin/CreateReactComponent
+.internal-fsb-selecting-on
+  .section-container
+    .section-title
+      | Back-End Actions Binding
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Connection")
+      | Source Manipulation
+    .section-body(internal-fsb-for="internal-fsb-class:Connection")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinsert']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupdate']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupsert']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdelete']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbretrieve']}")
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Connection")
+      | Target Manipulation
+    .section-body(internal-fsb-for="internal-fsb-class:Connection")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinsert']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupdate']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupsert']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdelete']}")
+      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbretrieve']}")
+    .section-note
+      | These will generating event boilerplates in the action controller. Use coding mode to define the business logic.
+    .section-hr
+  .section-container
+    .section-title
+      | Non-Existing Strategy
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase")
+      | Missing of Database
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable")
+      | Missing of Table
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
+      | Missing of Column
+    .section-body(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable,internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-missing-enable']}")
+    div(internal-fsb-for="data-missing-enable")
+      .section-subtitle
+        | Missing in Development
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-missing-action-development']}")
+      .section-subtitle
+        | Missing in Production
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-missing-action-production']}")
+      .section-subtitle
+        | Default Value
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-missing-default']}")
+      .section-subtitle(internal-fsb-for="data-missing-default:copy")
+        | Copy From
+      .section-body(internal-fsb-for="data-missing-default:copy")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-missing-copy'], inline: true, button: false, placeholder: 'column'}")
+      .section-subtitle(internal-fsb-for="data-missing-default:custom")
+        | Custom Value
+      .section-body(internal-fsb-for="data-missing-default:custom")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-missing-custom'], inline: true, button: false}")
+    .section-note
+      | These will automatically setup new data schemata for you in case of some table and column are missing.
+    .section-hr
+  .section-container
+    .section-title
+      | Data Mismatch Strategy
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase")
+      | Mismatch of Database
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable")
+      | Mismatch of Table
+    .section-subtitle(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
+      | Mismatch of Column
+    .section-body(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable,internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-mismatch-enable']}")
+    div(internal-fsb-for="data-mismatch-enable")
+      .section-subtitle
+        | Mismatch in Development
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-mismatch-action-development']}")
+      .section-subtitle
+        | Mismatch in Production
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-mismatch-action-production']}")
+      .section-subtitle
+        | Conversion Strategy
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-mismatch-action']}")
+      .section-subtitle(internal-fsb-for="data-mismatch-action:new")
+        | Always New Value
+      .section-subtitle(internal-fsb-for="data-mismatch-action:fallback")
+        | Fallback Value
+      .section-body(internal-fsb-for="data-mismatch-action:new,data-mismatch-action:fallback")
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-mismatch-default']}")
+      div(internal-fsb-for="data-mismatch-action:new,data-mismatch-action:fallback")
+        .section-subtitle(internal-fsb-for="data-mismatch-default:copy")
+          | Copy From
+        .section-body(internal-fsb-for="data-mismatch-default:copy")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-mismatch-copy'], inline: true, button: false, placeholder: 'column'}")
+        .section-subtitle(internal-fsb-for="data-mismatch-default:custom")
+          | Custom Value
+        .section-body(internal-fsb-for="data-mismatch-default:custom")
+          +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-mismatch-custom'], inline: true, button: false}")
+    .section-note
+      | These will automatically convert data for you in case of some table and column are mismatch from defined schemata.

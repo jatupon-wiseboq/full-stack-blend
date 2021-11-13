@@ -1,6 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {RandomHelper} from '../../helpers/RandomHelper';
 import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper';
+import {BACKEND_CONNECTION_GROUPS, BACKEND_CONNECTION_ENTITIES} from '../../Constants';
 
 let cachedElementTreeNodes = null;
 
@@ -11,8 +12,8 @@ var SchemaHelper = {
   generateDataSchema: (): any => {
     let tables = {};
     
-    const groups = ['RelationalTable', 'DocumentTable', 'WorkerInstance', 'VolatileMemory', 'RESTful'];
-    const entities = ['RelationalColumn', 'DocumentNotation', 'WorkerQueue', 'VolatilePrefix', 'Verb'];
+    const groups = BACKEND_CONNECTION_GROUPS;
+    const entities = BACKEND_CONNECTION_ENTITIES;
     
     for (const [i, group] of groups.entries()) {
       let tableElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', group);

@@ -12,13 +12,15 @@ include ../../mixin/CreateReactComponent
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
     .section-hr
-  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:WorkerInstance,internal-fsb-class:VolatileMemory,internal-fsb-class:RESTful")
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:WorkerInstance,internal-fsb-class:VolatileMemory,internal-fsb-class:RESTful,internal-fsb-class:Scheduler")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalDatabase")
       | Relational Database Options
     .section-title(internal-fsb-for="internal-fsb-class:DocumentDatabase")
       | Document Database Options
     .section-title(internal-fsb-for="internal-fsb-class:WorkerInstance")
       | Worker Instance Options
+    .section-title(internal-fsb-for="internal-fsb-class:Scheduler")
+      | Scheduler Instance Options
     .section-title(internal-fsb-for="internal-fsb-class:VolatileMemory")
       | Volatile Instance Options
     .section-title(internal-fsb-for="internal-fsb-class:RESTful")
@@ -27,6 +29,57 @@ include ../../mixin/CreateReactComponent
       | Name
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-note(internal-fsb-for="internal-fsb-class:RESTful")
+      | JSON data send to RESTful service will have schemata different than table.
+      br
+      | For example: {a: [0, 1], b: {c: 1}}
+      br
+      pre
+        | {
+        |   "source": SourceType.Collection,
+        |   "group": "Collection",
+        |   "rows": [
+        |     {
+        |       "keys": {},
+        |       "columns": {},
+        |       "relations": {
+        |         "a": {
+        |           "source": SourceType.Collection,
+        |           "group": "a",
+        |           "rows": [
+        |             {
+        |               "keys": {},
+        |               "columns": {
+        |                 "_": 0
+        |               },
+        |               "relations": {}
+        |             },
+        |             {
+        |               "keys": {},
+        |               "columns": {
+        |                 "_": 1
+        |               },
+        |               "relations": {}
+        |             }
+        |           ]
+        |         },
+        |         "b": {
+        |           "source": SourceType.Dictionary,
+        |           "group": "b",
+        |           "rows": [
+        |             {
+        |               "keys": {},
+        |               "columns": {
+        |                 "c": 1
+        |               },
+        |               "relations": {}
+        |             }
+        |           ]
+        |         }
+        |       }
+        |     }
+        |   ]
+        | }
   .section-container(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalTable")
       | Relational Table Options
@@ -96,6 +149,24 @@ include ../../mixin/CreateReactComponent
       | Group
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
+  .section-container(internal-fsb-for="internal-fsb-class:Timing")
+    .section-title
+      | Timing Options
+    .section-subtitle
+      | Group
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
+    .section-subtitle
+      | Repeated Days
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-timing-days', 'data-timing-day-sunday', 'data-timing-day-monday', 'data-timing-day-tuesday', 'data-timing-day-wednesday', 'data-timing-day-thursday', 'data-timing-day-friday', 'data-timing-day-saturday']}")
+    .section-subtitle
+      | Repeated Duration
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-timing-minutes-1', 'data-timing-minutes']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-timing-minutes-2', 'data-timing-minutes']}")
+    .section-note
+      | Use coding mode to design any business logic upon the scheduling.
   .section-container(internal-fsb-for="internal-fsb-class:VolatilePrefix")
     .section-title
       | Volatile Prefix Options
