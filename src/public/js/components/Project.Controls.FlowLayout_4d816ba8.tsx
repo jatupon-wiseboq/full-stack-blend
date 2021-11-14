@@ -174,7 +174,7 @@ class FlowLayout_4d816ba8 extends Base {
   protected render(): any {
     TestHelper.identify();
     return pug `
-      div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), className="-fsb-preset-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
+      div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="-fsb-preset-245bc127 internal-fsb-element " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .container-fluid
           .internal-fsb-strict-layout.row
             .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '0px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="257894ed")
@@ -209,12 +209,12 @@ class FlowLayout_4d816ba8 extends Base {
                     | ANY ALLEGED SOFTWARES ARE SUBJECT TO LOCAL LAW ENFORCEMENT AND WILL BE REMOVED WITHOUT ANY CONSENT.
             .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
               .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
-              .internal-fsb-element(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-guid="35e36a4a")
+              .internal-fsb-element(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="35e36a4a")
                 .container-fluid
                   .internal-fsb-strict-layout.row
                     .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, internal-fsb-guid="e439a68e")
                       | Please login or signup to start using StackBlend studio
-                    .col-12.internal-fsb-element(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-guid="89972713")
+                    .col-12.internal-fsb-element(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="89972713")
                       .container-fluid
                         .internal-fsb-strict-layout.row
                           Button.-fsb-self-d7d59dd2.col-5.internal-fsb-element.offset-1(style={background: (()=>{return (this.state.currentTab == 0) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 0) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 0) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_d7d59dd2.bind(this), internal-fsb-guid="d7d59dd2")
@@ -227,7 +227,7 @@ class FlowLayout_4d816ba8 extends Base {
                       input.form-control.form-control-sm(placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
                     .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="22d343bd")
                       input.form-control.form-control-sm(style={'FsbInheritedPresets': '1b650e66', 'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Password", type="password", disabled=this.state.submitting, required=true)
-                    .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-guid="4729c240")
+                    .col-12.internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', display: (()=>{return (this.state.currentTab == 0) ? 'none' : 'block';})()}, internal-fsb-class="FlowLayout", internal-fsb-guid="4729c240")
                       .container-fluid
                         .internal-fsb-strict-layout.row
                           .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="d3de6c93")
