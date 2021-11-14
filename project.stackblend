@@ -2720,7 +2720,7 @@ ce8b8488          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "fd646a2ae3367cdf1a55f24cef4e84b1b88ea039#-2039291774",
+  "headerBlobSHA": "0a27085d048be0c4146fec95c0a3761c7086cc7f#-822192136",
   "popups": {},
   "routeBlobSHA": "0f684434e19e65e24f74c9718614fddbde47f62a#-1117206934",
   "services": {
@@ -3623,6 +3623,12 @@ b160aa0e        "<div>1. Services Exploration</div>",
 b160aa0e        "<div>2. Graphics &amp; WebGL Element Insertion</div>",
 b160aa0e        "<div>3. Scheduler, Route, and Event of Data Flows Designing</div>",
 b160aa0e        "<div>4. The \"Global\" option of Generalizability</div>",
+b160aa0e        "<div>5. Audit Log</div>",
+b160aa0e        "<div>6. Back-End Actions Binding</div>",
+b160aa0e        "<div>7. Non-Existing Strategy</div>",
+b160aa0e        "<div>8. Data Mismatch Strategy</div>",
+b160aa0e        "<div>9. RESTful Manipulation</div>",
+b160aa0e        "<div>10. {...} and [...] Data Source</div>",
 b160aa0e        "</div>",
 b160aa0e        "</div>",
 b160aa0e        "<div",
@@ -3829,7 +3835,7 @@ b351d3a2    },
         "    style=\"background: rgba(3, 115, 252, 1); margin-top: 20px; padding-bottom: 20px; padding-top: 60px\">",
         "",
         "<div",
-        "    class=\"col-12 internal-fsb-element internal-fsb-measuring offset-0\"",
+        "    class=\"col-12 internal-fsb-element offset-0\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4414,7 +4420,7 @@ b351d3a2    },
   "viewBlobSHADict": {
     "3cb10a6e": "206b090817a6f42de9ff874e214f09f1b72ed44a#841779387",
     "9e885d49": "c6b848afe3f89eb235f2dc5f5e3c4007fc903d5f#2051014217",
-    "b160aa0e": "0cbeaa1d9cf7f9cb44d9afdc6345ddd959126624#1329391524",
-    "index": "29e5132cc25dbe1eb284b3799198a0cf9119d649#-994633353"
+    "b160aa0e": "e771c369256df3a883928ee11398d6f467894f57#-476850041",
+    "index": "1abc5a4843364aaa00ed5dc4027a8621b6373373#31351370"
   }
 }
