@@ -10,12 +10,12 @@
 	    -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, .5);
 	}
 
-	html, body {
+	& {
 	  overflow-x: auto !important;
 	  overflow-y: auto !important;
 	}
 
-	body {
+	& {
 	  -webkit-touch-callout: none; /* iOS Safari */
 	    -webkit-user-select: none; /* Safari */
 	     -khtml-user-select: none; /* Konqueror HTML */
@@ -27,7 +27,7 @@
 	  max-width: 5120px;
 	  max-height: 5120px;
 	}
-	body * {
+	& * {
 	  cursor: inherit;
 	  font-family: 'Roboto';
 	}
