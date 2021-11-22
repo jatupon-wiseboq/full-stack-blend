@@ -177,6 +177,9 @@ class ProjectManager extends Base<Props, State> {
       return repo;
     }
     public load(callback: any = null) {
+      window.GITHUB_FEATURE_BRANCH = window.location.hash.replace('#', '') || window.GITHUB_FEATURE_BRANCH;
+			if (window.GITHUB_FEATURE_BRANCH) window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
+      
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
       

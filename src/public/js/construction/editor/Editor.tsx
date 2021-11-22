@@ -277,6 +277,13 @@ let cachedUpdateEditorProperties = {};
     	
       perform('keydown', event.keyCode);
     
+      switch (event.keyCode) {
+      	case 67:
+        case 86:
+        case 88:
+      		return;
+      }
+    
       return EventHelper.cancel(event);
     }
   });
@@ -291,6 +298,45 @@ let cachedUpdateEditorProperties = {};
       
       return EventHelper.cancel(event);
     }
+  });
+  window.addEventListener("cut", (event: any) => {
+	  if (EventHelper.checkIfDenyForHandle(event)) return;
+	  
+    let element = EventHelper.getOriginalElement(event);
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+      
+      const iframe = document.getElementById('area') as HTMLFrameElement;
+    	const contentWindow = iframe.contentWindow;
+    	
+    	contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("cut", event);
+	  }
+  });
+  window.addEventListener("copy", (event: any) => {
+    if (EventHelper.checkIfDenyForHandle(event)) return;
+	  
+    let element = EventHelper.getOriginalElement(event);
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+      
+      const iframe = document.getElementById('area') as HTMLFrameElement;
+    	const contentWindow = iframe.contentWindow;
+    	
+    	contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("copy", event);
+	  }
+  });
+  window.addEventListener("paste", (event: any) => {
+    if (EventHelper.checkIfDenyForHandle(event)) return;
+	  
+    let element = EventHelper.getOriginalElement(event);
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    	if (element.className && element.className.indexOf('ace_') == 0) return;
+      
+      const iframe = document.getElementById('area') as HTMLFrameElement;
+    	const contentWindow = iframe.contentWindow;
+    	
+    	contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("paste", event);
+	  }
   });
   window.addEventListener("scroll", (event: any) => {
     window.scrollTo(0, 0);

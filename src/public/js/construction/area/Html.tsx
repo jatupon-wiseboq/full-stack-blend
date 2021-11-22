@@ -47,6 +47,13 @@ import {AnimationHelper} from './helpers/AnimationHelper';
         case 27:
           document.activeElement.blur();
           break;
+        case 67:
+        case 86:
+        case 88:
+        	// Allow cut, copy, and paste events.
+        	//
+        	if (!window.clipboardData) return;
+        	break;
       }
       
       EditorHelper.perform('keydown', event.keyCode);

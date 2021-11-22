@@ -27,7 +27,6 @@ let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
-let pasteboard: string = null;
 let isCutMode: boolean = false;
 
 function removeAllPresetReferences(presetId: string, link: string) {
@@ -66,6 +65,63 @@ function removeAllPresetReferences(presetId: string, link: string) {
 	} else {
 		EditorHelper.deselect();
 	}
+}
+
+if (!window.clipboardData) {
+	window.performClipboardAction = (type: string, event: ClipboardEvent) => {
+		if (type == 'cut') {
+			let selectingElement = EditorHelper.getSelectingElement();
+	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
+	  	isCutMode = true;
+	  	
+	    if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+	      if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
+	          HTMLHelper.hasClass(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-element')) {
+	        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-guid'));
+	      } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+	        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+	      }
+	    } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+	      ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+	    }
+	    
+	    event.preventDefault();
+		} else if (type == 'copy') {
+			let selectingElement = EditorHelper.getSelectingElement();
+	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
+	  	isCutMode = false;
+	    
+	    event.preventDefault();
+		} else if (type == 'paste') {
+			if (event.clipboardData.getData('application/stackblend')) {
+		  	if (isCutMode) {
+		  		ManipulationHelper.perform('insert', {
+		    		klass: 'Pasteboard',
+		        html: CodeHelper.preparePastingContent(event.clipboardData.getData('application/stackblend'), true)
+		    	});
+		  		event.clipboardData.setData('application/stackblend', '');
+		  		isCutMode = false;
+		  	} else {
+		    	ManipulationHelper.perform('insert', {
+		    		klass: 'Pasteboard',
+		        html: CodeHelper.preparePastingContent(event.clipboardData.getData('application/stackblend'))
+		    	});
+		    }
+		  }
+	    
+	    event.preventDefault();
+		}
+	};
+	
+	document.addEventListener('cut', (event: ClipboardEvent) => {
+		window.performClipboardAction && window.performClipboardAction('cut', event);
+	});
+	document.addEventListener('copy', (event: ClipboardEvent) => {
+		window.performClipboardAction && window.performClipboardAction('copy', event);
+	});
+	document.addEventListener('paste', (event: ClipboardEvent) => {
+		window.performClipboardAction && window.performClipboardAction('paste', event);
+	});
 }
 
 var ManipulationHelper = {
@@ -988,9 +1044,9 @@ var ManipulationHelper = {
         remember = false;
         break;
       case 88:
-        if (isCtrlKeyActive || isCommandKeyActive) {
+        if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive)) {
         	let selectingElement = EditorHelper.getSelectingElement();
-        	pasteboard = selectingElement.outerHTML;
+        	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
         	isCutMode = true;
         	
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
@@ -1061,26 +1117,26 @@ var ManipulationHelper = {
         remember = false;
         break;
       case 67:
-        if (isCtrlKeyActive || isCommandKeyActive) {
+        if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive)) {
         	let selectingElement = EditorHelper.getSelectingElement();
-        	pasteboard = selectingElement.outerHTML;
+        	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
         	isCutMode = false;
         }
         remember = false;
         break;
       case 86:
-        if ((isCtrlKeyActive || isCommandKeyActive) && pasteboard) {
+        if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive) && window.clipboardData.getData('application/stackblend')) {
         	if (isCutMode) {
         		ManipulationHelper.perform('insert', {
 	        		klass: 'Pasteboard',
-			        html: CodeHelper.preparePastingContent(pasteboard, true)
+			        html: CodeHelper.preparePastingContent(window.clipboardData.getData('application/stackblend'), true)
 	        	});
-        		pasteboard = null;
+        		window.clipboardData.setData('application/stackblend', '');
         		isCutMode = false;
         	} else {
 	        	ManipulationHelper.perform('insert', {
 	        		klass: 'Pasteboard',
-			        html: CodeHelper.preparePastingContent(pasteboard)
+			        html: CodeHelper.preparePastingContent(window.clipboardData.getData('application/stackblend'))
 	        	});
 	        }
         }
