@@ -179,6 +179,17 @@ class ProjectManager extends Base<Props, State> {
     public load(callback: any = null) {
       window.GITHUB_FEATURE_BRANCH = window.location.hash.replace('#', '') || window.GITHUB_FEATURE_BRANCH;
 			if (window.GITHUB_FEATURE_BRANCH) window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
+			
+			window.addEventListener('hashchange', () => {
+				const branch = window.location.hash.replace('#', '');
+				if (branch) {
+					if (branch != window.GITHUB_FEATURE_BRANCH) {
+						window.location.reload(true);
+					}
+				} else {
+					window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
+				}
+			});
       
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
@@ -841,59 +852,71 @@ script(type="text/javascript" src="/js/Site.bundle.js")
         base: GITHUB_DEVELOP_BRANCH
       }, (error, result, request) => {
         if (error) {
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+        	const message = this.extractErrorMessage(error);
+      		const isNoCommitsBetween = (message.indexOf('No commits between') != -1);
+      		
+        	if (!isNoCommitsBetween) {
+        		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
         	
-          alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
-          return;
-        }
-        
-        let pullRequestNumber = result.number;
-        if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
-        
-        repo.mergePullRequest(pullRequestNumber, {
-        }, (error, result, request) => {
-          if (error) {
-	        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-	        	
-            alert(`There was an error while merging a pull request into a develop branch. However, your changes didn't lose and you can go to your GitHub.com and perform it later.'`);
-            return;
+          	alert(`There was an error while creating a pull request:\n${message}`);
+          } else {
+	          this.afterMerge(repo);
           }
-          
-          repo.createPullRequest({
-            title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_FEATURE_BRANCH}`,
-            head: GITHUB_DEVELOP_BRANCH,
-            base: GITHUB_FEATURE_BRANCH
-          }, (error, result, request) => {
-            if (error) {
+        } else {
+        	let pullRequestNumber = result.number;
+        	if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+        
+	        repo.mergePullRequest(pullRequestNumber, {
+	        }, (error, result, request) => {
+	          if (error) {
 		        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
 		        	
-              alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
-              return;
-            }
-            
-            let pullRequestNumber = result.number;
-            if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
-            
-            repo.mergePullRequest(pullRequestNumber, {
-            }, (error, result, request) => {
-              if (error) {
+	            alert(`There was an error while merging a pull request into a develop branch. However, your changes didn't lose and you can go to your GitHub.com and perform it later.'`);
+	          } else {
+	          	this.afterMerge(repo);
+	          }
+	        });
+        }
+      });
+    }
+    private afterMerge(repo: any) {
+    	if (!confirm(`Your changes have been merged for other colleagues. Do you want to merge their changes and reload the project?`)) {
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+      } else {
+	      repo.createPullRequest({
+	        title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_FEATURE_BRANCH}`,
+	        head: GITHUB_DEVELOP_BRANCH,
+	        base: GITHUB_FEATURE_BRANCH
+	      }, (error, result, request) => {
+	        if (error) {
+	        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+	        	
+	          alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
+	        } else {
+						let pullRequestNumber = result.number;
+		        if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+		        
+		        repo.mergePullRequest(pullRequestNumber, {
+		        }, (error, result, request) => {
+		          if (error) {
 			        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
 			        	
-                alert(`There was an error while merging a pull request into your feature branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}'`);
-                return;
-              }
-              
-              window.setTimeout(() => {
-                if (confirm(`Your changes have been merged with other colleagues. Do you want to reload the project?`)) {
-                  window.location.reload();
-                  
-                  HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-                }
-              }, 5000);
-            });
-          });
-        });
-      });
+		            alert(`There was an error while merging a pull request into your feature branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}'`);
+		            return;
+		          }
+		          
+		          window.setTimeout(() => {
+		          	window.overrideBeforeUnload = true;
+		          	
+		            alert(`Your feature branch has been updated and required reloading.`)
+		            window.location.reload(true);
+		            
+		            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+		          }, 5000);
+		        });
+	        }
+	      });
+	    }
     }
     public deploy() {
       let repo = this.getGitHubRepo();
