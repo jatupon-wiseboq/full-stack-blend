@@ -27,7 +27,6 @@ let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
-let isCutMode: boolean = false;
 
 function removeAllPresetReferences(presetId: string, link: string) {
 	// TODO: should iterate in all documents.
@@ -72,7 +71,9 @@ if (!window.clipboardData) {
 		if (type == 'cut') {
 			let selectingElement = EditorHelper.getSelectingElement();
 	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-	  	isCutMode = true;
+	  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+	  		isCutMode: true
+	  	}));
 	  	
 	    if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
 	      if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
@@ -89,18 +90,23 @@ if (!window.clipboardData) {
 		} else if (type == 'copy') {
 			let selectingElement = EditorHelper.getSelectingElement();
 	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-	  	isCutMode = false;
+	  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+	  		isCutMode: false
+	  	}));
 	    
 	    event.preventDefault();
 		} else if (type == 'paste') {
 			if (event.clipboardData.getData('application/stackblend')) {
-		  	if (isCutMode) {
+				const state = JSON.parse(event.clipboardData.getData('application/stackblend-state') || '{}');
+		  	if (state.isCutMode) {
 		  		ManipulationHelper.perform('insert', {
 		    		klass: 'Pasteboard',
 		        html: CodeHelper.preparePastingContent(event.clipboardData.getData('application/stackblend'), true)
 		    	});
 		  		event.clipboardData.setData('application/stackblend', '');
-		  		isCutMode = false;
+		  		event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+			  		isCutMode: false
+			  	}));
 		  	} else {
 		    	ManipulationHelper.perform('insert', {
 		    		klass: 'Pasteboard',
@@ -1047,7 +1053,9 @@ var ManipulationHelper = {
         if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive)) {
         	let selectingElement = EditorHelper.getSelectingElement();
         	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-        	isCutMode = true;
+        	window.clipboardData.setData('application/stackblend-state', JSON.stringify({
+			  		isCutMode: true
+			  	}));
         	
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
             if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
@@ -1120,19 +1128,24 @@ var ManipulationHelper = {
         if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive)) {
         	let selectingElement = EditorHelper.getSelectingElement();
         	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-        	isCutMode = false;
+        	window.clipboardData.setData('application/stackblend-state', JSON.stringify({
+			  		isCutMode: false
+			  	}));
         }
         remember = false;
         break;
       case 86:
         if (window.clipboardData && (isCtrlKeyActive || isCommandKeyActive) && window.clipboardData.getData('application/stackblend')) {
-        	if (isCutMode) {
+        	const state = JSON.parse(window.clipboardData.getData('application/stackblend-state') || '{}');
+        	if (state.isCutMode) {
         		ManipulationHelper.perform('insert', {
 	        		klass: 'Pasteboard',
 			        html: CodeHelper.preparePastingContent(window.clipboardData.getData('application/stackblend'), true)
 	        	});
         		window.clipboardData.setData('application/stackblend', '');
-        		isCutMode = false;
+        		window.clipboardData.setData('application/stackblend-state', JSON.stringify({
+				  		isCutMode: false
+				  	}));
         	} else {
 	        	ManipulationHelper.perform('insert', {
 	        		klass: 'Pasteboard',
