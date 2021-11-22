@@ -123,6 +123,10 @@ class ProjectManager extends Base<Props, State> {
       
       let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
       
+      repo.getSingleCommit = (ref, cb) => {
+	      ref = ref || '';
+	      return repo._request('GET', `/repos/${repo.__fullname}/commits/${ref}?cache=${Math.random()}`, null, cb);
+      };
       repo.createBlob = (content, previousSHA, cb) => {
         if (content) {
           content = TextHelper.removeMultipleBlankLines(content);
@@ -160,7 +164,7 @@ class ProjectManager extends Base<Props, State> {
         }
       };
       repo.deleteFile = (path, cb) => {
-        repo._request('GET', `/repos/${repo.__fullname}/contents/${path}?ref=${'heads/' + GITHUB_FEATURE_BRANCH}`, null, (error, result, request) => {
+        repo._request('GET', `/repos/${repo.__fullname}/contents/${path}?ref=${'heads/' + GITHUB_FEATURE_BRANCH}&cache=${Math.random()}`, null, (error, result, request) => {
           if (error) {
             cb();
           } else {
@@ -912,7 +916,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
 		            window.location.reload(true);
 		            
 		            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-		          }, 5000);
+		          }, 10000);
 		        });
 	        }
 	      });
