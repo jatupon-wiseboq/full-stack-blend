@@ -423,6 +423,10 @@ var WorkspaceHelper = {
     } else if (InternalProjectSettings.currentMode == 'data') {
       EditorHelper.detach();
       InternalDataFlows.default = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(document.body.outerHTML)))).split('\n');
+      
+      // Need mode setting before re-render overlay.
+      // 
+      HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
       Accessories.overlay.setEnable(true);
       
       InternalDataFlows.schema = SchemaHelper.generateDataSchema();
