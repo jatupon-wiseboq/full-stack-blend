@@ -19,6 +19,10 @@ describe('DataFormationHelper', () => {
 		expect(() => { DataFormationHelper.convertFromHierarchicalDataTableToJSON(DataFormationHelper.convertFromJSONToHierarchicalDataTable(data)); }).toThrow();
 	});
 	
+	test('Standard Structure', () => {
+		
+	});
+	
 	test('Complex Structure', () => {
 		let data = null;
 		data = {

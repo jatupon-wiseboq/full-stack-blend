@@ -3978,7 +3978,7 @@
         "",
         "    // Handle the event of onButtonClick (Button 1) here:",
         "    // ",
-        "    window.location = '/editor?evaluation=true';",
+        "    window.location = '/editor?evaluation=BSD';",
         "    ",
         "    \"",
         "    onfsbclick=\"{&quot;event&quot;:true}\"",
