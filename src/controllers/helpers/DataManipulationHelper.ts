@@ -2,6 +2,7 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
 
 let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
@@ -19,7 +20,8 @@ const DataManipulationHelper = {
 		const table = (current.relations || {})[key];
 		if (table) {
 			if (index != -1) {
-				return table.rows[index];
+				if (table.rows[index] == undefined) return null;
+				else return table.rows[index];
 			} else {
 				return table.rows;
 			}
@@ -36,9 +38,8 @@ const DataManipulationHelper = {
   },
   getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}=dataset, inArray: boolean=false): any => {
     if (!notation) {
-      console.error("The notation is null, undefined or empty.");
-	  	alert("There is an error occured, please try again.");
-      return [];
+    	console.log("\x1b[33mThe notation is null, undefined or empty.\x1b[0m");
+	  	return (inArray) ? [] : null;
     }
     
     const splited = notation.split(".");
