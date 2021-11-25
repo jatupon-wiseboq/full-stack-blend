@@ -40,6 +40,8 @@ class Overlay extends React.Component<Props, State> {
         if (!this.domElement.parentNode) {
           document.body.appendChild(this.domElement);
         }
+        
+        this.renderAllRelations();
       } else {
         if (this.domElement.parentNode) {
           this.domElement.parentNode.removeChild(this.domElement);
