@@ -283,7 +283,7 @@ let cachedUpdateEditorProperties = {};
         case 88:
       		return;
       }
-    
+    	
       return EventHelper.cancel(event);
     }
   });

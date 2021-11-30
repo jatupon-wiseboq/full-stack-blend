@@ -66,56 +66,65 @@ function removeAllPresetReferences(presetId: string, link: string) {
 	}
 }
 
-if (!window.clipboardData) {
+((window, document) => {
+	if (window.clipboardData) return;
 	window.performClipboardAction = (type: string, event: ClipboardEvent) => {
-		if (type == 'cut') {
-			let selectingElement = EditorHelper.getSelectingElement();
-	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-	  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-	  		isCutMode: true
-	  	}));
-	  	
-	    if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
-	      if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
-	          HTMLHelper.hasClass(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-element')) {
-	        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-guid'));
-	      } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
-	        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
-	      }
-	    } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
-	      ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
-	    }
-	    
-	    event.preventDefault();
-		} else if (type == 'copy') {
-			let selectingElement = EditorHelper.getSelectingElement();
-	  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
-	  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-	  		isCutMode: false
-	  	}));
-	    
-	    event.preventDefault();
-		} else if (type == 'paste') {
-			if (event.clipboardData.getData('application/stackblend')) {
-				const state = JSON.parse(event.clipboardData.getData('application/stackblend-state') || '{}');
-		  	if (state.isCutMode) {
-		  		ManipulationHelper.perform('insert', {
-		    		klass: 'Pasteboard',
-		        html: CodeHelper.preparePastingContent(event.clipboardData.getData('application/stackblend'), true)
-		    	});
-		  		event.clipboardData.setData('application/stackblend', '');
-		  		event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-			  		isCutMode: false
-			  	}));
-		  	} else {
-		    	ManipulationHelper.perform('insert', {
-		    		klass: 'Pasteboard',
-		        html: CodeHelper.preparePastingContent(event.clipboardData.getData('application/stackblend'))
-		    	});
+		if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
+      return;
+    } else {
+			if (type == 'cut') {
+				let selectingElement = EditorHelper.getSelectingElement(window, document);
+		  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
+		  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+		  		isCutMode: true
+		  	}));
+		  	
+		    if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+		      if (HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()) &&
+		          HTMLHelper.hasClass(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-element')) {
+		        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(HTMLHelper.getPreviousSibling(Accessories.cursor.getDOMNode()), 'internal-fsb-guid'));
+		      } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+		        ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
+		      }
+		    } else if (selectingElement && selectingElement.parentNode && HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-absolute-layout')) {
+		      ManipulationHelper.perform('delete[cut]', HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid'));
 		    }
-		  }
-	    
-	    event.preventDefault();
+		    
+		    event.preventDefault();
+			} else if (type == 'copy') {
+				let selectingElement = EditorHelper.getSelectingElement(window, document);
+		  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
+		  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+		  		isCutMode: false
+		  	}));
+		    
+		    event.preventDefault();
+			} else if (type == 'paste') {
+				const html = event.clipboardData.getData('application/stackblend');
+				if (html) {
+					const state = JSON.parse(event.clipboardData.getData('application/stackblend-state') || '{}');
+			  	if (state.isCutMode) {
+			  		ManipulationHelper.perform('insert', {
+			    		klass: 'Pasteboard',
+			        html: CodeHelper.preparePastingContent(html, true)
+			    	});
+			  		event.clipboardData.setData('application/stackblend', '');
+			  		event.clipboardData.setData('application/stackblend-state', JSON.stringify({
+				  		isCutMode: false
+				  	}));
+			  	} else {
+			  		window.postMessage(JSON.stringify({
+				    	name: 'insert',
+				      content: {
+				    		klass: 'Pasteboard',
+				        html: CodeHelper.preparePastingContent(html)
+				    	}
+				    }), '*');
+			    }
+			  }
+		    
+		    event.preventDefault();
+			}
 		}
 	};
 	
@@ -128,7 +137,7 @@ if (!window.clipboardData) {
 	document.addEventListener('paste', (event: ClipboardEvent) => {
 		window.performClipboardAction && window.performClipboardAction('paste', event);
 	});
-}
+})(window, window.document);
 
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean=true, skipAfterPromise: boolean=false, link: any=false) => {
@@ -523,6 +532,7 @@ var ManipulationHelper = {
               	
     						StatusHelper.invalidate(selectingElement);
               } else if (attribute.name == 'data-title-name') {
+              	attribute.value = attribute.value || 'Untitled';
               	let titleElement = HTMLHelper.getElementsByClassName('internal-fsb-title', selectingElement, false)[0];
               	if (titleElement) {
               		titleElement.innerText = attribute.value;
@@ -1088,11 +1098,11 @@ var ManipulationHelper = {
         break;
       case 27:
         {
-          let selectingElement = EditorHelper.getSelectingElement();
+        	let selectingElement = EditorHelper.getSelectingElement();
           if (selectingElement) {
             accessory = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
           }
-      
+      		
           EditorHelper.deselect();
           
     			TimelineHelper.invalidate();

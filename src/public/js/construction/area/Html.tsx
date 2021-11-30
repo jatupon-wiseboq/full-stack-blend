@@ -8,6 +8,21 @@ import {AnimationHelper} from './helpers/AnimationHelper';
 
 (() => {
   let isLoaded: boolean = false;
+  
+  const checkTextElementIfBlank = () => {
+  	if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
+  		const element = HTMLHelper.findTheParentInClassName('internal-fsb-element', document.activeElement, true);
+  		
+  		if (element && element.innerText.trim() == '') {
+  			const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
+  			
+  			element.innerHTML = 'Text';
+  			
+  			for (const accessory of accessories) element.appendChild(accessory);
+  		}
+  	}
+  };
+  
   window.addEventListener("load", (event) => {
     // Setup a cursor and a resizer.
     //
@@ -29,6 +44,9 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   window.addEventListener("keydown", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
       [27].indexOf(event.keyCode) == -1) {
+      
+      window.setTimeout(checkTextElementIfBlank, 0);
+      
       if (HTMLHelper.hasClass(document.activeElement.parentNode, 'internal-fsb-absolute-layout')) {
         if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
           EditorHelper.perform('keydown', event.keyCode);
@@ -45,7 +63,12 @@ import {AnimationHelper} from './helpers/AnimationHelper';
     } else {
       switch (event.keyCode) {
         case 27:
-          document.activeElement.blur();
+          if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
+          	document.activeElement.blur();
+          	return EventHelper.cancel(event);
+          } else {
+          	document.activeElement.blur();
+          }
           break;
         case 67:
         case 86:
@@ -57,7 +80,7 @@ import {AnimationHelper} from './helpers/AnimationHelper';
       }
       
       EditorHelper.perform('keydown', event.keyCode);
-    
+    	
       return EventHelper.cancel(event);
     }
   }, false);
@@ -76,8 +99,11 @@ import {AnimationHelper} from './helpers/AnimationHelper';
     EditorHelper.synchronize("click", null);
   }, true);
   window.addEventListener("focus", (event) => {
-    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement') {
+    if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
+    	HTMLHelper.hasClass(document.activeElement, 'internal-fsb-selecting')) {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
+    } else {
+    	document.activeElement && document.activeElement.blur();
     }
   }, true);
   window.addEventListener("blur", (event) => {

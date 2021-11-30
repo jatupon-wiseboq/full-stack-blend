@@ -453,6 +453,8 @@ var EditorHelper = {
       Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
       
       Accessories.redLine.reset();
+      
+      document.activeElement && document.activeElement.blur();
     }
     EditorHelper.synchronize("click", null);
   },
@@ -469,18 +471,18 @@ var EditorHelper = {
       EditorHelper.select(allElements[0]);
     }
   },
-  getSelectingElement: () => {
+  getSelectingElement: (_window: any=window, _document: any=window.document) => {
   	if (Accessories.resizer == null) return null;
   	
     let current = Accessories.resizer.getDOMNode();
-    while (current != null && current != document.body) {
+    while (current != null && current != _document.body) {
       current = current.parentNode;
     }
     
-    if (current == document.body && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
+    if (current == _document.body && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
       return Accessories.resizer.getDOMNode().parentNode;
     } else {
-      return HTMLHelper.getElementByClassName('internal-fsb-selecting');
+      return HTMLHelper.getElementByClassName('internal-fsb-selecting', _document);
     }
   },
   move: (target: HTMLElement, destination: HTMLElement, direction: string) => {

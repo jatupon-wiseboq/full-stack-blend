@@ -224,7 +224,7 @@ var CodeHelper = {
   	}
   	
   	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
-  		current.remove();
+  		current.parentNode && current.parentNode.removeChild(current);
   		return; 
   	}
   	
