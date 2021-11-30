@@ -60,11 +60,6 @@ let controllerBlobSHA = null;
 let siteBundleBlobSHA = null;
 let version = 1.3;
 
-let temp = document.createElement('iframe');
-HTMLHelper.setAttribute(temp, 'style', 'visibility: hidden; pointer-events: none;');
-HTMLHelper.setAttribute(temp, 'width', '100');
-HTMLHelper.setAttribute(temp, 'height', '100');
-
 const DEFAULT_FLOW_PAGE_HTML = `<body><div class="internal-fsb-begin" internal-fsb-guid="0"><div class="internal-fsb-strict-layout internal-fsb-begin-layout internal-fsb-allow-cursor"></div></div></body>`.split('\n');
 const DEFAULT_SINGLE_ITEM_EDITING_HTML = `<body><div class="internal-fsb-begin" internal-fsb-guid="0"><div class="internal-fsb-strict-layout internal-fsb-begin-layout"></div></div></body>`.split('\n');
 const DEFAULT_ABSOLUTE_PAGE_HTML = `<body class="internal-fsb-disabled-guide"><div class="internal-fsb-begin" internal-fsb-guid="0" style="height: 100%;"><div class="internal-fsb-absolute-layout internal-fsb-begin-layout internal-fsb-allow-cursor" style="height: 100%;"></div></div></body>`.split('\n');
@@ -853,14 +848,40 @@ var WorkspaceHelper = {
 	    }
     }
   },
-  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
-    document.body.appendChild(temp);
+  createTempIframe: () => {
+  	const temp = document.createElement('iframe');
+		HTMLHelper.setAttribute(temp, 'style', 'visibility: hidden; pointer-events: none;');
+		HTMLHelper.setAttribute(temp, 'width', '0');
+		HTMLHelper.setAttribute(temp, 'height', '0');
 		
+  	document.body.appendChild(temp);
+		
+		const _document = temp.contentDocument || temp.contentWindow.document;
+  	
+  	_document.open();
+		_document.write('<html><head /><body /></html>');
+		_document.close();
+  	
+  	return temp;
+  },
+  disposeTempIframe: (temp: any) => {
+  	const _document = temp.contentDocument || temp.contentWindow.document;
+  	
+  	_document.open();
+		_document.write('<html />');
+		_document.close();
+		
+  	document.body.removeChild(temp);
+  },
+  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
+    const temp = WorkspaceHelper.createTempIframe();
     const _document = temp.contentDocument || temp.contentWindow.document;
     const _window = _document.defaultView;
     
     WorkspaceHelper.loadPageData(mode, id, _window);
     const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
+    
+    WorkspaceHelper.disposeTempIframe(temp);
     
     return results;
   },
@@ -970,13 +991,14 @@ var WorkspaceHelper = {
     }
   },
   generateBackEndCodeForID: (id: string=InternalProjectSettings.editingPageID) => {
-  	document.body.appendChild(temp);
-		
+  	const temp = WorkspaceHelper.createTempIframe();
     const _document = temp.contentDocument || temp.contentWindow.document;
     const _window = _document.defaultView;
     
     WorkspaceHelper.loadPageData('site', id, _window);
     const results = WorkspaceHelper.generateBackEndCodeForPage('site', id, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body));
+    
+    WorkspaceHelper.disposeTempIframe(temp);
     
     return results;
   },
