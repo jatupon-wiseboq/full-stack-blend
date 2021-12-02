@@ -42,6 +42,7 @@ let options = {
 		"data-field-type-1": CONSTANTS.BACKEND_DATA_FIELD_TYPE_1,
 		"data-field-type-2": CONSTANTS.BACKEND_DATA_FIELD_TYPE_2,
 		"data-field-type-3": CONSTANTS.BACKEND_DATA_FIELD_TYPE_3,
+		"data-field-type-4": CONSTANTS.BACKEND_DATA_FIELD_TYPE_4,
 		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
 		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
 		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
