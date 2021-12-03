@@ -17,6 +17,7 @@ var BackEndDOMHelper = {
     let path = pages && pages[0] && pages[0].path || '';
     path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
 		
+		info['editingPageID'] = key;
 		info['editingPagePath'] = (path) ? path + '/' : '';
 		
 		return BackEndScriptHelper.generateScriptCode(info);
