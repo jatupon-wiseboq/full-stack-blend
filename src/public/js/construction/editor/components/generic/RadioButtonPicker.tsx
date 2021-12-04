@@ -68,6 +68,7 @@ let options = {
 		"data-timing-days": CONSTANTS.BACKEND_TIMING_DAYS_OPTIONS,
 		"data-timing-minutes-1": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_1,
 		"data-timing-minutes-2": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_2,
+		"data-audit-collecting-option": CONSTANTS.BACKEND_AUDIT_COLLECTING_OPTIONS,
 
 		// Animations
 		// 
