@@ -3,7 +3,274 @@ import {DataManipulationHelper} from "../../../../src/controllers/helpers/DataMa
 
 describe('DataManipulationHelper', () => {
 	test('Standard Structure', () => {
+		const data = {
+	    "CollectionA": {
+	      "source": 6,
+	      "group": "CollectionA",
+	      "rows": [
+	        {
+	          "keys": {
+	            "keyA": 1,
+	            "keyB": "string 1"
+	          },
+	          "columns": {
+	            "keyC": 2,
+	            "keyD": false
+	          },
+	          "relations": {
+	            "CollectionB": {
+	              "source": 6,
+	              "group": "CollectionB",
+	              "rows": [
+	                {
+	                  "keys": {
+	                    "keyA": 3,
+	                    "keyB": "string 2"
+	                  },
+	                  "columns": {
+	                    "keyC": 4,
+	                    "keyD": true
+	                  },
+	                  "relations": {
+	                    "CollectionC": {
+	                      "source": 6,
+	                      "group": "CollectionC",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 5,
+	                            "keyB": "string 3"
+	                          },
+	                          "columns": {
+	                            "keyC": 6,
+	                            "keyD": false
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    },
+	                    "CollectionD": {
+	                      "source": 6,
+	                      "group": "CollectionD",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 55,
+	                            "keyB": "string 33"
+	                          },
+	                          "columns": {
+	                            "keyC": 66,
+	                            "keyD": true
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    }
+	                  }
+	                },
+	                {
+	                  "keys": {
+	                    "keyA": 7,
+	                    "keyB": "string 4"
+	                  },
+	                  "columns": {
+	                    "keyC": 8,
+	                    "keyD": false
+	                  },
+	                  "relations": {
+	                    "CollectionC": {
+	                      "source": 6,
+	                      "group": "CollectionC",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 9,
+	                            "keyB": "string 5"
+	                          },
+	                          "columns": {
+	                            "keyC": 10,
+	                            "keyD": true
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    }, 
+	                    "CollectionD": {
+	                      "source": 6,
+	                      "group": "CollectionD",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 99,
+	                            "keyB": "string 55"
+	                          },
+	                          "columns": {
+	                            "keyC": 100,
+	                            "keyD": false
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    }
+	                  }
+	                }
+	              ]
+	            }
+	          }
+	        },
+	        {
+	          "keys": {
+	            "keyA": 11,
+	            "keyB": "string 6"
+	          },
+	          "columns": {
+	            "keyC": 12,
+	            "keyD": true
+	          },
+	          "relations": {
+	            "CollectionB": {
+	              "source": 6,
+	              "group": "CollectionB",
+	              "rows": [
+	                {
+	                  "keys": {
+	                    "keyA": 13,
+	                    "keyB": "string 7"
+	                  },
+	                  "columns": {
+	                    "keyC": 14,
+	                    "keyD": false
+	                  },
+	                  "relations": {
+	                    "CollectionC": {
+	                      "source": 6,
+	                      "group": "CollectionC",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 15,
+	                            "keyB": "string 8"
+	                          },
+	                          "columns": {
+	                            "keyC": 16,
+	                            "keyD": true
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    }
+	                  }
+	                },
+	                {
+	                  "keys": {
+	                    "keyA": 17,
+	                    "keyB": "string 9"
+	                  },
+	                  "columns": {
+	                    "keyC": 18,
+	                    "keyD": false
+	                  },
+	                  "relations": {
+	                    "CollectionC": {
+	                      "source": 6,
+	                      "group": "CollectionC",
+	                      "rows": [
+	                        {
+	                          "keys": {
+	                            "keyA": 19,
+	                            "keyB": "string 10"
+	                          },
+	                          "columns": {
+	                            "keyC": 20,
+	                            "keyD": true
+	                          },
+	                          "relations": {}
+	                        }
+	                      ]
+	                    }
+	                  }
+	                }
+	              ]
+	            }
+	          }
+	        }
+	      ]
+	    },
+	    "CollectionD": {
+        "source": 6,
+        "group": "CollectionD",
+        "rows": [
+          {
+            "keys": {
+              "keyA": 11,
+              "keyB": "string 11"
+            },
+            "columns": {
+              "keyC": 22,
+              "keyD": false
+            },
+            "relations": {}
+          }
+        ]
+      }
+	  };
+		DataManipulationHelper.setData(data);
 		
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA')).toEqual(data['CollectionA'].rows);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].keyA')).toEqual(1);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].keyB')).toEqual("string 1");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].keyC')).toEqual(2);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.keyA')).toEqual(3);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.keyB')).toEqual("string 2");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.keyC')).toEqual(4);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionC.keyA')).toEqual(5);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionC.keyB')).toEqual("string 3");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionC.keyC')).toEqual(6);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionC.keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionD.keyA')).toEqual(55);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionD.keyB')).toEqual("string 33");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionD.keyC')).toEqual(66);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB.CollectionD.keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].keyA')).toEqual(7);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].keyB')).toEqual("string 4");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].keyC')).toEqual(8);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionC.keyA')).toEqual(9);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionC.keyB')).toEqual("string 5");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionC.keyC')).toEqual(10);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionC.keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionD.keyA')).toEqual(99);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionD.keyB')).toEqual("string 55");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionD.keyC')).toEqual(100);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[0].CollectionB[1].CollectionD.keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].keyA')).toEqual(11);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].keyB')).toEqual("string 6");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].keyC')).toEqual(12);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].keyA')).toEqual(13);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].keyB')).toEqual("string 7");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].keyC')).toEqual(14);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].CollectionC.keyA')).toEqual(15);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].CollectionC.keyB')).toEqual("string 8");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].CollectionC.keyC')).toEqual(16);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[0].CollectionC.keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].keyA')).toEqual(17);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].keyB')).toEqual("string 9");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].keyC')).toEqual(18);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].keyD')).toEqual(false);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].CollectionC.keyA')).toEqual(19);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].CollectionC.keyB')).toEqual("string 10");
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].CollectionC.keyC')).toEqual(20);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionA[1].CollectionB[1].CollectionC.keyD')).toEqual(true);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD')).toEqual(data['CollectionD'].rows);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD[0]')).toEqual(data['CollectionD'].rows[0]);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD.keyA')).toEqual(11);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD.keyB')).toEqual('string 11');
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD.keyC')).toEqual(22);
+		expect(DataManipulationHelper.getDataFromNotation('CollectionD.keyD')).toEqual(false);
 	});
 	
 	test('Complex Structure', () => {
