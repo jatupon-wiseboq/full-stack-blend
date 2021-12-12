@@ -352,6 +352,6 @@ describe('DataFormationHelper', () => {
 			},
 			'*()_|\'': 6
 		};
-		expect(DataFormationHelper.convertFromHierarchicalDataTableToJSON(DataFormationHelper.convertFromJSONToHierarchicalDataTable(data))).toEqual(data);
+		expect(() => { DataFormationHelper.convertFromHierarchicalDataTableToJSON(DataFormationHelper.convertFromJSONToHierarchicalDataTable(data)); }).toThrow();
 	});
 });

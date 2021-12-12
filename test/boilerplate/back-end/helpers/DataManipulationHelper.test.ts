@@ -318,8 +318,8 @@ describe('DataManipulationHelper', () => {
 			DataFormationHelper.convertFromJSONToHierarchicalDataTable([20, 21]).rows[0].relations['Children'].rows[0]
 		);
 		
-		expect(DataManipulationHelper.getDataFromNotation('Collection[[0]]')).toEqual(null);
-		expect(DataManipulationHelper.getDataFromNotation('Collection[0].[[0]]')).toEqual(null);
+		expect(() => { DataManipulationHelper.getDataFromNotation('Collection[[0]]'); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation('Collection[0].[[0]]'); }).toThrow();
 		expect(DataManipulationHelper.getDataFromNotation('Collection.aa')).toEqual(null);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.aa')).toEqual(null);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.b.c')).toEqual(null);
@@ -382,8 +382,8 @@ describe('DataManipulationHelper', () => {
 			[DataFormationHelper.convertFromJSONToHierarchicalDataTable([20, 21]).rows[0].relations['Children'].rows[0]]
 		);
 		
-		expect(DataManipulationHelper.getDataFromNotation('Collection[[0]]', undefined, true)).toEqual([]);
-		expect(DataManipulationHelper.getDataFromNotation('Collection[0].[[0]]', undefined, true)).toEqual([]);
+		expect(() => { DataManipulationHelper.getDataFromNotation('Collection[[0]]', undefined, true); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation('Collection[0].[[0]]', undefined, true); }).toThrow();
 		expect(DataManipulationHelper.getDataFromNotation('Collection.aa', undefined, true)).toEqual([]);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.b.c', undefined, true)).toEqual([]);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.b[2]', undefined, true)).toEqual([]);

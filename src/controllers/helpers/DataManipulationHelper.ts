@@ -3,6 +3,7 @@
 
 import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper";
 import {CodeHelper} from "./CodeHelper";
+import {strict as assert} from 'assert';
 
 let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
@@ -14,7 +15,8 @@ const DataManipulationHelper = {
 	},
   getDataFromKey: (key: string, current: any, index: number=-1): any => {
 		CodeHelper.assertOfPresent(key, 'key');
-		CodeHelper.assertOfNotUndefined(current, 'current');
+		CodeHelper.assertOfKeyName(key, 'key');
+		CodeHelper.assertOfPresent(current, 'current');
 		
 		if (Array.isArray(current)) {
 			current = current[0] || {};
@@ -43,6 +45,7 @@ const DataManipulationHelper = {
   },
   getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}=dataset, inArray: boolean=false): any => {
     CodeHelper.assertOfPresent(notation, 'notation');
+    CodeHelper.assertOfNotationFormat(notation, 'notation');
     
     const splited = notation.split(".");
     let current = {
