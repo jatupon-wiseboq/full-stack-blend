@@ -48,11 +48,17 @@ const CodeHelper = {
 	assertOfString: (obj: any, name: string='parameter', message: string='must be a string.', info: any=null) => {
 		assert(obj === null || obj === undefined || typeof obj === 'string', `${name} ${message}${CodeHelper.generateInfo(info)}`);
 	},
-	assertOfVariableName: (obj: any, name: string='parameter', message: string='must contain only a-z, 0-9 and underscore in lowercase or uppercase.', info: any=null) => {
+	assertOfKeyName: (obj: any, name: string='parameter', message: string='must contain only a-z, 0-9, and underscore in lowercase or uppercase.', info: any=obj) => {
 		CodeHelper.assertOfPresent(obj);
 		CodeHelper.assertOfString(obj);
 		
-		assert(obj.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+		assert(obj.match(/^[a-zA-Z0-9_]+$/), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
+	assertOfNotationFormat: (obj: any, name: string='parameter', message: string='has a wrong of notation format.', info: any=obj) => {
+		CodeHelper.assertOfPresent(obj);
+		CodeHelper.assertOfString(obj);
+		
+		assert(obj.match(/^(@|!|@!|!@)?[a-zA-Z0-9_]+(\[\-?[0-9]+(\,\-?[0-9]+)*\])?(\.(@|!|@!|!@)?[a-zA-Z0-9_]+(\[\-?[0-9]+(\,\-?[0-9]+)*\])?)*$/), `${name} ${message}${CodeHelper.generateInfo(info)}`);
 	},
   clone: (obj: any) => {
   	// TODO: to support Infinity, NaN, RegEX (, undefined)

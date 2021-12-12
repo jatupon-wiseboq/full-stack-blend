@@ -8,6 +8,7 @@ import { strict as assert } from 'assert';
 const DataFormationHelper = {
 	convertFromJSONToHierarchicalDataTable: (data: any, group: string="Collection"): HierarchicalDataTable => {
 		CodeHelper.assertOfPresent(data, 'data');
+		CodeHelper.assertOfKeyName(group, 'group');
 		CodeHelper.recursiveEvaluate(data, (obj: any) => {
     	CodeHelper.assertOfSimpleType(obj, 'data');
     });
@@ -44,6 +45,8 @@ const DataFormationHelper = {
 		} else if (typeof data === 'object' && data !== null) {
 			for (let key in data) {
 				if (data.hasOwnProperty(key)) {
+					CodeHelper.assertOfKeyName(key, 'key');
+					
 					if (Array.isArray(data[key])) {
 						const table = {
 							source: SourceType.Collection,
@@ -91,16 +94,22 @@ const DataFormationHelper = {
 			const dictionary = {};
 		
 			for (let key in row.keys) {
+				CodeHelper.assertOfKeyName(key, 'key');
+				
 				if (row.keys.hasOwnProperty(key)) {
 					dictionary['$' + key] = row.keys[key];
 				}
 			}
 			for (let key in row.columns) {
+				CodeHelper.assertOfKeyName(key, 'key');
+				
 				if (row.columns.hasOwnProperty(key)) {
 					dictionary[key] = row.columns[key];
 				}
 			}
 			for (let key in row.relations) {
+				CodeHelper.assertOfKeyName(key, 'key');
+				
 				if (row.relations.hasOwnProperty(key)) {
 					if (key == 'Children') {
 						const results = [];

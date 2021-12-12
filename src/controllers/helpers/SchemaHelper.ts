@@ -150,7 +150,7 @@ const SchemaHelper = {
 	verifyNotations: (tree: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
 		CodeHelper.assertOfPresent(tree, 'tree');
 		CodeHelper.recursiveEvaluate(tree, (obj: any) => {
-			CodeHelper.assertOfPresent(obj, 'tree');
+			if (typeof obj !== 'object') CodeHelper.assertOfString(obj, 'children');
 		});
 		
 	  const notations = SchemaHelper.findAllPossibleNotations(tree || {});
@@ -185,7 +185,6 @@ const SchemaHelper = {
 	},
 	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
 		CodeHelper.assertOfPresent(key, 'key');
-		CodeHelper.assertOfPresent(current, 'current');
 		
 		if (!searchForDataTableSchema) {
 			// Search DataTableSchema
@@ -203,7 +202,7 @@ const SchemaHelper = {
 		} else {
 			// Search DataColumnSchema
 			// 
-			const column = (current.keys || {})[key] || (current.columns || {})[key];
+			const column = (current && current.keys || {})[key] || (current && current.columns || {})[key];
 			if (column) {
 				return column;
 			} else {

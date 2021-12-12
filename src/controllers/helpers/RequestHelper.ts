@@ -111,6 +111,9 @@ const RequestHelper = {
 		CodeHelper.assertOfPresent(target, 'target', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(group, 'group', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(name, 'name', undefined, {guid: guid});
+		CodeHelper.assertOfNotationFormat(guid, 'guid');
+		CodeHelper.assertOfNotationFormat(group, 'group');
+		CodeHelper.assertOfNotationFormat(name, 'name');
 		
 		let _target: SourceType;
 		switch (target) {
@@ -154,9 +157,17 @@ const RequestHelper = {
 		CodeHelper.assertOfPresent(action, 'action', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(fields, 'fields', undefined, {guid: guid});
 		
+		CodeHelper.recursiveEvaluate(fields, (obj: any) => {
+    	CodeHelper.assertOfKeyName(obj, 'fields');
+    });
+		
 		CodeHelper.recursiveEvaluate(options, (obj: any) => {
     	CodeHelper.assertOfSimpleType(obj, 'options', undefined, {guid: guid});
     });
+    
+    CodeHelper.assertOfKeyName(pageId, 'pageId');
+		CodeHelper.assertOfNotationFormat(guid, 'guid');
+		CodeHelper.assertOfKeyName(action, 'action');
     
     const info = {
 			action: action,
@@ -173,6 +184,7 @@ const RequestHelper = {
 	getAction: (pageId: string, request: Request): ActionType => {
 		CodeHelper.assertOfPresent(pageId, 'pageId');
 		CodeHelper.assertOfPresent(request, 'request');
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
 		
 		const json: any = request.body;
 		
@@ -183,7 +195,7 @@ const RequestHelper = {
 		
 		if (typeof json.guid === 'undefined') return null;
 		
-		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		CodeHelper.assertOfString(json.guid, 'guid');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
 		
 		const action = requestSubmitInfoDict[pageId + json.guid] && requestSubmitInfoDict[pageId + json.guid].action || null;
@@ -212,6 +224,7 @@ const RequestHelper = {
 	getFields: (pageId: string, request: Request): any => {
 		CodeHelper.assertOfPresent(pageId, 'pageId');
 		CodeHelper.assertOfPresent(request, 'request');
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
 		
 		const json: any = request.body;
 		
@@ -222,7 +235,7 @@ const RequestHelper = {
 		
 		if (typeof json.guid === 'undefined') return [];
 		
-		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		CodeHelper.assertOfString(json.guid, 'guid');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
 		
 		return requestSubmitInfoDict[pageId + json.guid].fields;
@@ -230,6 +243,7 @@ const RequestHelper = {
 	getOptions: (pageId: string, request: Request): any => {
 		CodeHelper.assertOfPresent(pageId, 'pageId');
 		CodeHelper.assertOfPresent(request, 'request');
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
 		
 		const json: any = request.body;
 		
@@ -240,13 +254,14 @@ const RequestHelper = {
 		
 		if (typeof json.guid === 'undefined') return null;
 		
-		assert(typeof json.guid === 'string', 'guid in JSON must be a string.');
+		CodeHelper.assertOfString(json.guid, 'guid');
 		assert(requestSubmitInfoDict[pageId + json.guid], `The submit information isn\'t available (page: ${pageId}, guid: ${json.guid}).`);
 		
 		return requestSubmitInfoDict[pageId + json.guid].options;
 	},
 	getParamInfos: (guid: string): any => {
 		CodeHelper.assertOfPresent(guid, 'guid');
+		CodeHelper.assertOfNotationFormat(guid, 'guid');
 		
 		const info = requestParamInfoDict[guid.split('[')[0]];
 		
@@ -259,6 +274,7 @@ const RequestHelper = {
 	getSchema: (pageId: string, request: Request, schemata: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
 		CodeHelper.assertOfPresent(pageId, 'pageId');
 		CodeHelper.assertOfPresent(request, 'request');
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
 		
 		const fields = RequestHelper.getFields(pageId, request);
 		
@@ -272,6 +288,8 @@ const RequestHelper = {
 		CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
+		CodeHelper.assertOfNotationFormat(guid, 'guid');
 		
 		const json: any = request.body;
 		
@@ -318,6 +336,8 @@ const RequestHelper = {
 		CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
 		CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
+		CodeHelper.assertOfKeyName(pageId, 'pageId');
+		CodeHelper.assertOfNotationFormat(guid, 'guid');
 		
 		const json: any = request.body;
 		
@@ -333,6 +353,8 @@ const RequestHelper = {
 		const inputs = [];
 		
 		for (const key in json) {
+			CodeHelper.assertOfKeyName(key, 'key');
+			
 			if (key == 'notation') {
 				console.log("\x1b[33mnotation is no longer used due to a security issue, please use a newer version of StackBlend to remove this warning.\x1b[0m");
 			}
@@ -355,6 +377,8 @@ const RequestHelper = {
 		const _values = {};
 		
 		for (const key in values) {
+			CodeHelper.assertOfNotationFormat(key, 'key');
+			
 			if (values.hasOwnProperty(key)) {
 				if (values[key] != null && typeof values[key] == 'object' && !(values[key] instanceof Date)) {
 					for (const indexes in values[key]) {
@@ -369,6 +393,8 @@ const RequestHelper = {
 		
 		for (const key in values) {
 			if (values.hasOwnProperty(key)) {
+				CodeHelper.assertOfNotationFormat(key, 'key');
+				
 				const namespace = key.split('[')[0];
 				const splited = namespace.split('.');
 				const indexes = JSON.parse('[' + (key.split('[')[1] || ']'));
@@ -457,6 +483,8 @@ const RequestHelper = {
 		return results;
 	},
   sortInputs: (inputs: Input[]) => {
+  	CodeHelper.assertOfPresent(inputs, 'inputs');
+  	
     for (const input of inputs) {
       input.division = input.division || [];
     }

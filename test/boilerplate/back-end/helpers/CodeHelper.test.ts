@@ -142,17 +142,42 @@ describe('Extra Assertion Tools', () => {
 		expect(() => { CodeHelper.assertOfString(null); }).not.toThrow();
 		expect(() => { CodeHelper.assertOfString(undefined); }).not.toThrow();
 	});
-	test('assertOfVariableName', () => {
-		expect(() => { CodeHelper.assertOfVariableName('abc'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('a$bc'); }).toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('Abc'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('Abc '); }).toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('Abc09'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('Abc09_'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('+Abc09_'); }).toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('Ab c09_'); }).toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('0Abc09_'); }).toThrow();
-		expect(() => { CodeHelper.assertOfVariableName('_0Abc09_'); }).not.toThrow();
+	test('assertOfKeyName', () => {
+		expect(() => { CodeHelper.assertOfKeyName('abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('Abc09'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('Abc09_'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('0Abc09_'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('_0Abc09_'); }).not.toThrow();
+		
+		expect(() => { CodeHelper.assertOfKeyName('a$bc'); }).toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('Abc '); }).toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('+Abc09_'); }).toThrow();
+		expect(() => { CodeHelper.assertOfKeyName('Ab c09_'); }).toThrow();
+	});
+	test('assertOfNotationFormat', () => {
+		expect(() => { CodeHelper.assertOfNotationFormat('abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[0]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].789'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('@abc[01].789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('!abc[01].789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].@!789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('!@abc[01].!@789[10]'); }).not.toThrow();
+		
+		expect(() => { CodeHelper.assertOfNotationFormat(' abc'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[+01]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('ab$c[01]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01]..Abc'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('.abc[01].789'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('!@@abc[01].789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc![01].789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].!!789[10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].789[!10]'); }).not.toThrow();
 	});
 });
 describe('clone', () => {

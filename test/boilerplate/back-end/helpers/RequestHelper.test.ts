@@ -151,6 +151,11 @@ describe('Ingress Gate', () => {
 		const correctRequest9 = ({body: {guid: 'guid9'}} as any) as Request;
 		
 		test('registerSubmit', async () => {
+			expect(() => { RequestHelper.registerSubmit(' pageId1', 'guid1', 'test', ['field1'], {a: 1}); }).toThrow();
+			expect(() => { RequestHelper.registerSubmit('pageId1', 'gu..id1', 'test', ['field1'], {a: 1}); }).toThrow();
+			expect(() => { RequestHelper.registerSubmit('pageId1', 'guid1', 't$est', ['field1'], {a: 1}); }).toThrow();
+			expect(() => { RequestHelper.registerSubmit('pageId1', 'guid1', 'test', ['fi eld1'], {a: 1}); }).toThrow();
+			
 			expect(() => { RequestHelper.registerSubmit('pageId1', 'guid1', 'test', ['field1'], {a: 1}); }).not.toThrow();
 			expect(() => { RequestHelper.registerSubmit('pageId1', 'guid2', 'test', ['field0'], {a: 1}); }).not.toThrow();
 			expect(() => { RequestHelper.registerSubmit('pageId1', 'guid3', 'test', ['field0'], {a: 1}); }).not.toThrow();
@@ -188,6 +193,7 @@ describe('Ingress Gate', () => {
 			expect(() => { RequestHelper.registerSubmit(undefined, 'guid1', 'test', [], {}); }).toThrow();
 		});
 		test('getAction', async () => {
+			expect(() => { RequestHelper.getAction('#$%^', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getAction('', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getAction(null, correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getAction(undefined, correctRequest1); }).toThrow();
@@ -217,6 +223,7 @@ describe('Ingress Gate', () => {
 			expect(RequestHelper.getAction('pageId9', correctRequest9)).toEqual(null);
 		});
 		test('getFields', async () => {
+			expect(() => { RequestHelper.getFields('#$%^', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getFields('', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getFields(null, correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getFields(undefined, correctRequest1); }).toThrow();
@@ -246,6 +253,7 @@ describe('Ingress Gate', () => {
 			expect(RequestHelper.getFields('pageId9', correctRequest9)).toEqual([]);
 		});
 		test('getOptions', async () => {
+			expect(() => { RequestHelper.getOptions('#$%^', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getOptions('', correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getOptions(null, correctRequest1); }).toThrow();
 			expect(() => { RequestHelper.getOptions(undefined, correctRequest1); }).toThrow();
@@ -277,6 +285,11 @@ describe('Ingress Gate', () => {
 	});
 	describe('registerInput', () => {
 		test('registerInput', async () => {
+			expect(() => { RequestHelper.registerInput(' field1', 'relational', 'collection1', 'name1'); }).toThrow();
+			expect(() => { RequestHelper.registerInput('field1', 'rel$ational', 'collection1', 'name1'); }).toThrow();
+			expect(() => { RequestHelper.registerInput('field1', 'relational', 'collection1.', 'name1'); }).toThrow();
+			expect(() => { RequestHelper.registerInput('field1', 'relational', 'collection1', 'nam e1'); }).toThrow();
+			
 			expect(() => { RequestHelper.registerInput('', 'relational', 'collection1', 'name1'); }).toThrow();
 			expect(() => { RequestHelper.registerInput(null, 'relational', 'collection1', 'name1'); }).toThrow();
 			expect(() => { RequestHelper.registerInput(undefined, 'relational', 'collection1', 'name1'); }).toThrow();
@@ -308,6 +321,7 @@ describe('Ingress Gate', () => {
 			expect(() => { RequestHelper.registerInput('field6', 'unknown', 'collection6', 'name6'); }).toThrow();
 		});
 		test('getParamInfos', async () => {
+			expect(() => { RequestHelper.getParamInfos('#$%^'); }).toThrow();
 			expect(() => { RequestHelper.getParamInfos(''); }).toThrow();
 			expect(() => { RequestHelper.getParamInfos(null); }).toThrow();
 			expect(() => { RequestHelper.getParamInfos(undefined); }).toThrow();
@@ -393,6 +407,7 @@ describe('Ingress Gate', () => {
 			  retrievingPermission: null
 			};
 			
+			expect(() => { RequestHelper.getSchema('#$%^', correctRequest1, schemata); }).toThrow();
 			expect(() => { RequestHelper.getSchema('', correctRequest1, schemata); }).toThrow();
 			expect(() => { RequestHelper.getSchema(null, correctRequest1, schemata); }).toThrow();
 			expect(() => { RequestHelper.getSchema(undefined, correctRequest1, schemata); }).toThrow();
@@ -631,6 +646,9 @@ describe('Extract Inputs', () => {
 	};
 	
 	test('getInput', () => {
+		expect(() => { RequestHelper.getInput('page.Id2n1', correctRequest2, 'field2n1'); }).toThrow();
+		expect(() => { RequestHelper.getInput('pageId2n1', correctRequest2, 'fie ld2n1'); }).toThrow();
+		
 		expect(() => { RequestHelper.getInput('pageId1n1', correctRequest1, 'field1n1[0]'); }).toThrow();
 		expect(() => { RequestHelper.getInput(null, correctRequest2, 'field2n1'); }).toThrow();
 		expect(() => { RequestHelper.getInput(undefined, correctRequest2, 'field2n1'); }).toThrow();
@@ -909,6 +927,9 @@ describe('Extract Inputs', () => {
 		});
 	});
 	test('getInputs', () => {
+		expect(() => { RequestHelper.getInputs('page.Id6n1', correctRequest7, 'guid6n1'); }).toThrow();
+		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest7, 'guid 6n1'); }).toThrow();
+		
 		expect(() => { RequestHelper.getInputs(undefined, correctRequest7, 'guid6n1'); }).toThrow();
 		expect(() => { RequestHelper.getInputs(null, correctRequest7, 'guid6n1'); }).toThrow();
 		expect(() => { RequestHelper.getInputs('', correctRequest7, 'guid6n1'); }).toThrow();
@@ -968,6 +989,10 @@ describe('Extract Inputs', () => {
 		expect(() => { RequestHelper.getInputs('pageId6n1', correctRequest8, 'guid6n1'); }).toThrow();
 	});
 	test('createInputs', () => {
+		expect(() => { RequestHelper.createInputs({
+			'@!co$llection6n2.field6n2': undefined
+		}, schemata); }).toThrow();
+		
 		expect(() => { RequestHelper.createInputs({}, schemata); }).not.toThrow();
 		expect(() => { RequestHelper.createInputs({'field2n1': undefined}, schemata); }).toThrow();
 		expect(() => { RequestHelper.createInputs({'collection2n5.field2n1': undefined}, schemata); }).toThrow();
