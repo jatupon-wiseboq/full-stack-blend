@@ -332,9 +332,9 @@ describe('DataManipulationHelper', () => {
 		expect(DataManipulationHelper.getDataFromNotation('Collection.f.a[0].Children[3]._')).toEqual(null);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.f.a[0].Children[4]._')).toEqual(null);
 		
-		expect(DataManipulationHelper.getDataFromNotation(null)).toEqual(null);
-		expect(DataManipulationHelper.getDataFromNotation(undefined)).toEqual(null);
-		expect(DataManipulationHelper.getDataFromNotation('')).toEqual(null);
+		expect(() => { DataManipulationHelper.getDataFromNotation(null); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation(undefined); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation(''); }).toThrow();
 	});
 	
 	test('Complex Structure {inArray=true}', () => {
@@ -395,8 +395,8 @@ describe('DataManipulationHelper', () => {
 		expect(DataManipulationHelper.getDataFromNotation('Collection.f.a[0].Children[3]._', undefined, true)).toEqual([]);
 		expect(DataManipulationHelper.getDataFromNotation('Collection.f.a[0].Children[4]._', undefined, true)).toEqual([]);
 		
-		expect(DataManipulationHelper.getDataFromNotation(null, undefined, true)).toEqual([]);
-		expect(DataManipulationHelper.getDataFromNotation(undefined, undefined, true)).toEqual([]);
-		expect(DataManipulationHelper.getDataFromNotation('', undefined, true)).toEqual([]);
+		expect(() => { DataManipulationHelper.getDataFromNotation(null, undefined, true); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation(undefined, undefined, true); }).toThrow();
+		expect(() => { DataManipulationHelper.getDataFromNotation('', undefined, true); }).toThrow();
 	});
 });

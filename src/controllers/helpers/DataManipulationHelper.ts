@@ -8,9 +8,14 @@ let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
 const DataManipulationHelper = {
 	setData: (data: {[Identifier: string]: HierarchicalDataTable}) => {
+		CodeHelper.assertOfPresent(data, 'data');
+		
 		dataset = data;
 	},
   getDataFromKey: (key: string, current: any, index: number=-1): any => {
+		CodeHelper.assertOfPresent(key, 'key');
+		CodeHelper.assertOfNotUndefined(current, 'current');
+		
 		if (Array.isArray(current)) {
 			current = current[0] || {};
 		}
@@ -37,10 +42,7 @@ const DataManipulationHelper = {
 		}
   },
   getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable}=dataset, inArray: boolean=false): any => {
-    if (!notation) {
-    	console.log("\x1b[33mThe notation is null, undefined or empty.\x1b[0m");
-	  	return (inArray) ? [] : null;
-    }
+    CodeHelper.assertOfPresent(notation, 'notation');
     
     const splited = notation.split(".");
     let current = {
