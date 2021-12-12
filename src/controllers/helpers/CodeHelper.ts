@@ -45,6 +45,15 @@ const CodeHelper = {
 	assertOfNotNaN: (obj: any, name: string='parameter', message: string='cannot be NaN.', info: any=null) => {
 		assert(!(typeof obj === 'number' && isNaN(obj)), `${name} ${message}${CodeHelper.generateInfo(info)}`);
 	},
+	assertOfString: (obj: any, name: string='parameter', message: string='must be a string.', info: any=null) => {
+		assert(obj === null || obj === undefined || typeof obj === 'string', `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
+	assertOfVariableName: (obj: any, name: string='parameter', message: string='must contain only a-z, 0-9 and underscore in lowercase or uppercase.', info: any=null) => {
+		CodeHelper.assertOfPresent(obj);
+		CodeHelper.assertOfString(obj);
+		
+		assert(obj.match(/^[a-zA-Z_][a-zA-Z0-9_]*$/), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
   clone: (obj: any) => {
   	// TODO: to support Infinity, NaN, RegEX (, undefined)
     //
