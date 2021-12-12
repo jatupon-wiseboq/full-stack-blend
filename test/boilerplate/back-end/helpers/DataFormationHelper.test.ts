@@ -325,7 +325,7 @@ describe('DataFormationHelper', () => {
 		
 		data = {
 			$a: null,
-			b: [0.0, undefined],
+			b: [0.0, ''],
 			c: {$a: 1.125},
 			d: {b: [NaN, Number.MAX_SAFE_INTEGER]},
 			e: {c: {$a: ''}, d: [0, 1]},

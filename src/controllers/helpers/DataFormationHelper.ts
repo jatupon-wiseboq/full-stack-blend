@@ -23,6 +23,8 @@ const DataFormationHelper = {
 		return table;
 	},
 	recursiveExtractNodesIntoDataRow: (data: any): HierarchicalDataRow => {
+		CodeHelper.assertOfNotUndefined(data, 'data');
+		
 		const row = {
 			keys: {},
 		  columns: {},
@@ -76,9 +78,13 @@ const DataFormationHelper = {
 		return row;
 	},
 	convertFromHierarchicalDataTableToJSON: (data: HierarchicalDataTable): any => {
+		CodeHelper.assertOfPresent(data, 'data');
+		
 		return DataFormationHelper.recursiveExtractNodesIntoDictionary(data.rows[0]);
 	},
 	recursiveExtractNodesIntoDictionary: (row: HierarchicalDataRow): any => {
+		CodeHelper.assertOfPresent(row, 'row');
+		
 		if (row.columns.hasOwnProperty('_')) {
 			return row.columns['_'];
 		} else {
