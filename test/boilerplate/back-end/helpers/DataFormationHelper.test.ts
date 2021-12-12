@@ -314,7 +314,7 @@ describe('DataFormationHelper', () => {
 	test('Complex Structure', () => {
 		let data = null;
 		data = {
-			$a: 1,
+			a: 1,
 			b: [0, 1],
 			c: {$a: 1},
 			d: {b: [0, 1]},
@@ -324,7 +324,7 @@ describe('DataFormationHelper', () => {
 		expect(DataFormationHelper.convertFromHierarchicalDataTableToJSON(DataFormationHelper.convertFromJSONToHierarchicalDataTable(data))).toEqual(data);
 		
 		data = {
-			$a: null,
+			a: null,
 			b: [0.0, ''],
 			c: {$a: 1.125},
 			d: {b: [NaN, Number.MAX_SAFE_INTEGER]},
