@@ -125,6 +125,35 @@ describe('Extra Assertion Tools', () => {
 		expect(() => { CodeHelper.assertOfNotNaN(null); }).not.toThrow();
 		expect(() => { CodeHelper.assertOfNotNaN(undefined); }).not.toThrow();
 	});
+	test('assertOfString', () => {
+		expect(() => { CodeHelper.assertOfString(1); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(1.0); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(Infinity); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(-Infinity); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(NaN); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(false); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(true); }).toThrow();
+		expect(() => { CodeHelper.assertOfString('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfString(''); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfString(' '); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfString([]); }).toThrow();
+		expect(() => { CodeHelper.assertOfString({}); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(/123/); }).toThrow();
+		expect(() => { CodeHelper.assertOfString(null); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfString(undefined); }).not.toThrow();
+	});
+	test('assertOfVariableName', () => {
+		expect(() => { CodeHelper.assertOfVariableName('abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('a$bc'); }).toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('Abc'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('Abc '); }).toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('Abc09'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('Abc09_'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('+Abc09_'); }).toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('Ab c09_'); }).toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('0Abc09_'); }).toThrow();
+		expect(() => { CodeHelper.assertOfVariableName('_0Abc09_'); }).not.toThrow();
+	});
 });
 describe('clone', () => {
 	describe('Primitive', () => {

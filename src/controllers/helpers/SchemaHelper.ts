@@ -64,7 +64,7 @@ const SchemaHelper = {
 	        if (table.keys.hasOwnProperty(primaryKey)) {
 	          const column = table.keys[primaryKey];
 	          if (column.name === undefined || column.name === null || column.name.trim() === "")
-  	          throw new Error(`There was an error verifying data schema (missing a column name: ${JSON.stringify(column)}).`);
+  	          throw new Error(`There was an error verifying data schema (missing a key name: ${JSON.stringify(column)}).`);
 	        
 		        if (column.modifyingPermission) SchemaHelper.verifyPermission(column.modifyingPermission);
 	  	    	if (column.retrievingPermission) SchemaHelper.verifyPermission(column.retrievingPermission);
@@ -149,6 +149,9 @@ const SchemaHelper = {
 	},
 	verifyNotations: (tree: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
 		CodeHelper.assertOfPresent(tree, 'tree');
+		CodeHelper.recursiveEvaluate(tree, (obj: any) => {
+			CodeHelper.assertOfPresent(obj, 'tree');
+		});
 		
 	  const notations = SchemaHelper.findAllPossibleNotations(tree || {});
 	  for (const notation of notations) {
