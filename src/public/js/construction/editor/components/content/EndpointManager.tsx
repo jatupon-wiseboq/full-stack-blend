@@ -77,13 +77,19 @@ class EndpointManager extends Base<Props, State> {
     
     files: any = [];
     private create(path: string, content: string) {
-      return new Promise((resolve) => {
-        this.files.push({
-          path: path,
-          content: content
-        });
-        resolve();
-      });
+    	if (content === false) {
+    		return new Promise((resolve) => {
+	        resolve();
+	      });
+    	} else {
+	      return new Promise((resolve) => {
+	        this.files.push({
+	          path: path,
+	          content: content
+	        });
+	        resolve();
+	      });
+	    }
     }
     private commit(incremental: boolean=false) {
       let _files = this.files;
@@ -182,8 +188,8 @@ class EndpointManager extends Base<Props, State> {
       }
       
       let combinedHTMLPageDict = {};
-      let globalCombinedStylesheet = '';
-      let globalCombinedStylesheetExtension = '';
+      let globalCombinedStylesheet = false;
+      let globalCombinedStylesheetExtension = false;
       let arrayOfCombinedExpandingFeatureScripts = [];
       for (let key in frontEndCodeInfoDict) {
         if (frontEndCodeInfoDict.hasOwnProperty(key)) {
@@ -263,7 +269,7 @@ html
         }
       }
       
-      let combinedHeaderScripts = `
+      let combinedHeaderScripts = (globalCombinedStylesheet !== false && globalCombinedStylesheetExtension !== false) ? `
 link(rel="stylesheet" href="/css/embed.css")
 ${externalStylesheets.join('\n')}
 ${customHeaderExternalStylesheets.join('\n')}
@@ -344,7 +350,7 @@ script(type="text/javascript").
     }
   };
   ${globalCombinedStylesheetExtension}
-`;
+` : false;
   let combinedFooterScripts = `
 ${externalScripts.join('\n')}
 ${customFooterExternalStylesheets.join('\n')}
