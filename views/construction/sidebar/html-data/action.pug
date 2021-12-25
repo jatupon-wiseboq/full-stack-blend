@@ -6,19 +6,19 @@ include ../../mixin/CreateReactComponent
     .section-subtitle(internal-fsb-for="internal-fsb-class:Connection")
       | Source Manipulation
     .section-body(internal-fsb-for="internal-fsb-class:Connection")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinsert']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupdate']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupsert']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdelete']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbretrieve']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbsourceinsert']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbsourceupdate']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbsourceupsert']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbsourcedelete']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbsourceretrieve']}")
     .section-subtitle(internal-fsb-for="internal-fsb-class:Connection")
       | Target Manipulation
     .section-body(internal-fsb-for="internal-fsb-class:Connection")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbinsert']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupdate']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbupsert']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbdelete']}")
-      +CreateReactComponent('FullStackBlend.Components.ReactEventBinder', "{watchingAttributeNames: ['onfsbretrieve']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbtargetinsert']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbtargetupdate']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbtargetupsert']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbtargetdelete']}")
+      +CreateReactComponent('FullStackBlend.Components.BackEndEventBinder', "{watchingAttributeNames: ['onfsbtargetretrieve']}")
     .section-note
       | These will generating event boilerplates in the action controller. Use coding mode to define the business logic.
     .section-hr

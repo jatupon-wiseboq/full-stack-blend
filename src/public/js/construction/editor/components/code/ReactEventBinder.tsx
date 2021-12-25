@@ -84,7 +84,7 @@ let options = {
     "onfsbsuspend": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
     "onfsbtimeupdate": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
     "onfsbvolumechange": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS,
-    "onfsbwaiting": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS	
+    "onfsbwaiting": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS
 }
 
 declare let React: any;

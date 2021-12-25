@@ -30,6 +30,7 @@ import './components/generic/TextPicker';
 
 import './components/code/FrontEndScriptEditor';
 import './components/code/ReactEventBinder';
+import './components/code/BackEndEventBinder';
 import './components/code/ExternalLibrariesChooser';
 import './components/code/AttributeManager';
 import './components/code/OptionManager';

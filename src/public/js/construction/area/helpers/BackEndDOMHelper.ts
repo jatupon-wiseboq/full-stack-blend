@@ -68,6 +68,53 @@ var BackEndDOMHelper = {
         BackEndDOMHelper.recursiveGenerateCodeForMergingSection(body, child, key, executions, lines);
       }
     }
+  },
+	generateCodeForMergingSectionInData: function(element: HTMLElement) {
+  	let executions: string[] = [];
+  	let lines: string[] = [];
+  	BackEndDOMHelper.recursiveGenerateCodeForMergingSectionInData(element, element.getAttribute('data-title-name') || element.getAttribute('internal-fsb-guid'), executions, lines);
+    
+    executions = executions.filter((v, i, a) => a.indexOf(v) === i);
+    lines = lines.filter((v, i, a) => a.indexOf(v) === i);
+    
+    return [executions.join('\n'), lines.join('\n')];
+  },
+  recursiveGenerateCodeForMergingSectionInData: function(element: HTMLElement, key: string, executions: string[], lines: string[]) {
+  	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
+    
+    if (element && element.tagName) {
+    	if ((HTMLHelper.hasClass(element, 'internal-fsb-element') || HTMLHelper.hasClass(element, 'internal-fsb-inheriting-element')) &&
+    		FORM_CONTROL_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
+		    let info = HTMLHelper.getAttributes(element, false);
+    		
+	    	let code, mapping;
+	    	[code, mapping] = BackEndScriptHelper.generateMergingCode(info);
+	    	
+	    	if (code) lines.push(code);
+    	}
+    	
+    	if ((HTMLHelper.hasClass(element, 'internal-fsb-element') || HTMLHelper.hasClass(element, 'internal-fsb-inheriting-element')) && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button') {
+    		let reactClassComposingInfoGUID = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+    		let submitType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-type');
+    		let submitControls = HTMLHelper.getAttribute(element, 'internal-fsb-data-controls');
+    		let submitName = HTMLHelper.getAttribute(element, 'internal-fsb-name');
+    		let reactClassForPopup = HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class');
+    		let submitCrossType = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-cross-operation') == 'upsert';
+        let realTimeUpdate = HTMLHelper.getAttribute(element, 'internal-fsb-data-wizard-real-time-update') == 'true';
+    		
+    		if (submitControls) {
+    			let splited = submitControls && submitControls.split(' ') || [];
+          splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
+    			
+	    		executions.push(`    RequestHelper.registerSubmit(${JSON.stringify(key)}, ${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, crossRelationUpsert: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate)}, name: ${JSON.stringify(submitName)}});`);
+	    	}
+    	}
+    	
+    	let children = [...element.childNodes];
+      for (let child of children) {
+        BackEndDOMHelper.recursiveGenerateCodeForMergingSectionInData(child, key, executions, lines);
+      }
+    }
   }
 }
 

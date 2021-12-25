@@ -1,6 +1,6 @@
-import {USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
 
-const DEFAULTS = {
+const CONTROLLER_DEFAULTS = {
   Import: `
 
 // Import additional modules here:
@@ -289,9 +289,95 @@ const DEFAULTS = {
 //
 export default Controller;
 `
-}
+};
 
-const FULL_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
+const CONNECTOR_DEFAULTS = {
+  Import: `
+
+// Import additional modules here:
+//
+`,
+  Declare: `
+
+// Declare private static variables here:
+//
+`,
+  Interface: `
+
+// Declare or extend interfaces here:
+//
+`,
+  ClassBegin: `
+  
+  // Declare class variables and functions here:
+  //
+  `,
+  ClassEnd: `
+
+// Export variables here:
+//
+export default Controller;
+`
+};
+
+const WORKER_DEFAULTS = {
+  Import: `
+
+// Import additional modules here:
+//
+`,
+  Declare: `
+
+// Declare private static variables here:
+//
+`,
+  Interface: `
+
+// Declare or extend interfaces here:
+//
+`,
+  ClassBegin: `
+  
+  // Declare class variables and functions here:
+  //`,
+  ClassEnd: `
+
+// Export variables here:
+//
+export default Controller;
+`
+};
+
+const SCHEDULER_DEFAULTS = {
+  Import: `
+
+// Import additional modules here:
+//
+`,
+  Declare: `
+
+// Declare private static variables here:
+//
+`,
+  Interface: `
+
+// Declare or extend interfaces here:
+//
+`,
+  ClassBegin: `
+  
+  // Declare class variables and functions here:
+  //
+  `,
+  ClassEnd: `
+
+// Export variables here:
+//
+export default Controller;
+`
+};
+
+const FULL_CONTROLLER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 import {Request, Response} from "express";
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
@@ -379,7 +465,6 @@ class Controller extends Base {
   	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
-	  
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
 	  
@@ -394,27 +479,282 @@ class Controller extends Base {
 }
 // <---Auto[ClassEnd]`;
 
+const FULL_CONNECTOR_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
+// Auto[Import]--->
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Connector';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
+// <---Auto[Import]
+// Auto[Declare]--->
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}
+enum ActionType {
+  Insert,
+  Update,
+  Upsert,
+  Delete,
+  Retrieve,
+  Popup,
+  Navigate,
+  Test
+}*/
+// <---Auto[Declare]
+// Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
+}*/
+// <---Auto[Interface]
+// Auto[ClassBegin]--->
+class Connector extends Base {
+  constructor() {
+  	super();
+  }
+  // <---Auto[ClassBegin]
+ 	
+  // Auto[MergingBegin]--->  
+  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+	  // <---Auto[MergingBegin]
+	  // Auto[Merging]--->
+	  // <---Auto[Merging]
+	  
+	  // Auto[MergingEnd]--->
+	}
+  // <---Auto[MergingEnd]
+  
+  // Auto[ClassEnd]--->
+}
+// <---Auto[ClassEnd]`;
+
+const FULL_WORKER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
+// Auto[Import]--->
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Worker';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
+// <---Auto[Import]
+// Auto[Declare]--->
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}
+enum ActionType {
+  Insert,
+  Update,
+  Upsert,
+  Delete,
+  Retrieve,
+  Popup,
+  Navigate,
+  Test
+}*/
+// <---Auto[Declare]
+// Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
+}*/
+// <---Auto[Interface]
+// Auto[ClassBegin]--->
+class Worker extends Base {
+  constructor() {
+  	super();
+  }
+  // <---Auto[ClassBegin]
+ 	
+  // Auto[MergingBegin]--->  
+  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+	  // <---Auto[MergingBegin]
+	  // Auto[Merging]--->
+	  // <---Auto[Merging]
+	  
+	  // Auto[MergingEnd]--->
+	}
+  // <---Auto[MergingEnd]
+  
+  // Auto[ClassEnd]--->
+}
+// <---Auto[ClassEnd]`;
+
+const FULL_SCHEDULER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
+// Auto[Import]--->
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Scheduler';
+
+// Assign to an another one to override the base class.
+// 
+let Base: any = $Base;
+
+// <---Auto[Import]
+// Auto[Declare]--->
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}
+enum ActionType {
+  Insert,
+  Update,
+  Upsert,
+  Delete,
+  Retrieve,
+  Popup,
+  Navigate,
+  Test
+}*/
+// <---Auto[Declare]
+// Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
+}*/
+// <---Auto[Interface]
+// Auto[ClassBegin]--->
+class Scheduler extends Base {
+  constructor() {
+  	super();
+  }
+  // <---Auto[ClassBegin]
+ 	
+  // Auto[MergingBegin]--->  
+  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+	  // <---Auto[MergingBegin]
+	  // Auto[Merging]--->
+	  // <---Auto[Merging]
+	  
+	  // Auto[MergingEnd]--->
+	}
+  // <---Auto[MergingEnd]
+  
+  // Auto[ClassEnd]--->
+}
+// <---Auto[ClassEnd]`;
+
 const MERGING_BOILERPLATE = `// Auto[Merging:Begin]--->
 // <---Auto[Merging:Begin]
 
 // Auto[Merging:End]--->
 // <---Auto[Merging:End]`;
 
+const CLASS_END_BEGIN = `\n  // Auto[ClassEnd]--->`;
 const MAIN_MERGE_END_BEGIN = `	  // <---Auto[Merging]`;
 const SUB_MERGE_END_BEGIN = `\n// Auto[Merging:End]--->`;
 const FILE_BEGIN = `// Auto[File]--->`;
 const FILE_END = `// <---Auto[File]`;
 
 var BackEndScriptHelper = {
-		generateScriptCode: (info: any) => {
-				let code = FULL_BOILERPLATE;
-		    code = code.replace('// <---Auto[Import]', '// <---Auto[Import]' + (info['internal-fsb-data-code-import'] || DEFAULTS.Import));
-		    code = code.replace('// <---Auto[Declare]', '// <---Auto[Declare]' + (info['internal-fsb-data-code-declare'] || DEFAULTS.Declare));
-		    code = code.replace('// <---Auto[Interface]', '// <---Auto[Interface]' + (info['internal-fsb-data-code-interface'] || DEFAULTS.Interface));
-		    code = code.replace('// <---Auto[ClassBegin]', '// <---Auto[ClassBegin]' + (info['internal-fsb-data-code-body'] || DEFAULTS.ClassBegin));
-		    code = code.replace('// <---Auto[ClassEnd]', '// <---Auto[ClassEnd]' + (info['internal-fsb-data-code-footer'] || DEFAULTS.ClassEnd));
+		generateScriptCode: (info: any, boilerplate: string=FULL_CONTROLLER_BOILERPLATE, defaults: any=CONTROLLER_DEFAULTS, templateCode: number=0) => {
+				let code = boilerplate;
+		    code = code.replace('// <---Auto[Import]', '// <---Auto[Import]' + (info['internal-fsb-data-code-import'] || defaults.Import));
+		    code = code.replace('// <---Auto[Declare]', '// <---Auto[Declare]' + (info['internal-fsb-data-code-declare'] || defaults.Declare));
+		    code = code.replace('// <---Auto[Interface]', '// <---Auto[Interface]' + (info['internal-fsb-data-code-interface'] || defaults.Interface));
+		    code = code.replace('// <---Auto[ClassBegin]', '// <---Auto[ClassBegin]' + (info['internal-fsb-data-code-body'] || defaults.ClassBegin));
+		    code = code.replace('// <---Auto[ClassEnd]', '// <---Auto[ClassEnd]' + (info['internal-fsb-data-code-footer'] || defaults.ClassEnd));
 		        
 				let functionNameMapping = {};
+				
+				for (let name of Object.keys(CAMEL_OF_EVENTS_DICTIONARY)) {
+            let value = info[name];
+            if (value) value = JSON.parse(value);
+            else value = {};
+            
+            let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + '_' + info['internal-fsb-guid'];
+            let FUNCTION_COMPREHEND_NAME = CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, 'on' + info['internal-fsb-class']) + ' (' + info['internal-fsb-name'] + ')';
+            let FUNCTION_EVENT_TYPE = (CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS.indexOf(name) == -1) ? 'Event' : 'CustomEvent';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // const params = event.detail.params;                  /* manipulation parameters */
+    // const response = event.detail.response;              /* manipulation response */` : '';
+            let FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2 = (FUNCTION_EVENT_TYPE == 'CustomEvent') ? `
+    // return EventHelper.cancel(event);                    /* cancelling this manipulation */
+    // ` : '';
+            let FUNCTION_BEGIN_BEGIN = `\n  // Auto[${FUNCTION_NAME}:Begin]--->`;
+            let FUNCTION_BEGIN_END = `\n    // <---Auto[${FUNCTION_NAME}:Begin]`;
+            let FUNCTION_END_BEGIN = `// Auto[${FUNCTION_NAME}:End]--->`;
+            let FUNCTION_END_END = `\n  // <---Auto[${FUNCTION_NAME}:End]`;
+            let FUNCTION_BODY = `
+
+    // Handle the event of ${FUNCTION_COMPREHEND_NAME} here:
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_1}
+    // const target = EventHelper.getCurrentElement(event); /* current invoking element */
+    // const element1 = HTMLHelper.getElementById('ID');    /* accessing an element */
+    // const control1 = ReactDOM.findDOMNode(this.refs.ID); /* accessing a component */
+    // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2}
+    
+    `;
+    				if (templateCode == 1) FUNCTION_BODY = '\n    // Place your custom manipulation here:\n    \n    ';
+            
+            if (value.event) {
+                if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
+                    code = code.replace(CLASS_END_BEGIN,
+`${FUNCTION_BEGIN_BEGIN}
+  protected ${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  }${FUNCTION_END_END}
+${CLASS_END_BEGIN}`);
+                } else {
+                    code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
+                }
+            } else {
+                if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
+                    code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
+                }
+            }
+            
+            functionNameMapping[`${FUNCTION_NAME}:Begin`] = 'internal-fsb-react-code-' + name;
+        }
 				
 				let prerequisiteCode = info['autoGeneratedCodeForMergingBackEndScript'][0];
 				let mergingCode = info['autoGeneratedCodeForMergingBackEndScript'][1];
@@ -437,7 +777,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 				
 				return [code, functionNameMapping];
 		},
-		generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false) => {
+		generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false, templateCode: number=0) => {
 				let code = '';
 	      let functionNameMapping = {};
 	      
@@ -479,8 +819,18 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 
     		if (code == '') code = MERGING_BOILERPLATE;
     		
-        if (code.indexOf(SECTION_BEGIN_BEGIN) == -1) {
+        if (templateCode == 0 && code.indexOf(SECTION_BEGIN_BEGIN) == -1) {
             code = code.replace(SUB_MERGE_END_BEGIN,
+`${SECTION_BEGIN_BEGIN}
+		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
+		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE}, ${SECTION_VALIDATION_FORMAT}, ${SECTION_VALIDATION_REGEX});
+    for (let input of RequestHelper.getInputs(this.pageId, request, '${SECTION_GUID}')) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      if (input != null) data.push(input);
+    }
+${SECTION_END_END}
+${SUB_MERGE_END_BEGIN}`);
+        } else if (templateCode == 1) {
+        		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
 		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE}, ${SECTION_VALIDATION_FORMAT}, ${SECTION_VALIDATION_REGEX});
@@ -504,7 +854,7 @@ ${SUB_MERGE_END_BEGIN}`);
 	      functionNameMapping[`${SECTION_GUID}:Begin`] = 'internal-fsb-data-code';
 	      
 	      return [code, functionNameMapping];
-		},	
+		},
 	  extractCode: (code: string) => {
 		    if (!code) return {};
 		    
@@ -520,7 +870,16 @@ ${SUB_MERGE_END_BEGIN}`);
 		    }
 		    
 		    return resultDictionary;
-	  }
+	  },
+		generateConnectorCode: (info: any) => {
+				return BackEndScriptHelper.generateScriptCode(info, FULL_CONNECTOR_BOILERPLATE, CONNECTOR_DEFAULTS, 1);
+		},
+		generateWorkerCode: (info: any) => {
+				return BackEndScriptHelper.generateScriptCode(info, FULL_WORKER_BOILERPLATE, WORKER_DEFAULTS, 1);
+		},
+		generateSchedulerCode: (info: any) => {
+				return BackEndScriptHelper.generateScriptCode(info, FULL_SCHEDULER_BOILERPLATE, SCHEDULER_DEFAULTS, 1);
+		}
 }
 
-export {BackEndScriptHelper, DEFAULTS};
+export {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS};
