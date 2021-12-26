@@ -4,8 +4,14 @@
 import {HierarchicalDataTable} from "../helpers/DatabaseHelper";
 
 class Worker {
-	constructor() {
+	protected iterations: any[] = [];
+	
+	constructor(data: HierarchicalDataTable) {
+		this.initialize(data);
 	  this.setup();
+	  for (const parameters of this.iterations) {
+      this.perform.apply(this, parameters);
+    }
   }
   
 	protected register(action: ActionType, source: DataTableSchema, method: (Event) => Promise<any>) {
@@ -17,6 +23,9 @@ class Worker {
 	}
 	
 	protected setup() {
+	}
+	
+	protected perform() {
 	}
 }
 
