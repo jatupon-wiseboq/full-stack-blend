@@ -311,12 +311,16 @@ const CONNECTOR_DEFAULTS = {
   
   // Declare class variables and functions here:
   //
+  protected setup() {
+  	// Place your custom setup here (singleton):
+    
+	}
   `,
   ClassEnd: `
 
 // Export variables here:
 //
-export default Controller;
+export default Connector;
 `
 };
 
@@ -344,7 +348,7 @@ const WORKER_DEFAULTS = {
 
 // Export variables here:
 //
-export default Controller;
+export default Worker;
 `
 };
 
@@ -373,7 +377,7 @@ const SCHEDULER_DEFAULTS = {
 
 // Export variables here:
 //
-export default Controller;
+export default Scheduler;
 `
 };
 
@@ -534,7 +538,7 @@ class Connector extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  private initialize(): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -602,7 +606,7 @@ class Worker extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  private initialize(): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -670,7 +674,7 @@ class Scheduler extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  private initialize(): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -698,6 +702,8 @@ const FILE_END = `// <---Auto[File]`;
 var BackEndScriptHelper = {
 		generateScriptCode: (info: any, boilerplate: string=FULL_CONTROLLER_BOILERPLATE, defaults: any=CONTROLLER_DEFAULTS, templateCode: number=0) => {
 				let code = boilerplate;
+				const executions = [];
+				
 		    code = code.replace('// <---Auto[Import]', '// <---Auto[Import]' + (info['internal-fsb-data-code-import'] || defaults.Import));
 		    code = code.replace('// <---Auto[Declare]', '// <---Auto[Declare]' + (info['internal-fsb-data-code-declare'] || defaults.Declare));
 		    code = code.replace('// <---Auto[Interface]', '// <---Auto[Interface]' + (info['internal-fsb-data-code-interface'] || defaults.Interface));
@@ -734,19 +740,86 @@ var BackEndScriptHelper = {
     // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2}
     
     `;
-    				if (templateCode == 1) FUNCTION_BODY = '\n    // Place your custom manipulation here:\n    \n    ';
+    				if (templateCode == 1) FUNCTION_BODY = `
+    // Place your custom manipulation here:
+    // 
+    // const customEvent: CustomEvent = event as CustomEvent;
+    // const source: DataTableSchema = customEvent.detail.source;    					/* source of relation */
+    // const target: DataTableSchema = customEvent.detail.target;    					/* target of relation */
+    // const rows: HierarchicalDataRow[] = customEvent.detail.rows;    				/* data in-between */
+    // const transaction: any = customEvent.detail.transaction;    						/* transaction context */
+    // const crossRelationUpsert: boolean = customEvent.detail.crossRelationUpsert;    /* upsert for the next manipulation */
+    // const session: any = customEvent.detail.session;    										/* request session */
+    // const leavePermission: boolean = customEvent.detail.leavePermission;  	/* override permission */
+    // const innerCircleTags: string[] = customEvent.detail.innerCircleTags;  /* circle tags */
+    //
+    
+    `;
             
             if (value.event) {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${templateCode != 0 ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
                     code = `${code.split(FUNCTION_END_BEGIN)[0]}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
                 }
+        				
+        				if (templateCode != 0) {
+	        				let type: string;
+	            		let destination: string;
+	            		
+	            		switch (name) {
+	            			case 'onfsbsourceinsert':
+	            				type = 'Insert';
+	            				destination = info['data-source-group-name'];
+	            				break;
+	            			case 'onfsbtargetinsert':
+	            				type = 'Insert';
+	            				destination = info['data-target-group-name'];
+	            				break;
+	            			case 'onfsbsourceupsert':
+	            				type = 'Upsert';
+	            				destination = info['data-source-group-name'];
+	            				break;
+	            			case 'onfsbtargetupsert':
+	            				type = 'Upsert';
+	            				destination = info['data-target-group-name'];
+	            				break;
+	            			case 'onfsbsourceupdate':
+	            				type = 'Update';
+	            				destination = info['data-source-group-name'];
+	            				break;
+	            			case 'onfsbtargetupdate':
+	            				type = 'Update';
+	            				destination = info['data-target-group-name'];
+	            				break;
+	            			case 'onfsbsourcedelete':
+	            				type = 'Delete';
+	            				destination = info['data-source-group-name'];
+	            				break;
+	            			case 'onfsbtargetdelete':
+	            				type = 'Delete';
+	            				destination = info['data-target-group-name'];
+	            				break;
+	            			case 'onfsbsourceretrieve':
+	            				type = 'Retrieve';
+	            				destination = info['data-source-group-name'];
+	            				break;
+	            			case 'onfsbtargetretrieve':
+	            				type = 'Retrieve';
+	            				destination = info['data-target-group-name'];
+	            				break;
+	            			default:
+	            				type = null;
+	            				break;
+	            		}
+	            		
+	            		if (type) executions.push(`	  this.register(ActionType.${type}, SchemaHelper.getSchemaFromKey('${destination}'), this.${FUNCTION_NAME});`);
+	              }
             } else {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
                     code = code.split(FUNCTION_BEGIN_BEGIN)[0] + code.split(FUNCTION_END_END + '\n')[1];
@@ -755,6 +828,14 @@ ${CLASS_END_BEGIN}`);
             
             functionNameMapping[`${FUNCTION_NAME}:Begin`] = 'internal-fsb-react-code-' + name;
         }
+        
+        if (templateCode == 1) {
+					code = code.replace('constructor()', `constructor(SchemaHelper.getSchemaFromKey('${info['data-source-group-name']}'), SchemaHelper.getSchemaFromKey('${info['data-target-group-name']}'))`);
+				} else if (templateCode == 2) {
+					
+				} else if (templateCode == 3) {
+					
+				}
 				
 				let prerequisiteCode = info['autoGeneratedCodeForMergingBackEndScript'][0];
 				let mergingCode = info['autoGeneratedCodeForMergingBackEndScript'][1];
@@ -765,7 +846,7 @@ ${CLASS_END_BEGIN}`);
     		
     		mergingCode = mergingCode.replace(/(\n)+/g, '\n');
 				
-				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}
+				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}${executions.join('\n')}
 ${mergingCode}
 ${MAIN_MERGE_END_BEGIN}`);
 				
