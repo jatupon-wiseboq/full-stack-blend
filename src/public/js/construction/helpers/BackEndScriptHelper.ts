@@ -1,5 +1,12 @@
 import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
 
+enum TemplateCode {
+	Controller,
+	Connector,
+	Worker,
+	Scheduler
+};
+
 const CONTROLLER_DEFAULTS = {
   Import: `
 
@@ -343,7 +350,12 @@ const WORKER_DEFAULTS = {
   ClassBegin: `
   
   // Declare class variables and functions here:
-  //`,
+  //
+  protected setup() {
+  	// Place your custom setup here (singleton):
+    
+	}
+  `,
   ClassEnd: `
 
 // Export variables here:
@@ -372,6 +384,10 @@ const SCHEDULER_DEFAULTS = {
   
   // Declare class variables and functions here:
   //
+  protected setup() {
+  	// Place your custom setup here (singleton):
+    
+	}
   `,
   ClassEnd: `
 
@@ -700,7 +716,7 @@ const FILE_BEGIN = `// Auto[File]--->`;
 const FILE_END = `// <---Auto[File]`;
 
 var BackEndScriptHelper = {
-		generateScriptCode: (info: any, boilerplate: string=FULL_CONTROLLER_BOILERPLATE, defaults: any=CONTROLLER_DEFAULTS, templateCode: number=0) => {
+		generateScriptCode: (info: any, boilerplate: string=FULL_CONTROLLER_BOILERPLATE, defaults: any=CONTROLLER_DEFAULTS, templateCode: TemplateCode=TemplateCode.Controller) => {
 				let code = boilerplate;
 				const executions = [];
 				
@@ -740,7 +756,7 @@ var BackEndScriptHelper = {
     // ${FUNCTION_CUSTOM_EVENT_CODING_GUIDE_2}
     
     `;
-    				if (templateCode == 1) FUNCTION_BODY = `
+    				if (templateCode == TemplateCode.Connector) FUNCTION_BODY = `
     // Place your custom manipulation here:
     // 
     // const customEvent: CustomEvent = event as CustomEvent;
@@ -760,7 +776,7 @@ var BackEndScriptHelper = {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${templateCode != 0 ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${templateCode != TemplateCode.Controller ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
@@ -768,7 +784,7 @@ ${CLASS_END_BEGIN}`);
   }${FUNCTION_END_END}${code.split(FUNCTION_END_END)[1]}`;
                 }
         				
-        				if (templateCode != 0) {
+        				if (templateCode != TemplateCode.Controller) {
 	        				let type: string;
 	            		let destination: string;
 	            		
@@ -829,11 +845,11 @@ ${CLASS_END_BEGIN}`);
             functionNameMapping[`${FUNCTION_NAME}:Begin`] = 'internal-fsb-react-code-' + name;
         }
         
-        if (templateCode == 1) {
+        if (templateCode == TemplateCode.Connector) {
 					code = code.replace('constructor()', `constructor(SchemaHelper.getSchemaFromKey('${info['data-source-group-name']}'), SchemaHelper.getSchemaFromKey('${info['data-target-group-name']}'))`);
-				} else if (templateCode == 2) {
+				} else if (templateCode == TemplateCode.Worker) {
 					
-				} else if (templateCode == 3) {
+				} else if (templateCode == TemplateCode.Scheduler) {
 					
 				}
 				
@@ -858,7 +874,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 				
 				return [code, functionNameMapping];
 		},
-		generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false, templateCode: number=0) => {
+		generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean=false, templateCode: TemplateCode=TemplateCode.Controller) => {
 				let code = '';
 	      let functionNameMapping = {};
 	      
@@ -900,7 +916,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 
     		if (code == '') code = MERGING_BOILERPLATE;
     		
-        if (templateCode == 0 && code.indexOf(SECTION_BEGIN_BEGIN) == -1) {
+        if (templateCode == TemplateCode.Controller && code.indexOf(SECTION_BEGIN_BEGIN) == -1) {
             code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
@@ -910,7 +926,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
-        } else if (templateCode == 1) {
+        } else if (templateCode == TemplateCode.Worker || templateCode == TemplateCode.Connector) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
@@ -953,14 +969,14 @@ ${SUB_MERGE_END_BEGIN}`);
 		    return resultDictionary;
 	  },
 		generateConnectorCode: (info: any) => {
-				return BackEndScriptHelper.generateScriptCode(info, FULL_CONNECTOR_BOILERPLATE, CONNECTOR_DEFAULTS, 1);
+				return BackEndScriptHelper.generateScriptCode(info, FULL_CONNECTOR_BOILERPLATE, CONNECTOR_DEFAULTS, TemplateCode.Connector);
 		},
 		generateWorkerCode: (info: any) => {
-				return BackEndScriptHelper.generateScriptCode(info, FULL_WORKER_BOILERPLATE, WORKER_DEFAULTS, 1);
+				return BackEndScriptHelper.generateScriptCode(info, FULL_WORKER_BOILERPLATE, WORKER_DEFAULTS, TemplateCode.Worker);
 		},
 		generateSchedulerCode: (info: any) => {
-				return BackEndScriptHelper.generateScriptCode(info, FULL_SCHEDULER_BOILERPLATE, SCHEDULER_DEFAULTS, 1);
+				return BackEndScriptHelper.generateScriptCode(info, FULL_SCHEDULER_BOILERPLATE, SCHEDULER_DEFAULTS, TemplateCode.Scheduler);
 		}
 }
 
-export {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS};
+export {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode};

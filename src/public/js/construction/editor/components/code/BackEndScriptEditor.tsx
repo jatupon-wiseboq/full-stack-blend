@@ -2,7 +2,7 @@ import {CodeHelper} from '../../../helpers/CodeHelper';
 import {TextHelper} from '../../../helpers/TextHelper';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
-import {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS} from '../../../helpers/BackEndScriptHelper';
+import {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode} from '../../../helpers/BackEndScriptHelper';
 import {CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST} from '../../../Constants';
 
 declare let React: any;
@@ -182,7 +182,8 @@ class BackEndScriptEditor extends Base<Props, State> {
 	        	
 	      		let info = this.state.attributeValues;
 	          
-	        	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false, 1);
+	        	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false,
+	        		(this.state.attributeValues['internal-fsb-class'] == 'WorkerQueue') ? TemplateCode.Worker : TemplateCode.Scheduler);
 	      		
 	        	this.functionNameMapping = mapping;
 	      	} else {

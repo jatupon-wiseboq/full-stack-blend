@@ -1,5 +1,5 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper';
-import {BackEndScriptHelper, DEFAULTS} from '../../helpers/BackEndScriptHelper';
+import {BackEndScriptHelper, TemplateCode} from '../../helpers/BackEndScriptHelper';
 import {InternalProjectSettings} from './WorkspaceHelper';
 import {FORM_CONTROL_CLASS_LIST} from '../../Constants';
 
@@ -89,7 +89,8 @@ var BackEndDOMHelper = {
 		    let info = HTMLHelper.getAttributes(element, false);
     		
 	    	let code, mapping;
-	    	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false, 1);
+	    	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false,
+	    		(HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'WorkerQueue') ? TemplateCode.Worker : TemplateCode.Connector);
 	    	
 	    	if (code) lines.push(code);
     	}
