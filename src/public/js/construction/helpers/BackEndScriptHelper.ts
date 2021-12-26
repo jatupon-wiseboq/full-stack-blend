@@ -355,6 +355,12 @@ const WORKER_DEFAULTS = {
   protected setup() {
   	// Place your custom setup here (instantaneous):
   	//
+  	
+	}
+	
+  protected perform() {
+  	// Place your custom setup here (instantaneous):
+  	//
     
 	}
   `,
@@ -619,13 +625,13 @@ interface HierarchicalDataRow {
 // <---Auto[Interface]
 // Auto[ClassBegin]--->
 class Worker extends Base {
-  constructor() {
-  	super();
+  constructor(data: HierarchicalDataTable) {
+  	super(data);
   }
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(): void {
+  private initialize(data: HierarchicalDataTable): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -721,7 +727,8 @@ const FILE_END = `// <---Auto[File]`;
 var BackEndScriptHelper = {
 		generateScriptCode: (info: any, boilerplate: string=FULL_CONTROLLER_BOILERPLATE, defaults: any=CONTROLLER_DEFAULTS, templateCode: TemplateCode=TemplateCode.Controller) => {
 				let code = boilerplate;
-				const executions = [];
+				const beforeExecutions = [];
+				const afterExecutions = [];
 				
 		    code = code.replace('// <---Auto[Import]', '// <---Auto[Import]' + (info['internal-fsb-data-code-import'] || defaults.Import));
 		    code = code.replace('// <---Auto[Declare]', '// <---Auto[Declare]' + (info['internal-fsb-data-code-declare'] || defaults.Declare));
@@ -837,7 +844,7 @@ ${CLASS_END_BEGIN}`);
 	            				break;
 	            		}
 	            		
-	            		if (type) executions.push(`	  this.register(ActionType.${type}, SchemaHelper.getSchemaFromKey('${destination}'), this.${FUNCTION_NAME});`);
+	            		if (type) beforeExecutions.push(`	  this.register(ActionType.${type}, SchemaHelper.getSchemaFromKey('${destination}'), this.${FUNCTION_NAME});`);
 	              }
             } else {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {
@@ -851,7 +858,11 @@ ${CLASS_END_BEGIN}`);
         if (templateCode == TemplateCode.Connector) {
 					code = code.replace('constructor()', `constructor(SchemaHelper.getSchemaFromKey('${info['data-source-group-name']}'), SchemaHelper.getSchemaFromKey('${info['data-target-group-name']}'))`);
 				} else if (templateCode == TemplateCode.Worker) {
-					
+					beforeExecutions.push('    let count = 0;');
+					beforeExecutions.push('    let value = undefined;');
+					beforeExecutions.push('    for (const [index, row] of data.rows.entries()) {');
+					beforeExecutions.push('      this.iterations[index] = this.iterations[index] || [];');
+					afterExecutions.push('    }');
 				} else if (templateCode == TemplateCode.Scheduler) {
 					
 				}
@@ -865,8 +876,9 @@ ${CLASS_END_BEGIN}`);
     		
     		mergingCode = mergingCode.replace(/(\n)+/g, '\n');
 				
-				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}${executions.join('\n')}
+				code = code.replace(MAIN_MERGE_END_BEGIN, `${prerequisiteCode}${beforeExecutions.join('\n')}
 ${mergingCode}
+${afterExecutions.join('\n')}
 ${MAIN_MERGE_END_BEGIN}`);
 				
 				code = `${code.split(FILE_END)[0]}
@@ -883,6 +895,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 	      
 	      let SECTION_GUID = info['internal-fsb-guid'];
 	      let SECTION_NAME = info['internal-fsb-name'];
+	      let SECTION_ENTITY = info['data-title-name'];
 	      let SECTION_TARGET = info['internal-fsb-data-source-type'];
 	      let SECTION_TABLE_NAME= info['internal-fsb-data-source-name'];
 	      let SECTION_COLUMN_NAME = info['internal-fsb-data-source-column'];
@@ -929,7 +942,23 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
-        } else if (templateCode == TemplateCode.Worker || templateCode == TemplateCode.Connector) {
+        } else if (templateCode == TemplateCode.Worker) {
+        		code = code.replace(SUB_MERGE_END_BEGIN,
+`${SECTION_BEGIN_BEGIN}
+      value = undefined;
+      
+      if (row.keys.hasOwnProperty('${SECTION_ENTITY}')) {
+        value = row.keys['${SECTION_ENTITY}'];
+      } else if (row.columns.hasOwnProperty('${SECTION_ENTITY}')) {
+        value = row.columns['${SECTION_ENTITY}'];
+      }
+${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      
+      this.iterations[index][count] = value;
+      count += 1;
+${SECTION_END_END}
+${SUB_MERGE_END_BEGIN}`);
+        } else if (templateCode == TemplateCode.Connector) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
 		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
