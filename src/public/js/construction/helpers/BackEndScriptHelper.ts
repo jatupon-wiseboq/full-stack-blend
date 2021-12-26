@@ -320,6 +320,7 @@ const CONNECTOR_DEFAULTS = {
   //
   protected setup() {
   	// Place your custom setup here (singleton):
+  	//
     
 	}
   `,
@@ -352,7 +353,8 @@ const WORKER_DEFAULTS = {
   // Declare class variables and functions here:
   //
   protected setup() {
-  	// Place your custom setup here (singleton):
+  	// Place your custom setup here (instantaneous):
+  	//
     
 	}
   `,
@@ -385,7 +387,8 @@ const SCHEDULER_DEFAULTS = {
   // Declare class variables and functions here:
   //
   protected setup() {
-  	// Place your custom setup here (singleton):
+  	// Place your custom setup here (instantaneous):
+  	//
     
 	}
   `,

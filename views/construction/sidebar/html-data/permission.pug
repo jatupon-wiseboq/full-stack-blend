@@ -89,7 +89,7 @@ include ../../mixin/CreateReactComponent
   .section-container
     .section-title
       | Audit Log
-    div(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable,internal-fsb-class:WorkerInstance,internal-fsb-class:RESTful")
+    div(internal-fsb-for="internal-fsb-class:RelationalTable,internal-fsb-class:DocumentTable,internal-fsb-class:Queue,internal-fsb-class:RESTful")
       .section-subtitle
         | Chain of Trust I
       .section-body
@@ -102,7 +102,7 @@ include ../../mixin/CreateReactComponent
         | Chain of Trust III
       .section-body
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-audit-independent-3'], inline: true, button: false, placeholder: 'Document Database III'}")
-    div(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation,internal-fsb-class:Verb,internal-fsb-class:WorkerQueue")
+    div(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation,internal-fsb-class:Verb,internal-fsb-class:Parameter")
       .section-subtitle
         | Collecting Option
       .section-body

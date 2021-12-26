@@ -59,7 +59,7 @@
 	.internal-fsb-element[internal-fsb-class="RelationalTable"],
 	.internal-fsb-element[internal-fsb-class="DocumentDatabase"],
 	.internal-fsb-element[internal-fsb-class="DocumentTable"],
-	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
+	.internal-fsb-element[internal-fsb-class="Queue"],
 	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
 	.internal-fsb-element[internal-fsb-class="RESTful"],
 	.internal-fsb-element[internal-fsb-class="Scheduler"] {
@@ -121,7 +121,7 @@
 	    }
 	  }
 	}
-	.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
+	.internal-fsb-element[internal-fsb-class="Queue"] {
 	  > .internal-fsb-title {
 	    &::before {
 	      content: "\f162";
@@ -153,7 +153,7 @@
 
 	.internal-fsb-element[internal-fsb-class="RelationalTable"],
 	.internal-fsb-element[internal-fsb-class="DocumentTable"],
-	.internal-fsb-element[internal-fsb-class="WorkerInstance"],
+	.internal-fsb-element[internal-fsb-class="Queue"],
 	.internal-fsb-element[internal-fsb-class="VolatileMemory"],
 	.internal-fsb-element[internal-fsb-class="RESTful"],
 	.internal-fsb-element[internal-fsb-class="Scheduler"] {
@@ -176,7 +176,7 @@
 
 	.internal-fsb-element[internal-fsb-class="RelationalColumn"],
 	.internal-fsb-element[internal-fsb-class="DocumentNotation"],
-	.internal-fsb-element[internal-fsb-class="WorkerQueue"],
+	.internal-fsb-element[internal-fsb-class="Parameter"],
 	.internal-fsb-element[internal-fsb-class="VolatilePrefix"],
 	.internal-fsb-element[internal-fsb-class="Verb"],
 	.internal-fsb-element[internal-fsb-class="Timing"] {
@@ -232,7 +232,7 @@
 	.internal-fsb-element[internal-fsb-class="DocumentTable"] {
 	  z-index: 200;
 	}
-	.internal-fsb-element[internal-fsb-class="WorkerInstance"] {
+	.internal-fsb-element[internal-fsb-class="Queue"] {
 	  z-index: 300;
 	}
 	.internal-fsb-element[internal-fsb-class="VolatileMemory"] {

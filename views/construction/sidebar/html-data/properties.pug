@@ -12,13 +12,13 @@ include ../../mixin/CreateReactComponent
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
     .section-hr
-  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:WorkerInstance,internal-fsb-class:VolatileMemory,internal-fsb-class:RESTful,internal-fsb-class:Scheduler")
+  .section-container(internal-fsb-for="internal-fsb-class:RelationalDatabase,internal-fsb-class:DocumentDatabase,internal-fsb-class:Queue,internal-fsb-class:VolatileMemory,internal-fsb-class:RESTful,internal-fsb-class:Scheduler")
     .section-title(internal-fsb-for="internal-fsb-class:RelationalDatabase")
       | Relational Database Options
     .section-title(internal-fsb-for="internal-fsb-class:DocumentDatabase")
       | Document Database Options
-    .section-title(internal-fsb-for="internal-fsb-class:WorkerInstance")
-      | Worker Instance Options
+    .section-title(internal-fsb-for="internal-fsb-class:Queue")
+      | Queue Options
     .section-title(internal-fsb-for="internal-fsb-class:Scheduler")
       | Scheduler Instance Options
     .section-title(internal-fsb-for="internal-fsb-class:VolatileMemory")
@@ -143,9 +143,9 @@ include ../../mixin/CreateReactComponent
         +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-recursive']}")
     .section-note(internal-fsb-not-for="internal-fsb-class:RelationalColumn")
       | Forward option will duplicate and forward the data of this field to the configuring table using collection or columns with a prefix.
-  .section-container(internal-fsb-for="internal-fsb-class:WorkerQueue")
+  .section-container(internal-fsb-for="internal-fsb-class:Parameter")
     .section-title
-      | Worker Queue Options
+      | Parameter Options
     .section-subtitle
       | Group
     .section-body

@@ -131,9 +131,9 @@ var BackEndManipulationHelper = {
               | Document Column
         `, element);
         break;
-      case 'WorkerInstance':
+      case 'Queue':
       	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside any element to insert a worker instance.');
+      		alert('Please place a cursor outside any element to insert a Queue.');
       		return [accessory, false, link];
       	}
       	
@@ -141,15 +141,15 @@ var BackEndManipulationHelper = {
         element = ReactDOM.render(pug `
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
-              | Worker Instance
+              | Queue
             .container-fluid
               .row.internal-fsb-strict-layout.internal-fsb-allow-cursor
         `, element);
         break;
-      case 'WorkerQueue':
+      case 'Parameter':
       	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'WorkerInstance') {
-      		alert('Please place a cursor inside a worker instance to insert a worker queue.');
+      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Queue') {
+      		alert('Please place a cursor inside a Queue to insert a Parameter.');
       		return [accessory, false, link];
       	}
       	
@@ -157,7 +157,7 @@ var BackEndManipulationHelper = {
         element = ReactDOM.render(pug `
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
-              | Worker Queue
+              | Parameter
         `, element);
         break;
       case 'Scheduler':

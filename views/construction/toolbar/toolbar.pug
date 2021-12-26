@@ -208,12 +208,12 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           .title
             | Worker
         .dropdown-menu(aria-labelledby='dropdownMenuLink')
-          a.dropdown-item(onclick='perform("insert", "WorkerInstance")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Worker</b></p><p>Create a worker instance to handle a bulk of processing jobs.</p>")
+          a.dropdown-item(onclick='perform("insert", "Queue")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Queue</b></p><p>Create a queue to handle a bulk of processing jobs.</p>")
             i.fa.fa-database
-            | Instance
-          a.dropdown-item(onclick='perform("insert", "WorkerQueue")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Prioritized Queue</b></p><p>Create a queue on the worker instance to handle processing based on length and priority.</p>")
-            i.fa.fa-columns
             | Queue
+          a.dropdown-item(onclick='perform("insert", "Parameter")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Create A Parameter</b></p><p>Create a parameter of the queue to define inputs.</p>")
+            i.fa.fa-columns
+            | Parameter
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-thumb-tack.m-0

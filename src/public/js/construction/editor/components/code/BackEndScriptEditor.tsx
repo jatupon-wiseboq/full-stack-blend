@@ -143,7 +143,7 @@ class BackEndScriptEditor extends Base<Props, State> {
 		        if (code) {
 		        	code = TextHelper.removeMultipleBlankLines(code);
 		        }
-	      	} else if (['WorkerInstance'].indexOf(this.state.attributeValues['internal-fsb-class']) != -1) {
+	      	} else if (['Queue'].indexOf(this.state.attributeValues['internal-fsb-class']) != -1) {
 	        	this.state.defaults = WORKER_DEFAULTS;
 	        	
 	      		let info = this.state.attributeValues;
@@ -177,13 +177,13 @@ class BackEndScriptEditor extends Base<Props, State> {
 		        if (code) {
 		        	code = TextHelper.removeMultipleBlankLines(code);
 		        }
-	      	} else if (['WorkerQueue', 'Timing'].indexOf(this.state.attributeValues['internal-fsb-class']) != -1) {
+	      	} else if (['Parameter', 'Timing'].indexOf(this.state.attributeValues['internal-fsb-class']) != -1) {
 	        	this.state.defaults = SCHEDULER_DEFAULTS;
 	        	
 	      		let info = this.state.attributeValues;
 	          
 	        	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false,
-	        		(this.state.attributeValues['internal-fsb-class'] == 'WorkerQueue') ? TemplateCode.Worker : TemplateCode.Scheduler);
+	        		(this.state.attributeValues['internal-fsb-class'] == 'Parameter') ? TemplateCode.Worker : TemplateCode.Scheduler);
 	      		
 	        	this.functionNameMapping = mapping;
 	      	} else {

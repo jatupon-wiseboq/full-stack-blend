@@ -85,12 +85,12 @@ var BackEndDOMHelper = {
   	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     
     if (element && element.tagName) {
-    	if (['WorkerQueue', 'Timing'].indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
+    	if (['Parameter', 'Timing'].indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
 		    let info = HTMLHelper.getAttributes(element, false);
     		
 	    	let code, mapping;
 	    	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false,
-	    		(HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'WorkerQueue') ? TemplateCode.Worker : TemplateCode.Connector);
+	    		(HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Parameter') ? TemplateCode.Worker : TemplateCode.Connector);
 	    	
 	    	if (code) lines.push(code);
     	}
