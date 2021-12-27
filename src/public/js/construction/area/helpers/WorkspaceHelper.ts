@@ -1069,10 +1069,6 @@ var WorkspaceHelper = {
     const connectors = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'Connector', _document);
     const results = {};
     
-	  if (code) {
-	  	code = TextHelper.removeMultipleBlankLines(code);
-	  }
-    
     for (const connector of connectors) {
 	    let info = HTMLHelper.getAttributes(connector);
 			if (info['data-title-name'] == 'Untitled') info['data-title-name'] = '';
