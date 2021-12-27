@@ -90,7 +90,7 @@ var BackEndDOMHelper = {
     		
 	    	let code, mapping;
 	    	[code, mapping] = BackEndScriptHelper.generateMergingCode(info, [], false,
-	    		(HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Parameter') ? TemplateCode.Worker : TemplateCode.Connector);
+	    		(HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Parameter') ? TemplateCode.Worker : TemplateCode.Scheduler);
 	    	
 	    	if (code) lines.push(code);
     	}

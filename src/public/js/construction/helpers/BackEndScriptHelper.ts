@@ -7,6 +7,16 @@ enum TemplateCode {
 	Scheduler
 };
 
+enum DAYS {
+	SUNDAY=1,
+	MONDAY=2,
+	TUESDAY=4,
+	WEDNESDAY=8,
+	THURSDAY=16,
+	FRIDAY=32,
+	SATURDAY=64
+}
+
 const CONTROLLER_DEFAULTS = {
   Import: `
 
@@ -513,7 +523,7 @@ const FULL_CONNECTOR_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
-import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Connector';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
@@ -581,7 +591,7 @@ const FULL_WORKER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
-import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Worker';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
@@ -649,7 +659,7 @@ const FULL_SCHEDULER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
-import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Scheduler';
+import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
@@ -910,6 +920,16 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
         let SECTION_END_BEGIN = `// Auto[${SECTION_GUID}:End]--->`;
         let SECTION_END_END = `    // <---Auto[${SECTION_GUID}:End]`;
         
+        let SECTION_SCHEDULING_MONDAY = info['data-timing-day-monday'] ? DAYS.MONDAY : 0;
+        let SECTION_SCHEDULING_TUESDAY = info['data-timing-day-tuesday'] ? DAYS.TUESDAY : 0;
+        let SECTION_SCHEDULING_WEDNESDAY = info['data-timing-day-wednesday'] ? DAYS.WEDNESDAY : 0;
+        let SECTION_SCHEDULING_THURSDAY = info['data-timing-day-thursday'] ? DAYS.THURSDAY : 0;
+        let SECTION_SCHEDULING_FRIDAY = info['data-timing-day-friday'] ? DAYS.FRIDAY : 0;
+        let SECTION_SCHEDULING_SATURDAY = info['data-timing-day-saturday'] ? DAYS.SATURDAY : 0;
+        let SECTION_SCHEDULING_SUNDAY = info['data-timing-day-sunday'] ? DAYS.SUNDAY : 0;
+        let SECTION_SCHEDULING_DAYS = SECTION_SCHEDULING_MONDAY | SECTION_SCHEDULING_TUESDAY | SECTION_SCHEDULING_WEDNESDAY | SECTION_SCHEDULING_THURSDAY | SECTION_SCHEDULING_FRIDAY | SECTION_SCHEDULING_SATURDAY | SECTION_SCHEDULING_SUNDAY;
+        let SECTION_SCHEDULING_MINUTES = info['data-timing-minutes'] || 0;
+        
         if (SECTION_VALIDATION_FORMAT != 'custom') SECTION_VALIDATION_REGEX = null;
         
         let SECTION_BODY = `
@@ -942,6 +962,16 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
+        } else if (templateCode == TemplateCode.Connector) {
+        		code = code.replace(SUB_MERGE_END_BEGIN,
+`${SECTION_BEGIN_BEGIN}
+		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
+		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE}, ${SECTION_VALIDATION_FORMAT}, ${SECTION_VALIDATION_REGEX});
+    for (let input of RequestHelper.getInputs(this.pageId, request, '${SECTION_GUID}')) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      if (input != null) data.push(input);
+    }
+${SECTION_END_END}
+${SUB_MERGE_END_BEGIN}`);
         } else if (templateCode == TemplateCode.Worker) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
@@ -958,13 +988,13 @@ ${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'
       count += 1;
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
-        } else if (templateCode == TemplateCode.Connector) {
+        } else if (templateCode == TemplateCode.Scheduler) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
-		RequestHelper.registerInput('${SECTION_GUID}', ${SECTION_TARGET}, ${SECTION_TABLE_NAME}, ${SECTION_COLUMN_NAME});
-		ValidationHelper.registerInput('${SECTION_GUID}', ${SECTION_NAME}, ${!!SECTION_REQUIRED}, ${SECTION_VALIDATION_MESSAGE}, ${SECTION_VALIDATION_FORMAT}, ${SECTION_VALIDATION_REGEX});
-    for (let input of RequestHelper.getInputs(this.pageId, request, '${SECTION_GUID}')) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
-      if (input != null) data.push(input);
+		const minutes = ${SECTION_SCHEDULING_MINUTES};
+		const days = ${SECTION_SCHEDULING_DAYS};
+    if (days != 0) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
+      	
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);

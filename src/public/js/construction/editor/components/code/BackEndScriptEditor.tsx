@@ -47,6 +47,14 @@ watchingAttributeNames.push('internal-fsb-data-code-footer');
 watchingAttributeNames.push('data-source-group-name');
 watchingAttributeNames.push('data-target-group-name');
 watchingAttributeNames.push('data-title-name');
+watchingAttributeNames.push('data-timing-day-monday');
+watchingAttributeNames.push('data-timing-day-tuesday');
+watchingAttributeNames.push('data-timing-day-wednesday');
+watchingAttributeNames.push('data-timing-day-thursday');
+watchingAttributeNames.push('data-timing-day-friday');
+watchingAttributeNames.push('data-timing-day-saturday');
+watchingAttributeNames.push('data-timing-day-sunday');
+watchingAttributeNames.push('data-timing-minutes');
 
 let watchingExtensionNames = [];
 watchingExtensionNames.push('pages');

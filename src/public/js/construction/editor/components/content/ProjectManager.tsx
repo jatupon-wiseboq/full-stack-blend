@@ -298,6 +298,9 @@ class ProjectManager extends Base<Props, State> {
             let constructionPageData = CodeHelper.clone(constructionWindow.generateWorkspaceData() || {});
             let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages(true));
             let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages(true));
+            let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
+            let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
+            let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);
@@ -525,6 +528,21 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                 arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
               }
             }
+            for (let key in connectorControllerInfoDict) {
+              if (connectorControllerInfoDict.hasOwnProperty(key)) {
+                arrayOfControllerScripts.push(connectorControllerInfoDict[key][0]);
+              }
+            }
+            for (let key in workerControllerInfoDict) {
+              if (workerControllerInfoDict.hasOwnProperty(key)) {
+                arrayOfControllerScripts.push(workerControllerInfoDict[key][0]);
+              }
+            }
+            for (let key in schedulerControllerInfoDict) {
+              if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+                arrayOfControllerScripts.push(schedulerControllerInfoDict[key][0]);
+              }
+            }
             
             let persistingContent = document.createElement('div');
             let persistingGUIDs = {index: true};
@@ -578,7 +596,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
             nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
             
             this.createRouteBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.routeBlobSHA, (routeBlobSHA: string) => {
-              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
+              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
                   this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
                   	
@@ -640,7 +658,15 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                             
                             for (let key in nextProjectData.backEndControllerBlobSHADict) {
                               if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                                nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+                              	if (connectorControllerInfoDict.hasOwnProperty()) {
+                              		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
+                              	} else if (workerControllerInfoDict.hasOwnProperty()) {
+                              		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
+                              	} else if (schedulerControllerInfoDict.hasOwnProperty()) {
+                              		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
+                              	} else {
+                                	nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+                                }
                               }
                             }
                             for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
@@ -702,12 +728,35 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                               
                               for (let key in nextProjectData.backEndControllerBlobSHADict) {
                                 if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                                  tree.push({
-                                    path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
-                                    mode: "100644",
-                                    type: "blob",
-                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
-                                  });
+                                	if (connectorControllerInfoDict.hasOwnProperty()) {
+                                		tree.push({
+	                                    path: `src/controllers/connectors/${this.getRepresentativeName(key)}.ts`,
+	                                    mode: "100644",
+	                                    type: "blob",
+	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+	                                  });
+                                	} else if (workerControllerInfoDict.hasOwnProperty()) {
+                                		tree.push({
+	                                    path: `src/controllers/workers/${this.getRepresentativeName(key)}.ts`,
+	                                    mode: "100644",
+	                                    type: "blob",
+	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+	                                  });
+                                	} else if (schedulerControllerInfoDict.hasOwnProperty()) {
+                                		tree.push({
+	                                    path: `src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`,
+	                                    mode: "100644",
+	                                    type: "blob",
+	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+	                                  });
+                                	} else {
+                                		tree.push({
+	                                    path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
+	                                    mode: "100644",
+	                                    type: "blob",
+	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+	                                  });
+                                	}
                                 }
                               }
                               for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
@@ -987,16 +1036,22 @@ export default route;
         cb(nextRouteDataSHA);
       });
     }
-    createControllerBlob(repo: any, routes: string[], previousSHA: string, cb: any) {
+    createControllerBlob(repo: any, routes: string[], connectors: string[], workers: string[], schedulers: string[], previousSHA: string, cb: any) {
       repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
+${connectors.map(key => `import Connector${key} from "./components/connectors/${this.getRepresentativeName(key)}";`).join('\n')}
+${workers.map(key => `import Worker${key} from "./components/workers/${this.getRepresentativeName(key)}";`).join('\n')}
+${schedulers.map(key => `import Scheduler${key} from "./components/shedulers/${this.getRepresentativeName(key)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
+${connectors.map(key => `register('connector', Connector${key});`).join('\n')}
+${workers.map(key => `register('worker', Connector${key});`).join('\n')}
+${schedulers.map(key => `register('scheduler', Connector${key});`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {

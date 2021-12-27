@@ -128,6 +128,15 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   window.generateBackEndCodeForAllPages = (() => {
     return WorkspaceHelper.generateBackEndCodeForAllPages();
   });
+  window.generateConnectorCode = (() => {
+  	return WorkspaceHelper.generateConnectorCode();
+  });
+  window.generateWorkerCode = (() => {
+  	return WorkspaceHelper.generateWorkerCode();
+  });
+  window.generateSchedulerCode = (() => {
+  	return WorkspaceHelper.generateSchedulerCode();
+  });
   window.getCommonExpandingFeatureScripts = (() => {
     return WorkspaceHelper.getCommonExpandingFeatureScripts();
   });
