@@ -298,6 +298,7 @@ class ProjectManager extends Base<Props, State> {
             let constructionPageData = CodeHelper.clone(constructionWindow.generateWorkspaceData() || {});
             let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages(true));
             let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages(true));
+            
             let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
             let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
             let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
@@ -658,11 +659,11 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                             
                             for (let key in nextProjectData.backEndControllerBlobSHADict) {
                               if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                              	if (connectorControllerInfoDict.hasOwnProperty()) {
+                              	if (connectorControllerInfoDict.hasOwnProperty(key)) {
                               		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
-                              	} else if (workerControllerInfoDict.hasOwnProperty()) {
+                              	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
                               		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
-                              	} else if (schedulerControllerInfoDict.hasOwnProperty()) {
+                              	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
                               		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
                               	} else {
                                 	nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
@@ -728,21 +729,21 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                               
                               for (let key in nextProjectData.backEndControllerBlobSHADict) {
                                 if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                                	if (connectorControllerInfoDict.hasOwnProperty()) {
+                                	if (connectorControllerInfoDict.hasOwnProperty(key)) {
                                 		tree.push({
 	                                    path: `src/controllers/connectors/${this.getRepresentativeName(key)}.ts`,
 	                                    mode: "100644",
 	                                    type: "blob",
 	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
 	                                  });
-                                	} else if (workerControllerInfoDict.hasOwnProperty()) {
+                                	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
                                 		tree.push({
 	                                    path: `src/controllers/workers/${this.getRepresentativeName(key)}.ts`,
 	                                    mode: "100644",
 	                                    type: "blob",
 	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
 	                                  });
-                                	} else if (schedulerControllerInfoDict.hasOwnProperty()) {
+                                	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
                                 		tree.push({
 	                                    path: `src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`,
 	                                    mode: "100644",
