@@ -76,6 +76,8 @@ class WizardInputManager extends Base<Props, State> {
                 guids.splice(index, 1);
             }
         }
+       	
+       	guids = guids.filter(guid => this.state.nodes.some(node => node.tag.guid == guid));
         
         guids.sort();
         
