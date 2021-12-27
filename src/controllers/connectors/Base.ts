@@ -2,10 +2,11 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 import {HierarchicalDataRow, ActionType} from "../helpers/DatabaseHelper";
+import {DataTableSchema} from "../helpers/SchemaHelper";
 
 const dictionary: {[Identifier: string]: (Event) => Promise<any>} = {};
 
-class Connector {
+class Base {
 	private source: DataTableSchema = null;
 	private target: DataTableSchema = null;
 
@@ -25,9 +26,10 @@ class Connector {
 	}
 	
 	protected setup() {
+		void(0);
 	}
 	
-	static void async perform(action: ActionType, source: DataTableSchema, target: DataTableSchema, rows: HierarchicalDataRow[], transaction: any, crossRelationUpsert=false, session: any, leavePermission: boolean, innerCircleTags: string[]) {
+	static async perform(action: ActionType, source: DataTableSchema, target: DataTableSchema, rows: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean, session: any, leavePermission: boolean, innerCircleTags: string[]) {
 		let type: string = null;
 		switch (action) {
 			case ActionType.Insert:
@@ -66,7 +68,7 @@ class Connector {
 	}
 }
 
-export {Connector};
+export {Base};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
