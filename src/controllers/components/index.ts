@@ -366,7 +366,6 @@ class Controller extends Base {
   	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
-	  
 	  // Auto[Merging]--->
 
 	  // <---Auto[Merging]
