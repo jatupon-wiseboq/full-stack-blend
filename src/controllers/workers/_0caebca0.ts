@@ -70,13 +70,13 @@ class Worker extends Base {
   
   // Declare class variables and functions here:
   //
-  protected setup() {
-  	// Place your custom setup here (instantaneous):
-  	//
-  	
+  protected async run(): Promise<void> => {
+		for (const parameters of this.iterations) {
+      await this.perform(parameters);
+    }
 	}
 	
-  protected perform(parameters: any[]) {
+  protected async perform(parameters: any[]): Promise<void> => {
   	// Place your custom setup here (instantaneous):
   	//
     

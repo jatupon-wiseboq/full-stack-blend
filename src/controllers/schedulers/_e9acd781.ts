@@ -72,7 +72,7 @@ class Scheduler extends Base {
   // Declare class variables and functions here:
   //
   protected setup() {
-  	// Place your custom setup here (instantaneous):
+  	// Place your custom setup here (singleton):
   	//
     
 	}

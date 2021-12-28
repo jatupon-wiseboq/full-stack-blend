@@ -89,7 +89,7 @@ class Connector extends Base {
   // <---Auto[MergingEnd]
   
   // Auto[onConnectionSourceInsert_02699134:Begin]--->
-  protected async onConnectionSourceInsert_02699134(event: Event) {
+  protected async onConnectionSourceInsert_02699134(event: Event): Promise<HierarchicalDataRow[]> => {
     // <---Auto[onConnectionSourceInsert_02699134:Begin]
     // Place your custom manipulation here:
     // 
@@ -103,6 +103,8 @@ class Connector extends Base {
     // const leavePermission: boolean = customEvent.detail.leavePermission;  	/* override permission */
     // const innerCircleTags: string[] = customEvent.detail.innerCircleTags;  /* circle tags */
     //
+    
+    return rows;
     
     // Auto[onConnectionSourceInsert_02699134:End]--->
   }
