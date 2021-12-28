@@ -36,63 +36,69 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 // Resque
 //
 const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
-const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
-const redisConnectionSettings = {
-	host: redisConnectionURL.host.split(":")[0],
-	port: parseInt(redisConnectionURL.port),
-	db: 0,
-	password: redisConnectionURL.password,
-	enableReadyCheck: true,
-	autoResubscribe: true
-};
-const redisClientForResque = new Redis(redisConnectionSettings);
-const redisConnectionSettingForResque = {
-	redis: redisClientForResque
-};
-const jobs = {
-  perform: {
-    plugins: [Plugins.JobLock],
-    pluginOptions: {
-      JobLock: {reEnqueue: true},
-    },
-    perform: async (table: any) => {
-    	const {WorkerHelper} = require("./controllers/helpers/WorkerHelper");
-      await WorkerHelper.perform(table);
-    }
-  }
-};
-const queue = new Queue({
-		connection: redisConnectionSettingForResque
-	},
-	jobs
-);
-const worker = new Worker(
-  {
-  	connection: redisConnectionSettingForResque,
-  	queues: ["general"]
-  },
-  jobs
-);
-const scheduler = new Scheduler({
-		connection: redisConnectionSettingForResque
-	}
-);
 
-(async () => {
-	console.log("Booting worker..");
-	await worker.connect();
-	worker.start();
+let queue = new Queue();
+let scheduler = new Scheduler();
+
+if (process.env.RESQUE_REDIS_URI) {
+	const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
+	const redisConnectionSettings = {
+		host: redisConnectionURL.host.split(":")[0],
+		port: parseInt(redisConnectionURL.port),
+		db: 0,
+		password: redisConnectionURL.password,
+		enableReadyCheck: true,
+		autoResubscribe: true
+	};
+	const redisClientForResque = new Redis(redisConnectionSettings);
+	const redisConnectionSettingForResque = {
+		redis: redisClientForResque
+	};
+	const jobs = {
+	  perform: {
+	    plugins: [Plugins.JobLock],
+	    pluginOptions: {
+	      JobLock: {reEnqueue: true},
+	    },
+	    perform: async (table: any) => {
+	    	const {WorkerHelper} = require("./controllers/helpers/WorkerHelper");
+	      await WorkerHelper.perform(table);
+	    }
+	  }
+	};
+	queue = new Queue({
+			connection: redisConnectionSettingForResque
+		},
+		jobs
+	);
+	const worker = new Worker(
+	  {
+	  	connection: redisConnectionSettingForResque,
+	  	queues: ["general"]
+	  },
+	  jobs
+	);
+	scheduler = new Scheduler({
+			connection: redisConnectionSettingForResque
+		}
+	);
 	
-	console.log("Booting scheduler..");
-	await scheduler.connect();
-	scheduler.start();
-	
-	console.log("Booting queue..");
-	await queue.connect();
-	queue.on("error", (error) => {
-	  console.log(error);
-	});
-})();
+	(async () => {
+		console.log("Booting worker..");
+		await worker.connect();
+		worker.start();
+		
+		console.log("Booting scheduler..");
+		await scheduler.connect();
+		scheduler.start();
+		
+		console.log("Booting queue..");
+		await queue.connect();
+		queue.on("error", (error) => {
+		  console.log(error);
+		});
+	})();
+}
 
 // StackBlend routes
 // 
