@@ -1,6 +1,7 @@
 import * as SocketIO from "socket.io";
 import fs from "fs";
 import dotenv from "dotenv";
+import Redis from "ioredis";
 
 import app from "./app";
 
@@ -32,6 +33,73 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 	socket = SocketIO.listen(server);
 }
 
+// Resque
+//
+const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
+
+let queue: any = null;
+let scheduler: any = null;
+
+if (process.env.RESQUE_REDIS_URI) {
+	const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
+	const redisConnectionSettings = {
+		host: redisConnectionURL.host.split(":")[0],
+		port: parseInt(redisConnectionURL.port),
+		db: 0,
+		password: redisConnectionURL.password,
+		enableReadyCheck: true,
+		autoResubscribe: true
+	};
+	const redisClientForResque = new Redis(redisConnectionSettings);
+	const redisConnectionSettingForResque = {
+		redis: redisClientForResque
+	};
+	const jobs = {
+	  perform: {
+	    plugins: [Plugins.JobLock],
+	    pluginOptions: {
+	      JobLock: {reEnqueue: true},
+	    },
+	    perform: async (table: any) => {
+	    	const {WorkerHelper} = require("./controllers/helpers/WorkerHelper");
+	      await WorkerHelper.perform(table);
+	    }
+	  }
+	};
+	queue = new Queue({
+			connection: redisConnectionSettingForResque
+		},
+		jobs
+	);
+	const worker = new Worker(
+	  {
+	  	connection: redisConnectionSettingForResque,
+	  	queues: ["general"]
+	  },
+	  jobs
+	);
+	scheduler = new Scheduler({
+			connection: redisConnectionSettingForResque
+		}
+	);
+	
+	(async () => {
+		console.log("Booting worker..");
+		await worker.connect();
+		worker.start();
+		
+		console.log("Booting scheduler..");
+		await scheduler.connect();
+		scheduler.start();
+		
+		console.log("Booting queue..");
+		await queue.connect();
+		queue.on("error", (error) => {
+		  console.log(error);
+		});
+	})();
+}
+
 // StackBlend routes
 // 
 import * as endpoint from "./controllers/Endpoint";
@@ -59,4 +127,4 @@ if (["production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.delete("/test/api", controller.index);
 }
 
-export {server, socket};
+export {server, socket, queue, scheduler};
