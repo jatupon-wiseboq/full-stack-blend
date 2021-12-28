@@ -362,13 +362,13 @@ const WORKER_DEFAULTS = {
   
   // Declare class variables and functions here:
   //
-  protected async run(): Promise<void> => {
+  protected async run(): Promise<void> {
 		for (const parameters of this.iterations) {
       await this.perform(parameters);
     }
 	}
 	
-  protected async perform(parameters: any[]): Promise<void> => {
+  protected async perform(parameters: any[]): Promise<void> {
   	// Place your custom setup here (instantaneous):
   	//
     
