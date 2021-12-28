@@ -77,9 +77,9 @@ class Scheduler extends Base {
   
   // Auto[MergingBegin]--->  
   private initialize(): [number, number] {
-  	let days: number;
-  	let minutes: number;
-  	let delegate: () => Promise<void>;
+  	let days: number = 0;
+  	let minutes: number = 0;
+  	let delegate: () => Promise<void> = null;
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 
