@@ -74,7 +74,7 @@ class Worker extends Base {
   	
 	}
 	
-  protected perform() {
+  protected perform(parameters: any[]) {
   	// Place your custom setup here (instantaneous):
   	//
     

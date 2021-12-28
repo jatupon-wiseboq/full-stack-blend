@@ -2,6 +2,10 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
+import {ConnectorHelper} from "./helpers/ActionHelper";
+import {WorkerHelper} from "./helpers/WorkerHelper";
+import {SchedulerHelper} from "./helpers/SchedulerHelper";
+
 import Component3cb10a6e from "./components/account/settings/_3cb10a6e";
 import Component9e885d49 from "./components/account/authenticate/_9e885d49";
 import Componentb160aa0e from "./components/developer/_b160aa0e";
@@ -22,9 +26,9 @@ export const _b160aa0e = (req: Request, res: Response) => {
 export const index = (req: Request, res: Response) => {
   new Componentindex(req, res, "home/index");
 }
-register('connector', Connector02699134);
-register('worker', Connector0caebca0);
-register('scheduler', Connectore9acd781);
+ConnectorHelper.register(Connector02699134);
+WorkerHelper.register(Worker0caebca0);
+SchedulerHelper.register(Schedulere9acd781);
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

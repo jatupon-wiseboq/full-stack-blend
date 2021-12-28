@@ -61,8 +61,8 @@ interface HierarchicalDataRow {
 
 // Auto[ClassBegin]--->
 class Connector extends Base {
-  constructor(SchemaHelper.getSchemaFromKey('Employee'), SchemaHelper.getSchemaFromKey('Queue')) {
-  	super();
+  constructor() {
+  	super(SchemaHelper.getSchemaFromKey('Employee'), SchemaHelper.getSchemaFromKey('Queue');
   }
   // <---Auto[ClassBegin]
   

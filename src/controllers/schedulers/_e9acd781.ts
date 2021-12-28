@@ -5,6 +5,7 @@
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '../../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '../../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '../../helpers/SchemaHelper';
+import {SchedulerHelper} from '../../helpers/SchedulerHelper';
 import {Base as $Base} from '../Base';
 
 // Assign to an another one to override the base class.
@@ -75,17 +76,23 @@ class Scheduler extends Base {
 	}
   
   // Auto[MergingBegin]--->  
-  private initialize(): void {
+  private initialize(): [number, number] {
+  	let days: number;
+  	let minutes: number;
+  	let delegate: () => Promise<void>;
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 
-		const minutes = 720;
-		const days = 42;
+		days = 42;
+		minutes = 720;
+		delegate = null;
+		
     if (days != 0) {
     
       // Override data parsing and manipulation of Timing 2 here:
       // 
       
+      if (delegate != null) SchedulerHelper.scheduling(days, minutes, delegate);
     }
 
 	  // <---Auto[Merging]
