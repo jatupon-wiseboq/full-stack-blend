@@ -12,7 +12,7 @@ const WorkerHelper = {
   	dictionary[name] = worker;
   },
   enqueue: (table: HierarchicalDataTable) => {
-  	queue.enqueue("general", "perform", [table]);
+  	queue && queue.enqueue("general", "perform", [table]);
   },
   perform: async (table: HierarchicalDataTable): Promise<void> => {
   	const worker = new dictionary[table.group](table);

@@ -37,8 +37,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 //
 const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
 
-let queue = new Queue();
-let scheduler = new Scheduler();
+let queue: Queue = null;
+let scheduler: Scheduler = null;
 
 if (process.env.RESQUE_REDIS_URI) {
 	const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
