@@ -362,13 +362,13 @@ const WORKER_DEFAULTS = {
   
   // Declare class variables and functions here:
   //
-  protected setup() {
-  	// Place your custom setup here (instantaneous):
-  	//
-  	
+  protected async run(): Promise<void> => {
+		for (const parameters of this.iterations) {
+      await this.perform(parameters);
+    }
 	}
 	
-  protected perform(parameters: any[]) {
+  protected async perform(parameters: any[]): Promise<void> => {
   	// Place your custom setup here (instantaneous):
   	//
     
@@ -403,7 +403,7 @@ const SCHEDULER_DEFAULTS = {
   // Declare class variables and functions here:
   //
   protected setup() {
-  	// Place your custom setup here (instantaneous):
+  	// Place your custom setup here (singleton):
   	//
     
 	}
@@ -800,13 +800,15 @@ var BackEndScriptHelper = {
     // const innerCircleTags: string[] = customEvent.detail.innerCircleTags;  /* circle tags */
     //
     
+    return rows;
+    
     `;
             
             if (value.event) {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${templateCode != TemplateCode.Controller ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE}) {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${templateCode != TemplateCode.Controller ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE})${templateCode != TemplateCode.Controller ? ': Promise<HierarchicalDataRow[]> =>' : ''} {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
