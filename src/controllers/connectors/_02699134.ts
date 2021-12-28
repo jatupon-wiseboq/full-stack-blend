@@ -89,7 +89,7 @@ class Connector extends Base {
   // <---Auto[MergingEnd]
   
   // Auto[onConnectionSourceInsert_02699134:Begin]--->
-  protected async onConnectionSourceInsert_02699134(event: Event): Promise<HierarchicalDataRow[]> => {
+  protected async onConnectionSourceInsert_02699134(event: Event): Promise<HierarchicalDataRow[]> {
     // <---Auto[onConnectionSourceInsert_02699134:Begin]
     // Place your custom manipulation here:
     // 
