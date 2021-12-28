@@ -35,7 +35,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 
 // Resque
 //
-const { Scheduler, Queue } = require("node-resque");
+const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
 const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
 const redisConnectionSettings = {
 	host: redisConnectionURL.host.split(":")[0],
@@ -49,19 +49,40 @@ const redisClientForResque = new Redis(redisConnectionSettings);
 const redisConnectionSettingForResque = {
 	redis: redisClientForResque
 };
+const jobs = {
+  perform: {
+    plugins: [Plugins.JobLock],
+    pluginOptions: {
+      JobLock: {reEnqueue: true},
+    },
+    perform: async (table: any) => {
+    	const {WorkerHelper} = require("./controllers/helpers/WorkerHelper");
+      await WorkerHelper.perform(table);
+    }
+  }
+};
+const queue = new Queue({
+		connection: redisConnectionSettingForResque
+	},
+	jobs
+);
+const worker = new Worker(
+  {
+  	connection: redisConnectionSettingForResque,
+  	queues: ["general"]
+  },
+  jobs
+);
+const scheduler = new Scheduler({
+		connection: redisConnectionSettingForResque
+	}
+);
 
 (async () => {
-	const scheduler = new Scheduler({
-			connection: redisConnectionSettingForResque
-		},
-		{}
-	);
-	const queue = new Queue({
-			connection: redisConnectionSettingForResque
-		},
-		{}
-	);
-
+	console.log("Booting worker..");
+	await worker.connect();
+	worker.start();
+	
 	console.log("Booting scheduler..");
 	await scheduler.connect();
 	scheduler.start();
@@ -69,8 +90,8 @@ const redisConnectionSettingForResque = {
 	console.log("Booting queue..");
 	await queue.connect();
 	queue.on("error", (error) => {
-    console.log(error);
-  });
+	  console.log(error);
+	});
 })();
 
 // StackBlend routes
@@ -96,4 +117,4 @@ if (["production"].indexOf(process.env.NODE_ENV) == -1) {
 	app.delete("/test/api", controller.index);
 }
 
-export {server, socket};
+export {server, socket, queue, scheduler};
