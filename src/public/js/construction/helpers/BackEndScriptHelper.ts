@@ -568,7 +568,7 @@ interface HierarchicalDataRow {
 // Auto[ClassBegin]--->
 class Connector extends Base {
   constructor() {
-  	super();
+  	__REPLACEMENT_SUPER_MAKER__
   }
   // <---Auto[ClassBegin]
  	
