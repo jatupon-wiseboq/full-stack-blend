@@ -124,13 +124,13 @@ const DatabaseHelper = {
 			case 'relational':
 				return SourceType.Relational;
 			case 'document':
-				return SourceType.PrioritizedWorker;
-			case 'worker':
 				return SourceType.Document;
 			case 'volatile-memory':
 				return SourceType.VolatileMemory;
 			case 'RESTful':
 				return SourceType.RESTful;
+			case 'worker':
+				return SourceType.PrioritizedWorker;
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
