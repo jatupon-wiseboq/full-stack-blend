@@ -8,10 +8,6 @@ class Base {
 	
 	constructor(data: HierarchicalDataTable) {
 		this.initialize(data);
-	  this.setup();
-	  for (const parameters of this.iterations) {
-      this.perform(parameters);
-    }
   }
   
 	protected register() {
@@ -22,11 +18,13 @@ class Base {
 		void(0);
 	}
 	
-	protected setup() {
-		void(0);
+	protected async run(): Promise<void> {
+		for (const parameters of this.iterations) {
+      await this.perform(parameters);
+    }
 	}
 	
-	protected perform(parameters) {
+	protected async perform(parameters: any[]): Promise<void> {
 		void(0);
 	}
 }
