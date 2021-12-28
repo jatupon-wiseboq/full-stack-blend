@@ -711,6 +711,9 @@ class Scheduler extends Base {
  	
   // Auto[MergingBegin]--->  
   private initialize(): [number, number] {
+  	let days: number;
+  	let minutes: number;
+  	let delegate: () => Promise<void>;
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -992,9 +995,9 @@ ${SUB_MERGE_END_BEGIN}`);
         } else if (templateCode == TemplateCode.Scheduler) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
-		const days = ${SECTION_SCHEDULING_DAYS};
-		const minutes = ${SECTION_SCHEDULING_MINUTES};
-		let delegate: () => Promise<void> = null;
+		days = ${SECTION_SCHEDULING_DAYS};
+		minutes = ${SECTION_SCHEDULING_MINUTES};
+		delegate = null;
 		
     if (days != 0) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
       
