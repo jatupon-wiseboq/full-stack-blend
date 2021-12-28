@@ -2,6 +2,8 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 // Auto[Import]--->
+/* eslint-disable @typescript-eslint/camelcase */
+
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '../../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '../../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '../../helpers/SchemaHelper';
