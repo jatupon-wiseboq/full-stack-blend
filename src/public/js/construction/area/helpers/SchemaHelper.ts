@@ -97,7 +97,7 @@ var SchemaHelper = {
         }
         
         tables[tableName] = {
-          source: ['relational', 'worker', 'document', 'volatile-memory', 'RESTful'][i],
+          source: ['relational', 'document', 'volatile-memory', 'RESTful', 'worker'][i],
           group: tableName,
           guid: tableGUID,
           keys: keys,

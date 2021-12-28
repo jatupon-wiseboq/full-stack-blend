@@ -4,11 +4,11 @@
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '../../helpers/DatabaseHelper';
-import {ProjectConfigurationHelper} from '../../helpers/ProjectConfigurationHelper';
-import {SchemaHelper, DataTableSchema} from '../../helpers/SchemaHelper';
-import {SchedulerHelper} from '../../helpers/SchedulerHelper';
-import {Base as $Base} from '../Base';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from '../helpers/ProjectConfigurationHelper';
+import {SchemaHelper, DataTableSchema} from '../helpers/SchemaHelper';
+import {SchedulerHelper} from '../helpers/SchedulerHelper';
+import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 

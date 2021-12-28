@@ -1057,19 +1057,19 @@ export default route;
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
-import {ConnectorHelper} from "./helpers/ActionHelper";
+import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
 
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
-${connectors.map(key => `import Connector${key} from "./components/connectors/${this.getRepresentativeName(key)}";`).join('\n')}
-${workers.map(key => `import Worker${key} from "./components/workers/${this.getRepresentativeName(key)}";`).join('\n')}
-${schedulers.map(key => `import Scheduler${key} from "./components/shedulers/${this.getRepresentativeName(key)}";`).join('\n')}
+${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
+${workers.map(key => `import Worker${key} from "./workers/${this.getRepresentativeName(key)}";`).join('\n')}
+${schedulers.map(key => `import Scheduler${key} from "./schedulers/${this.getRepresentativeName(key)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
-${connectors.map(key => `ConnectorHelper.register(Connector${key});`).join('\n')}
+${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
 ${workers.map(key => `WorkerHelper.register(Worker${key});`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
