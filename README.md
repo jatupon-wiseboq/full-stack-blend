@@ -14,7 +14,7 @@ You might clone the repository and run it on your local machine for advanced deb
 4. Run "cd boilerplate".
 5. Run "git remote rename origin boilerplate".
 6. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
-7. Run "git checkout 1.14".
+7. Run "git checkout 1.15".
 8. Run "git checkout -b staging".
 9. Run "git push --set-upstream origin staging --force".
 10. Run "git checkout -b develop".
@@ -54,12 +54,12 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org. Please note that for all of the old versions, you must perform "git cherry-pick COMMIT_ID" for all of hotfixes, beginning with a prefix "Hotfix:" in the message, that may apply to your current using version.
 
 1. Run "git stash".
-2. Run "git pull boilerplate 1.14 --allow-unrelated-histories".
+2. Run "git pull boilerplate 1.15 --allow-unrelated-histories".
 3. Run "git stash apply".
 
 To list all of hotfixes:
 
-1. Run "git checkout 1.14".
+1. Run "git checkout 1.15".
 2. Run "git pull".
 3. Run "git log --oneline | grep Hotfix".
 4. For each of hotfix, run "git cherry-pick COMMIT_ID".
@@ -82,7 +82,7 @@ To get started:
 
 ## Restoring malformed project files from regular updates
 
-Because we often release regular updates on stackblend.org, which right now is version 1.14. If you preferred one that you were working with, please run the editor cloned from the releases of full-stack-blend instead. Where you may find out the current version that you are using from README.md file.
+Because we often release regular updates on stackblend.org, which right now is version 1.15. If you preferred one that you were working with, please run the editor cloned from the releases of full-stack-blend instead. Where you may find out the current version that you are using from README.md file.
 
 You might also reset the project files by cloning a boilerplate from the releases with the same version as the editor. Copy only project.stackblend file from your old project to the new one, open it using the editor and navigate to each of pages, components, and popups.
 
