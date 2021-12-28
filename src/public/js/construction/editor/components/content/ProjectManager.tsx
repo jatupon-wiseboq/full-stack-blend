@@ -565,6 +565,21 @@ script(type="text/javascript" src="/js/Site.bundle.js")
               element.innerHTML = nextProjectData.popups[popup.id] && nextProjectData.popups[popup.id].html.join('\n') || '';
               persistingContent.appendChild(element);
             }
+            for (let key in connectorControllerInfoDict) {
+              if (connectorControllerInfoDict.hasOwnProperty(key)) {
+                persistingGUIDs[key] = true;
+              }
+            }
+            for (let key in workerControllerInfoDict) {
+              if (workerControllerInfoDict.hasOwnProperty(key)) {
+                persistingGUIDs[key] = true;
+              }
+            }
+            for (let key in schedulerControllerInfoDict) {
+              if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+                persistingGUIDs[key] = true;
+              }
+            }
             
             let elements = HTMLHelper.getElementsByClassName('internal-fsb-element', persistingContent);
             for (let element of elements) {
