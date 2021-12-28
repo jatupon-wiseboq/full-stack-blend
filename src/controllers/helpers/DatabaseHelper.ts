@@ -8,6 +8,8 @@ import {DataFormationHelper} from './DataFormationHelper';
 import {RequestHelper} from './RequestHelper';
 import {ValidationInfo} from './ValidationHelper';
 import {PermissionHelper} from './PermissionHelper';
+import {ActionHelper} from './ActionHelper';
+import {WorkerHelper} from './WorkerHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
 import {FieldType, DataTableSchema} from './SchemaHelper';
 import {DataTypes} from 'sequelize';
@@ -964,6 +966,8 @@ const DatabaseHelper = {
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
+									  
+									  row.relations[key].rows = await ActionHelper.perform(ActionType.Insert, schema, nextSchema, row.relations[key].rows, transaction, crossRelationUpsert, session, leavePermission, innerCircleTags);
 									
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveInsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
@@ -987,15 +991,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
-		    		
-		    		for (const row of input.rows) {
-							PrioritizedWorkerClient.enqueue(schema.group, [row], {
-						    retry: true,
-						    queue: 'normal'
-							});
-						}
-		    		
+		    		WorkerHelper.perform(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'PUT');
@@ -1156,6 +1152,8 @@ const DatabaseHelper = {
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
+									  
+									  row.relations[key].rows = await ActionHelper.perform(ActionType.Upsert, schema, nextSchema, row.relations[key].rows, transaction, true, session, leavePermission, innerCircleTags);
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else await DatabaseHelper.performRecursiveUpsert(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission, innerCircleTags);
@@ -1178,10 +1176,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
-		    		
-		    		throw new Error('Cannot perform UPSERT on prioritized worker.');
-		    		
+		    		WorkerHelper.perform(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
@@ -1345,6 +1340,8 @@ const DatabaseHelper = {
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
 									  };
+									  
+									  row.relations[key].rows = await ActionHelper.perform(ActionType.Update, schema, nextSchema, row.relations[key].rows, transaction, crossRelationUpsert, session, leavePermission, innerCircleTags);
 										
 										if (row.relations[key].associate) await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, result.relations, session, row.relations[key].notify !== undefined, leavePermission, transaction, innerCircleTags);
 										else if (!crossRelationUpsert) await DatabaseHelper.performRecursiveUpdate(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, false, session, leavePermission, innerCircleTags);
@@ -1368,10 +1365,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
-		    		
-		    		throw new Error('Cannot perform UPDATE on prioritized worker.');
-		    		
+		    		WorkerHelper.perform(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
@@ -1467,10 +1461,7 @@ const DatabaseHelper = {
 	        		
 	        		break;
 	        	case SourceType.PrioritizedWorker:
-	        		if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
-	        		
 	        		throw new Error('Cannot perform RETRIEVE ALL on prioritized worker.');
-	        		
 	        		break;
 	        	case SourceType.Document:
 	        		if (!DocumentDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
@@ -1661,6 +1652,8 @@ const DatabaseHelper = {
 								  			}
 							  			}
 							  		}
+							  		
+							  		row.relations[key].rows = await ActionHelper.perform(ActionType.Retrieve, schema, nextSchema, row.relations[key].rows, connectionInfos, undefined, session, leavePermission, innerCircleTags);
 									  
 									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission, connectionInfos, innerCircleTags);
 							  	}
@@ -1844,6 +1837,8 @@ const DatabaseHelper = {
 											group: nextSchema.group,
 										  rows: []
 									  };
+									  
+									  row.relations[key].rows = await ActionHelper.perform(ActionType.Delete, schema, nextSchema, row.relations[key].rows, transaction, undefined, session, leavePermission, []);
 									
 										await DatabaseHelper.performRecursiveDelete(row.relations[key], nextSchema, result.relations[nextSchema.group].rows, transaction, session, leavePermission);
 									}
@@ -1865,10 +1860,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 						break;
 					case SourceType.PrioritizedWorker:
-						if (!PrioritizedWorkerClient) throw new Error('There was an error trying to obtain a connection (not found).');
-						
-						throw new Error('Cannot perform DELETE on prioritized worker.');
-						
+						WorkerHelper.perform(input);
 						break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'DELETE');
