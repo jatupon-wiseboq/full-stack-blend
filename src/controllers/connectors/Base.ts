@@ -63,8 +63,12 @@ class Base {
 				innerCircleTags: innerCircleTags
 			}
 		});
-		
-		return await dictionary[`${source.guid}:${target.guid}:${action}`](event);
+
+		if (dictionary[`${source.guid}:${target.guid}:${action}`]) {		
+			return await dictionary[`${source.guid}:${target.guid}:${action}`](event);
+		} else {
+			return rows;
+		}
 	}
 }
 
