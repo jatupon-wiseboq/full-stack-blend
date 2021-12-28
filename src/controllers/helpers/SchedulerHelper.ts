@@ -28,7 +28,7 @@ const SchedulerHelper = {
   	if ((days & DAYS.FRIDAY) != 0) _days.push(5);
   	if ((days & DAYS.SATURDAY) != 0) _days.push(6);
   	
-  	scheduler.scheduleJob(`${minutes} * * * * ${_days.join(',')}`, delegate);
+  	scheduler && scheduler.scheduleJob(`${minutes} * * * * ${_days.join(',')}`, delegate);
   }
 };
 
