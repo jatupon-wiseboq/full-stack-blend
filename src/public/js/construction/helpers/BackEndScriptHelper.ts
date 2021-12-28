@@ -368,7 +368,7 @@ const WORKER_DEFAULTS = {
   	
 	}
 	
-  protected perform() {
+  protected perform(parameters: any[]) {
   	// Place your custom setup here (instantaneous):
   	//
     
@@ -659,6 +659,7 @@ const FULL_SCHEDULER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
+import {SchedulerHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchedulerHelper';
 import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
@@ -709,7 +710,7 @@ class Scheduler extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(): void {
+  private initialize(): [number, number] {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -991,10 +992,13 @@ ${SUB_MERGE_END_BEGIN}`);
         } else if (templateCode == TemplateCode.Scheduler) {
         		code = code.replace(SUB_MERGE_END_BEGIN,
 `${SECTION_BEGIN_BEGIN}
-		const minutes = ${SECTION_SCHEDULING_MINUTES};
 		const days = ${SECTION_SCHEDULING_DAYS};
+		const minutes = ${SECTION_SCHEDULING_MINUTES};
+		let delegate: () => Promise<void> = null;
+		
     if (days != 0) {${SECTION_VALUE_SOURCE || ''}${SECTION_BEGIN_END}${info['internal-fsb-data-code'] || SECTION_BODY}${SECTION_END_BEGIN}
-      	
+      
+      if (delegate != null) SchedulerHelper.scheduling(days, minutes, delegate);
     }
 ${SECTION_END_END}
 ${SUB_MERGE_END_BEGIN}`);
