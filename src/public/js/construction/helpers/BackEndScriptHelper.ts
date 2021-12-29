@@ -369,7 +369,7 @@ const WORKER_DEFAULTS = {
 	}
 	
   protected async perform(parameters: any[]): Promise<void> {
-  	// Place your custom setup here (instantaneous):
+  	// Place your custom code here (instantaneous):
   	//
     
 	}
