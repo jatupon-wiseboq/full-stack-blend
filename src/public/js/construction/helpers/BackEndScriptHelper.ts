@@ -429,7 +429,7 @@ import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -529,7 +529,7 @@ import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -599,7 +599,7 @@ import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -670,7 +670,7 @@ import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 // Auto[Declare]--->
@@ -716,7 +716,7 @@ class Scheduler extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(): [number, number] {
+  private initialize() {
   	let days: number = 0;
   	let minutes: number = 0;
   	let delegate: () => Promise<void> = null;
