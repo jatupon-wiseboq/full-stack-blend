@@ -498,7 +498,7 @@ class Controller extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;
@@ -575,7 +575,7 @@ class Connector extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(): void {
+  protected initialize(): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -645,7 +645,7 @@ class Worker extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize(data: HierarchicalDataTable): void {
+  protected initialize(data: HierarchicalDataTable): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  // <---Auto[Merging]
@@ -716,7 +716,7 @@ class Scheduler extends Base {
   // <---Auto[ClassBegin]
  	
   // Auto[MergingBegin]--->  
-  private initialize() {
+  protected initialize() {
   	let days: number = 0;
   	let minutes: number = 0;
   	let delegate: () => Promise<void> = null;

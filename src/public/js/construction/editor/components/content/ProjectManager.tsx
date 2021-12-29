@@ -615,265 +615,272 @@ script(type="text/javascript" src="/js/Site.bundle.js")
               this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
                   this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
-                  	
-                    repo.createBlob(combinedHeaderScripts, nextProjectData.headerBlobSHA, (headerBlobError, headerBlobResult, request) => {
-                      repo.createBlob(combinedFooterScripts, nextProjectData.footerBlobSHA, (footerBlobError, footerBlobResult, request) => {
-                        if (headerBlobError) {
-								      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-								      		
-                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(headerBlobError)}`);
-                          return;
+                    const process = () => {
+                      if (headerBlobError) {
+							      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+							      		
+                        alert(`There was an error while creating blob:\n${this.extractErrorMessage(headerBlobError)}`);
+                        return;
+                      }
+                      if (footerBlobError) {
+							      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+							      		
+                        alert(`There was an error while creating blob:\n${this.extractErrorMessage(footerBlobError)}`);
+                        return;
+                      }
+                      const headerBlobSHA = headerBlobResult && headerBlobResult.sha || nextProjectData.headerBlobSHA;
+                      const footerBlobSHA = footerBlobResult && footerBlobResult.sha || nextProjectData.footerBlobSHA;
+                    	
+                      this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict: any) => {
+                        
+                        nextProjectData.routeBlobSHA = routeBlobSHA;
+                        nextProjectData.controllerBlobSHA = controllerBlobSHA;
+                        nextProjectData.headerBlobSHA = headerBlobSHA;
+                        nextProjectData.footerBlobSHA = footerBlobSHA;
+                        
+                        nextProjectData.backEndControllerBlobSHADict = nextProjectData.backEndControllerBlobSHADict || {};
+                        Object.assign(nextProjectData.backEndControllerBlobSHADict, backEndControllerBlobSHADict);
+                        
+                        nextProjectData.frontEndComponentsBlobSHADict = nextProjectData.frontEndComponentsBlobSHADict || {};
+                        Object.assign(nextProjectData.frontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
+                        
+                        nextProjectData.viewBlobSHADict = nextProjectData.viewBlobSHADict || {};
+                        Object.assign(nextProjectData.viewBlobSHADict, viewBlobSHADict);
+                        
+                        for (let key in nextProjectData.backEndControllerBlobSHADict) {
+                          if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+                            delete nextProjectData.backEndControllerBlobSHADict[key];
+                          }
                         }
-                        if (footerBlobError) {
-								      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-								      		
-                          alert(`There was an error while creating blob:\n${this.extractErrorMessage(footerBlobError)}`);
-                          return;
+                        for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
+                          if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+                            delete nextProjectData.frontEndComponentsBlobSHADict[key];
+                          }
                         }
-                        const headerBlobSHA = headerBlobResult.sha;
-                        const footerBlobSHA = footerBlobResult.sha;
-                      	
-                        this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict: any) => {
-                          
-                          nextProjectData.routeBlobSHA = routeBlobSHA;
-                          nextProjectData.controllerBlobSHA = controllerBlobSHA;
-                          nextProjectData.headerBlobSHA = headerBlobSHA;
-                          nextProjectData.footerBlobSHA = footerBlobSHA;
-                          
-                          nextProjectData.backEndControllerBlobSHADict = nextProjectData.backEndControllerBlobSHADict || {};
-                          Object.assign(nextProjectData.backEndControllerBlobSHADict, backEndControllerBlobSHADict);
-                          
-                          nextProjectData.frontEndComponentsBlobSHADict = nextProjectData.frontEndComponentsBlobSHADict || {};
-                          Object.assign(nextProjectData.frontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
-                          
-                          nextProjectData.viewBlobSHADict = nextProjectData.viewBlobSHADict || {};
-                          Object.assign(nextProjectData.viewBlobSHADict, viewBlobSHADict);
+                        for (let key in nextProjectData.viewBlobSHADict) {
+                          if (nextProjectData.viewBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
+                            delete nextProjectData.viewBlobSHADict[key];
+                          }
+                        }
+                    
+                        this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, nextProjectData.siteBundleBlobSHA, (siteBundleBlobSHA: string) => {
+                        
+                          nextProjectData.siteBundleBlobSHA = siteBundleBlobSHA;
+                        
+                          let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
+                          let nextPersistingFiles = [];
                           
                           for (let key in nextProjectData.backEndControllerBlobSHADict) {
-                            if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
-                              delete nextProjectData.backEndControllerBlobSHADict[key];
+                            if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
+                            	if (connectorControllerInfoDict.hasOwnProperty(key)) {
+                            		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
+                            	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
+                            		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
+                            	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+                            		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
+                            	} else {
+                              	nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+                              }
                             }
                           }
                           for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
-                            if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
-                              delete nextProjectData.frontEndComponentsBlobSHADict[key];
+                            if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
+                              nextPersistingFiles.push(`src/public/js/components/${key}.tsx`);
                             }
                           }
                           for (let key in nextProjectData.viewBlobSHADict) {
-                            if (nextProjectData.viewBlobSHADict.hasOwnProperty(key) && !persistingGUIDs[key]) {
-                              delete nextProjectData.viewBlobSHADict[key];
+                            if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
+                              nextPersistingFiles.push(`views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`);
                             }
                           }
-                      
-                          this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, nextProjectData.siteBundleBlobSHA, (siteBundleBlobSHA: string) => {
                           
-                            nextProjectData.siteBundleBlobSHA = siteBundleBlobSHA;
+                          let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
+                          nextProjectData.currentPersistingFiles = nextPersistingFiles;
                           
-                            let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
-                            let nextPersistingFiles = [];
+                          const createTree = (error, result, request) => {
+                            if (error) {
+							      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+							      					
+                              alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
+                              return;
+                            }
+                            
+                            let nextProjectDataSHA = result.sha;
+                            if (DEBUG_GITHUB_UPLOADER) console.log('nextProjectDataSHA', nextProjectDataSHA);
+                            
+                            let tree = [{
+                              path: 'project.stackblend',
+                              mode: "100644",
+                              type: "blob",
+                              sha: nextProjectDataSHA.split('#')[0]
+                            },{
+                              path: 'src/route.ts',
+                              mode: "100644",
+                              type: "blob",
+                              sha: routeBlobSHA.split('#')[0]
+                            },{
+                              path: 'src/controllers/Home.ts',
+                              mode: "100644",
+                              type: "blob",
+                              sha: controllerBlobSHA.split('#')[0]
+                            },{
+                              path: `src/public/js/Site.tsx`,
+                              mode: "100644",
+                              type: "blob",
+                              sha: siteBundleBlobSHA.split('#')[0]
+                            },{
+                              path: `views/home/_header.pug`,
+                              mode: "100644",
+                              type: "blob",
+                              sha: headerBlobSHA.split('#')[0]
+                            },{
+                              path: `views/home/_footer.pug`,
+                              mode: "100644",
+                              type: "blob",
+                              sha: footerBlobSHA.split('#')[0]
+                            }];
                             
                             for (let key in nextProjectData.backEndControllerBlobSHADict) {
                               if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
                               	if (connectorControllerInfoDict.hasOwnProperty(key)) {
-                              		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
+                              		tree.push({
+                                    path: `src/controllers/connectors/${this.getRepresentativeName(key)}.ts`,
+                                    mode: "100644",
+                                    type: "blob",
+                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+                                  });
                               	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
-                              		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
+                              		tree.push({
+                                    path: `src/controllers/workers/${this.getRepresentativeName(key)}.ts`,
+                                    mode: "100644",
+                                    type: "blob",
+                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+                                  });
                               	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-                              		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
+                              		tree.push({
+                                    path: `src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`,
+                                    mode: "100644",
+                                    type: "blob",
+                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+                                  });
                               	} else {
-                                	nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
-                                }
+                              		tree.push({
+                                    path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
+                                    mode: "100644",
+                                    type: "blob",
+                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+                                  });
+                              	}
                               }
                             }
                             for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
                               if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
-                                nextPersistingFiles.push(`src/public/js/components/${key}.tsx`);
+                                tree.push({
+                                  path: `src/public/js/components/${key}.tsx`,
+                                  mode: "100644",
+                                  type: "blob",
+                                  sha: nextProjectData.frontEndComponentsBlobSHADict[key].split('#')[0]
+                                });
                               }
                             }
                             for (let key in nextProjectData.viewBlobSHADict) {
                               if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
-                                nextPersistingFiles.push(`views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`);
+                                tree.push({
+                                  path: `views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`,
+                                  mode: "100644",
+                                  type: "blob",
+                                  sha: nextProjectData.viewBlobSHADict[key].split('#')[0]
+                                });
                               }
                             }
                             
-                            let deletingPersistingFiles = previousPersistingFiles.filter(file => nextPersistingFiles.indexOf(file) == -1);
-                            nextProjectData.currentPersistingFiles = nextPersistingFiles;
-                            
-                            const createTree = (error, result, request) => {
+                            repo.createTree(tree, baseTreeSHA, (error, result, request) => {
                               if (error) {
 								      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
 								      					
-                                alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
+                                alert(`There was an error while creating a new tree:\n${this.extractErrorMessage(error)}`);
                                 return;
                               }
                               
-                              let nextProjectDataSHA = result.sha;
-                              if (DEBUG_GITHUB_UPLOADER) console.log('nextProjectDataSHA', nextProjectDataSHA);
+                              let updatedTreeSHA = result.sha;
+                              if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
                               
-                              let tree = [{
-                                path: 'project.stackblend',
-                                mode: "100644",
-                                type: "blob",
-                                sha: nextProjectDataSHA.split('#')[0]
-                              },{
-                                path: 'src/route.ts',
-                                mode: "100644",
-                                type: "blob",
-                                sha: routeBlobSHA.split('#')[0]
-                              },{
-                                path: 'src/controllers/Home.ts',
-                                mode: "100644",
-                                type: "blob",
-                                sha: controllerBlobSHA.split('#')[0]
-                              },{
-                                path: `src/public/js/Site.tsx`,
-                                mode: "100644",
-                                type: "blob",
-                                sha: siteBundleBlobSHA.split('#')[0]
-                              },{
-                                path: `views/home/_header.pug`,
-                                mode: "100644",
-                                type: "blob",
-                                sha: headerBlobSHA.split('#')[0]
-                              },{
-                                path: `views/home/_footer.pug`,
-                                mode: "100644",
-                                type: "blob",
-                                sha: footerBlobSHA.split('#')[0]
-                              }];
+                              let message = prompt('Please describe your recent changes:', recentCommitMessage || '');
                               
-                              for (let key in nextProjectData.backEndControllerBlobSHADict) {
-                                if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                                	if (connectorControllerInfoDict.hasOwnProperty(key)) {
-                                		tree.push({
-	                                    path: `src/controllers/connectors/${this.getRepresentativeName(key)}.ts`,
-	                                    mode: "100644",
-	                                    type: "blob",
-	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
-	                                  });
-                                	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
-                                		tree.push({
-	                                    path: `src/controllers/workers/${this.getRepresentativeName(key)}.ts`,
-	                                    mode: "100644",
-	                                    type: "blob",
-	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
-	                                  });
-                                	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-                                		tree.push({
-	                                    path: `src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`,
-	                                    mode: "100644",
-	                                    type: "blob",
-	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
-	                                  });
-                                	} else {
-                                		tree.push({
-	                                    path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
-	                                    mode: "100644",
-	                                    type: "blob",
-	                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
-	                                  });
-                                	}
-                                }
-                              }
-                              for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
-                                if (nextProjectData.frontEndComponentsBlobSHADict.hasOwnProperty(key)) {
-                                  tree.push({
-                                    path: `src/public/js/components/${key}.tsx`,
-                                    mode: "100644",
-                                    type: "blob",
-                                    sha: nextProjectData.frontEndComponentsBlobSHADict[key].split('#')[0]
-                                  });
-                                }
-                              }
-                              for (let key in nextProjectData.viewBlobSHADict) {
-                                if (nextProjectData.viewBlobSHADict.hasOwnProperty(key)) {
-                                  tree.push({
-                                    path: `views/home/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.pug`,
-                                    mode: "100644",
-                                    type: "blob",
-                                    sha: nextProjectData.viewBlobSHADict[key].split('#')[0]
-                                  });
-                                }
-                              }
-                              
-                              repo.createTree(tree, baseTreeSHA, (error, result, request) => {
-                                if (error) {
-									      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-									      					
-                                  alert(`There was an error while creating a new tree:\n${this.extractErrorMessage(error)}`);
-                                  return;
-                                }
-                                
-                                let updatedTreeSHA = result.sha;
-                                if (DEBUG_GITHUB_UPLOADER) console.log('updatedTreeSHA', updatedTreeSHA);
-                                
-                                let message = prompt('Please describe your recent changes:', recentCommitMessage || '');
-                                
-                                if (message !== null && message.trim() !== "") {
-                                  repo.commit(baseCommitSHA, updatedTreeSHA, message, (error, result, request) => {
+                              if (message !== null && message.trim() !== "") {
+                                repo.commit(baseCommitSHA, updatedTreeSHA, message, (error, result, request) => {
+                                  if (error) {
+										      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+										      					
+                                    alert(`There was an error while committing a new change:\n${this.extractErrorMessage(error)}`);
+                                    return;
+                                  }
+                                  
+                                  let recentCommitSHA = result.sha;
+                                  if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
+                                  
+                                  repo.updateHead('heads/' + GITHUB_FEATURE_BRANCH, recentCommitSHA, true, (error, result, request) => {
                                     if (error) {
 											      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
 											      					
-                                      alert(`There was an error while committing a new change:\n${this.extractErrorMessage(error)}`);
+                                      alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
                                       return;
                                     }
+              
+                                    constructionWindow.clearFullStackCodeForAllPages(nextProjectData);
                                     
-                                    let recentCommitSHA = result.sha;
-                                    if (DEBUG_GITHUB_UPLOADER) console.log('recentCommitSHA', recentCommitSHA);
+                                    if (message.indexOf('[continue]') != 0) {
+                                      recentCommitMessage = '[continue] ' + message;
+                                    } else {
+                                      recentCommitMessage = message;
+                                    }
                                     
-                                    repo.updateHead('heads/' + GITHUB_FEATURE_BRANCH, recentCommitSHA, true, (error, result, request) => {
-                                      if (error) {
-												      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-												      					
-                                        alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
-                                        return;
-                                      }
-                
-                                      constructionWindow.clearFullStackCodeForAllPages(nextProjectData);
-                                      
-                                      if (message.indexOf('[continue]') != 0) {
-                                        recentCommitMessage = '[continue] ' + message;
-                                      } else {
-                                        recentCommitMessage = message;
-                                      }
-                                      
-                                      StorageHelper.setCookie('recentCommitMessage', recentCommitMessage);
-                                      
-                                      this.deleteFiles(repo, deletingPersistingFiles, () => {
-																	      let endpoint = window.ENDPOINT;
-																	     	if (endpoint.indexOf('https://localhost') == 0) {
-																	     		endpoint = 'https://localhost.stackblend.org';
-																	     	}
-                                      
-                                        RequestHelper.post(`${endpoint}/endpoint/reset/content`, {}).then(() => {
-                                          RequestHelper.post(`${endpoint}/endpoint/pull/content`, {}).then(() => {
-														      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-														      					
-                                            alert('Your changes have been saved successfully.');
-                                          }).catch(() => {
-														      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-														      					
-                                            alert('Your changes have been saved successfully.');
-                                          });
+                                    StorageHelper.setCookie('recentCommitMessage', recentCommitMessage);
+                                    
+                                    this.deleteFiles(repo, deletingPersistingFiles, () => {
+																      let endpoint = window.ENDPOINT;
+																     	if (endpoint.indexOf('https://localhost') == 0) {
+																     		endpoint = 'https://localhost.stackblend.org';
+																     	}
+                                    
+                                      RequestHelper.post(`${endpoint}/endpoint/reset/content`, {}).then(() => {
+                                        RequestHelper.post(`${endpoint}/endpoint/pull/content`, {}).then(() => {
+													      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+													      					
+                                          alert('Your changes have been saved successfully.');
                                         }).catch(() => {
 													      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
 													      					
                                           alert('Your changes have been saved successfully.');
                                         });
+                                      }).catch(() => {
+												      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+												      					
+                                        alert('Your changes have been saved successfully.');
                                       });
                                     });
                                   });
-                                } else {
-                                	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-                                }
-                              });
-                            };
-                            
-                            repo.createBlob(CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)), null, createTree);
-                          });
+                                });
+                              } else {
+                              	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                              }
+                            });
+                          };
+                          
+                          repo.createBlob(CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2)), null, createTree);
                         });
                       });
-                    });
+                    };
+                    
+                    if (Object.keys(frontEndCodeInfoDict).length != 0) {
+	                    repo.createBlob(combinedHeaderScripts, nextProjectData.headerBlobSHA, (headerBlobError, headerBlobResult, request) => {
+	                      repo.createBlob(combinedFooterScripts, nextProjectData.footerBlobSHA, (footerBlobError, footerBlobResult, request) => {
+	                      	process(headerBlobError, headerBlobResult, footerBlobError, footerBlobResult);
+	                    	});
+	                    });
+	                  } else {
+	                  	process(null, null, null, null);
+	                  }
                   });
                 });
               });
