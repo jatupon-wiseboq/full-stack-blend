@@ -14,8 +14,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 }
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	const {stdout, stderr} = child.execSync('kill-port 443');
-	if (stderr && stderr["_hadError"]) throw stderr;
+	child.execSync('kill-port 443');
 	
   const https = require("https");
   
@@ -30,8 +29,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
   server = https.createServer(options, app).listen(443);
 	socket = SocketIO.listen(server);
 } else {
-	const {stdout, stderr} = child.execSync('kill-port ' + (process.env.PORT || 8000));
-	if (stderr && stderr["_hadError"]) throw stderr;
+	child.execSync('kill-port ' + (process.env.PORT || 8000));
 	
 	const http = require("http");
 	
