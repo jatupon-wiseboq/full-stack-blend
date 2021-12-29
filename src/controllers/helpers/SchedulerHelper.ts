@@ -3,6 +3,7 @@
 
 import {Base as Scheduler} from '../schedulers/Base';
 import {scheduler} from '../../server';
+import schedule from 'node-schedule';
 
 enum DAYS {
 	SUNDAY=1,
@@ -28,7 +29,7 @@ const SchedulerHelper = {
   	if ((days & DAYS.FRIDAY) != 0) _days.push(5);
   	if ((days & DAYS.SATURDAY) != 0) _days.push(6);
   	
-  	scheduler && scheduler.scheduleJob(`${minutes} * * * * ${_days.join(',')}`, delegate);
+  	scheduler && schedule.scheduleJob(`${minutes} * * * * ${_days.join(',')}`, delegate);
   }
 };
 
