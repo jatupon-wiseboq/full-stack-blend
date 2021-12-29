@@ -789,15 +789,14 @@ var BackEndScriptHelper = {
     				if (templateCode == TemplateCode.Connector) FUNCTION_BODY = `
     // Place your custom manipulation here:
     // 
-    // const customEvent: CustomEvent = event as CustomEvent;
-    // const source: DataTableSchema = customEvent.detail.source;    					/* source of relation */
-    // const target: DataTableSchema = customEvent.detail.target;    					/* target of relation */
-    // const rows: HierarchicalDataRow[] = customEvent.detail.rows;    				/* data in-between */
-    // const transaction: any = customEvent.detail.transaction;    						/* transaction context */
-    // const crossRelationUpsert: boolean = customEvent.detail.crossRelationUpsert;    /* upsert for the next manipulation */
-    // const session: any = customEvent.detail.session;    										/* request session */
-    // const leavePermission: boolean = customEvent.detail.leavePermission;  	/* override permission */
-    // const innerCircleTags: string[] = customEvent.detail.innerCircleTags;  /* circle tags */
+    // const source: DataTableSchema = info.source;    					/* source of relation */
+    // const target: DataTableSchema = info.target;    					/* target of relation */
+    // const rows: HierarchicalDataRow[] = info.rows;    				/* data in-between */
+    // const transaction: any = info.transaction;    						/* transaction context */
+    // const crossRelationUpsert: boolean = info.crossRelationUpsert;    /* upsert for the next manipulation */
+    // const session: any = info.session;    										/* request session */
+    // const leavePermission: boolean = info.leavePermission;  	/* override permission */
+    // const innerCircleTags: string[] = info.innerCircleTags;  /* circle tags */
     //
     
     return rows;
@@ -808,7 +807,7 @@ var BackEndScriptHelper = {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) == -1) {
                     code = code.replace(CLASS_END_BEGIN,
 `${FUNCTION_BEGIN_BEGIN}
-  protected ${templateCode != TemplateCode.Controller ? 'async ' : ''}${FUNCTION_NAME}(event: ${FUNCTION_EVENT_TYPE})${templateCode != TemplateCode.Controller ? ': Promise<HierarchicalDataRow[]>' : ''} {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
+  protected ${templateCode != TemplateCode.Controller ? 'async ' : ''}${FUNCTION_NAME}(info: any)${templateCode != TemplateCode.Controller ? ': Promise<HierarchicalDataRow[]>' : ''} {${FUNCTION_BEGIN_END}${info['internal-fsb-react-code-' + name] || FUNCTION_BODY}${FUNCTION_END_BEGIN}${value['no-propagation'] ? NO_PROPAGATION : ''}
   }${FUNCTION_END_END}
 ${CLASS_END_BEGIN}`);
                 } else {
