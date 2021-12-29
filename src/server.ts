@@ -2,6 +2,7 @@ import * as SocketIO from "socket.io";
 import fs from "fs";
 import dotenv from "dotenv";
 import Redis from "ioredis";
+import * as child from "child_process";
 
 import app from "./app";
 
@@ -13,6 +14,9 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 }
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
+	const {stdout, stderr} = child.execSync('kill-port 443');
+	if (stderr && stderr["_hadError"]) throw stderr;
+	
   const https = require("https");
   
   // Development SSL
@@ -26,6 +30,9 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
   server = https.createServer(options, app).listen(443);
 	socket = SocketIO.listen(server);
 } else {
+	const {stdout, stderr} = child.execSync('kill-port ' + (process.env.PORT || 8000));
+	if (stderr && stderr["_hadError"]) throw stderr;
+	
 	const http = require("http");
 	
 	// [TODO] Replace and configure production SSL
@@ -84,19 +91,31 @@ if (process.env.RESQUE_REDIS_URI) {
 	);
 	
 	(async () => {
-		console.log("Booting worker..");
-		await worker.connect();
-		worker.start();
-		
-		console.log("Booting scheduler..");
-		await scheduler.connect();
-		scheduler.start();
-		
-		console.log("Booting queue..");
-		await queue.connect();
-		queue.on("error", (error) => {
-		  console.log(error);
-		});
+		try {
+			console.log("Booting worker..");
+			worker.on("error", (error) => {
+			  console.log(error);
+			});
+			await worker.connect();
+			worker.start();
+			
+			console.log("Booting scheduler..");
+			scheduler.on("error", (error) => {
+			  console.log(error);
+			});
+			await scheduler.connect();
+			scheduler.start();
+			
+			console.log("Booting queue..");
+			queue.on("error", (error) => {
+			  console.log(error);
+			});
+			await queue.connect();
+			
+			console.log("Done");
+		} catch(error) {
+			console.log(error);
+		}
 	})();
 }
 
