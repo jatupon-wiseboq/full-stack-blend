@@ -15,6 +15,7 @@ class Base {
 		this.target = target;
 		
 		this.setup();
+		this.initialize();
   }
   
 	protected register(action: ActionType, source: DataTableSchema, method: (Event) => Promise<HierarchicalDataRow[]>) {
@@ -26,6 +27,10 @@ class Base {
 	}
 	
 	protected setup() {
+		void(0);
+	}
+	
+	protected initialize() {
 		void(0);
 	}
 	

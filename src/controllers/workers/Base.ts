@@ -7,10 +7,11 @@ class Base {
 	protected iterations: any[] = [];
 	
 	constructor(data: HierarchicalDataTable) {
+		this.setup();
 		this.initialize(data);
   }
   
-	protected register() {
+	protected setup() {
 		void(0);
 	}
 	

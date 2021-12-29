@@ -7,13 +7,14 @@ import {DataTableSchema} from "../helpers/SchemaHelper";
 class Base {
 	constructor() {
 	  this.setup();
+	  this.initialize();
   }
 	
-	protected register() {
+	protected setup() {
 		void(0);
 	}
 	
-	protected setup() {
+	protected initialize() {
 		void(0);
 	}
 }
