@@ -348,7 +348,8 @@ const RequestHelper = {
 		
 		if (typeof json.guid === 'undefined') [];
 		
-		assert(json.guid === guid, `guid doesn't match (guid: ${guid}).`);
+		// TODO: undo and enforce strictness.
+		// assert(json.guid === guid, `guid doesn't match (guid: ${guid}).`);
 		
 		const inputs = [];
 		

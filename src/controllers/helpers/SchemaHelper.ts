@@ -168,7 +168,7 @@ const SchemaHelper = {
 	  }
 	},
 	getFieldType: (value: string): FieldType => {
-		CodeHelper.assertOfPresent(value, 'value');
+		CodeHelper.assertOfString(value, 'value');
 		
 		switch (value) {
 			case "auto":
