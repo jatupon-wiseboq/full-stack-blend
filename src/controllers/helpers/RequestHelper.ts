@@ -354,7 +354,10 @@ const RequestHelper = {
 		const inputs = [];
 		
 		for (const key in json) {
-			CodeHelper.assertOfKeyName(key, 'key');
+			if (key.indexOf(guid) != 0) continue;
+			
+			// TODO: undo and enforce strictness.
+			// CodeHelper.assertOfKeyName(key, 'key');
 			
 			if (key == 'notation') {
 				console.log("\x1b[33mnotation is no longer used due to a security issue, please use a newer version of StackBlend to remove this warning.\x1b[0m");
