@@ -31,6 +31,9 @@ class EndpointManager extends Base<Props, State> {
     
 		private incrementalUpdatingFrontEndCodeInfoDict: any = {};
 		private incrementalUpdatingBackEndControllerInfoDict: any = {};
+		private incrementalUpdatingConnectorControllerInfoDict: any = {};
+		private incrementalUpdatingWorkerControllerInfoDict: any = {};
+		private incrementalUpdatingSchedulerControllerInfoDict: any = {};
 
     constructor(props) {
       super(props);

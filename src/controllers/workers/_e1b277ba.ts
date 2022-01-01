@@ -1,0 +1,131 @@
+// Auto[Generating:V1]--->
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
+
+
+// Auto[Import]--->
+/* eslint-disable @typescript-eslint/camelcase */
+
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from './../helpers/DatabaseHelper';
+import {ProjectConfigurationHelper} from './../helpers/ProjectConfigurationHelper';
+import {SchemaHelper, DataTableSchema} from './../helpers/SchemaHelper';
+import {Base as $Base} from './Base';
+
+// Assign to an another one to override the base class.
+// 
+let Base: typeof $Base = $Base;
+
+// <---Auto[Import]
+
+// Import additional modules here:
+//123
+
+
+// Auto[Declare]--->
+/*enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}
+enum ActionType {
+  Insert,
+  Update,
+  Upsert,
+  Delete,
+  Retrieve,
+  Popup,
+  Navigate,
+  Test
+}*/
+// <---Auto[Declare]
+
+// Declare private static variables here:
+//
+
+
+// Auto[Interface]--->
+/*interface HierarchicalDataTable {
+	source: SourceType;
+	group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
+}
+interface HierarchicalDataRow {
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
+}*/
+// <---Auto[Interface]
+
+// Declare or extend interfaces here:
+//
+
+
+// Auto[ClassBegin]--->
+class Worker extends Base {
+  constructor(data: HierarchicalDataTable) {
+  	super(data);
+  }
+  // <---Auto[ClassBegin]
+  
+  // Declare class variables and functions here:
+  //
+  protected async run(): Promise<void> {
+		for (const parameters of this.iterations) {
+      await this.perform(parameters);
+    }
+	}
+	
+  protected async perform(parameters: any[]): Promise<void> {
+  	// Place your custom code here (instantaneous):
+  	//
+    
+	}
+  
+  
+ 	
+  // Auto[MergingBegin]--->  
+  protected initialize(data: HierarchicalDataTable): void {
+	  // <---Auto[MergingBegin]
+	  // Auto[Merging]--->
+    let count = 0;
+    let value = undefined;
+    for (const [index, row] of data.rows.entries()) {
+      this.iterations[index] = this.iterations[index] || [];
+      value = undefined;
+      
+      if (row.keys.hasOwnProperty('')) {
+        value = row.keys[''];
+      } else if (row.columns.hasOwnProperty('')) {
+        value = row.columns[''];
+      }
+    
+      // Override data parsing and manipulation of Parameter 1 here:
+      // 
+      
+      
+      this.iterations[index][count] = value;
+      count += 1;
+
+    }
+	  // <---Auto[Merging]
+	  
+	  // Auto[MergingEnd]--->
+	}
+  // <---Auto[MergingEnd]
+  
+  // Auto[ClassEnd]--->
+}
+// <---Auto[ClassEnd]
+
+// Export variables here:
+//
+export default Worker;
+
+
+// <--- Auto[Generating:V1]
+// PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
