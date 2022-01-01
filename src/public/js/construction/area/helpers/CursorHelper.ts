@@ -142,7 +142,7 @@ var CursorHelper = {
     return {allAllowCursorElements, allAllowCursorPositions};
   },
 	findWalkPathForElement: function(allowCursorElement: HTMLElement) {
-    let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByClassName('internal-fsb-begin');
+    let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
     
     if (isReferenceElementASingleDomElement) {

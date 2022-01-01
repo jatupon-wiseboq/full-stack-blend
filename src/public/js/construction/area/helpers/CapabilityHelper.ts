@@ -61,7 +61,7 @@ var CapabilityHelper = {
 	          	listenEventFromElement.addEventListener('click', (event) => {
 	          		if (EventHelper.checkIfDenyForHandle(event)) return;
 	          		
-	          		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
+	          		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true);
 	          		let cursorPosition = EventHelper.getMousePosition(event);
 	          		let found = -1;
 	          		
@@ -96,7 +96,7 @@ var CapabilityHelper = {
 	            listenEventFromElement.addEventListener('click', (event) => {
 	              if (EventHelper.checkIfDenyForHandle(event)) return;
 	              
-	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
+	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true);
 	              let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(allowCursorElement, 'internal-fsb-class')) != -1);
 	              
 	              if (isReferenceElementASingleDomElement) {
@@ -141,7 +141,7 @@ var CapabilityHelper = {
                   mousePosition[1] - layoutPosition[1]
                 ));
               } else {
-	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement);
+	              let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true);
 	              if (referenceElement != null) {
 	                referenceElement.click();
 	                
