@@ -195,7 +195,7 @@ var ManipulationHelper = {
 		      	if (element) {
 		      		let allowCursorElement = element.parentNode;
 		      		if (HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-strict-layout')) {
-			      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+			      		let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true) || HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
 			      		let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
 			          let theAllowCursorElement = allowCursorElement;
 			          let indexOfAllowCursorElement = allowCursorElements.indexOf(theAllowCursorElement);
