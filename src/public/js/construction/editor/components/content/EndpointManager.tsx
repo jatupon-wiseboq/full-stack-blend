@@ -117,11 +117,17 @@ class EndpointManager extends Base<Props, State> {
       let constructionEditorData = this.generateWorkspaceData() || {};
       let frontEndCodeInfoDict = Object.assign({}, constructionWindow.generateFrontEndCodeForAllPages(true));
       let backEndControllerInfoDict = Object.assign({}, constructionWindow.generateBackEndCodeForAllPages(true));
+      let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
+      let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
+      let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
       let nextProjectData = {};
       
       if (incremental) {
       	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
       	const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
+      	const _incrementalUpdatingConnectorControllerInfoDict = this.incrementalUpdatingConnectorControllerInfoDict;
+      	const _incrementalUpdatingWorkerControllerInfoDict = this.incrementalUpdatingWorkerControllerInfoDict;
+      	const _incrementalUpdatingSchedulerControllerInfoDict = this.incrementalUpdatingSchedulerControllerInfoDict;
       	
       	for (const key of Object.keys(frontEndCodeInfoDict)) {
       		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
@@ -135,6 +141,30 @@ class EndpointManager extends Base<Props, State> {
       		if (backEndControllerInfoDict.hasOwnProperty(key)) {
       			if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
       				delete backEndControllerInfoDict[key];
+      			}
+      		}
+      	}
+      	
+      	for (const key of Object.keys(connectorControllerInfoDict)) {
+      		if (connectorControllerInfoDict.hasOwnProperty(key)) {
+      			if (JSON.stringify(_incrementalUpdatingConnectorControllerInfoDict[key]) == JSON.stringify(connectorControllerInfoDict[key])) {
+      				delete connectorControllerInfoDict[key];
+      			}
+      		}
+      	}
+      	
+      	for (const key of Object.keys(workerControllerInfoDict)) {
+      		if (workerControllerInfoDict.hasOwnProperty(key)) {
+      			if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key]) == JSON.stringify(workerControllerInfoDict[key])) {
+      				delete workerControllerInfoDict[key];
+      			}
+      		}
+      	}
+      	
+      	for (const key of Object.keys(schedulerControllerInfoDict)) {
+      		if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+      			if (JSON.stringify(_incrementalUpdatingSchedulerControllerInfoDict[key]) == JSON.stringify(schedulerControllerInfoDict[key])) {
+      				delete schedulerControllerInfoDict[key];
       			}
       		}
       	}
@@ -364,11 +394,26 @@ script(type="text/javascript" src="/js/Site.bundle.js")
           arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
         }
       }
+      for (let key in connectorControllerInfoDict) {
+        if (connectorControllerInfoDict.hasOwnProperty(key)) {
+          arrayOfControllerScripts.push(connectorControllerInfoDict[key][0]);
+        }
+      }
+      for (let key in workerControllerInfoDict) {
+        if (workerControllerInfoDict.hasOwnProperty(key)) {
+          arrayOfControllerScripts.push(workerControllerInfoDict[key][0]);
+        }
+      }
+      for (let key in schedulerControllerInfoDict) {
+        if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+          arrayOfControllerScripts.push(schedulerControllerInfoDict[key][0]);
+        }
+      }
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
         this.createController(nextProjectData.globalSettings.pages, () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-            this.createBackEndController(arrayOfControllerScripts, () => {
+            this.createBackEndController(arrayOfControllerScripts, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
                 this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
                   this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
@@ -381,6 +426,9 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                           if (incremental) {
 	                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
 	      										$this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
+	      										$this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
+	      										$this.incrementalUpdatingWorkerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
+	      										$this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
                           }
                           
                           cb(true);
@@ -492,7 +540,7 @@ ${tokens[1]}
       if (arrayOfContent.length != 0) mainprocess(0);
       else cb(nextFrontEndComponentsDataSHADict);
     }
-    createBackEndController(arrayOfContent: string[], cb: any) {
+    createBackEndController(arrayOfContent: string[], connectors: string[], workers: string[], schedulers: string[], cb: any) {
       let nextBackEndControllersDataSHAInfos = [];
       let mainprocess = ((mainIndex: number) => {
         let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
@@ -505,8 +553,13 @@ ${tokens[1]}
         } else {
           let subprocess = ((subIndex: number) => {
             let tokens = results[subIndex].split("\n// <---Auto[File]");
+            let path = './components/';
             
-            this.create(`./components/${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
+            if (connectors.indexOf(tokens[0]) != -1) path = './connectors/';
+            else if (workers.indexOf(tokens[0]) != -1) path = './workers/';
+            else if (schedulers.indexOf(tokens[0]) != -1) path = './schedulers/';
+            
+            this.create(`${path}${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${this.replaceShortcuts(tokens[1])}

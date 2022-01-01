@@ -298,7 +298,6 @@ class ProjectManager extends Base<Props, State> {
             let constructionPageData = CodeHelper.clone(constructionWindow.generateWorkspaceData() || {});
             let frontEndCodeInfoDict = CodeHelper.clone(constructionWindow.generateFrontEndCodeForAllPages(true));
             let backEndControllerInfoDict = CodeHelper.clone(constructionWindow.generateBackEndCodeForAllPages(true));
-            
             let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
             let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
             let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
