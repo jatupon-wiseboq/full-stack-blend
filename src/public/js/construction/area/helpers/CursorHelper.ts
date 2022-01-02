@@ -120,8 +120,7 @@ var CursorHelper = {
     let count = 0;
     let total = 0;
     for (let i=0; i<children.length; i++) {
-      if (children[i] == Accessories.cursor.getDOMNode()) continue;
-      if (children[i] == Accessories.resizer.getDOMNode()) continue;
+      if (HTMLHelper.hasClass(children[i], 'internal-fsb-accessory')) continue;
       if (isContainerAllowedCursor) {
         allAllowCursorElements.push(container);
         allAllowCursorPositions.push(count);
