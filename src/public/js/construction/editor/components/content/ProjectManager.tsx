@@ -614,7 +614,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
               this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
                   this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
-                    const process = () => {
+                    const process = (headerBlobError, headerBlobResult, footerBlobError, footerBlobResult) => {
                       if (headerBlobError) {
 							      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
 							      		
