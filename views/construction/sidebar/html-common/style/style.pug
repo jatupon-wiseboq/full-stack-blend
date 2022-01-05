@@ -24,10 +24,7 @@ div(internal-fsb-for="areFormatAndStyleOptionsAvailable")
       .section-subtitle
         | Container
       .section-body
-        span(internal-fsb-for="isNotContainingInFlexbox:true")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
-        span(internal-fsb-not-for="isNotContainingInFlexbox:true")
-          +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display-for-flexbox'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
+        +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['display'], watchingAttributeNames: ['internal-fsb-react-style-display']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['position'], watchingAttributeNames: ['internal-fsb-react-style-position']}")
         +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['z-index'], watchingAttributeNames: ['internal-fsb-react-style-z-index']}")
         span(internal-fsb-for="isNotContainingInFlexbox:true")
