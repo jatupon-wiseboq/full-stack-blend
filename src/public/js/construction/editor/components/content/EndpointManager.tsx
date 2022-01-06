@@ -414,7 +414,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
       }
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
-        this.createController(nextProjectData.globalSettings.pages, () => {
+        this.createController(nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
             this.createBackEndController(arrayOfControllerScripts, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
@@ -467,16 +467,26 @@ export default route;
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
     }
-    createController(routes: string[], cb: any) {
+    createController(routes: string[], connectors: string[], workers: string[], schedulers: string[], cb: any) {
       this.create('./Home.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
+import {ActionHelper} from "./helpers/ActionHelper";
+import {WorkerHelper} from "./helpers/WorkerHelper";
+import {SchedulerHelper} from "./helpers/SchedulerHelper";
+
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
+${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
+${workers.map(key => `import Worker${key} from "./workers/${this.getRepresentativeName(key)}";`).join('\n')}
+${schedulers.map(key => `import Scheduler${key} from "./schedulers/${this.getRepresentativeName(key)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
+${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
+${workers.map(key => `WorkerHelper.register(Worker${key});`).join('\n')}
+${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
