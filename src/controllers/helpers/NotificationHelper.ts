@@ -136,7 +136,7 @@ const NotificationHelper = {
 	associateInnerCircles: (session: any, innerCircleTags: string[]) => {
 		for (const innerCircleTag of innerCircleTags) {
 			innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
-			if (innerCircleLookupTable[innerCircleTag].indexOf(session.id) != -1) {
+			if (innerCircleLookupTable[innerCircleTag].indexOf(session.id) == -1) {
 				innerCircleLookupTable[innerCircleTag].push(session.id);
 			}
 		}
@@ -187,14 +187,14 @@ const NotificationHelper = {
   	const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
   	
   	if (!combinationInfo.hasOwnProperty(session.id)) {
-  		combinationInfo[session.id] = sessionLookupTable[session.id] && [...Array.from(sessionLookupTable[session.id])] || null;
+  		combinationInfo[session.id] = sessionLookupTable[session.id] && {sockets: [...Array.from(sessionLookupTable[session.id])]} || null;
   	}
   	
   	for (const innerCircleTag of innerCircleTags) {
   		const members = innerCircleLookupTable[innerCircleTag] || [];
   		
   		for (const sessionId of members) {
-  			combinationInfo[sessionId] = sessionLookupTable[sessionId] && [...Array.from(sessionLookupTable[sessionId])] || null;
+  			combinationInfo[sessionId] = sessionLookupTable[sessionId] && {sockets: [...Array.from(sessionLookupTable[sessionId])]} || null;
   		}
   	}
   	
@@ -290,20 +290,24 @@ const NotificationHelper = {
   	for (const result of results) {
 			for (const group in result.relations) {
 				if (result.relations.hasOwnProperty(group)) {
-					const firstRow = result.relations[group].rows[0];
-					if (!firstRow) continue;
-					
 					const nextSchema = SchemaHelper.getDataTableSchemaFromNotation(group);
-					const query = {};
-					const targetEntity = baseSchema.relations[nextSchema.group].targetEntity;
+					const md5OfClientTableUpdatingIdentity = result.relations[group].notification;
 					
-					if (firstRow.columns[targetEntity]) query[targetEntity] = firstRow.columns[targetEntity];
-					if (firstRow.keys[targetEntity]) query[targetEntity] = firstRow.keys[targetEntity];
-					
-					console.log(baseSchema.group, nextSchema.group, targetEntity, sessionId);
-					
-					if (Object.keys(query).length != 0) {
-						result.relations[group].notification = NotificationHelper.getTableUpdatingIdentity(nextSchema, query, {id: sessionId});
+					if (!md5OfClientTableUpdatingIdentity) continue;
+					if (notificationInfos[group]) {
+						for (const md5OfServerTableUpdatingIdentity in notificationInfos[group]) {
+							if (notificationInfos[group].hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
+								const combinations = notificationInfos[group][md5OfServerTableUpdatingIdentity];
+								
+								if (combinations[md5OfClientTableUpdatingIdentity]) {
+									const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
+									
+									if (!combinationInfo.hasOwnProperty(sessionId)) {
+							  		combinationInfo[sessionId] = sessionLookupTable[sessionId] && {sockets: [...Array.from(sessionLookupTable[sessionId])]} || null;
+							  	}
+								}
+							}
+						}
 					}
 					
 					NotificationHelper.recursiveTagDerivableSubsequenceNotification(nextSchema, result.relations[group].rows, sessionId);
