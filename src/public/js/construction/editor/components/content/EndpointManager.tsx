@@ -123,6 +123,9 @@ class EndpointManager extends Base<Props, State> {
       let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
       let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
       let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
+      let _connectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
+      let _workerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
+      let _schedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
       let nextProjectData = {};
       
       if (incremental) {
@@ -414,9 +417,9 @@ script(type="text/javascript" src="/js/Site.bundle.js")
       }
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
-        this.createController(nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
+        this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-            this.createBackEndController(arrayOfControllerScripts, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(schedulerControllerInfoDict), () => {
+            this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(_schedulerControllerInfoDict), () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
                 this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
                   this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
@@ -429,14 +432,14 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                           if (incremental) {
 	                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
 	      										$this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
-	      										$this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
+	      										$this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(_connectorControllerInfoDict);
 	      										$this.incrementalUpdatingWorkerControllerInfoDict = {};
-	      										for (const key in workerControllerInfoDict) {
-	      											if (workerControllerInfoDict.hasOwnProperty(key)) {
-	      												$this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = workerControllerInfoDict[key];
+	      										for (const key in _workerControllerInfoDict) {
+	      											if (_workerControllerInfoDict.hasOwnProperty(key)) {
+	      												$this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = _workerControllerInfoDict[key];
 	      											}
 	      										}
-	      										$this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
+	      										$this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(_schedulerControllerInfoDict);
                           }
                           
                           cb(true);
