@@ -48,7 +48,7 @@ class EndpointManager extends Base<Props, State> {
     }
     
     replaceShortcuts(textContent: any) {
-      textContent = textContent.replace(/(\@)(\{[^}]+\})([ ]*,[ ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, table) => {
+      textContent = textContent.replace(/(\@)(\{[^{}]*(\{[^{}]*(\{[^{}]*(\{[^{}]*[^{}]+[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\})([\t\r\n ]*,[\t\r\n ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, a, b, c, table) => {
         try {
           const createInputs = `RequestHelper.createInputs(${content})`;
           if (!table) return createInputs;
