@@ -8,7 +8,7 @@ import {queue} from '../../server';
 const dictionary: {[Identifier: string]: any} = {};
 
 const WorkerHelper = {
-  register: <T extends Worker>(worker: new () => T, name: string) => {
+  register: <T extends Worker>(worker: new (data: HierarchicalDataTable) => T, name: string) => {
   	dictionary[name] = worker;
   },
   enqueue: (table: HierarchicalDataTable) => {
