@@ -158,7 +158,7 @@ class EndpointManager extends Base<Props, State> {
       	
       	for (const key of Object.keys(workerControllerInfoDict)) {
       		if (workerControllerInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key]) == JSON.stringify(workerControllerInfoDict[key])) {
+      			if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]]) == JSON.stringify(workerControllerInfoDict[key])) {
       				delete workerControllerInfoDict[key];
       			}
       		}
@@ -416,7 +416,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
       this.createRoute(nextProjectData.globalSettings.pages, () => {
         this.createController(nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-            this.createBackEndController(arrayOfControllerScripts, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), () => {
+            this.createBackEndController(arrayOfControllerScripts, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(schedulerControllerInfoDict), () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
                 this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
                   this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
@@ -430,7 +430,12 @@ script(type="text/javascript" src="/js/Site.bundle.js")
 	                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
 	      										$this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
 	      										$this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
-	      										$this.incrementalUpdatingWorkerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
+	      										$this.incrementalUpdatingWorkerControllerInfoDict = {};
+	      										for (const key in workerControllerInfoDict) {
+	      											if (workerControllerInfoDict.hasOwnProperty(key)) {
+	      												$this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = workerControllerInfoDict[key];
+	      											}
+	      										}
 	      										$this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
                           }
                           
@@ -478,14 +483,14 @@ import {SchedulerHelper} from "./helpers/SchedulerHelper";
 
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 ${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
-${workers.map(key => `import Worker${key} from "./workers/${this.getRepresentativeName(key)}";`).join('\n')}
+${workers.map(key => `import Worker${key.split(':')[0]} from "./workers/${this.getRepresentativeName(key.split(':')[0])}";`).join('\n')}
 ${schedulers.map(key => `import Scheduler${key} from "./schedulers/${this.getRepresentativeName(key)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 ${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
-${workers.map(key => `WorkerHelper.register(Worker${key});`).join('\n')}
+${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}');`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
 // <--- Auto[Generating:V1]

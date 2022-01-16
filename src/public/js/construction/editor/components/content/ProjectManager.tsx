@@ -571,7 +571,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
             }
             for (let key in workerControllerInfoDict) {
               if (workerControllerInfoDict.hasOwnProperty(key)) {
-                persistingGUIDs[key] = true;
+                persistingGUIDs[key.split(':')[0]] = true;
               }
             }
             for (let key in schedulerControllerInfoDict) {
@@ -668,12 +668,13 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                         
                           let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
                           let nextPersistingFiles = [];
+                          let workers = Object.keys(workerControllerInfoDict).map((key) => { return key.split(':')[0]; });
                           
                           for (let key in nextProjectData.backEndControllerBlobSHADict) {
                             if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
                             	if (connectorControllerInfoDict.hasOwnProperty(key)) {
                             		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
-                            	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
+                            	} else if (workers.indexOf(key) != -1) {
                             		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
                             	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
                             		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
@@ -748,12 +749,12 @@ script(type="text/javascript" src="/js/Site.bundle.js")
                                     type: "blob",
                                     sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
                                   });
-                              	} else if (workerControllerInfoDict.hasOwnProperty(key)) {
+                              	} else if (workers.indexOf(key) != -1) {
                               		tree.push({
-                                    path: `src/controllers/workers/${this.getRepresentativeName(key)}.ts`,
+                                    path: `src/controllers/workers/${this.getRepresentativeName(key.split(':')[0])}.ts`,
                                     mode: "100644",
                                     type: "blob",
-                                    sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
+                                    sha: nextProjectData.backEndControllerBlobSHADict[key.split(':')[0]].split('#')[0]
                                   });
                               	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
                               		tree.push({
@@ -1069,14 +1070,14 @@ import {SchedulerHelper} from "./helpers/SchedulerHelper";
 
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 ${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
-${workers.map(key => `import Worker${key} from "./workers/${this.getRepresentativeName(key)}";`).join('\n')}
+${workers.map(key => `import Worker${key.split(':')[0]} from "./workers/${this.getRepresentativeName(key.split(':')[0])}";`).join('\n')}
 ${schedulers.map(key => `import Scheduler${key} from "./schedulers/${this.getRepresentativeName(key)}";`).join('\n')}
 
 ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 ${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
-${workers.map(key => `WorkerHelper.register(Worker${key});`).join('\n')}
+${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}');`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
 // <--- Auto[Generating:V1]
