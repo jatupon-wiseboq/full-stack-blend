@@ -522,8 +522,9 @@ const FULL_CONNECTOR_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
 import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
@@ -592,8 +593,9 @@ const FULL_WORKER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
 import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
 
@@ -662,8 +664,9 @@ const FULL_SCHEDULER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchemaHelper';
 import {SchedulerHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/SchedulerHelper';
 import {Base as $Base} from '{__IMPORT_DIRECTORY_PREFIX__}Base';
