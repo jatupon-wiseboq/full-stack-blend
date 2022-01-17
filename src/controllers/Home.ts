@@ -27,7 +27,7 @@ export const index = (req: Request, res: Response) => {
   new Componentindex(req, res, "home/index");
 }
 ActionHelper.register(Connector02699134);
-WorkerHelper.register(Worker0caebca0);
+WorkerHelper.register(Worker0caebca0, 'Queue');
 SchedulerHelper.register(Schedulere9acd781);
 
 // <--- Auto[Generating:V1]

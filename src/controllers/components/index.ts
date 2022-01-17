@@ -13,7 +13,7 @@ import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -360,7 +360,7 @@ class Controller extends Base {
   }
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;

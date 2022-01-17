@@ -4,15 +4,16 @@
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from './../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from './../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from './../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from './../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from './../helpers/SchemaHelper';
 import {SchedulerHelper} from './../helpers/SchedulerHelper';
 import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -78,7 +79,7 @@ class Scheduler extends Base {
 	}
   
   // Auto[MergingBegin]--->  
-  private initialize(): [number, number] {
+  protected initialize() {
   	let days: number = 0;
   	let minutes: number = 0;
   	let delegate: () => Promise<void> = null;

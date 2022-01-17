@@ -4,14 +4,15 @@
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from './../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from './../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from './../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from './../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from './../helpers/SchemaHelper';
 import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -77,7 +78,7 @@ class Connector extends Base {
 	}
   
   // Auto[MergingBegin]--->  
-  private initialize(): void {
+  protected initialize(): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
 	  this.register(ActionType.Insert, SchemaHelper.getSchemaFromKey('Employee'), this.onConnectionSourceInsert_02699134);
@@ -89,19 +90,18 @@ class Connector extends Base {
   // <---Auto[MergingEnd]
   
   // Auto[onConnectionSourceInsert_02699134:Begin]--->
-  protected async onConnectionSourceInsert_02699134(event: Event): Promise<HierarchicalDataRow[]> {
+  protected async onConnectionSourceInsert_02699134(info: any): Promise<HierarchicalDataRow[]> {
     // <---Auto[onConnectionSourceInsert_02699134:Begin]
     // Place your custom manipulation here:
     // 
-    // const customEvent: CustomEvent = event as CustomEvent;
-    // const source: DataTableSchema = customEvent.detail.source;    					/* source of relation */
-    // const target: DataTableSchema = customEvent.detail.target;    					/* target of relation */
-    // const rows: HierarchicalDataRow[] = customEvent.detail.rows;    				/* data in-between */
-    // const transaction: any = customEvent.detail.transaction;    						/* transaction context */
-    // const crossRelationUpsert: boolean = customEvent.detail.crossRelationUpsert;    /* upsert for the next manipulation */
-    // const session: any = customEvent.detail.session;    										/* request session */
-    // const leavePermission: boolean = customEvent.detail.leavePermission;  	/* override permission */
-    // const innerCircleTags: string[] = customEvent.detail.innerCircleTags;  /* circle tags */
+    // const source: DataTableSchema = info.source;    					/* source of relation */
+    // const target: DataTableSchema = info.target;    					/* target of relation */
+    // const rows: HierarchicalDataRow[] = info.rows;    				/* data in-between */
+    // const transaction: any = info.transaction;    						/* transaction context */
+    // const crossRelationUpsert: boolean = info.crossRelationUpsert;    /* upsert for the next manipulation */
+    // const session: any = info.session;    										/* request session */
+    // const leavePermission: boolean = info.leavePermission;  	/* override permission */
+    // const innerCircleTags: string[] = info.innerCircleTags;  /* circle tags */
     //
     
     return rows;

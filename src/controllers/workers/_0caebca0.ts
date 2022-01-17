@@ -4,14 +4,15 @@
 // Auto[Import]--->
 /* eslint-disable @typescript-eslint/camelcase */
 
-import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow} from './../helpers/DatabaseHelper';
+import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from './../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from './../helpers/ProjectConfigurationHelper';
+import {RequestHelper} from './../helpers/RequestHelper';
 import {SchemaHelper, DataTableSchema} from './../helpers/SchemaHelper';
 import {Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -77,13 +78,13 @@ class Worker extends Base {
 	}
 	
   protected async perform(parameters: any[]): Promise<void> {
-  	// Place your custom setup here (instantaneous):
+  	// Place your custom code here (instantaneous):
   	//
     
 	}
   
   // Auto[MergingBegin]--->  
-  private initialize(data: HierarchicalDataTable): void {
+  protected initialize(data: HierarchicalDataTable): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
     let count = 0;
