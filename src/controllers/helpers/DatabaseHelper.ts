@@ -991,7 +991,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		WorkerHelper.perform(input);
+		    		WorkerHelper.enqueue(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'PUT');
@@ -1176,7 +1176,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
-		    		WorkerHelper.perform(input);
+		    		WorkerHelper.enqueue(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
@@ -1365,7 +1365,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
 						break;
 		    	case SourceType.PrioritizedWorker:
-		    		WorkerHelper.perform(input);
+		    		WorkerHelper.enqueue(input);
 		    		break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'POST');
@@ -1860,7 +1860,7 @@ const DatabaseHelper = {
 						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 						break;
 					case SourceType.PrioritizedWorker:
-						WorkerHelper.perform(input);
+						WorkerHelper.enqueue(input);
 						break;
 		    	case SourceType.RESTful:
 		    		const _column = Object.keys(schema.columns).map(key => schema.columns[key]).filter(column => column.verb == 'DELETE');
