@@ -17,7 +17,7 @@ if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
 }
 
-socket.sockets.on("connection", (socket) => {
+socket && socket.sockets.on("connection", (socket) => {
 	const req: any = {headers: socket.handshake.headers};
 	const parser = cookieParser(process.env.SESSION_SECRET);
 	
