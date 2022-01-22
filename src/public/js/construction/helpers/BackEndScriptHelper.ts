@@ -882,9 +882,9 @@ ${CLASS_END_BEGIN}`);
         if (templateCode == TemplateCode.Connector) {
 					code = code.replace('constructor()', `constructor(SchemaHelper.getSchemaFromKey('${info['data-source-group-name']}'), SchemaHelper.getSchemaFromKey('${info['data-target-group-name']}'))`);
 				} else if (templateCode == TemplateCode.Worker) {
-					beforeExecutions.push('    let count = 0;');
-					beforeExecutions.push('    let value = undefined;');
 					beforeExecutions.push('    for (const [index, row] of data.rows.entries()) {');
+					beforeExecutions.push('      let count = 0;');
+					beforeExecutions.push('      let value = undefined;');
 					beforeExecutions.push('      this.iterations[index] = this.iterations[index] || [];');
 					afterExecutions.push('    }');
 				} else if (templateCode == TemplateCode.Scheduler) {
