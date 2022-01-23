@@ -6,6 +6,8 @@ import * as child from "child_process";
 
 import app from "./app";
 
+console.log("Initializing server and socket..");
+
 let socket = null;
 let server = null;
 
@@ -44,6 +46,8 @@ const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
 
 let queue: any = null;
 let scheduler: any = null;
+let finalize: Function = null;
+const complete = {};
 
 if (process.env.RESQUE_REDIS_URI) {
 	const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
@@ -88,72 +92,96 @@ if (process.env.RESQUE_REDIS_URI) {
 		}
 	);
 	
-	(async () => {
-		try {
-			if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_ENV) == -1 ||
-					["worker"].indexOf(process.env.NODE_ENV) != -1) {
-				console.log("Booting worker..");
-				
-				try {
-					const route = require("./route");
-					
-					worker.on("error", (error) => {
-					  console.log(error);
-					});
-					await worker.connect();
-					worker.start();
-				} catch (error) { /* void */ }
-			}
+	if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_ENV) == -1 ||
+			["worker"].indexOf(process.env.NODE_ENV) != -1) {		
+		console.log("Booting worker..");
+		worker.on("error", (error) => {
+		  console.log(error);
+		});
+		worker.connect().then(() => {
+			console.log("Started worker.");
+			worker.start();
 			
-			if (["worker"].indexOf(process.env.NODE_ENV) == -1) {
-				console.log("Booting scheduler..");
-				scheduler.on("error", (error) => {
-				  console.log(error);
-				});
-				await scheduler.connect();
-				scheduler.start();
-			}
+			complete['worker'] = true;
+			complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
+		});
+	} else {
+		complete['worker'] = true;
+	}
+	
+	if (["worker"].indexOf(process.env.NODE_ENV) == -1) {
+		console.log("Booting scheduler..");
+		scheduler.on("error", (error) => {
+		  console.log(error);
+		});
+		scheduler.connect().then(() => {
+			console.log("Started scheduler.");
+			scheduler.start();
 			
-			console.log("Booting queue..");
-			queue.on("error", (error) => {
-			  console.log(error);
-			});
-			await queue.connect();
-			
-			console.log("Done");
-		} catch(error) {
-			console.log(error);
-		}
-	})();
+			complete['scheduler'] = true;
+			complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
+		});
+	} else {
+		complete['scheduler'] = true;
+	}
+	
+	console.log("Booting queue..");
+	queue.on("error", (error) => {
+	  console.log(error);
+	});
+	queue.connect().then(() => {
+		console.log("Started queue.");
+		
+		complete['queue'] = true;
+		complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
+	});
+	
+	complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
+} else {
+	complete['worker'] = true;
+	complete['scheduler'] = true;
+	complete['queue'] = true;
 }
 
 // StackBlend routes
 // 
-if (["worker"].indexOf(process.env.NODE_ENV) == -1) {
+finalize = () => {
+	finalize = null;
+	
+	console.log("Registering jobs..");
 	const endpoint = require("./controllers/Endpoint");
-	
-	try {
-		const route = require("./route");
-		route.default(app);
-	} catch (error) {
-		if (process.env.JEST_WORKER_ID !== undefined) {
-			console.log("\x1b[33m", error, "\x1b[0m");
-		} else {
-			console.log("\x1b[31m", error, "\x1b[0m");
+	console.log("Registered.");
+	console.log("Initialized server and socket.");
+		
+	if (["production", "worker"].indexOf(process.env.NODE_ENV) == -1) {		
+		console.log("Initializing StackBlend router..");
+		
+		try {
+			const route = require("./route");
+			route.default(app);
+		} catch (error) {
+			if (process.env.JEST_WORKER_ID !== undefined) {
+				console.log("\x1b[33m", error, "\x1b[0m");
+			} else {
+				console.log("\x1b[31m", error, "\x1b[0m");
+			}
+			endpoint.addRecentError(error);
 		}
-		endpoint.addRecentError(error);
+		
+		// StackBlend test console
+		// 
+		if (["production"].indexOf(process.env.NODE_ENV) == -1) {
+			const controller = require("./controllers/components/Test");
+		
+			app.get("/test/api", controller.index);
+			app.post("/test/api", controller.index);
+			app.put("/test/api", controller.index);
+			app.delete("/test/api", controller.index);
+		}
+		
+		console.log("Initialized StackBlend router.");
 	}
-	
-	// StackBlend test console
-	// 
-	if (["production"].indexOf(process.env.NODE_ENV) == -1) {
-		const controller = require("./controllers/components/Test");
-	
-		app.get("/test/api", controller.index);
-		app.post("/test/api", controller.index);
-		app.put("/test/api", controller.index);
-		app.delete("/test/api", controller.index);
-	}
-}
+};
+complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
 
 export {server, socket, queue, scheduler};
