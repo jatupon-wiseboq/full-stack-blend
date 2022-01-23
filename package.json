@@ -149,5 +149,8 @@
     "ts-node": "^8.4.1",
     "typescript": "^3.7.5",
     "watchify": "^3.11.1"
+  },
+  "nodemonConfig": {
+    "delay": 2500
   }
 }
