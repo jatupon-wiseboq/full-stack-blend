@@ -46,7 +46,7 @@ const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
 
 let queue: any = null;
 let scheduler: any = null;
-let finalize: Function = null;
+let finalize: () => void = null;
 const complete = {};
 
 if (process.env.RESQUE_REDIS_URI) {
