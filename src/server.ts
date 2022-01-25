@@ -149,14 +149,16 @@ finalize = () => {
 	finalize = null;
 	
 	console.log("Registering jobs..");
-	const endpoint = require("./controllers/Endpoint");
+	require("./controllers/Home");
 	console.log("Registered.");
 	console.log("Initialized server and socket.");
 		
 	if (["production", "worker"].indexOf(process.env.NODE_ENV) == -1) {		
 		console.log("Initializing StackBlend router..");
 		
+		let endpoint = null;
 		try {
+			endpoint = require("./controllers/Endpoint");
 			const route = require("./route");
 			route.default(app);
 		} catch (error) {
@@ -165,7 +167,7 @@ finalize = () => {
 			} else {
 				console.log("\x1b[31m", error, "\x1b[0m");
 			}
-			endpoint.addRecentError(error);
+			endpoint && endpoint.addRecentError(error);
 		}
 		
 		// StackBlend test console
