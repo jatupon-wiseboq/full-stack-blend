@@ -29,7 +29,12 @@ const SchedulerHelper = {
   	if ((days & DAYS.FRIDAY) != 0) _days.push(5);
   	if ((days & DAYS.SATURDAY) != 0) _days.push(6);
   	
-  	scheduler && schedule.scheduleJob(`${minutes} * * * * ${_days.join(',')}`, delegate);
+  	let _minutes = minutes % 60;
+  	const _hours = Math.floor(minutes / 60);
+  	
+  	if (_hours != 0) _minutes = 0;
+  	
+  	scheduler && schedule.scheduleJob(`${_minutes ? '*/' + _minutes : '*'} ${_hours ? '*/' + _hours : '*'} * * * ${_days.join(',')}`, delegate);
   }
 };
 
