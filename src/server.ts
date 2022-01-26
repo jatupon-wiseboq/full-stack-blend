@@ -153,7 +153,7 @@ finalize = () => {
 	console.log("Registered.");
 	console.log("Initialized server and socket.");
 		
-	if (["production", "worker"].indexOf(process.env.NODE_ENV) == -1) {		
+	if (["worker"].indexOf(process.env.NODE_ENV) == -1) {		
 		console.log("Initializing StackBlend router..");
 		
 		let endpoint = null;
