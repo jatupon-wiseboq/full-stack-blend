@@ -407,7 +407,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || !CodeHelper.equals(clonedPage, page)) {
+      if (force || !CodeHelper.equals([clonedPage.head, clonedPage.extensions, clonedPage.body], [page.head, page.extensions, page.body])) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
@@ -461,7 +461,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || component.html != previous) {
+      if (force || !CodeHelper.equals(component.html, previous)) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
         WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
@@ -495,7 +495,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || popup.html != previous) {
+      if (force || !CodeHelper.equals(popup.html, previous)) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
