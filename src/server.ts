@@ -75,6 +75,10 @@ if (process.env.RESQUE_REDIS_URI) {
 	    }
 	  }
 	};
+	
+	const shouldEnableBackgroundJobs = (["development", "staging", "production", "worker"].indexOf(process.env.NODE_ENV) == -1 ||
+		["worker"].indexOf(process.env.NODE_ENV) != -1);
+	
 	queue = new Queue({
 			connection: redisConnectionSettingForResque
 		},
@@ -85,15 +89,14 @@ if (process.env.RESQUE_REDIS_URI) {
 	  	connection: redisConnectionSettingForResque,
 	  	queues: ["general"]
 	  },
-	  jobs
+	  shouldEnableBackgroundJobs ? jobs : {}
 	);
 	scheduler = new Scheduler({
 			connection: redisConnectionSettingForResque
 		}
 	);
 	
-	if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_ENV) == -1 ||
-			["worker"].indexOf(process.env.NODE_ENV) != -1) {		
+	if (shouldEnableBackgroundJobs) {		
 		console.log("Booting worker..");
 		worker.on("error", (error) => {
 		  console.log(error);
