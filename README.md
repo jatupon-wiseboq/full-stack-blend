@@ -1,6 +1,6 @@
 # Boilerplate for StackBlend Platform
 
-The purpose of this repository is for forking and being used with StackBlend platform. The forked repository will be your assets under the MIT License ([read more on terms of service, section 2: Use License](https://www.softenstorm.com/stackblend-policy-and-terms)).
+The purpose of this repository is for forking and being used with StackBlend platform. The forked repository will be your assets under the MIT license, while the editor is under the BSD 4-Clause license. ([read more on terms of service, section 2: Use License](https://www.softenstorm.com/stackblend-policy-and-terms)).
 
 Please go to https://www.stackblend.org to get started. Please note that a dedicated GitHub account for StackBlend is recommended while it is underdevelopment.
 
@@ -35,6 +35,8 @@ Required parameters in the environment file:
 2. RELATIONAL_DATABASE_KEY=MYSQL_URL
 3. SESSION_SECRET=
 
+Openning the preview URL on your browser by using: https://localhost.stackblend.org
+
 ## Running boilerplate on Heroku
 
 This repository has been designed to be working on Heroku, a cloud platform as a service (PaaS) supporting several programming languages, including Node.js. You may following with these instruction to get it works on Heroku.
@@ -49,13 +51,16 @@ This repository has been designed to be working on Heroku, a cloud platform as a
 6. Configure an automatic deploy or deploy a staging branch.
 7. Please take a note of the running URL.
 
+Openning the running URL on your browser to see the results.
+
 ## Updating boilerplate periodically
 
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org. Please note that for all of the old versions, you must perform "git cherry-pick COMMIT_ID" for all of hotfixes, beginning with a prefix "Hotfix:" in the message, that may apply to your current using version.
 
 1. Run "git stash".
-2. Run "git pull boilerplate 1.15 --allow-unrelated-histories".
-3. Run "git stash apply".
+2. Run "git fetch boilerplate 1.15".
+3. Run "git merge 1.15 --allow-unrelated-histories".
+4. Run "git stash apply".
 
 To list all of hotfixes:
 
@@ -78,7 +83,7 @@ To get started:
 6. From Feature Branch, enter "feature/YOUR_NEW_FEATURE_NAME".
 7. From Develop Branch, enter "develop".
 8. From Staging Branch, enter "staging".
-9. From Endpoint, enter "https://localhost".
+9. From Endpoint, enter "https://localhost.stackblend.org".
 
 ## Restoring malformed project files from regular updates
 
