@@ -31,9 +31,12 @@ script(src='/js/construction/Editor.bundle.js')
             include explorer/explorer
           .workspace-horizontal-panel.full-relative-size(style="border-bottom: solid 1px #c8c8c8;")
             .workspace-container
-              .workspace-vertical-container
+              .workspace-vertical-container.full-relative-size
                 .workspace-vertical-panel
                   include area/area
+              .workspace-vertical-container
+                .workspace-vertical-panel.text-center
+                  +CreateReactComponent('FullStackBlend.Components.PreviewSizePicker')
               include footer/footer
           .workspace-horizontal-panel
             include sidebar/sidebar
