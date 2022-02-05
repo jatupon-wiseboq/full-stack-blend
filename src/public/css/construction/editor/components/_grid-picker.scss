@@ -1,8 +1,7 @@
 // Grid & Display Picker
 // -------------------------
 .grid-picker,
-.display-picker,
-.preview-size-picker {
+.display-picker {
   .btn-group {
     
     .btn {
@@ -49,9 +48,8 @@
     
     .btn {
       line-height: 12px;
-      width: 48px;
       margin-bottom: 0;
-    	padding: 0;
+    	padding: 0 3px;
     }
     
     &:first-child {
@@ -71,4 +69,12 @@
     	padding: 3px 0;
     }
   }
+}
+body[mode="data"], body[mode="services"] {
+	.preview-size-picker-container {
+		display: none;
+	}
+	#area-container {
+		width: 100% !important;
+	}
 }

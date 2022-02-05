@@ -13,6 +13,7 @@ body > .jsconsole.eclipse > .jsconsole-input {
   right: 0;
   bottom: 0;
   background-color: #ffffff;
+  min-height: 35px;
   z-index: 100;
   
   &::before {

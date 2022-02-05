@@ -8,6 +8,8 @@ script(type="text/javascript").
   window.ENDPOINT = "!{user.endpoint}";
   window.PROGRESSIVE = !{user.progressivelyUpdate === true};
 div(internal-fsb-for="editing", style="display: none;")
-  iframe.construction(id='area', src='/editor/construction/area/html')
+  div(style="position: absolute; width: 100%; height: 100%; top: 0; right: 0; bottom: 0; left: 0; overflow-y: hidden; overflow-x: auto; background-color: darkgray;")
+    div(id='area-container', style="position: relative; width: 100%; height: 100%; margin: 0 auto;")
+      iframe.construction(id='area', src='/editor/construction/area/html')
 div(internal-fsb-not-for="editing")
   include ../common/empty
