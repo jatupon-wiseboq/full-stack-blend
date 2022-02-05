@@ -520,7 +520,6 @@ class Controller extends Base {
 
 const FULL_CONNECTOR_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-/* eslint-disable @typescript-eslint/camelcase */
 
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
@@ -591,7 +590,6 @@ class Connector extends Base {
 
 const FULL_WORKER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-/* eslint-disable @typescript-eslint/camelcase */
 
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
@@ -662,7 +660,6 @@ class Worker extends Base {
 
 const FULL_SCHEDULER_BOILERPLATE = `// Auto[File]--->// <---Auto[File]
 // Auto[Import]--->
-/* eslint-disable @typescript-eslint/camelcase */
 
 import {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, DatabaseHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/DatabaseHelper';
 import {ProjectConfigurationHelper} from '{__IMPORT_DIRECTORY_PREFIX__}../helpers/ProjectConfigurationHelper';
