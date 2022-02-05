@@ -1859,15 +1859,6 @@ var ManipulationHelper = {
     }
     
     switch (content) {
-      case 'siteButton':
-        EditorHelper.setEditorCurrentMode('site');
-        break;
-      case 'componentsButton':
-        EditorHelper.setEditorCurrentMode('components');
-        break;
-      case 'popupsButton':
-        EditorHelper.setEditorCurrentMode('popups');
-        break;
       case 'designButton':
         EditorHelper.setEditorCurrentMode('design');
         break;
@@ -1876,12 +1867,6 @@ var ManipulationHelper = {
         break;
       case 'codingButton':
         EditorHelper.setEditorCurrentMode('coding');
-        break;
-      case 'dataButton':
-        EditorHelper.setEditorCurrentMode('data');
-        break;
-      case 'servicesButton':
-        EditorHelper.setEditorCurrentMode('services');
         break;
     }
     

@@ -229,6 +229,7 @@ let cachedUpdateEditorProperties = {};
 	      if (content && content['extensions']) {
 	      	document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
 	      	if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
+	      	if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
 	      	
 	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox']) {
 	      		let value = content['extensions'][key];
