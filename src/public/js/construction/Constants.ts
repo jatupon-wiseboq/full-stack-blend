@@ -428,3 +428,4 @@ export const BOX_SHADOW_0_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px",
 export const BOX_SHADOW_1_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px", "6px", "7px", "8px"];
 export const BOX_SHADOW_2_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px", "10px", "15px", "20px"];
 export const BOX_SHADOW_3_OPTIONS = [null, "{COLOR}"];
+export const SCREEN_SIZE = [320, 576, 768, 992, 1200, 1920];
