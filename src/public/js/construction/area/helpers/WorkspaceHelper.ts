@@ -311,7 +311,7 @@ var WorkspaceHelper = {
     
     EditorHelper.init(['site'].indexOf(InternalProjectSettings.currentMode) != -1, updateUI);
 		
-  	HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
+  	HTMLHelper.setAttribute(document.body, 'explore', InternalProjectSettings.currentMode);
   },
   loadPageData: (mode: string, editingID: string, _window: any=window) => {
   	HTMLHelper.sortAttributes(_window.document);
@@ -373,7 +373,7 @@ var WorkspaceHelper = {
   saveWorkspaceData: (reinit: boolean=true, force: boolean=false) => {
   	HTMLHelper.sortAttributes();
   	
-  	HTMLHelper.removeAttribute(document.body, 'mode');
+  	HTMLHelper.removeAttribute(document.body, 'explore');
   	
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
@@ -422,7 +422,7 @@ var WorkspaceHelper = {
       
       // Need mode setting before re-render overlay.
       // 
-      HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
+      HTMLHelper.setAttribute(document.body, 'explore', InternalProjectSettings.currentMode);
       Accessories.overlay.setEnable(true);
       
       InternalDataFlows.schema = SchemaHelper.generateDataSchema();
@@ -507,7 +507,7 @@ var WorkspaceHelper = {
       }
     }
     
-    HTMLHelper.setAttribute(document.body, 'mode', InternalProjectSettings.currentMode);
+    HTMLHelper.setAttribute(document.body, 'explore', InternalProjectSettings.currentMode);
   },
   replaceBodyOuterHTML: (window: any, html: string) => {
   	const document = window.document;
