@@ -876,6 +876,25 @@ const DatabaseHelper = {
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
+						let bulkResults = [];
+						const recent = new Date();
+						if (input.source == SourceType.Relational) {
+							const records = [];
+							for (const row of input.rows) {
+								let queryKeys: {[Identifier: string]: any} = {};
+								let queryColumns: {[Identifier: string]: any} = {};
+								let dataKeys: {[Identifier: string]: any} = {};
+								let dataColumns: {[Identifier: string]: any} = {};
+								
+								[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
+								dataColumns['updatedAt'] = recent;
+								
+								records.push(Object.assign({}, dataColumns, dataKeys));
+							}
+							await map.bulkCreate(records, {transaction: transaction.relationalDatabaseTransaction});
+							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
+						}
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -889,7 +908,7 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
+								records[0] = bulkResults[input.rows.indexOf(row)];
 							} else if (input.source == SourceType.Document) {
 								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys)))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
@@ -1054,6 +1073,25 @@ const DatabaseHelper = {
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
+						let bulkResults = [];
+						const recent = new Date();
+						if (input.source == SourceType.Relational) {
+							const records = [];
+							for (const row of input.rows) {
+								let queryKeys: {[Identifier: string]: any} = {};
+								let queryColumns: {[Identifier: string]: any} = {};
+								let dataKeys: {[Identifier: string]: any} = {};
+								let dataColumns: {[Identifier: string]: any} = {};
+								
+								[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
+								dataColumns['updatedAt'] = recent;
+								
+								records.push(Object.assign({}, dataColumns, dataKeys));
+							}
+							await map.bulkCreate(records, {updateOnDuplicate: [...Object.keys(schema.columns).filter(key => schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction});
+							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
+						}
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1065,7 +1103,7 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
+								records[0] = bulkResults[input.rows.indexOf(row)];
 							} else if (input.source == SourceType.Document) {
 								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true});
 								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
@@ -1416,7 +1454,7 @@ const DatabaseHelper = {
 	        		if (!RelationalDatabaseClient) throw new Error('There was an error trying to obtain a connection (not found).');
 	        		
 	        		map = DatabaseHelper.ormMap(baseSchema);
-	  					records = await map.findAll() || [];
+	  					records = await map.findAll();
 	  					
 	  					for (const record of records) {
 	  					  const row = {
