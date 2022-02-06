@@ -905,7 +905,7 @@ const DatabaseHelper = {
 								}).join(';')] = result;
 							}
 							
-							for (const [record, index] of records.entries()) {
+							for (const [index, record] of records.entries()) {
 								const key = _uniqueKeys.map((key) => {
 									return `${key}:${record[key]}`;
 								}).join(';');
@@ -1125,7 +1125,7 @@ const DatabaseHelper = {
 								}).join(';')] = result;
 							}
 							
-							for (const [record, index] of records.entries()) {
+							for (const [index, record] of records.entries()) {
 								const key = _uniqueKeys.map((key) => {
 									return `${key}:${record[key]}`;
 								}).join(';');
