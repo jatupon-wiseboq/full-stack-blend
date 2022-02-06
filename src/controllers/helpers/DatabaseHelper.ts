@@ -878,7 +878,7 @@ const DatabaseHelper = {
 						
 						let bulkResults = [];
 						const recent = new Date();
-						if (input.source == SourceType.Relational) {
+						if (input.source == SourceType.Relational && input.rows.length > 1) {
 							const records = [];
 							for (const row of input.rows) {
 								let queryKeys: {[Identifier: string]: any} = {};
@@ -893,6 +893,25 @@ const DatabaseHelper = {
 							}
 							await map.bulkCreate(records, {transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
+							
+							const _bulkResults = bulkResults;
+							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _hashDict = {};
+							bulkResults = [];
+							
+							for (const result of _bulkResults) {
+								_hashDict[_uniqueKeys.map((key) => {
+									return `${key}:${result[key]}`;
+								}).join(';')] = result;
+							}
+							
+							for (const [record, index] of records.entries()) {
+								const key = _uniqueKeys.map((key) => {
+									return `${key}:${record[key]}`;
+								}).join(';');
+								if (!_hashDict[key]) throw new Error('Cannot matching all of results to inputs while performing bulk insertion.');
+								bulkResults[index] = _hashDict[key];
+							}
 						}
 						
 						for (const row of input.rows) {
@@ -908,7 +927,11 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = bulkResults[input.rows.indexOf(row)];
+								if (input.source == SourceType.Relational && input.rows.length > 1) {
+									records[0] = bulkResults[input.rows.indexOf(row)];
+								} else {
+									records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
+								}
 							} else if (input.source == SourceType.Document) {
 								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys)))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
@@ -1075,7 +1098,7 @@ const DatabaseHelper = {
 						
 						let bulkResults = [];
 						const recent = new Date();
-						if (input.source == SourceType.Relational) {
+						if (input.source == SourceType.Relational && input.rows.length > 1) {
 							const records = [];
 							for (const row of input.rows) {
 								let queryKeys: {[Identifier: string]: any} = {};
@@ -1090,6 +1113,25 @@ const DatabaseHelper = {
 							}
 							await map.bulkCreate(records, {updateOnDuplicate: [...Object.keys(schema.columns).filter(key => schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
+							
+							const _bulkResults = bulkResults;
+							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _hashDict = {};
+							bulkResults = [];
+							
+							for (const result of _bulkResults) {
+								_hashDict[_uniqueKeys.map((key) => {
+									return `${key}:${result[key]}`;
+								}).join(';')] = result;
+							}
+							
+							for (const [record, index] of records.entries()) {
+								const key = _uniqueKeys.map((key) => {
+									return `${key}:${record[key]}`;
+								}).join(';');
+								if (!_hashDict[key]) throw new Error('Cannot matching all of results to inputs while performing bulk upsertion.');
+								bulkResults[index] = _hashDict[key];
+							}
 						}
 						
 						for (const row of input.rows) {
@@ -1103,7 +1145,11 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								records[0] = bulkResults[input.rows.indexOf(row)];
+								if (input.source == SourceType.Relational && input.rows.length > 1) {
+									records[0] = bulkResults[input.rows.indexOf(row)];
+								} else {
+									records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
+								}
 							} else if (input.source == SourceType.Document) {
 								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true});
 								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
