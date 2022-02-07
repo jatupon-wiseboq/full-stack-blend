@@ -270,7 +270,7 @@ const NotificationHelper = {
   								if (combinationInfo[sessionId].length < 128) {
 	  								combinationInfo[sessionId].push({
 	  									action: action,
-	  									results: clonedResult
+	  									results: [clonedResult]
 	  								});
 	  							} else {
 	  								combinationInfo[sessionId] = false;
