@@ -12,7 +12,7 @@ import {ActionHelper} from './ActionHelper';
 import {WorkerHelper} from './WorkerHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
 import {FieldType, DataTableSchema} from './SchemaHelper';
-import {DataTypes} from 'sequelize';
+import {DataTypes, Op} from 'sequelize';
 import {ObjectID} from 'mongodb';
 
 const DEFAULT_DOCUMENT_DATABASE_NAME = process.env.MONGODB_DEFAULT_DATABASE_NAME;
@@ -1826,6 +1826,44 @@ const DatabaseHelper = {
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
+						let bulkResults = [];
+						const recent = new Date();
+						if (input.source == SourceType.Relational && input.rows.length > 1) {
+							const records = [];
+							for (const row of input.rows) {
+								let queryKeys: {[Identifier: string]: any} = {};
+								let queryColumns: {[Identifier: string]: any} = {};
+								let dataKeys: {[Identifier: string]: any} = {};
+								let dataColumns: {[Identifier: string]: any} = {};
+								
+								[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
+								dataColumns['updatedAt'] = recent;
+								
+								records.push(Object.assign({}, queryColumns, queryKeys));
+							}
+							bulkResults = await map.findAll({where: {[Op.or]: records}, transaction: transaction.relationalDatabaseTransaction});
+							await map.bulkDelete({[Op.or]: records}, {transaction: transaction.relationalDatabaseTransaction});
+							
+							const _bulkResults = bulkResults;
+							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _hashDict = {};
+							bulkResults = [];
+							
+							for (const result of _bulkResults) {
+								_hashDict[_uniqueKeys.map((key) => {
+									return `${key}:${result[key]}`;
+								}).join(';')] = result;
+							}
+							
+							for (const [index, record] of records.entries()) {
+								const key = _uniqueKeys.map((key) => {
+									return `${key}:${record[key]}`;
+								}).join(';');
+								if (!_hashDict[key]) throw new Error('Cannot matching all of results to inputs while performing bulk insertion.');
+								bulkResults[index] = _hashDict[key];
+							}
+						}
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1838,8 +1876,12 @@ const DatabaseHelper = {
 							
 							let records;
 							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
-		  				  await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+		  				  if (input.source == SourceType.Relational && input.rows.length > 1) {
+									records[0] = bulkResults[input.rows.indexOf(row)];
+								} else {
+									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
+		  				  	await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+								}
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
 									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
