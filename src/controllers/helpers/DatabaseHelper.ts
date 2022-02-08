@@ -1111,7 +1111,7 @@ const DatabaseHelper = {
 								
 								records.push(Object.assign({}, dataColumns, dataKeys));
 							}
-							await map.bulkCreate(records, {updateOnDuplicate: [...Object.keys(schema.columns).filter(key => schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction});
+							await map.bulkCreate(records, {updateOnDuplicate: Object.keys(schema.columns).filter(key => !schema.columns[key].unique), transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
 							const _bulkResults = bulkResults;
