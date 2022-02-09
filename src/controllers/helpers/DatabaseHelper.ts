@@ -895,7 +895,7 @@ const DatabaseHelper = {
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
 							const _bulkResults = bulkResults;
-							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _uniqueKeys = [...Object.keys(schema.keys), ...Object.keys(schema.columns).filter(key => schema.columns[key].unique)];
 							const _hashDict = {};
 							bulkResults = [];
 							
@@ -1115,7 +1115,7 @@ const DatabaseHelper = {
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
 							const _bulkResults = bulkResults;
-							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _uniqueKeys = [...Object.keys(schema.keys), ...Object.keys(schema.columns).filter(key => schema.columns[key].unique)];
 							const _hashDict = {};
 							bulkResults = [];
 							
@@ -1324,7 +1324,7 @@ const DatabaseHelper = {
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
-						let bulkResults = [];
+						/*let bulkResults = [];
 						const recent = new Date();
 						if (input.source == SourceType.Relational && input.rows.length > 1) {
 							const records = [];
@@ -1345,7 +1345,7 @@ const DatabaseHelper = {
 							if (bulkResults.length != records.length) throw new Error('Cannot perform bulk update because of mismatching in input and output data.');
 							
 							const _bulkResults = bulkResults;
-							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
+							const _uniqueKeys = [...Object.keys(schema.keys), ...Object.keys(schema.columns).filter(key => schema.columns[key].unique)];
 							const _hashDict = {};
 							bulkResults = [];
 							
@@ -1362,7 +1362,7 @@ const DatabaseHelper = {
 								if (!_hashDict[key]) throw new Error('Cannot matching all of results to inputs while performing bulk upsertion.');
 								bulkResults[index] = _hashDict[key];
 							}
-						}
+						}*/
 						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
@@ -1377,12 +1377,12 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								if (input.rows.length > 1) {
-									records[0] = bulkResults[input.rows.indexOf(row)];
-								} else {
+								//if (input.rows.length > 1) {
+								//	records[0] = bulkResults[input.rows.indexOf(row)];
+								//} else {
 									await map.update(dataColumns, {where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
 									records[0] = await map.findOne({where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
-								}
+								//}
 							} else if (input.source == SourceType.Document) {
 								if (Object.keys(dataColumns).length != 0) {
 									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns});
@@ -1886,26 +1886,7 @@ const DatabaseHelper = {
 								records.push(Object.assign({}, queryColumns, queryKeys));
 							}
 							bulkResults = await map.findAll({where: {[Op.or]: records}, transaction: transaction.relationalDatabaseTransaction});
-							await map.bulkDelete({[Op.or]: records}, {transaction: transaction.relationalDatabaseTransaction});
-							
-							const _bulkResults = bulkResults;
-							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
-							const _hashDict = {};
-							bulkResults = [];
-							
-							for (const result of _bulkResults) {
-								_hashDict[_uniqueKeys.map((key) => {
-									return `${key}:${result[key]}`;
-								}).join(';')] = result;
-							}
-							
-							for (const [index, record] of records.entries()) {
-								const key = _uniqueKeys.map((key) => {
-									return `${key}:${record[key]}`;
-								}).join(';');
-								if (!_hashDict[key]) throw new Error('Cannot matching all of results to inputs while performing bulk insertion.');
-								bulkResults[index] = _hashDict[key];
-							}
+							await RelationalDatabaseORMClient.getQueryInterface().bulkDelete(schema.group, {[Op.or]: records}, {transaction: transaction.relationalDatabaseTransaction});
 						}
 						
 						for (const row of input.rows) {
@@ -1918,7 +1899,7 @@ const DatabaseHelper = {
 							
 							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 							
-							let records;
+							let records = [];
 							if (input.source == SourceType.Relational) {
 		  				  if (input.rows.length > 1) {
 									records[0] = bulkResults[input.rows.indexOf(row)];
