@@ -1342,7 +1342,7 @@ const DatabaseHelper = {
 							await map.bulkCreate(records, {updateOnDuplicate: Object.keys(schema.columns).filter(key => !schema.columns[key].unique), transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
-							if (bulkResults.length != records.length) throw new Exception('Cannot perform bulk update because of mismatching in input and output data.');
+							if (bulkResults.length != records.length) throw new Error('Cannot perform bulk update because of mismatching in input and output data.');
 							
 							const _bulkResults = bulkResults;
 							const _uniqueKeys = Object.keys(schema.columns).filter(key => schema.columns[key].unique);
