@@ -107,8 +107,8 @@ socket && socket.sockets.on("connection", (socket) => {
   	}
   }
   
-  socket.on("disconnect", (socket) => {
-  	if (!socket.connected) {
+  socket.on("disconnect", (reason) => {
+  	if (reason == "ping timeout") {
   		const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
   		if (index != -1) {
   			sessionLookupTable[sessionId].splice(index, 1);
@@ -123,7 +123,7 @@ socket && socket.sockets.on("connection", (socket) => {
 	  }
   });
   
-  socket.on("reconnect", (socket) => {
+  socket.on("reconnect", (reason) => {
   	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
 	  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
   		sessionLookupTable[sessionId].push(socket);
