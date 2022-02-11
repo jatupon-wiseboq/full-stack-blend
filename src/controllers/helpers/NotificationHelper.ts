@@ -12,6 +12,8 @@ import dotenv from "dotenv";
 const notificationInfos = {};
 const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
 const sessionLookupTable: {[Identifier: string]: any[]} = {};
+const disconnectingSockets: {[Identifier: string]: any[]} = {};
+let disconnectingTimer = null;
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
@@ -107,23 +109,41 @@ socket && socket.sockets.on("connection", (socket) => {
   	}
   }
   
+  delete disconnectingSockets[socket.id];
+  
   socket.on("disconnect", (reason) => {
-  	if (reason == "ping timeout") {
-  		const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
-  		if (index != -1) {
-  			sessionLookupTable[sessionId].splice(index, 1);
-  		}
-  		
-  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
-  			sessionLookupTable[sessionId] = null;
-  			setSocket(null);
-  		} else {
-  			setSocket(sessionLookupTable[sessionId]);
-  		}
-	  }
+  	disconnectingSockets[socket.id] = [socket, 15];
   });
   
+  disconnectingTimer = disconnectingTimer || setInterval(() => {
+		for (const socketId in disconnectingSockets) {
+			if (disconnectingSockets.hasOwnProperty(socketId)) {
+				disconnectingSockets[socketId][1]--;
+				
+				if (disconnectingSockets[socketId][1] <= 0) {
+					const socket = disconnectingSockets[socketId][0];
+					const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
+		  		
+		  		if (index != -1) {
+		  			sessionLookupTable[sessionId].splice(index, 1);
+		  		}
+		  		
+		  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
+		  			sessionLookupTable[sessionId] = null;
+		  			setSocket(null);
+		  		} else {
+		  			setSocket(sessionLookupTable[sessionId]);
+		  		}
+		  		
+		  		delete disconnectingSockets[socket.id];
+				}
+			}
+		}
+	}, 1000);
+  
   socket.on("reconnect", (reason) => {
+  	delete disconnectingSockets[socket.id];
+  	
   	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
 	  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
   		sessionLookupTable[sessionId].push(socket);
