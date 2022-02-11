@@ -122,18 +122,26 @@ socket && socket.sockets.on("connection", (socket) => {
 				
 				if (disconnectingSockets[socketId][1] <= 0) {
 					const socket = disconnectingSockets[socketId][0];
-					const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
-		  		
-		  		if (index != -1) {
-		  			sessionLookupTable[sessionId].splice(index, 1);
-		  		}
-		  		
-		  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
-		  			sessionLookupTable[sessionId] = null;
-		  			setSocket(null);
-		  		} else {
-		  			setSocket(sessionLookupTable[sessionId]);
-		  		}
+					const req: any = {headers: socket.handshake.headers};
+					const parser = cookieParser(process.env.SESSION_SECRET);
+					
+					parser(req, {}, () => {});
+					
+				  const sessionId = req.signedCookies["connect.sid"];
+					if (sessionId) {
+						const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
+			  		
+			  		if (index != -1) {
+			  			sessionLookupTable[sessionId].splice(index, 1);
+			  		}
+			  		
+			  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
+			  			sessionLookupTable[sessionId] = null;
+			  			setSocket(null);
+			  		} else {
+			  			setSocket(sessionLookupTable[sessionId]);
+			  		}
+			  	}
 		  		
 		  		delete disconnectingSockets[socket.id];
 				}
