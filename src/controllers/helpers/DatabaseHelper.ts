@@ -1081,7 +1081,7 @@ const DatabaseHelper = {
 						
 						let bulkResults = [];
 						const recent = new Date();
-						if (input.source == SourceType.Relational && input.rows.length > 1) {
+						if (input.source == SourceType.Relational && input.rows.length > 1 && input.rows.every((row) => Object.keys(row.relations).length == 0)) {
 							const records = [];
 							for (const row of input.rows) {
 								let queryKeys: {[Identifier: string]: any} = {};
@@ -1111,7 +1111,7 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								if (input.rows.length > 1) {
+								if (input.rows.length > 1 && Object.keys(row.relations).length == 0) {
 									records[0] = bulkResults[input.rows.indexOf(row)];
 								} else {
 									records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
