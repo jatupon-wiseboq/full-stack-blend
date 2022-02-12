@@ -1097,7 +1097,7 @@ const DatabaseHelper = {
 							await map.bulkCreate(records, {updateOnDuplicate: Object.keys(schema.columns).filter(key => !schema.columns[key].unique), transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
-							if (input.rows.length != bulkResults.length) throw new Error('Cannot matching all of results to inputs while performing bulk upsertion.');
+							input.rows = input.rows.splice(0, bulkResults.length); // Please make sure these won't be used except loop counting.
 						}
 						
 						for (const row of input.rows) {
