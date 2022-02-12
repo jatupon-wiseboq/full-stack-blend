@@ -83,7 +83,7 @@ socket && socket.sockets.on("connection", (socket) => {
 				  						}
 					  					
 				  						hasState = true;
-							  		combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
+							  			combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
 				  					}
 				  				} else {
 				  					combinationInfo[sessionId] = null;
