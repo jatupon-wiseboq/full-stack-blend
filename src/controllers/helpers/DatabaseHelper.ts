@@ -1803,14 +1803,14 @@ const DatabaseHelper = {
 								let dataColumns: {[Identifier: string]: any} = {};
 								
 								[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
-								dataColumns['updatedAt'] = recent;
 								
 								records.push(Object.assign({}, queryColumns, queryKeys));
 							}
 							bulkResults = await map.findAll({where: {[Op.or]: records}, transaction: transaction.relationalDatabaseTransaction});
-							await RelationalDatabaseORMClient.getQueryInterface().bulkDelete(schema.group, {[Op.or]: records}, {transaction: transaction.relationalDatabaseTransaction});
+							await map.destroy({where: {[Op.or]: records}}, {force: true, transaction: transaction.relationalDatabaseTransaction});
 						}
 						
+						let isFirstLoop = true;
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1824,7 +1824,8 @@ const DatabaseHelper = {
 							let records = [];
 							if (input.source == SourceType.Relational) {
 		  				  if (input.rows.length > 1) {
-									records[0] = bulkResults[input.rows.indexOf(row)];
+									records = (isFirstLoop) ? bulkResults : [];
+									isFirstLoop = false;
 								} else {
 									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
 		  				  	await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
