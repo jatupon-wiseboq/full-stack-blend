@@ -1080,8 +1080,9 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						let bulkResults = [];
+						let allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
 						const recent = new Date();
-						if (input.source == SourceType.Relational && input.rows.length > 1 && input.rows.every((row) => Object.keys(row.relations).length == 0)) {
+						if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
 							const records = [];
 							for (const row of input.rows) {
 								let queryKeys: {[Identifier: string]: any} = {};
@@ -1111,7 +1112,7 @@ const DatabaseHelper = {
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
-								if (input.rows.length > 1 && Object.keys(row.relations).length == 0) {
+								if (input.rows.length > 1 && allowBulkProcess) {
 									records[0] = bulkResults[input.rows.indexOf(row)];
 								} else {
 									records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
@@ -1793,8 +1794,9 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						let bulkResults = [];
+						let allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
 						const recent = new Date();
-						if (input.source == SourceType.Relational && input.rows.length > 1) {
+						if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
 							const records = [];
 							for (const row of input.rows) {
 								let queryKeys: {[Identifier: string]: any} = {};
@@ -1810,7 +1812,6 @@ const DatabaseHelper = {
 							await map.destroy({where: {[Op.or]: records}}, {force: true, transaction: transaction.relationalDatabaseTransaction});
 						}
 						
-						let isFirstLoop = true;
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1823,9 +1824,8 @@ const DatabaseHelper = {
 							
 							let records = [];
 							if (input.source == SourceType.Relational) {
-		  				  if (input.rows.length > 1) {
-									records = (isFirstLoop) ? bulkResults : [];
-									isFirstLoop = false;
+		  				  if (input.rows.length > 1 && allowBulkProcess) {
+									records = bulkResults;
 								} else {
 									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
 		  				  	await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
@@ -1948,6 +1948,12 @@ const DatabaseHelper = {
 		    		results.push(table.rows[0]);
 		    		
 		    		break;
+		    	
+		    	if (input.source == SourceType.Relational) {
+		  			if (input.rows.length > 1 && allowBulkProcess) {
+		  				break;
+		  			}
+		  		}
 				}
 		    
 	  		resolve();
