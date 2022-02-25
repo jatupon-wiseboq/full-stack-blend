@@ -1929,6 +1929,12 @@ const DatabaseHelper = {
 								  }
 								}
 							}
+							
+				    	if (input.source == SourceType.Relational) {
+				  			if (input.rows.length > 1 && allowBulkProcess) {
+				  				break;
+				  			}
+				  		}
 						}
 						
 						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
@@ -1948,12 +1954,6 @@ const DatabaseHelper = {
 		    		results.push(table.rows[0]);
 		    		
 		    		break;
-		    	
-		    	if (input.source == SourceType.Relational) {
-		  			if (input.rows.length > 1 && allowBulkProcess) {
-		  				break;
-		  			}
-		  		}
 				}
 		    
 	  		resolve();
