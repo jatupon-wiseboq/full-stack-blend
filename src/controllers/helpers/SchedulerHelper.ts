@@ -34,7 +34,7 @@ const SchedulerHelper = {
   	
   	if (_hours != 0) _minutes = 0;
   	
-  	scheduler && schedule.scheduleJob(`${_minutes ? '*/' + _minutes : '*'} ${_hours ? '*/' + _hours : '*'} * * * ${_days.join(',')}`, delegate);
+  	scheduler && schedule.scheduleJob(`0 ${_minutes ? '*/' + _minutes : '*'} ${_hours ? '*/' + _hours : '*'} * * ${_days.join(',')}`, delegate);
   }
 };
 
