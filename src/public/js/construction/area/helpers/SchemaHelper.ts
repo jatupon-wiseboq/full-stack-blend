@@ -23,6 +23,11 @@ var SchemaHelper = {
         let tableGUID = HTMLHelper.getAttribute(tableElement, 'internal-fsb-guid');
         let columnElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', entities[i], tableElement);
         let relationElements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'Connection');
+        let dataForwardOption = HTMLHelper.getAttribute(tableElement, 'data-forward-option');
+        let dataForwardMode = HTMLHelper.getAttribute(tableElement, 'data-forward-mode');
+        let dataForwardRecursive = HTMLHelper.getAttribute(tableElement, 'data-forward-recursive');
+        let dataForwardingTable = HTMLHelper.getAttribute(tableElement, 'data-forwarding-table');
+        let dataForwardingPrefix = HTMLHelper.getAttribute(tableElement, 'data-forwarding-prefix');
         
         let keys = {};
         let columns = {};
@@ -104,7 +109,14 @@ var SchemaHelper = {
           columns: columns,
           relations: relations,
           modifyingPermission: SchemaHelper.generatePermission(tableElement, 'data-lock'),
-          retrievingPermission: SchemaHelper.generatePermission(tableElement, 'data-rendering-condition')
+          retrievingPermission: SchemaHelper.generatePermission(tableElement, 'data-rendering-condition'),
+          forward: (dataForwardOption) ? {
+          	option: dataForwardOption,
+	          mode: dataForwardMode || 'collection',
+	          recursive: dataForwardRecursive === 'true',
+	          forwardingTable: dataForwardingTable || null,
+	          forwardingPrefix: dataForwardingPrefix || null
+	        } : null
         };
       }
     }
