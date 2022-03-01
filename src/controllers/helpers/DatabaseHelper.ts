@@ -839,6 +839,7 @@ const DatabaseHelper = {
 		if (schema.source != SourceType.Document) return;
 		if (results.length == 0) return;
 		if (!schema.forward.forwardingTable) throw new Error(`Developer must define a set of forwarding tables for '${schema.group}'.`);
+		if (isRoot) results = CodeHelper.clone(results);
 		
 		const tables = schema.forward.forwardingTable.split(',');
 		for (const key of tables) {
