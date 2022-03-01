@@ -1772,7 +1772,7 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
 							
-							if (results[schema.group] && results[schema.group].forwarded === true) {
+							if (!results[schema.group] || results[schema.group].forwarded !== true) {
 								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
 								
 								let records;
