@@ -858,7 +858,7 @@ const DatabaseHelper = {
 				results.splice(0, 1);
 			}
 			
-			for (const result of results) {
+			for (const [index, result] of results.entries()) {
 				const query = {keys: {}, columns: {}, relations: {}};
 				if (isRoot) result.relations = {};
 				
@@ -941,11 +941,21 @@ const DatabaseHelper = {
 					const properties = {};
 					
 					if (schema.forward.mode == 'prefix') {
-						const forwardingPrefix = schema.forward.forwardingPrefix || '';
-						
-						for (const key in result.columns) {
-							if (result.columns.hasProperty(key)) {
-								properties[`${forwardingPrefix}${key.charAt(0).toUpperCase() + key.slice(1)}`] = result.columns[key];
+						if (schema.forward.option == 'single') {
+							const forwardingPrefix = schema.forward.forwardingPrefix || '';
+							
+							for (const key in result.columns) {
+								if (result.columns.hasProperty(key)) {
+									properties[`${forwardingPrefix}${key.charAt(0).toUpperCase() + key.slice(1)}`] = result.columns[key];
+								}
+							}
+						} else {
+							const forwardingPrefix = schema.forward.forwardingPrefix || '';
+							
+							for (const key in result.columns) {
+								if (result.columns.hasProperty(key)) {
+									properties[`${forwardingPrefix}${key.charAt(0).toUpperCase() + key.slice(1)}${index + 1}`] = result.columns[key];
+								}
 							}
 						}
 					} else {
