@@ -849,7 +849,7 @@ const DatabaseHelper = {
 			  rows: []
 			};
 			
-			if (!schema) throw new Error(`Developer specified a non-existing of forwarding tables for '${schema.group}'.`);
+			if (!nextSchema) throw new Error(`Developer specified a non-existing of forwarding tables for '${schema.group}'.`);
 			if (!schema.relations[nextSchema.group]) throw new Error(`Developer specified a non-related of forwarding tables for '${schema.group}'.`);
 			
 			const relation = schema.relations[nextSchema.group];
