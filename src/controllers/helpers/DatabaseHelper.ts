@@ -53,6 +53,7 @@ interface HierarchicalDataTable {
   notification?: string;
   associate?: boolean;
   notify?: string[];
+  forwarded?: boolean;
 }
 interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
@@ -964,7 +965,8 @@ const DatabaseHelper = {
 						properties['relations'][schema.group] = {
 							source: schema.source,
 							group: schema.group,
-						  rows: embededResults
+						  rows: embededResults,
+					  	forwarded: true
 						}
 					}
 					
@@ -1761,57 +1763,81 @@ const DatabaseHelper = {
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
 						for (const row of input.rows) {
+							let rows = [];
+							
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
 							let dataKeys: {[Identifier: string]: any} = {};
 							let dataColumns: {[Identifier: string]: any} = {};
 							
-							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
-							
-							const rows = [];
-							let records;
-							if (input.source == SourceType.Relational) {
-								records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
-							} else if (input.source == SourceType.Document) {
-								if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
-								records = await new Promise(async (resolve, reject) => {
-									await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
-										if (error) {
-											reject(error);
-										} else {
-											resolve(results);
-										}
+							if (results[schema.group] && results[schema.group].forwarded === true) {
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
+								
+								let records;
+								if (input.source == SourceType.Relational) {
+									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
+								} else if (input.source == SourceType.Document) {
+									if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
+									records = await new Promise(async (resolve, reject) => {
+										await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+											if (error) {
+												reject(error);
+											} else {
+												resolve(results);
+											}
+										});
 									});
-								});
-							} else if (input.source == SourceType.VolatileMemory) {
-								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(queryKeys));
-								const record = await VolatileMemoryClient.get(_key);
-								records = record && [JSON.parse(record)] || [];
-							}
-							
-							for (const record of records) {
-							  const row = {
-		  				    keys: {},
-		  				    columns: {},
-		  				    relations: {}
-		  				  };
-						  
-						  	if (record['_id']) record['id'] = record['_id'].toString();
-						  	
-							  for (const key in schema.columns) {
-		  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
-		  					  }
-		  					}
-		  					for (const key in schema.keys) {
-		  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
-		  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
-		  					  }
-		  					}
-		  					
-		  					rows.push(row);
+								} else if (input.source == SourceType.VolatileMemory) {
+									const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(queryKeys));
+									const record = await VolatileMemoryClient.get(_key);
+									records = record && [JSON.parse(record)] || [];
+								}
+								
+								for (const record of records) {
+								  const row = {
+			  				    keys: {},
+			  				    columns: {},
+			  				    relations: {}
+			  				  };
+							  
+							  	if (record['_id']) record['id'] = record['_id'].toString();
+							  	
+								  for (const key in schema.columns) {
+			  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+			  					    row.columns[key] = fixType(schema.columns[key].fieldType, record[key]);
+			  					  }
+			  					}
+			  					for (const key in schema.keys) {
+			  					  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+			  					    row.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
+			  					  }
+			  					}
+			  					
+			  					if (record['relations']) row.relations = record['relations'];
+			  					
+			  					rows.push(row);
+								}
+							} else {
+								for (const row of results[schema.group].rows) {
+									let found = false;
+									
+									for (const key in queryKeys) {
+			  					  if (queryKeys.hasOwnProperty(key) && row.keys[key] != queryKeys[key]) {
+			  					    found = true;
+			  					    break;
+			  					  }
+			  					}
+			  					for (const key in queryColumns) {
+			  					  if (queryColumns.hasOwnProperty(key) && row.columns[key] != queryColumns[key]) {
+			  					    found = true;
+			  					    break;
+			  					  }
+			  					}
+									
+									if (!found) rows.push(row);
+								}
 							}
 						
 							results[schema.group] = results[schema.group] || {
@@ -1852,7 +1878,7 @@ const DatabaseHelper = {
 								  			}
 							  			}
 							  		}
-							  		
+										
 							  		row.relations[key].rows = await ActionHelper.perform(ActionType.Retrieve, schema, nextSchema, row.relations[key].rows, connectionInfos, undefined, session, leavePermission, innerCircleTags);
 									  
 									  await DatabaseHelper.performRecursiveRetrieve(row.relations[key], nextSchema, _row.relations, session, notifyUpdates, leavePermission, connectionInfos, innerCircleTags);
