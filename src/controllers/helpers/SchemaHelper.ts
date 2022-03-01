@@ -14,6 +14,13 @@ enum FieldType {
   DateTime
 }
 
+interface ForwardOptions {
+	option: string;
+  mode: string;
+  recursive: boolean;
+  forwardingTable: string;
+  forwardingPrefix: string;
+}
 interface DataSchema {
   tables: {[Identifier: string]: DataTableSchema};
 }
@@ -26,6 +33,7 @@ interface DataTableSchema {
   relations: {[Identifier: string]: DataRelationSchema};
   modifyingPermission: Permission;
   retrievingPermission: Permission;
+  forward: ForwardOptions;
 }
 interface DataColumnSchema {
 	name: string;

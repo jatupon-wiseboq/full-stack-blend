@@ -834,6 +834,141 @@ const DatabaseHelper = {
 							
 		return [queryKeys, queryColumns, dataKeys, dataColumns];
 	},
+	recursiveForwardRecordSet: async (schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, isRoot: boolean=true) => {
+		if (!schema.forward) return;
+		if (schema.source != SourceType.Document) return;
+		if (results.length == 0) return;
+		if (!schema.forward.forwardingTable) throw new Error(`Developer must define a set of forwarding tables for '${schema.group}'.`);
+		
+		const tables = schema.forward.forwardingTable.split(',');
+		for (const key in tables) {
+			const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+			const nextResults: HierarchicalDataTable = {
+				source: nextSchema.source,
+				group: nextSchema.group,
+			  rows: []
+			};
+			
+			if (!schema) throw new Error(`Developer specified a non-existing of forwarding tables for '${schema.group}'.`);
+			if (!schema.relations[nextSchema.group]) throw new Error(`Developer specified a non-related of forwarding tables for '${schema.group}'.`);
+			
+			const relation = schema.relations[nextSchema.group];
+			
+			if (schema.forward.option == 'single') {
+				results.splice(0, 1);
+			}
+			
+			for (const result of results) {
+				const query = {keys: {}, columns: {}, relations: {}};
+				if (isRoot) result.relations = {};
+				
+  			if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+	  				query.columns[relation.targetEntity] = result.columns[relation.sourceEntity];
+	  			} else {
+	  				query.keys[relation.targetEntity] = result.columns[relation.sourceEntity];
+	  			}
+  			} else {
+  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && schema.source == SourceType.Document) {
+  						query.columns[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+  					} else {
+  						query.columns[relation.targetEntity] = result.keys[relation.sourceEntity];
+  					}
+	  			} else {
+	  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && schema.source == SourceType.Document) {
+  						query.keys[relation.targetEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+  					} else {
+  						query.keys[relation.targetEntity] = result.keys[relation.sourceEntity];
+  					}
+	  			}
+  			}
+  			
+  			const dataset = {};
+  			dataset[nextSchema.group] = nextResults;
+  			
+				await DatabaseHelper.performRecursiveRetrieve({
+					source: nextSchema.source,
+					group: nextSchema.group,
+				  rows: [query]
+				}, nextSchema, dataset, undefined, undefined, undefined, transaction);
+				
+				const embededResults: HierarchicalDataRow[] = [];
+				
+				if (schema.forward.option == 'single') {
+					embededResults.push(result);
+				} else if (schema.forward.option == 'multiple') {
+					const _query = {keys: {}, columns: {}, relations: {}};
+					
+					if (schema.columns.hasOwnProperty(relation.sourceEntity)) {
+	  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+		  				_query.columns[relation.sourceEntity] = result.columns[relation.sourceEntity];
+		  			} else {
+		  				_query.keys[relation.sourceEntity] = result.columns[relation.sourceEntity];
+		  			}
+	  			} else {
+	  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
+	  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && schema.source == SourceType.Document) {
+	  						_query.columns[relation.sourceEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+	  					} else {
+	  						_query.columns[relation.sourceEntity] = result.keys[relation.sourceEntity];
+	  					}
+		  			} else {
+		  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`) && schema.source == SourceType.Document) {
+	  						_query.keys[relation.sourceEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+	  					} else {
+	  						_query.keys[relation.sourceEntity] = result.keys[relation.sourceEntity];
+	  					}
+		  			}
+	  			}
+	  			
+	  			const _dataset = {};
+  				_dataset[schema.group] = {
+						source: schema.source,
+						group: schema.group,
+					  rows: embededResults
+					};
+	  			
+	  			await DatabaseHelper.performRecursiveRetrieve({
+						source: schema.source,
+						group: schema.group,
+					  rows: [_query]
+					}, schema, _dataset, undefined, undefined, undefined, transaction);
+				}
+				
+				for (let i=0; i<nextResults.rows.length; i++) {
+					const nextResult = nextResults.rows[i];
+					const properties = {};
+					
+					if (schema.forward.mode == 'prefix') {
+						const forwardingPrefix = schema.forward.forwardingPrefix || '';
+						
+						for (const key in result.columns) {
+							if (result.columns.hasProperty(key)) {
+								properties[`${forwardingPrefix}${key.charAt(0).toUpperCase() + key.slice(1)}`] = result.columns[key];
+							}
+						}
+					} else {
+						properties['relations'] = nextResult.relations || {};
+						properties['relations'][schema.group] = {
+							source: schema.source,
+							group: schema.group,
+						  rows: embededResults
+						}
+					}
+					
+					if (Object.keys(nextResult.keys).length != 0) {
+						await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(nextResult.keys, {$set: properties});
+						nextResult.columns = Object.assign(nextResult.columns, properties);
+					}
+				}
+			}
+			
+			if (schema.forward.recursive) {
+				DatabaseHelper.recursiveForwardRecordSet(nextSchema, nextResults.rows, transaction, false);
+			}
+		}
+	},
 	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
   		const transaction = await CreateTransaction({});
@@ -1013,6 +1148,7 @@ const DatabaseHelper = {
 							}
 						}
 						
+						DatabaseHelper.recursiveForwardRecordSet(schema, results, transaction);
 						NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
@@ -1224,6 +1360,7 @@ const DatabaseHelper = {
 							}
 						}
 						
+						DatabaseHelper.recursiveForwardRecordSet(schema, results, transaction);
 						NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
@@ -1413,6 +1550,7 @@ const DatabaseHelper = {
 							}
 						}
 						
+						DatabaseHelper.recursiveForwardRecordSet(schema, results, transaction);
 						NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
 						break;
 		    	case SourceType.PrioritizedWorker:
@@ -1937,6 +2075,7 @@ const DatabaseHelper = {
 				  		}
 						}
 						
+						DatabaseHelper.recursiveForwardRecordSet(schema, results, transaction);
 						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
 						break;
 					case SourceType.PrioritizedWorker:
