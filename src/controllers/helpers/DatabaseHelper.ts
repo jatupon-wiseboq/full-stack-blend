@@ -841,17 +841,17 @@ const DatabaseHelper = {
 		if (!schema.forward.forwardingTable) throw new Error(`Developer must define a set of forwarding tables for '${schema.group}'.`);
 		
 		const tables = schema.forward.forwardingTable.split(',');
-		for (const key in tables) {
+		for (const key of tables) {
 			const nextSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
+			
+			if (!nextSchema) throw new Error(`Developer specified a non-existing of forwarding tables for '${schema.group}'.`);
+			if (!schema.relations[nextSchema.group]) throw new Error(`Developer specified a non-related of forwarding tables for '${schema.group}'.`);
+			
 			const nextResults: HierarchicalDataTable = {
 				source: nextSchema.source,
 				group: nextSchema.group,
 			  rows: []
 			};
-			
-			if (!nextSchema) throw new Error(`Developer specified a non-existing of forwarding tables for '${schema.group}'.`);
-			if (!schema.relations[nextSchema.group]) throw new Error(`Developer specified a non-related of forwarding tables for '${schema.group}'.`);
-			
 			const relation = schema.relations[nextSchema.group];
 			
 			if (schema.forward.option == 'single') {
