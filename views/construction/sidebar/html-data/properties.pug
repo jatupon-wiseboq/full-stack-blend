@@ -90,17 +90,22 @@ include ../../mixin/CreateReactComponent
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false, placeholder: 'collection'}")
     .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
-      | Forwarding Mode
+      | Forwarding Option
     .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-mode']}")
-    .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
-      | Forwarded Table
-    .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-table'], inline: true, button: false, placeholder: 'collection, collection'}")
-    .section-subtitle(internal-fsb-for="data-forward-mode:prefix")
-      | Forwarding Prefix
-    .section-body(internal-fsb-for="data-forward-mode:prefix")
-      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-prefix'], inline: true, button: false, placeholder: 'prefix'}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-option']}")
+    div(internal-fsb-for="data-forward-option:single, data-forward-option:multiple")
+      .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
+        | Forwarding Mode
+      .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-mode']}")
+      .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentTable")
+        | Forwarded Table
+      .section-body(internal-fsb-for="internal-fsb-class:DocumentTable")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-table'], inline: true, button: false, placeholder: 'collection, collection'}")
+      .section-subtitle(internal-fsb-for="data-forward-mode:prefix")
+        | Forwarding Prefix
+      .section-body(internal-fsb-for="data-forward-mode:prefix")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-prefix'], inline: true, button: false, placeholder: 'prefix'}")
     .section-note
       | Forward option will duplicate the data of all configured fields from this table to the forwarded one using collection or columns with a prefix.
   .section-container(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation,internal-fsb-class:Parameter")
@@ -134,10 +139,6 @@ include ../../mixin/CreateReactComponent
       | Unique
     .section-body(internal-fsb-not-for="data-field-type:auto,internal-fsb-class:Parameter")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-unique']}")
-    .section-subtitle(internal-fsb-for="internal-fsb-class:DocumentNotation")
-      | Forwarding Option
-    .section-body(internal-fsb-for="internal-fsb-class:DocumentNotation")
-      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-option']}")
     div(internal-fsb-not-for="internal-fsb-class:RelationalColumn,internal-fsb-class:Parameter")
       .section-subtitle(internal-fsb-for="data-forward-option:single, data-forward-option:multiple")
         | Forwarding Recursive Option
