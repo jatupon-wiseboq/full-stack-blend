@@ -70,7 +70,7 @@ class PreviewSizePicker extends Base<Props, State> {
                 label.btn.btn-light.btn-sm(className=((this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == index && this.state.extensionValues['preview'][1] == -middle) ? 'active' : 'inactive'))
                   span
                     i(className=["", "fa fa-mobile", "fa fa-tablet", "fa fa-tablet fa-rotate-90", "fa fa-laptop", "fa fa-desktop", ""][index])
-              .btn-group(key="group-right-" + index, onClick=this.choose.bind(this, index, -1))
+              .btn-group(key="group-right-" + index, onClick=this.choose.bind(this, index, (index != 4) ? -1 : 0))
                 label.btn.btn-light.btn-sm(className=((this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == index && this.state.extensionValues['preview'][1] == -1) ? 'active' : 'inactive'))
                   span
                     i(className="fa fa-long-arrow-right")
