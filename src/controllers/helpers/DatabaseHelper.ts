@@ -901,7 +901,7 @@ const DatabaseHelper = {
 				  rows: [query]
 				}, nextSchema, dataset, undefined, undefined, undefined, transaction);
 				
-				const embededResults: HierarchicalDataRow[] = [];
+				let embededResults: HierarchicalDataRow[] = [];
 				
 				if (schema.forward.option == 'single') {
 					embededResults.push(result);
