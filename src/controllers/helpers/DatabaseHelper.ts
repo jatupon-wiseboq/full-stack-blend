@@ -1984,6 +1984,11 @@ const DatabaseHelper = {
 								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, session)) delete _row.keys[key];
 								  }
 								}
+								for (const key in _row.relations) {
+									if (_row.relations.hasOwnProperty(key)) {
+										if (!row.relations.hasOwnProperty(key)) delete _row.relations[key];
+									}
+								}
 							}
 						}
 						break;
