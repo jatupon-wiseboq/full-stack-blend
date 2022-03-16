@@ -106,6 +106,10 @@ include ../../mixin/CreateReactComponent
         | Forwarding Prefix
       .section-body(internal-fsb-for="data-forward-mode:prefix")
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-forwarding-prefix'], inline: true, button: false, placeholder: 'prefix'}")
+      .section-subtitle
+        | Forwarding Recursive Option
+      .section-body
+        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-recursive']}")
     .section-note
       | Forward option will duplicate the data of all configured fields from this table to the forwarded one using collection or columns with a prefix.
   .section-container(internal-fsb-for="internal-fsb-class:RelationalColumn,internal-fsb-class:DocumentNotation,internal-fsb-class:Parameter")
@@ -139,11 +143,6 @@ include ../../mixin/CreateReactComponent
       | Unique
     .section-body(internal-fsb-not-for="data-field-type:auto,internal-fsb-class:Parameter")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-unique']}")
-    div(internal-fsb-not-for="internal-fsb-class:RelationalColumn,internal-fsb-class:Parameter")
-      .section-subtitle(internal-fsb-for="data-forward-option:single, data-forward-option:multiple")
-        | Forwarding Recursive Option
-      .section-body(internal-fsb-for="data-forward-option:single, data-forward-option:multiple")
-        +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-forward-recursive']}")
     .section-note(internal-fsb-not-for="internal-fsb-class:RelationalColumn,internal-fsb-class:Parameter")
       | Forward option will duplicate and forward the data of this field to the configuring table using collection or columns with a prefix.
   .section-container(internal-fsb-for="internal-fsb-class:Timing")
