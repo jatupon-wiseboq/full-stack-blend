@@ -27,6 +27,7 @@ interface HierarchicalDataRow {
   keys: {[Identifier: string]: any};
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
+  timestamp?: number;
 }
 
 const fieldManipulatorsInfoDict: any = {};
