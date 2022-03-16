@@ -1933,14 +1933,14 @@ const DatabaseHelper = {
 								for (const row of results[schema.group].rows) {
 									let found = false;
 									
-									for (const key in queryKeys) {
-			  					  if (queryKeys.hasOwnProperty(key) && row.keys[key] != queryKeys[key]) {
+									for (const key in dataKeys) {
+			  					  if (dataKeys.hasOwnProperty(key) && row.keys[key].toString() != dataKeys[key].toString()) {
 			  					    found = true;
 			  					    break;
 			  					  }
 			  					}
-			  					for (const key in queryColumns) {
-			  					  if (queryColumns.hasOwnProperty(key) && row.columns[key] != queryColumns[key]) {
+			  					for (const key in dataColumns) {
+			  					  if (dataColumns.hasOwnProperty(key) && row.columns[key].toString() != dataColumns[key].toString()) {
 			  					    found = true;
 			  					    break;
 			  					  }
@@ -1950,14 +1950,12 @@ const DatabaseHelper = {
 								}
 							}
 						
-							results[schema.group] = results[schema.group] || {
+							results[schema.group] = {
 							  source: schema.source,
 							  group: schema.group,
-							  rows: [],
+							  rows: rows,
 							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags) : null
 							};
-	  					
-							results[schema.group].rows = [...results[schema.group].rows, ...rows] as HierarchicalDataRow[];
 							
 							for (const _row of rows) {
 								for (const key in row.relations) {
