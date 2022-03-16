@@ -1001,18 +1001,20 @@ const DatabaseHelper = {
 				if (forwardingSchema.source != SourceType.Document) continue;
 				if (!forwardingSchema.forward.forwardingTable) throw new Error(`Developer must define a set of forwarding tables for '${forwardingSchema.group}'.`);
 				
-				const forwardingTable: HierarchicalDataTable = {
+				const relation = forwardedSchema.relations[key];
+				
+				const tables = forwardingSchema.forward.forwardingTable.split(',');
+				if (tables.indexOf(forwardedSchema.group) == -1) continue;
+				if (walked.indexOf(key) != -1) continue;
+				
+				walked.push(key);
+				
+				const dataset = {};
+				dataset[forwardingSchema.group] = {
 					source: forwardingSchema.source,
 					group: forwardingSchema.group,
 				  rows: []
 				};
-				const relation = forwardedSchema.relations[key];
-				
-				const tables = forwardingSchema.forward.forwardingTable.split(',');
-				if (tables.indexOf(key) == -1) continue;
-				if (walked.indexOf(key) != -1) continue;
-				
-				walked.push(key);
 				
 				for (const result of forwardedResults) {
 					const forwardingQuery = {keys: {}, columns: {}, relations: {}};
@@ -1039,9 +1041,6 @@ const DatabaseHelper = {
 		  			}
 	  			}
 	  			
-	  			const dataset = {};
-	  			dataset[forwardingSchema.group] = forwardingTable;
-	  			
 					await DatabaseHelper.performRecursiveRetrieve({
 						source: forwardingSchema.source,
 						group: forwardingSchema.group,
@@ -1049,8 +1048,8 @@ const DatabaseHelper = {
 					}, forwardingSchema, dataset, undefined, undefined, undefined, transaction);
 	  		}
 				
-				DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, forwardingTable.rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
-				DatabaseHelper.recursiveForwardRecordSet(forwardedSchema, forwardedResults, previousForwardedSchema, previousForwardedResults, transaction);
+				DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
+				DatabaseHelper.recursiveForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction);
 			}
 		}
 	},
