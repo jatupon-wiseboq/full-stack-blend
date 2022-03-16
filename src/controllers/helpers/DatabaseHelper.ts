@@ -60,6 +60,7 @@ interface HierarchicalDataRow {
   columns: {[Identifier: string]: any};
   relations: {[Identifier: string]: HierarchicalDataTable};
   division?: number[];
+  timestamp?: number;
 }
 interface HierarchicalDataFilter {
   name: string;
@@ -1179,7 +1180,7 @@ const DatabaseHelper = {
 							}
 							
 							for (const record of records) {
-							  const result = {
+							  const result: any = {
 							    keys: {},
 							    columns: {},
 							    relations: {}
@@ -1198,6 +1199,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
+								result.timestamp = (new Date()).getTime();
 								results.push(result);
 								
 								for (const key in row.relations) {
@@ -1393,7 +1395,7 @@ const DatabaseHelper = {
 								
 								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 								
-							  const result = {
+							  const result: any = {
 							    keys: {},
 							    columns: {},
 							    relations: {}
@@ -1412,6 +1414,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
+								result.timestamp = (new Date()).getTime();
 								results.push(result);
 								
 								for (const key in row.relations) {
@@ -1583,7 +1586,7 @@ const DatabaseHelper = {
 						  }
 							
 							for (const record of records) {
-							  const result = {
+							  const result: any = {
 							    keys: {},
 							    columns: {},
 							    relations: {}
@@ -1601,7 +1604,8 @@ const DatabaseHelper = {
 								    result.keys[key] = fixType(schema.keys[key].fieldType, record[key]);
 								  }
 								}
-							
+								
+								result.timestamp = (new Date()).getTime();
 								results.push(result);
 								
 								for (const key in row.relations) {
@@ -1731,7 +1735,7 @@ const DatabaseHelper = {
 	  					records = await map.findAll();
 	  					
 	  					for (const record of records) {
-	  					  const row = {
+	  					  const row: any = {
 	    				    keys: {},
 	    				    columns: {},
 	    				    relations: {}
@@ -1759,6 +1763,7 @@ const DatabaseHelper = {
 	    					  }
 	    					}
 	    					
+	    					row.timestamp = (new Date()).getTime();
 	    					rows.push(row);
 	  					}
 	  					
@@ -1790,7 +1795,7 @@ const DatabaseHelper = {
 							});
 							
 							for (const record of records) {
-	  					  const row = {
+	  					  const row: any = {
 	    				    keys: {},
 	    				    columns: {},
 	    				    relations: {}
@@ -1818,6 +1823,7 @@ const DatabaseHelper = {
 	    					  }
 	    					}
 	    					
+	    					row.timestamp = (new Date()).getTime();
 	    					rows.push(row);
 	  					}
 	  					
@@ -1906,7 +1912,7 @@ const DatabaseHelper = {
 								}
 								
 								for (const record of records) {
-								  const row = {
+								  const row: any = {
 			  				    keys: {},
 			  				    columns: {},
 			  				    relations: {}
@@ -1927,6 +1933,7 @@ const DatabaseHelper = {
 			  					
 			  					if (record['relations']) row.relations = record['relations'];
 			  					
+			  					row.timestamp = (new Date()).getTime();
 			  					rows.push(row);
 								}
 							} else {
@@ -1946,7 +1953,10 @@ const DatabaseHelper = {
 			  					  }
 			  					}
 									
-									if (!found) rows.push(row);
+									if (!found) {
+										row.timestamp = (new Date()).getTime();
+										rows.push(row);
+									}
 								}
 							}
 						
@@ -2142,7 +2152,7 @@ const DatabaseHelper = {
 							}
 							
 							for (const record of records) {
-							  const row = {
+							  const row: any = {
 		  				    keys: {},
 		  				    columns: {},
 		  				    relations: {}
@@ -2161,6 +2171,7 @@ const DatabaseHelper = {
 		  					  }
 		  					}
 		  					
+		  					row.timestamp = (new Date()).getTime();
 		  					results.push(row);
 							}
 							
