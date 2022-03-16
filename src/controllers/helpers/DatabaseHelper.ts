@@ -911,25 +911,13 @@ const DatabaseHelper = {
 				const embeddingQuery = {keys: {}, columns: {}, relations: {}};
 				
 				if (forwardingSchema.columns.hasOwnProperty(relation.sourceEntity)) {
-  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-	  				embeddingQuery.columns[relation.sourceEntity] = result.columns[relation.sourceEntity];
-	  			} else {
-	  				embeddingQuery.keys[relation.sourceEntity] = result.columns[relation.sourceEntity];
-	  			}
+  				embeddingQuery.columns[relation.sourceEntity] = result.columns[relation.sourceEntity];
   			} else {
-  				if (nextSchema.columns.hasOwnProperty(relation.targetEntity)) {
-  				  if (isObjectID(`${result.keys[relation.sourceEntity]}`)) {
-  						embeddingQuery.columns[relation.sourceEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-  					} else {
-  						embeddingQuery.columns[relation.sourceEntity] = result.keys[relation.sourceEntity];
-  					}
-	  			} else {
-	  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`)) {
-  						embeddingQuery.keys[relation.sourceEntity] = new ObjectID(result.keys[relation.sourceEntity]);
-  					} else {
-  						embeddingQuery.keys[relation.sourceEntity] = result.keys[relation.sourceEntity];
-  					}
-	  			}
+  			  if (isObjectID(`${result.keys[relation.sourceEntity]}`)) {
+						embeddingQuery.keys[relation.sourceEntity] = new ObjectID(result.keys[relation.sourceEntity]);
+					} else {
+						embeddingQuery.keys[relation.sourceEntity] = result.keys[relation.sourceEntity];
+					}
   			}
   			
   			const embeddingDataset = {};
