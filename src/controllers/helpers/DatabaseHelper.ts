@@ -926,12 +926,48 @@ const DatabaseHelper = {
 					group: forwardingSchema.group,
 				  rows: []
 				};
-  			
-  			await DatabaseHelper.performRecursiveRetrieve({
-					source: forwardingSchema.source,
-					group: forwardingSchema.group,
-				  rows: [embeddingQuery]
-				}, forwardingSchema, embeddingDataset, undefined, undefined, undefined, transaction);
+				
+				const records = await new Promise<any[]>(async (resolve, reject) => {
+					let queryKeys: {[Identifier: string]: any} = {};
+					let queryColumns: {[Identifier: string]: any} = {};
+					let dataKeys: {[Identifier: string]: any} = {};
+					let dataColumns: {[Identifier: string]: any} = {};
+					
+					[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(embeddingQuery, forwardingSchema, true);
+					
+					await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+						if (error) {
+							reject(error);
+						} else {
+							resolve(results);
+						}
+					});
+				});
+				
+				for (const record of records) {
+				  const row = {
+				    keys: {},
+				    columns: {},
+				    relations: {}
+				  };
+			  
+			  	if (record['_id']) record['id'] = record['_id'].toString();
+			  	
+				  for (const key in forwardingSchema.columns) {
+					  if (forwardingSchema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+					    row.columns[key] = fixType(forwardingSchema.columns[key].fieldType, record[key]);
+					  }
+					}
+					for (const key in forwardingSchema.keys) {
+					  if (forwardingSchema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+					    row.keys[key] = fixType(forwardingSchema.keys[key].fieldType, record[key]);
+					  }
+					}
+					
+					if (record['relations']) row.relations = record['relations'];
+					
+					embeddingDataset[forwardingSchema.group].rows.push(row);
+				}
 				
 				const embeddingResults: HierarchicalDataRow[] = embeddingDataset[forwardingSchema.group].rows;
 				
