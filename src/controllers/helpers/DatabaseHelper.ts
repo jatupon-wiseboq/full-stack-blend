@@ -1941,13 +1941,13 @@ const DatabaseHelper = {
 									let found = false;
 									
 									for (const key in dataKeys) {
-			  					  if (dataKeys.hasOwnProperty(key) && row.keys[key].toString() != dataKeys[key].toString()) {
+			  					  if (dataKeys.hasOwnProperty(key) && `${row.keys[key]}` != `${dataKeys[key]}`) {
 			  					    found = true;
 			  					    break;
 			  					  }
 			  					}
 			  					for (const key in dataColumns) {
-			  					  if (dataColumns.hasOwnProperty(key) && row.columns[key].toString() != dataColumns[key].toString()) {
+			  					  if (dataColumns.hasOwnProperty(key) && `${row.columns[key]}` != `${dataColumns[key]}`) {
 			  					    found = true;
 			  					    break;
 			  					  }
