@@ -90,7 +90,7 @@ const NotificationHelper = {
           if (!found) {
           	table.rows.push(result);
           } else {
-          	if (found.timestamp && result.timestamp && new Date(found.timestamp) >= new Date(result.timestamp)) continue;
+          	if (found.timestamp && result.timestamp && found.timestamp >= result.timestamp) continue;
           	
         		table.rows.splice(table.rows.indexOf(found), 1);
         		table.rows.push(result);
@@ -144,7 +144,7 @@ const NotificationHelper = {
           }
           
           if (found) {
-          	if (found.timestamp && result.timestamp && new Date(found.timestamp) >= new Date(result.timestamp)) continue;
+          	if (found.timestamp && result.timestamp && found.timestamp >= result.timestamp) continue;
           	found.timestamp = result.timestamp;
           	
           	for (let key in result.keys) {
@@ -185,7 +185,7 @@ const NotificationHelper = {
           }
           
           if (found) {
-          	if (found.timestamp && result.timestamp && new Date(found.timestamp) >= new Date(result.timestamp)) continue;
+          	if (found.timestamp && result.timestamp && found.timestamp >= result.timestamp) continue;
           	found.timestamp = result.timestamp;
           	
           	for (let key in result.keys) {
