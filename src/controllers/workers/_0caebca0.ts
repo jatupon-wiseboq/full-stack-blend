@@ -86,9 +86,9 @@ class Worker extends Base {
   protected initialize(data: HierarchicalDataTable): void {
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
-    let count = 0;
-    let value = undefined;
     for (const [index, row] of data.rows.entries()) {
+      let count = 0;
+      let value = undefined;
       this.iterations[index] = this.iterations[index] || [];
       value = undefined;
       

@@ -13,7 +13,7 @@ import {Base as $Base} from '../../Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -365,13 +365,12 @@ class Controller extends Base {
   }
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;
   	
 	  // <---Auto[MergingBegin]
-	  
 	  // Auto[Merging]--->
     RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","49da134d","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Button 2"});
 		RequestHelper.registerInput('27d35136', "document", "User", "email");

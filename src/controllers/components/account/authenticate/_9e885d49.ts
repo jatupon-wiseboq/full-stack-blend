@@ -13,7 +13,7 @@ import {Base as $Base} from '../../Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base: typeof $Base = $Base;
 
 // <---Auto[Import]
 
@@ -309,12 +309,18 @@ class Controller extends Base {
               return;
             }
             
-            this.request.logIn(existingUser, (err) => {
-              if (err) {
-                reject(new Error('There was an internal server error, please try again. (1103)'));
-                return;
+            existingUser.comparePassword(password, (err, isMatch: boolean) => {
+              if (!isMatch) {
+                reject(new Error('Password doesn\'t match. (1102)'));
+              } else {
+                this.request.logIn(existingUser, (err) => {
+                  if (err) {
+                    reject(new Error('There was an internal server error, please try again. (1103)'));
+                    return;
+                  }
+                  resolve('/editor');
+                });
               }
-              resolve('/editor');
             });
           });
       	}
@@ -325,7 +331,7 @@ class Controller extends Base {
   }
  	
   // Auto[MergingBegin]--->  
-  private initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
+  protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
   	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
   	let data: Input[] = [];
   	let input: Input = null;
