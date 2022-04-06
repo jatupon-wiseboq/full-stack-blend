@@ -34,7 +34,13 @@ const SchedulerHelper = {
   	
   	if (_hours != 0) _minutes = 0;
   	
-  	scheduler && schedule.scheduleJob(`0 ${_minutes ? '*/' + _minutes : '*'} ${_hours ? '*/' + _hours : '*'} * * ${_days.join(',')}`, delegate);
+  	const rule = new schedule.RecurrenceRule();
+
+  	rule.dayOfWeek = _days;
+		if (_hours != 0) rule.hour = _hours;
+		if (_minutes != 0) rule.minute = _minutes;
+  	
+  	scheduler && schedule.scheduleJob(rule, delegate);
   }
 };
 
