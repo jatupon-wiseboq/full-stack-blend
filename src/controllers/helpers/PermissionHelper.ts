@@ -1,7 +1,8 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {ActionType} from './DatabaseHelper';
+import {DatabaseHelper, ActionType, SourceType} from './DatabaseHelper';
+import {RequestHelper} from './RequestHelper';
 import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from './SchemaHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
 import {RelationalDatabaseClient} from './ConnectionHelper';
@@ -65,7 +66,7 @@ const PermissionHelper = {
 		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
 	},
 	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			try {
 				if (permission == null) {
 					resolve(true);
@@ -80,7 +81,7 @@ const PermissionHelper = {
 					case 'relation':
 						if (session == null) throw new Error('There was an error authorizing a permission (the request session variable was null).');
 						
-						const shortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
+						const unitedShortestPath = SchemaHelper.findShortestPathOfRelations(target, data.tables[permission.relationModeSourceGroup], data);
 						let value;
 						
 						switch (permission.relationMatchingMode) {
@@ -92,50 +93,119 @@ const PermissionHelper = {
 								break;
 						}
 						
-						const INNER_JOIN = [];
-						const WHERE_CLAUSE = [];
-						const VALUES = [];
+						const separatedSourceShortestPath = [];
+						let currentSourceShortestPath = [];
+						let currentSource = null;
 						
-						let current = shortestPath[0];
-						for (let i=1; i<shortestPath.length; i++) {
-							const next = shortestPath[i];
-							
-							INNER_JOIN.push(`INNER JOIN ${next.group} ON ${current.group}.${current.relations[next.group].sourceEntity} = ${next.group}.${current.relations[next.group].targetEntity}`);
-							
-							current = next;
-						}
-						
-						WHERE_CLAUSE.push(`CONVERT(${permission.relationModeSourceGroup}.${permission.relationModeSourceEntity}, char) = CONVERT(?, char)`);
-						VALUES.push(value);
-						
-						const from = shortestPath[shortestPath.length - 1];
-						for (const key in from.keys) {
-							if (from.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
-								VALUES.push(modifyingColumns[key]);
+						for (const schema of unitedShortestPath) {
+							if (currentSource != null && (currentSource != schema.source || currentSource != SourceType.Relational)) {
+								if (currentSource) separatedSourceShortestPath.push(currentSourceShortestPath);
+								currentSourceShortestPath = [];
+								currentSource = null;
 							}
+							
+							currentSourceShortestPath.push(schema);
+							currentSource = schema.source;
 						}
 						
-						const COMMAND = `SELECT * FROM ${target.group} ${INNER_JOIN.join(' ')} WHERE ${WHERE_CLAUSE.join(' AND ')} LIMIT 1`;
-	      		console.log(COMMAND);
-	      		
-	      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);
-	      		if (cachedPermissions[cachedPermissionMD5Key]) {
-	      			resolve(true);
-	      			return;
-	      		}
+						if (currentSource) separatedSourceShortestPath.push(currentSourceShortestPath);
 						
-						RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
-	            if (error) {
-	              reject(error);
-	      			} else if (results.length > 0) {
-	      				cachedPermissions[cachedPermissionMD5Key] = true;
-	      			  resolve(true);
-	      			} else {
-	      				cachedPermissions[cachedPermissionMD5Key] = false;
-	      			  resolve(false);
-	      			}
-	      		}).bind(this));
+						let flag = true;
+						let lastSourceGroup = null;
+						let lastSourceEntity = null;
+						
+						for (const [index, shortestPath] of separatedSourceShortestPath.entries()) {
+							if (!flag) break;
+							if (shortestPath[0].source == SourceType.Relational && shortestPath.length > 1) {
+								const INNER_JOIN = [];
+								const WHERE_CLAUSE = [];
+								const VALUES = [];
+								
+								let current = shortestPath[0];
+								
+								for (let i=1; i<shortestPath.length; i++) {
+									const next = shortestPath[i];
+									
+									INNER_JOIN.push(`INNER JOIN ${next.group} ON ${current.group}.${current.relations[next.group].sourceEntity} = ${next.group}.${current.relations[next.group].targetEntity}`);
+									
+									lastSourceGroup = next.group;
+									lastSourceEntity = current.relations[next.group].sourceEntity;
+									
+									current = next;
+								}
+								
+								WHERE_CLAUSE.push(`CONVERT(${lastSourceGroup}.${lastSourceEntity}, char) = CONVERT(?, char)`);
+								VALUES.push(value);
+								
+								const from = shortestPath[shortestPath.length - 1];
+								for (const key in from.keys) {
+									if (from.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
+										WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
+										VALUES.push(modifyingColumns[key]);
+									}
+								}
+								
+								const COMMAND = `SELECT ${lastSourceGroup}.${lastSourceEntity} as value FROM ${target.group} ${INNER_JOIN.join(' ')} WHERE ${WHERE_CLAUSE.join(' AND ')} LIMIT 1`;
+			      		console.log(COMMAND);
+			      		
+			      		const cachedPermissionMD5Key = Md5.init(session.id + COMMAND);
+			      		if (cachedPermissions[cachedPermissionMD5Key] !== '__FALSE__') {
+			      			value = cachedPermissions[cachedPermissionMD5Key];
+			      			continue;
+			      		}
+								
+								RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
+			            if (error) {
+			              reject(error);
+			      			} else if (results.length > 0) {
+			      				cachedPermissions[cachedPermissionMD5Key] = results[0]['value'];
+			      				value = results[0]['value'];
+			      			} else {
+			      				cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
+			      			  flag = false;
+			      			}
+			      		}).bind(this));
+			      	} else {
+			      		const data = {};
+			      		data[`${shortestPath[0].group}.${lastSourceEntity}`] = value;
+			      					      		
+		      			lastSourceGroup = shortestPath[0].group;
+		      			if (separatedSourceShortestPath[index + 1]) {
+		      				lastSourceEntity = shortestPath[0].relations[separatedSourceShortestPath[index + 1][0].group].sourceEntity;
+		      			} else {
+		      				lastSourceEntity = null;
+		      			}
+			      		
+			      		let cachedPermissionMD5Key = null;
+			      		if (lastSourceEntity) {			
+			      			cachedPermissionMD5Key = Md5.init(session.id + JSON.stringify([data, lastSourceGroup, lastSourceEntity]));
+				      		if (cachedPermissions[cachedPermissionMD5Key] !== '__FALSE__') {
+				      			value = cachedPermissions[cachedPermissionMD5Key];
+				      			continue;
+				      		}
+				      	}
+			      		
+			      		const dataset = await DatabaseHelper.retrieve(RequestHelper.createInputs(data), ProjectConfigurationHelper.getDataSchema().tables[shortestPath[0].group], false);
+			      		
+			      		if (dataset[shortestPath[0].group].rows.length == 0) {
+			      			if (cachedPermissionMD5Key) cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
+			      			flag = false;
+			      			break;
+			      		} else {
+			      			if (lastSourceEntity) {
+				      			if (shortestPath[0].keys.hasOwnProperty(lastSourceEntity)) {
+				      				value = dataset[shortestPath[0].group].rows[0].keys[lastSourceEntity];
+				      			} else {
+				      				value = dataset[shortestPath[0].group].rows[0].columns[lastSourceEntity];
+				      			}
+				      			
+				      			cachedPermissions[cachedPermissionMD5Key] = value;
+				      		}
+			      		}
+			      	}
+						}
+						
+						resolve(flag);
 						break;
 					case 'session':
 						if (session == null) throw new Error('There was an error authorizing a permission (the request session variable was null).');
