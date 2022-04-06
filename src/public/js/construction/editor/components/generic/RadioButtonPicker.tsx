@@ -88,9 +88,18 @@ let map = {
     "data-wizard-type-1": "internal-fsb-data-wizard-type",
     "data-wizard-type-2": "internal-fsb-data-wizard-type",
     "data-wizard-type-3": "internal-fsb-data-wizard-type",
+    "data-validation-format-1": "data-validation-format",
+    "data-validation-format-2": "data-validation-format",
+    "data-validation-format-3": "data-validation-format",
     "data-field-type-1": "data-field-type",
     "data-field-type-2": "data-field-type",
-    "data-field-type-3": "data-field-type"
+    "data-field-type-3": "data-field-type",
+    "data-field-type-4": "data-field-type",
+    "data-lock-mode-1": "data-lock-mode",
+    "data-rendering-condition-mode-1": "data-rendering-condition-mode",
+    "data-timing-minutes-1": "data-timing-minutes",
+    "data-timing-minutes-2": "data-timing-minutes",
+    "animation-easing-fn-1": "animation-easing-fn"
 }
 
 const Mode = Object.freeze({
