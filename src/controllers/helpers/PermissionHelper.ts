@@ -113,6 +113,7 @@ const PermissionHelper = {
 						let flag = true;
 						let lastSourceGroup = null;
 						let lastSourceEntity = null;
+						let lastTargetEntity = null;
 						
 						for (const [index, shortestPath] of separatedSourceShortestPath.entries()) {
 							if (!flag) break;
@@ -130,6 +131,7 @@ const PermissionHelper = {
 									
 									lastSourceGroup = next.group;
 									lastSourceEntity = current.relations[next.group].sourceEntity;
+									lastTargetEntity = current.relations[next.group].targetEntity;
 									
 									current = next;
 								}
@@ -167,18 +169,20 @@ const PermissionHelper = {
 			      		}).bind(this));
 			      	} else {
 			      		const data = {};
-			      		data[`${shortestPath[0].group}.${lastSourceEntity}`] = value;
+			      		data[`${shortestPath[0].group}.${lastTargetEntity}`] = value;
 			      					      		
 		      			lastSourceGroup = shortestPath[0].group;
 		      			if (separatedSourceShortestPath[index + 1]) {
 		      				lastSourceEntity = shortestPath[0].relations[separatedSourceShortestPath[index + 1][0].group].sourceEntity;
+		      				lastTargetEntity = shortestPath[0].relations[separatedSourceShortestPath[index + 1][0].group].targetEntity;
 		      			} else {
 		      				lastSourceEntity = null;
+		      				lastTargetEntity = null;
 		      			}
 			      		
 			      		let cachedPermissionMD5Key = null;
 			      		if (lastSourceEntity) {			
-			      			cachedPermissionMD5Key = Md5.init(session.id + JSON.stringify([data, lastSourceGroup, lastSourceEntity]));
+			      			cachedPermissionMD5Key = Md5.init(session.id + JSON.stringify([data, lastSourceGroup, lastSourceEntity, lastTargetEntity]));
 				      		if (cachedPermissions[cachedPermissionMD5Key] !== '__FALSE__') {
 				      			value = cachedPermissions[cachedPermissionMD5Key];
 				      			continue;
@@ -192,11 +196,11 @@ const PermissionHelper = {
 			      			flag = false;
 			      			break;
 			      		} else {
-			      			if (lastSourceEntity) {
-				      			if (shortestPath[0].keys.hasOwnProperty(lastSourceEntity)) {
-				      				value = dataset[shortestPath[0].group].rows[0].keys[lastSourceEntity];
+			      			if (lastTargetEntity) {
+				      			if (shortestPath[0].keys.hasOwnProperty(lastTargetEntity)) {
+				      				value = dataset[shortestPath[0].group].rows[0].keys[lastTargetEntity];
 				      			} else {
-				      				value = dataset[shortestPath[0].group].rows[0].columns[lastSourceEntity];
+				      				value = dataset[shortestPath[0].group].rows[0].columns[lastTargetEntity];
 				      			}
 				      			
 				      			cachedPermissions[cachedPermissionMD5Key] = value;
