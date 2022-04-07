@@ -1387,6 +1387,13 @@ const DatabaseHelper = {
 							}
 							
 							for (const record of records) {
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+								for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataColumns[key] = record[key];
+								  }
+								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
 								    dataKeys[key] = record[key];
@@ -1400,8 +1407,6 @@ const DatabaseHelper = {
 							    columns: {},
 							    relations: {}
 							  };
-							  
-							  if (record['_id']) record['id'] = record['_id'].toString();
 							  
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -1561,8 +1566,6 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
-							
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
@@ -1586,13 +1589,26 @@ const DatabaseHelper = {
 						  }
 							
 							for (const record of records) {
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+								for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataColumns[key] = record[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataKeys[key] = record[key];
+								  }
+								}
+								
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+								
 							  const result: any = {
 							    keys: {},
 							    columns: {},
 							    relations: {}
 							  };
-							  
-							  if (record['_id']) record['id'] = record['_id'].toString();
 							  
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key)) {
@@ -1891,8 +1907,6 @@ const DatabaseHelper = {
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
 							
 							if (!results[schema.group] || results[schema.group].forwarded !== true) {
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
-								
 								let records;
 								if (input.source == SourceType.Relational) {
 									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
@@ -1914,13 +1928,26 @@ const DatabaseHelper = {
 								}
 								
 								for (const record of records) {
+							  	if (record['_id']) record['id'] = record['_id'].toString();
+							  	
+							  	for (const key in schema.columns) {
+									  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+									    dataColumns[key] = record[key];
+									  }
+									}
+									for (const key in schema.keys) {
+									  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+									    dataKeys[key] = record[key];
+									  }
+									}
+									
+									if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
+								
 								  const row: any = {
 			  				    keys: {},
 			  				    columns: {},
 			  				    relations: {}
 			  				  };
-							  
-							  	if (record['_id']) record['id'] = record['_id'].toString();
 							  	
 								  for (const key in schema.columns) {
 			  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
@@ -2120,8 +2147,6 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
-							
 							let records = [];
 							if (input.source == SourceType.Relational) {
 		  				  if (input.rows.length > 1 && allowBulkProcess) {
@@ -2154,13 +2179,26 @@ const DatabaseHelper = {
 							}
 							
 							for (const record of records) {
+							  if (record['_id']) record['id'] = record['_id'].toString();
+							  
+								for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataColumns[key] = record[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataKeys[key] = record[key];
+								  }
+								}
+							
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+								
 							  const row: any = {
 		  				    keys: {},
 		  				    columns: {},
 		  				    relations: {}
 		  				  };
-						  
-						  	if (record['_id']) record['id'] = record['_id'].toString();
 						  	
 							  for (const key in schema.columns) {
 		  					  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
