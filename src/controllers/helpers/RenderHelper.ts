@@ -38,7 +38,7 @@ const RenderHelper = {
 	  if (response.headersSent) return;
 	  response.json({
 			success: false,
-			error: `${error.message} ${(process.env.NODE_ENV != 'production') ? error.stack : ''}`.trim(),
+			error: (process.env.NODE_ENV != 'production') ? error.stack.toString() : error.message,
 			results: null,
 			redirect: null
 		});
