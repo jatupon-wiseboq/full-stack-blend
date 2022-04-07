@@ -1261,12 +1261,12 @@ const DatabaseHelper = {
 							  
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1475,12 +1475,12 @@ const DatabaseHelper = {
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1667,12 +1667,12 @@ const DatabaseHelper = {
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1754,12 +1754,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.keys, row.columns), session)) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.keys, row.columns), session)) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1814,12 +1814,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.keys, row.columns), session)) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.keys, row.columns), session)) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1853,7 +1853,11 @@ const DatabaseHelper = {
 			    		
 			    		break;
 	        }
-	      
+	        
+	        for (const result of results) {
+						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, result.columns, result.keys), session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+	      	}
+	      	
 	      	resolve(results);
 	      }
       } catch(error) {
@@ -2007,12 +2011,12 @@ const DatabaseHelper = {
 							for (const _row of rows) {
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, _row.keys, _row.columns), session)) delete _row.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, _row.columns, _row.keys), session)) delete _row.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, _row.keys, _row.columns), session)) delete _row.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, _row.columns, _row.keys), session)) delete _row.keys[key];
 								  }
 								}
 								for (const key in _row.relations) {
@@ -2221,12 +2225,12 @@ const DatabaseHelper = {
 								
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.keys, result.columns), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
 								  }
 								}
 							}
