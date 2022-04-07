@@ -1722,8 +1722,6 @@ const DatabaseHelper = {
 			  	
 		  		resolve(results);
 		  	} else {
-		  		if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, {}, session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
-		  		
 		  		let map, records;
 		  		const hash = {}, rows = [], results = {};
 		  		
