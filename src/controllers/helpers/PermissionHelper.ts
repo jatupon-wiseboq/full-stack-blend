@@ -62,7 +62,7 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any={}, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
 	},
 	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
@@ -169,7 +169,14 @@ const PermissionHelper = {
 			      		}).bind(this));
 			      	} else {
 			      		const data = {};
-			      		data[`${shortestPath[0].group}.${lastTargetEntity}`] = value;
+			      		if (value !== undefined) data[`${shortestPath[0].group}.${lastTargetEntity}`] = value;
+			      		
+			      		const from = shortestPath[0];
+								for (const key in from.keys) {
+									if (from.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
+										data[`${shortestPath[0].group}.${key}`] = modifyingColumns[key];
+									}
+								}
 			      					      		
 		      			lastSourceGroup = shortestPath[0].group;
 		      			if (separatedSourceShortestPath[index + 1]) {
@@ -190,7 +197,7 @@ const PermissionHelper = {
 				      	}
 			      		
 			      		const dataset = await DatabaseHelper.retrieve(RequestHelper.createInputs(data), ProjectConfigurationHelper.getDataSchema().tables[shortestPath[0].group], false);
-			      		
+								
 			      		if (dataset[shortestPath[0].group].rows.length == 0) {
 			      			if (cachedPermissionMD5Key) cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
 			      			flag = false;
