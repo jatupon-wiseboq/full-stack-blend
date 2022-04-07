@@ -1854,7 +1854,7 @@ const DatabaseHelper = {
 			    		break;
 	        }
 	        
-	        for (const result of results) {
+	        for (const result of results[baseSchema.group].rows) {
 						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, result.columns, result.keys), session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 	      	}
 	      	
