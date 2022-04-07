@@ -63,7 +63,7 @@ const PermissionHelper = {
 		});
 	},
 	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any={}, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, {}, session, data);
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, data);
 	},
 	allowPermission: async (permission: Permission, target: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
