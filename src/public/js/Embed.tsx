@@ -1,7 +1,6 @@
 import {DataManipulationHelper} from './helpers/DataManipulationHelper';
 import {TestHelper} from './helpers/TestHelper';
 import {AnimationHelper} from './helpers/AnimationHelper';
-import * as Ruffle from '../../../dist/public/js/ruffle.js';
 
 declare let window: any;
 
