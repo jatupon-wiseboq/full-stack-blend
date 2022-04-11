@@ -67,13 +67,14 @@ if (process.env.RELATIONAL_DATABASE_KEY) {
 	  database : connectionURL.pathname.split("/")[1]
 	};
 	RelationalDatabaseClient = new Pool(dbconfig);
-	RelationalDatabaseORMClient = new Sequelize(connectionURL.pathname.split("/")[1],
-	  connectionURL.username,
-	  connectionURL.password, {
-      host: connectionURL.host,
-      dialect: "postgres"
+	RelationalDatabaseORMClient = new Sequelize(process.env[process.env.RELATIONAL_DATABASE_KEY], {
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
     }
-  );
+  });
 }
 if (process.env.DOCUMENT_DATABASE_KEY) {
 	const connectionURL = process.env[process.env.DOCUMENT_DATABASE_KEY];
