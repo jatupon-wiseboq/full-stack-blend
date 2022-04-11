@@ -3,7 +3,7 @@
 
 import url from "url";
 import redis from "redis";
-import mysql from "mysql2";
+import {Pool} from "node-postgres";
 import {MongoClient} from "mongodb";
 import sidekiq from "sidekiq";
 import {Sequelize, Transaction} from "sequelize";
@@ -66,12 +66,12 @@ if (process.env.RELATIONAL_DATABASE_KEY) {
 	  password : connectionURL.password,
 	  database : connectionURL.pathname.split("/")[1]
 	};
-	RelationalDatabaseClient = mysql.createPool(dbconfig);
+	RelationalDatabaseClient = new Pool(dbconfig);
 	RelationalDatabaseORMClient = new Sequelize(connectionURL.pathname.split("/")[1],
 	  connectionURL.username,
 	  connectionURL.password, {
       host: connectionURL.host,
-      dialect: "mysql"
+      dialect: "postgres"
     }
   );
 }
