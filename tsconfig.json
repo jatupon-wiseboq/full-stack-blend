@@ -16,6 +16,7 @@
                 "src/types/*"
             ]
         },
+        "noEmit": true,
         "downlevelIteration": true
     },
     "include": [
