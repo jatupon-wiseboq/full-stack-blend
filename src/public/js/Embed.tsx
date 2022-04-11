@@ -35,19 +35,4 @@ declare let window: any;
   window.DataManipulationHelper = DataManipulationHelper;
   window.TestHelper = TestHelper;
   window.AnimationHelper = AnimationHelper;
-  
-  window._RuffleLoaded = !!Ruffle;
-  window.RufflePlayer.config = {
-    "publicPath": undefined,
-    "polyfills": true,
-    "autoplay": "auto",
-    "unmuteOverlay": "visible",
-    "backgroundColor": null,
-    "letterbox": "fullscreen",
-    "warnOnUnsupportedContent": true,
-    "contextMenu": false,
-    "upgradeToHttps": window.location.protocol === "https:",
-    "maxExecutionDuration": {"secs": 15, "nanos": 0},
-    "logLevel": "error"
-	};
 })();
