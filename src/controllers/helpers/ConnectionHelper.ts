@@ -78,8 +78,23 @@ if (process.env.RELATIONAL_DATABASE_KEY) {
 if (process.env.DOCUMENT_DATABASE_KEY) {
 	const connectionURL = process.env[process.env.DOCUMENT_DATABASE_KEY];
 	DocumentDatabaseClient = new MongoClient(connectionURL, {
-		useUnifiedTopology: true
+		useUnifiedTopology: true,
+		poolSize: 20
 	});
+	
+	DocumentDatabaseClient._connect = DocumentDatabaseClient.connect;
+	DocumentDatabaseClient._connection = null;
+	DocumentDatabaseClient.connect = async () => {
+		if (DocumentDatabaseClient._connection == null || !DocumentDatabaseClient._connection.isConnected()) {
+			DocumentDatabaseClient._connection = await DocumentDatabaseClient._connect();
+			
+			DocumentDatabaseClient._connection._close = DocumentDatabaseClient._connection.close;
+			DocumentDatabaseClient._connection.close = () => {};
+		}
+		return new Promise<any>((resolve) => {
+			resolve(DocumentDatabaseClient._connection);
+		});
+	};
 }
 if (process.env.PRIORITIZED_WORKER_KEY) {
 	if (process.env.PRIORITIZED_WORKER_KEY == process.env.VOLATILE_MEMORY_KEY) {
