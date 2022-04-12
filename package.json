@@ -1,6 +1,9 @@
 {
   "name": "referring",
   "version": "0.1.0",
+  "engines": {
+    "node": "12.14.x"
+  },
   "description": "A starting point for Node.js express apps with TypeScript",
   "repository": {
     "type": "git",
