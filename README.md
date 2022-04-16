@@ -11,23 +11,24 @@ You might clone the repository and run it on your local machine for advanced deb
 1. Signup and Login to GitHub.
 2. Create a project and name it.
 3. Open a terminal, run "git clone git@github.com:SoftenStorm/boilerplate.git".
-4. Run "cd boilerplate".
-5. Run "git remote rename origin boilerplate".
-6. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
-7. Run "git checkout 1.17".
-8. Run "git checkout -b staging".
-9. Run "git push --set-upstream origin staging --force".
-10. Run "git checkout -b develop".
-11. Run "git push --set-upstream origin develop --force".
-12. Run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
-13. Run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
-14. Run "npm install".
-15. Copy "dev.env" as ".env" and config the file.
-16. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
-17. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
-18. From the terminal, run "git reset --hard & git pull".
-19. Run "npm run build".
-20. Run "npm run watch".
+4. Run "mv boilerplate YOUR_PROJECT_NAME".
+5. Run "cd YOUR_PROJECT_NAME".
+6. Run "git remote rename origin boilerplate".
+7. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
+8. Run "git checkout 1.17".
+9. Run "git checkout -b staging".
+10. Run "git push --set-upstream origin staging --force".
+11. Run "git checkout -b develop".
+12. Run "git push --set-upstream origin develop --force".
+13. Run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
+14. Run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
+15. Run "npm install".
+16. Run "mv dev.env .env" and config the file.
+17. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
+18. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
+19. From the terminal, run "git reset --hard & git pull".
+20. Run "npm run build".
+21. Run "npm run watch".
 
 Required parameters in the environment file:
 
