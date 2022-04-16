@@ -46,7 +46,7 @@ var FrontEndManipulationHelper = {
       case 'FlowLayout':
         element = document.createElement('div');
         element = ReactDOM.render(pug `
-          .internal-fsb-element.container-fluid.internal-fsb-strict-layout.internal-fsb-allow-cursor(style={paddingLeft: '0px', paddingRight: '0px'})
+          .internal-fsb-element.internal-fsb-strict-layout.internal-fsb-allow-cursor(style={paddingLeft: '0px', paddingRight: '0px'})
         `, element);
         break;
       case 'TableLayout':

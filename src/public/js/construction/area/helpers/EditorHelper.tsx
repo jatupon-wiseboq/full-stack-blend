@@ -413,7 +413,8 @@ var EditorHelper = {
       
       let current = element;
       while (current != null) {
-        if (HTMLHelper.getAttribute(current, 'internal-fsb-class') == 'FlowLayout' ||
+        if ((current != element && HTMLHelper.getAttribute(current, 'internal-fsb-class') == 'FlowLayout') ||
+        		HTMLHelper.hasClass(current, 'internal-fsb-begin-layout') ||
         		(HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
           current.insertBefore(Accessories.guide.getDOMNode(), current.firstElementChild);
       		Accessories.guide.invalidate();
