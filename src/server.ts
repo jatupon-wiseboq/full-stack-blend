@@ -49,8 +49,8 @@ let scheduler: any = null;
 let finalize: () => void = null;
 const complete = {};
 
-if (process.env.RESQUE_REDIS_URI) {
-	const redisConnectionURL = new URL(process.env.RESQUE_REDIS_URI);
+if (process.env.PRIORITIZED_WORKER_KEY) {
+	const redisConnectionURL = new URL(process.env[process.env.PRIORITIZED_WORKER_KEY]);
 	const redisConnectionSettings = {
 		host: redisConnectionURL.host.split(":")[0],
 		port: parseInt(redisConnectionURL.port),

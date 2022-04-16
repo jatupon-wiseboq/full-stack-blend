@@ -11,29 +11,35 @@ You might clone the repository and run it on your local machine for advanced deb
 1. Signup and Login to GitHub.
 2. Create a project and name it.
 3. Open a terminal, run "git clone git@github.com:SoftenStorm/boilerplate.git".
-4. Run "cd boilerplate".
-5. Run "git remote rename origin boilerplate".
-6. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
-7. Run "git checkout 1.16".
-8. Run "git checkout -b staging".
-9. Run "git push --set-upstream origin staging --force".
-10. Run "git checkout -b develop".
-11. Run "git push --set-upstream origin develop --force".
-12. Run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
-13. Run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
-14. Run "npm install".
-15. Copy "dev.env" as ".env" and config the file.
-16. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
-17. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
-18. From the terminal, run "git reset --hard & git pull".
-19. Run "npm run build".
-20. Run "npm run watch".
+4. Run "mv boilerplate YOUR_PROJECT_NAME".
+5. Run "cd boilerplate".
+6. Run "git remote rename origin boilerplate".
+7. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
+8. Run "git checkout 1.17".
+9. Run "git checkout -b staging".
+10. Run "git push --set-upstream origin staging --force".
+11. Run "git checkout -b develop".
+12. Run "git push --set-upstream origin develop --force".
+13. Run "git checkout -b feature/YOUR_NEW_FEATURE_NAME".
+14. Run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
+15. Run "npm install".
+16. Run "mv dev.env .env" and config the file.
+17. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
+18. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
+19. From the terminal, run "git reset --hard & git pull".
+20. Run "npm run build".
+21. Run "npm run watch".
 
 Required parameters in the environment file:
 
-1. MYSQL_URL=
-2. RELATIONAL_DATABASE_KEY=MYSQL_URL
-3. SESSION_SECRET=
+1. POSTGRESQL_URL=
+2. RELATIONAL_DATABASE_KEY=POSTGRESQL_URL
+3. MONGODB_URI=
+4. DOCUMENT_DATABASE_KEY=MONGODB_URI
+5. REDIS_URI=
+6. PRIORITIZED_WORKER_KEY=REDIS_URI
+7. VOLATILE_MEMORY_KEY=REDIS_URI
+8. SESSION_SECRET=
 
 Openning the preview URL on your browser by using: https://localhost.stackblend.org
 
@@ -58,13 +64,13 @@ Openning the running URL on your browser to see the results.
 This boilerplate is designed for incremental update for any underlying supports of new features in StackBlend Studio. After StackBlend has released a new version, you must merge the new changes into your project, to make it works on StackBlend.org. Please note that for all of the old versions, you must perform "git cherry-pick COMMIT_ID" for all of hotfixes, beginning with a prefix "Hotfix:" in the message, that may apply to your current using version.
 
 1. Run "git stash".
-2. Run "git fetch boilerplate 1.16".
-3. Run "git merge 1.16 --allow-unrelated-histories".
+2. Run "git fetch boilerplate 1.17".
+3. Run "git merge 1.17 --allow-unrelated-histories".
 4. Run "git stash apply".
 
 To list all of hotfixes:
 
-1. Run "git checkout 1.16".
+1. Run "git checkout 1.17".
 2. Run "git pull".
 3. Run "git log --oneline | grep Hotfix".
 4. For each of hotfix, run "git cherry-pick COMMIT_ID".
@@ -87,7 +93,7 @@ To get started:
 
 ## Restoring malformed project files from regular updates
 
-Because we often release regular updates on stackblend.org, which right now is version 1.16. If you preferred one that you were working with, please run the editor cloned from the releases of full-stack-blend instead. Where you may find out the current version that you are using from README.md file.
+Because we often release regular updates on stackblend.org, which right now is version 1.17. If you preferred one that you were working with, please run the editor cloned from the releases of full-stack-blend instead. Where you may find out the current version that you are using from README.md file.
 
 You might also reset the project files by cloning a boilerplate from the releases with the same version as the editor. Copy only project.stackblend file from your old project to the new one, open it using the editor and navigate to each of pages, components, and popups.
 

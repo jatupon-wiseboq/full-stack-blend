@@ -70,6 +70,7 @@
     "redis": "^3.0.2",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
+    "ruffle-mirror": "^2021.8.22",
     "sequelize": "^6.18.0",
     "sidekiq": "^1.1.1",
     "socket.io": "^2.3.0",
