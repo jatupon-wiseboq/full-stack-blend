@@ -37,7 +37,7 @@ declare let window: any;
   window.TestHelper = TestHelper;
   window.AnimationHelper = AnimationHelper;
   window._RuffleLoaded = !!window.Ruffle;
-  window.RufflePlayer.config = {
+  window._RuffleLoaded && window.RufflePlayer.config = {
     "publicPath": undefined,
     "polyfills": true,
     "autoplay": "auto",
