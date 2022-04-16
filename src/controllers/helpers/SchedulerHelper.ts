@@ -37,7 +37,7 @@ const SchedulerHelper = {
   	const rule = new schedule.RecurrenceRule();
 
   	rule.dayOfWeek = _days;
-		if (_hours != 0) rule.hour = _hours;
+		if (_hours != 0 || _minutes == 0) rule.hour = _hours;
 		if (_minutes != 0) rule.minute = _minutes;
   	
   	scheduler && schedule.scheduleJob(rule, delegate);
