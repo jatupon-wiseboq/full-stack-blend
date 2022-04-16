@@ -37,7 +37,7 @@ declare let window: any;
   window.TestHelper = TestHelper;
   window.AnimationHelper = AnimationHelper;
   window._RuffleLoaded = !!window.Ruffle;
-  window._RuffleLoaded && window.RufflePlayer.config = {
+  window._RuffleLoaded && (window.RufflePlayer.config = {
     "publicPath": undefined,
     "polyfills": true,
     "autoplay": "auto",
@@ -49,5 +49,5 @@ declare let window: any;
     "upgradeToHttps": window.location.protocol === "https:",
     "maxExecutionDuration": {"secs": 15, "nanos": 0},
     "logLevel": "error"
-	};
+	});
 })();
