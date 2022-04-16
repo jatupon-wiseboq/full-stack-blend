@@ -12,7 +12,7 @@ You might clone the repository and run it on your local machine for advanced deb
 2. Create a project and name it.
 3. Open a terminal, run "git clone git@github.com:SoftenStorm/boilerplate.git".
 4. Run "mv boilerplate YOUR_PROJECT_NAME".
-5. Run "cd boilerplate".
+5. Run "cd YOUR_PROJECT_NAME".
 6. Run "git remote rename origin boilerplate".
 7. Run "git remote add origin git@github.com:YOUR_ALIAS/YOUR_PROJECT_NAME.git".
 8. Run "git checkout 1.17".
