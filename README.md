@@ -31,9 +31,14 @@ You might clone the repository and run it on your local machine for advanced deb
 
 Required parameters in the environment file:
 
-1. MYSQL_URL=
-2. RELATIONAL_DATABASE_KEY=MYSQL_URL
-3. SESSION_SECRET=
+1. POSTGRESQL_URL=
+2. RELATIONAL_DATABASE_KEY=POSTGRESQL_URL
+3. MONGODB_URI=
+4. DOCUMENT_DATABASE_KEY=MONGODB_URI
+5. REDIS_URI=
+6. PRIORITIZED_WORKER_KEY=REDIS_URI
+7. VOLATILE_MEMORY_KEY=REDIS_URI
+8. SESSION_SECRET=
 
 Openning the preview URL on your browser by using: https://localhost.stackblend.org
 
