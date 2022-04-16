@@ -1904,6 +1904,8 @@ const DatabaseHelper = {
 							let dataKeys: {[Identifier: string]: any} = {};
 							let dataColumns: {[Identifier: string]: any} = {};
 							
+							let notificationURI = NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags); // Early generate due to modification of dataKeys and dataColumns.
+							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
 							
 							if (!results[schema.group] || results[schema.group].forwarded !== true) {
@@ -1993,7 +1995,7 @@ const DatabaseHelper = {
 							  source: schema.source,
 							  group: schema.group,
 							  rows: rows,
-							  notification: (notifyUpdates) ? NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags) : null
+							  notification: (notifyUpdates) ? notificationURI : null
 							};
 							
 							for (const _row of rows) {
