@@ -1908,7 +1908,7 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
 							
-							if (!results[schema.group] || results[schema.group].forwarded !== true) {
+							if (!results.relations || !results.relations[schema.group] || results.relations[schema.group].forwarded !== true) {
 								let records;
 								if (input.source == SourceType.Relational) {
 									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
@@ -1968,7 +1968,7 @@ const DatabaseHelper = {
 			  					rows.push(row);
 								}
 							} else {
-								for (const row of results[schema.group].rows) {
+								for (const row of results.relations[schema.group].rows) {
 									let found = false;
 									
 									for (const key in dataKeys) {
