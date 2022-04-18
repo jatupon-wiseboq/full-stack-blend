@@ -1904,9 +1904,9 @@ const DatabaseHelper = {
 							let dataKeys: {[Identifier: string]: any} = {};
 							let dataColumns: {[Identifier: string]: any} = {};
 							
-							let notificationURI = NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags); // Early generate due to modification of dataKeys and dataColumns.
+							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 							
-							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);	
+							let notificationURI = NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags); // Early generate due to modification of dataKeys and dataColumns.
 							
 							if (!results.relations || !results.relations[schema.group] || results.relations[schema.group].forwarded !== true) {
 								let records;
