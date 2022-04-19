@@ -3,6 +3,7 @@ import fs from "fs";
 import dotenv from "dotenv";
 import Redis from "ioredis";
 import * as child from "child_process";
+import { base64id } from "base64id";
 import { NotificationHelper } from './controllers/helpers/NotificationHelper';
 
 import app from "./app";

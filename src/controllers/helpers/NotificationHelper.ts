@@ -12,6 +12,8 @@ const notificationInfos = {};
 const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
 const sessionLookupTable: {[Identifier: string]: any[]} = {};
 const disconnectingSockets: {[Identifier: string]: any[]} = {};
+const disposingInstances: {[Identifier: string]: any[]} = {};
+const confirmingMessages: {[Identifier: string]: {[Identifier: string]: any}} = {};
 let disconnectingTimer = null;
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
@@ -29,7 +31,9 @@ const NotificationHelper = {
 			
 			parser(req, {}, () => {});
 			
+  		const instanceId = socket.handshake.query.instanceId;
 		  const sessionId = req.signedCookies["connect.sid"];
+		  const uniqueId = sessionId + instanceId;
 			if (!sessionId) return;
 		  
 		  const setSocket = (sockets: any[]): boolean => {
@@ -109,14 +113,16 @@ const NotificationHelper = {
 		  }
 		  if (!setSocket(sessionLookupTable[sessionId])) {
 		  	for (const socket of sessionLookupTable[sessionId]) {
-		  		socket.emit("command", "refresh");
+		  		socket.unconfirmEmit("command", "refresh");
 		  	}
 		  }
 		  
 		  delete disconnectingSockets[socket.id];
+		  delete disposingInstances[uniqueId];
 		  
 		  socket.on("disconnect", (reason) => {
 		  	disconnectingSockets[socket.id] = [socket, 15];
+		  	disposingInstances[uniqueId] = [uniqueId, 3600];
 		  });
 		  
 		  disconnectingTimer = disconnectingTimer || setInterval(() => {
@@ -151,10 +157,21 @@ const NotificationHelper = {
 						}
 					}
 				}
+				for (const uniqueId in disposingInstances) {
+					if (disposingInstances.hasOwnProperty(uniqueId)) {
+						disposingInstances[uniqueId][1]--;
+						
+						if (disposingInstances[uniqueId][1] <= 0) {
+							delete confirmingMessages[uniqueId];
+				  		delete disposingInstances[uniqueId];
+						}
+					}
+				}
 			}, 1000);
 		  
 		  socket.on("reconnect", (reason) => {
 		  	delete disconnectingSockets[socket.id];
+		  	delete disposingInstances[uniqueId];
 		  	
 		  	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
 			  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
@@ -162,6 +179,41 @@ const NotificationHelper = {
 			  }
 		  	setSocket(sessionLookupTable[sessionId]);
 		  });
+		  
+		  confirmingMessages[uniqueId] = confirmingMessages[uniqueId] || {};
+		  
+		  if (!socket.unconfirmEmit) {
+			  socket.unconfirmEmit = socket.emit;
+			  socket.emitCount = 0;
+			  socket.emit = (name: string, data: any) => {
+			  	data.timestamp = `${(new Date()).getTime()}.${socket.emitCount++}`;
+			  	
+			  	if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > 100) {
+			  		delete confirmingMessages[uniqueId];
+			  		socket.unconfirmEmit("command", "refresh");
+			  	} else {
+			  		confirmingMessages[uniqueId][data.timestamp] = [name, data];
+			  		socket.unconfirmEmit(name, data);
+			  	}
+			  };
+			  
+			  socket.on("acknowledge", (message: any) => {
+			  	if (!confirmingMessages.hasOwnProperty(uniqueId)) return;
+			  	delete confirmingMessages[uniqueId][message.timestamp];
+			  });
+			  
+			  if (!confirmingMessages.hasOwnProperty(uniqueId)) {
+			  	socket.unconfirmEmit("command", "refresh");
+			  } else {
+			  	const messageInfo = confirmingMessages[uniqueId];
+			  	for (const key in messageInfo) {
+			  		if (messageInfo.hasOwnProperty(key)) {
+			  			const [name, data] = messageInfo[key];
+			  			socket.unconfirmEmit(name, data);
+			  		}
+			  	}
+			  }
+			}
 		});
 	},
 	associateInnerCircles: (session: any, innerCircleTags: string[]) => {
