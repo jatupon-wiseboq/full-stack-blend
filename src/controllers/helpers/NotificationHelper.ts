@@ -113,7 +113,7 @@ const NotificationHelper = {
 		  }
 		  if (!setSocket(sessionLookupTable[sessionId])) {
 		  	for (const socket of sessionLookupTable[sessionId]) {
-		  		socket.unconfirmEmit("command", "refresh");
+		  		(socket.unconfirmEmit || socket.emit)("command", "refresh");
 		  	}
 		  }
 		  
