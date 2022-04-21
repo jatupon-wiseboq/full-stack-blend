@@ -41,7 +41,7 @@ Required parameters in the environment file:
 7. VOLATILE_MEMORY_KEY=REDIS_URI
 8. SESSION_SECRET=
 
-You may use a free of Heroku dynos for web and worker, to run your project. Heroku is a cloud platform as a service (PaaS) supporting several programming languages, including Node.js. They also provides a free Heroku Postgres and a free Heroku Redis, too. Moreover, MongoDB also provides the service for free. And to reduce traffics to Heroku dynos by serving cache instead, please use a free CDN to achieve it. They will ask you to enter your credit card, but with all of these with the right data-flow optimization techniques, you can serve the high amount of traffics without any costs.
+Heroku is a cloud platform as a service (PaaS) supporting several programming languages, including Node.js, that you may use a free of Heroku dynos for web and worker to run your project. They also provides a free Heroku Postgres and a free Heroku Redis, too. Moreover, on MongoDB.com, they also provides the database service for free. And to reduce traffics to the dynos, please serving cache through a CDN instead by using a free CDN from Cloudflare to achieve it. They will ask you to enter your credit card, but with all of these with the right data-flow optimization techniques, you can serve the high amount of traffics without any costs.
 
 Heroku: https://www.heroku.com
 MongoDB: https://www.mongodb.com
