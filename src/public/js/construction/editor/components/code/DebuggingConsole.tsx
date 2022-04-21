@@ -105,6 +105,7 @@ class DebuggingConsole extends Base<Props, State> {
               data = JSON.parse(event.data);
             } catch { /*void*/ }
             
+            if (data == null || !data.type) return;
             switch (data.type) {
               case 'error':
                 repl.print(`${data.msg} (line: ${data.line}, col: ${data.col}) ${data.url}`, 'type-error');
