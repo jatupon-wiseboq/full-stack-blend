@@ -3,6 +3,8 @@ import fs from "fs";
 import dotenv from "dotenv";
 import Redis from "ioredis";
 import * as child from "child_process";
+import { base64id } from "base64id";
+import { NotificationHelper } from './controllers/helpers/NotificationHelper';
 
 import app from "./app";
 
@@ -39,6 +41,8 @@ if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_
   server = http.createServer(app).listen(process.env.PORT || 8000);
 	socket = SocketIO.listen(server);
 }
+
+NotificationHelper.setup(socket);
 
 // Resque
 //
@@ -189,4 +193,4 @@ finalize = () => {
 };
 complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
 
-export {server, socket, queue, scheduler};
+export {server, queue, scheduler};

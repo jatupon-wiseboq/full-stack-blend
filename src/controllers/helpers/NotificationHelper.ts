@@ -4,7 +4,6 @@
 import {CodeHelper} from "./CodeHelper";
 import {DataTableSchema, SchemaHelper} from "./SchemaHelper";
 import {ActionType, HierarchicalDataRow} from "./DatabaseHelper";
-import {socket} from "../../server";
 import {Md5} from "md5-typescript";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -13,154 +12,213 @@ const notificationInfos = {};
 const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
 const sessionLookupTable: {[Identifier: string]: any[]} = {};
 const disconnectingSockets: {[Identifier: string]: any[]} = {};
+const disposingInstances: {[Identifier: string]: any[]} = {};
+const confirmingMessages: {[Identifier: string]: {[Identifier: string]: any}} = {};
 let disconnectingTimer = null;
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
 }
 
-socket && socket.sockets.on("connection", (socket) => {
-	const req: any = {headers: socket.handshake.headers};
-	const parser = cookieParser(process.env.SESSION_SECRET);
-	
-	parser(req, {}, () => {});
-	
-  const sessionId = req.signedCookies["connect.sid"];
-	if (!sessionId) return;
-  
-  const setSocket = (sockets: any[]): boolean => {
-  	let hasState: boolean = false;
-  	
-  	for (const group in notificationInfos) {
-	  	if (notificationInfos.hasOwnProperty(group)) {
-	  		const notificationInfo = notificationInfos[group];
-	  		
-	  		for (const md5OfServerTableUpdatingIdentity in notificationInfo) {
-			  	if (notificationInfo.hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
-	  				const combinations = notificationInfo[md5OfServerTableUpdatingIdentity].combinations;
-	  				
-	  				for (const md5OfClientTableUpdatingIdentity in combinations) {
-					  	if (combinations.hasOwnProperty(md5OfClientTableUpdatingIdentity)) {
-			  				const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
+let socket = null;
+
+const NotificationHelper = {
+	setup: (_socket: any) => {
+		socket = _socket;
+		socket && socket.sockets.on("connection", (socket) => {
+			const req: any = {headers: socket.handshake.headers};
+			const parser = cookieParser(process.env.SESSION_SECRET);
+			
+			parser(req, {}, () => {});
+			
+  		const instanceId = socket.handshake.query.instanceId;
+		  const sessionId = req.signedCookies["connect.sid"];
+		  const uniqueId = sessionId + instanceId;
+			if (!sessionId) return;
+		  
+		  const setSocket = (sockets: any[]): boolean => {
+		  	let hasState: boolean = false;
+		  	
+		  	for (const group in notificationInfos) {
+			  	if (notificationInfos.hasOwnProperty(group)) {
+			  		const notificationInfo = notificationInfos[group];
+			  		
+			  		for (const md5OfServerTableUpdatingIdentity in notificationInfo) {
+					  	if (notificationInfo.hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
+			  				const combinations = notificationInfo[md5OfServerTableUpdatingIdentity].combinations;
 			  				
-			  				if (combinationInfo.hasOwnProperty(sessionId)) {
-			  					if (sockets != null) {
-				  					if (combinationInfo[sessionId] === false) {
-				  						setSocket(null);
-				  						return false;
-				  					} else {
-				  						for (const socket of sockets) {
-				  							if (Array.isArray(combinationInfo[sessionId])) {
-						  						for (const item of combinationInfo[sessionId]) {
-						  							switch (item.action) {
-												  		case ActionType.Insert:
-												  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
-												  				id: md5OfClientTableUpdatingIdentity,
-												  				results: item.results
-												  			});
-												  			break;
-												  		case ActionType.Update:
-												  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
-												  				id: md5OfClientTableUpdatingIdentity,
-												  				results: item.results
-												  			});
-												  			break;
-												  		case ActionType.Upsert:
-												  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
-												  				id: md5OfClientTableUpdatingIdentity,
-												  				results: item.results
-												  			});
-												  			break;
-												  		case ActionType.Delete:
-												  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
-												  				id: md5OfClientTableUpdatingIdentity,
-												  				results: item.results
-												  			});
-												  			break;
-												  	}
+			  				for (const md5OfClientTableUpdatingIdentity in combinations) {
+							  	if (combinations.hasOwnProperty(md5OfClientTableUpdatingIdentity)) {
+					  				const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
+					  				
+					  				if (combinationInfo.hasOwnProperty(sessionId)) {
+					  					if (sockets != null) {
+						  					if (combinationInfo[sessionId] === false) {
+						  						setSocket(null);
+						  						return false;
+						  					} else {
+						  						for (const socket of sockets) {
+						  							if (Array.isArray(combinationInfo[sessionId])) {
+								  						for (const item of combinationInfo[sessionId]) {
+								  							switch (item.action) {
+														  		case ActionType.Insert:
+														  			socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
+														  				id: md5OfClientTableUpdatingIdentity,
+														  				results: item.results
+														  			});
+														  			break;
+														  		case ActionType.Update:
+														  			socket.emit("update_" + md5OfClientTableUpdatingIdentity, {
+														  				id: md5OfClientTableUpdatingIdentity,
+														  				results: item.results
+														  			});
+														  			break;
+														  		case ActionType.Upsert:
+														  			socket.emit("upsert_" + md5OfClientTableUpdatingIdentity, {
+														  				id: md5OfClientTableUpdatingIdentity,
+														  				results: item.results
+														  			});
+														  			break;
+														  		case ActionType.Delete:
+														  			socket.emit("delete_" + md5OfClientTableUpdatingIdentity, {
+														  				id: md5OfClientTableUpdatingIdentity,
+														  				results: item.results
+														  			});
+														  			break;
+														  	}
+								  						}
+								  					}
 						  						}
+							  					
+						  						hasState = true;
+									  			combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
 						  					}
-				  						}
-					  					
-				  						hasState = true;
-							  			combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
-				  					}
-				  				} else {
-				  					combinationInfo[sessionId] = null;
-				  				}
-						  	}
+						  				} else {
+						  					combinationInfo[sessionId] = null;
+						  				}
+								  	}
+							  	}
+							  }
 					  	}
 					  }
 			  	}
 			  }
-	  	}
-	  }
-	  
-	  return hasState;
-  };
-  
-  if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
-  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
-  	sessionLookupTable[sessionId].push(socket);
-  }
-  if (!setSocket(sessionLookupTable[sessionId])) {
-  	for (const socket of sessionLookupTable[sessionId]) {
-  		socket.emit("command", "refresh");
-  	}
-  }
-  
-  delete disconnectingSockets[socket.id];
-  
-  socket.on("disconnect", (reason) => {
-  	disconnectingSockets[socket.id] = [socket, 15];
-  });
-  
-  disconnectingTimer = disconnectingTimer || setInterval(() => {
-		for (const socketId in disconnectingSockets) {
-			if (disconnectingSockets.hasOwnProperty(socketId)) {
-				disconnectingSockets[socketId][1]--;
-				
-				if (disconnectingSockets[socketId][1] <= 0) {
-					const socket = disconnectingSockets[socketId][0];
-					const req: any = {headers: socket.handshake.headers};
-					const parser = cookieParser(process.env.SESSION_SECRET);
-					
-					parser(req, {}, () => {});
-					
-				  const sessionId = req.signedCookies["connect.sid"];
-					if (sessionId) {
-						const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
-			  		
-			  		if (index != -1) {
-			  			sessionLookupTable[sessionId].splice(index, 1);
-			  		}
-			  		
-			  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
-			  			sessionLookupTable[sessionId] = null;
-			  			setSocket(null);
-			  		} else {
-			  			setSocket(sessionLookupTable[sessionId]);
+			  
+			  return hasState;
+		  };
+		  
+		  delete disconnectingSockets[socket.id];
+		  delete disposingInstances[uniqueId];
+		  
+		  confirmingMessages[uniqueId] = confirmingMessages[uniqueId] || {};
+		  
+		  socket.on("disconnect", (reason) => {
+		  	disconnectingSockets[socket.id] = [socket, 15];
+		  	disposingInstances[uniqueId] = [uniqueId, 3600];
+		  });
+		  socket.on("reconnect", (reason) => {
+		  	delete disconnectingSockets[socket.id];
+		  	delete disposingInstances[uniqueId];
+		  	
+		  	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
+			  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
+		  		sessionLookupTable[sessionId].push(socket);
+			  }
+		  	setSocket(sessionLookupTable[sessionId]);
+		  });
+		  
+		  disconnectingTimer = disconnectingTimer || setInterval(() => {
+				for (const socketId in disconnectingSockets) {
+					if (disconnectingSockets.hasOwnProperty(socketId)) {
+						disconnectingSockets[socketId][1]--;
+						
+						if (disconnectingSockets[socketId][1] <= 0) {
+							const socket = disconnectingSockets[socketId][0];
+							const req: any = {headers: socket.handshake.headers};
+							const parser = cookieParser(process.env.SESSION_SECRET);
+							
+							parser(req, {}, () => {});
+							
+						  const sessionId = req.signedCookies["connect.sid"];
+							if (sessionId) {
+								const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
+					  		
+					  		if (index != -1) {
+					  			sessionLookupTable[sessionId].splice(index, 1);
+					  		}
+					  		
+					  		if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
+					  			sessionLookupTable[sessionId] = null;
+					  			setSocket(null);
+					  		} else {
+					  			setSocket(sessionLookupTable[sessionId]);
+					  		}
+					  	}
+				  		
+				  		delete disconnectingSockets[socket.id];
+						}
+					}
+				}
+				for (const uniqueId in disposingInstances) {
+					if (disposingInstances.hasOwnProperty(uniqueId)) {
+						disposingInstances[uniqueId][1]--;
+						
+						if (disposingInstances[uniqueId][1] <= 0) {
+							delete confirmingMessages[uniqueId];
+				  		delete disposingInstances[uniqueId];
+						}
+					}
+				}
+			}, 1000);
+		  
+		  if (!socket.unconfirmEmit) {
+			  socket.unconfirmEmit = socket.emit;
+			  socket.emitCount = 0;
+			  socket.emit = (name: string, data: any) => {
+			  	if (typeof data === 'object') {
+				  	data.timestamp = `${(new Date()).getTime()}.${socket.emitCount++}`;
+				  	
+				  	if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > 100) {
+				  		delete confirmingMessages[uniqueId];
+				  		socket.unconfirmEmit("command", "refresh");
+				  	} else {
+				  		confirmingMessages[uniqueId][data.timestamp] = [name, data];
+				  		socket.unconfirmEmit(name, data);
+				  	}
+				  } else {
+				  	socket.unconfirmEmit(name, data);
+				  }
+			  };
+			  
+			  socket.on("acknowledge", (message: any) => {
+			  	if (!confirmingMessages.hasOwnProperty(uniqueId)) return;
+			  	delete confirmingMessages[uniqueId][message.timestamp];
+			  });
+			  
+			  if (!confirmingMessages.hasOwnProperty(uniqueId)) {
+			  	socket.unconfirmEmit("command", "refresh");
+			  } else {
+			  	const messageInfo = confirmingMessages[uniqueId];
+			  	for (const key in messageInfo) {
+			  		if (messageInfo.hasOwnProperty(key)) {
+			  			const [name, data] = messageInfo[key];
+			  			socket.unconfirmEmit(name, data);
 			  		}
 			  	}
-		  		
-		  		delete disconnectingSockets[socket.id];
-				}
+			  }
 			}
-		}
-	}, 1000);
-  
-  socket.on("reconnect", (reason) => {
-  	delete disconnectingSockets[socket.id];
-  	
-  	if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
-	  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
-  		sessionLookupTable[sessionId].push(socket);
-	  }
-  	setSocket(sessionLookupTable[sessionId]);
-  });
-});
-
-const NotificationHelper = {
+		  
+		  if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
+		  	sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
+		  	sessionLookupTable[sessionId].push(socket);
+		  }
+		  if (!setSocket(sessionLookupTable[sessionId])) {
+		  	for (const socket of sessionLookupTable[sessionId]) {
+		  		socket.unconfirmEmit("command", "refresh");
+		  	}
+		  }
+		});
+	},
 	associateInnerCircles: (session: any, innerCircleTags: string[]) => {
 		for (const innerCircleTag of innerCircleTags) {
 			innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
