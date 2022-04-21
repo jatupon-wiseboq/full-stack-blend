@@ -1,12 +1,12 @@
 # StackBlend Studio
 
-This repository is the StackBlend studio, that will be your assets under the BSD 4-Clause license. ([read more on terms of service, section 2: Use License](https://www.softenstorm.com/stackblend-policy-and-terms)).
+This repository is the StackBlend Studio, that will be your assets under the BSD 4-Clause license. ([read more on terms of service, section 2: Use License](https://www.softenstorm.com/stackblend-policy-and-terms)).
 
 Please go to https://www.stackblend.org to get started. Please note that a dedicated GitHub account for StackBlend is recommended while it is underdevelopment.
 
-## Running boilerplate on local machine
+## Running boilerplate in local machine
 
-You might clone the repository and run it on your local machine for advanced debugging. We recommend to do it, because you can reverse changes or merge conflicts, can change a part of code and see what will be happening, can lint and fix code bugs before deploying, and can install new modules via npm package managing.
+You might clone the repository and run it in your local machine for advanced debugging. We recommend to do it, because you can reverse changes or merge conflicts, can change a part of code and see what will be happening, can lint and fix code bugs before deploying, and can install new modules via npm package managing.
 
 1. Signup and Login to GitHub.
 2. Create a project and name it.
@@ -24,8 +24,8 @@ You might clone the repository and run it on your local machine for advanced deb
 14. Run "git push --set-upstream origin feature/YOUR_NEW_FEATURE_NAME --force".
 15. Run "npm install".
 16. Run "mv dev.env .env" and config the file.
-17. Please take a note of the new branch name and connect the repository with StackBlend (see the instruction below).
-18. From StackBlend editor, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
+17. Connecting the repository with StackBlend Studio (see the instruction below).
+18. Within StackBlend Studio, click save button to push changes to feature/YOUR_NEW_FEATURE_NAME" including new auto-generated files.
 19. From the terminal, run "git reset --hard & git pull".
 20. Run "npm run build".
 21. Run "npm run watch".
@@ -41,23 +41,42 @@ Required parameters in the environment file:
 7. VOLATILE_MEMORY_KEY=REDIS_URI
 8. SESSION_SECRET=
 
-Openning the preview URL on your browser by using: https://localhost.stackblend.org
+You may use a free of Heroku dynos for web and worker, to run your project. Heroku is a cloud platform as a service (PaaS) supporting several programming languages, including Node.js. They also provides a free Heroku Postgres and a free Heroku Redis, too. Moreover, MongoDB also provides the service for free. And to reduce traffics to Heroku dynos by serving cache instead, please use a free CDN to achieve it. They will ask you to enter your credit card, but with all of these with the right data-flow optimization techniques, you can serve the high amount of traffics without any costs.
+
+Heroku: https://www.heroku.com
+MongoDB: https://www.mongodb.com
+Cloudflare: https://www.cloudflare.com
+
+Please generate a random string of SESSION_SECRET using:
+
+1. Run "npm install -g generate-secret".
+2. Enter ".env".
+3. Enter "SESSION_SECRET".
+
+Finally, openning the preview URL in your browser by using: https://localhost.stackblend.org.
 
 ## Running boilerplate on Heroku
 
-This repository has been designed to be working on Heroku, a cloud platform as a service (PaaS) supporting several programming languages, including Node.js. You may following with these instruction to get it works on Heroku.
+This repository has been designed to be working on Heroku. You may following with these instruction to get your project works on the platform.
 
-1. Signup and Login to Heroku.
+1. Signup and Login on Heroku.com.
 2. Create a new pipeline and connect the pipeline to the GitHub account.
 3. On the pipeline page, add an app for staging environment.
-4. On the app's resource page, create a new add-on "MySQL".
-5. On the app's settings page, add a config variable "RELATIONAL_DATABASE_KEY" and assign the key name to its value.
-5. Add a config variable "SESSION_SECRET" and assign the random string.
-5. Add a config variable "NODE_ENV" and assign "staging".
-6. Configure an automatic deploy or deploy a staging branch.
-7. Please take a note of the running URL.
+4. On the app's resource page, create a new add-on "Heroku Postgres", and wait until it's running.
+5. On the app's settings page, config a new variable named "POSTGRESQL_URL", 
+   and also point "RELATIONAL_DATABASE_KEY" to it using the name.
+6. On the app's resource page, create a new add-on "Heroku Redis".
+7. On the app's settings page, config a new variable named "REDIS_URI",
+   and also point "PRIORITIZED_WORKER_KEY" and "VOLATILE_MEMORY_KEY" to it using the name.
+8. Signup and Login on MongoDB.com.
+9. Create a new database on MongoDB.
+10. On the app's settings page, config a new variable named "MONGODB_URI",
+    and also point "DOCUMENT_DATABASE_KEY" to it using the name.
+11. Add a config variable "SESSION_SECRET" and assign the random string.
+12. Add a config variable "NODE_ENV" and assign "staging".
+13. Configure an automatic deploy or deploy a staging branch.
 
-Openning the running URL on your browser to see the results.
+Openning https://__APP_NAME__.herokuapp.com in your browser to see the results.
 
 ## Updating boilerplate periodically
 
@@ -75,7 +94,7 @@ To list all of hotfixes:
 3. Run "git log --oneline | grep Hotfix".
 4. For each of hotfix, run "git cherry-pick COMMIT_ID".
 
-## Connecting the repository with StackBlend
+## Connecting the repository with StackBlend Studio
 
 Whatever you are a full-stack engineer or not, StackBlend will helps you cope with front-end, back-end, UI/UX, and content in a single one editor. You may design the user interface right from the editor, configure their properties and data dot notations, link them to fully customizable server-side scripts, and get the results back on the client-side using less than 10 lines of code, where the rests are auto-generated by the editor.
 
