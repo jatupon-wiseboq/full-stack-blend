@@ -76,7 +76,7 @@ This repository has been designed to be working on Heroku. You may following wit
 12. Add a config variable "NODE_ENV" and assign "staging".
 13. Configure an automatic deploy or deploy a staging branch.
 
-Openning https://__APP_NAME__.herokuapp.com in your browser to see the results.
+Openning https://YOUR_APP_NAME.herokuapp.com in your browser to see the results.
 
 ## Updating boilerplate periodically
 
