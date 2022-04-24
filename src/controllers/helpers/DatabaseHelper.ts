@@ -1719,9 +1719,10 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  const connectionInfos: {[Identifier: string]: any} = {};
+		  if (transaction) connectionInfos['documentDatabaseConnection'] = transaction.documentDatabaseConnection;
 		  try {
 		  	if (data != null) {
 	  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
