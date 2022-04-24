@@ -1090,9 +1090,9 @@ const DatabaseHelper = {
 			}
 		}
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema, crossRelationUpsert);
@@ -1296,9 +1296,9 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Upsert, baseSchema, true);
@@ -1516,9 +1516,9 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema, crossRelationUpsert);
@@ -2080,9 +2080,9 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);

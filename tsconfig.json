@@ -3,7 +3,7 @@
         "module": "commonjs",
         "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
-        "target": "es3",
+        "target": "es5",
         "jsx": "react",
         "noImplicitAny": false,
         "moduleResolution": "node",
