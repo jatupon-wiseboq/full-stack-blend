@@ -122,12 +122,12 @@ const CreateTransaction = async (options) => {
 	}
 	if (DocumentDatabaseClient) {
 		documentDatabaseConnection = await DocumentDatabaseClient.connect();
-		try {
-			documentDatabaseSession = DocumentDatabaseClient.startSession({
-				retryWrites: true,
-				causalConsistency: true
-			});
-			if (!options.manual) {
+		if (!options.manual) {
+			try {
+				documentDatabaseSession = DocumentDatabaseClient.startSession({
+					retryWrites: true,
+					causalConsistency: true
+				});
 				documentDatabaseSession.startTransaction({
 					readPreference: 'primary',
 					readConcern: {
@@ -137,9 +137,9 @@ const CreateTransaction = async (options) => {
 						w: 'majority'
 					}
 		    });
-		  }
-	 	} catch {
-	 		documentDatabaseSession = null;
+		 	} catch {
+		 		documentDatabaseSession = null;
+		 	}
 	 	}
 	}
 	
