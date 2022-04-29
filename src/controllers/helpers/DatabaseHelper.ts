@@ -815,8 +815,9 @@ const DatabaseHelper = {
 		      queryColumns[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key]};
 		    	dataColumns[(key == 'id') ? '_id' : key] = isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key];
 		    } else {
-		    	queryColumns[key] = row.columns[key];
-		    	dataColumns[key] = row.columns[key];
+		    	const value = (typeof row.columns[key] === 'object' && row.columns[key] != null && row.columns[key].constructor.name === 'ObjectID') ? row.columns[key].toString() : row.columns[key];
+		    	queryColumns[key] = value;
+		    	dataColumns[key] = value;
 		    }
 		  }
 		}
@@ -828,6 +829,7 @@ const DatabaseHelper = {
 		      queryKeys[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key]};
 		    	dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
 		    } else {
+		    	const value = (typeof row.keys[key] === 'object' && row.keys[key] != null && row.keys[key].constructor.name === 'ObjectID') ? row.keys[key].toString() : row.keys[key];
 		    	queryKeys[key] = row.keys[key];
 		    	dataKeys[key] = row.keys[key];
 		    }
