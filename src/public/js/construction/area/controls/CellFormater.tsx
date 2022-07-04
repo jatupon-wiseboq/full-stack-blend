@@ -55,6 +55,8 @@ class CellFormater extends React.Component<Props, State> {
 		if (this.tableElement != null) {
 			for (let cell of this.allCellElements) {
 				cell.removeEventListener('mousedown', this.mouseDown, false);
+    		cell.removeEventListener('dragstart', this.void, false);
+    		cell.removeEventListener('drop', this.void, false);
 			}
 		}
 
@@ -65,6 +67,8 @@ class CellFormater extends React.Component<Props, State> {
 
 			for (let cell of this.allCellElements) {
 				cell.addEventListener('mousedown', this.mouseDown, false);
+    		cell.addEventListener('dragstart', this.void, false);
+    		cell.addEventListener('drop', this.void, false);
 			}
 		} else {
 			this.allCellElements = [];
@@ -236,6 +240,9 @@ class CellFormater extends React.Component<Props, State> {
 		EditorHelper.updateEditorProperties();
 		
 		EventHelper.setDenyForHandle('click', false, 100);
+		return EventHelper.cancel(event);
+	}
+	private void(event) {
 		return EventHelper.cancel(event);
 	}
 

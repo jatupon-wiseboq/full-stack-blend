@@ -188,7 +188,7 @@ var CapabilityHelper = {
     elements.forEach((element) => {
   	  if (!element.internalFsbBindedDragging) {
         element.internalFsbBindedDragging = true;
-        
+    	
         Accessories.dragger.bind(element);
       }
   	});
