@@ -559,11 +559,15 @@ var WorkspaceHelper = {
     	component.innerHTML = '';
     }
     
-    const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting', holder);
-    if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+    const selectings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-selecting', holder));
+    for (const selecting of selectings) {
+    	HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+    }
     
-    const walking = HTMLHelper.getElementByClassName('internal-fsb-walking', holder);
-    if (walking) HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+    const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking', holder));
+    for (const walking of walkings) {
+   		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+   	}
     
     return holder.innerHTML;
   },
