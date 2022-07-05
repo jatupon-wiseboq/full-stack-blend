@@ -17,7 +17,7 @@ var StatusHelper = {
   	
   	const statuses = {};
   	
-  	const elements = [...Array.from(HTMLHelper.getElementsByAttribute('internal-fsb-guid'))];
+  	const elements = Array.from(HTMLHelper.getElementsByAttribute('internal-fsb-guid'));
   	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
   	if (selecting) elements.push(selecting);
   	for (const element of elements) {

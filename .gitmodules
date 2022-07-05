@@ -1,4 +1,0 @@
-[submodule "boilerplate"]
-	path = boilerplate
-	url = git@github.com:SoftenStorm/boilerplate.git
-	branch = master
