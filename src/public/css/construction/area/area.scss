@@ -43,6 +43,10 @@ html.internal-fsb-guide-on {
     .internal-fsb-resizer {
       display: table-caption !important;
     }
+    
+    &.internal-fsb-selecting > tbody > tr > td:not(.internal-fsb-placing-cursor) > .internal-fsb-element {
+    	pointer-events: none;
+    }
   }
   
   // -------------------------------------------------------------------------

@@ -30,6 +30,10 @@ var MalformationRepairHelper = {
 	  		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-walking')) {
 	  			HTMLHelper.removeClass(elements[j], 'internal-fsb-walking');
 	  		}
+	  		
+	  		if (HTMLHelper.hasClass(elements[j], 'internal-fsb-placing-cursor')) {
+	  			HTMLHelper.removeClass(elements[j], 'internal-fsb-placing-cursor');
+	  		}
     	}
   		
   		if (HTMLHelper.getAttribute(elements[j], 'internal-fsb-class') == 'FlowLayout') {

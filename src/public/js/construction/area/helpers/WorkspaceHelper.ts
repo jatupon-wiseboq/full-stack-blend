@@ -569,6 +569,11 @@ var WorkspaceHelper = {
    		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
    	}
     
+    const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holder));
+    for (const placing of placings) {
+   		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
+   	}
+    
     return holder.innerHTML;
   },
   cleanupPageHTMLData: (html: string, preview: boolean=false) => {
@@ -610,6 +615,11 @@ var WorkspaceHelper = {
     const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking', holder));
     for (const walking of walkings) {
    		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+   	}
+    
+    const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holder));
+    for (const placing of placings) {
+   		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
    	}
     
     const outerHTML = holderWindow.document.body.outerHTML;

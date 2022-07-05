@@ -204,8 +204,15 @@ var CursorHelper = {
     return [referenceElementGUID, indexOfAllowCursorElement, positionXInTheAllowCursorElement, positionYInTheAllowCursorElement];
   },
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
-    let element = HTMLHelper.getElementByClassName('internal-fsb-walking');
-    if (element) HTMLHelper.removeClass(element, 'internal-fsb-walking');
+  	const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking'));
+    for (const walking of walkings) {
+   		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+   	}
+   	
+  	const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor'));
+    for (const placing of placings) {
+   		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
+   	}
     
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
@@ -233,8 +240,10 @@ var CursorHelper = {
           theAllowCursorElement.insertBefore(Accessories.cursor.getDOMNode(), theAllowCursorElement.firstElementChild);
         }
     
-        element = HTMLHelper.findTheParentInClassName('internal-fsb-element', theAllowCursorElement, true);
+        const element = HTMLHelper.findTheParentInClassName('internal-fsb-element', theAllowCursorElement, true);
         if (element) HTMLHelper.addClass(element, 'internal-fsb-walking');
+        
+        if (theAllowCursorElement.tagName == 'TD') HTMLHelper.addClass(theAllowCursorElement, 'internal-fsb-placing-cursor');
       }
     }
   }

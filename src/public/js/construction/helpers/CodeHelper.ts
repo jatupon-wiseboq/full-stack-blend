@@ -223,6 +223,10 @@ var CodeHelper = {
   		HTMLHelper.removeClass(current, 'internal-fsb-walking');
   	}
   	
+  	if (HTMLHelper.hasClass(current, 'internal-fsb-placing-cursor')) {
+  		HTMLHelper.removeClass(current, 'internal-fsb-placing-cursor');
+  	}
+  	
   	if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
   		current.parentNode && current.parentNode.removeChild(current);
   		return; 
