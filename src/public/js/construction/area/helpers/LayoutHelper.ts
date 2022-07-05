@@ -44,7 +44,7 @@ var LayoutHelper = {
   		let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
   		let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
   		let isTableLayoutRow = (element.tagName == 'TR');
-  		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : ((isTableLayoutRow) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid'));
+  		let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : ((isTableLayoutRow) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid')); // TODO: Move into an unit code or a different helper.
   		
   		if ((id || isTableLayoutCell || isTableLayoutRow) && !isTheBeginElement) {
   			nodes.push({
@@ -63,7 +63,7 @@ var LayoutHelper = {
   				nodes: this.getElementTreeNodes(includeInheriting, [], element),
   				tag: {
   				  class: klass,
-  				  guid: guid,
+  				  guid: (isTableLayoutRow) ? id + ':' + [...element.parentNode.childNodes].indexOf(element) : guid,
   				  options: LayoutHelper.getElementOptions(element)
   				}
   			});

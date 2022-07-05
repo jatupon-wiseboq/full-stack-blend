@@ -17,10 +17,16 @@ var StatusHelper = {
   	
   	const statuses = {};
   	
-  	const elements = Array.from(HTMLHelper.getElementsByAttribute('internal-fsb-guid'));
+  	const elements = [...Array.from(HTMLHelper.getElementsByAttribute('internal-fsb-guid'))];
+  	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+  	if (selecting) elements.push(selecting);
   	for (const element of elements) {
   		const guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-			statuses[guid] = StatusHelper.getElementAuthoringStatus(element);
+  		const isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
+			const isTableLayoutRow = (element.tagName == 'TR');
+			const id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : ((isTableLayoutRow) ? HTMLHelper.getAttribute(element.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid')); // TODO: Move into an unit code or a different helper.
+			
+			statuses[(isTableLayoutRow) ? id + ':' + [...element.parentNode.childNodes].indexOf(element) : guid] = StatusHelper.getElementAuthoringStatus(element);
   	}
 		
 		cachedElementAuthoringRevision++;
