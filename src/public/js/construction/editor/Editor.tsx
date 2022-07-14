@@ -75,7 +75,7 @@ let cachedUpdateEditorProperties = {};
     const element = document.getElementById('area') as HTMLFrameElement;
     const contentWindow = element.contentWindow;
 	 	const stringifyIfNeed = contentWindow.messageFnArray ? (data: any) => data : JSON.stringify;
-    contentWindow.postMessage(stringifyIfNeed{
+    contentWindow.postMessage(stringifyIfNeed({
       name: name,
       content: content
     }), '*');
