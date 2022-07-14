@@ -72,9 +72,10 @@ let cachedUpdateEditorProperties = {};
       document.body.click();
     }
     
-    let element = document.getElementById('area') as HTMLFrameElement;
-    let contentWindow = element.contentWindow;
-    contentWindow.postMessage(JSON.stringify({
+    const element = document.getElementById('area') as HTMLFrameElement;
+    const contentWindow = element.contentWindow;
+	 	const stringifyIfNeed = contentWindow.messageFnArray ? (data: any) => data : JSON.stringify;
+    contentWindow.postMessage(stringifyIfNeed{
       name: name,
       content: content
     }), '*');
@@ -345,16 +346,27 @@ let cachedUpdateEditorProperties = {};
     window.scrollTo(0, 0);
   });
   
-  window.addEventListener("message", (event) => {
+  const messageFn = (event) => {
   	try {
-	    let data = JSON.parse(event.data);
+	    let data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
 	  	if (data.target == 'editor') {
 	    	synchronize(data.name, data.content);
 	    }
 	  } catch (error) {
 	  	/* void */
 	  }
-  });
+  };
+  window.addEventListener("message", messageFn);
+  window.messageFnArray = window.messageFnArray || [];
+  window.messageFnArray.push(messageFn);
+  window.postMessage = (data: any) => {
+  	if (typeof data === 'string') data = JSON.parse(data);
+  	for (const messageFn of window.messageFnArray) {
+  		messageFn({
+  			data: data
+  		});
+  	}
+  };
   
   window.addEventListener("beforeunload", (event: any) => {
   	if (!window.overrideBeforeUnload) {

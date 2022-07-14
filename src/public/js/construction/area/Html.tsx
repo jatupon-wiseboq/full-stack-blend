@@ -37,10 +37,22 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   
   // Bind events.
   //
-  window.addEventListener("message", (event) => {
-    let data = JSON.parse(event.data);
+  const messageFn = (event) => {
+    let data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
     EditorHelper.perform(data.name, data.content);
-  }, true);
+  };
+  window.addEventListener("message", messageFn, true);
+  window.messageFnArray = window.messageFnArray || [];
+  window.messageFnArray.push(messageFn);
+  window.postMessage = (data: any) => {
+  	if (typeof data === 'string') data = JSON.parse(data);
+  	for (const messageFn of window.messageFnArray) {
+  		messageFn({
+  			data: data
+  		});
+  	}
+  };
+  
   window.addEventListener("keydown", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
       [27].indexOf(event.keyCode) == -1) {

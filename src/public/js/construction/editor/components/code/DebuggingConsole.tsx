@@ -98,11 +98,11 @@ class DebuggingConsole extends Base<Props, State> {
 		        out.completionValue = 'executed';
 		        return out;
 		      };
-        
-          top.addEventListener("message", ((event: any) => {
+        	
+        	const messageFn = ((event: any) => {
             let data = null;
             try {
-              data = JSON.parse(event.data);
+              data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
             } catch { /*void*/ }
             
             if (data == null || !data.type) return;
@@ -119,12 +119,16 @@ class DebuggingConsole extends Base<Props, State> {
             }
             
             repl.on('entry', (event) => {
-              this.props.window.postMessage(JSON.stringify({
+	  					const stringifyIfNeed = this.props.window.messageFnArray ? (data: any) => data : JSON.stringify;
+              this.props.window.postMessage(stringifyIfNeed({
           	    type: 'execute',
           	    statement: event.input
           	  }), '*');
             });
-          }).bind(this));
+          }).bind(this);
+          top.addEventListener("message", messageFn);
+			    top.messageFnArray = window.messageFnArray || [];
+			    top.messageFnArray.push(messageFn);
         }
     }
     

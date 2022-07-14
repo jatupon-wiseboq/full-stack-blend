@@ -208,14 +208,16 @@ var EditorHelper = {
 	  			}
 	  		}
 	  		
-		    window.top.postMessage(JSON.stringify({
+	  		const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
+		    window.top.postMessage(stringifyIfNeed({
 		    	target: 'editor',
 		      name: name,
 		      content: content
 		    }), '*');
   		}, 200);
   	} else {
-	    window.top.postMessage(JSON.stringify({
+	  	const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
+	    window.top.postMessage(stringifyIfNeed({
 	    	target: 'editor',
 	      name: name,
 	      content: content

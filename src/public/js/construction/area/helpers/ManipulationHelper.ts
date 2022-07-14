@@ -113,6 +113,7 @@ function removeAllPresetReferences(presetId: string, link: string) {
 				  		isCutMode: false
 				  	}));
 			  	} else {
+	  				const stringifyIfNeed = window.messageFnArray ? (data: any) => data : JSON.stringify;
 			  		window.postMessage(JSON.stringify({
 				    	name: 'insert',
 				      content: {
