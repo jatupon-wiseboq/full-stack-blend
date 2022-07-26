@@ -94,7 +94,7 @@ class FlowLayout_52d0514b extends Base {
     TestHelper.identify();
     function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         
-    DataManipulationHelper.register("65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); }});
+    DataManipulationHelper.register("65759748", "insert", ["174ec3c5","320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); }});
   }
   // <---Auto[ClassBegin]
   
@@ -185,6 +185,7 @@ class FlowLayout_52d0514b extends Base {
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="4d43796a")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="7311c62a")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="821640a3")
+          input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="174ec3c5")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9d3a3982")
             .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="7862eb69")
               | Message:  

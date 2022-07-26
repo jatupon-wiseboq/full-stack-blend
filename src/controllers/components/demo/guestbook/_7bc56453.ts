@@ -365,7 +365,7 @@ class Controller extends Base {
   	
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("7bc56453", "65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "[submit]"});
+    RequestHelper.registerSubmit("7bc56453", "65759748", "insert", ["174ec3c5","320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "[submit]"});
 		RequestHelper.registerInput('ad367405', "document", "guestbook", "id");
 		ValidationHelper.registerInput('ad367405', "[id]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'ad367405')) {
@@ -406,6 +406,16 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
+		RequestHelper.registerInput('174ec3c5', "document", "guestbook", "createdAt");
+		ValidationHelper.registerInput('174ec3c5', "[createdAt]", false, undefined, undefined, null);
+    for (let input of RequestHelper.getInputs(this.pageId, request, '174ec3c5')) {
+    
+      // Override data parsing and manipulation of Hidden 1 here:
+      // 
+      input.value = new Date();
+      
+      if (input != null) data.push(input);
+    }
 		RequestHelper.registerInput('320d25b6', "document", "guestbook", "message");
 		ValidationHelper.registerInput('320d25b6', "[message]", true, "Please enter a message.", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '320d25b6')) {
@@ -424,7 +434,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('bb881bb6', "document", "guestbook", "name");
+		RequestHelper.registerInput('bb881bb6', "document", "info", "answer");
 		ValidationHelper.registerInput('bb881bb6', "[answer]", true, "Please answer to the question.", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'bb881bb6')) {
     
