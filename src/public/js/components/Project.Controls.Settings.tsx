@@ -232,7 +232,7 @@ class Settings extends Base {
             .internal-fsb-element(style={'FsbInheritedPresets': '', 'color': (()=>{return (this.state.currentTab == 2) ? 'rgba(3, 115, 252, 1)' : 'rgba(255, 255, 255, 1)';})() || 'rgba(255, 255, 255, 1)', 'display': 'inline-block'}, internal-fsb-guid="c7844719")
               | Account
         .col-9.internal-fsb-element.internal-fsb-strict-layout.offset-3(style={'WebkitBorderRadius': '0px 8px 0px 0px', 'background': 'rgba(255, 255, 255, 0.95)', 'borderRadius': '0px 8px 0px 0px', 'height': '45px', 'left': '0px', 'paddingRight': '10px', 'paddingTop': '10px', 'position': 'absolute', 'right': '0px', 'top': '0px', 'zIndex': '900'}, internal-fsb-class="FlowLayout", internal-fsb-guid="ea965490")
-          Button.btn.btn-primary.btn-sm.col-2.internal-fsb-element.offset-10(onClick=((event) => { window.internalFsbSubmit('ea9268d1', 'User', event, ((results) => { this.manipulate('ea9268d1', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting || '', type="button", onSubmitted=this.onButtonSubmitted_ea9268d1.bind(this), onSubmitting=this.onButtonSubmitting_ea9268d1.bind(this), internal-fsb-guid="ea9268d1")
+          Button.btn.btn-primary.btn-sm.col-2.internal-fsb-element.offset-10(onClick=((event) => { window.internalFsbSubmit('ea9268d1', 'User', event, ((results) => { this.manipulate('ea9268d1', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting || undefined, type="button", onSubmitted=this.onButtonSubmitted_ea9268d1.bind(this), onSubmitting=this.onButtonSubmitting_ea9268d1.bind(this), internal-fsb-guid="ea9268d1")
             .internal-fsb-element(internal-fsb-guid="ea9268d1-text")
               | Save
         .col-9.internal-fsb-element.internal-fsb-strict-layout.offset-3(style={'MsOverflowX': 'hidden', 'MsOverflowY': 'scroll', 'background': 'rgba(255, 255, 255, 0)', 'bottom': '0px', 'overflowX': 'hidden', 'overflowY': 'scroll', 'paddingTop': '10px', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="3096eb71")
@@ -336,14 +336,14 @@ class Settings extends Base {
                   .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="0bd07ebe")
                     | New password:
                   .col-7.internal-fsb-element(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="3478b9ac")
-                    input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="password", disabled=this.state.submitting)
+                    input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, autocomplete="off", type="password", disabled=this.state.submitting)
             label.-fsb-preset-24bc9bae.col-12.internal-fsb-element(style={'FsbInheritedPresets': '24bc9bae'}, internal-fsb-guid="76574a2d")
               .container-fluid
                 .internal-fsb-strict-layout.row
                   .-fsb-preset-c8d71ae6.col-4.internal-fsb-element(style={'FsbInheritedPresets': 'c8d71ae6'}, internal-fsb-guid="b4d97ce1")
                     | Confirm password:
                   .col-7.internal-fsb-element(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="33832ba7")
-                    input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="password", disabled=this.state.submitting)
+                    input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, autocomplete="off", type="password", disabled=this.state.submitting)
             .-fsb-preset-12bc19e4.col-12.internal-fsb-element(style={'FsbInheritedPresets': '12bc19e4'}, internal-fsb-guid="d577da61")
               | Delete Account
             .-fsb-preset-baed14b5.col-12.internal-fsb-element(style={'FsbInheritedPresets': 'baed14b5'}, internal-fsb-guid="1bdb6469")
