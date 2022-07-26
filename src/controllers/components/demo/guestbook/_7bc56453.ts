@@ -441,6 +441,7 @@ class Controller extends Base {
       // Override data parsing and manipulation of [answer] here:
       // 
       if (input.value != 3) throw new Error('You provided a wrong answer.');
+      input = null;
       
       if (input != null) data.push(input);
     }
