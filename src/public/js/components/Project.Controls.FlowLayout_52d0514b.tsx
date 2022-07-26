@@ -171,14 +171,14 @@ class FlowLayout_52d0514b extends Base {
     TestHelper.identify();
     return pug `
       div(style=Object.assign({'marginBottom': '20px', 'marginTop': '20px', 'paddingLeft': '0px', 'paddingRight': '0px'}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="col-6 internal-fsb-element internal-fsb-strict-layout offset-3 " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="52d0514b")
-        .internal-fsb-element.internal-fsb-strict-layout(style={'MsOverflowY': 'scroll', 'maxHeight': '75vh', 'overflowY': 'scroll', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="46de0c81")
+        .internal-fsb-element.internal-fsb-inverse.internal-fsb-strict-layout(style={'MsFlexDirection': 'column-reverse', 'MsOverflowY': 'scroll', 'WebkitFlexDirection': 'column-reverse', 'display': 'flex', 'flexDirection': 'column-reverse', 'maxHeight': '75vh', 'overflowY': 'scroll', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="46de0c81")
           each data, i in this.getDataFromNotation("guestbook", true, false)
             .internal-fsb-element(style={'WebkitBorderRadius': '5px 5px 5px 5px', 'background': 'rgba(247, 247, 247, 1)', 'borderRadius': '5px 5px 5px 5px', 'marginBottom': '5px', 'paddingBottom': '5px', 'paddingLeft': '5px', 'paddingRight': '5px', 'paddingTop': '5px', 'width': '100%'}, key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || i), data-fsb-index=i, internal-fsb-guid="4d89825a")
               .col-12.internal-fsb-element(style={'marginBottom': '15px', 'textAlign': 'center'}, dangerouslySetInnerHTML={__html: CodeHelper.escape(CodeHelper.toSecuredDataString(this.getDataFromNotation("guestbook[" + i + "].message")))}, internal-fsb-guid="e8a4e015")
               .col-12.internal-fsb-element(style={'fontSize': '12px', 'textAlign': 'right'}, internal-fsb-guid="d3906688")
                 | Name: #{this.getDataFromNotation("guestbook[" + i + "].name")} At: #{this.getDataFromNotation("guestbook[" + i + "].createdAt")}
           if this.isEmpty()
-            .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginTop': '15px', 'textAlign': 'center'}, internal-fsb-guid="db5c1b64")
+            .internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'marginTop': '15px', 'textAlign': 'center'}, internal-fsb-guid="db5c1b64")
               | None of comment available.
         .col-12.internal-fsb-element.internal-fsb-strict-layout.offset-0(style={'WebkitBorderRadius': '5px 5px 5px 5px', 'background': 'rgba(3, 115, 252, 0.15)', 'borderRadius': '5px 5px 5px 5px', 'marginTop': '30px', 'paddingBottom': '10px', 'paddingLeft': '10px', 'paddingRight': '10px', 'paddingTop': '10px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="67ee18c3")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="ad367405")
