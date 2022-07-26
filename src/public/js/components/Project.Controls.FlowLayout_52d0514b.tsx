@@ -94,7 +94,7 @@ class FlowLayout_52d0514b extends Base {
     TestHelper.identify();
     function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         
-    DataManipulationHelper.register("65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); }});
+    DataManipulationHelper.register("65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); }});
   }
   // <---Auto[ClassBegin]
   
@@ -159,6 +159,10 @@ class FlowLayout_52d0514b extends Base {
     return super.getDataFromNotation(notation, inArray, always);
   }
   
+  private isEmpty(): boolean {
+    return this.getDataFromNotation('guestbook', true).length == 0;
+  }
+  
   // Auto[Merging]--->
   // <---Auto[Merging]
   
@@ -173,24 +177,32 @@ class FlowLayout_52d0514b extends Base {
               .col-12.internal-fsb-element(style={'marginBottom': '15px', 'textAlign': 'center'}, dangerouslySetInnerHTML={__html: CodeHelper.escape(CodeHelper.toSecuredDataString(this.getDataFromNotation("guestbook[" + i + "].message")))}, internal-fsb-guid="e8a4e015")
               .col-12.internal-fsb-element(style={'fontSize': '12px', 'textAlign': 'right'}, internal-fsb-guid="d3906688")
                 | Name: #{this.getDataFromNotation("guestbook[" + i + "].name")} At: #{this.getDataFromNotation("guestbook[" + i + "].createdAt")}
+          if this.isEmpty()
+            .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginTop': '15px', 'textAlign': 'center'}, internal-fsb-guid="db5c1b64")
+              | None of comment available.
         .col-12.internal-fsb-element.internal-fsb-strict-layout.offset-0(style={'WebkitBorderRadius': '5px 5px 5px 5px', 'background': 'rgba(3, 115, 252, 0.15)', 'borderRadius': '5px 5px 5px 5px', 'marginTop': '30px', 'paddingBottom': '10px', 'paddingLeft': '10px', 'paddingRight': '10px', 'paddingTop': '10px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="67ee18c3")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="ad367405")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="4d43796a")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="7311c62a")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="821640a3")
+          .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9d3a3982")
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="7862eb69")
+              | Message:  
+            .col-8.internal-fsb-element.internal-fsb-measuring.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="320d25b6")
+              textarea.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, rows="3", type="text", value="Please enter a message.")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="87a58374")
-            .col-4.internal-fsb-element.offset-0(style={'textAlign': 'right'}, internal-fsb-guid="78e6d75b")
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="78e6d75b")
               | Name:  
             .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="37790653")
-              input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, type="text")
-          .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9d3a3982")
-            .col-4.internal-fsb-element.offset-0(style={'textAlign': 'right'}, internal-fsb-guid="7862eb69")
-              | Message:  
-            .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="320d25b6")
-              textarea.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, rows="3", type="text")
+              input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, type="text")
+          .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="96400d41")
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="952bec68")
+              | Verify Human:  
+            .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="bb881bb6")
+              input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, placeholder="1 + 2 = ?", required=true, type="text")
           Button.btn.btn-md.btn-primary.col-8.internal-fsb-element.offset-4(onClick=((event) => { window.internalFsbSubmit('65759748', 'guestbook', event, ((results) => { this.manipulate('65759748', 'guestbook', results); }).bind(this)); }).bind(this), type="button", internal-fsb-guid="65759748")
             .internal-fsb-element(internal-fsb-guid="65759748-text")
-              | Post
+              | Comment
     `
   }
 }

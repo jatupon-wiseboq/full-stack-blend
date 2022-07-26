@@ -249,6 +249,11 @@ class Controller extends Base {
         // data = RequestHelper.createInputs({...});
         // schema = SchemaHelper.getDataTableSchemaFromNotation('collection');
         // 
+        switch (name) {
+          case '[submit]':
+            data = data.filter(input => input.name != '[answer]');
+            break;
+        }
         
         resolve(await DatabaseHelper.insert(data, schema, options.crossRelationUpsert, this.request.session));
       } catch(error) {
@@ -360,8 +365,8 @@ class Controller extends Base {
   	
 	  // <---Auto[MergingBegin]
 	  // Auto[Merging]--->
-    RequestHelper.registerSubmit("7bc56453", "65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Submit Button"});
-		RequestHelper.registerInput('ad367405', "relational", "guestbook", "id");
+    RequestHelper.registerSubmit("7bc56453", "65759748", "insert", ["320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "[submit]"});
+		RequestHelper.registerInput('ad367405', "document", "guestbook", "id");
 		ValidationHelper.registerInput('ad367405', "[id]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'ad367405')) {
     
@@ -371,7 +376,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('4d43796a', "relational", "guestbook.log", "id");
+		RequestHelper.registerInput('4d43796a', "document", "guestbook.log", "id");
 		ValidationHelper.registerInput('4d43796a', "[log.id]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '4d43796a')) {
     
@@ -381,7 +386,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('7311c62a', "relational", "guestbook.log", "gbid");
+		RequestHelper.registerInput('7311c62a', "document", "guestbook.log", "gbid");
 		ValidationHelper.registerInput('7311c62a', "[log.gbid]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '7311c62a')) {
     
@@ -391,7 +396,7 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('821640a3', "relational", "guestbook.log", "ipAddress");
+		RequestHelper.registerInput('821640a3', "document", "guestbook.log", "ipAddress");
 		ValidationHelper.registerInput('821640a3', "[log.ipAddress]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '821640a3')) {
     
@@ -401,8 +406,17 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('37790653', "relational", "guestbook", "name");
-		ValidationHelper.registerInput('37790653', "[name]", false, undefined, undefined, null);
+		RequestHelper.registerInput('320d25b6', "document", "guestbook", "message");
+		ValidationHelper.registerInput('320d25b6', "[message]", true, undefined, undefined, null);
+    for (let input of RequestHelper.getInputs(this.pageId, request, '320d25b6')) {
+    
+      // Override data parsing and manipulation of [message] here:
+      // 
+      
+      if (input != null) data.push(input);
+    }
+		RequestHelper.registerInput('37790653', "document", "guestbook", "name");
+		ValidationHelper.registerInput('37790653', "[name]", true, "Please provide your name.", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '37790653')) {
     
       // Override data parsing and manipulation of [name] here:
@@ -410,12 +424,13 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('320d25b6', "relational", "guestbook", "message");
-		ValidationHelper.registerInput('320d25b6', "[message]", false, undefined, undefined, null);
-    for (let input of RequestHelper.getInputs(this.pageId, request, '320d25b6')) {
+		RequestHelper.registerInput('bb881bb6', "document", "guestbook", "name");
+		ValidationHelper.registerInput('bb881bb6', "[answer]", true, "Please answer to the question.", undefined, null);
+    for (let input of RequestHelper.getInputs(this.pageId, request, 'bb881bb6')) {
     
-      // Override data parsing and manipulation of [message] here:
+      // Override data parsing and manipulation of [answer] here:
       // 
+      if (input.value != 3) throw new Error('You provided a wrong answer.');
       
       if (input != null) data.push(input);
     }
