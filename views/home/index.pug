@@ -7,14 +7,14 @@ html
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
-      #{headers && headers.title || 'StackBlend - Full-Stack Application Editor'}
+      #{headers && headers.title || 'StackBlend - Full-Stack Application Studio'}
     meta(name="description" content=headers && headers.description || 'StackBlend is an editor for full-stack website development which comes with extensive options for HTML5, CSS3, and database without coding.')
     meta(name="keywords" content=headers && headers.keywords || 'full-stack, front-end, back-end, editor, wysiwyg, heroku, cloudflare, drag&drop, drag and drop, automatic generate, auto-generate, auto-generated, boilerplate, node.js, react.js, typescript, ready to deploy, easy to deploy, cheap, cheapest, inexpensive, free')
     meta(http-equiv="content-language" content=headers && headers.language || 'en')
     meta(http-equiv="content-type" content=headers && headers.contentType || 'UTF-8')
     meta(name="revisit-after" content=headers && headers.revisitAfter || '7 days')
     meta(name="robots" content=headers && headers.robots || 'index, follow')
-    meta(property="og:title" content=headers && headers.title || 'StackBlend - Full-Stack Application Editor')
+    meta(property="og:title" content=headers && headers.title || 'StackBlend - Full-Stack Application Studio')
     meta(property="og:url" content=headers && headers.linkUrl || '/')
     meta(property="og:image" content=headers && headers.imageUrl || 'https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png')
     meta(property="og:type" content=headers && headers.itemType || 'website')
@@ -30,7 +30,7 @@ html
             .col-12.internal-fsb-element.offset-0(style={'font-family': 'Roboto', 'font-size': '14px', 'font-weight': '300', 'padding-left': '0px', 'padding-right': '0px'}, internal-fsb-guid="1ddd959b")
               | https://github.com/SoftenStorm/full-stack-blend
           .col-10.col-lg-12.internal-fsb-element.offset-1.offset-lg-0(style={'font-family': 'Roboto', 'font-size': '20px', 'font-weight': '300', 'padding-left': '0px'}, internal-fsb-guid="2ec1682b")
-            | StackBlend – Full Stack Application Studio
+            | StackBlend – Full-Stack Application Studio
           .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'background': 'rgba(3, 115, 252, 1)', 'margin-top': '20px', 'padding-bottom': '20px', 'padding-top': '60px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="6ec629ac")
             .col-12.internal-fsb-element.offset-0(style={'color': 'rgba(255, 255, 255, 1)', 'font-family': 'Roboto', 'font-size': '36px', 'font-weight': '300', 'text-align': 'center'}, internal-fsb-guid="d3615ea5")
               | StackBlend
@@ -102,6 +102,15 @@ html
               br
             div
               | Furthermore, a developer can convert any parent of elements to become a reusable component that your designer can placed them on any page, too.
+        .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'-ms-overflow-x': 'hidden', '-ms-overflow-y': 'hidden', 'overflow-x': 'hidden', 'overflow-y': 'hidden', 'position': 'relative'}, internal-fsb-class="FlowLayout", internal-fsb-guid="05ea45d5")
+          .col-12.internal-fsb-element.internal-fsb-strict-layout.offset-0(style={'-fsb-background-type': 'linear', 'background': 'linear-gradient(0deg, rgba(166, 166, 166, 1) 0%, rgba(247, 247, 247, 1) 100%)', 'bottom': '-20px', 'left': '0px', 'position': 'absolute', 'right': '0px', 'top': '-20px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="1348c6c8")
+          .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'padding-bottom': '180px', 'padding-top': '180px', 'position': 'relative'}, internal-fsb-class="FlowLayout", internal-fsb-guid="e3be1176")
+            .col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(style={'border-bottom-color': 'rgba(85, 85, 85, 1)', 'border-bottom-width': '2px', 'color': 'rgba(85, 85, 85, 1)', 'font-size': '24px', 'text-align': 'center'}, internal-fsb-guid="24286a5d")
+              | Implementation Demo
+            .-fsb-preset-49d77136.col-2.internal-fsb-element.internal-fsb-strict-layout.offset-5(style={'-fsb-inherited-presets': '49d77136', 'background': 'rgba(166, 166, 166, 1)'}, internal-fsb-class="FlowLayout", internal-fsb-guid="094de761")
+            button.btn.btn-md.btn-secondary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(type="button", internal-fsb-guid="45925c27")
+              .internal-fsb-element(internal-fsb-guid="ca129778")
+                | Guestbook
         .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'border-top-color': 'rgba(3, 115, 252, 1)', 'border-top-style': 'solid', 'border-top-width': '15px', 'margin-top': '1px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="d2c926ad")
         .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png", internal-fsb-forward="1", internal-fsb-guid="98d2830a")
           img(style={'display': 'block', 'margin-bottom': '30px', 'margin-top': '45px', 'width': '100%'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png")
@@ -153,6 +162,11 @@ html
               // 
               window.location = '/development/workarounds';
           };
+          Controller.prototype.onButtonClick_45925c27 = function (event) {
+              // Handle the event of onButtonClick (Button 1) here:
+              // 
+              window.location = '/account/guestbook';
+          };
           Controller.prototype.onButtonClick_57bd398a = function (event) {
               // Handle the event of onButtonClick (Button 2) here:
               // 
@@ -185,6 +199,7 @@ html
       controller.register('651393e4', 'click', 'onButtonClick_651393e4', false);
       controller.register('513d8787', 'click', 'onButtonClick_513d8787', false);
       controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4', false);
+      controller.register('45925c27', 'click', 'onButtonClick_45925c27', false);
       controller.register('57bd398a', 'click', 'onButtonClick_57bd398a', false);
       TestHelper.identify();
       function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
@@ -192,6 +207,7 @@ html
       controller.listen('651393e4');
       controller.listen('513d8787');
       controller.listen('d85b2bd4');
+      controller.listen('45925c27');
       controller.listen('57bd398a');
       
     <link internal-fsb-link="true" href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@1,400;1,700&amp;display=swap" rel="stylesheet" class="internal-fsb-accessory internal-fsb-font">

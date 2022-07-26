@@ -16,6 +16,10 @@ const route = (app: any) => {
  app.post("/account/settings", homeController._3cb10a6e);
  app.put("/account/settings", homeController._3cb10a6e);
  app.delete("/account/settings", homeController._3cb10a6e);
+ app.get("/demo/guestbook", homeController._7bc56453);
+ app.post("/demo/guestbook", homeController._7bc56453);
+ app.put("/demo/guestbook", homeController._7bc56453);
+ app.delete("/demo/guestbook", homeController._7bc56453);
  app.get("/development/workarounds", homeController._b160aa0e);
  app.post("/development/workarounds", homeController._b160aa0e);
  app.put("/development/workarounds", homeController._b160aa0e);
