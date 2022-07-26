@@ -407,7 +407,7 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 		RequestHelper.registerInput('320d25b6', "document", "guestbook", "message");
-		ValidationHelper.registerInput('320d25b6', "[message]", true, undefined, undefined, null);
+		ValidationHelper.registerInput('320d25b6', "[message]", true, "Please enter a message.", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '320d25b6')) {
     
       // Override data parsing and manipulation of [message] here:

@@ -188,8 +188,8 @@ class FlowLayout_52d0514b extends Base {
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9d3a3982")
             .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="7862eb69")
               | Message:  
-            .col-8.internal-fsb-element.internal-fsb-measuring.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="320d25b6")
-              textarea.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, rows="3", type="text", value="Please enter a message.")
+            .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="320d25b6")
+              textarea.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, rows="3", type="text")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="87a58374")
             .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="78e6d75b")
               | Name:  
