@@ -154,7 +154,7 @@ class Controller extends Base {
     return new Promise(async (resolve, reject) => {
       try {
         resolve(await DatabaseHelper.retrieve(RequestHelper.createInputs({
-            'guestbook': null
+            'guestbook.id': null
           }), ProjectConfigurationHelper.getDataSchema().tables['guestbook'],
           this.request.session,   // session variables
           true,                   // real-time updates
