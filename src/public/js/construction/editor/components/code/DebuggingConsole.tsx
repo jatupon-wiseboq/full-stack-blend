@@ -55,36 +55,35 @@ class DebuggingConsole extends Base<Props, State> {
         	window.repl = repl;
         	
           this.props.window.error = ((msg, url, line, col, error) => {
-            this.props.window.setTimeout(() => {
-              $('#codingButton')[0].click();
-              $('#footerConsole')[0].click();
-            }, 0);
+            this.props.window.setTimeout((() => {
+            	this.makeDebuggerPanelActive();
+            }).bind(this), 0);
             repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
-          });
+          }).bind(this);
           this.props.window.onerror = this.props.window.error;
           
           this.props.window.console.log = ((...args) => {
           	repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
           });
+          this.props.window.console.log('StackBlend Studios debugging information will appear here.');
+          
           this.props.window.console.error = ((...args) => {
-            this.props.window.setTimeout(() => {
-              $('#codingButton')[0].click();
-              $('#footerConsole')[0].click();
-            }, 0);
+            this.props.window.setTimeout((() => {
+              this.makeDebuggerPanelActive();
+            }).bind(this), 0);
   	        repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
-          });
+          }).bind(this);
           
           let output = document.createElement('div');
           output.className = 'jsconsole eclipse';
           output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
           document.body.append(output);
         	
-          repl.on('entry', (event) => {
-            this.props.window.setTimeout(() => {
-              $('#codingButton')[0].click();
-              $('#footerConsole')[0].click();
-            }, 0);
-          });
+          repl.on('entry', ((event) => {
+            this.props.window.setTimeout((() => {
+              this.makeDebuggerPanelActive();
+            }).bind(this), 0);
+          }));
           this.props.window.setTimeout(() => {
             repl.output.focus();
           }, 10);
@@ -138,6 +137,12 @@ class DebuggingConsole extends Base<Props, State> {
     
     public update(properties: any) {
         if (!super.update(properties)) return;
+    }
+    
+    private makeDebuggerPanelActive() {
+      	const codingButton = HTMLHelper.getElementById('codingButton');
+        if (!HTMLHelper.hasClass(codingButton, 'active')) codingButton.click();
+        HTMLHelper.getElementById('footerConsole').click();
     }
     
     render() {
