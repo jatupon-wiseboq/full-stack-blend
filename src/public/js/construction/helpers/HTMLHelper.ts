@@ -36,6 +36,12 @@ var HTMLHelper = {
       });
     }
   },
+  getElementsBySelector: (selector: string, container: HTMLElement=document) => {
+  	return container.querySelectorAll(selector);
+  },
+  getElementBySelector: (selector: string, container: HTMLElement=document) => {
+  	return HTMLHelper.getElementsBySelector(selector, container)[0] || null;
+  },
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
   },
