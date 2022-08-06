@@ -94,20 +94,28 @@ let cachedUpdateEditorProperties = {};
   };
   
   window.swap = (selector: string, toolsetSelector: string=null, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
-    let button = $(EventHelper.getCurrentElement(event));
+    const button = $(EventHelper.getCurrentElement(event));
     if (button.prop('tagName') != 'A') button = button.parent();
-    if (button.hasClass('active')) return;
     
-    let accessory = button.parent().find('> a.active').attr('id');
+    const accessory = button.parent().find('> a.active').attr('id');
+    const isTogglingOff = ['#design', '#animation', '#coding'].indexOf(selector) != -1 && button.hasClass('active');
+    
+    if (!isTogglingOff && button.hasClass('active')) return;
     
     button.parent().find('> a.active').removeClass('active');
-    button.addClass('active');
+    
+    if (isTogglingOff) {
+    	$('.workspace-panel-container.sidebar').hide();
+    } else {
+    	$('.workspace-panel-container.sidebar').show();
+    	button.addClass('active');
+    }
     
     let panel = $('.panel' + selector);
     
     panel.each((index, value) => {
       $(value).parent().find('> .panel').removeClass('active');
-      $(value).addClass('active');
+      !isTogglingOff && $(value).addClass('active');
     });
     
     if (replacingIconSelector != null) {
@@ -123,7 +131,7 @@ let cachedUpdateEditorProperties = {};
       
       if (extraPanelSelector != null) {
         let extraPanel = $(extraPanelSelector);
-        extraPanel.addClass('active');
+        !isTogglingOff && extraPanel.addClass('active');
       }
       
       recentExtraPanelSelector = extraPanelSelector;
@@ -131,7 +139,7 @@ let cachedUpdateEditorProperties = {};
     
     if (toolsetSelector) {
       $('.toolset').hide();
-      $(toolsetSelector).show();
+      !isTogglingOff && $(toolsetSelector).show();
     }
     
     if (button.attr('skip-perform') !== 'true') {
