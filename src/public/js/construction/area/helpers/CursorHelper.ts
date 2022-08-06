@@ -17,10 +17,16 @@ var CursorHelper = {
   moveCursorToTheLeft: (link: any=Math.random()) => {
   	const cursorElement = Accessories.cursor.getDOMNode();
   	const isSkipEntering = cursorElement.previousElementSibling && !HTMLHelper.hasClass(cursorElement.previousElementSibling, 'internal-fsb-allow-cursor') || undefined;
-    const {theAllowCursorElement, theAllowCursorPosition} = CursorHelper.recusiveFindOnTheLeft(Accessories.cursor.getDOMNode(), isSkipEntering);
+    let {theAllowCursorElement, theAllowCursorPosition} = CursorHelper.recusiveFindOnTheLeft(Accessories.cursor.getDOMNode(), isSkipEntering);
     
-    // TODO: Enable table cell walking.
-    if (theAllowCursorElement == null || theAllowCursorElement.tagName == 'TR' || theAllowCursorPosition == null) return;
+    if (theAllowCursorElement.tagName == 'TR') {
+    	const cursorElement = Accessories.cursor.getDOMNode();
+    	theAllowCursorElement = cursorElement.parentNode.previousElementSibling || null;
+    	
+    	if (theAllowCursorElement == null) return;
+    	
+    	theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
+    }
     
     const walkPath = CursorHelper.findWalkPathForElement(theAllowCursorElement);
     walkPath[2] = theAllowCursorPosition;
@@ -89,8 +95,14 @@ var CursorHelper = {
   moveCursorToTheRight: (link: any=Math.random()) => {
     let {theAllowCursorElement, theAllowCursorPosition} = CursorHelper.recusiveFindOnTheRight(Accessories.cursor.getDOMNode());
     
-    // TODO: Enable table cell walking.
-    if (theAllowCursorElement == null || theAllowCursorElement.tagName == 'TR' || theAllowCursorPosition == null) return;
+    if (theAllowCursorElement.tagName == 'TR') {
+    	const cursorElement = Accessories.cursor.getDOMNode();
+    	theAllowCursorElement = cursorElement.parentNode.nextElementSibling || null;
+    	
+    	if (theAllowCursorElement == null) return;
+    	
+    	theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
+    }
     
     let walkPath = CursorHelper.findWalkPathForElement(theAllowCursorElement);
     walkPath[2] = theAllowCursorPosition;
