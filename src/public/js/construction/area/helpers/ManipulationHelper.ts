@@ -1042,7 +1042,7 @@ var ManipulationHelper = {
   	
   	EditorHelper.synchronize("click", null);
   	  	
- 	 	if ([37, 38, 39, 40, 8].indexOf(content) != -1 && !Accessories.cursor.getDOMNode().parentNode) {
+ 	 	if ([37, 38, 39, 40, 8].indexOf(content) != -1 && (!Accessories.cursor || !Accessories.cursor.getDOMNode().parentNode)) {
   		alert('Please place a cursor anywhere before performing keystroke action.');
   		return [accessory, false, link];
   	}
@@ -1726,7 +1726,7 @@ var ManipulationHelper = {
   handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
   	let accessory = null;
   	
-  	if (Accessories.cursor.getDOMNode().parentNode != null && CursorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
+  	if (Accessories.cursor && Accessories.cursor.getDOMNode().parentNode != null && CursorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
       remember = false;
     }
     if (remember) {

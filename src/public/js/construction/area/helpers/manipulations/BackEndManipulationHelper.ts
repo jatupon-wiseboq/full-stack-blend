@@ -17,7 +17,7 @@ var BackEndManipulationHelper = {
     let accessory = null;
     let element = null;
     
-    if (!Accessories.cursor.getDOMNode().parentNode) {
+    if (!Accessories.cursor || !Accessories.cursor.getDOMNode().parentNode) {
       alert('Please place a cursor anywhere before performing insertion.');
       return [accessory, false, link];
     }
@@ -43,7 +43,7 @@ var BackEndManipulationHelper = {
     
     switch (content.klass) {
       case 'RelationalDatabase':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
       		alert('Please place a cursor outside any element to insert a relational database.');
       		return [accessory, false, link];
       	}
@@ -88,7 +88,7 @@ var BackEndManipulationHelper = {
         `, element);
         break;
       case 'DocumentDatabase':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
       		alert('Please place a cursor outside any element to insert a document database.');
       		return [accessory, false, link];
       	}
@@ -133,7 +133,7 @@ var BackEndManipulationHelper = {
         `, element);
         break;
       case 'Queue':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
       		alert('Please place a cursor outside any element to insert a Queue.');
       		return [accessory, false, link];
       	}
@@ -163,8 +163,8 @@ var BackEndManipulationHelper = {
         break;
       case 'Scheduler':
       	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
+      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
       		alert('Please place a cursor outside any element for cross database scheduling, or inside a database element for cross table scheduling.');
       		return [accessory, false, link];
       	}
@@ -193,7 +193,7 @@ var BackEndManipulationHelper = {
         `, element);
         break;
       case 'VolatileMemory':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
       		alert('Please place a cursor outside any element to insert a volatile memory.');
       		return [accessory, false, link];
       	}
@@ -223,8 +223,8 @@ var BackEndManipulationHelper = {
         break;
       case 'Connection':
       	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1) {
+      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
       		alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation.');
       		return [accessory, false, link];
       	}
@@ -235,7 +235,7 @@ var BackEndManipulationHelper = {
         `, element);
         break;
       case 'RESTful':
-      	if (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
       		alert('Please place a cursor outside any element to insert a RESTful collection.');
       		return [accessory, false, link];
       	}
@@ -294,7 +294,7 @@ var BackEndManipulationHelper = {
       //
       if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       
-      if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
+      if (Accessories.cursor && HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
       } else {
         StylesheetHelper.setStyleAttribute(element, 'left', Accessories.cursor.getDOMNode().style.left);

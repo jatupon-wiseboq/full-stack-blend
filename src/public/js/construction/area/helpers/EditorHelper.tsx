@@ -450,7 +450,7 @@ var EditorHelper = {
 	  }
   },
   deselect: () => {
-    if (Accessories.resizer.getDOMNode().parentNode != null) {
+    if (Accessories.resizer && Accessories.resizer.getDOMNode().parentNode != null) {
     	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
     	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
@@ -484,7 +484,7 @@ var EditorHelper = {
       current = current.parentNode;
     }
     
-    if (current == _document.body && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
+    if (current == _document.body && Accessories.resizer && HTMLHelper.hasClass(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-element')) {
       return Accessories.resizer.getDOMNode().parentNode;
     } else {
       return HTMLHelper.getElementByClassName('internal-fsb-selecting', _document);
