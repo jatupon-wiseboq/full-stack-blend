@@ -424,7 +424,7 @@ var AnimationHelper = {
   	}
   },
   extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
-  	if (Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;
+  	if (!Accessories.resizer || Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;
   	
   	if (presetIdOrSelector && [':active', ':focus', ':hover', ':visited'].indexOf(presetIdOrSelector) != -1) {
   		const guid = HTMLHelper.getAttribute(Accessories.resizer.getDOMNode().parentNode, 'internal-fsb-guid');

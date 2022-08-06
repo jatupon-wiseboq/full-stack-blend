@@ -30,7 +30,7 @@ var TimelineHelper = {
 				dropable: false,
 				insertable: true,
 				dragable: true,
-				disabled: Accessories.resizer.getDOMNode().parentNode == null,
+				disabled: !Accessories.resizer || Accessories.resizer.getDOMNode().parentNode == null,
 				selected: false,
 				nodes: (info.id == 'selector') ? TimelineHelper.getSelectorTreeNodes() : TimelineHelper.recursiveGetElementTreeNodes(undefined, undefined, info.id),
 				tag: {
@@ -74,7 +74,7 @@ var TimelineHelper = {
 						insertable: true,
 						dragable: true,
 						disabled: false,
-						selected: (key == InternalProjectSettings.editingAnimationID && Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
+						selected: (key == InternalProjectSettings.editingAnimationID && Accessories.resizer && Accessories.resizer.getDOMNode().parentNode == element) ? true : false,
 	  				nodes: TimelineHelper.recursiveGetElementTreeNodes([], element, key),
 	  				tag: {
 	  					key: key,
@@ -93,7 +93,7 @@ var TimelineHelper = {
   	return nodes;
   },
   getSelectorTreeNodes: function() {
-  	if (Accessories.resizer.getDOMNode().parentNode == null || InternalProjectSettings.editingAnimationID != 'selector') return [];
+  	if (!Accessories.resizer || Accessories.resizer.getDOMNode().parentNode == null || InternalProjectSettings.editingAnimationID != 'selector') return [];
   	else return ['Active', 'Focus', 'Hover', 'Visited'].map((selector) => {
   		const selectorId = `:${selector.toLowerCase()}`;
   		return {

@@ -19,7 +19,7 @@ var FrontEndManipulationHelper = {
     let accessory = null;
     let element = null;
     
-    if (!Accessories.cursor.getDOMNode().parentNode) {
+    if (!Accessories.cursor || !Accessories.cursor.getDOMNode().parentNode) {
       alert('Please place a cursor anywhere before performing insertion.');
       return [accessory, false, link];
     }
@@ -263,7 +263,7 @@ var FrontEndManipulationHelper = {
       // Insert the element before the cursor.
       //
       if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
-      if (LayoutHelper.isNestedComponent(Accessories.cursor.getDOMNode().parentNode, content.id)) {
+      if (Accessories.cursor && LayoutHelper.isNestedComponent(Accessories.cursor.getDOMNode().parentNode, content.id)) {
         alert("The editor doesn't allow nest of components.");
         remember = false;
       } if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button' && HTMLHelper.findAllParentsInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()).some(element => element.getAttribute('internal-fsb-class') == 'Button')) {
