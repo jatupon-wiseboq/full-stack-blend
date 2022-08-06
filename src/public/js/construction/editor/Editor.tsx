@@ -124,23 +124,26 @@ let cachedUpdateEditorProperties = {};
       	if (p.parentNode != value.parentNode) return;
       	HTMLHelper.removeClass(p, 'active');
       });
-      !isTogglingOff && HTMLHelper.addClass(value, 'active');
+      HTMLHelper.addClass(value, 'active');
     });
     
     if (replacingIconSelector != null) {
-      const replacingIconElement = HTMLHelper.getElementBySelector(replacingIconSelector);
-      replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
+      HTMLHelper.getElementsBySelector(replacingIconSelector).forEach((replacingIconElement) => {
+      	replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
+      });
     }
     
     if (!skipExtraPanel) {
       if (recentExtraPanelSelector != null) {
-        const recentExtraPanel = HTMLHelper.getElementBySelector(recentExtraPanelSelector);
-        HTMLHelper.removeClass(recentExtraPanel, 'active');
+        HTMLHelper.getElementsBySelector(recentExtraPanelSelector).forEach((recentExtraPanel) => {
+      		HTMLHelper.removeClass(recentExtraPanel, 'active');
+      	});
       }
       
       if (extraPanelSelector != null) {
-        const extraPanel = HTMLHelper.getElementBySelector(extraPanelSelector);
-        !isTogglingOff && HTMLHelper.addClass(extraPanel, 'active');
+        const extraPanel = HTMLHelper.getElementsBySelector(extraPanelSelector).forEach((extraPanel) => {
+      		HTMLHelper.addClass(extraPanel, 'active');
+      	});
       }
       
       recentExtraPanelSelector = extraPanelSelector;
@@ -150,7 +153,9 @@ let cachedUpdateEditorProperties = {};
     	HTMLHelper.getElementsBySelector('.toolset').forEach((value, index) => {
     		value.style.display = 'none';
     	});
-      if (!isTogglingOff) HTMLHelper.getElementBySelector(toolsetSelector).style.display = '';
+      HTMLHelper.getElementsBySelector(toolsetSelector).forEach((toolset) => {
+      	toolset.style.display = '';
+      });
     }
     
     if (HTMLHelper.getAttribute(button, 'skip-perform') !== 'true') {
@@ -292,7 +297,8 @@ let cachedUpdateEditorProperties = {};
           control.update(content);
         });
         
-        HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-off internal-fsb-selecting-on');
+        HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-off');
+        HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-on');
         HTMLHelper.addClass(document.body, content && content['extensions'] && content['extensions']['isSelectingElement'] ?
         	'internal-fsb-selecting-on' : 'internal-fsb-selecting-off');
         break;
