@@ -2,6 +2,7 @@ import {FullStackBlend} from '../helpers/DeclarationHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {RequestHelper} from '../helpers/RequestHelper';
+import {SIDEBAR_TOGGLING_ATTRIBUTES, SIDEBAR_TOGGLING_STYLES, SIDEBAR_TOGGLING_EXTENSIONS} from '../Constants';
 
 import './components/layout/GridPicker';
 import './components/layout/OffsetPicker';
@@ -82,11 +83,13 @@ let cachedUpdateEditorProperties = {};
   };
   
   window.toggle = (name: string, iconSelector: string) => {
-    let icon = $(iconSelector);
-    if (icon.hasClass('fa-toggle-on')) {
-      icon.removeClass('fa-toggle-on').addClass('fa-toggle-off');
+    let icon = HTMLHelper.getElementBySelector(iconSelector);
+    if (HTMLHelper.hasClass(icon, 'fa-toggle-on')) {
+      HTMLHelper.removeClass(icon, 'fa-toggle-on');
+      HTMLHelper.addClass(icon, 'fa-toggle-off');
     } else {
-      icon.removeClass('fa-toggle-off').addClass('fa-toggle-on');
+      HTMLHelper.removeClass(icon, 'fa-toggle-off');
+      HTMLHelper.addClass(icon, 'fa-toggle-on');
     }
     perform('toggle', name);
     
@@ -94,61 +97,69 @@ let cachedUpdateEditorProperties = {};
   };
   
   window.swap = (selector: string, toolsetSelector: string=null, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
-    const button = $(EventHelper.getCurrentElement(event));
-    if (button.prop('tagName') != 'A') button = button.parent();
+    const button = EventHelper.getCurrentElement(event);
+    if (button.tagName != 'A') button = button.parentNode;
     
-    const accessory = button.parent().find('> a.active').attr('id');
-    const isTogglingOff = ['#design', '#animation', '#coding'].indexOf(selector) != -1 && button.hasClass('active');
+    const accessory = HTMLHelper.getAttribute(HTMLHelper.getElementBySelector('a.active', button.parentNode), 'id');
+    const isTogglingOff = ['#design', '#animation', '#coding'].indexOf(selector) != -1 && HTMLHelper.hasClass(button, 'active');
     
-    if (!isTogglingOff && button.hasClass('active')) return;
+    if (!isTogglingOff && HTMLHelper.hasClass(button, 'active')) return;
     
-    button.parent().find('> a.active').removeClass('active');
+    HTMLHelper.getElementsBySelector('a.active', button.parentNode).forEach((value, index) => {
+    	if (value.parentNode != button.parentNode) return;
+    	HTMLHelper.removeClass(value, 'active');
+    });
     
     if (isTogglingOff) {
-    	$('.workspace-panel-container.sidebar').hide();
+    	HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = 'none';
     } else {
-    	$('.workspace-panel-container.sidebar').show();
-    	button.addClass('active');
+    	HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = '';
+    	HTMLHelper.addClass(button, 'active');
     }
     
-    let panel = $('.panel' + selector);
+    const panel = HTMLHelper.getElementsBySelector('.panel' + selector);
     
-    panel.each((index, value) => {
-      $(value).parent().find('> .panel').removeClass('active');
-      !isTogglingOff && $(value).addClass('active');
+    panel.forEach((value, index) => {
+      HTMLHelper.getElementsBySelector('.panel', value.parentNode).forEach((p, index) => {
+      	if (p.parentNode != value.parentNode) return;
+      	HTMLHelper.removeClass(p, 'active');
+      });
+      !isTogglingOff && HTMLHelper.addClass(value, 'active');
     });
     
     if (replacingIconSelector != null) {
-      let replacingIconElement = $(replacingIconSelector)[0];
+      const replacingIconElement = HTMLHelper.getElementBySelector(replacingIconSelector);
       replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
     }
     
     if (!skipExtraPanel) {
       if (recentExtraPanelSelector != null) {
-        let recentExtraPanel = $(recentExtraPanelSelector);
-        recentExtraPanel.removeClass('active');
+        const recentExtraPanel = HTMLHelper.getElementBySelector(recentExtraPanelSelector);
+        HTMLHelper.removeClass(recentExtraPanel, 'active');
       }
       
       if (extraPanelSelector != null) {
-        let extraPanel = $(extraPanelSelector);
-        !isTogglingOff && extraPanel.addClass('active');
+        const extraPanel = HTMLHelper.getElementBySelector(extraPanelSelector);
+        !isTogglingOff && HTMLHelper.addClass(extraPanel, 'active');
       }
       
       recentExtraPanelSelector = extraPanelSelector;
     }
     
     if (toolsetSelector) {
-      $('.toolset').hide();
-      !isTogglingOff && $(toolsetSelector).show();
+    	HTMLHelper.getElementsBySelector('.toolset').forEach((value, index) => {
+    		value.style.display = 'none';
+    	});
+      if (!isTogglingOff) HTMLHelper.getElementBySelector(toolsetSelector).style.display = '';
     }
     
-    if (button.attr('skip-perform') !== 'true') {
+    if (HTMLHelper.getAttribute(button, 'skip-perform') !== 'true') {
       perform('swap', {
-        id: button.attr('id'),
+        id: HTMLHelper.getAttribute(button, 'id'),
         accessory: accessory
       });
     }
-    button.removeAttr('skip-perform');
+    HTMLHelper.removeAttribute(button, 'skip-perform');
     
     synchronize('click');
     
@@ -193,68 +204,86 @@ let cachedUpdateEditorProperties = {};
 	  			}
 	  		}
   			cachedUpdateEditorProperties = Object.assign({}, content);
-      
-	      $('[internal-fsb-for]').hide();
-	      $('[internal-fsb-not-for]').show();
+      	
+      	HTMLHelper.getElementsBySelector('[internal-fsb-for]').forEach((value, index) => {
+	    		value.style.display = 'none';
+	    	});
+      	HTMLHelper.getElementsBySelector('[internal-fsb-not-for]').forEach((value, index) => {
+	    		value.style.display = '';
+	    	});
+      	
 	      if (content && content['attributes']) {
-	      	for (let key of ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode', 'internal-fsb-animation-timing-mode', 'internal-fsb-data-validation-format', 'internal-fsb-react-display-logic', 'internal-fsb-react-division', 'data-forward-option', 'data-forward-mode', 'data-missing-enable', 'data-missing-default', 'data-mismatch-enable', 'data-mismatch-default', 'data-mismatch-action']) {
+	      	for (let key of SIDEBAR_TOGGLING_ATTRIBUTES) {
 	      		let value = content['attributes'][key];
 	      		if (value) {
-		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
-		          	element = $(element);
-		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-		          	else element.show();
-		          });
-		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
-		          	element = $(element);
-		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-		          	else element.show();
-		          });
-		          $('[internal-fsb-not-for="' + key + '"]').hide();
-		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
-		        }
-		        
-		        let style = content['attributes']['style'];
-		        if (style) {
-		        	let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
-		        	for (let key of ['-fsb-animation-timing-mode']) {
-		        		let value = hashMap[key];
-		        		$('[internal-fsb-for="' + key + '"]').each((index, element) => {
-			          	element = $(element);
-			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-			          	else element.show();
-			          });
-			          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
-			          	element = $(element);
-			          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-			          	else element.show();
-			          });
-			          $('[internal-fsb-not-for="' + key + '"]').hide();
-			          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
-		        	}
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
+		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+		          	if (displayValue) value.style.display = displayValue;
+		          	else value.style.display = '';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+		          	if (displayValue) value.style.display = displayValue;
+		          	else value.style.display = '';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
+				    		value.style.display = 'none';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+				    		value.style.display = 'none';
+				    	});
 		        }
 	      	}
+	      	let style = content['attributes']['style'];
+					if (style) {
+						let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
+						for (let key of SIDEBAR_TOGGLING_STYLES) {
+							let value = hashMap[key];
+							if (value) {
+		      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
+			          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+			          	if (displayValue) value.style.display = displayValue;
+			          	else value.style.display = '';
+					    	});
+		      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+			          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+			          	if (displayValue) value.style.display = displayValue;
+			          	else value.style.display = '';
+					    	});
+		      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
+					    		value.style.display = 'none';
+					    	});
+		      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+					    		value.style.display = 'none';
+					    	});
+					    }
+		        }
+					}
 	      }
 	      if (content && content['extensions']) {
 	      	document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
 	      	if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
 	      	if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
 	      	
-	      	for (let key of ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox']) {
+	      	for (let key of SIDEBAR_TOGGLING_EXTENSIONS) {
 	      		let value = content['extensions'][key];
 	      		if (value) {
-		          $('[internal-fsb-for="' + key + '"]').each((index, element) => {
-		          	element = $(element);
-		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-		          	else element.show();
-		          });
-		          $('[internal-fsb-for*="' + key + ':' + value + '"]').each((index, element) => {
-		          	element = $(element);
-		          	if (element.attr('internal-fsb-for-display-value')) element.css('display', element.attr('internal-fsb-for-display-value'));
-		          	else element.show();
-		          });
-		          $('[internal-fsb-not-for="' + key + '"]').hide();
-		          $('[internal-fsb-not-for*="' + key + ':' + value + '"]').hide();
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
+		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+		          	if (displayValue) value.style.display = displayValue;
+		          	else value.style.display = '';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+		          	if (displayValue) value.style.display = displayValue;
+		          	else value.style.display = '';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
+				    		value.style.display = 'none';
+				    	});
+	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+				    		value.style.display = 'none';
+				    	});
 		        }
 	      	}
 	      }
@@ -263,8 +292,8 @@ let cachedUpdateEditorProperties = {};
           control.update(content);
         });
         
-        $(document.body).removeClass('internal-fsb-selecting-off internal-fsb-selecting-on')
-        	.addClass(content && content['extensions'] && content['extensions']['isSelectingElement'] ?
+        HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-off internal-fsb-selecting-on');
+        HTMLHelper.addClass(document.body, content && content['extensions'] && content['extensions']['isSelectingElement'] ?
         	'internal-fsb-selecting-on' : 'internal-fsb-selecting-off');
         break;
       case 'click':
@@ -386,8 +415,10 @@ let cachedUpdateEditorProperties = {};
   });
   
   window.setup = (() => {
-    $('.workspace-panel-container.scrollable').on('scroll', (event) => {
-      document.body.click();
+    HTMLHelper.getElementsBySelector('.workspace-panel-container.scrollable').forEach((value, index) => {
+    	value.addEventListener('scroll', (event) => {
+	      document.body.click();
+	    });
     });
     Accessories.projectManager.current.load();
   });
@@ -424,7 +455,7 @@ let cachedUpdateEditorProperties = {};
 	    
 	    Accessories.preview.current.open();
 	    
-	    $('#siteButton')[0].click();
+	    HTMLHelper.getElementBySelector('#siteButton').click();
 	    
 	    window.setTimeout(() => {
 		    Accessories.endpointManager.current.save((success) => {
