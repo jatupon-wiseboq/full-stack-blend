@@ -43,7 +43,7 @@ var CursorHelper = {
   			return CursorHelper.recusiveFindOnTheLeft(element.parentNode, isSkipEntering, willSkipOnce);
   		}
   	} else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
-  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor')) {
+  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
 				if (element.lastElementChild) {
 					return CursorHelper.recusiveFindOnTheLeft(element.lastElementChild, true, false);
 				} else {
@@ -53,6 +53,8 @@ var CursorHelper = {
   			if (willSkipOnce) {
   				// TODO: Will be removed when there isn't a case that the previousElementSibling may be an internal-fsb-accessory.
   				if (element.previousElementSibling && !HTMLHelper.hasClass(element.previousElementSibling, 'internal-fsb-accessory')) {
+  					isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
+  					
 		  			return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, false);
 		  		} else {
 		  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: 0};
@@ -119,12 +121,14 @@ var CursorHelper = {
   			return CursorHelper.recusiveFindOnTheRight(element.parentNode, isSkipEntering, willSkipOnce);
   		}
   	} else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
-  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor')) {
+  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
   			return {theAllowCursorElement: element, theAllowCursorPosition: 0};
   		} else {
   			if (willSkipOnce) {
   				// TODO: Will be removed when there isn't a case that the nextElementSibling may be an internal-fsb-accessory.
   				if (element.nextElementSibling && !HTMLHelper.hasClass(element.nextElementSibling, 'internal-fsb-accessory')) {
+  					isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
+  					
 		  			return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
 		  		} else {
 		  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: element.parentNode.children.length};
