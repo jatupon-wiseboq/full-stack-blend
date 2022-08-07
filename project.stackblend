@@ -2049,7 +2049,11 @@ e75c4c70          }
         "state": "update"
       }
     ],
-    "popups": []
+    "popups": [],
+    "preview": [
+      4,
+      -104
+    ]
   },
   "headerBlobSHA": "f15e183924affa85fa483d113523ed50cf078348#1187873080",
   "popups": {},
@@ -4072,15 +4076,15 @@ b351d3a2    },
         "    internal-fsb-class=\"FlowLayout\"",
         "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-background-size: cover; -webkit-perspective: 236px; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_655115377.jpg&quot;); background-size: cover; margin-top: 20px; padding-left: 0px; padding-right: 0px; perspective: 236px\">",
         "<div",
-        "    class=\"col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-measuring internal-fsb-strict-layout\"",
+        "    class=\"col-12 col-md-10 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout internal-fsb-walking offset-md-2\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ec629ac\"",
         "    internal-fsb-name=\"FlowLayout 5\"",
-        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); padding-bottom: 20px; padding-top: 60px; transform-style: preserve-3d; transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1)\">",
+        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); padding-bottom: 20px; padding-top: 60px; transform-style: preserve-3d\">",
         "",
         "<div",
-        "    class=\"col-12 internal-fsb-element internal-fsb-selecting internal-fsb-walking offset-0\"",
+        "    class=\"col-12 internal-fsb-element offset-0\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4811,6 +4815,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "faecb4602fcbcf2b48b8033044fdcae25385a404#-731087909",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "fc6d7b5e385cce4d109b2776e23551eb505da4ae#-544415882"
+    "index": "70d60711f24e2ff7db4250c561dd9d7b9b56a8d1#-1620446275"
   }
 }
