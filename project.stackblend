@@ -1,5 +1,12 @@
 {
   "animations": {
+a6333507    "a6333507": {
+a6333507      "6ec629ac": {
+a6333507        "1607d4c7": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 4",
+a6333507        "2642bbcc": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 0; background: rgba(255, 255, 255, 0.5)",
+a6333507        "repeatMode": "time"
+a6333507      }
+a6333507    },
 d0e675b7    "d0e675b7": {
 d0e675b7      "651393e4": {
 d0e675b7        "04d52929": "-fsb-animation-keyframe-time: 2.025",
@@ -2043,7 +2050,7 @@ e75c4c70          }
     ],
     "popups": []
   },
-  "headerBlobSHA": "fd646a2ae3367cdf1a55f24cef4e84b1b88ea039#-2039291774",
+  "headerBlobSHA": "80eb16740e9db6cde1e7c0b405309a3b2eab7be0#1912879208",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -4017,7 +4024,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-a6333507 animation-group-d0e675b7\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4057,12 +4064,19 @@ b351d3a2    },
         "    internal-fsb-name=\"TextElement 2\"",
         "    style=\"font-family: Roboto; font-size: 20px; font-weight: 300; padding-left: 0px\">StackBlend Studio – Blend Full-Stack Application</div>",
         "<div",
-        "    class=\"col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout\"",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout\"",
+        "    internal-fsb-guid=\"c3676833\"",
+        "    internal-fsb-name=\"FlowLayout 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-class=\"FlowLayout\"",
+        "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_655115377.jpg&quot;); background-size: cover; margin-top: 20px; padding-left: 0px; padding-right: 0px\">",
+        "<div",
+        "    class=\"col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout internal-fsb-walking\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ec629ac\"",
         "    internal-fsb-name=\"FlowLayout 5\"",
-        "    style=\"background: rgba(3, 115, 252, 1); margin-top: 20px; padding-bottom: 20px; padding-top: 60px\">",
+        "    style=\"background: rgba(3, 115, 252, 1); padding-bottom: 20px; padding-top: 60px\">",
         "",
         "<div",
         "    class=\"col-12 internal-fsb-element offset-0\"",
@@ -4073,7 +4087,7 @@ b351d3a2    },
         "    internal-fsb-name=\"TextElement 1\"",
         "    style=\"color: rgba(255, 255, 255, 1); font-family: Roboto; font-size: 36px; font-weight: 300; text-align: center\">StackBlend Studio</div>",
         "<div",
-        "    class=\"col-12 col-lg-6 col-md-8 internal-fsb-element internal-fsb-walking offset-0 offset-lg-3 offset-md-2\"",
+        "    class=\"col-12 col-lg-6 col-md-8 internal-fsb-element offset-0 offset-lg-3 offset-md-2\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4143,6 +4157,7 @@ b351d3a2    },
         "    style=\"-fsb-for-children: true; display: block; height: 50px; width: 50px\">",
         "</div>",
         "</a>",
+        "</div>",
         "</div>",
         "</div>",
         "</div>",
@@ -4795,6 +4810,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "faecb4602fcbcf2b48b8033044fdcae25385a404#-731087909",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "09821680429144a9e087beb6263e59f910b70bad#-1329361243"
+    "index": "a19fffb9a39bb425aec3a361d54508d290c219bb#-1319850795"
   }
 }
