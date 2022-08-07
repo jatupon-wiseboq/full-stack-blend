@@ -1,5 +1,11 @@
 {
   "animations": {
+a58e28b5    "a58e28b5": {
+a58e28b5      "e19668b7": {
+a58e28b5        "303a5ae2": "-fsb-animation-keyframe-time: 5.75; left: 100%; top: 100%",
+a58e28b5        "b2e97140": "-fsb-animation-keyframe-time: 0; left: -200%; top: -200%"
+a58e28b5      }
+a58e28b5    },
 a6333507    "a6333507": {
 a6333507      "6ec629ac": {
 a6333507        "1607d4c7": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 4",
@@ -1973,14 +1979,14 @@ e75c4c70          }
       "rgba(3, 115, 252, 0.15)",
       "rgba(255, 255, 255, 0)",
       "rgba(3, 115, 252, 0.15)",
-      "rgba(255, 255, 255, 1)",
+      "rgba(3, 115, 252, 0.2)",
       null,
       null,
       null,
       null,
       null,
-      null,
-      null
+      "rgba(255, 255, 255, 0.3)",
+      "rgba(255, 255, 255, 0)"
     ],
     "components": [
       {
@@ -2050,12 +2056,9 @@ e75c4c70          }
       }
     ],
     "popups": [],
-    "preview": [
-      4,
-      -104
-    ]
+    "preview": null
   },
-  "headerBlobSHA": "f15e183924affa85fa483d113523ed50cf078348#1187873080",
+  "headerBlobSHA": "f6bcf4c5d3cb83422fd91be147e2b351f49f2ef9#-69055024",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -4029,7 +4032,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-a6333507 animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4076,15 +4079,30 @@ b351d3a2    },
         "    internal-fsb-class=\"FlowLayout\"",
         "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-background-size: cover; -webkit-perspective: 236px; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_655115377.jpg&quot;); background-size: cover; margin-top: 20px; padding-left: 0px; padding-right: 0px; perspective: 236px\">",
         "<div",
-        "    class=\"col-12 col-md-10 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout internal-fsb-walking offset-md-2\"",
+        "    class=\"col-12 col-md-10 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout offset-md-2\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ec629ac\"",
         "    internal-fsb-name=\"FlowLayout 5\"",
-        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); padding-bottom: 20px; padding-top: 60px; transform-style: preserve-3d\">",
+        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-overflow-x: hidden; -ms-overflow-y: hidden; -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.5); overflow-x: hidden; overflow-y: hidden; padding-bottom: 20px; padding-left: 0px; padding-right: 0px; padding-top: 60px; transform-style: preserve-3d\">",
         "",
         "<div",
-        "    class=\"col-12 internal-fsb-element offset-0\"",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
+        "    internal-fsb-guid=\"e19668b7\"",
+        "    internal-fsb-name=\"Rectangle 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-class=\"Rectangle\"",
+        "    style=\"-fsb-background-type: linear; background: linear-gradient(135deg, rgba(255, 255, 255, 0) 39.233038348082594%, rgba(217, 234, 255, 0.2) 45.72271386430678%, rgba(255, 255, 255, 0) 51.91740412979351%); height: 200%; padding-left: 0px; padding-right: 0px; pointer-events: none; position: absolute; width: 200%; z-index: 1000\">",
+        "</div>",
+        "<div",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout\"",
+        "    internal-fsb-guid=\"7c17c802\"",
+        "    internal-fsb-name=\"FlowLayout 1\"",
+        "    internal-fsb-event-no-propagate=\"1\"",
+        "    internal-fsb-class=\"FlowLayout\"",
+        "    style=\"padding-left: 0px; padding-right: 0px; position: relative\">",
+        "<div",
+        "    class=\"col-12 internal-fsb-element internal-fsb-walking offset-0\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4164,6 +4182,8 @@ b351d3a2    },
         "</a>",
         "</div>",
         "</div>",
+        "</div>",
+        "",
         "</div>",
         "</div>",
         "<div",
@@ -4815,6 +4835,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "faecb4602fcbcf2b48b8033044fdcae25385a404#-731087909",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "70d60711f24e2ff7db4250c561dd9d7b9b56a8d1#-1620446275"
+    "index": "86b8f0b7e5b449ab98af712b5d73c5386adc63f5#1601482676"
   }
 }
