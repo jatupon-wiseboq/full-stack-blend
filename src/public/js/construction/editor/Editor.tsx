@@ -100,10 +100,9 @@ let cachedUpdateEditorProperties = {};
     const button = EventHelper.getCurrentElement(event);
     if (button.tagName != 'A') button = button.parentNode;
     
-    const accessory = HTMLHelper.getAttribute(HTMLHelper.getElementBySelector('a.active', button.parentNode), 'id');
-    const isTogglingOff = ['#design', '#animation', '#coding'].indexOf(selector) != -1 && HTMLHelper.hasClass(button, 'active');
-    
-    if (!isTogglingOff && HTMLHelper.hasClass(button, 'active')) return;
+    const accessory = HTMLHelper.getAttribute(HTMLHelper.getElementBySelector('a.active', button.parentNode) || button, 'id');
+    const isSwappingEditingMode = ['#design', '#animation', '#coding'].indexOf(selector) != -1;
+    const isTogglingOff = isSwappingEditingMode && HTMLHelper.hasClass(button, 'active');
     
     HTMLHelper.getElementsBySelector('a.active', button.parentNode).forEach((value, index) => {
     	if (value.parentNode != button.parentNode) return;
@@ -111,9 +110,18 @@ let cachedUpdateEditorProperties = {};
     });
     
     if (isTogglingOff) {
-    	HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = 'none';
+    	if (isSwappingEditingMode) {
+    		HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = 'none';
+    		HTMLHelper.getElementById('timeline').style.display = 'none';
+    		HTMLHelper.getElementById('codeEditor').style.display = 'none';
+    	}
     } else {
-    	HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = '';
+    	if (isSwappingEditingMode) {
+    		HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = '';
+    		HTMLHelper.getElementById('timeline').style.display = '';
+    		HTMLHelper.getElementById('codeEditor').style.display = '';
+    	}
+    	
     	HTMLHelper.addClass(button, 'active');
     }
     
@@ -208,60 +216,21 @@ let cachedUpdateEditorProperties = {};
 	  				}
 	  			}
 	  		}
+	  		
   			cachedUpdateEditorProperties = Object.assign({}, content);
-      	
-      	HTMLHelper.getElementsBySelector('[internal-fsb-for]').forEach((value, index) => {
-	    		value.style.display = 'none';
-	    	});
-      	HTMLHelper.getElementsBySelector('[internal-fsb-not-for]').forEach((value, index) => {
-	    		value.style.display = '';
-	    	});
+      	prepareUpdateOptionalVisibilities();
       	
 	      if (content && content['attributes']) {
 	      	for (let key of SIDEBAR_TOGGLING_ATTRIBUTES) {
 	      		let value = content['attributes'][key];
-	      		if (value) {
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
-		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-		          	if (displayValue) value.style.display = displayValue;
-		          	else value.style.display = '';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-		          	if (displayValue) value.style.display = displayValue;
-		          	else value.style.display = '';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
-				    		value.style.display = 'none';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-				    		value.style.display = 'none';
-				    	});
-		        }
+	      		if (value) updateOptionalVisibilities(key, value);
 	      	}
 	      	let style = content['attributes']['style'];
 					if (style) {
 						let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
 						for (let key of SIDEBAR_TOGGLING_STYLES) {
 							let value = hashMap[key];
-							if (value) {
-		      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
-			          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-			          	if (displayValue) value.style.display = displayValue;
-			          	else value.style.display = '';
-					    	});
-		      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-			          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-			          	if (displayValue) value.style.display = displayValue;
-			          	else value.style.display = '';
-					    	});
-		      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
-					    		value.style.display = 'none';
-					    	});
-		      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-					    		value.style.display = 'none';
-					    	});
-					    }
+							if (value) updateOptionalVisibilities(key, value);
 		        }
 					}
 	      }
@@ -272,24 +241,7 @@ let cachedUpdateEditorProperties = {};
 	      	
 	      	for (let key of SIDEBAR_TOGGLING_EXTENSIONS) {
 	      		let value = content['extensions'][key];
-	      		if (value) {
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
-		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-		          	if (displayValue) value.style.display = displayValue;
-		          	else value.style.display = '';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-		          	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
-		          	if (displayValue) value.style.display = displayValue;
-		          	else value.style.display = '';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
-				    		value.style.display = 'none';
-				    	});
-	      			HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
-				    		value.style.display = 'none';
-				    	});
-		        }
+	      		if (value) updateOptionalVisibilities(key, value);
 	      	}
 	      }
         
@@ -313,6 +265,32 @@ let cachedUpdateEditorProperties = {};
         }
         break;
     }
+  };
+  var prepareUpdateOptionalVisibilities = () => {
+  	HTMLHelper.getElementsBySelector('[internal-fsb-for]').forEach((value, index) => {
+  		value.style.display = 'none';
+  	});
+  	HTMLHelper.getElementsBySelector('[internal-fsb-not-for]').forEach((value, index) => {
+  		value.style.display = '';
+  	});
+  };
+  var updateOptionalVisibilities = (key, value) => {
+  	HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
+    	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+    	if (displayValue) value.style.display = displayValue;
+    	else value.style.display = '';
+  	});
+		HTMLHelper.getElementsBySelector('[internal-fsb-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+    	const displayValue = HTMLHelper.getAttribute(value, 'internal-fsb-for-display-value');
+    	if (displayValue) value.style.display = displayValue;
+    	else value.style.display = '';
+  	});
+		HTMLHelper.getElementsBySelector('[internal-fsb-not-for="' + key + '"]').forEach((value, index) => {
+  		value.style.display = 'none';
+  	});
+		HTMLHelper.getElementsBySelector('[internal-fsb-not-for*="' + key + ':' + value + '"]').forEach((value, index) => {
+  		value.style.display = 'none';
+  	});
   };
   
   window.addEventListener("keydown", (event: any) => {
