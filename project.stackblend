@@ -2056,7 +2056,10 @@ e75c4c70          }
       }
     ],
     "popups": [],
-    "preview": null
+    "preview": [
+      4,
+      -104
+    ]
   },
   "headerBlobSHA": "9aff61749b95c095a49aba317609ca85e42ad3c9#1309257144",
   "popups": {},
@@ -4052,7 +4055,7 @@ b351d3a2    },
         "    internal-fsb-name=\"FlowLayout 1\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"FlowLayout\"",
-        "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-background-size: cover; -webkit-perspective: 236px; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/green_park.jpg&quot;); background-size: cover; perspective: 236px\">",
+        "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-background-size: cover; -webkit-perspective: 236px; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/green_park.jpg&quot;); background-size: cover; padding-left: 15px; padding-right: 15px; perspective: 236px\">",
         "<div",
         "    class=\"col-10 col-lg-12 internal-fsb-element offset-1 offset-lg-0\"",
         "    contenteditable=\"true\"",
@@ -4060,7 +4063,7 @@ b351d3a2    },
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"2ec1682b\"",
         "    internal-fsb-name=\"TextElement 2\"",
-        "    style=\"border-bottom-color: rgba(166, 166, 166, 1); border-bottom-style: solid; border-bottom-width: 1px; font-family: Roboto; font-size: 20px; font-weight: 300; margin-top: 15px\">StackBlend Studio – Blend Full-Stack Application</div>",
+        "    style=\"border-bottom-color: rgba(166, 166, 166, 1); border-bottom-style: solid; border-bottom-width: 1px; font-family: Roboto; font-size: 20px; font-weight: 300; margin-top: 15px; padding-left: 0px\">StackBlend Studio – Blend Full-Stack Application</div>",
         "<div",
         "    class=\"col-12 col-md-10 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout offset-md-2\"",
         "    internal-fsb-class=\"FlowLayout\"",
@@ -4085,7 +4088,7 @@ b351d3a2    },
         "    internal-fsb-class=\"FlowLayout\"",
         "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-perspective: 236px; padding-left: 0px; padding-right: 0px; perspective: 236px; position: relative\">",
         "<div",
-        "    class=\"col-12 internal-fsb-element offset-0\"",
+        "    class=\"col-12 internal-fsb-element internal-fsb-selecting internal-fsb-walking offset-0\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4834,6 +4837,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "faecb4602fcbcf2b48b8033044fdcae25385a404#-731087909",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "b43fdd8a25742b097d507547c29e46f5c6287e60#1814206142"
+    "index": "a2d200cbfae5c347d498313fc0f5b113c14df2c5#-1388400608"
   }
 }
