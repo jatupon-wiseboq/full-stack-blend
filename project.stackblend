@@ -2056,10 +2056,7 @@ e75c4c70          }
       }
     ],
     "popups": [],
-    "preview": [
-      4,
-      -104
-    ]
+    "preview": null
   },
   "headerBlobSHA": "9aff61749b95c095a49aba317609ca85e42ad3c9#1309257144",
   "popups": {},
@@ -4081,14 +4078,14 @@ b351d3a2    },
         "    style=\"-fsb-background-type: linear; background: linear-gradient(135deg, rgba(255, 255, 255, 0) 39.233038348082594%, rgba(217, 234, 255, 0.2) 45.72271386430678%, rgba(255, 255, 255, 0) 51.91740412979351%); height: 200%; padding-left: 0px; padding-right: 0px; pointer-events: none; position: absolute; width: 200%; z-index: 1000\">",
         "</div>",
         "<div",
-        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout\"",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout internal-fsb-walking\"",
         "    internal-fsb-guid=\"7c17c802\"",
         "    internal-fsb-name=\"FlowLayout 1\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    style=\"-child-transform-style: preserve-3d; -fsb-mode: perspective; -ms-perspective: 236px; -webkit-perspective: 236px; padding-left: 0px; padding-right: 0px; perspective: 236px; position: relative\">",
         "<div",
-        "    class=\"col-12 internal-fsb-element internal-fsb-selecting internal-fsb-walking offset-0\"",
+        "    class=\"col-12 internal-fsb-element internal-fsb-selecting offset-0\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
