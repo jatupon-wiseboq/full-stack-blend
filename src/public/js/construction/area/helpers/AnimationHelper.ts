@@ -6,7 +6,7 @@ import {TimelineHelper} from './TimelineHelper';
 import {StylesheetHelper} from './StylesheetHelper';
 import {StatusHelper} from './StatusHelper';
 import * as ClientAnimationHelper from '../../../helpers/AnimationHelper';
-import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES} from '../../Constants';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES, ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
@@ -19,6 +19,10 @@ window.AnimationHelper = ClientAnimationHelper.AnimationHelper;
 const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
 for (const property of ANIMATABLE_CSS_PROPERTIES) {
 	ANIMATABLE_CSS_PROPERTIES_DICTIONARY[property] = true;
+}
+const ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING_DICTIONARY = {};
+for (const property of ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING) {
+	ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING_DICTIONARY[property] = true;
 }
 
 var AnimationHelper = {
@@ -614,8 +618,8 @@ var AnimationHelper = {
 					  			for (const key in hashMap) {
 					  				if (key.indexOf('-fsb-animation-') == 0) continue;
 					  				if (hashMap.hasOwnProperty(key) && ANIMATABLE_CSS_PROPERTIES_DICTIONARY[key] !== true) {
-					  					inanimatableHashMap[key] = hashMap[key] + ' !important';
-					  					combinedInanimatableHashmap[key] = hashMap[key] + ' !important';
+					  					inanimatableHashMap[key] = hashMap[key] + (ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING_DICTIONARY[key] ? ' !important' : '');
+					  					combinedInanimatableHashmap[key] = hashMap[key] + (ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING_DICTIONARY[key] ? ' !important' : '');
 					  				} else {
 					  					animatableHashMap[key] = hashMap[key];
 					  				}
