@@ -1,19 +1,29 @@
 {
   "animations": {
+1007a040    "1007a040": {
+1007a040      "6ec629ac": {
+1007a040        "256ab155": "-fsb-animation-keyframe-time: 0; -fsb-transform: 700.00000000 1000.00000000 1000.00000000 -1.00000000 0.00001000 0.05000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); -ms-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); -webkit-opacity: 0; -webkit-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); background: rgba(255, 255, 255, 0.5); opacity: 0; transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1)",
+1007a040        "71ed425e": "-fsb-animation-keyframe-time: 0.45; -webkit-opacity: 1; opacity: 1",
+1007a040        "8bc5642d": "-fsb-animation-keyframe-time: 1.275; background: rgba(255, 255, 255, 0.5)",
+1007a040        "ca6ca087": "-fsb-animation-keyframe-time: 2.125; background: rgba(3, 115, 252, 1)",
+1007a040        "repeatMode": "time"
+1007a040      },
+1007a040      "7ed79c7a": {
+1007a040        "783c1d40": "-fsb-animation-keyframe-time: 0; -fsb-transform: 0.00000000 0.00000000 0.00000000 -1.00000000 0.00001000 -0.05000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.995, -2.1e-05, 0.1, 0, 1.9e-05, 1.005, 2.1e-05, 0, 0.1, 1.9e-05, -1, 0, 0, 0, 0, 1); -ms-transform: matrix3d(0.995, -2.1e-05, 0.1, 0, 1.9e-05, 1.005, 2.1e-05, 0, 0.1, 1.9e-05, -1, 0, 0, 0, 0, 1); -webkit-transform: matrix3d(0.995, -2.1e-05, 0.1, 0, 1.9e-05, 1.005, 2.1e-05, 0, 0.1, 1.9e-05, -1, 0, 0, 0, 0, 1); transform: matrix3d(0.995, -2.1e-05, 0.1, 0, 1.9e-05, 1.005, 2.1e-05, 0, 0.1, 1.9e-05, -1, 0, 0, 0, 0, 1)",
+1007a040        "cb2c63a9": "-fsb-animation-keyframe-time: 2.125",
+1007a040        "repeatMode": "time"
+1007a040      },
+1007a040      "groupName": "3D Folding",
+1007a040      "groupTestState": "on"
+1007a040    },
 a58e28b5    "a58e28b5": {
 a58e28b5      "e19668b7": {
 a58e28b5        "303a5ae2": "-fsb-animation-keyframe-time: 5.75; left: 100%; top: 100%",
 a58e28b5        "b2e97140": "-fsb-animation-keyframe-time: 0; left: -200%; top: -200%"
-a58e28b5      }
+a58e28b5      },
+a58e28b5      "groupName": "Highlight",
+a58e28b5      "groupTestState": "on"
 a58e28b5    },
-a6333507    "a6333507": {
-a6333507      "6ec629ac": {
-a6333507        "1607d4c7": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 4",
-a6333507        "2642bbcc": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 0; background: rgba(255, 255, 255, 0.5)",
-a6333507        "repeatMode": "time"
-a6333507      },
-a6333507      "groupTestState": null
-a6333507    },
 d0e675b7    "d0e675b7": {
 d0e675b7      "651393e4": {
 d0e675b7        "04d52929": "-fsb-animation-keyframe-time: 2.025",
@@ -26,7 +36,8 @@ d0e675b7        "9cbea9b1": "-fsb-animation-easing-fn: ease; -fsb-animation-keyf
 d0e675b7        "e16e0c10": "-fsb-animation-easing-fn: ease; -fsb-animation-keyframe-time: 10"
 d0e675b7      },
 d0e675b7      "groupName": "Main",
-d0e675b7      "groupState": null
+d0e675b7      "groupState": null,
+d0e675b7      "groupTestState": "on"
 d0e675b7    }
   },
   "backEndControllerBlobSHADict": {
@@ -1420,8 +1431,11 @@ d0e675b7    }
 4d816ba8        "</div>",
 4d816ba8        "</div>"
 4d816ba8      ],
+4d816ba8      "id": "4d816ba8",
 4d816ba8      "klass": "FlowLayout_4d816ba8",
-4d816ba8      "namespace": "Project.Controls"
+4d816ba8      "name": "Authenticator",
+4d816ba8      "namespace": "Project.Controls",
+4d816ba8      "state": "create"
 4d816ba8    }
   },
   "controllerBlobSHA": "5bd4bdfeadb6a8f9217264f5a27e9e6d1c0b7230#662331207",
@@ -1953,7 +1967,7 @@ e75c4c70          }
   },
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "67da579220f16eacdd51a31279bd645601174f3e#-767499524",
+    "Project.Controls.FlowLayout_4d816ba8": "2bdf0deeecae6c065e39a7cdaa44451b8ee45218#-1679251684",
     "Project.Controls.FlowLayout_52d0514b": "5fc2e6d3044d15626862d9887ccdb05e21e6d1fc#-1023910403",
     "Project.Controls.Settings": "767f4efc8392d3a8c4540f92fa9f377d3668cfe4#-179601188"
   },
@@ -1986,7 +2000,7 @@ e75c4c70          }
       null,
       null,
       "rgba(255, 255, 255, 0.3)",
-      "rgba(255, 255, 255, 0)"
+      "rgba(255, 255, 255, 0.5)"
     ],
     "components": [
       {
@@ -2058,7 +2072,7 @@ e75c4c70          }
     "popups": [],
     "preview": null
   },
-  "headerBlobSHA": "9aff61749b95c095a49aba317609ca85e42ad3c9#1309257144",
+  "headerBlobSHA": "c85603f7c804e1b80763b40007c84b127da411ed#-1574777285",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -3365,7 +3379,7 @@ e75c4c70          }
 9e885d49        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/federa_lake.jpg); background-position: center center; background-size: cover\">",
 9e885d49        "<div",
 9e885d49        "    class=\"internal-fsb-begin\"",
-9e885d49        "    internal-fsb-animation=\"animation-group-243eaa41 animation-group-d0e675b7\"",
+9e885d49        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-c626dd4c animation-group-1007a040 animation-group-243eaa41 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
 9e885d49        "    internal-fsb-guid=\"0\">",
 9e885d49        "<div",
 9e885d49        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4032,7 +4046,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-group-08ac50cc animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-extension-641a0997 animation-extension-783c1d40 animation-group-08ac50cc animation-group-1007a040 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4093,7 +4107,7 @@ b351d3a2    },
         "    internal-fsb-name=\"TextElement 1\"",
         "    style=\"color: rgba(255, 255, 255, 1); font-family: Roboto; font-size: 48px; font-weight: 300; text-align: center\">StackBlend Studio</div>",
         "<div",
-        "    class=\"col-12 col-md-10 internal-fsb-element offset-0 offset-md-1\"",
+        "    class=\"col-12 col-md-10 internal-fsb-element internal-fsb-measuring offset-0 offset-md-1\"",
         "    contenteditable=\"true\"",
         "    internal-fsb-class=\"TextElement\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4832,8 +4846,8 @@ b351d3a2    },
   "viewBlobSHADict": {
     "3cb10a6e": "84012ab2254f81869b2ecb99cda88b42e6122422#-548438305",
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
-    "9e885d49": "faecb4602fcbcf2b48b8033044fdcae25385a404#-731087909",
+    "9e885d49": "19291ee626214ca049aa529ae17b3acd2bdba8b4#-586365114",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "f444f4436435622a362ee9620a6c181bdc9ab856#-1008179404"
+    "index": "098d5cbe95e5933435568ae191a9c1e9966c2e28#1559443122"
   }
 }

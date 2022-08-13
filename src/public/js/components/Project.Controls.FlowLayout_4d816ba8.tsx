@@ -209,7 +209,7 @@ class FlowLayout_4d816ba8 extends Base {
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
           .internal-fsb-element.internal-fsb-strict-layout(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="35e36a4a")
             .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, internal-fsb-guid="e439a68e")
-              | Please login or signup to start using StackBlend studio
+              | Please login or signup to start using StackBlend Studio
             .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="89972713")
               Button.-fsb-self-d7d59dd2.col-5.internal-fsb-element.offset-1(style={background: (()=>{return (this.state.currentTab == 0) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 0) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 0) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_d7d59dd2.bind(this), internal-fsb-guid="d7d59dd2")
                 .internal-fsb-element(internal-fsb-guid="d7d59dd2-text")
