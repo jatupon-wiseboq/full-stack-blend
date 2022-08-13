@@ -2,18 +2,19 @@
   "animations": {
 1007a040    "1007a040": {
 1007a040      "6ec629ac": {
-1007a040        "256ab155": "-fsb-animation-keyframe-time: 0; -fsb-transform: 700.00000000 1000.00000000 1000.00000000 -1.00000000 0.00001000 0.05000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); -ms-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); -webkit-opacity: 0; -webkit-transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1); background: rgba(255, 255, 255, 0.5); opacity: 0; transform: matrix3d(0.995, -1.9e-05, -0.1, 0, 2.1e-05, 1.005, 1.9e-05, 0, -0.1, 2.1e-05, -1, 0, -700, -1000, -1000, 1)",
+1007a040        "256ab155": "-fsb-animation-keyframe-time: 0; -fsb-transform: -400.00000000 400.00000000 0.00000000 -1.00000000 0.00001000 -0.25000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -ms-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -webkit-opacity: 0; -webkit-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); background: rgba(0, 174, 255, 0.5); opacity: 0; transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1)",
 1007a040        "71ed425e": "-fsb-animation-keyframe-time: 0.45; -webkit-opacity: 1; opacity: 1",
-1007a040        "8bc5642d": "-fsb-animation-keyframe-time: 1.275; background: rgba(255, 255, 255, 0.5)",
+1007a040        "8bc5642d": "-fsb-animation-keyframe-time: 1.275; background: rgba(0, 174, 255, 0.5)",
 1007a040        "ca6ca087": "-fsb-animation-keyframe-time: 2.125; background: rgba(3, 115, 252, 1)",
 1007a040        "repeatMode": "time"
 1007a040      },
 1007a040      "7ed79c7a": {
-1007a040        "783c1d40": "-fsb-animation-keyframe-time: 0; -fsb-transform: 0.00000000 0.00000000 0.00000000 -1.00000000 0.00001000 -0.01000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9998, -2.02e-05, 0.02, 0, 1.98e-05, 1.0002, 2.02e-05, 0, 0.02, 1.98e-05, -1, 0, 0, 0, 0, 1); -ms-transform: matrix3d(0.9998, -2.02e-05, 0.02, 0, 1.98e-05, 1.0002, 2.02e-05, 0, 0.02, 1.98e-05, -1, 0, 0, 0, 0, 1); -webkit-transform: matrix3d(0.9998, -2.02e-05, 0.02, 0, 1.98e-05, 1.0002, 2.02e-05, 0, 0.02, 1.98e-05, -1, 0, 0, 0, 0, 1); transform: matrix3d(0.9998, -2.02e-05, 0.02, 0, 1.98e-05, 1.0002, 2.02e-05, 0, 0.02, 1.98e-05, -1, 0, 0, 0, 0, 1)",
-1007a040        "cb2c63a9": "-fsb-animation-keyframe-time: 2.125",
+1007a040        "783c1d40": "-fsb-animation-keyframe-time: 0; -fsb-transform: -15.00000000 0.00000000 0.00000000 -1.00000000 0.00001000 -0.15000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.955, -2.3e-05, 0.3, 0, 1.7e-05, 1.045, 2.3e-05, 0, 0.3, 1.7e-05, -1, 0, 15, 0, 0, 1); -ms-transform: matrix3d(0.955, -2.3e-05, 0.3, 0, 1.7e-05, 1.045, 2.3e-05, 0, 0.3, 1.7e-05, -1, 0, 15, 0, 0, 1); -webkit-transform: matrix3d(0.955, -2.3e-05, 0.3, 0, 1.7e-05, 1.045, 2.3e-05, 0, 0.3, 1.7e-05, -1, 0, 15, 0, 0, 1); transform: matrix3d(0.955, -2.3e-05, 0.3, 0, 1.7e-05, 1.045, 2.3e-05, 0, 0.3, 1.7e-05, -1, 0, 15, 0, 0, 1)",
+1007a040        "937b2c6c": "-fsb-animation-keyframe-time: 2.7",
+1007a040        "cb2c63a9": "-fsb-animation-keyframe-time: 2.25; -fsb-transform: -15.00000000 0.00000000 0.00000000 -1.00000000 0.00001000 0.01500000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.99955, -1.97e-05, -0.03, 0, 2.03e-05, 1.00045, 1.97e-05, 0, -0.03, 2.03e-05, -1, 0, 15, 0, 0, 1); -ms-transform: matrix3d(0.99955, -1.97e-05, -0.03, 0, 2.03e-05, 1.00045, 1.97e-05, 0, -0.03, 2.03e-05, -1, 0, 15, 0, 0, 1); -webkit-transform: matrix3d(0.99955, -1.97e-05, -0.03, 0, 2.03e-05, 1.00045, 1.97e-05, 0, -0.03, 2.03e-05, -1, 0, 15, 0, 0, 1); transform: matrix3d(0.99955, -1.97e-05, -0.03, 0, 2.03e-05, 1.00045, 1.97e-05, 0, -0.03, 2.03e-05, -1, 0, 15, 0, 0, 1)",
 1007a040        "repeatMode": "time"
 1007a040      },
-1007a040      "groupName": "3D Folding",
+1007a040      "groupName": "3D Fold",
 1007a040      "groupTestState": "on"
 1007a040    },
 a58e28b5    "a58e28b5": {
@@ -24,6 +25,16 @@ a58e28b5      },
 a58e28b5      "groupName": "Highlight",
 a58e28b5      "groupTestState": "on"
 a58e28b5    },
+b7965b87    "b7965b87": {
+b7965b87      "6ec629ac": {
+b7965b87        "b7231a68": "-fsb-animation-keyframe-time: 0",
+b7965b87        "c9b44bd2": "-fsb-animation-keyframe-time: 0.8; background: rgba(3, 115, 252, 0.2)",
+b7965b87        "repeatMode": "time"
+b7965b87      },
+b7965b87      "groupName": "Hero Unit - Active",
+b7965b87      "groupState": "off",
+b7965b87      "groupTestState": "on"
+b7965b87    },
 d0e675b7    "d0e675b7": {
 d0e675b7      "651393e4": {
 d0e675b7        "04d52929": "-fsb-animation-keyframe-time: 2.025",
@@ -38,7 +49,22 @@ d0e675b7      },
 d0e675b7      "groupName": "Main",
 d0e675b7      "groupState": null,
 d0e675b7      "groupTestState": "on"
-d0e675b7    }
+d0e675b7    },
+e37e3b85    "e37e3b85": {
+e37e3b85      "6ec629ac": {
+e37e3b85        "c3062215": "-fsb-animation-keyframe-time: 0",
+e37e3b85        "d54d78bc": "-fsb-animation-keyframe-time: 0.8; background: rgba(3, 115, 252, 1)",
+e37e3b85        "repeatMode": "time"
+e37e3b85      },
+e37e3b85      "groupName": "Hero Unit - Inactive",
+e37e3b85      "groupState": "off",
+e37e3b85      "groupTestState": "on"
+e37e3b85    },
+    "selector": {
+      "6ec629ac:hover": {
+        "repeatMode": "time"
+      }
+    }
   },
   "backEndControllerBlobSHADict": {
     "3cb10a6e": "87e684970579b8f3c67f3316cfe90ed3c8c9c797#-231406185",
@@ -2072,7 +2098,7 @@ e75c4c70          }
     "popups": [],
     "preview": null
   },
-  "headerBlobSHA": "abb1dd1a4cb2ef3c04a6de09f92413a08f20f375#2017007949",
+  "headerBlobSHA": "023098a1a8ec8799428026f68aa0511b1f7ca05e#-1293190275",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -3379,7 +3405,7 @@ e75c4c70          }
 9e885d49        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/federa_lake.jpg); background-position: center center; background-size: cover\">",
 9e885d49        "<div",
 9e885d49        "    class=\"internal-fsb-begin\"",
-9e885d49        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-c626dd4c animation-group-1007a040 animation-group-243eaa41 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
+9e885d49        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-c626dd4c animation-group-1007a040 animation-group-243eaa41 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
 9e885d49        "    internal-fsb-guid=\"0\">",
 9e885d49        "<div",
 9e885d49        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4046,7 +4072,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-641a0997 animation-extension-783c1d40 animation-group-08ac50cc animation-group-1007a040 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-group-08ac50cc animation-group-1007a040 animation-group-3ec1d254 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4088,7 +4114,17 @@ b351d3a2    },
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"6ec629ac\"",
         "    internal-fsb-name=\"FlowLayout 5\"",
-        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-overflow-x: hidden; -ms-overflow-y: hidden; -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5); overflow-x: hidden; overflow-y: hidden; padding-bottom: 20px; padding-top: 60px; transform-style: preserve-3d\">",
+        "    style=\"-fsb-transform: -100.00000000 0.00000000 100.00000000 -1.00000000 0.00001000 -0.02000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -ms-overflow-x: hidden; -ms-overflow-y: hidden; -ms-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); -webkit-box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5); -webkit-transform: matrix3d(0.9992, -2.04e-05, 0.04, 0, 1.96e-05, 1.0008, 2.04e-05, 0, 0.04, 1.96e-05, -1, 0, 100, 0, -100, 1); background: rgba(3, 115, 252, 1); box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5); cursor: help; overflow-x: hidden; overflow-y: hidden; padding-bottom: 20px; padding-top: 60px; transform-style: preserve-3d\"",
+        "    onfsbdocumentclick=\"{&quot;remove-animation-tracks&quot;:[],&quot;add-animation-tracks&quot;:[&quot;1007a040&quot;],&quot;event&quot;:true,&quot;animation-reset&quot;:true}\"",
+        "    onfsbdocumentmousedown=\"{&quot;remove-animation-tracks&quot;:[]}\"",
+        "    onfsbdocumentmouseup=\"{&quot;add-animation-tracks&quot;:[]}\"",
+        "    onfsbdocumentmouseover=\"{&quot;add-animation-tracks&quot;:[],&quot;remove-animation-tracks&quot;:[],&quot;animation-at-element&quot;:true}\"",
+        "    onfsbdocumentmouseout=\"{&quot;add-animation-tracks&quot;:[],&quot;animation-reset&quot;:true,&quot;remove-animation-tracks&quot;:[]}\"",
+        "    onfsbmousedown=\"{&quot;remove-animation-tracks&quot;:[]}\"",
+        "    onfsbmouseup=\"{&quot;add-animation-tracks&quot;:[]}\"",
+        "    onfsbmouseover=\"{&quot;event&quot;:true,&quot;add-animation-tracks&quot;:[&quot;b7965b87&quot;],&quot;animation-at-element&quot;:true,&quot;remove-animation-tracks&quot;:[&quot;e37e3b85&quot;]}\"",
+        "    onfsbmouseout=\"{&quot;event&quot;:true,&quot;add-animation-tracks&quot;:[&quot;e37e3b85&quot;],&quot;animation-at-element&quot;:true,&quot;remove-animation-tracks&quot;:[&quot;b7965b87&quot;]}\"",
+        "    onfsbload=\"{&quot;event&quot;:true,&quot;add-animation-tracks&quot;:[&quot;1007a040&quot;],&quot;animation-reset&quot;:true}\">",
         "",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
@@ -4854,8 +4890,8 @@ b351d3a2    },
   "viewBlobSHADict": {
     "3cb10a6e": "84012ab2254f81869b2ecb99cda88b42e6122422#-548438305",
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
-    "9e885d49": "19291ee626214ca049aa529ae17b3acd2bdba8b4#-586365114",
+    "9e885d49": "c427e073afc9d63d5303a122368aacf9b5b4ba7d#-1597433294",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "555d08afe032699b0953ca6a9a2d782d9b3a848a#417813782"
+    "index": "d1662bd7dd9de40d7db1db6b730efe7f92d6252e#1792084904"
   }
 }
