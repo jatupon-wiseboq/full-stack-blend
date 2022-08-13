@@ -223,7 +223,14 @@ var ManipulationHelper = {
 		      		}
 		      	}
 		      }).then(() => {
-	      		if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
+		      	if (content && content.indexOf(':') == 0) {
+		      		ManipulationHelper.perform('update', {
+			      		extensions: [{
+			      			name: 'editingAnimationSelector',
+			      			value: content
+			      		}]
+			      	}, true, false, link);
+		      	} else if (recentSelectingElement && HTMLHelper.getAttribute(recentSelectingElement, 'internal-fsb-guid') != content) {
 				      ManipulationHelper.perform('update', {
 			      		extensions: [{
 			      			name: 'editingKeyframeID',
