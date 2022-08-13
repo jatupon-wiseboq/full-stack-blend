@@ -10,17 +10,17 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   let isLoaded: boolean = false;
   
   const checkTextElementIfBlank = () => {
-  	if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
-  		const element = HTMLHelper.findTheParentInClassName('internal-fsb-element', document.activeElement, true);
-  		
-  		if (element && element.innerText.trim() == '') {
-  			const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
-  			
-  			element.innerHTML = 'Text';
-  			
-  			for (const accessory of accessories) element.appendChild(accessory);
-  		}
-  	}
+		const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement');
+		
+		for (const element of elements) {
+			if (element && element.innerText.trim() == '') {
+				const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
+				
+				element.innerHTML = 'Text';
+				
+				for (const accessory of accessories) element.appendChild(accessory);
+			}
+		}
   };
   
   window.addEventListener("load", (event) => {
@@ -56,13 +56,11 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   window.addEventListener("keydown", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
       [27].indexOf(event.keyCode) == -1) {
-      
-      window.setTimeout(checkTextElementIfBlank, 0);
-      
       if (HTMLHelper.hasClass(document.activeElement.parentNode, 'internal-fsb-absolute-layout')) {
         if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
           EditorHelper.perform('keydown', event.keyCode);
           
+  				checkTextElementIfBlank();
           HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
     
           return EventHelper.cancel(event);
@@ -119,6 +117,7 @@ import {AnimationHelper} from './helpers/AnimationHelper';
     }
   }, true);
   window.addEventListener("blur", (event) => {
+  	checkTextElementIfBlank();
     HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
   let previousWindowSize = {width: null, height: null};

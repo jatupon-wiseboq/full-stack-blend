@@ -2,7 +2,7 @@
   "name": "full-stack-blend",
   "version": "0.1.0",
   "engines": {
-    "node": "12.14.x"
+    "node": "14.17.x"
   },
   "description": "Full-Stack Development Platform For Web Application",
   "repository": {
