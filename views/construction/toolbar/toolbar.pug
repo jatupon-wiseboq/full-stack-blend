@@ -1,7 +1,7 @@
 include ../mixin/CreateReactComponent
-nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
-  .container-fluid.px-2
-    .mr-auto.py-1
+nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
+  .container-fluid.px-2.flex-nowrap.overflow-auto
+    .mr-auto.pr-1.py-1.text-nowrap
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-sitemap.m-0(id='exploreIcon')
@@ -34,7 +34,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           i.fa.fa-mobile.m-0(style='font-size: 14px;')
           .title
             | Mobile
-    .mx-auto.py-1
+    .mx-auto.px-1.py-1.text-nowrap
       a.btn.btn-sm.btn-light.mr-1(href='#', role='button', onclick='perform("undo", null)', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Reverse Editing</b></p><p>This will reverse your changes of cursor position, element inserting, deleting, and modification.</p>")
         i.fa.fa-undo.m-0
         .title
@@ -71,7 +71,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
         .progress
           .gradient-1
           .gradient-2
-    .mx-auto.siteToolset.popupsToolset.componentsToolset.toolset.py-1
+    .mx-auto.px-1.siteToolset.popupsToolset.componentsToolset.toolset.py-1.text-nowrap
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-reorder.m-0
@@ -171,7 +171,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
             i.fa.fa-plus
             | Create
           +CreateReactComponent('FullStackBlend.Components.ComponentMenu')
-    .mx-auto.dataToolset.toolset.py-1(style='display: none;')
+    .mx-auto.px-1.dataToolset.toolset.py-1.text-nowrap(style='display: none;')
       .dropdown.mr-1(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 60px;')
           i.fa.fa-share-alt.m-0
@@ -263,7 +263,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='perform("insert", "Service")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Linking A Service</b></p><p>Placing an external service that you have created or received from your businesses, so that you can perform scheduling, manipulation, or event retreiving an encoded or transformed data.</p>")
             i.fa.fa-plus
             | Create
-    .mx-auto.siteToolset.popupsToolset.componentsToolset.dataToolset.toolset.py-1
+    .mx-auto.px-1.siteToolset.popupsToolset.componentsToolset.dataToolset.toolset.py-1.text-nowrap
       .dropdown(style='display: inline;')
         a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
           i.fa.fa-glide-g.m-0
@@ -273,7 +273,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0.w-100
           a.dropdown-item(onclick='toggle("guide", "#toggleGuide")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Toggle Lines</b></p><p>Turn on and off design lines which use to distinguish layouts, components, and bindings.</p>")
             i.fa.fa-toggle-on(id='toggleGuide')
             | Toggle
-    .ml-auto.py-1
+    .ml-auto.px-1.py-1.text-nowrap
       .btn-group.btn-group-toggle.mr-1(data-toggle='buttons')
         a.btn.btn-sm.btn-light.active(id='designButton', onclick="swap('#design')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Element Design</b></p><p>This will allow you to design and configure the properties of the selected element.</p>", style='width: 50px;')
           input(type='radio', name='options', checked=true)
