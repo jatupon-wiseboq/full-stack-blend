@@ -193,6 +193,15 @@ var CapabilityHelper = {
       }
   	});
   },
+  installCapabilityOfBeingDropped: (_container: HTMLElement) => {
+    HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
+  	  container.addEventListener('drop', (event: Event) => {
+  	  	alert("While dropping content isn't supported, please use ctrl+x, ctrl+c, and ctrl+v instead.");
+  	  	
+  	  	return EventHelper.cancel(event);
+      }, false);
+  	});
+  },
   installCapabilityOfBeingClickWithoutRedirection: (_container: HTMLElement) => {
     let elements = [...HTMLHelper.getElementsByTagName('a', _container)];
     if (_container.tagName == 'A') {
@@ -221,6 +230,7 @@ var CapabilityHelper = {
       
       if (HTMLHelper.getAttribute(container, 'contentEditable') == 'true') {
       	CapabilityHelper.installCapabilityOfBeingPasted(container);
+      	CapabilityHelper.installCapabilityOfBeingDropped(container);
       }
     });
     CapabilityHelper.installCapabilityOfBeingDragged(_container);
