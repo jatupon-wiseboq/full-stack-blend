@@ -91,6 +91,16 @@ let cachedUpdateEditorProperties = {};
       HTMLHelper.removeClass(icon, 'fa-toggle-off');
       HTMLHelper.addClass(icon, 'fa-toggle-on');
     }
+    
+    switch (name) {
+    	case 'explorer':
+    		HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
+    		break;
+    	case 'information':
+    		HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
+    		break;
+    }
+    
     perform('toggle', name);
     
     synchronize('click');
