@@ -96,7 +96,7 @@ let cachedUpdateEditorProperties = {};
     	case 'explorer':
     		HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
     		break;
-    	case 'information':
+    	case 'layering':
     		HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
     		break;
     }
