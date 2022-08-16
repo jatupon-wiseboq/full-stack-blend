@@ -7,10 +7,10 @@
 1007a040        "repeatMode": "time"
 1007a040      },
 1007a040      "6ec629ac": {
-1007a040        "256ab155": "-fsb-animation-keyframe-time: 0; -fsb-transform: -400.00000000 400.00000000 0.00000000 -1.00000000 0.00001000 -0.25000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -ms-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -webkit-opacity: 0; -webkit-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); opacity: 0; transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1)",
+1007a040        "256ab155": "-fsb-animation-keyframe-time: 0; -fsb-transform: -400.00000000 400.00000000 0.00000000 -1.00000000 0.00001000 -0.25000000 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -ms-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); -webkit-opacity: 0; -webkit-transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1); opacity: 0; pointer-events: none; transform: matrix3d(0.875, -2.5e-05, 0.5, 0, 1.5e-05, 1.125, 2.5e-05, 0, 0.5, 1.5e-05, -1, 0, 400, -400, 0, 1)",
 1007a040        "71ed425e": "-fsb-animation-keyframe-time: 0.45; -webkit-opacity: 1; opacity: 1",
 1007a040        "8bc5642d": "-fsb-animation-keyframe-time: 1.275",
-1007a040        "ca6ca087": "-fsb-animation-keyframe-time: 2.125",
+1007a040        "ca6ca087": "-fsb-animation-keyframe-time: 2.125; pointer-events: auto",
 1007a040        "repeatMode": "time"
 1007a040      },
 1007a040      "7ed79c7a": {
@@ -2112,7 +2112,7 @@ e75c4c70          }
     "popups": [],
     "preview": null
   },
-  "headerBlobSHA": "cada82ada74baa255d4b094fb1a160d2b4126038#226609684",
+  "headerBlobSHA": "b2303540b5fcdfd43450a2345e22b35eea685346#-925848803",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -4086,7 +4086,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-group-08ac50cc animation-group-1007a040 animation-group-3ec1d254 animation-group-499cb518 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7 animation-group-e37e3b85\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-3ec1d254 animation-group-499cb518 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
