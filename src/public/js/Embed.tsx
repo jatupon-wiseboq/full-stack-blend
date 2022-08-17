@@ -2,6 +2,7 @@ import {DataManipulationHelper} from './helpers/DataManipulationHelper';
 import {TestHelper} from './helpers/TestHelper';
 import {AnimationHelper} from './helpers/AnimationHelper';
 import {EventHelper} from './helpers/EventHelper';
+import {HTMLHelper} from './helpers/HTMLHelper';
 import * as Ruffle from '../../../dist/public/js/ruffle.js';
 
 declare let window: any;
@@ -38,6 +39,7 @@ declare let window: any;
   window.TestHelper = TestHelper;
   window.AnimationHelper = AnimationHelper;
   window.EventHelper = EventHelper;
+  window.HTMLHelper = HTMLHelper;
   window._RuffleLoaded = !!window.Ruffle;
   window._RuffleLoaded && (window.RufflePlayer.config = {
     "publicPath": undefined,
