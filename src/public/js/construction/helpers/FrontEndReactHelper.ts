@@ -358,8 +358,14 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
             
             if (value.event) {
             		if (code == '') code = MERGING_BOILERPLATE;
-            	
-            		const target = (value['animation-at-element']) ? 'EventHelper.getCurrentElement(event)' : 'undefined';
+            		
+            		let target = null;
+            		if (value['animation-at-element']) {
+            			const custom = info[name.replace('onfsb', 'internal-fsb-targeting-')] || null;
+            			target = (custom) ? `HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '${custom}')` : 'EventHelper.getCurrentElement(event)';
+            		} else {
+            			target = 'undefined';
+            		}
             	
             		let ACTIVE_ANIMATION = '';
             		if (value['add-animation-tracks']) {
