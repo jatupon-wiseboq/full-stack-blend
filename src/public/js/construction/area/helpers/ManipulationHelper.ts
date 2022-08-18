@@ -76,7 +76,8 @@ function removeAllPresetReferences(presetId: string, link: string) {
 				let selectingElement = EditorHelper.getSelectingElement(window, document);
 		  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
 		  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-		  		isCutMode: true
+		  		isCutMode: true,
+		  		editorMode: EditorHelper.getEditorCurrentMode()
 		  	}));
 		  	
 		    if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
@@ -95,7 +96,8 @@ function removeAllPresetReferences(presetId: string, link: string) {
 				let selectingElement = EditorHelper.getSelectingElement(window, document);
 		  	event.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
 		  	event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-		  		isCutMode: false
+		  		isCutMode: false,
+		  		editorMode: EditorHelper.getEditorCurrentMode()
 		  	}));
 		    
 		    event.preventDefault();
@@ -103,6 +105,7 @@ function removeAllPresetReferences(presetId: string, link: string) {
 				const html = event.clipboardData.getData('application/stackblend');
 				if (html) {
 					const state = JSON.parse(event.clipboardData.getData('application/stackblend-state') || '{}');
+					if (['data'].indexOf(state.editorMode) != -1 && state.editorMode != EditorHelper.getEditorCurrentMode()) return;
 			  	if (state.isCutMode) {
 			  		ManipulationHelper.perform('insert', {
 			    		klass: 'Pasteboard',
@@ -110,7 +113,8 @@ function removeAllPresetReferences(presetId: string, link: string) {
 			    	});
 			  		event.clipboardData.setData('application/stackblend', '');
 			  		event.clipboardData.setData('application/stackblend-state', JSON.stringify({
-				  		isCutMode: false
+				  		isCutMode: false,
+		  				editorMode: EditorHelper.getEditorCurrentMode()
 				  	}));
 			  	} else {
 	  				const stringifyIfNeed = window.messageFnArray ? (data: any) => data : JSON.stringify;
@@ -1065,7 +1069,8 @@ var ManipulationHelper = {
         	let selectingElement = EditorHelper.getSelectingElement();
         	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
         	window.clipboardData.setData('application/stackblend-state', JSON.stringify({
-			  		isCutMode: true
+			  		isCutMode: true,
+		  			editorMode: EditorHelper.getEditorCurrentMode()
 			  	}));
         	
           if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
@@ -1140,7 +1145,8 @@ var ManipulationHelper = {
         	let selectingElement = EditorHelper.getSelectingElement();
         	window.clipboardData.setData('application/stackblend', selectingElement.outerHTML);
         	window.clipboardData.setData('application/stackblend-state', JSON.stringify({
-			  		isCutMode: false
+			  		isCutMode: false,
+		  			editorMode: EditorHelper.getEditorCurrentMode()
 			  	}));
         }
         remember = false;
@@ -1155,7 +1161,8 @@ var ManipulationHelper = {
 	        	});
         		window.clipboardData.setData('application/stackblend', '');
         		window.clipboardData.setData('application/stackblend-state', JSON.stringify({
-				  		isCutMode: false
+				  		isCutMode: false,
+		  				editorMode: EditorHelper.getEditorCurrentMode()
 				  	}));
         	} else {
 	        	ManipulationHelper.perform('insert', {

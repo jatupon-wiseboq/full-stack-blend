@@ -39,6 +39,7 @@ var BackEndManipulationHelper = {
     
     let style: string;
     let parent: any;
+    let isComponentInsertion: boolean = false;
     
     switch (content.klass) {
       case 'RelationalDatabase':
@@ -262,6 +263,16 @@ var BackEndManipulationHelper = {
               | name
         `, element);
         break;
+      case 'Pasteboard':
+      	element = document.createElement('div');
+        element.innerHTML = content.html;
+        element = element.firstElementChild;
+      	
+      	content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+        content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
+        
+        isComponentInsertion = true;
+      	break;
     }
     
     if (element !== null) {
@@ -281,7 +292,7 @@ var BackEndManipulationHelper = {
       
       // Insert the element before the cursor.
       //
-      HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
+      if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
       
       if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
