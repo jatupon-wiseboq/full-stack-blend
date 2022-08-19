@@ -829,11 +829,10 @@ var WorkspaceHelper = {
 	          if (InternalComponents[key].references) {
 	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
-	          		if (WorkspaceHelper.getComponentData(key).html.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = content;
 	          		
-	          		referencing.push(key);
+	          		if (WorkspaceHelper.getComponentData(key).html.join('\n') != html) referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
@@ -844,11 +843,10 @@ var WorkspaceHelper = {
 	          if (InternalPopups[key].references) {
 	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
-	          		if (WorkspaceHelper.getPopupData(key).html.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = content;
 	          		
-	          		referencing.push(key);
+	          		if (WorkspaceHelper.getPopupData(key).html.join('\n') != html) referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
@@ -859,11 +857,10 @@ var WorkspaceHelper = {
 	          if (InternalSites[key].references) {
 	          	if (InternalSites[key].references.indexOf(reference) != -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
-	          		if (WorkspaceHelper.getPageData(key).body.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = content;
 	          		
-	          		referencing.push(key);
+	          		if (WorkspaceHelper.getPageData(key).body.join('\n') != html) referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
