@@ -407,7 +407,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || !CodeHelper.equals([clonedPage.head, clonedPage.extensions, clonedPage.body.join()], [page.head, page.extensions, page.body.join()])) {
+      if (force || !CodeHelper.equals([clonedPage.head, clonedPage.extensions, clonedPage.body && clonedPage.body.join()], [page.head, page.extensions, page.body && page.body.join()])) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
@@ -461,7 +461,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || !CodeHelper.equals(component.html.join(), previous.join())) {
+      if (force || !CodeHelper.equals(component.html && component.html.join(), previous && previous.join())) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
         WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
@@ -495,7 +495,7 @@ var WorkspaceHelper = {
       	AnimationHelper.initializeStylesheetData(InternalAnimations);
       }
       
-      if (force || !CodeHelper.equals(popup.html.join(), previous.join())) {
+      if (force || !CodeHelper.equals(popup.html && popup.html.join(), previous && previous.join())) {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
