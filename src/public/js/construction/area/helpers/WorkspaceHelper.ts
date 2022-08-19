@@ -827,6 +827,7 @@ var WorkspaceHelper = {
   generateFrontEndCodeForAnyReferencingComponentsOrPopups: () => {
     if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
     	let referencing = [WorkspaceHelper.getCurrentGenerateFrontEndKey()];
+    	let skipping = [];
     	let refreshed = [];
     	
     	while (referencing.length != 0) {
@@ -837,12 +838,14 @@ var WorkspaceHelper = {
     		for (let key in InternalComponents) {
 	        if (InternalComponents.hasOwnProperty(key)) {
 	          if (InternalComponents[key].references) {
-	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
+	          	if (InternalComponents[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = content;
 	          		
 	          		if (WorkspaceHelper.getComponentData(key).html.join('\n') != html) referencing.push(key);
+	          		else skipping.push(key);
+	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
@@ -851,12 +854,14 @@ var WorkspaceHelper = {
 	      for (let key in InternalPopups) {
 	        if (InternalPopups.hasOwnProperty(key)) {
 	          if (InternalPopups[key].references) {
-	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
+	          	if (InternalPopups[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = content;
 	          		
 	          		if (WorkspaceHelper.getPopupData(key).html.join('\n') != html) referencing.push(key);
+	          		else skipping.push(key);
+	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
@@ -865,12 +870,14 @@ var WorkspaceHelper = {
 	      for (let key in InternalSites) {
 	        if (InternalSites.hasOwnProperty(key)) {
 	          if (InternalSites[key].references) {
-	          	if (InternalSites[key].references.indexOf(reference) != -1) {
+	          	if (InternalSites[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = content;
 	          		
 	          		if (WorkspaceHelper.getPageData(key).body.join('\n') != html) referencing.push(key);
+	          		else skipping.push(key);
+	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
