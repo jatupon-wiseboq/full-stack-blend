@@ -918,6 +918,7 @@ var WorkspaceHelper = {
 	    }
   		
   		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
+  		results[0] = WorkspaceHelper.cleanupComponentHTMLData(results[0]);
   		
   		if (update) {
   			WorkspaceHelper.unplugComponentInputs(container);
@@ -942,6 +943,7 @@ var WorkspaceHelper = {
 	    }
 	    
   		results = FrontEndDOMHelper.generateFrontEndCode(container.ownerDocument, container);
+  		results[0] = WorkspaceHelper.cleanupComponentHTMLData(results[0]);
   		
   		if (update) {
   			WorkspaceHelper.unplugComponentInputs(container);
