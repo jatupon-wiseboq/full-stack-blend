@@ -828,10 +828,13 @@ var WorkspaceHelper = {
 	        if (InternalComponents.hasOwnProperty(key)) {
 	          if (InternalComponents[key].references) {
 	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
+	          		const content = WorkspaceHelper.generateFrontEndCodeForID('components', key);
+	          		if (WorkspaceHelper.getComponentData(key).html == content[0]) continue;
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = content;
+	          		
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
-	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = WorkspaceHelper.generateFrontEndCodeForID('components', key);
 	          	}
 	          }
 	        }
@@ -840,10 +843,13 @@ var WorkspaceHelper = {
 	        if (InternalPopups.hasOwnProperty(key)) {
 	          if (InternalPopups[key].references) {
 	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
+	          		const content = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
+	          		if (WorkspaceHelper.getPopupData(key).html == content[0]) continue;
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = content;
+	          		
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
-	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
 	          	}
 	          }
 	        }
@@ -852,10 +858,13 @@ var WorkspaceHelper = {
 	        if (InternalSites.hasOwnProperty(key)) {
 	          if (InternalSites[key].references) {
 	          	if (InternalSites[key].references.indexOf(reference) != -1) {
+	          		const content = WorkspaceHelper.generateFrontEndCodeForID('site', key);
+	          		if (WorkspaceHelper.getPageData(key).body == content[0]) continue;
+	          		
+	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = content;
+	          		
 	          		referencing.push(key);
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
-	          		
-	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = WorkspaceHelper.generateFrontEndCodeForID('site', key);
 	          	}
 	          }
 	        }
