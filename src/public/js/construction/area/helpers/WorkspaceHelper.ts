@@ -573,6 +573,11 @@ var WorkspaceHelper = {
     for (const placing of placings) {
    		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
    	}
+   	
+   	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
+    for (const element of classes) {
+    	element.className = element.className.replace(/( )+/g, ' ').trim();
+   	}
     
     return holder.innerHTML;
   },
@@ -620,6 +625,11 @@ var WorkspaceHelper = {
     const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holder));
     for (const placing of placings) {
    		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
+   	}
+   	
+   	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
+    for (const element of classes) {
+    	element.className = element.className.replace(/( )+/g, ' ').trim();
    	}
     
     const outerHTML = holderWindow.document.body.outerHTML;
