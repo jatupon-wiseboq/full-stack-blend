@@ -828,8 +828,8 @@ var WorkspaceHelper = {
 	        if (InternalComponents.hasOwnProperty(key)) {
 	          if (InternalComponents[key].references) {
 	          	if (InternalComponents[key].references.indexOf(reference) != -1) {
-	          		const content = WorkspaceHelper.generateFrontEndCodeForID('components', key);
-	          		if (WorkspaceHelper.getComponentData(key).html == content[0]) continue;
+	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
+	          		if (WorkspaceHelper.getComponentData(key).html.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = content;
 	          		
@@ -843,8 +843,8 @@ var WorkspaceHelper = {
 	        if (InternalPopups.hasOwnProperty(key)) {
 	          if (InternalPopups[key].references) {
 	          	if (InternalPopups[key].references.indexOf(reference) != -1) {
-	          		const content = WorkspaceHelper.generateFrontEndCodeForID('popups', key);
-	          		if (WorkspaceHelper.getPopupData(key).html == content[0]) continue;
+	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
+	          		if (WorkspaceHelper.getPopupData(key).html.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = content;
 	          		
@@ -858,8 +858,8 @@ var WorkspaceHelper = {
 	        if (InternalSites.hasOwnProperty(key)) {
 	          if (InternalSites[key].references) {
 	          	if (InternalSites[key].references.indexOf(reference) != -1) {
-	          		const content = WorkspaceHelper.generateFrontEndCodeForID('site', key);
-	          		if (WorkspaceHelper.getPageData(key).body == content[0]) continue;
+	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
+	          		if (WorkspaceHelper.getPageData(key).body.join('\n') == html) continue;
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = content;
 	          		
@@ -897,17 +897,33 @@ var WorkspaceHelper = {
 		
   	document.body.removeChild(temp);
   },
-  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey()) => {
+  generateFrontEndCodeForID: (mode: string=InternalProjectSettings.currentMode, id: string=WorkspaceHelper.getCurrentGenerateFrontEndKey(), hasInfo: boolean=false) => {
     const temp = WorkspaceHelper.createTempIframe();
     const _document = temp.contentDocument || temp.contentWindow.document;
     const _window = _document.defaultView;
     
     WorkspaceHelper.loadPageData(mode, id, _window);
-    const results = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
+    const content = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
+    
+    let html = null;
+    if (hasInfo) {
+	    switch (mode) {
+	    	case 'components':
+	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0]))));
+	    		break;
+	    	case 'popups':
+	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0]))));
+	    		break;
+	    	case 'site':
+	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(_window.document.body.outerHTML))));
+	    		break;
+	    }
+	  }
     
     WorkspaceHelper.disposeTempIframe(temp);
     
-    return results;
+    if (hasInfo) return {content, html};
+    else return content;
   },
   generateFrontEndCodeForPage: (mode: string='site', container: any=document.body, update: boolean=true) => {
     let results = null;
