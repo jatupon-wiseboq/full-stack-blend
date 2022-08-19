@@ -909,10 +909,10 @@ var WorkspaceHelper = {
     if (hasInfo) {
 	    switch (mode) {
 	    	case 'components':
-	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0]))));
+	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0].outerHTML))));
 	    		break;
 	    	case 'popups':
-	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0]))));
+	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupComponentHTMLData(HTMLHelper.getElementsByClassName('internal-fsb-element', _window.document.body)[0].outerHTML))));
 	    		break;
 	    	case 'site':
 	    		html = merging_beautify(html_beautify(TextHelper.removeMultipleBlankLines(WorkspaceHelper.cleanupPageHTMLData(_window.document.body.outerHTML))));
