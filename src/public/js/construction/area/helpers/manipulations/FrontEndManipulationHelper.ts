@@ -200,6 +200,13 @@ var FrontEndManipulationHelper = {
               embed(quality='high', wmode='transparent', align='middle', allowscriptaccess='sameDomain', type='application/x-shockwave-flash', pluginspage='http://www.macromedia.com/go/getflashplayer', style={width: '100%', height: '100%', padding: '0px'})
         `, element);
         break;
+      case 'SVG':
+        element = document.createElement('div');
+        element = ReactDOM.render(pug `
+          .internal-fsb-element
+            .svg
+        `, element);
+        break;
       case 'Component':
         let componentInfo = WorkspaceHelper.getComponentData(content.id);
         let componentName = componentInfo.name;

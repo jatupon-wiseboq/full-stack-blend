@@ -1,6 +1,6 @@
-// Site Preview
+// Site & External Editor Preview
 // -------------------------
-.site-preview {
+.site-preview, .external-preview {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -151,13 +151,29 @@
 		}
 	}
 }
-body.internal-fsb-preview-on {
+.external-preview {
+  .iframe-container {
+		.iframe-body {
+			right: 0px;
+		}
+	}
+	.loading-container {
+		width: 60vw;
+	}
+}
+body.internal-fsb-preview-on, body.internal-fsb-external-on {
 	> .workspace-container {
 		opacity: 0.1;
 		pointer-events: none;
 	}
-	
+}
+body.internal-fsb-preview-on {
 	.site-preview {
+		display: block;
+	}
+}
+body.internal-fsb-external-on {
+	.external-preview {
 		display: block;
 	}
 }

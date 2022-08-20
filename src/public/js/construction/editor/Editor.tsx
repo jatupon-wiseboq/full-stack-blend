@@ -24,6 +24,7 @@ import './components/shape/Transformer';
 import './components/shape/SizePicker';
 import './components/shape/SwatchPicker';
 import './components/shape/GradientPicker';
+import './components/shape/SVGEditor';
 
 import './components/generic/DropDownPicker';
 import './components/generic/RadioButtonPicker';
