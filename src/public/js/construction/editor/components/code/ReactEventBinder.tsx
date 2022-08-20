@@ -155,8 +155,6 @@ class ReactEventBinder extends Base<Props, State> {
 			                        <div className="section-title">Customize Binding</div>
 			                        <div className="section-subtitle">Binding</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        <div className="section-subtitle">Custom Code</div>
-			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"disabled-custom-code": true}', ["fa-power-off", "disable"]]]}/></div>
 			                        <div className="section-subtitle">Execute at First</div>
 			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
 			                        <div className="section-subtitle">No Propagation</div>
