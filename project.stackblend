@@ -62,7 +62,7 @@ b7965b87        "20320507": "-fsb-animation-keyframe-time: 8.55; -webkit-opacity
 b7965b87        "2b6859ae": "-fsb-animation-keyframe-time: 27.475; -webkit-opacity: 0; opacity: 0",
 b7965b87        "37624b6d": "-fsb-animation-keyframe-time: 10.325; -webkit-opacity: 0.3; opacity: 0.3",
 b7965b87        "386d81db": "-fsb-animation-keyframe-time: 0; -webkit-opacity: 0; opacity: 0",
-b7965b87        "4a6c6916": "-fsb-animation-keyframe-time: 18; -webkit-opacity: 0.4; opacity: 0.4",
+b7965b87        "4a6c6916": "-fsb-animation-keyframe-time: 18; -webkit-opacity: 0.7; opacity: 0.7",
 b7965b87        "5a96ba86": "-fsb-animation-keyframe-time: 25.85; -webkit-opacity: 0.3; opacity: 0.3"
 b7965b87      },
 b7965b87      "bae9ca42": {
@@ -2143,7 +2143,7 @@ e75c4c70          }
     "popups": [],
     "preview": null
   },
-  "headerBlobSHA": "3d4d9903607a01244be995f3537db32365919a22#-178695518",
+  "headerBlobSHA": "35a8f8f6c8ca2b332d7aa088238aa62eaf6fee4b#265240220",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -4198,7 +4198,7 @@ b351d3a2    },
         "    internal-fsb-class=\"Image\">",
         "<img",
         "    style=\"-fsb-for-children: true; -webkit-opacity: 0; display: block; height: 300px; left: 50%; margin-left: -150px; margin-top: -150px; opacity: 0; padding: 0px; position: absolute; top: 50%; width: 300px\"",
-        "    src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_1057569722-[Converted].png\"",
+        "    src=\"https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_1991745620-[cropped].png\"",
         "    class=\"\">",
         "</div>",
         "</div>",
@@ -5033,6 +5033,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "a967fa8a9d4068f8860cc4a1d3741bdcc4d5049c#1729708805",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "cceacd0b3b849b4936161143298c9cc548a400dc#-506386090"
+    "index": "1a9f35566efbf43ae51262244c9b80dc16abc020#574670887"
   }
 }
