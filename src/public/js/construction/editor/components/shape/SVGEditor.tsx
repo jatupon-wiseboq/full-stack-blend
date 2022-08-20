@@ -87,6 +87,7 @@ class SVGEditor extends Base<Props, State> {
 		          	this.close();
 						  }).bind(this)
 						});
+						externalWindow.svgEditor.setIconSize('m');
 					}
 				}
     }
