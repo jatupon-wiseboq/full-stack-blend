@@ -58,13 +58,12 @@ b7965b87      "6ec629ac": {
 b7965b87        "repeatMode": "time"
 b7965b87      },
 b7965b87      "9d55268b": {
-b7965b87        "20320507": "-fsb-animation-keyframe-time: 1.5; -webkit-opacity: 0; opacity: 0",
-b7965b87        "2b6859ae": "-fsb-animation-keyframe-time: 21.85; -webkit-opacity: 0; opacity: 0",
-b7965b87        "37624b6d": "-fsb-animation-keyframe-time: 3.025; -webkit-opacity: 0.3; opacity: 0.3",
+b7965b87        "20320507": "-fsb-animation-keyframe-time: 8.55; -webkit-opacity: 0; opacity: 0",
+b7965b87        "2b6859ae": "-fsb-animation-keyframe-time: 27.475; -webkit-opacity: 0; opacity: 0",
+b7965b87        "37624b6d": "-fsb-animation-keyframe-time: 10.325; -webkit-opacity: 0.3; opacity: 0.3",
 b7965b87        "386d81db": "-fsb-animation-keyframe-time: 0; -webkit-opacity: 0; opacity: 0",
-b7965b87        "4a6c6916": "-fsb-animation-keyframe-time: 11.525; -webkit-opacity: 0.4; opacity: 0.4",
-b7965b87        "5a96ba86": "-fsb-animation-keyframe-time: 20.225; -webkit-opacity: 0.3; opacity: 0.3",
-b7965b87        "d95b7c3d": "-fsb-animation-keyframe-time: 26.925"
+b7965b87        "4a6c6916": "-fsb-animation-keyframe-time: 18; -webkit-opacity: 0.4; opacity: 0.4",
+b7965b87        "5a96ba86": "-fsb-animation-keyframe-time: 25.85; -webkit-opacity: 0.3; opacity: 0.3"
 b7965b87      },
 b7965b87      "bae9ca42": {
 b7965b87        "688a713c": "-fsb-animation-keyframe-time: 6.15; -fsb-transform: 0.00000000 0.00000000 0.00000000 -0.95369361 -0.30077983 0.00001254 1.00000000 1.00000000 1.00000000; -moz-transform: matrix3d(0.819063, 0.573704, -2.00002e-05, 0, -0.573704, 0.819063, 1.99998e-05, 0, -2.78554e-05, 4.90691e-06, -1, 0, 0, 0, 0, 1); -ms-transform: matrix3d(0.819063, 0.573704, -2.00002e-05, 0, -0.573704, 0.819063, 1.99998e-05, 0, -2.78554e-05, 4.90691e-06, -1, 0, 0, 0, 0, 1); -webkit-transform: matrix3d(0.819063, 0.573704, -2.00002e-05, 0, -0.573704, 0.819063, 1.99998e-05, 0, -2.78554e-05, 4.90691e-06, -1, 0, 0, 0, 0, 1); transform: matrix3d(0.819063, 0.573704, -2.00002e-05, 0, -0.573704, 0.819063, 1.99998e-05, 0, -2.78554e-05, 4.90691e-06, -1, 0, 0, 0, 0, 1)",
@@ -82,7 +81,7 @@ b7965b87        "e7b7ddee": "-fsb-animation-easing-fn: ease; -fsb-animation-keyf
 b7965b87      },
 b7965b87      "groupName": "Transparent",
 b7965b87      "groupState": "off",
-b7965b87      "groupTestState": "off"
+b7965b87      "groupTestState": "on"
 b7965b87    },
 d0e675b7    "d0e675b7": {
 d0e675b7      "45925c27": {
@@ -2144,7 +2143,7 @@ e75c4c70          }
     "popups": [],
     "preview": null
   },
-  "headerBlobSHA": "9bc9a8faa7f153a52c6f725f886bc8126ba6ec30#-1518619011",
+  "headerBlobSHA": "3d4d9903607a01244be995f3537db32365919a22#-178695518",
   "popups": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
   "services": {
@@ -4118,7 +4117,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-3ec1d254 animation-group-499cb518 animation-group-a58e28b5 animation-group-a6333507 animation-group-d0e675b7 animation-group-e37e3b85\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4191,7 +4190,7 @@ b351d3a2    },
         "    internal-fsb-class=\"Rectangle\"",
         "    style=\"bottom: 0px; left: 0px; padding-left: 0px; padding-right: 0px; pointer-events: none; position: absolute; right: 0px; top: 0px; width: 100%\">",
         "<div",
-        "    class=\"internal-fsb-element\"",
+        "    class=\"internal-fsb-element internal-fsb-selecting internal-fsb-walking\"",
         "    internal-fsb-guid=\"9d55268b\"",
         "    internal-fsb-name=\"Image 1\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -4774,7 +4773,7 @@ b351d3a2    },
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"Rectangle\">",
         "<button",
-        "    class=\"btn btn-md btn-secondary internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-walking\"",
+        "    class=\"btn btn-md btn-secondary internal-fsb-allow-cursor internal-fsb-element\"",
         "    internal-fsb-class=\"Button\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"45925c27\"",
