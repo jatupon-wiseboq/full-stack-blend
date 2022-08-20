@@ -78,7 +78,7 @@ class SitePreview extends Base<Props, State> {
     }
     
     public load() {
-    		if (this.state.location == 'about:blank') return;
+    		if (this.state.location == 'about:blank' || this.state.location == null) return;
         this.setState({loading: false});
     }
     

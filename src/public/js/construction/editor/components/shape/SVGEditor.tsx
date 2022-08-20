@@ -64,12 +64,13 @@ class SVGEditor extends Base<Props, State> {
         
         this.container = ReactDOM.findDOMNode(this.refs.container);
         this.external = ReactDOM.findDOMNode(this.refs.external);
+        this.external.style.visibility = 'hidden';
         
         document.body.appendChild(this.container);
     }
     
     public load() {
-    		if (this.state.location == 'about:blank') return;
+    		if (this.state.location == 'about:blank' || this.state.location == null) return;
         this.setState({loading: false});
         
         if (this.external) {
@@ -88,6 +89,9 @@ class SVGEditor extends Base<Props, State> {
 						  }).bind(this)
 						});
 						externalWindow.svgEditor.setIconSize('m');
+						externalWindow.document.body.style.backgroundColor = 'rgba(255, 255, 255, 0.0)';
+						
+        		this.external.style.visibility = '';
 					}
 				}
     }
