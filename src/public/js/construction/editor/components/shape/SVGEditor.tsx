@@ -90,6 +90,7 @@ class SVGEditor extends Base<Props, State> {
 						});
 						externalWindow.svgEditor.setIconSize('m');
 						externalWindow.document.body.style.backgroundColor = 'rgba(255, 255, 255, 0.0)';
+						externalWindow.focus();
 						
         		this.external.style.visibility = '';
 					}

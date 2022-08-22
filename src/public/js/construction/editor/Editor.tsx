@@ -310,6 +310,8 @@ let cachedUpdateEditorProperties = {};
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
     	if (element.className && element.className.indexOf('ace_') == 0) return;
+    	if (HTMLHelper.hasClass(document.body, 'internal-fsb-preview-on')) return;
+    	if (HTMLHelper.hasClass(document.body, 'internal-fsb-external-on')) return;
     	
       perform('keydown', event.keyCode);
     
