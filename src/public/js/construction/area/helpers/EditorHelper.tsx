@@ -454,8 +454,12 @@ var EditorHelper = {
     	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
     	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
-      Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
-      Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
+      if (Accessories.resizer.getDOMNode().parentNode) {
+      	Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
+      }
+      if (Accessories.redLine.getDOMNode().parentNode) {
+      	Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
+      }
       
       Accessories.redLine.reset();
       
