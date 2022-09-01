@@ -4480,7 +4480,7 @@ b351d3a2    },
         "    internal-fsb-name=\"TextElement 2\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"TextElement\"",
-        "    style=\"border-bottom-color: rgba(85, 85, 85, 1); border-bottom-width: 2px; color: rgba(85, 85, 85, 1); font-size: 16px; font-weight: 500; margin-bottom: 15px; text-align: center\">StackBlend Studio is incubating and learning business requirements and&nbsp; at</div>",
+        "    style=\"border-bottom-color: rgba(85, 85, 85, 1); border-bottom-width: 2px; color: rgba(85, 85, 85, 1); font-size: 16px; font-weight: 500; margin-bottom: 15px; text-align: center\">StackBlend Studio is incubating and learning additional business requirements at</div>",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
         "    internal-fsb-guid=\"dd09bc65\"",
@@ -5127,6 +5127,6 @@ b351d3a2    },
     "7bc56453": "96c836bbe12c0590027f7dfab396e707eef6a89b#-1518200056",
     "9e885d49": "c427e073afc9d63d5303a122368aacf9b5b4ba7d#-1597433294",
     "b160aa0e": "385d427766b0d2176d906295176233c126467bb8#-381856685",
-    "index": "97731adc185c2465c8fa334ac2c3d517b96af074#-1672435748"
+    "index": "703017483dd8e6b94c55d3f4055790c294ef4941#-1585193940"
   }
 }
