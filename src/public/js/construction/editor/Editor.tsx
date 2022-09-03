@@ -148,6 +148,7 @@ let cachedUpdateEditorProperties = {};
     
     if (replacingIconSelector != null) {
       HTMLHelper.getElementsBySelector(replacingIconSelector).forEach((replacingIconElement) => {
+    		if (!replacingIconElement.className && typeof replacingIconElement.className !== 'string') return;
       	replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
       });
     }
