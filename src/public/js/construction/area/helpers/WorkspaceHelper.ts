@@ -576,7 +576,7 @@ var WorkspaceHelper = {
    	
    	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
     for (const element of classes) {
-    	if (!element.className && typeof element.className !== 'string') continue;
+    	if (!element.className || typeof element.className !== 'string') continue;
     	element.className = element.className.replace(/( )+/g, ' ').trim();
    	}
     
@@ -630,7 +630,7 @@ var WorkspaceHelper = {
    	
    	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
     for (const element of classes) {
-    	if (!element.className && typeof element.className !== 'string') continue;
+    	if (!element.className || typeof element.className !== 'string') continue;
     	element.className = element.className.replace(/( )+/g, ' ').trim();
    	}
     
