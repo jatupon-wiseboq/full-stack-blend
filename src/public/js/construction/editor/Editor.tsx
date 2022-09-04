@@ -415,7 +415,11 @@ let cachedUpdateEditorProperties = {};
   window.addEventListener('contextmenu', (event: any) => {
   	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
   	
-  	alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
+  	if (!top._contextMenuNotice) {
+  		alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
+  		top._contextMenuNotice = true;
+  	}
+  	
 		return EventHelper.cancel(event);
 	}, true);
   
