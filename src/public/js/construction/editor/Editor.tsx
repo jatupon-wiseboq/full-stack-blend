@@ -412,6 +412,13 @@ let cachedUpdateEditorProperties = {};
 	  }
   });
   
+  window.addEventListener('contextmenu', (event: any) => {
+  	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
+  	
+  	alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
+		return EventHelper.cancel(event);
+	}, true);
+  
   window.setup = (() => {
     HTMLHelper.getElementsBySelector('.workspace-panel-container.scrollable').forEach((value, index) => {
     	value.addEventListener('scroll', (event) => {
