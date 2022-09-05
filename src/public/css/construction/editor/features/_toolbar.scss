@@ -46,9 +46,12 @@
 // -------------------------
 .tooltip {
   .tooltip-inner {
+  	opacity: 1.0;
     min-width: 240px;
     color: #666;
-    background-color: #fff;
+    background-color: #d5d5d5;
+	  backdrop-filter: blur(20px);
+	  -webkit-backdrop-filter: blur(20px);
     -webkit-box-shadow: 1.5px 1.5px 3px 3px #ddd;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
     -moz-box-shadow:    1.5px 1.5px 3px 3px #ddd;  /* Firefox 3.5 - 3.6 */
     box-shadow:         1.5px 1.5px 3px 3px #ddd;  /* Opera 10.5, IE 9, Firefox 4+, Chrome 6+, iOS 5 */
@@ -70,6 +73,7 @@
 .tooltip.bs-tooltip-bottom > .arrow::before { border-bottom-color: white; }
 .tooltip.bs-tooltip-left > .arrow::before { border-left-color: white; }
 .tooltip.bs-tooltip-right > .arrow::before { border-right-color: white; }
+.tooltip > .arrow { display: none !important; }
 
 @keyframes progress-gradient-1 {
   0%   {left: 0px;}
