@@ -2146,7 +2146,10 @@ e75c4c70          }
       }
     ],
     "popups": [],
-    "preview": null
+    "preview": [
+      1,
+      -128
+    ]
   },
   "headerBlobSHA": "d4b63eb46ee91917787924f42c2fe0b18aabbd4c#-1854791310",
   "popups": {},
@@ -4595,14 +4598,14 @@ b351d3a2    },
         "    internal-fsb-name=\"Product Detail Section\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-class=\"Rectangle\"",
-        "    style=\"background: rgba(0, 70, 156, 1); padding-left: 0px; padding-right: 0px; position: relative; width: 100%\">",
+        "    style=\"background: rgba(0, 191, 255, 0.95); padding-left: 0px; padding-right: 0px; position: relative; width: 100%\">",
         "<div",
-        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout internal-fsb-walking offset-0\"",
+        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout offset-0\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"1348c6c8\"",
         "    internal-fsb-name=\"Background Image\"",
-        "    style=\"-webkit-background-size: cover; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_505340026-[modified].jpg&quot;); background-position: center bottom; background-repeat: no-repeat; background-size: cover; bottom: 0px; height: 100%; left: 0px; max-height: 50%; pointer-events: none; position: absolute; right: 0px\"",
+        "    style=\"-webkit-background-size: contain; background-image: url(&quot;https://stackblend-static-files.s3-us-west-1.amazonaws.com/shutterstock_505340026-[modified].jpg&quot;); background-position: center bottom; background-repeat: no-repeat; background-size: contain; bottom: 0px; height: 100%; left: 0px; pointer-events: none; position: absolute; right: 0px\"",
         "    internal-fsb-note=\"This background image used here was bought from ShutterStock. Please do not duplicate and use it from the original hosting.\">",
         "",
         "</div>",
@@ -4614,7 +4617,7 @@ b351d3a2    },
         "    internal-fsb-class=\"Rectangle\"",
         "    style=\"-ms-flex-direction: row; -ms-flex-wrap: wrap; -webkit-flex-direction: row; -webkit-flex-wrap: wrap; display: flex; flex-direction: row; flex-wrap: wrap; padding-left: 0px; padding-right: 0px; position: relative; width: 100%\">",
         "<div",
-        "    class=\"-fsb-self-4d8aded9 col-12 col-lg-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout offset-0 offset-lg-0\"",
+        "    class=\"-fsb-self-4d8aded9 col-12 col-lg-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout internal-fsb-walking offset-0 offset-lg-0\"",
         "    internal-fsb-class=\"FlowLayout\"",
         "    internal-fsb-event-no-propagate=\"1\"",
         "    internal-fsb-guid=\"4d8aded9\"",
@@ -5141,6 +5144,6 @@ b351d3a2    },
     "7bc56453": "446c1f0c7bfe6ccd3bb23a44b76895bf3f90faf9#-1846288417",
     "9e885d49": "c427e073afc9d63d5303a122368aacf9b5b4ba7d#-1597433294",
     "b160aa0e": "6bb7707481e4fae7051063f8caf9e30d8fffb191#-1004523606",
-    "index": "8dcd22224af7814493bbe3ddbb981fc9f807b177#98223184"
+    "index": "e9b43a318617e3f4ffd9599a7d55ba082520da65#-826802751"
   }
 }
