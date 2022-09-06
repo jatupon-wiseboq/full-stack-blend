@@ -1,7 +1,7 @@
 import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {EventHelper} from '../../helpers/EventHelper';
 import {CursorHelper} from './CursorHelper';
-import {isCtrlKeyActive, isCommandKeyActive, ManipulationHelper} from './ManipulationHelper';
+import {KeyStatuses, ManipulationHelper} from './ManipulationHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 import {InternalProjectSettings} from './WorkspaceHelper';
 import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
@@ -18,7 +18,7 @@ var CapabilityHelper = {
         parents.splice(0, 0, willSelected);
         let index = parents.indexOf(selecting);
         
-        if (isCtrlKeyActive || isCommandKeyActive) {
+        if (KeyStatuses.isCtrlKeyActive || KeyStatuses.isCommandKeyActive) {
           if (index != -1) {
             willSelected = parents[Math.max(0, index - 1)];
           } else {

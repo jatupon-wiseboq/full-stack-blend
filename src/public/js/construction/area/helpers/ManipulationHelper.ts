@@ -1903,4 +1903,10 @@ var ManipulationHelper = {
   }
 };
 
-export {isShiftKeyActive, isCtrlKeyActive, isCommandKeyActive, ManipulationHelper};
+const KeyStatuses = {
+	get isShiftKeyActive(): boolean { return isShiftKeyActive; },
+	get isCtrlKeyActive(): boolean { return isCtrlKeyActive; },
+	get isCommandKeyActive(): boolean { return isCommandKeyActive; }
+};
+
+export {KeyStatuses, ManipulationHelper};
