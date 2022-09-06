@@ -116,6 +116,10 @@ Because we often release regular updates on stackblend.org, which right now is v
 
 You might also reset the project files by cloning a boilerplate from the releases with the same version as the editor. Copy only project.stackblend file from your old project to the new one, open it using the editor and navigate to each of pages, components, and popups.
 
+## Enhanced License information of all using images
+
+Indicating on ShutterStock, the purchased digital photos used on StackBlend Studio by SoftenStorm (on the master branch) have an ability to use in digital templates, which include being forked or cloned the StackBlend Studio directly from GitHub, reserved under the agreement on our AWS S3 service. You must not download the photos, redistribute, or promote your customized studio using the photos from our service. Please change all of them or delete all the content. Otherwise, you may subject to any local law enforcement.
+
 ## Questions?
 
 For any questions, please send an email to [jatupon@softenstorm.com](mailto:jatupon@softenstorm.com).
