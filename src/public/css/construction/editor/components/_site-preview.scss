@@ -34,8 +34,7 @@
 	  	left: 0;
 	  	height: 36px;
 	  	background: rgb(195,195,195);
-  		background: linear-gradient(0deg, rgba(222,222,222,1) 0%, rgba(232,232,232,1) 50%, rgba(242,242,242,1) 100%);
-  		opacity: 0.5;
+  		background: linear-gradient(0deg, rgba(222,222,222,0.5) 0%, rgba(232,232,232,0.5) 50%, rgba(242,242,242,0.5) 100%);
   		
   		&::before {
   			content: '';
@@ -144,7 +143,7 @@
 					animation-name: placeHolderShimmer;
 					animation-timing-function: linear;
 					background: transparent;
-					background: linear-gradient(to right, rgba(200, 200, 200, 0.1) 8%, rgba(200, 200, 200, 0.2) 18%, rgba(200, 200, 200, 0.1) 33%);
+					background: linear-gradient(to right, rgba(200, 200, 200, 0.25) 8%, rgba(200, 200, 200, 0.5) 18%, rgba(200, 200, 200, 0.25) 33%);
 					background-size: 1000px 104px;
 				}
 			}
@@ -162,9 +161,22 @@
 		width: 60vw;
 	}
 }
+@supports ((-webkit-backdrop-filter: blur(5px)) or (backdrop-filter: blur(5px))) {
+	.site-preview, .external-preview {
+  	.iframe-navigation-bar {
+     	backdrop-filter: blur(20px);
+     	-webkit-backdrop-filter: blur(20px);
+  	}
+		.iframe-body {
+			background-color: transparent !important;
+     	backdrop-filter: blur(10px);
+     	-webkit-backdrop-filter: blur(10px);
+		}
+	}
+}
 body.internal-fsb-preview-on, body.internal-fsb-external-on {
 	> .workspace-container {
-		opacity: 0.1;
+		opacity: 0.25;
 		pointer-events: none;
 	}
 }

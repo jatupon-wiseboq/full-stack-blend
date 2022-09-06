@@ -2,4 +2,11 @@
 // -------------------------
 .explorer {
   width: 250px;
+  
+  .treenode-title > div {
+  	white-space: nowrap;
+	  overflow-x: hidden;
+	  text-overflow: ellipsis;
+	  width: 100%;
+  }
 }
