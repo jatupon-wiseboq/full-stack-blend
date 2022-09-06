@@ -20,6 +20,7 @@ body[mode="animation"][selector="true"] .dropdown-picker {
 }
 
 .dropdown-menu {
+	padding: 3.5px;
 	&.is-not-animatable {
 		.dropdown-item[value='coding'] {
   		text-decoration: underline #ff0000 2px;
