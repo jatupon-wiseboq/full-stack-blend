@@ -2041,7 +2041,7 @@ e75c4c70          }
   "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "2bdf0deeecae6c065e39a7cdaa44451b8ee45218#-1679251684",
-    "Project.Controls.FlowLayout_52d0514b": "5fc2e6d3044d15626862d9887ccdb05e21e6d1fc#-1023910403",
+    "Project.Controls.FlowLayout_52d0514b": "aa59aa984992d8480549bd8f07bb58907fa42d97#-1466580067",
     "Project.Controls.Settings": "767f4efc8392d3a8c4540f92fa9f377d3668cfe4#-179601188"
   },
   "globalSettings": {
@@ -2739,12 +2739,12 @@ e75c4c70          }
 7bc56453        "<div",
 7bc56453        "    class=\"internal-fsb-begin\"",
 7bc56453        "    internal-fsb-guid=\"0\"",
-7bc56453        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-1007a040 animation-group-a58e28b5 animation-group-b7965b87 animation-group-d0e675b7\">",
+7bc56453        "    internal-fsb-animation=\"animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-1007a040 animation-group-a58e28b5 animation-group-b7965b87 animation-group-d0e675b7\">",
 7bc56453        "<div",
 7bc56453        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
 7bc56453        "    internal-fsb-event-no-propagate=\"1\">",
 7bc56453        "<div",
-7bc56453        "    class=\"col-6 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout offset-3\"",
+7bc56453        "    class=\"col-6 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout offset-3\"",
 7bc56453        "    internal-fsb-guid=\"52d0514b\"",
 7bc56453        "    internal-fsb-name=\"Application\"",
 7bc56453        "    internal-fsb-event-no-propagate=\"1\"",
@@ -2820,7 +2820,7 @@ e75c4c70          }
 7bc56453        "  ",
 7bc56453        "  \">",
 7bc56453        "<div",
-7bc56453        "    class=\"internal-fsb-allow-cursor internal-fsb-element internal-fsb-inverse internal-fsb-strict-layout\"",
+7bc56453        "    class=\"col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-inverse internal-fsb-strict-layout offset-0\"",
 7bc56453        "    internal-fsb-guid=\"46de0c81\"",
 7bc56453        "    internal-fsb-name=\"List\"",
 7bc56453        "    internal-fsb-event-no-propagate=\"1\"",
