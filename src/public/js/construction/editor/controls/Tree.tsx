@@ -22,6 +22,7 @@ interface IProps {
   extendingControl: any;
   visibility: boolean;
   removability: boolean;
+  filter: string;
 }
 
 interface IState {
@@ -197,7 +198,7 @@ class Tree extends React.Component<IProps, IState> {
             {(() => {
         	    if (this.props.nodes && this.props.nodes.filter(node => (node.id !== 'delete')).length != 0) {
         	      return (
-              	  <TreeNode deep={0} nodes={this.props.nodes} customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl} visibility={this.props.visibility} removability={this.props.removability} onNodeVisibleToggled={this.props.onNodeVisibleToggled} onNodeRemoved={this.props.onNodeRemoved}>
+              	  <TreeNode deep={0} nodes={this.props.nodes} filter={this.props.filter}  customDraggerClassName={this.props.customDraggerClassName} onUpdate={this.onUpdate.bind(this)} enableDragging={this.props.enableDragging} onStartDragging={this.onStartDragging.bind(this)} onDragging={this.onDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} revision={this.state.revision} draggableAfterSelected={this.props.draggableAfterSelected} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl} visibility={this.props.visibility} removability={this.props.removability} onNodeVisibleToggled={this.props.onNodeVisibleToggled} onNodeRemoved={this.props.onNodeRemoved}>
                     {this.props.children}
                   </TreeNode>
         	      );

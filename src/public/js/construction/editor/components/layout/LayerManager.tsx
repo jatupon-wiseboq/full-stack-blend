@@ -14,6 +14,7 @@ interface Props extends IProps {
 
 interface State extends IState {
 	height: any;
+	filter: string;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -112,6 +113,11 @@ class LayerManager extends Base<Props, State> {
     		this.forceUpdate();
     }
     
+    private valueOnUpdate(value: string) {
+    		this.state.filter = value.toLowerCase();
+    		this.forceUpdate();
+    }
+    
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		let value = null;
     	
@@ -139,7 +145,10 @@ class LayerManager extends Base<Props, State> {
     render() {
       return (
       	<div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
-      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
+      		<div style={{padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000}}>
+      			<FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..'></FullStackBlend.Controls.Textbox>
+      		</div>
+      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} filter={this.state.filter} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
       	</div>
       );
     }

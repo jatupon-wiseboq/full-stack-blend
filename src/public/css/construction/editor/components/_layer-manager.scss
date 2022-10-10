@@ -58,6 +58,11 @@
 			&.offset-18 { margin-left: 54%; }
 			&.offset-19 { margin-left: 57%; }
 			&.offset-20 { margin-left: 60%; }
+		
+			&.matched { }
+			&.unmatched {
+				opacity: 0.3;
+			}
 		}
 		
 		&.selected {
