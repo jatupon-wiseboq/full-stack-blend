@@ -843,6 +843,14 @@ var WorkspaceHelper = {
 	          if (InternalComponents[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalComponents[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
+	          		const info = WorkspaceHelper.getComponentData(key);
+	          		
+	          		if ((content === false && html === false) || !info || !info.html) {
+	          			top.console.log(`Cannot generate the front-end component for a component ${key}. Please take a note and perform any further investigation.`);
+	          			
+	          			skipping.push(key);
+	          			continue;
+	          		}
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('components', key)] = content;
 	          		
@@ -859,6 +867,14 @@ var WorkspaceHelper = {
 	          if (InternalPopups[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalPopups[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
+	          		const info = WorkspaceHelper.getPopupData(key);
+	          		
+	          		if ((content === false && html === false) || !info || !info.html) {
+	          			top.console.log(`Cannot generate the front-end component for a popup ${key}. Please take a note and perform any further investigation.`);
+	          			
+	          			skipping.push(key);
+	          			continue;
+	          		}
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('popups', key)] = content;
 	          		
@@ -875,6 +891,14 @@ var WorkspaceHelper = {
 	          if (InternalSites[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalSites[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
+	          		const info = WorkspaceHelper.getPageData(key);
+	          		
+	          		if ((content === false && html === false) || !info || !info.body) {
+	          			top.console.log(`Cannot generate the front-end component for a page ${key}. Please take a note and perform any further investigation.`);
+	          			
+	          			skipping.push(key);
+	          			continue;
+	          		}
 	          		
 	          		cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey('site', key)] = content;
 	          		
@@ -921,6 +945,8 @@ var WorkspaceHelper = {
     
     WorkspaceHelper.loadPageData(mode, id, _window);
     const content = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
+    
+    if (HTMLHelper.getElementByClassName('internal-fsb-element', _window.document.body) == null) return {false, false};
     
     let html = null;
     if (hasInfo) {
