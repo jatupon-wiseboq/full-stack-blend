@@ -436,6 +436,13 @@ describe('equals', () => {
 	  	expect(CodeHelper.equals({a: 123, c: {x: 1}}, {a: 123, c: {x: false}})).toEqual(false);
 	  });
 	});
+	describe('Assertion', () => {
+		expect(() => { CodeHelper.assertEquals('', ''); }).not.toThrow();
+		expect(() => { CodeHelper.assertEquals('', 'Abc'); }).toThrow();
+		
+		expect(() => { CodeHelper.assertEquals('Abc123', 'Abc123'); }).not.toThrow();
+		expect(() => { CodeHelper.assertEquals('Abc123', '123'); }).toThrow();
+	});
 });
 
 describe('escape', () => {

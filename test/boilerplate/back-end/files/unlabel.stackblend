@@ -2264,17 +2264,6 @@
       },
       "Log": {
         "columns": {
-          "id": {
-            "fieldType": "auto",
-            "guid": "bb9ae5e2",
-            "modifyingPermission": null,
-            "name": "id",
-            "required": false,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
           "message": {
             "fieldType": null,
             "guid": "a9a1e789",
@@ -2300,7 +2289,19 @@
         },
         "group": "Log",
         "guid": "49b8ae39",
-        "keys": {},
+        "keys": {
+          "id": {
+            "fieldType": "auto",
+            "guid": "bb9ae5e2",
+            "modifyingPermission": null,
+            "name": "id",
+            "required": false,
+            "retrievingPermission": null,
+            "unique": false,
+            "url": null,
+            "verb": null
+          }
+        },
         "modifyingPermission": null,
         "relations": {
           "User": {
@@ -2317,17 +2318,6 @@
       },
       "Note": {
         "columns": {
-          "eid": {
-            "fieldType": "number",
-            "guid": "9715a5d4",
-            "modifyingPermission": null,
-            "name": "eid",
-            "required": true,
-            "retrievingPermission": null,
-            "unique": false,
-            "url": null,
-            "verb": null
-          },
           "note": {
             "fieldType": null,
             "guid": "9728cc26",
@@ -2342,7 +2332,19 @@
         },
         "group": "Note",
         "guid": "52160ba0",
-        "keys": {},
+        "keys": {
+          "eid": {
+            "fieldType": "number",
+            "guid": "9715a5d4",
+            "modifyingPermission": null,
+            "name": "eid",
+            "required": true,
+            "retrievingPermission": null,
+            "unique": false,
+            "url": null,
+            "verb": null
+          }
+        },
         "modifyingPermission": null,
         "relations": {
           "Employee": {
@@ -2391,7 +2393,11 @@
             "unique": false,
             "url": "https:///www.stackblend.org",
             "verb": "POST"
-          },
+          }
+        },
+        "group": "RESTfulTesting",
+        "guid": "dc7d3cee",
+        "keys": {
           "put": {
             "fieldType": null,
             "guid": "c52cd70e",
@@ -2404,16 +2410,16 @@
             "verb": "PUT"
           }
         },
-        "group": "RESTfulTesting",
-        "guid": "dc7d3cee",
-        "keys": {},
         "modifyingPermission": null,
         "relations": {},
         "retrievingPermission": null,
         "source": "RESTful"
       },
       "Redis": {
-        "columns": {
+        "columns": {},
+        "group": "Redis",
+        "guid": "41aecdb8",
+        "keys": {
           "prefix-abc-": {
             "fieldType": null,
             "guid": "e3184980",
@@ -2426,9 +2432,6 @@
             "verb": null
           }
         },
-        "group": "Redis",
-        "guid": "41aecdb8",
-        "keys": {},
         "modifyingPermission": null,
         "relations": {
           "Business": {
@@ -2478,7 +2481,10 @@
         "source": "relational"
       },
       "Sidekiq": {
-        "columns": {
+        "columns": {},
+        "group": "Sidekiq",
+        "guid": "95570e10",
+        "keys": {
           "write": {
             "fieldType": null,
             "guid": "5405e3c1",
@@ -2491,9 +2497,6 @@
             "verb": null
           }
         },
-        "group": "Sidekiq",
-        "guid": "95570e10",
-        "keys": {},
         "modifyingPermission": null,
         "relations": {
           "Employee": {
@@ -2601,7 +2604,10 @@
         "source": "relational"
       },
       "VolatileTesting": {
-        "columns": {
+        "columns": {},
+        "group": "VolatileTesting",
+        "guid": "31e6a8b1",
+        "keys": {
           "prefix": {
             "fieldType": null,
             "guid": "ce8b8488",
@@ -2614,9 +2620,6 @@
             "verb": null
           }
         },
-        "group": "VolatileTesting",
-        "guid": "31e6a8b1",
-        "keys": {},
         "modifyingPermission": null,
         "relations": {},
         "retrievingPermission": null,

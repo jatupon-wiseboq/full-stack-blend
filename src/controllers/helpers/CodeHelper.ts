@@ -60,6 +60,9 @@ const CodeHelper = {
 		
 		assert(obj.match(/^(@|!|@!|!@)?[a-zA-Z0-9_]+(\[\-?[0-9]+(\,\-?[0-9]+)*\])?(\.(@|!|@!|!@)?[a-zA-Z0-9_]+(\[\-?[0-9]+(\,\-?[0-9]+)*\])?)*$/), `${name} ${message}${CodeHelper.generateInfo(info)}`);
 	},
+	assertEquals: (obj: any, value: any, name: string='parameter', message: string=`must be '${value}'.`, info: any=null) => {
+		assert(CodeHelper.equals(obj, value), `${name} ${message}${CodeHelper.generateInfo(info)}`);
+	},
   clone: (obj: any) => {
   	// TODO: to support Infinity, NaN, RegEX (, undefined)
     //

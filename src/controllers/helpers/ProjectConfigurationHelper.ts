@@ -10,6 +10,16 @@ import {CodeHelper} from "./CodeHelper";
 let file, data;
 let cachedSchema = null;
 
+enum SourceType {
+  Relational,
+  PrioritizedWorker,
+  Document,
+  VolatileMemory,
+  RESTful,
+  Dictionary,
+  Collection
+}
+
 const ProjectConfigurationHelper = {
 	reload: () => {
 		try {
@@ -27,7 +37,7 @@ const ProjectConfigurationHelper = {
   convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
       if (tables.hasOwnProperty(tableKey)) {
-        tables[tableKey].source = DatabaseHelper.getSourceType(tables[tableKey].source);
+        tables[tableKey].source = ProjectConfigurationHelper.getSourceType(tables[tableKey].source);
       }
       
       for (const columnKey in tables[tableKey].keys) {
@@ -54,6 +64,22 @@ const ProjectConfigurationHelper = {
 	},
 	getDotNotationPossibilities: (page: string): any => {
 	  return data.sites && data.sites[page] && data.sites[page].notations || [];
+	},
+	getSourceType: (value: string): SourceType => {
+		switch (value) {
+			case 'relational':
+				return SourceType.Relational;
+			case 'document':
+				return SourceType.Document;
+			case 'volatile-memory':
+				return SourceType.VolatileMemory;
+			case 'RESTful':
+				return SourceType.RESTful;
+			case 'worker':
+				return SourceType.PrioritizedWorker;
+		  default:
+		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
+		}
 	}
 };
 

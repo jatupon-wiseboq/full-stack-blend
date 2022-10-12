@@ -10,22 +10,13 @@ import {ValidationInfo} from './ValidationHelper';
 import {PermissionHelper} from './PermissionHelper';
 import {ActionHelper} from './ActionHelper';
 import {WorkerHelper} from './WorkerHelper';
-import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {ProjectConfigurationHelper, SourceType} from './ProjectConfigurationHelper';
 import {FieldType, DataTableSchema} from './SchemaHelper';
 import {DataTypes, Op} from 'sequelize';
 import {ObjectID} from 'mongodb';
 
 const DEFAULT_DOCUMENT_DATABASE_NAME = process.env.MONGODB_DEFAULT_DATABASE_NAME;
 
-enum SourceType {
-  Relational,
-  PrioritizedWorker,
-  Document,
-  VolatileMemory,
-  RESTful,
-  Dictionary,
-  Collection
-}
 enum ActionType {
   Insert,
   Update,
@@ -123,22 +114,6 @@ const isObjectID = (value: string): boolean => {
 };
 
 const DatabaseHelper = {
-	getSourceType: (value: string): SourceType => {
-		switch (value) {
-			case 'relational':
-				return SourceType.Relational;
-			case 'document':
-				return SourceType.Document;
-			case 'volatile-memory':
-				return SourceType.VolatileMemory;
-			case 'RESTful':
-				return SourceType.RESTful;
-			case 'worker':
-				return SourceType.PrioritizedWorker;
-		  default:
-		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
-		}
-	},
   distinct: (data: Input[]) => {
     const remove = [];
     const hash = {};
