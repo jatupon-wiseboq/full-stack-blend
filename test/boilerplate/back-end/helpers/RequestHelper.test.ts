@@ -364,8 +364,7 @@ describe('Ingress Gate', () => {
 			  columns: {},
 			  relations: {},
 			  modifyingPermission: null,
-			  retrievingPermission: null,
-			  forward: false
+			  retrievingPermission: null
 			};
 			tables['collection2'] = {
 				source: SourceType.PrioritizedWorker,
@@ -375,8 +374,7 @@ describe('Ingress Gate', () => {
 			  columns: {},
 			  relations: {},
 			  modifyingPermission: null,
-			  retrievingPermission: null,
-			  forward: false
+			  retrievingPermission: null
 			};
 			tables['collection3'] = {
 				source: SourceType.Document,
@@ -386,8 +384,7 @@ describe('Ingress Gate', () => {
 			  columns: {},
 			  relations: {},
 			  modifyingPermission: null,
-			  retrievingPermission: null,
-			  forward: false
+			  retrievingPermission: null
 			};
 			tables['collection4'] = {
 				source: SourceType.VolatileMemory,
@@ -397,8 +394,7 @@ describe('Ingress Gate', () => {
 			  columns: {},
 			  relations: {},
 			  modifyingPermission: null,
-			  retrievingPermission: null,
-			  forward: false
+			  retrievingPermission: null
 			};
 			tables['collection5'] = {
 				source: SourceType.RESTful,
@@ -408,8 +404,7 @@ describe('Ingress Gate', () => {
 			  columns: {},
 			  relations: {},
 			  modifyingPermission: null,
-			  retrievingPermission: null,
-			  forward: false
+			  retrievingPermission: null
 			};
 			
 			expect(() => { RequestHelper.getSchema('#$%^', correctRequest1, schemata); }).toThrow();

@@ -33,7 +33,7 @@ interface DataTableSchema {
   relations: {[Identifier: string]: DataRelationSchema};
   modifyingPermission: Permission;
   retrievingPermission: Permission;
-  forward: ForwardOptions;
+  forward?: ForwardOptions;
 }
 interface DataColumnSchema {
 	name: string;
