@@ -66,14 +66,9 @@ const CodeHelper = {
     CodeHelper.recursiveEvaluate(obj, (obj: any) => {
     	CodeHelper.assertOfSimpleType(obj, 'obj');
     	CodeHelper.assertOfNotInfinity(obj, 'obj');
-    });
-    // TODO: undo and enforce strictness.
-    /*CodeHelper.recursiveEvaluate(obj, (obj: any) => {
-    	CodeHelper.assertOfSimpleType(obj, 'obj');
-    	CodeHelper.assertOfNotUndefined(obj, 'obj');
-    	CodeHelper.assertOfNotInfinity(obj, 'obj');
+    	// CodeHelper.assertOfNotUndefined(obj, 'obj'); /* TODO: undo and enforce strictness. */
     	CodeHelper.assertOfNotNaN(obj, 'obj');
-    });*/
+    });
     
     return JSON.parse(JSON.stringify(obj));
   },

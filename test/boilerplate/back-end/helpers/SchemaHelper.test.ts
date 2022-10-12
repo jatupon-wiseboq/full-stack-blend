@@ -1,3 +1,5 @@
+import {SchemaHelper} from "../../../../src/controllers/helpers/SchemaHelper";
+
 describe('Verification', () => {
 	describe('Table', () => {
 		test('missing a group name', () => {
