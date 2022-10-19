@@ -156,7 +156,7 @@ const PermissionHelper = {
 			      			continue;
 			      		}
 								
-								RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
+								RelationalDatabaseClient.query(COMMAND, {replacements: VALUES}, (function(error, results, fields) {
 			            if (error) {
 			              reject(error);
 			      			} else if (results.length > 0) {

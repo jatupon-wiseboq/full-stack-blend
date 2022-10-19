@@ -1077,7 +1077,7 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
   new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
 }`).join('\n')}
 ${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
-${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}');`).join('\n')}
+${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}', '${key.split(':')[2]}');`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
 // <--- Auto[Generating:V1]

@@ -67,6 +67,8 @@ let options = {
 		"data-timing-minutes-1": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_1,
 		"data-timing-minutes-2": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_2,
 		"data-audit-collecting-option": CONSTANTS.BACKEND_AUDIT_COLLECTING_OPTIONS,
+		"data-worker-group-1": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_1,
+		"data-worker-group-2": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_2,
 
 		// Animations
 		// 
@@ -95,7 +97,9 @@ let map = {
     "data-field-type-4": "data-field-type",
     "data-timing-minutes-1": "data-timing-minutes",
     "data-timing-minutes-2": "data-timing-minutes",
-    "animation-easing-fn-1": "animation-easing-fn"
+    "animation-easing-fn-1": "animation-easing-fn",
+    "data-worker-group-1": "data-worker-group",
+    "data-worker-group-2": "data-worker-group"
 }
 
 const Mode = Object.freeze({

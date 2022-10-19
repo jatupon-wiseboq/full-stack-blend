@@ -29,6 +29,11 @@ include ../../mixin/CreateReactComponent
       | Name
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
+    .section-subtitle
+      | Group
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-worker-group-1', 'data-worker-group']}")
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-worker-group-2', 'data-worker-group']}")
     .section-note(internal-fsb-for="internal-fsb-class:RESTful")
       | JSON data send to RESTful service will have schemata different than table.
       br
