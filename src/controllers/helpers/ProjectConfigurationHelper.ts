@@ -85,7 +85,7 @@ const ProjectConfigurationHelper = {
 
 ProjectConfigurationHelper.reload();
 
-export {ProjectConfigurationHelper};
+export {ProjectConfigurationHelper, SourceType};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

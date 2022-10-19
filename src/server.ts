@@ -91,7 +91,7 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 	const worker = new Worker(
 	  {
 	  	connection: redisConnectionSettingForResque,
-	  	queues: ["general"]
+	  	queues: ["general", ...((["worker"].indexOf(process.env.NODE_ENV) == -1) ? ["serverA", "serverB", "serverC"] : ["workerA", "workerB", "workerC"])]
 	  },
 	  shouldEnableBackgroundJobs ? jobs : {}
 	);
