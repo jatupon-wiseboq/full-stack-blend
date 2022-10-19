@@ -11,7 +11,7 @@ const groupDictionary: {[Identifier: string]: any} = {};
 const WorkerHelper = {
   register: <T extends Worker>(worker: new (data: HierarchicalDataTable) => T, name: string, group: string='general') => {
   	instanceDictionary[name] = worker;
-  	groupDictionary[name] = group;
+  	groupDictionary[name] = group || 'general';
   },
   enqueue: (table: HierarchicalDataTable) => {
   	for (const row of table.rows) {
