@@ -88,30 +88,33 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
 		},
 		jobs
 	);
-	const worker = new Worker(
-	  {
-	  	connection: redisConnectionSettingForResque,
-	  	queues: ["general", ...((["worker"].indexOf(process.env.NODE_ENV) == -1) ? (process.env.PRIORITIZED_WORKER_INSIDE_WEB_QUEUES || "serverA,serverB,serverC").split(",") : (process.env.PRIORITIZED_WORKER_QUEUES || "workerA,workerB,workerC").split(","))]
-	  },
-	  shouldEnableBackgroundJobs ? jobs : {}
-	);
 	scheduler = new Scheduler({
 			connection: redisConnectionSettingForResque
 		}
 	);
 	
-	if (shouldEnableBackgroundJobs) {		
-		console.log("Booting worker..");
-		worker.on("error", (error) => {
-		  console.log(error);
-		});
-		worker.connect().then(() => {
-			console.log("Started worker.");
-			worker.start();
+	if (shouldEnableBackgroundJobs) {
+		for (let i=0; i<(process.env.PRIORITIZED_WORKER_THREAD || 5); i++) {
+			const worker = new Worker(
+			  {
+			  	connection: redisConnectionSettingForResque,
+			  	queues: ["general", ...((["worker"].indexOf(process.env.NODE_ENV) == -1) ? (process.env.PRIORITIZED_WORKER_INSIDE_WEB_QUEUES || "serverA,serverB,serverC").split(",") : (process.env.PRIORITIZED_WORKER_QUEUES || "workerA,workerB,workerC").split(","))]
+			  },
+			  shouldEnableBackgroundJobs ? jobs : {}
+			);
 			
-			complete['worker'] = true;
-			complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
-		});
+			console.log(`Booting worker #${i}..`);
+			worker.on("error", (error) => {
+			  console.log(error);
+			});
+			worker.connect().then(() => {
+				console.log(`Started worker #${i}.`);
+				worker.start();
+				
+				complete['worker'] = true;
+				complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
+			});
+		}
 	} else {
 		complete['worker'] = true;
 	}
