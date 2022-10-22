@@ -19,9 +19,9 @@ const SitemapHelper = {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       ${Object.keys(sitemapDictionary).map((key) => `
    <url>
-      <loc>http://www.example.com/</loc>
-      <changefreq>${sitemapDictionary[key].frequency}</changefreq>
-      <priority>${sitemapDictionary[key].priority}</priority>
+      <loc>${escape(key)}</loc>${sitemapDictionary[key].frequency && `
+      <changefreq>${sitemapDictionary[key].frequency}</changefreq>` || ''}${sitemapDictionary[key].priority && `
+      <priority>${sitemapDictionary[key].priority}</priority>` || ''}
    </url>`).join('\n')}
 </urlset> 
 `;

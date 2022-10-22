@@ -13,6 +13,7 @@ import cors from "cors";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
+import {SitemapHelper} from './controllers/helpers/SitemapHelper';
 
 const MongoStore = mongo(session);
 
@@ -116,6 +117,12 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     res.set('Content-Type', 'text/javascript');
   	res.send(Buffer.from(bundle));
   });
+});
+
+// Serve sitemap.xml
+app.get("/sitemap.xml", (req, res) => {
+  res.set('Content-Type', 'text/xml');
+	res.send(SitemapHelper.generateXMLDocument());
 });
 
 // StackBlend code editor's endpoint
