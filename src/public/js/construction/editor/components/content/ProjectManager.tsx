@@ -1092,7 +1092,7 @@ ${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
 ${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}', '${key.split(':')[2]}');`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
 
-${Object.keys(sitemapInfoDict).map(key => `SitemapHelper.register(key, sitemapInfoDict[key].frequency, sitemapInfoDict[key].priority);`).join('\n')}
+${Object.keys(sitemapInfoDict).map(key => `SitemapHelper.register('${key}', ${sitemapInfoDict[key].frequency && `'${sitemapInfoDict[key].frequency}'` || 'undefined'}, ${sitemapInfoDict[key].priority && `'${sitemapInfoDict[key].priority}'` || 'undefined'});`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
