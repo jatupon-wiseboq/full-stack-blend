@@ -301,6 +301,7 @@ class ProjectManager extends Base<Props, State> {
             let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
             let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
             let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
+            let sitemapInfoDict = {}
             let nextProjectData = {};
             
             Object.assign(nextProjectData, previousProjectData);
@@ -391,6 +392,16 @@ class ProjectManager extends Base<Props, State> {
                 let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
                 let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
                 let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+                let sitemap = pages && pages[0] && pages[0].sitemap || false;
+                let frequency = pages && pages[0] && pages[0].frequency || undefined;
+                let priority = pages && pages[0] && pages[0].priority || undefined;
+                
+                if (sitemap == true) {
+                	sitemapInfoDict[`${path}`] = {
+	                	frequency: frequency,
+	                	priority: priority
+                	};
+                }
                 
                 if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
                 
@@ -1067,6 +1078,7 @@ import {Request, Response} from "express";
 import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
+import {SitemapHelper} from "./helpers/SchedulerHelper";
 
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 ${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
@@ -1079,6 +1091,8 @@ ${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (r
 ${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
 ${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}', '${key.split(':')[2]}');`).join('\n')}
 ${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
+
+${Object.keys(sitemapInfoDict).map(key => `SitemapHelper.register(key, sitemapInfoDict[key].frequency, sitemapInfoDict[key].priority);`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
