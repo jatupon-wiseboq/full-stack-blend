@@ -622,7 +622,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
             nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
             
             this.createRouteBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.routeBlobSHA, (routeBlobSHA: string) => {
-              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, (controllerBlobSHA: string) => {
+              this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, sitemapInfoDict, (controllerBlobSHA: string) => {
                 this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
                   this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
                     const process = (headerBlobError, headerBlobResult, footerBlobError, footerBlobResult) => {
@@ -1070,7 +1070,7 @@ export default route;
         cb(nextRouteDataSHA);
       });
     }
-    createControllerBlob(repo: any, routes: string[], connectors: string[], workers: string[], schedulers: string[], previousSHA: string, cb: any) {
+    createControllerBlob(repo: any, routes: string[], connectors: string[], workers: string[], schedulers: string[], previousSHA: string, sitemapInfoDict: any={}, cb: any) {
       repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 

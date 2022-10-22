@@ -428,7 +428,7 @@ script(type="text/javascript" src="/js/Site.bundle.js")
       }
       
       this.createRoute(nextProjectData.globalSettings.pages, () => {
-        this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), () => {
+        this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), sitemapInfoDict, () => {
           this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
             this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(_schedulerControllerInfoDict), () => {
               this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
@@ -486,7 +486,7 @@ export default route;
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
     }
-    createController(routes: string[], connectors: string[], workers: string[], schedulers: string[], cb: any) {
+    createController(routes: string[], connectors: string[], workers: string[], schedulers: string[], sitemapInfoDict: any={}, cb: any) {
       this.create('./Home.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
