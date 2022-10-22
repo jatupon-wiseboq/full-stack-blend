@@ -302,7 +302,7 @@ class HTMLManager extends Base<Props, State> {
                     	<div>
 		                    <div className="section-subtitle">Keywords</div>
 		                    <div className="section-body">
-		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} multiline={true}></FullStackBlend.Controls.Textbox>
+		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} maxLength={1000} multiline={true}></FullStackBlend.Controls.Textbox>
 		                    </div>
 		                    <div className="section-subtitle">Image</div>
 		                    <div className="section-body">
