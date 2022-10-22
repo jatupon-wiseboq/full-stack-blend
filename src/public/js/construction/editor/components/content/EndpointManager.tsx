@@ -268,7 +268,7 @@ class EndpointManager extends Base<Props, State> {
           let frequency = pages && pages[0] && pages[0].frequency || undefined;
           let priority = pages && pages[0] && pages[0].priority || undefined;
           
-          if (sitemap == true) {
+          if (sitemap == 'true') {
           	sitemapInfoDict[`${path}`] = {
             	frequency: frequency,
             	priority: priority
