@@ -330,6 +330,7 @@ export const CHECKED_OPTIONS = [["checked", "true", ["fa-circle", "Yes"]], ["che
 export const READONLY_OPTIONS = [["readonly", null, ["fa-circle", "Allow"]], ["readonly", "true", ["fa-circle-o", "Disallow"]]];
 export const REQUIRE_OPTIONS = [["required", "true", ["fa-circle", "Necessary"]], ["required", null, ["fa-circle-o", "Additional"]]];
 export const MULTIPLE_OPTIONS = [["multiple", null, ["fa-minus", "Single"]], ["multiple", "true", ["fa-reorder", "Multiple"]]];
+export const SEO_FOLLOW_OPTIONS = [["rel", null, ["fa-circle", "Fertilize Destination"]], ["rel", "nofollow", ["fa-circle-o", "Block Off"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "relational", ["fa-share-alt", "Relational"]], ["internal-fsb-data-source-type", "worker", ["fa-sort-numeric-asc", "Prioritized Worker"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_2 = [["internal-fsb-data-source-type", "document", ["fa-file-o", "Document"]], ["internal-fsb-data-source-type", "volatile-memory", ["fa-thumb-tack", "Volatile Memory"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_3 = [["internal-fsb-data-source-type", "RESTful", ["fa-globe", "RESTful"]], ["internal-fsb-data-source-type", "Collection", ["font-weight-bold", "[..., ...]"]], ["internal-fsb-data-source-type", "Dictionary", ["font-weight-bold", "{...}"]]];

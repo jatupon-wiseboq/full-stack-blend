@@ -17,6 +17,7 @@ let options = {
     "readonly": CONSTANTS.READONLY_OPTIONS,
     "required": CONSTANTS.REQUIRE_OPTIONS,
     "multiple": CONSTANTS.MULTIPLE_OPTIONS,
+    "rel": CONSTANTS.SEO_FOLLOW_OPTIONS,
     "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
     "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
     "data-source-type-3": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_3,
