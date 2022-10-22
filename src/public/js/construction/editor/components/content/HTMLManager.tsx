@@ -7,7 +7,7 @@ import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHel
 import {ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Textbox';
 import '../generic/ListManager';
-import {FORWARED_ATTRIBUTES_FOR_CHILDREN} from '../../../Constants';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN, SEO_FREQUENCY_OPTIONS, SEO_PRIORITY_OPTIONS} from '../../../Constants';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -104,7 +104,9 @@ class HTMLManager extends Base<Props, State> {
                 keywords: null,
                 image: null,
                 path: null,
-                sitemap: null
+                sitemap: null,
+                frequency: null,
+                priority: null
             });
         }
     }
@@ -122,7 +124,9 @@ class HTMLManager extends Base<Props, State> {
                 keywords: node.tag.keywords,
                 image: node.tag.image,
                 path: node.tag.path,
-                sitemap: node.tag.sitemap
+                sitemap: node.tag.sitemap,
+                frequency: node.tag.frequency,
+                priority: node.tag.priority
             });
         
             perform('update', {
@@ -159,6 +163,16 @@ class HTMLManager extends Base<Props, State> {
         this.forceUpdate();
     }
     
+    protected frequencyOnUpdate(identitty: any, value: any) {
+        this.state.frequency = value;
+        this.forceUpdate();
+    }
+    
+    protected priorityOnUpdate(identitty: any, value: any) {
+        this.state.priority = value;
+        this.forceUpdate();
+    }
+    
     private addOnClick(event) {
         if (this.state.name && (!this.props.path || this.state.path)) {
             let item = {
@@ -169,6 +183,8 @@ class HTMLManager extends Base<Props, State> {
                 image: this.state.image,
                 path: this.state.path,
                 sitemap: this.state.sitemap,
+                frequency: this.state.frequency,
+                priority: this.state.priority,
                 state: 'update'
             };
             
@@ -208,6 +224,8 @@ class HTMLManager extends Base<Props, State> {
             item.image = this.state.image;
             item.path = this.state.path;
             item.sitemap = this.state.sitemap;
+            item.frequency = this.state.frequency;
+            item.priority = this.state.priority;
             item.state = 'update';
           
             perform('update', {
@@ -319,7 +337,15 @@ class HTMLManager extends Base<Props, State> {
 		                    </div>
 		                    <div className="section-subtitle">Sitemap Option</div>
 		                    <div className="section-body">
-		                    		<FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "add"]]]}/>
+		                    		<FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "enable for this page"]]]}/>
+		                    		<div style={{opacity: this.state.sitemap ? '' : '0.15', pointerEvents: this.state.sitemap ? '' : 'none', height: '64px'}}>
+		                    				<FullStackBlend.Controls.DropDownList options={SEO_FREQUENCY_OPTIONS} onUpdate={this.frequencyOnUpdate.bind(this)} inline={true}>
+                                	<span>frequency: {this.state.frequency}</span>
+                                </FullStackBlend.Controls.DropDownList>
+		                    				<FullStackBlend.Controls.DropDownList options={SEO_PRIORITY_OPTIONS} onUpdate={this.priorityOnUpdate.bind(this)} inline={true}>
+                                	<span>priority: {this.state.priority}</span>
+                                </FullStackBlend.Controls.DropDownList>
+		                    		</div>
 		                    </div>
 		                  </div>
                     )}

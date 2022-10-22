@@ -12,6 +12,7 @@ interface Props extends IProps {
     onUpdate(identity: any, value: any, index: any);
     onVisibleChanged(visible: boolean, tag: any);
     autohide: boolean;
+    inline: boolean;
     customClassName: string;
     searchBox: boolean;
     useMaximumHeight: boolean;
@@ -35,7 +36,8 @@ class DropDownList extends React.Component<Props, State> {
         searchBox: false,
         useMaximumHeight: false,
         width: 0,
-        optionPadding: null
+        optionPadding: null,
+        inline: false
     }
     
     private documentOnClickDelegate: Function = null;
@@ -110,7 +112,6 @@ class DropDownList extends React.Component<Props, State> {
             
             // Handling Events
             //
-            
             document.body.addEventListener('click', this.documentOnClickDelegate, false);
             
             if (this.props.onVisibleChanged) {
@@ -185,7 +186,7 @@ class DropDownList extends React.Component<Props, State> {
       return (
         pug `
           .btn-group(ref="group", internal-fsb-event-no-propagate="click")
-            button.btn.btn-sm.dropdown-toggle(ref="button", type="button", className=(this.props.customClassName || "btn-light"), aria-haspopup="true", aria-expanded="false")
+            button.btn.btn-sm.dropdown-toggle(ref="button", type="button", className=(this.props.customClassName || "btn-light"), aria-haspopup="true", aria-expanded="false", onMouseDown=(() => { if (this.props.inline) { EventHelper.setDenyForHandle('click', true); EventHelper.setDenyForHandle('click', false, 500); }}).bind(this))
               = this.props.children
             .fsb-dropdown-menu.dropdown-menu.hide(ref="dropdown", internal-fsb-event-no-propagate="click")
               if this.props.searchBox

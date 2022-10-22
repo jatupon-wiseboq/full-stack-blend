@@ -11,11 +11,15 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
-    inline: boolean,
-    button: boolean,
-    manual: boolean,
-    float: boolean,
-    placeholder: string
+    inline: boolean;
+    button: boolean;
+    manual: boolean;
+    float: boolean;
+    onUpdate(value: any);
+    placeholder: string;
+    preRegExp: string;
+    postRegExp: string;
+    value: string;
 }
 
 interface State extends IState {
@@ -64,6 +68,8 @@ class NumberPicker extends Base<Props, State> {
         		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         } else if (this.props.watchingExtensionNames[0]) {
         		original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+        } else {
+        		original = this.props.value;
         }
         
         if (original !== null) {
@@ -88,7 +94,7 @@ class NumberPicker extends Base<Props, State> {
                 replace: this.props.watchingStyleNames[0]
             });
         }
-        if (this.props.watchingAttributeNames[0] && !this.props.manual) {
+        else if (this.props.watchingAttributeNames[0] && !this.props.manual) {
             perform('update', {
                 attributes: [{
                     name: this.props.watchingAttributeNames[0].split('[')[0],
@@ -97,7 +103,7 @@ class NumberPicker extends Base<Props, State> {
                 replace: this.props.watchingAttributeNames[0]
             });
         }
-        if (this.props.watchingExtensionNames[0] && !this.props.manual) {
+        else if (this.props.watchingExtensionNames[0] && !this.props.manual) {
             perform('update', {
                 extensions: [{
                     name: this.props.watchingExtensionNames[0].split('[')[0],
@@ -105,6 +111,8 @@ class NumberPicker extends Base<Props, State> {
                 }],
                 replace: this.props.watchingExtensionNames[0]
             });
+        } else if (this.props.onUpdate) {
+       			this.props.onUpdate(value);
         }
     }
     
@@ -138,6 +146,8 @@ class NumberPicker extends Base<Props, State> {
         		} else {
         				return value.toString();
         		}
+        } else {
+        		return value.toString();
         }
     }
     
@@ -152,7 +162,7 @@ class NumberPicker extends Base<Props, State> {
         if (this.props.inline) {
             return (
                 <div className="input-group inline" internal-fsb-event-no-propagate="click">
-                    <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                    <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.preRegExp || (this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?")} postRegExp={this.props.postRegExp || (this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))")} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     {(() => {
                         if (this.props.button) {
                             return (
@@ -171,7 +181,7 @@ class NumberPicker extends Base<Props, State> {
                 <div className={"number-picker " + this.props.additionalClassName}>
                     <FullStackBlend.Controls.DropDownControl representing={this.state.value}>
                         <div className="input-group">
-                            <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?"} postRegExp={this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))"} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                            <FullStackBlend.Controls.Textbox value={isNaN(this.state.value) ? '' : this.state.value} placeholder={this.props.placeholder} preRegExp={this.props.preRegExp || (this.props.float ? "(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?" : "(([0-9]+))?")} postRegExp={this.props.postRegExp || (this.props.float ? "(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))" : "(([0-9]+))")} onUpdate={this.textboxOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                         </div>
                     </FullStackBlend.Controls.DropDownControl>
                 </div>

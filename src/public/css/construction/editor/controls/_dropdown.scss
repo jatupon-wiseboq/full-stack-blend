@@ -76,7 +76,19 @@
   &.show {
     display: table;
   }
-  &.for-dropdown-control.show {
-    display: block;
-  }
+  &.for-dropdown-control {
+	  .btn.btn-sm {
+	    font-size: 12px;
+	    margin-right: 4px;
+	    margin-bottom: 4px;
+	  }
+	  
+	  .dropdown-item {
+	    font-size: 12px;
+	  }
+	  
+	  &.show {
+	    display: block;
+	  }
+	}
 }
