@@ -36,6 +36,7 @@ let options = {
     "internal-fsb-react-division": CONSTANTS.REACT_FIELD_DIVISION_OPTIONS,
     "internal-fsb-react-accumulate": CONSTANTS.REACT_ACCUMULATE_OPTIONS,
     "internal-fsb-react-display-logic": CONSTANTS.REACT_DISPLAY_LOGIC_OPTIONS,
+    "internal-fsb-seo-emphasizer": CONSTANTS.SEO_EMPHASIZE_OPTIONS,
     
     // Back-End Options
 		// 

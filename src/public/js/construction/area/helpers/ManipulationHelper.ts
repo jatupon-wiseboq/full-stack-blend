@@ -519,6 +519,33 @@ var ManipulationHelper = {
                 }
               }
               break;
+            case 'internal-fsb-seo-emphasizer':
+              if (selectingElement.tagName != attribute.value) {
+                found = true;
+                
+                if (attribute.value !== null) {
+                	HTMLHelper.setAttribute(selectingElement, attribute.name, attribute.value);
+                } else {
+                	HTMLHelper.removeAttribute(selectingElement, attribute.name);
+                }
+                
+              	let outerHTML = selectingElement.outerHTML;
+              	outerHTML = outerHTML.replace(/^<(div|h1|h2|h3|h4|h5|h6)/i, `<${attribute.value || 'div'}`);
+              	outerHTML = outerHTML.replace(/(div|h1|h2|h3|h4|h5|h6)>$/i, `${attribute.value || 'div'}>`);
+                outerHTML = WorkspaceHelper.cleanupComponentHTMLData(outerHTML);
+                
+                const container = document.createElement('div');
+                container.innerHTML = outerHTML;
+                const target = container.firstElementChild;
+                
+                selectingElement.parentNode.insertBefore(target, selectingElement);
+                selectingElement.parentNode.removeChild(selectingElement);
+                
+                CapabilityHelper.installCapabilitiesForInternalElements(target);
+                
+                EditorHelper.select(target);
+              }
+              break;
             case 'internal-fsb-inner-html':
               if (HTMLHelper.getAttribute(selectingElement, attribute.name) != attribute.value) {
                 found = true;

@@ -331,6 +331,7 @@ export const READONLY_OPTIONS = [["readonly", null, ["fa-circle", "Allow"]], ["r
 export const REQUIRE_OPTIONS = [["required", "true", ["fa-circle", "Necessary"]], ["required", null, ["fa-circle-o", "Additional"]]];
 export const MULTIPLE_OPTIONS = [["multiple", null, ["fa-minus", "Single"]], ["multiple", "true", ["fa-reorder", "Multiple"]]];
 export const SEO_FOLLOW_OPTIONS = [["rel", null, ["fa-circle", "Fertilize Destination"]], ["rel", "nofollow", ["fa-circle-o", "Block Off"]]];
+export const SEO_EMPHASIZE_OPTIONS = [["internal-fsb-seo-emphasizer", "h1", ["d-none", "H1"]], ["internal-fsb-seo-emphasizer", "h2", ["d-none", "H2"]], ["internal-fsb-seo-emphasizer", "h3", ["d-none", "H3"]], ["internal-fsb-seo-emphasizer", "h4", ["d-none", "H4"]], ["internal-fsb-seo-emphasizer", "h5", ["d-none", "H5"]], ["internal-fsb-seo-emphasizer", "h6", ["d-none", "H6"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_1 = [["internal-fsb-data-source-type", "relational", ["fa-share-alt", "Relational"]], ["internal-fsb-data-source-type", "worker", ["fa-sort-numeric-asc", "Prioritized Worker"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_2 = [["internal-fsb-data-source-type", "document", ["fa-file-o", "Document"]], ["internal-fsb-data-source-type", "volatile-memory", ["fa-thumb-tack", "Volatile Memory"]]];
 export const DATA_SOURCE_TYPE_OPTIONS_3 = [["internal-fsb-data-source-type", "RESTful", ["fa-globe", "RESTful"]], ["internal-fsb-data-source-type", "Collection", ["font-weight-bold", "[..., ...]"]], ["internal-fsb-data-source-type", "Dictionary", ["font-weight-bold", "{...}"]]];
