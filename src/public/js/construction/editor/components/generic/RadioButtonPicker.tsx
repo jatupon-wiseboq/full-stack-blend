@@ -106,7 +106,8 @@ let map = {
 const Mode = Object.freeze({
     STYLE:   Symbol("style"),
     ATTRIBUTE:  Symbol("attribute"),
-    EXTENSION: Symbol("extension")
+    EXTENSION: Symbol("extension"),
+    CUSTOM: Symbol("custom")
 });
 
 declare let React: any;
@@ -310,6 +311,8 @@ class RadioButtonPicker extends Base<Props, State> {
 	            case Mode.EXTENSION:
 	            		results = this.state.extensionValues;
 		            	break;
+	            case Mode.CUSTOM:
+	            		results = this.props.value;
      				}
      				
      				let found = true;
@@ -348,6 +351,8 @@ class RadioButtonPicker extends Base<Props, State> {
 		            case Mode.EXTENSION:
 		            		current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
 		            		break;
+		            case Mode.CUSTOM:
+		            		current = this.props.value;
             }
             
             let currentDict = JSON.parse(current || '{}');
@@ -371,6 +376,8 @@ class RadioButtonPicker extends Base<Props, State> {
 		            		return this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
 		            case Mode.EXTENSION:
 		            		return this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
+		            case Mode.CUSTOM:
+		            		current = this.props.value[nameOrArrayOfRegularExpression] == target;
             }
         }
     }
@@ -384,6 +391,8 @@ class RadioButtonPicker extends Base<Props, State> {
             _options = options[this.props.watchingAttributeNames[0]] || this.props.options;
         } else if (this.props.watchingExtensionNames[0]) {
             _options = options[this.props.watchingExtensionNames[0]] || this.props.options;
+        } else {
+        		_options = this.props.options;
         }
         
         if (_options && _options[0] && _options[0][0] == '-fsb-background-type') {
@@ -418,6 +427,14 @@ class RadioButtonPicker extends Base<Props, State> {
               else if this.props.watchingExtensionNames[0]
                 each value, index in this.getOptions()
                   .btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.EXTENSION) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.EXTENSION) style={fontSize: '12px'})
+                    if typeof value[2] == 'string'
+                      i.m-0(className="fa "+ value[2])
+                    else
+                      i.m-0(className="fa "+ value[2][0])
+                      = ' ' + value[2][1]
+              else
+                each value, index in this.props.options
+                  .btn.text-center(key="item-extension-" + index, className=(this.getState(value, Mode.CUSTOM) ? 'btn-primary' : (this.props.customClassName || 'btn-light')), onClick=this.buttonOnClick.bind(this, value, Mode.CUSTOM) style={fontSize: '12px'})
                     if typeof value[2] == 'string'
                       i.m-0(className="fa "+ value[2])
                     else

@@ -103,7 +103,8 @@ class HTMLManager extends Base<Props, State> {
                 description: null,
                 keywords: null,
                 image: null,
-                path: null
+                path: null,
+                sitemap: null
             });
         }
     }
@@ -120,7 +121,8 @@ class HTMLManager extends Base<Props, State> {
                 description: node.tag.description,
                 keywords: node.tag.keywords,
                 image: node.tag.image,
-                path: node.tag.path
+                path: node.tag.path,
+                sitemap: node.tag.sitemap
             });
         
             perform('update', {
@@ -152,6 +154,11 @@ class HTMLManager extends Base<Props, State> {
         this.state.path = value;
     }
     
+    protected sitemapOnUpdate(value: any) {
+        this.state.sitemap = value;
+        this.forceUpdate();
+    }
+    
     private addOnClick(event) {
         if (this.state.name && (!this.props.path || this.state.path)) {
             let item = {
@@ -161,6 +168,7 @@ class HTMLManager extends Base<Props, State> {
                 keywords: this.state.keywords,
                 image: this.state.image,
                 path: this.state.path,
+                sitemap: this.state.sitemap,
                 state: 'update'
             };
             
@@ -199,6 +207,7 @@ class HTMLManager extends Base<Props, State> {
             item.keywords = this.state.keywords;
             item.image = this.state.image;
             item.path = this.state.path;
+            item.sitemap = this.state.sitemap;
             item.state = 'update';
           
             perform('update', {
@@ -296,17 +305,21 @@ class HTMLManager extends Base<Props, State> {
                     </div>
                     <div className="section-subtitle">Description</div>
                     <div className="section-body">
-                        <FullStackBlend.Controls.Textbox ref="description" value={this.state.description} preRegExp='.*' postRegExp='.*' onUpdate={this.descriptionOnUpdate.bind(this)} maxLength={165} multiline={true}></FullStackBlend.Controls.Textbox>
+                        <FullStackBlend.Controls.Textbox ref="description" value={this.state.description} preRegExp='.*' postRegExp='.*' onUpdate={this.descriptionOnUpdate.bind(this)} maxLength={165} multiline={true} resizable={false}></FullStackBlend.Controls.Textbox>
                     </div>
                     {['components', 'popups'].indexOf(currentMode) == -1 && (
                     	<div>
 		                    <div className="section-subtitle">Keywords</div>
 		                    <div className="section-body">
-		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} maxLength={1000} multiline={true}></FullStackBlend.Controls.Textbox>
+		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} maxLength={1000} multiline={true} resizable={false}></FullStackBlend.Controls.Textbox>
 		                    </div>
 		                    <div className="section-subtitle">Image</div>
 		                    <div className="section-body">
 		                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} placeholder="URL" preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+		                    </div>
+		                    <div className="section-subtitle">Sitemap Option</div>
+		                    <div className="section-body">
+		                    		<FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "add"]]]}/>
 		                    </div>
 		                  </div>
                     )}
