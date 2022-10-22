@@ -494,7 +494,7 @@ import {Request, Response} from "express";
 import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
-import {SitemapHelper} from "./helpers/SchedulerHelper";
+import {SitemapHelper} from "./helpers/SitemapHelper";
 
 ${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
 ${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
