@@ -15,7 +15,7 @@ import {AnimationHelper} from './helpers/AnimationHelper';
 		for (const element of elements) {
 			// When switching off and deselecting, causes the innerText to be empty,
 			// and we should prevent it.
-			if (HTMLHelper.hasClass(element, 'internal-fsb-layer-off')) return;
+			if (HTMLHelper.findTheParentInClassName(element, 'internal-fsb-layer-off') != null) return;
 			
 			if (element && element.innerText.trim() == '') {
 				const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
