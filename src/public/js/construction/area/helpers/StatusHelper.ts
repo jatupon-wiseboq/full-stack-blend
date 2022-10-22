@@ -77,9 +77,11 @@ var StatusHelper = {
 		
 		const reactMode = HTMLHelper.getAttribute(element, 'internal-fsb-react-mode');
 		const presetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name');
+		const isHidden = HTMLHelper.hasClass(element, 'internal-fsb-layer-off');
 		
 		if (reactMode) statuses.push('is-react-component');
 		if (presetName) statuses.push('is-containing-preset');
+		if (isHidden) statuses.push('has-preview-off');
   	
   	if (HTMLHelper.hasClass(element, 'internal-fsb-selecting')) {
   	  statuses.push('-fsb-selecting');

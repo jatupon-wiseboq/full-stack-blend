@@ -139,7 +139,7 @@
 	}
 	
 	.treenode-outer-container {
-		&.has-design, &.has-animation, &.has-coding {
+		&.has-design, &.has-animation, &.has-coding, &.has-preview-off {
 			> .treenode-container .treenode-title {
 				&::before {
 					display: 'block';
@@ -171,6 +171,13 @@
 				}
 			}
 		}
+		&.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070';
+				}
+			}
+		}
 		&.has-design.has-animation {
 			> .treenode-container .treenode-title {
 				&::before {
@@ -192,10 +199,59 @@
 				}
 			}
 		}
-		&.has-design.has-animation.has-coding {
+		&.has-design.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f1fc';
+				}
+			}
+		}
+		&.has-animation.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f0e7';
+				}
+			}
+		}
+		&.has-coding.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f121';
+				}
+			}
+		}
+		&.has-design.has-animation.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f1fc \f0e7';
+				}
+			}
+		}
+		&.has-coding.has-animation.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f0e7 \f121';
+				}
+			}
+		}
+		&.has-coding.has-design.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f1fc \f121';
+				}
+			}
+		}
+		&.has-coding.has-design.has-animation {
 			> .treenode-container .treenode-title {
 				&::before {
 					content: '\f1fc \f0e7 \f121';
+				}
+			}
+		}
+		&.has-design.has-animation.has-coding.has-preview-off {
+			> .treenode-container .treenode-title {
+				&::before {
+					content: '\f070 \f1fc \f0e7 \f121';
 				}
 			}
 		}
