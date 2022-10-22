@@ -24,7 +24,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-	watchingAttributeNames: ['internal-fsb-name'],
+	watchingAttributeNames: [],
 	watchingExtensionNames: ['elementTreeNodes', 'elementAuthoringStatuses', 'elementAuthoringRevision']
 });
 
@@ -141,14 +141,27 @@ class LayerManager extends Base<Props, State> {
 	    			direction: value
     		});
     }
+    private onLayerVisibleToggled() {
+    		perform('update', {
+		        extensions: [{
+		            name: 'currentActiveLayerHidden',
+		            value: !this.state.extensionValues['currentActiveLayerHidden']
+		        }]
+		    });
+    }
+    private onLayerRemoved() {
+    		perform('delete', this.state.attributeValues['internal-fsb-guid']);
+    }
     
     render() {
       return (
       	<div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
-      		<div style={{padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000}}>
-      			<FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..' value={this.state.filter}></FullStackBlend.Controls.Textbox>
-      		</div>
-      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} filter={this.state.filter} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
+      	  <div style={{position: 'absolute', top: '0px', right: '0px', bottom: '24px', left: '0px'}}>
+	      		<div style={{padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000}}>
+	      			<FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..' value={this.state.filter}></FullStackBlend.Controls.Textbox>
+	      		</div>
+	      		<FullStackBlend.Controls.Tree enableDragging={true} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} filter={this.state.filter} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
+	        </div>
       	</div>
       );
     }

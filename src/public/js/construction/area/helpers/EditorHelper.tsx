@@ -400,12 +400,18 @@ var EditorHelper = {
   },
   
   select: (element: HTMLElement) => {
+  	InternalProjectSettings.currentActiveLayerToolAvailable = !!element;
+  	InternalProjectSettings.currentActiveLayerHidden = false;
+  	InternalProjectSettings.currentActiveLayerRemovable = !!element;
+  	
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
     	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
     	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     	
     	HTMLHelper.addClass(element, 'internal-fsb-selecting');
+    	
+    	InternalProjectSettings.currentActiveLayerHidden = !!element.currentActiveLayerHidden;
     	
       element.appendChild(Accessories.resizer.getDOMNode());
       element.appendChild(Accessories.redLine.getDOMNode());

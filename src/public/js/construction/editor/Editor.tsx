@@ -9,6 +9,7 @@ import './components/layout/OffsetPicker';
 import './components/layout/DisplayPicker';
 import './components/layout/PreservePicker';
 import './components/layout/LayerManager';
+import './components/layout/LayerToolManager';
 import './components/layout/PreviewSizePicker';
 
 import './components/css/CSSPresets';

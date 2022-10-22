@@ -564,6 +564,12 @@ input[type='radio'], input[type='checkbox'] {
 	outline: solid red 1px !important;
 }
 
+.internal-fsb-layer-off {
+	visibility: hidden !important;
+	opacity: 0.0 !important;
+	pointer-events: none;
+}
+
 .internal-fsb-top-red-line, .internal-fsb-right-red-line, .internal-fsb-bottom-red-line, .internal-fsb-left-red-line, .internal-fsb-info-red-line {
 	position: fixed;
 	pointer-events: none;
