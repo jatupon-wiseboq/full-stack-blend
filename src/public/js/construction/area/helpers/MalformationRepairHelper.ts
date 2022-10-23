@@ -5,6 +5,18 @@ import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
 var MalformationRepairHelper = {
 	repair: (container: HTMLElement=document) => {
   	MalformationRepairHelper.recursiveRepair([document.body]);
+  	
+  	if (!HTMLHelper.hasClass(document.body.firstElementChild, 'internal-fsb-begin')) {
+  		const child = document.body.firstElementChild;
+  		const container = document.createElement('div');
+  		
+  		container.className = 'internal-fsb-begin';
+  		container.setAttribute('internal-fsb-guid', '0');
+  		
+  		document.body.insertBefore(container, child);
+  		document.body.removeChild(child);
+  		container.appendChild(child);
+  	}
   },
 	recursiveRepair: (elements: any) => {
     for (let j = 0; j < elements.length; j++) {
