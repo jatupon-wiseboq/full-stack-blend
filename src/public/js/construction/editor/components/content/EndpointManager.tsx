@@ -25,6 +25,7 @@ let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
 });
 
+// TODO: Inherit Components.ProjectManager instead.
 class EndpointManager extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
@@ -126,8 +127,22 @@ class EndpointManager extends Base<Props, State> {
       let _connectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
       let _workerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
       let _schedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
-      let sitemapInfoDict = {}
+      const sitemapInfoDict = {}
       let nextProjectData = {};
+      
+      for (const page of this.state.extensionValues['pages']) {
+      	const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+      	const sitemap = page.sitemap || false;
+        const frequency = page.frequency || undefined;
+        const priority = page.priority || undefined;
+        
+        if (sitemap == 'true') {
+        	sitemapInfoDict[`${path}`] = {
+          	frequency: frequency,
+          	priority: priority
+        	};
+        }
+      }
       
       if (incremental) {
       	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
@@ -264,16 +279,6 @@ class EndpointManager extends Base<Props, State> {
           let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
           let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
           let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          let sitemap = pages && pages[0] && pages[0].sitemap || false;
-          let frequency = pages && pages[0] && pages[0].frequency || undefined;
-          let priority = pages && pages[0] && pages[0].priority || undefined;
-          
-          if (sitemap == 'true') {
-          	sitemapInfoDict[`${path}`] = {
-            	frequency: frequency,
-            	priority: priority
-          	};
-          }
           
           if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
           
@@ -496,19 +501,19 @@ import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
 import {SitemapHelper} from "./helpers/SitemapHelper";
 
-${routes.map(route => `import Component${route.id} from "./components/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}";`).join('\n')}
-${connectors.map(key => `import Connector${key} from "./connectors/${this.getRepresentativeName(key)}";`).join('\n')}
-${workers.map(key => `import Worker${key.split(':')[0]} from "./workers/${this.getRepresentativeName(key.split(':')[0])}";`).join('\n')}
-${schedulers.map(key => `import Scheduler${key} from "./schedulers/${this.getRepresentativeName(key)}";`).join('\n')}
+${Object.keys(routes).sort().map(key => `import Component${routes[key].id} from "./components/${this.getFeatureDirectoryPrefix(routes[key].id)}${this.getRepresentativeName(routes[key].id)}";`).join('\n')}
+${Object.keys(connectors).sort().map(key => `import Connector${connectors[key]} from "./connectors/${this.getRepresentativeName(connectors[key])}";`).join('\n')}
+${Object.keys(workers).sort().map(key => `import Worker${workers[key].split(':')[0]} from "./workers/${this.getRepresentativeName(workers[key].split(':')[0])}";`).join('\n')}
+${Object.keys(schedulers).sort().map(key => `import Scheduler${schedulers[key]} from "./schedulers/${this.getRepresentativeName(schedulers[key])}";`).join('\n')}
 
-${routes.map(route => `export const ${this.getRepresentativeName(route.id)} = (req: Request, res: Response) => {
-  new Component${route.id}(req, res, "home/${this.getFeatureDirectoryPrefix(route.id)}${this.getRepresentativeName(route.id)}");
+${Object.keys(routes).sort().map(key => `export const ${this.getRepresentativeName(routes[key].id)} = (req: Request, res: Response) => {
+  new Component${routes[key].id}(req, res, "home/${this.getFeatureDirectoryPrefix(routes[key].id)}${this.getRepresentativeName(routes[key].id)}");
 }`).join('\n')}
-${connectors.map(key => `ActionHelper.register(Connector${key});`).join('\n')}
-${workers.map(key => `WorkerHelper.register(Worker${key.split(':')[0]}, '${key.split(':')[1]}', '${key.split(':')[2]}');`).join('\n')}
-${schedulers.map(key => `SchedulerHelper.register(Scheduler${key});`).join('\n')}
+${Object.keys(connectors).sort().map(key => `ActionHelper.register(Connector${connectors[key]});`).join('\n')}
+${Object.keys(workers).sort().map(key => `WorkerHelper.register(Worker${workers[key].split(':')[0]}, '${workers[key].split(':')[1]}', '${workers[key].split(':')[2]}');`).join('\n')}
+${Object.keys(schedulers).sort().map(key => `SchedulerHelper.register(Scheduler${schedulers[key]});`).join('\n')}
 
-${Object.keys(sitemapInfoDict).map(key => `SitemapHelper.register('${key}', ${sitemapInfoDict[key].frequency && `'${sitemapInfoDict[key].frequency}'` || 'undefined'}, ${sitemapInfoDict[key].priority && `${sitemapInfoDict[key].priority}` || 'undefined'});`).join('\n')}
+${Object.keys(sitemapInfoDict).sort().map(key => `SitemapHelper.register('${key}', ${sitemapInfoDict[key].frequency && `'${sitemapInfoDict[key].frequency}'` || 'undefined'}, ${sitemapInfoDict[key].priority && `${sitemapInfoDict[key].priority}` || 'undefined'});`).join('\n')}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
@@ -623,7 +628,7 @@ ${this.replaceShortcuts(tokens[1])}
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
 import {HTMLHelper} from './helpers/HTMLHelper';
 import {EventHelper} from './helpers/EventHelper';
-${Object.keys(frontEndComponentsBlobSHADict).map(key => `import './components/${key}';`).join('\n')}
+${Object.keys(frontEndComponentsBlobSHADict).sort().map(key => `import './components/${key}';`).join('\n')}
 
 declare let React: any;
 declare let ReactDOM: any;
