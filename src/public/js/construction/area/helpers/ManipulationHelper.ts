@@ -909,7 +909,6 @@ var ManipulationHelper = {
                 EditorHelper.updateExternalLibraries();
               } else if (extension.name == 'currentActiveLayerHidden') {
               	if (selectingElement) {
-              		selectingElement.currentActiveLayerHidden = extension.value;
               		InternalProjectSettings.currentActiveLayerHidden = extension.value;
               		
               		if (extension.value) HTMLHelper.addClass(selectingElement, 'internal-fsb-layer-off');

@@ -411,7 +411,7 @@ var EditorHelper = {
     	
     	HTMLHelper.addClass(element, 'internal-fsb-selecting');
     	
-    	InternalProjectSettings.currentActiveLayerHidden = !!element.currentActiveLayerHidden;
+    	InternalProjectSettings.currentActiveLayerHidden = HTMLHelper.hasClass(element, 'internal-fsb-layer-off');
     	
       element.appendChild(Accessories.resizer.getDOMNode());
       element.appendChild(Accessories.redLine.getDOMNode());
