@@ -36,6 +36,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
+    watchingAttributeNames: ['internal-fsb-guid'],
     watchingStyleNames: ['-fsb-transform', '-fsb-mode']
 });
 
@@ -187,6 +188,8 @@ class Transformer extends Base<Props, State> {
     }
     
     modeOnClick(mode) {
+    		if (!this.state.attributeValues['internal-fsb-guid']) return;
+    		
         perform('update', {
             styles: [{
                 name: '-fsb-mode',
@@ -255,35 +258,37 @@ class Transformer extends Base<Props, State> {
             this.currentTransform = (fsbTransform != Default) ? fsbTransform : null;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
-            perform('update', {
-                styles: [
-                    {
-                        name: '-fsb-mode',
-                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
-                    },
-                    {
-                        name: 'perspective',
-                        value: (isPerspectiveCamera) ? '236px' : null
-                    },
-                    {
-                        name: '-child-transform-style',
-                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
-                    },
-                    {
-                        name: '-child-transform',
-                        value: null
-                    },
-                    {
-                        name: 'transform',
-                        value: (fsbTransform != Default) ? transform : null
-                    },
-                    {
-                        name: '-fsb-transform',
-                        value: (fsbTransform != Default) ? fsbTransform : null
-                    }
-                ],
-                replace: '-fsb-transform'
-            });
+    				if (!this.state.attributeValues['internal-fsb-guid']) {
+		            perform('update', {
+		                styles: [
+		                    {
+		                        name: '-fsb-mode',
+		                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
+		                    },
+		                    {
+		                        name: 'perspective',
+		                        value: (isPerspectiveCamera) ? '236px' : null
+		                    },
+		                    {
+		                        name: '-child-transform-style',
+		                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
+		                    },
+		                    {
+		                        name: '-child-transform',
+		                        value: null
+		                    },
+		                    {
+		                        name: 'transform',
+		                        value: (fsbTransform != Default) ? transform : null
+		                    },
+		                    {
+		                        name: '-fsb-transform',
+		                        value: (fsbTransform != Default) ? fsbTransform : null
+		                    }
+		                ],
+		                replace: '-fsb-transform'
+		            });
+		         }
         }
         
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);

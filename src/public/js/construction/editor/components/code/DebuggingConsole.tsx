@@ -65,8 +65,8 @@ class DebuggingConsole extends Base<Props, State> {
           this.props.window.console.log = ((...args) => {
           	repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
           });
-          this.props.window.console.log("StackBlend Studio's debugging information will appear here.");
-          this.props.window.console.log("Since being deployed regularly, the most of failures will disappear after refreshing your browser, or you may go to https://github.com/SoftenStorm/full-stack-blend to check all recent commits.");
+          this.props.window.console.log("The debugging information of StackBlend Studio will appear here.");
+          this.props.window.console.log("Since being deployed regularly, the most of failures will disappear after refreshing your browser. You may go to github.com/SoftenStorm/full-stack-blend to check all recent commits.");
           
           this.props.window.console.error = ((...args) => {
             this.props.window.setTimeout((() => {
