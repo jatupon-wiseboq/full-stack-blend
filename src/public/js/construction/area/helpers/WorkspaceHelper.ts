@@ -823,7 +823,7 @@ var WorkspaceHelper = {
   	return InternalDataFlows.schema;
  	},
   generateFrontEndCodeForCurrentPage: () => {
-  	if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) return WorkspaceHelper.generateFrontEndCodeForID();
+  	if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) return WorkspaceHelper.generateFrontEndCodeForID()[0];
   	else return null;
   },
   generateFrontEndCodeForAnyReferencingComponentsOrPopups: () => {
@@ -842,7 +842,7 @@ var WorkspaceHelper = {
 	        if (InternalComponents.hasOwnProperty(key)) {
 	          if (InternalComponents[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalComponents[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
-	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
+	          		const [content, html] = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
 	          		const info = WorkspaceHelper.getComponentData(key);
 	          		
 	          		if (!content || !html || !info || !info.html) {
@@ -867,7 +867,7 @@ var WorkspaceHelper = {
 	        if (InternalPopups.hasOwnProperty(key)) {
 	          if (InternalPopups[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalPopups[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
-	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
+	          		const [content, html] = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
 	          		const info = WorkspaceHelper.getPopupData(key);
 	          		
 	          		if (!content || !html || !info || !info.html) {
@@ -892,7 +892,7 @@ var WorkspaceHelper = {
 	        if (InternalSites.hasOwnProperty(key)) {
 	          if (InternalSites[key].references) {
 	          	if (always.indexOf(reference) != -1 || (InternalSites[key].references.indexOf(reference) != -1 && skipping.indexOf(reference) == -1)) {
-	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
+	          		const [content, html] = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
 	          		const info = WorkspaceHelper.getPageData(key);
 	          		
 	          		if (!content || !html || !info || !info.html) {
@@ -949,7 +949,7 @@ var WorkspaceHelper = {
     WorkspaceHelper.loadPageData(mode, id, _window);
     const content = WorkspaceHelper.generateFrontEndCodeForPage(mode, HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0", _window.document.body), true);
     
-    if (HTMLHelper.getElementByClassName('internal-fsb-element', _window.document.body) == null) return {false, false};
+    if (HTMLHelper.getElementByClassName('internal-fsb-element', _window.document.body) == null) return [null];
     
     let html = null;
     if (hasInfo) {
@@ -968,8 +968,8 @@ var WorkspaceHelper = {
     
     WorkspaceHelper.disposeTempIframe(temp);
     
-    if (hasInfo) return {content, html};
-    else return content;
+    if (hasInfo) return [content, html];
+    else return [content];
   },
   generateFrontEndCodeForPage: (mode: string='site', container: any=document.body, update: boolean=true) => {
     let results = null;
