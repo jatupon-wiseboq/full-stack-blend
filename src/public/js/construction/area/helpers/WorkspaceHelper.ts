@@ -845,7 +845,7 @@ var WorkspaceHelper = {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('components', key, true);
 	          		const info = WorkspaceHelper.getComponentData(key);
 	          		
-	          		if ((content === false && html === false) || !info || !info.html) {
+	          		if (!content || !html || !info || !info.html) {
 	          			top.console.log(`Cannot generate the front-end component for a component ${key}. Please take a note and perform any further investigation.`);
 	          			
 	          			skipping.push(key);
@@ -858,6 +858,7 @@ var WorkspaceHelper = {
 	          		else skipping.push(key);
 	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		always = always.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
 	        }
@@ -869,7 +870,7 @@ var WorkspaceHelper = {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('popups', key, true);
 	          		const info = WorkspaceHelper.getPopupData(key);
 	          		
-	          		if ((content === false && html === false) || !info || !info.html) {
+	          		if (!content || !html || !info || !info.html) {
 	          			top.console.log(`Cannot generate the front-end component for a popup ${key}. Please take a note and perform any further investigation.`);
 	          			
 	          			skipping.push(key);
@@ -882,6 +883,7 @@ var WorkspaceHelper = {
 	          		else skipping.push(key);
 	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		always = always.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
 	        }
@@ -893,7 +895,7 @@ var WorkspaceHelper = {
 	          		const {content, html} = WorkspaceHelper.generateFrontEndCodeForID('site', key, true);
 	          		const info = WorkspaceHelper.getPageData(key);
 	          		
-	          		if ((content === false && html === false) || !info || !info.body) {
+	          		if (!content || !html || !info || !info.html) {
 	          			top.console.log(`Cannot generate the front-end component for a page ${key}. Please take a note and perform any further investigation.`);
 	          			
 	          			skipping.push(key);
@@ -906,6 +908,7 @@ var WorkspaceHelper = {
 	          		else skipping.push(key);
 	          		
 	          		referencing = referencing.filter(reference => refreshed.indexOf(reference) == -1);
+	          		always = always.filter(reference => refreshed.indexOf(reference) == -1);
 	          	}
 	          }
 	        }
