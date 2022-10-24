@@ -530,6 +530,9 @@ var WorkspaceHelper = {
     InternalProjectSettings.components = InternalProjectSettings.components.filter(component => component.id != id);
   },
   addOrReplaceComponentData: (id: string, name: string, namespace: string, klass: string, html: string) => {
+  	// Rely on saveWorkspaceData() when editing the root component right from the Explore Component mode.
+  	if (InternalProjectSettings.currentMode == 'components' && InternalProjectSettings.editingComponentID == id) return;
+  	
   	InternalComponents[id] = {
       namespace: namespace,
       klass: klass,
