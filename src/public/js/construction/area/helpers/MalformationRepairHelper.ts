@@ -7,14 +7,28 @@ var MalformationRepairHelper = {
   	MalformationRepairHelper.recursiveRepair([document.body]);
   	
   	if (!HTMLHelper.hasClass(document.body.firstElementChild, 'internal-fsb-begin')) {
-  		const child = document.body.firstElementChild;
+  		const parent = document.body;
+  		const child = parent.firstElementChild;
   		const container = document.createElement('div');
   		
   		container.className = 'internal-fsb-begin';
   		container.setAttribute('internal-fsb-guid', '0');
   		
-  		document.body.insertBefore(container, child);
-  		document.body.removeChild(child);
+  		parent.insertBefore(container, child);
+  		parent.removeChild(child);
+  		container.appendChild(child);
+  	}
+  	
+  	if (!HTMLHelper.hasClass(document.body.firstElementChild.firstElementChild, 'internal-fsb-begin-layout')) {
+  		const parent = document.body.firstElementChild;
+  		const child = parent.firstElementChild;
+  		const container = document.createElement('div');
+  		
+  		container.className = 'internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout';
+  		container.setAttribute('internal-fsb-event-no-propagate', '1');
+  		
+  		parent.insertBefore(container, child);
+  		parent.removeChild(child);
   		container.appendChild(child);
   	}
   },
