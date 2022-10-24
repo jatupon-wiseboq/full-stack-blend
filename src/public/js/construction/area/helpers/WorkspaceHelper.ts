@@ -613,22 +613,22 @@ var WorkspaceHelper = {
     	}
     }
     
-    const selectings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-selecting', holder));
+    const selectings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-selecting', holderWindow.document));
     for (const selecting of selectings) {
     	HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
     }
     
-    const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking', holder));
+    const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking', holderWindow.document));
     for (const walking of walkings) {
    		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
    	}
     
-    const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holder));
+    const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holderWindow.document));
     for (const placing of placings) {
    		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
    	}
    	
-   	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
+   	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holderWindow.document));
     for (const element of classes) {
     	if (!element.className || typeof element.className !== 'string') continue;
     	element.className = element.className.replace(/( )+/g, ' ').trim();
