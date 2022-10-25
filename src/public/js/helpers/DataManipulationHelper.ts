@@ -37,6 +37,26 @@ const isDevelopmentMachine = ['localhost:3000', 'develop.stackblend.com', 'stagi
 const registeredEndpoint: string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
 const currentPath: string = (isDevelopmentMachine) ? window.PATH || null : null;
 
+const removeAndRestoreDisabledAttributeForInvoking = (button: any, callback: any) => {
+	const disabled = HTMLHelper.getAttribute(button, 'disabled');
+	const setAttribute = button.setAttribute;
+	const getAttribute = button.getAttribute;
+	const removeAttribute = button.removeAttribute;
+
+	let detectedChange = false;
+	button.setAttribute = (name, value) => { if (name && name.toLowerCase() == 'disabled') { detectedChange = true; setAttribute.call(button, name, value); } };
+	button.getAttribute = (name) => { if (name && name.toLowerCase() == 'disabled') { return disabled; } else { return getAttribute.call(button, name); } };
+	button.removeAttribute = (name) => { if (name && name.toLowerCase() == 'disabled') { detectedChange = true; removeAttribute.call(button, name); } };
+
+	callback();
+
+	button.setAttribute = setAttribute;
+	button.getAttribute = getAttribute;
+	button.removeAttribute = removeAttribute;
+
+	if (!detectedChange && HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+};
+
 const DataManipulationHelper = {
 	register: (guid: string, action: string, fields: string[], options: any) => {
 		if (!fieldManipulatorsInfoDict[guid]) {
@@ -162,10 +182,10 @@ const DataManipulationHelper = {
 					},
 					cancelable: true
 				});
-				const disabled = HTMLHelper.getAttribute(button, 'disabled');
-				HTMLHelper.removeAttribute(button, 'disabled');
-				button.dispatchEvent(event);
-				if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+				
+				removeAndRestoreDisabledAttributeForInvoking(button, () => {
+					button.dispatchEvent(event);
+				});
 				if (event.defaultPrevented) return;
 	  	}
 	  	
@@ -179,10 +199,10 @@ const DataManipulationHelper = {
 							},
 							cancelable: true
 						});
-						const disabled = HTMLHelper.getAttribute(button, 'disabled');
-						HTMLHelper.removeAttribute(button, 'disabled');
-						button.dispatchEvent(event);
-						if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+						
+						removeAndRestoreDisabledAttributeForInvoking(button, () => {
+							button.dispatchEvent(event);
+						});
 						if (event.defaultPrevented) return;
 					}
 	  			
@@ -195,10 +215,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
-							const disabled = HTMLHelper.getAttribute(button, 'disabled');
-							HTMLHelper.removeAttribute(button, 'disabled');
-							button.dispatchEvent(event);
-							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+							
+							removeAndRestoreDisabledAttributeForInvoking(button, () => {
+								button.dispatchEvent(event);
+							});
 							if (event.defaultPrevented) return;
 						}
 	  				
@@ -220,10 +240,10 @@ const DataManipulationHelper = {
 								},
 								cancelable: true
 							});
-							const disabled = HTMLHelper.getAttribute(button, 'disabled');
-							HTMLHelper.removeAttribute(button, 'disabled');
-							button.dispatchEvent(event);
-							if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+							
+							removeAndRestoreDisabledAttributeForInvoking(button, () => {
+								button.dispatchEvent(event);
+							});
 							if (event.defaultPrevented) return;
 						}
 	  				
