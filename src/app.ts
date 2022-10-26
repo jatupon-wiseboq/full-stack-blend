@@ -14,6 +14,7 @@ import fs from "fs";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
+import {SitemapHelper} from './controllers/helpers/SitemapHelper';
 
 // API keys and Passport configuration
 import passport from "passport";
@@ -175,6 +176,12 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     res.set('Content-Type', 'text/javascript');
   	res.send(Buffer.from(bundle));
   });
+});
+
+// Serve sitemap.xml
+app.get("/sitemap.xml", (req, res) => {
+  res.set('Content-Type', 'text/xml');
+	res.send(SitemapHelper.generateXMLDocument());
 });
 
 // StackBlend code editor's endpoint

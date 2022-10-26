@@ -10,22 +10,13 @@ import {ValidationInfo} from './ValidationHelper';
 import {PermissionHelper} from './PermissionHelper';
 import {ActionHelper} from './ActionHelper';
 import {WorkerHelper} from './WorkerHelper';
-import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {ProjectConfigurationHelper, SourceType} from './ProjectConfigurationHelper';
 import {FieldType, DataTableSchema} from './SchemaHelper';
 import {DataTypes, Op} from 'sequelize';
 import {ObjectID} from 'mongodb';
 
 const DEFAULT_DOCUMENT_DATABASE_NAME = process.env.MONGODB_DEFAULT_DATABASE_NAME;
 
-enum SourceType {
-  Relational,
-  PrioritizedWorker,
-  Document,
-  VolatileMemory,
-  RESTful,
-  Dictionary,
-  Collection
-}
 enum ActionType {
   Insert,
   Update,
@@ -123,22 +114,6 @@ const isObjectID = (value: string): boolean => {
 };
 
 const DatabaseHelper = {
-	getSourceType: (value: string): SourceType => {
-		switch (value) {
-			case 'relational':
-				return SourceType.Relational;
-			case 'document':
-				return SourceType.Document;
-			case 'volatile-memory':
-				return SourceType.VolatileMemory;
-			case 'RESTful':
-				return SourceType.RESTful;
-			case 'worker':
-				return SourceType.PrioritizedWorker;
-		  default:
-		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
-		}
-	},
   distinct: (data: Input[]) => {
     const remove = [];
     const hash = {};
@@ -815,8 +790,9 @@ const DatabaseHelper = {
 		      queryColumns[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key]};
 		    	dataColumns[(key == 'id') ? '_id' : key] = isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key];
 		    } else {
-		    	queryColumns[key] = row.columns[key];
-		    	dataColumns[key] = row.columns[key];
+		    	const value = (typeof row.columns[key] === 'object' && row.columns[key] != null && row.columns[key].constructor.name === 'ObjectID') ? row.columns[key].toString() : row.columns[key];
+		    	queryColumns[key] = value;
+		    	dataColumns[key] = value;
 		    }
 		  }
 		}
@@ -828,6 +804,7 @@ const DatabaseHelper = {
 		      queryKeys[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key]};
 		    	dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
 		    } else {
+		    	const value = (typeof row.keys[key] === 'object' && row.keys[key] != null && row.keys[key].constructor.name === 'ObjectID') ? row.keys[key].toString() : row.keys[key];
 		    	queryKeys[key] = row.keys[key];
 		    	dataKeys[key] = row.keys[key];
 		    }
@@ -1090,9 +1067,9 @@ const DatabaseHelper = {
 			}
 		}
 	},
-	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema, crossRelationUpsert);
@@ -1296,9 +1273,9 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Upsert, baseSchema, true);
@@ -1516,9 +1493,9 @@ const DatabaseHelper = {
 		  }
 		});
 	},
-	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<HierarchicalDataRow[]> => {
+	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema, crossRelationUpsert);
@@ -1719,9 +1696,10 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false, innerCircleTags: string[]=[]): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
+	retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any=null, notifyUpdates=false, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
 		return new Promise(async (resolve, reject) => {
 		  const connectionInfos: {[Identifier: string]: any} = {};
+		  if (transaction) connectionInfos['documentDatabaseConnection'] = transaction.documentDatabaseConnection;
 		  try {
 		  	if (data != null) {
 	  			const list = DatabaseHelper.prepareData(data, ActionType.Retrieve, baseSchema);
@@ -2080,9 +2058,9 @@ const DatabaseHelper = {
 		  }
 		});
   },
-	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false): Promise<HierarchicalDataRow[]> => {
+	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		const transaction = await CreateTransaction({});
+  		if (!transaction) transaction = await CreateTransaction({});
   		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);

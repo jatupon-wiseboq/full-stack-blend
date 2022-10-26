@@ -174,10 +174,10 @@ describe('Extra Assertion Tools', () => {
 		expect(() => { CodeHelper.assertOfNotationFormat('abc[01]..Abc'); }).toThrow();
 		expect(() => { CodeHelper.assertOfNotationFormat('.abc[01].789'); }).toThrow();
 		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].'); }).toThrow();
-		expect(() => { CodeHelper.assertOfNotationFormat('!@@abc[01].789[10]'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfNotationFormat('abc![01].789[10]'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].!!789[10]'); }).not.toThrow();
-		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].789[!10]'); }).not.toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('!@@abc[01].789[10]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc![01].789[10]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].!!789[10]'); }).toThrow();
+		expect(() => { CodeHelper.assertOfNotationFormat('abc[01].789[!10]'); }).toThrow();
 	});
 });
 describe('clone', () => {
@@ -297,8 +297,8 @@ describe('clone', () => {
 	  	const structure8 = {
 	  		a: undefined
 	  	};
-	  	//expect(CodeHelper.clone(structure8)).toEqual(structure8);
-	  	expect(() => { CodeHelper.clone(structure8); }).toThrow();
+	  	expect(CodeHelper.clone(structure8)).toEqual(structure8);
+	  	//expect(() => { CodeHelper.clone(structure8); }).toThrow();
 	  });
 	});
 	describe('Property', () => {
@@ -435,6 +435,13 @@ describe('equals', () => {
 	  	expect(CodeHelper.equals({a: 123, c: {x: false}}, {a: 123, c: {x: 1}})).toEqual(false);
 	  	expect(CodeHelper.equals({a: 123, c: {x: 1}}, {a: 123, c: {x: false}})).toEqual(false);
 	  });
+	});
+	describe('Assertion', () => {
+		expect(() => { CodeHelper.assertEquals('', ''); }).not.toThrow();
+		expect(() => { CodeHelper.assertEquals('', 'Abc'); }).toThrow();
+		
+		expect(() => { CodeHelper.assertEquals('Abc123', 'Abc123'); }).not.toThrow();
+		expect(() => { CodeHelper.assertEquals('Abc123', '123'); }).toThrow();
 	});
 });
 

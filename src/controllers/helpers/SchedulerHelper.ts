@@ -32,13 +32,32 @@ const SchedulerHelper = {
   	let _minutes = minutes % 60;
   	const _hours = Math.floor(minutes / 60);
   	
-  	if (_hours != 0) _minutes = 0;
-  	
   	const rule = new schedule.RecurrenceRule();
 
   	rule.dayOfWeek = _days;
-		if (_hours != 0 || _minutes == 0) rule.hour = _hours;
-		if (_minutes != 0) rule.minute = _minutes;
+  	
+		if (_hours != 0) {
+			rule.hour = [];
+			
+			for (let h=_hours; h<=24; h+=_hours) {
+				rule.hour.push(h % 24);
+			}
+			
+			rule.hour.sort();
+			rule.minute = 0;
+		} else if (_minutes != 0) {
+			rule.hour = [new schedule.Range(0, 23)];
+			rule.minute = [];
+			
+			for (let m=_minutes; m<=60; m+=_minutes) {
+				rule.minute.push(m % 60);
+			}
+			
+			rule.minute.sort();
+		} else {
+			rule.hour = 0;
+			rule.minute = 0;
+		}
   	
   	scheduler && schedule.scheduleJob(rule, delegate);
   }

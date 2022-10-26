@@ -33,7 +33,7 @@ interface DataTableSchema {
   relations: {[Identifier: string]: DataRelationSchema};
   modifyingPermission: Permission;
   retrievingPermission: Permission;
-  forward: ForwardOptions;
+  forward?: ForwardOptions;
 }
 interface DataColumnSchema {
 	name: string;
@@ -60,8 +60,8 @@ const SchemaHelper = {
 	  for (const tableKey in data.tables) {
 	    if (data.tables.hasOwnProperty(tableKey)) {
   	    const table = data.tables[tableKey];
-  	    if (table.group === undefined || table.group === null || table.group.trim() === "")
-  	      throw new Error(`There was an error verifying data schema (missing a group name: ${JSON.stringify(table)}).`);
+  	    
+  	    CodeHelper.assertOfPresent(table.group, tableKey, `There was an error verifying data schema (missing a group name: ${JSON.stringify(table)}).`);
   	    if (Object.keys(table.keys).length == 0)
   	      throw new Error(`There was an error verifying data schema (missing a primary key: ${JSON.stringify(table)}).`);
   	    
@@ -71,9 +71,11 @@ const SchemaHelper = {
   	    for (const primaryKey in table.keys) {
 	        if (table.keys.hasOwnProperty(primaryKey)) {
 	          const column = table.keys[primaryKey];
-	          if (column.name === undefined || column.name === null || column.name.trim() === "")
-  	          throw new Error(`There was an error verifying data schema (missing a key name: ${JSON.stringify(column)}).`);
-	        
+	          
+	          CodeHelper.assertOfPresent(column.name, primaryKey, `There was an error verifying data schema (missing a key name: ${JSON.stringify(column)}).`);
+	          CodeHelper.assertOfPresent(column.fieldType, primaryKey, `There was an error verifying data schema (missing a kind of value: ${JSON.stringify(column)}).`);
+	          CodeHelper.assertEquals(column.name, primaryKey, primaryKey, `There was an error verifying data schema (key name is mismatched: ${JSON.stringify(column)}).`);
+	        	
 		        if (column.modifyingPermission) SchemaHelper.verifyPermission(column.modifyingPermission);
 	  	    	if (column.retrievingPermission) SchemaHelper.verifyPermission(column.retrievingPermission);
 	        }
@@ -81,9 +83,11 @@ const SchemaHelper = {
   	    for (const columnKey in table.columns) {
 	        if (table.columns.hasOwnProperty(columnKey)) {
 	          const column = table.columns[columnKey];
-	          if (column.name === undefined || column.name === null || column.name.trim() === "")
-  	          throw new Error(`There was an error verifying data schema (missing a column name: ${JSON.stringify(column)}).`);
-	        
+
+	          CodeHelper.assertOfPresent(column.name, columnKey, `There was an error verifying data schema (missing a key name: ${JSON.stringify(column)}).`);
+	          CodeHelper.assertOfPresent(column.fieldType, columnKey, `There was an error verifying data schema (missing a kind of value: ${JSON.stringify(column)}).`);
+	          CodeHelper.assertEquals(column.name, columnKey, columnKey, `There was an error verifying data schema (column name is mismatched: ${JSON.stringify(column)}).`);
+	        	
 		        if (column.modifyingPermission) SchemaHelper.verifyPermission(column.modifyingPermission);
 	  	    	if (column.retrievingPermission) SchemaHelper.verifyPermission(column.retrievingPermission);
 	        }
@@ -93,23 +97,15 @@ const SchemaHelper = {
           if (table.relations.hasOwnProperty(relationTableKey)) {
             const relation = table.relations[relationTableKey];
             
-            if (relation.sourceGroup === undefined || relation.sourceGroup === null || relation.sourceGroup.trim() === "")
-        	    throw new Error(`There was an error verifying data schema (missing a source group name: ${JSON.stringify(relation)}).`);
-            if (relation.sourceEntity === undefined || relation.sourceEntity === null || relation.sourceEntity.trim() === "")
-        	    throw new Error(`There was an error verifying data schema (missing a source entity name: ${JSON.stringify(relation)}).`);
-            if (relation.targetGroup === undefined || relation.targetGroup === null || relation.targetGroup.trim() === "")
-        	    throw new Error(`There was an error verifying data schema (missing a target group name: ${JSON.stringify(relation)}).`);
-            if (relation.targetEntity === undefined || relation.targetEntity === null || relation.targetEntity.trim() === "")
-        	    throw new Error(`There was an error verifying data schema (missing a target entity name: ${JSON.stringify(relation)}).`);
-        	  
-        	  if (!data.tables[relation.sourceGroup])
-        	    throw new Error(`There was an error verifying data schema (source group unavailable: ${JSON.stringify(relation.sourceGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
-        	  if (!data.tables[relation.sourceGroup].keys[relation.sourceEntity] && !data.tables[relation.sourceGroup].columns[relation.sourceEntity])
-        	    throw new Error(`There was an error verifying data schema (source entity unavailable: ${JSON.stringify(relation.sourceEntity)}; choices are ${[...Object.keys(data.tables[relation.sourceGroup].keys), ...Object.keys(data.tables[relation.sourceGroup].columns)].join(", ")}).`);
-        	  if (!data.tables[relation.targetGroup])
-        	    throw new Error(`There was an error verifying data schema (target group unavailable: ${JSON.stringify(relation.targetGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
-        	  if (!data.tables[relation.targetGroup].keys[relation.targetEntity] && !data.tables[relation.targetGroup].columns[relation.targetEntity])
-        	    throw new Error(`There was an error verifying data schema (target entity unavailable: ${JSON.stringify(relation.targetEntity)}; choices are ${[...Object.keys(data.tables[relation.targetGroup].keys), ...Object.keys(data.tables[relation.targetGroup].columns)].join(", ")}).`);
+	          CodeHelper.assertOfPresent(relation.sourceGroup, relationTableKey, `There was an error verifying data schema (missing a source group name: ${JSON.stringify(relation)}).`);
+	          CodeHelper.assertOfPresent(relation.sourceEntity, relationTableKey, `There was an error verifying data schema (missing a source entity name: ${JSON.stringify(relation)}).`);
+	          CodeHelper.assertOfPresent(relation.targetGroup, relationTableKey, `There was an error verifying data schema (missing a target group name: ${JSON.stringify(relation)}).`);
+	          CodeHelper.assertOfPresent(relation.targetEntity, relationTableKey, `There was an error verifying data schema (missing a target entity name: ${JSON.stringify(relation)}).`);
+            
+	          CodeHelper.assertOfPresent(data.tables[relation.sourceGroup], relationTableKey, `There was an error verifying data schema (source group unavailable: ${JSON.stringify(relation.sourceGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
+	          CodeHelper.assertOfPresent(data.tables[relation.sourceGroup].keys[relation.sourceEntity] || data.tables[relation.sourceGroup].columns[relation.sourceEntity], relationTableKey, `There was an error verifying data schema (source entity unavailable: ${JSON.stringify(relation.sourceEntity)}; choices are ${[...Object.keys(data.tables[relation.sourceGroup].keys), ...Object.keys(data.tables[relation.sourceGroup].columns)].join(", ")}).`);
+	          CodeHelper.assertOfPresent(data.tables[relation.targetGroup], relationTableKey, `There was an error verifying data schema (target group unavailable: ${JSON.stringify(relation.targetGroup)}; choices are ${Object.keys(data.tables).join(", ")}).`);
+	          CodeHelper.assertOfPresent(data.tables[relation.targetGroup].keys[relation.targetEntity] || data.tables[relation.targetGroup].columns[relation.targetEntity], relationTableKey, `There was an error verifying data schema (target entity unavailable: ${JSON.stringify(relation.targetEntity)}; choices are ${[...Object.keys(data.tables[relation.targetGroup].keys), ...Object.keys(data.tables[relation.targetGroup].columns)].join(", ")}).`);
           }
         }
   	  }

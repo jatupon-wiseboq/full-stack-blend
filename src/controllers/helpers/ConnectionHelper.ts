@@ -117,27 +117,29 @@ const CreateTransaction = async (options) => {
 	let documentDatabaseConnection = null;
 	let documentDatabaseSession = null;
 	
-	if (RelationalDatabaseORMClient) {
+	if (RelationalDatabaseORMClient && !options.manual) {
 		relationalDatabaseTransaction = await RelationalDatabaseORMClient.transaction();
 	}
 	if (DocumentDatabaseClient) {
 		documentDatabaseConnection = await DocumentDatabaseClient.connect();
-		try {
-			documentDatabaseSession = DocumentDatabaseClient.startSession({
-				retryWrites: true,
-				causalConsistency: true
-			});
-			documentDatabaseSession.startTransaction({
-				readPreference: 'primary',
-				readConcern: {
-					level: 'local'
-				},
-				writeConcern: {
-					w: 'majority'
-				}
-	    });
-	 	} catch {
-	 		documentDatabaseSession = null;
+		if (!options.manual) {
+			try {
+				documentDatabaseSession = DocumentDatabaseClient.startSession({
+					retryWrites: true,
+					causalConsistency: true
+				});
+				documentDatabaseSession.startTransaction({
+					readPreference: 'primary',
+					readConcern: {
+						level: 'local'
+					},
+					writeConcern: {
+						w: 'majority'
+					}
+		    });
+		 	} catch {
+		 		documentDatabaseSession = null;
+		 	}
 	 	}
 	}
 	
@@ -160,9 +162,13 @@ const CreateTransaction = async (options) => {
 				if (documentDatabaseConnection) documentDatabaseConnection.close();
 			}
 		},
-		relationalDatabaseTransaction: relationalDatabaseTransaction,
-		documentDatabaseConnection: documentDatabaseConnection,
-		documentDatabaseSession: documentDatabaseSession
+		get relationalDatabaseTransaction(): any { return relationalDatabaseTransaction; },
+		get documentDatabaseConnection(): any { return documentDatabaseConnection; },
+		get documentDatabaseSession(): any { return documentDatabaseSession; },
+		setup: (_relationalDatabaseTransaction: any, _documentDatabaseSession: any) => {
+			relationalDatabaseTransaction = _relationalDatabaseTransaction;
+			documentDatabaseSession = _documentDatabaseSession;
+		}
 	};
 };
 
