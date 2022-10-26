@@ -53,8 +53,8 @@ const removeAndRestoreDisabledAttributeForInvoking = (button: any, callback: any
 	button.setAttribute = setAttribute;
 	button.getAttribute = getAttribute;
 	button.removeAttribute = removeAttribute;
-
-	if (HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
+	
+	if (!detectedChange && HTMLHelper.getAttribute(button, 'disabled') == null && disabled != null) HTMLHelper.setAttribute(button, 'disabled', disabled);
 };
 
 const DataManipulationHelper = {
