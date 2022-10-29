@@ -664,7 +664,7 @@ ${rootScript}`;
       }
     }
   },
-  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true) {
+  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
     
@@ -701,6 +701,10 @@ ${rootScript}`;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
+        let ssrData = null;
+        let ssrAccumulateNotation = null;
+        let ssrDisplayLogic = null;
+        let ssrDisplayStatement = null;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
@@ -708,6 +712,54 @@ ${rootScript}`;
         let submitType = null;
         let submitCrossType = null;
         let activeAnimation = null;
+        
+        let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
+        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
+        let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
+            element : element.parentNode, 'internal-fsb-ssr-data');
+        
+        if (dotNotation) {
+          if (consumableTagItem) {
+            if (tag == 'input') {
+              if (['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'value';
+              } else if (['radio'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'checked';
+                consumableTagItem[2] = '{';
+                consumableTagItem[3] = ' == \'' + HTMLHelper.getAttribute(element, 'value') + '\'}';
+              } else if (['checkbox'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'checked';
+                consumableTagItem[2] = '{';
+                consumableTagItem[3] = ' === true}';
+              }
+            }
+            
+            let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
+            if (index != -1) {
+              _attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
+            } else {
+              _attributes.push({
+                name: consumableTagItem[1],
+                value: consumableTagItem[2] + `___DATA___` + consumableTagItem[3]
+              });
+            }
+          }
+          
+          if (consumableClassItem) {
+            let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
+            if (index != -1) {
+              _attributes[index].value = consumableClassItem[2] + `___DATA___` + consumableClassItem[3];
+            } else {
+              _attributes.push({
+                name: consumableClassItem[1],
+                value: consumableClassItem[2] + `___DATA___` + consumableClassItem[3]
+              });
+            }
+          }
+        }
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -789,6 +841,18 @@ ${rootScript}`;
               break;
             case 'internal-fsb-react-class':
               if (!!attribute.value) reactClass = attribute.value;
+              break;
+            case 'internal-fsb-ssr-data':
+              if (!!attribute.value) ssrData = attribute.value;
+              break;
+            case 'internal-fsb-ssr-accumulate':
+              if (!!attribute.value) ssrAccumulateNotation = attribute.value;
+              break;
+            case 'internal-fsb-ssr-display-logic':
+              if (!!attribute.value) ssrDisplayLogic = attribute.value;
+              break;
+            case 'internal-fsb-ssr-display-statement':
+              if (!!attribute.value) ssrDisplayStatement = attribute.value;
               break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
@@ -908,8 +972,49 @@ ${rootScript}`;
         }
         
         // For HTML5 fallback rendering:
-        // TODO: still skip dot notation in fallback mode.
+        //
+        
+        // Dot Notation Feature
         // 
+        if (ssrAccumulateNotation == 'reset') cumulatedDotNotation = '';
+        if (ssrData) ssrData = ssrData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
+        
+        let _indent = indent;
+        let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + ssrData);
+        let _nodeData = 'data';
+        if (ssrData !== null) {
+          if (!_leafNode) {
+            lines.push(indent + 'each data, ' + dotNotationChar + ' in DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '", undefined, true, ' + (ssrDisplayLogic == 'always') + ')');
+            
+            indent += '  ';
+            
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '[" + ' + dotNotationChar + ' + "].';
+          } else {
+            _nodeData = 'DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '")';
+            
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '.';
+          }
+        }
+        
+        // Rendering Logic
+        // 
+        if (ssrDisplayLogic == 'statement') {
+        	lines.push(`${indent}if ${ssrDisplayStatement || 'true'}`);
+        	indent += '  ';
+        }
+        
+        // Dot Notation Feature (Continue 1/2)
+        // 
+        if (ssrData && !_leafNode) {
+          attributes.splice(0, 0, 'data-fsb-index=' + dotNotationChar);
+        }
+        
+        if (ssrData !== null) {
+          if (!_leafNode) {
+            let charcode = dotNotationChar.charCodeAt() + 1;
+            dotNotationChar = String.fromCharCode(charcode);
+          }
+        }
         
         // Include Another React Class Feature
         // 
@@ -938,7 +1043,7 @@ ${rootScript}`;
           
           attributes = Array.from(new Set(attributes));
           
-          if (attributes.length != 0) composed += '(' + attributes.join(', ') + ')';
+          if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           lines.push(composed);
           
@@ -947,7 +1052,7 @@ ${rootScript}`;
           }
           
           for (let child of children) {
-            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false);
+            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
           }
         }
       }

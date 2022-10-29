@@ -85,6 +85,28 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       .section-body
         +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-data-wizard-manipulate-into'], inline: true, button: false, placeholder: 'collection.collection[i]'}")
     .section-hr
+  .section-container(internal-fsb-not-for="hasParentReactComponent")
+    .section-title
+      | Server-Side Rendering
+    .section-subtitle
+      | Hierarchical Dot Notation
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-ssr-data'], inline: true, button: false, placeholder: 'collection.collection[i].column'}")
+    .section-subtitle
+      | Accumulate Path
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-ssr-accumulate'], inline: true, button: false}")
+    .section-subtitle
+      | Render Logic
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-ssr-display-logic'], inline: true, button: false}")
+    .section-subtitle(internal-fsb-for="internal-fsb-ssr-display-logic:statement")
+      | Render Displaying Statement
+    .section-body(internal-fsb-for="internal-fsb-ssr-display-logic:statement")
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-ssr-display-statement'], inline: true, button: false, placeholder: 'data.rows.length != 0'}")
+    .section-note
+      | Having an automatic generated hierarchical data, the notation extends from its parent, and non-leaf node makes it repeating.
+    .section-hr(internal-fsb-not-for="hasParentReactComponent")
   div
     .section-container(internal-fsb-for="hasParentReactComponent")
       .section-title
@@ -108,7 +130,7 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       .section-subtitle(internal-fsb-for="internal-fsb-react-display-logic:statement")
         | Render Displaying Statement
       .section-body(internal-fsb-for="internal-fsb-react-display-logic:statement")
-        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-display-statement'], inline: true, button: false, placeholder: 'true'}")
+        +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-react-display-statement'], inline: true, button: false, placeholder: 'data.rows.length != 0'}")
       .section-subtitle
         | Group of Fields Division
       .section-body
