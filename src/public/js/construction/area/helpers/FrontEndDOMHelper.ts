@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {WorkspaceHelper} from './WorkspaceHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK} from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -713,8 +713,8 @@ ${rootScript}`;
         let submitCrossType = null;
         let activeAnimation = null;
         
-        let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
-        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
+        let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK.filter(item => (item[0] == tag))[0];
+        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
         let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
             element : element.parentNode, 'internal-fsb-ssr-data');
         
@@ -727,23 +727,25 @@ ${rootScript}`;
               } else if (['radio'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
                 consumableTagItem = CodeHelper.clone(consumableTagItem);
                 consumableTagItem[1] = 'checked';
-                consumableTagItem[2] = '{';
-                consumableTagItem[3] = ' == \'' + HTMLHelper.getAttribute(element, 'value') + '\'}';
+                consumableTagItem[2] = '(';
+                consumableTagItem[3] = ' == \'' + HTMLHelper.getAttribute(element, 'value') + '\')';
               } else if (['checkbox'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
                 consumableTagItem = CodeHelper.clone(consumableTagItem);
                 consumableTagItem[1] = 'checked';
-                consumableTagItem[2] = '{';
-                consumableTagItem[3] = ' === true}';
+                consumableTagItem[2] = '(';
+                consumableTagItem[3] = ' === true)';
               }
             }
             
             let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
             if (index != -1) {
               _attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
+              _attributes[index].consumable = true;
             } else {
               _attributes.push({
                 name: consumableTagItem[1],
-                value: consumableTagItem[2] + `___DATA___` + consumableTagItem[3]
+                value: consumableTagItem[2] + `___DATA___` + consumableTagItem[3],
+                consumable: true
               });
             }
           }
@@ -752,10 +754,12 @@ ${rootScript}`;
             let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
             if (index != -1) {
               _attributes[index].value = consumableClassItem[2] + `___DATA___` + consumableClassItem[3];
+              _attributes[index].consumable = true;
             } else {
               _attributes.push({
                 name: consumableClassItem[1],
-                value: consumableClassItem[2] + `___DATA___` + consumableClassItem[3]
+                value: consumableClassItem[2] + `___DATA___` + consumableClassItem[3],
+                consumable: true
               });
             }
           }
@@ -898,6 +902,8 @@ ${rootScript}`;
                     _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME, !!value.capture]);
                   }
                 }
+              } else if (attribute.consumable) {
+              	attributes.push(attribute.name + '=' + attribute.value);
               } else {
                 attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 
@@ -981,7 +987,9 @@ ${rootScript}`;
         
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + ssrData);
-        let _nodeData = 'data';
+        let _splited = cumulatedDotNotation.trim().split('.').filter(item => item != '');
+        let _notation = ssrData || _splited[_splited.length - 1];
+        let _nodeData = null;
         if (ssrData !== null) {
           if (!_leafNode) {
             lines.push(indent + 'each data, ' + dotNotationChar + ' in DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '", undefined, true, ' + (ssrDisplayLogic == 'always') + ')');
@@ -990,11 +998,10 @@ ${rootScript}`;
             
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '[" + ' + dotNotationChar + ' + "].';
           } else {
-            _nodeData = 'DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '")';
-            
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '.';
           }
         }
+        _nodeData = _nodeData || 'DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation.replace(/\.$/, '') + '")';
         
         // Rendering Logic
         // 
@@ -1041,18 +1048,28 @@ ${rootScript}`;
           if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
           
+          const inline = attributes.filter(attribute => attribute.startsWith('__INLINE__'));
+          attributes = attributes.filter(attribute => !attribute.startsWith('__INLINE__'));
           attributes = Array.from(new Set(attributes));
           
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           lines.push(composed);
           
-          if (_localEvents.length != 0) {
-            executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
-          }
-          
-          for (let child of children) {
-            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+          if (inline[0]) {
+          	indent += '  ';
+          	composed = indent;
+          	composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
+          	
+          	lines.push(composed);
+          } else {
+          	if (_localEvents.length != 0) {
+	            executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
+	          }
+	          
+	          for (let child of children) {
+	            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+	          }
           }
         }
       }
