@@ -1,4 +1,4 @@
-import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST} from '../Constants';
 
 const DEFAULTS = {
   Import: `
@@ -387,7 +387,7 @@ ${MERGE_END_BEGIN}`);
                 }
                 
                 if (executions) {
-                		executions.push(`controller.register('${info['internal-fsb-guid']}', '${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '').toLowerCase()}', '${FUNCTION_NAME}', ${!!value['capture']});`);
+                		executions.push(`controller.register('${info['internal-fsb-guid']}', '${CAMEL_OF_EVENTS_DICTIONARY[name].replace(/^on/, '').toLowerCase()}', '${FUNCTION_NAME}', ${!!value['capture']}, ${(FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(info['internal-fsb-class']) != -1) ? 'true' : 'false'});`);
                 }
             } else {
                 if (code.indexOf(FUNCTION_BEGIN_BEGIN) != -1) {

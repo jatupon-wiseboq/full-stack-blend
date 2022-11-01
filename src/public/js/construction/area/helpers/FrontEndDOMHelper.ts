@@ -47,9 +47,9 @@ var FrontEndDOMHelper = {
   
   ${functionDeclarations}
   
-  public register(guid, eventName, functionName, capturing) {
+  public register(guid, eventName, functionName, capturing, forward) {
     if (!this.dictionary[guid]) this.dictionary[guid] = {};
-    this.dictionary[guid][eventName] = [functionName, capturing];
+    this.dictionary[guid][eventName] = [functionName, capturing, forward];
   }
   public listen(guid) {
     if (this.dictionary[guid]) {
@@ -58,7 +58,8 @@ var FrontEndDOMHelper = {
           const eventName = key;
           const functionName = this.dictionary[guid][key][0];
           const capturing = !!this.dictionary[guid][key][1];
-          const element = this.getElementUsingGUID(guid);
+          const forward = this.dictionary[guid][key][2];
+          const element = (!forward) ? this.getElementUsingGUID(guid) : this.getElementUsingGUID(guid).firstElementChild;
           
           element.addEventListener(eventName, this[functionName].bind(this), capturing);
         }
