@@ -258,7 +258,7 @@ class Transformer extends Base<Props, State> {
             this.currentTransform = (fsbTransform != Default) ? fsbTransform : null;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
-    				if (!this.state.attributeValues['internal-fsb-guid']) {
+    				if (this.state.attributeValues['internal-fsb-guid']) {
 		            perform('update', {
 		                styles: [
 		                    {
