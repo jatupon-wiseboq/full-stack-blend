@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {WorkspaceHelper} from './WorkspaceHelper';
 import {SchemaHelper} from './SchemaHelper';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS} from '../../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK} from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -47,9 +47,9 @@ var FrontEndDOMHelper = {
   
   ${functionDeclarations}
   
-  public register(guid, eventName, functionName, capturing) {
+  public register(guid, eventName, functionName, capturing, forward) {
     if (!this.dictionary[guid]) this.dictionary[guid] = {};
-    this.dictionary[guid][eventName] = [functionName, capturing];
+    this.dictionary[guid][eventName] = [functionName, capturing, forward];
   }
   public listen(guid) {
     if (this.dictionary[guid]) {
@@ -58,7 +58,8 @@ var FrontEndDOMHelper = {
           const eventName = key;
           const functionName = this.dictionary[guid][key][0];
           const capturing = !!this.dictionary[guid][key][1];
-          const element = this.getElementUsingGUID(guid);
+          const forward = this.dictionary[guid][key][2];
+          const element = (!forward) ? this.getElementUsingGUID(guid) : this.getElementUsingGUID(guid).firstElementChild;
           
           element.addEventListener(eventName, this[functionName].bind(this), capturing);
         }
@@ -664,7 +665,7 @@ ${rootScript}`;
       }
     }
   },
-  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true) {
+  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
     
@@ -701,6 +702,10 @@ ${rootScript}`;
         let reactClassComposingInfoClassName = null;
         let reactClassComposingInfoGUID = null;
         let reactClassForPopup = null;
+        let ssrData = null;
+        let ssrAccumulateNotation = null;
+        let ssrDisplayLogic = null;
+        let ssrDisplayStatement = null;
         let inheritingID = null;
         let inheritingAttributes = [];
         let inheritingStyles = [];
@@ -708,6 +713,58 @@ ${rootScript}`;
         let submitType = null;
         let submitCrossType = null;
         let activeAnimation = null;
+        
+        let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK.filter(item => (item[0] == tag))[0];
+        let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
+        let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
+            element : element.parentNode, 'internal-fsb-ssr-data');
+        
+        if (dotNotation) {
+          if (consumableTagItem) {
+            if (tag == 'input') {
+              if (['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'value';
+              } else if (['radio'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'checked';
+                consumableTagItem[2] = '(';
+                consumableTagItem[3] = ' == \'' + HTMLHelper.getAttribute(element, 'value') + '\')';
+              } else if (['checkbox'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
+                consumableTagItem = CodeHelper.clone(consumableTagItem);
+                consumableTagItem[1] = 'checked';
+                consumableTagItem[2] = '(';
+                consumableTagItem[3] = ' === true)';
+              }
+            }
+            
+            let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
+            if (index != -1) {
+              _attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
+              _attributes[index].consumable = true;
+            } else {
+              _attributes.push({
+                name: consumableTagItem[1],
+                value: consumableTagItem[2] + `___DATA___` + consumableTagItem[3],
+                consumable: true
+              });
+            }
+          }
+          
+          if (consumableClassItem) {
+            let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
+            if (index != -1) {
+              _attributes[index].value = consumableClassItem[2] + `___DATA___` + consumableClassItem[3];
+              _attributes[index].consumable = true;
+            } else {
+              _attributes.push({
+                name: consumableClassItem[1],
+                value: consumableClassItem[2] + `___DATA___` + consumableClassItem[3],
+                consumable: true
+              });
+            }
+          }
+        }
         
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
@@ -790,6 +847,18 @@ ${rootScript}`;
             case 'internal-fsb-react-class':
               if (!!attribute.value) reactClass = attribute.value;
               break;
+            case 'internal-fsb-ssr-data':
+              if (!!attribute.value) ssrData = attribute.value;
+              break;
+            case 'internal-fsb-ssr-accumulate':
+              if (!!attribute.value) ssrAccumulateNotation = attribute.value;
+              break;
+            case 'internal-fsb-ssr-display-logic':
+              if (!!attribute.value) ssrDisplayLogic = attribute.value;
+              break;
+            case 'internal-fsb-ssr-display-statement':
+              if (!!attribute.value) ssrDisplayStatement = attribute.value;
+              break;
             case 'internal-fsb-data-controls':
               if (!!attribute.value) submitControls = attribute.value.trim();
               break;
@@ -834,6 +903,8 @@ ${rootScript}`;
                     _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME, !!value.capture]);
                   }
                 }
+              } else if (attribute.consumable) {
+              	attributes.push(attribute.name + '=' + attribute.value);
               } else {
                 attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
                 
@@ -908,8 +979,50 @@ ${rootScript}`;
         }
         
         // For HTML5 fallback rendering:
-        // TODO: still skip dot notation in fallback mode.
+        //
+        
+        // Dot Notation Feature
         // 
+        if (ssrAccumulateNotation == 'reset') cumulatedDotNotation = '';
+        if (ssrData) ssrData = ssrData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
+        
+        let _indent = indent;
+        let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + ssrData);
+        let _splited = cumulatedDotNotation.trim().split('.').filter(item => item != '');
+        let _notation = ssrData || _splited[_splited.length - 1];
+        let _nodeData = null;
+        if (ssrData !== null) {
+          if (!_leafNode) {
+            lines.push(indent + 'each data, ' + dotNotationChar + ' in DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '", undefined, true, ' + (ssrDisplayLogic == 'always') + ')');
+            
+            indent += '  ';
+            
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '[" + ' + dotNotationChar + ' + "].';
+          } else {
+            cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '.';
+          }
+        }
+        _nodeData = _nodeData || 'DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation.replace(/\.$/, '') + '")';
+        
+        // Rendering Logic
+        // 
+        if (ssrDisplayLogic == 'statement') {
+        	lines.push(`${indent}if ${ssrDisplayStatement || 'true'}`);
+        	indent += '  ';
+        }
+        
+        // Dot Notation Feature (Continue 1/2)
+        // 
+        if (ssrData && !_leafNode) {
+          attributes.splice(0, 0, 'data-fsb-index=' + dotNotationChar);
+        }
+        
+        if (ssrData !== null) {
+          if (!_leafNode) {
+            let charcode = dotNotationChar.charCodeAt() + 1;
+            dotNotationChar = String.fromCharCode(charcode);
+          }
+        }
         
         // Include Another React Class Feature
         // 
@@ -936,18 +1049,28 @@ ${rootScript}`;
           if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
           
+          const inline = attributes.filter(attribute => attribute.startsWith('__INLINE__'));
+          attributes = attributes.filter(attribute => !attribute.startsWith('__INLINE__'));
           attributes = Array.from(new Set(attributes));
           
-          if (attributes.length != 0) composed += '(' + attributes.join(', ') + ')';
+          if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           lines.push(composed);
           
-          if (_localEvents.length != 0) {
-            executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
-          }
-          
-          for (let child of children) {
-            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false);
+          if (inline[0]) {
+          	indent += '  ';
+          	composed = indent;
+          	composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
+          	
+          	lines.push(composed);
+          } else {
+          	if (_localEvents.length != 0) {
+	            executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
+	          }
+	          
+	          for (let child of children) {
+	            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+	          }
           }
         }
       }

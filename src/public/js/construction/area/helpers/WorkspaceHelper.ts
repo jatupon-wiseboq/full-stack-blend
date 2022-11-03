@@ -576,6 +576,11 @@ var WorkspaceHelper = {
     for (const placing of placings) {
    		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
    	}
+    
+    const measurings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-measuring', holder));
+    for (const measuring of measurings) {
+   		HTMLHelper.removeClass(measuring, 'internal-fsb-measuring');
+   	}
    	
    	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holder));
     for (const element of classes) {
@@ -629,6 +634,11 @@ var WorkspaceHelper = {
     const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor', holderWindow.document));
     for (const placing of placings) {
    		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
+   	}
+    
+    const measurings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-measuring', holderWindow.document));
+    for (const measuring of measurings) {
+   		HTMLHelper.removeClass(measuring, 'internal-fsb-measuring');
    	}
    	
    	const classes = Array.from(HTMLHelper.getElementsByAttribute('class', holderWindow.document));

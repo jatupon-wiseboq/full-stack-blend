@@ -71,6 +71,8 @@ let options = {
 		"data-audit-collecting-option": CONSTANTS.BACKEND_AUDIT_COLLECTING_OPTIONS,
 		"data-worker-group-1": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_1,
 		"data-worker-group-2": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_2,
+    "internal-fsb-ssr-accumulate": CONSTANTS.SSR_ACCUMULATE_OPTIONS,
+    "internal-fsb-ssr-display-logic": CONSTANTS.SSR_DISPLAY_LOGIC_OPTIONS,
 
 		// Animations
 		// 
