@@ -29,9 +29,9 @@ include ../../mixin/CreateReactComponent
       | Name
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['data-title-name'], inline: true, button: false}")
-    .section-subtitle
+    .section-subtitle(internal-fsb-for="internal-fsb-class:Queue")
       | Group
-    .section-body
+    .section-body(internal-fsb-for="internal-fsb-class:Queue")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-worker-group-1', 'data-worker-group']}")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['data-worker-group-2', 'data-worker-group']}")
     .section-note(internal-fsb-for="internal-fsb-class:RESTful")
