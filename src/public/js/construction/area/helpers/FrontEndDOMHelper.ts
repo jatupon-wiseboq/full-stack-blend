@@ -665,7 +665,7 @@ ${rootScript}`;
       }
     }
   },
-  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i') {
+  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
     
@@ -686,13 +686,15 @@ ${rootScript}`;
         }
       } else {
         let tag = element.tagName.toLowerCase().replace('ruffle-embed', 'embed');
+        let _props = [];
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let classes = '';
         let styles = null;
         let bindingStyles = {};
         let _globalEvents = [];
         let _localEvents = [];
-        let attributes = [];
+        let attributes = forwardAttributes && CodeHelper.clone(forwardAttributes) || [];
+        let _forwardAttributes = [];
         let isForChildren = false;
         let isReactElement = false;
         let reactMode = null;
@@ -906,7 +908,11 @@ ${rootScript}`;
               } else if (attribute.consumable) {
               	attributes.push(attribute.name + '=' + attribute.value);
               } else {
-                attributes.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
+                } else {
+                  _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
+                }
                 
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
                   inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
@@ -944,6 +950,13 @@ ${rootScript}`;
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
           attributes.push(`internal-fsb-forward="1"`);
+        }
+        
+        if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
+        	_forwardAttributes = [..._props];
+        } else {
+        	attributes = [...attributes, ..._props];
+        	_forwardAttributes = [];
         }
         
         if (_globalEvents.length != 0) executions.push(_globalEvents.join('\n'));
@@ -1069,7 +1082,7 @@ ${rootScript}`;
 	          }
 	          
 	          for (let child of children) {
-	            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar);
+	            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
 	          }
           }
         }
