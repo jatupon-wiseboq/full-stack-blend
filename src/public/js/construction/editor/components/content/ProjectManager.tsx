@@ -28,6 +28,7 @@ let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
 });
 
+// TODO: Inherit Components.ProjectManager instead (EndpointManager.)
 class ProjectManager extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
@@ -412,7 +413,7 @@ class ProjectManager extends Base<Props, State> {
                 if (pages && pages[0]) {
                 	let combinedHTMLPage = `.
   <!DOCTYPE html>
-html
+html(lang=headers && headers.language || 'en')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.

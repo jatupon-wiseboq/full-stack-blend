@@ -285,7 +285,7 @@ class EndpointManager extends Base<Props, State> {
           if (pages && pages[0]) {
           	let combinedHTMLPage = `.
   <!DOCTYPE html>
-html
+html(lang=headers && headers.language || 'en')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
