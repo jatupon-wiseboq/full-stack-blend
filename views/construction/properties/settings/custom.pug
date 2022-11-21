@@ -1,0 +1,14 @@
+include ../../mixin/CreateReactComponent
+.section-container
+  .section-title
+    | Custom Project Settings
+  .section-subtitle
+    | Front-End Keys
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
+  .section-subtitle
+    | Back-End Keys
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
+  .section-subtitle
+    | These will be available via Project.Settings.[key], which can be used in Element Coding, e.g., option or custom code.

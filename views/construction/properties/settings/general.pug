@@ -1,0 +1,10 @@
+include ../../mixin/CreateReactComponent
+.section-container
+  .section-title
+    | Editor Settings
+  .section-subtitle
+    | Workspace Mode
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceMode']}")
+  .section-note
+    | Choose a workspace mode which you will working with. These will disable options, if necessary, to prevent colleague from modifying or ruining the masterpiece. 

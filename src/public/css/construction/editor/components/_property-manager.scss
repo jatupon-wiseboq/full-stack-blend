@@ -23,6 +23,7 @@
 		    color: #444;
 	      position: relative;
 	      border-radius: 3px;
+		    cursor: pointer;
 	      
   	    .treenode-body {
   	      padding: 10px 0;
@@ -46,6 +47,7 @@
       .treenode-container.selected {
         background-color: #007bff;
 		    color: #fff;
+		    cursor: default;
       }
       
       &#property-localization, &#property-settings {

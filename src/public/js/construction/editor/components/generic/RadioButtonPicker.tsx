@@ -2,110 +2,10 @@ import {TextHelper} from '../../../helpers/TextHelper';
 import {FontHelper} from '../../../helpers/FontHelper';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
-import * as CONSTANTS from '../../../Constants';
+import {GENERIC_RADIO_OPTION_PRESETS, GENERIC_RADIO_OPTION_PRESETS_MAPPING} from '../../../Constants';
 
-let options = {
-		// Front-End Options
-		// 
-    "text-align": CONSTANTS.TEXT_ALIGN_OPTIONS,
-    "font-style": CONSTANTS.FONT_STYLE_OPTIONS,
-    "table-cell-0": CONSTANTS.TABLE_CELL_0_OPTIONS,
-    "table-cell-1": CONSTANTS.TABLE_CELL_1_OPTIONS,
-    "internal-fsb-react-mode": CONSTANTS.REACT_MODE_OPTIONS,
-    "disabled": CONSTANTS.ENABLED_OPTIONS,
-    "checked": CONSTANTS.CHECKED_OPTIONS,
-    "readonly": CONSTANTS.READONLY_OPTIONS,
-    "required": CONSTANTS.REQUIRE_OPTIONS,
-    "multiple": CONSTANTS.MULTIPLE_OPTIONS,
-    "rel": CONSTANTS.SEO_FOLLOW_OPTIONS,
-    "data-source-type-1": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_1,
-    "data-source-type-2": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_2,
-    "data-source-type-3": CONSTANTS.DATA_SOURCE_TYPE_OPTIONS_3,
-    "data-wizard-type-1": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_1,
-    "data-wizard-type-2": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_2,
-    "data-wizard-type-3": CONSTANTS.DATA_WIZARD_TYPE_OPTIONS_3,
-    "internal-fsb-textbox-mode": CONSTANTS.TEXTBOX_MODE_OPTIONS,
-    "-fsb-background-type": CONSTANTS.BACKGROUND_TYPE_OPTIONS,
-    "type": CONSTANTS.TEXT_INPUT_TYPE_OPTIONS,
-    "data-wizard-cross-operation": CONSTANTS.CROSS_OPERATION_OPTIONS,
-    "data-wizard-real-time-update": CONSTANTS.DATA_WIZARD_REAL_TIME_UPDATE,
-    "data-value-source": CONSTANTS.DATA_VALUE_SOURCE_OPTIONS,
-    "data-validation-format-1": CONSTANTS.DATA_VALUE_FORMAT_OPTIONS_1,
-    "data-validation-format-2": CONSTANTS.DATA_VALUE_FORMAT_OPTIONS_2,
-    "data-validation-format-3": CONSTANTS.DATA_VALUE_FORMAT_OPTIONS_3,
-    "internal-fsb-react-division": CONSTANTS.REACT_FIELD_DIVISION_OPTIONS,
-    "internal-fsb-react-accumulate": CONSTANTS.REACT_ACCUMULATE_OPTIONS,
-    "internal-fsb-react-display-logic": CONSTANTS.REACT_DISPLAY_LOGIC_OPTIONS,
-    "internal-fsb-seo-emphasizer": CONSTANTS.SEO_EMPHASIZE_OPTIONS,
-    
-    // Back-End Options
-		// 
-		"data-column-type": CONSTANTS.BACKEND_DATA_COLUMN_TYPE,
-		"data-field-type-1": CONSTANTS.BACKEND_DATA_FIELD_TYPE_1,
-		"data-field-type-2": CONSTANTS.BACKEND_DATA_FIELD_TYPE_2,
-		"data-field-type-3": CONSTANTS.BACKEND_DATA_FIELD_TYPE_3,
-		"data-field-type-4": CONSTANTS.BACKEND_DATA_FIELD_TYPE_4,
-		"data-required": CONSTANTS.BACKEND_DATA_REQUIRED,
-		"data-unique": CONSTANTS.BACKEND_DATA_UNIQUE,
-		"data-force-constraint": CONSTANTS.BACKEND_DATA_FORCE_CONSTRAINT,
-		"data-lock-mode": CONSTANTS.BACKEND_DATA_LOCK_MODE,
-		"data-lock-matching-mode": CONSTANTS.BACKEND_DATA_LOCK_MATCHING_MODE,
-		"data-rendering-condition-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MODE,
-		"data-rendering-condition-matching-mode": CONSTANTS.BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
-		"data-verb": CONSTANTS.BACKEND_VERB,
-		"data-forward-mode": CONSTANTS.BACKEND_FORWARD_MODE_OPTIONS,
-		"data-forward-option": CONSTANTS.BACKEND_FORWARD_OPTIONS,
-		"data-forward-recursive": CONSTANTS.BACKEND_FORWARD_RECURSIVE_OPTIONS,
-		"data-missing-enable": CONSTANTS.BACKEND_SCHEMA_MISSING_ENABLE_OPTIONS,
-		"data-missing-default": CONSTANTS.BACKEND_SCHEMA_MISSING_DEFAULT_OPTIONS,
-		"data-missing-action-development": CONSTANTS.BACKEND_SCHEMA_MISSING_ACTION_DEVELOPMENT_OPTIONS,
-		"data-missing-action-production": CONSTANTS.BACKEND_SCHEMA_MISSING_ACTION_PRODUCTION_OPTIONS,
-		"data-mismatch-enable": CONSTANTS.BACKEND_SCHEMA_MISMATCH_ENABLE_OPTIONS,
-		"data-mismatch-default": CONSTANTS.BACKEND_SCHEMA_MISMATCH_DEFAULT_OPTIONS,
-		"data-mismatch-action-development": CONSTANTS.BACKEND_SCHEMA_MISMATCH_ACTION_DEVELOPMENT_OPTIONS,
-		"data-mismatch-action-production": CONSTANTS.BACKEND_SCHEMA_MISMATCH_ACTION_PRODUCTION_OPTIONS,
-		"data-mismatch-action": CONSTANTS.BACKEND_SCHEMA_MISMATCH_ACTION_OPTIONS,
-		"data-timing-days": CONSTANTS.BACKEND_TIMING_DAYS_OPTIONS,
-		"data-timing-minutes-1": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_1,
-		"data-timing-minutes-2": CONSTANTS.BACKEND_TIMING_MINUTES_OPTIONS_2,
-		"data-audit-collecting-option": CONSTANTS.BACKEND_AUDIT_COLLECTING_OPTIONS,
-		"data-worker-group-1": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_1,
-		"data-worker-group-2": CONSTANTS.BACKEND_DATA_WORKER_QUEUE_GROUP_2,
-    "internal-fsb-ssr-accumulate": CONSTANTS.SSR_ACCUMULATE_OPTIONS,
-    "internal-fsb-ssr-display-logic": CONSTANTS.SSR_DISPLAY_LOGIC_OPTIONS,
-
-		// Animations
-		// 
-		"animation-mode": CONSTANTS.ANIMATION_TIMING_MODE,
-		"animation-scrolling-triggering": CONSTANTS.ANIMATION_SCROLLING_TRIGGERING,
-		"animation-easing-mode": CONSTANTS.ANIMATION_EASING_MODE,
-		"animation-easing-fn-1": CONSTANTS.ANIMATION_EASING_FN_1,
-		"animation-repeating-mode": CONSTANTS.ANIMATION_REPEATING_MODE,
-		"animation-state": CONSTANTS.ANIMATION_DEFAULT_STATE,
-		"animation-test-state": CONSTANTS.ANIMATION_DEFAULT_TEST_STATE,
-		"animation-synchronize": CONSTANTS.ANIMATION_SYNCHRONIZE_MODE
-}
-let map = {
-    "data-source-type-1": "internal-fsb-data-source-type",
-    "data-source-type-2": "internal-fsb-data-source-type",
-    "data-source-type-3": "internal-fsb-data-source-type",
-    "data-wizard-type-1": "internal-fsb-data-wizard-type",
-    "data-wizard-type-2": "internal-fsb-data-wizard-type",
-    "data-wizard-type-3": "internal-fsb-data-wizard-type",
-    "data-validation-format-1": "data-validation-format",
-    "data-validation-format-2": "data-validation-format",
-    "data-validation-format-3": "data-validation-format",
-    "data-field-type-1": "data-field-type",
-    "data-field-type-2": "data-field-type",
-    "data-field-type-3": "data-field-type",
-    "data-field-type-4": "data-field-type",
-    "data-timing-minutes-1": "data-timing-minutes",
-    "data-timing-minutes-2": "data-timing-minutes",
-    "animation-easing-fn-1": "animation-easing-fn",
-    "data-worker-group-1": "data-worker-group",
-    "data-worker-group-2": "data-worker-group"
-}
-
+const options = GENERIC_RADIO_OPTION_PRESETS;
+const map = GENERIC_RADIO_OPTION_PRESETS_MAPPING;
 const Mode = Object.freeze({
     STYLE:   Symbol("style"),
     ATTRIBUTE:  Symbol("attribute"),
@@ -284,7 +184,7 @@ class RadioButtonPicker extends Base<Props, State> {
 							            }]
 							        });
 		            		} else {
-			            		perform('style', {
+			            		perform('update', {
 							            styles: [{
 							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 							                value: (currentState) ? null : target

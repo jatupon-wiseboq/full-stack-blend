@@ -33,6 +33,7 @@ interface IProps {
   deep: number;
   nodes: [ITreeNode];
   onUpdate(node: ITreeNode);
+  onClick(node: ITreeNode);
   enableDragging: boolean;
   onStartDragging(node: ITreeNode);
   onDragging(point: Point);
@@ -117,6 +118,17 @@ class TreeNode extends React.Component<IProps, IState> {
 			if (this.draggingElement && this.draggingElement.parentNode) {
 				this.draggingElement.parentNode.removeChild(this.draggingElement);
 				this.draggingElement = null;
+			}
+		}
+		
+		private onClick(event) {
+			if (this.props.enableDragging) return;
+			
+			if (this.props.onClick != null) {
+				const originalElement = EventHelper.getCurrentElement(event);
+				const node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
+				
+				this.props.onClick(node);
 			}
 		}
     
@@ -269,7 +281,7 @@ class TreeNode extends React.Component<IProps, IState> {
                       )
                     }
                   })()}
-                  <div className={"treenode-body col offset-" + this.props.deep + (this.props.filter && (([node.name, node.id].join(' ').toLowerCase().indexOf(this.props.filter) != -1) ? ' matched' : ' unmatched') || '')} onMouseDown={this.mouseDown.bind(this)} node={node.id}>
+                  <div className={"treenode-body col offset-" + this.props.deep + (this.props.filter && (([node.name, node.id].join(' ').toLowerCase().indexOf(this.props.filter) != -1) ? ' matched' : ' unmatched') || '')} onMouseDown={this.mouseDown.bind(this)} node={node.id} onClick={this.onClick.bind(this)}>
                     {(() => {
                       if (this.props.children && this.props.editingControl) {
                       	const EditingControl = this.props.editingControl;

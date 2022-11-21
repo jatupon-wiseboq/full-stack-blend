@@ -2,7 +2,7 @@ import {FullStackBlend} from '../helpers/DeclarationHelper';
 import {EventHelper} from '../helpers/EventHelper';
 import {HTMLHelper} from '../helpers/HTMLHelper';
 import {RequestHelper} from '../helpers/RequestHelper';
-import {SIDEBAR_TOGGLING_ATTRIBUTES, SIDEBAR_TOGGLING_STYLES, SIDEBAR_TOGGLING_EXTENSIONS} from '../Constants';
+import {WORKSPACE_TOGGLING_ATTRIBUTES, WORKSPACE_TOGGLING_STYLES, WORKSPACE_TOGGLING_EXTENSIONS} from '../Constants';
 
 import './components/layout/GridPicker';
 import './components/layout/OffsetPicker';
@@ -235,14 +235,14 @@ let cachedUpdateEditorProperties = {};
       	prepareUpdateOptionalVisibilities();
       	
 	      if (content && content['attributes']) {
-	      	for (let key of SIDEBAR_TOGGLING_ATTRIBUTES) {
+	      	for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
 	      		let value = content['attributes'][key];
 	      		if (value) updateOptionalVisibilities(key, value);
 	      	}
 	      	let style = content['attributes']['style'];
 					if (style) {
 						let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
-						for (let key of SIDEBAR_TOGGLING_STYLES) {
+						for (let key of WORKSPACE_TOGGLING_STYLES) {
 							let value = hashMap[key];
 							if (value) updateOptionalVisibilities(key, value);
 		        }
@@ -253,7 +253,7 @@ let cachedUpdateEditorProperties = {};
 	      	if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
 	      	if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
 	      	
-	      	for (let key of SIDEBAR_TOGGLING_EXTENSIONS) {
+	      	for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
 	      		let value = content['extensions'][key];
 	      		if (value) updateOptionalVisibilities(key, value);
 	      	}

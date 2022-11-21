@@ -1,14 +1,36 @@
 .workspace-container
   .workspace-horizontal-container
     .workspace-horizontal-panel
-      .workspace-container
+      .workspace-container(style="border-right: solid 1px #c8c8c8;")
         .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
-          .workspace-vertical-panel
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:settings")
             .workspace-tab-container
               .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(onclick="swap('.properties-settings-general', null, null, null, null, true)")
                   input(type='radio', name='options', checked=true)
                   | General
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(onclick="swap('.properties-settings-custom', null, null, null, null, true)")
+                  input(type='radio', name='options', checked=true)
+                  | Custom Strings
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:localization")
+            .workspace-tab-container
+              .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(onclick="swap('.properties-properties-general', null, null, null, null, true)")
+                  input(type='radio', name='options', checked=true)
+                  | General
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(onclick="swap('.properties-properties-custom', null, null, null, null, true)")
+                  input(type='radio', name='options', checked=true)
+                  | Localized Strings
         .workspace-vertical-container.full-relative-size
-          .workspace-vertical-panel
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:settings", style="border-top: none;")
             .workspace-panel-container.scrollable
+              .panel.properties-settings-general.active
+                include ./settings/general
+              .panel.properties-settings-custom
+                include ./settings/custom
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:localization", style="border-top: none;")
+            .workspace-panel-container.scrollable
+              .panel.properties-properties-general.active
+                include ./localization/general
+              .panel.properties-properties-custom
+                include ./localization/custom

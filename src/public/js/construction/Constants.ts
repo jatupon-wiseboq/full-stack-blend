@@ -419,6 +419,7 @@ export const ANIMATION_TIMING_MODE = [["animationGroupMode", null, ["fa-hourglas
 export const ANIMATION_SCROLLING_TRIGGERING = [["-fsb-animation-scrolling-triggering", "top", ["fa-level-down", "Top"]], ["-fsb-animation-scrolling-triggering", null, ["fa-arrows-v", "Center"]], ["-fsb-animation-scrolling-triggering", "bottom", ["fa-level-up", "Bottom"]]];
 export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-sign-in", "In"]], ["-fsb-animation-easing-mode", null, ["fa-arrows-h", "In-Out"]], ["-fsb-animation-easing-mode", "out", ["fa-sign-out", "Out"]]];
 export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
+export const WORKSPACE_LOCK_MODE = [["workspaceMode", null, ["d-none", "Full-Stack"]], ["workspaceMode", "coder", ["d-none", "Coder"]], ["workspaceMode", "designer", ["d-none", "Designer"]], ["workspaceMode", "business", ["d-none", "Business"]]];
 export const EASING_COEFFICIENT = {
 	ease: 0.42
 };
@@ -437,6 +438,111 @@ export const BOX_SHADOW_1_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px",
 export const BOX_SHADOW_2_OPTIONS = [null, "{SIZE}", "0px", "1px", "2px", "3px", "4px", "5px", "10px", "15px", "20px"];
 export const BOX_SHADOW_3_OPTIONS = [null, "{COLOR}"];
 export const SCREEN_SIZE = [320, 576, 768, 992, 1200, 1920];
-export const SIDEBAR_TOGGLING_ATTRIBUTES = ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode', 'internal-fsb-animation-timing-mode', 'internal-fsb-data-validation-format', 'internal-fsb-react-display-logic', 'internal-fsb-react-division', 'data-forward-option', 'data-forward-mode', 'data-missing-enable', 'data-missing-default', 'data-mismatch-enable', 'data-mismatch-default', 'data-mismatch-action', 'internal-fsb-ssr-display-logic'];
-export const SIDEBAR_TOGGLING_STYLES = ['-fsb-animation-timing-mode'];
-export const SIDEBAR_TOGGLING_EXTENSIONS = ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox'];
+export const WORKSPACE_TOGGLING_ATTRIBUTES = ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode', 'internal-fsb-animation-timing-mode', 'internal-fsb-data-validation-format', 'internal-fsb-react-display-logic', 'internal-fsb-react-division', 'data-forward-option', 'data-forward-mode', 'data-missing-enable', 'data-missing-default', 'data-mismatch-enable', 'data-mismatch-default', 'data-mismatch-action', 'internal-fsb-ssr-display-logic'];
+export const WORKSPACE_TOGGLING_STYLES = ['-fsb-animation-timing-mode'];
+export const WORKSPACE_TOGGLING_EXTENSIONS = ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox', 'editingProperties'];
+export const GENERIC_RADIO_OPTION_PRESETS = {
+	// Front-End Options
+	// 
+  "text-align": TEXT_ALIGN_OPTIONS,
+  "font-style": FONT_STYLE_OPTIONS,
+  "table-cell-0": TABLE_CELL_0_OPTIONS,
+  "table-cell-1": TABLE_CELL_1_OPTIONS,
+  "internal-fsb-react-mode": REACT_MODE_OPTIONS,
+  "disabled": ENABLED_OPTIONS,
+  "checked": CHECKED_OPTIONS,
+  "readonly": READONLY_OPTIONS,
+  "required": REQUIRE_OPTIONS,
+  "multiple": MULTIPLE_OPTIONS,
+  "rel": SEO_FOLLOW_OPTIONS,
+  "data-source-type-1": DATA_SOURCE_TYPE_OPTIONS_1,
+  "data-source-type-2": DATA_SOURCE_TYPE_OPTIONS_2,
+  "data-source-type-3": DATA_SOURCE_TYPE_OPTIONS_3,
+  "data-wizard-type-1": DATA_WIZARD_TYPE_OPTIONS_1,
+  "data-wizard-type-2": DATA_WIZARD_TYPE_OPTIONS_2,
+  "data-wizard-type-3": DATA_WIZARD_TYPE_OPTIONS_3,
+  "internal-fsb-textbox-mode": TEXTBOX_MODE_OPTIONS,
+  "-fsb-background-type": BACKGROUND_TYPE_OPTIONS,
+  "type": TEXT_INPUT_TYPE_OPTIONS,
+  "data-wizard-cross-operation": CROSS_OPERATION_OPTIONS,
+  "data-wizard-real-time-update": DATA_WIZARD_REAL_TIME_UPDATE,
+  "data-value-source": DATA_VALUE_SOURCE_OPTIONS,
+  "data-validation-format-1": DATA_VALUE_FORMAT_OPTIONS_1,
+  "data-validation-format-2": DATA_VALUE_FORMAT_OPTIONS_2,
+  "data-validation-format-3": DATA_VALUE_FORMAT_OPTIONS_3,
+  "internal-fsb-react-division": REACT_FIELD_DIVISION_OPTIONS,
+  "internal-fsb-react-accumulate": REACT_ACCUMULATE_OPTIONS,
+  "internal-fsb-react-display-logic": REACT_DISPLAY_LOGIC_OPTIONS,
+  "internal-fsb-seo-emphasizer": SEO_EMPHASIZE_OPTIONS,
+  
+  // Back-End Options
+	// 
+	"data-column-type": BACKEND_DATA_COLUMN_TYPE,
+	"data-field-type-1": BACKEND_DATA_FIELD_TYPE_1,
+	"data-field-type-2": BACKEND_DATA_FIELD_TYPE_2,
+	"data-field-type-3": BACKEND_DATA_FIELD_TYPE_3,
+	"data-field-type-4": BACKEND_DATA_FIELD_TYPE_4,
+	"data-required": BACKEND_DATA_REQUIRED,
+	"data-unique": BACKEND_DATA_UNIQUE,
+	"data-force-constraint": BACKEND_DATA_FORCE_CONSTRAINT,
+	"data-lock-mode": BACKEND_DATA_LOCK_MODE,
+	"data-lock-matching-mode": BACKEND_DATA_LOCK_MATCHING_MODE,
+	"data-rendering-condition-mode": BACKEND_DATA_RENDERING_CONDITION_MODE,
+	"data-rendering-condition-matching-mode": BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
+	"data-verb": BACKEND_VERB,
+	"data-forward-mode": BACKEND_FORWARD_MODE_OPTIONS,
+	"data-forward-option": BACKEND_FORWARD_OPTIONS,
+	"data-forward-recursive": BACKEND_FORWARD_RECURSIVE_OPTIONS,
+	"data-missing-enable": BACKEND_SCHEMA_MISSING_ENABLE_OPTIONS,
+	"data-missing-default": BACKEND_SCHEMA_MISSING_DEFAULT_OPTIONS,
+	"data-missing-action-development": BACKEND_SCHEMA_MISSING_ACTION_DEVELOPMENT_OPTIONS,
+	"data-missing-action-production": BACKEND_SCHEMA_MISSING_ACTION_PRODUCTION_OPTIONS,
+	"data-mismatch-enable": BACKEND_SCHEMA_MISMATCH_ENABLE_OPTIONS,
+	"data-mismatch-default": BACKEND_SCHEMA_MISMATCH_DEFAULT_OPTIONS,
+	"data-mismatch-action-development": BACKEND_SCHEMA_MISMATCH_ACTION_DEVELOPMENT_OPTIONS,
+	"data-mismatch-action-production": BACKEND_SCHEMA_MISMATCH_ACTION_PRODUCTION_OPTIONS,
+	"data-mismatch-action": BACKEND_SCHEMA_MISMATCH_ACTION_OPTIONS,
+	"data-timing-days": BACKEND_TIMING_DAYS_OPTIONS,
+	"data-timing-minutes-1": BACKEND_TIMING_MINUTES_OPTIONS_1,
+	"data-timing-minutes-2": BACKEND_TIMING_MINUTES_OPTIONS_2,
+	"data-audit-collecting-option": BACKEND_AUDIT_COLLECTING_OPTIONS,
+	"data-worker-group-1": BACKEND_DATA_WORKER_QUEUE_GROUP_1,
+	"data-worker-group-2": BACKEND_DATA_WORKER_QUEUE_GROUP_2,
+  "internal-fsb-ssr-accumulate": SSR_ACCUMULATE_OPTIONS,
+  "internal-fsb-ssr-display-logic": SSR_DISPLAY_LOGIC_OPTIONS,
+
+	// Animations
+	// 
+	"animation-mode": ANIMATION_TIMING_MODE,
+	"animation-scrolling-triggering": ANIMATION_SCROLLING_TRIGGERING,
+	"animation-easing-mode": ANIMATION_EASING_MODE,
+	"animation-easing-fn-1": ANIMATION_EASING_FN_1,
+	"animation-repeating-mode": ANIMATION_REPEATING_MODE,
+	"animation-state": ANIMATION_DEFAULT_STATE,
+	"animation-test-state": ANIMATION_DEFAULT_TEST_STATE,
+	"animation-synchronize": ANIMATION_SYNCHRONIZE_MODE,
+	
+	// Editor
+	//
+	"workspaceMode": WORKSPACE_LOCK_MODE
+};
+export const GENERIC_RADIO_OPTION_PRESETS_MAPPING = {
+  "data-source-type-1": "internal-fsb-data-source-type",
+  "data-source-type-2": "internal-fsb-data-source-type",
+  "data-source-type-3": "internal-fsb-data-source-type",
+  "data-wizard-type-1": "internal-fsb-data-wizard-type",
+  "data-wizard-type-2": "internal-fsb-data-wizard-type",
+  "data-wizard-type-3": "internal-fsb-data-wizard-type",
+  "data-validation-format-1": "data-validation-format",
+  "data-validation-format-2": "data-validation-format",
+  "data-validation-format-3": "data-validation-format",
+  "data-field-type-1": "data-field-type",
+  "data-field-type-2": "data-field-type",
+  "data-field-type-3": "data-field-type",
+  "data-field-type-4": "data-field-type",
+  "data-timing-minutes-1": "data-timing-minutes",
+  "data-timing-minutes-2": "data-timing-minutes",
+  "animation-easing-fn-1": "animation-easing-fn",
+  "data-worker-group-1": "data-worker-group",
+  "data-worker-group-2": "data-worker-group"
+};

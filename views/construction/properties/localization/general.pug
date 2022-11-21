@@ -1,0 +1,14 @@
+include ../../mixin/CreateReactComponent
+.section-container
+  .section-title
+    | Default Language
+  .section-subtitle
+    | Workspace Language
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['defaultLanguage'], inline: true, button: false, placeholder: 'en'}")
+  .section-subtitle
+    | Localized Language
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['defaultLocalizedLanguage'], inline: true, button: false, placeholder: 'th'}")
+  .section-subtitle
+    | The default localized language will be configurable directly from Sidebar.
