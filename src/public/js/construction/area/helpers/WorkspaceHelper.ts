@@ -51,6 +51,7 @@ let InternalComponents = {};
 let InternalPopups = {};
 let InternalDataFlows = {};
 let InternalServices = {};
+let InternalProperties = {};
 let InternalStylesheets = {};
 let InternalAnimations = {};
 let backEndControllerBlobSHADict = {};
@@ -115,6 +116,7 @@ var WorkspaceHelper = {
 	      popups: clonedInternalPopups,
 	      flows: InternalDataFlows,
 	      services: InternalServices,
+	      properties: InternalProperties,
 	      stylesheets: StylesheetHelper.generateStylesheetData(),
 	      animations: AnimationHelper.generateStylesheetData()
 	    }, removeSHADict ? {} : {
@@ -134,6 +136,7 @@ var WorkspaceHelper = {
     InternalPopups = data && data.popups || {};
     InternalDataFlows = data && data.flows || {};
     InternalServices = data && data.services || {};
+    InternalProperties = data && data.properties || {};
     InternalStylesheets = data && data.stylesheets || {};
     InternalAnimations = data && data.animations || {};
     InternalDataFlows.schema = InternalDataFlows.schema || {};
@@ -226,6 +229,8 @@ var WorkspaceHelper = {
       return 'data';
     } else if (InternalProjectSettings.currentMode == 'services') {
       return 'services';
+    } else if (InternalProjectSettings.currentMode == 'properties') {
+      return 'properties';
     }
   },
   getAllUsingFonts: () => {
@@ -263,6 +268,10 @@ var WorkspaceHelper = {
       
       Accessories.overlay.setEnable(true);
     } else if (InternalProjectSettings.currentMode == 'services') {
+      WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
+      
+      Accessories.overlay.setEnable(false);
+    } else if (InternalProjectSettings.currentMode == 'properties') {
       WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
       
       Accessories.overlay.setEnable(false);
@@ -344,6 +353,7 @@ var WorkspaceHelper = {
     	WorkspaceHelper.replaceBodyOuterHTML(_window, (InternalDataFlows.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
     } else if (mode == 'services') {
     	WorkspaceHelper.replaceBodyOuterHTML(_window, (InternalServices.default || DEFAULT_ABSOLUTE_PAGE_HTML).join('\n'));
+    } else if (mode == 'properties') {
     } else if (mode == 'components') {
       let component = WorkspaceHelper.getComponentData(editingID);
       if (component == null) return false;
@@ -437,6 +447,7 @@ var WorkspaceHelper = {
       if (reinit) {
         EditorHelper.init(true, false);
       }
+    } else if (InternalProjectSettings.currentMode == 'properties') {
     } else if (InternalProjectSettings.currentMode == 'components') {
     	if (InternalProjectSettings.editingComponentID == null) return;
     	

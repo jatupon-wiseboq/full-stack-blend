@@ -68,6 +68,12 @@
                             .panel.sidebar-action-panel
                               include html-data/action
                     .workspace-container.servicesToolset.toolset(style="display: none;")
+                      .workspace-vertical-container.full-relative-size
+                        .workspace-vertical-panel
+                          .workspace-panel-container.scrollable
+                            .panel.active
+                              include ../common/coming
+                    .workspace-container.propertiesToolset.toolset(style="display: none;")
                       .workspace-vertical-container
                         .workspace-vertical-panel
                           .workspace-tab-container
@@ -79,7 +85,7 @@
                         .workspace-vertical-panel
                           .workspace-panel-container.scrollable
                             .panel.active
-                              | Services
+                              include ../common/coming
     .workspace-horizontal-panel(id="layering", style="border-left: solid 1px #c8c8c8;")
       .workspace-container(style="width: 259px;")
         .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")

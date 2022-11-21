@@ -1,0 +1,14 @@
+.workspace-container
+  .workspace-horizontal-container
+    .workspace-horizontal-panel
+      .workspace-container
+        .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")
+          .workspace-vertical-panel
+            .workspace-tab-container
+              .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active
+                  input(type='radio', name='options', checked=true)
+                  | General
+        .workspace-vertical-container.full-relative-size
+          .workspace-vertical-panel
+            .workspace-panel-container.scrollable

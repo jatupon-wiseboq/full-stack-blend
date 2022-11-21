@@ -142,7 +142,7 @@
 		&.has-design, &.has-animation, &.has-coding, &.has-preview-off {
 			> .treenode-container .treenode-title {
 				&::before {
-					display: 'block';
+					display: inline-block;
 					margin-right: 5px;
 					font-weight: 900;
 					font-family: "Font Awesome 5 Free";

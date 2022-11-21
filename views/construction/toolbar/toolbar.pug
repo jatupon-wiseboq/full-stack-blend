@@ -20,9 +20,12 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
           a.dropdown-item(id='componentsButton', onclick="swap('#components', '.componentsToolset', null, '#exploreIcon', 'fa-puzzle-piece', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
             i.fa.fa-puzzle-piece
             | Components
-          a.dropdown-item(id='popupsButton', onclick="swap('#popups', '.popupsToolset', null, '#exploreIcon', 'fa-list-alt', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
-            i.fa.fa-list-alt
+          a.dropdown-item(id='popupsButton', onclick="swap('#popups', '.popupsToolset', null, '#exploreIcon', 'fa-window-maximize', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Popups</b></p><p>Create and manage all reusable popups for prompting over any pages on client-side.</p>")
+            i.fa.fa-window-maximize
             | Popups
+          a.dropdown-item(id='propertiesButton', onclick="swap('#properties', '.propertiesToolset', null, '#exploreIcon', 'fa-list-alt', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Edit Properties</b></p><p>Change and edit the properties of global setting and localization.</p>")
+            i.fa.fa-list-alt
+            | Properties
       .btn-group.btn-group-toggle.siteToolset.popupsToolset.componentsToolset.toolset(data-toggle='buttons')
         a.btn.btn-sm.btn-light.active(id='desktopButton', onclick="swap('#desktop')", data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Switch to Desktop Layout</b></p><p>Design the placement and sizing of the desktop layout which is independent from the mobile layout.</p><p><i>However, you need to resize the current window to see the differences of the responsive layout configuration.</i></p>", style='width: 50px;')
           input(type='radio', name='options', checked=true)

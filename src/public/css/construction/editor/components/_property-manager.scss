@@ -1,0 +1,80 @@
+// Property Manager
+// -------------------------
+.property-manager {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+	
+	.tree-container {
+  	width: 100%;
+    height: 100%;
+  	position: relative;
+	  overflow-y: scroll;
+	  overflow-x: hidden;
+	  padding: 0 0 6px 0;
+  	
+  	.treenode-outer-container {
+  	  margin: 6px 6px 0 6px;
+  	  
+	    .treenode-container {
+	      background-color: #ddd;
+		    color: #444;
+	      position: relative;
+	      border-radius: 3px;
+	      
+  	    .treenode-body {
+  	      padding: 10px 0;
+  	      
+    			.form-check {
+    				padding-left: 6px;
+    				
+    				.form-check-label {
+    				  input {
+    				    display: none;
+    				  }
+    				}
+    				.treenode-title {
+    				  width: 190px;
+    					padding: 0;
+    				}
+    			}
+  	    }
+      }
+      
+      .treenode-container.selected {
+        background-color: #007bff;
+		    color: #fff;
+      }
+      
+      &#property-localization, &#property-settings {
+				> .treenode-container .treenode-title {
+					&::before {
+						display: inline-block;
+						margin-right: 5px;
+						font-weight: 900;
+						font-family: "Font Awesome 5 Free";
+						opacity: 0.5;
+						width: 13px;
+						text-align: center;
+					}
+				}
+			}
+			&#property-localization {
+				> .treenode-container .treenode-title {
+					&::before {
+						content: '\f1fc';
+					}
+				}
+			}
+			&#property-settings {
+				> .treenode-container .treenode-title {
+					&::before {
+						content: '\f0e7';
+					}
+				}
+			}
+  	}
+  }
+}
