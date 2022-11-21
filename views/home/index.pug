@@ -3,7 +3,7 @@
 
 .
   <!DOCTYPE html>
-html
+html(lang=headers && headers.language || 'en')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
@@ -59,10 +59,10 @@ html
                       .col-6.internal-fsb-element.offset-3(style={'-webkit-justify-content': 'space-around', 'display': 'flex', 'justify-content': 'space-around', 'margin-top': '30px'}, internal-fsb-guid="13ae6870")
                         .internal-fsb-element(internal-fsb-guid="db9ce756")
                           a.internal-fsb-element(style={'display': 'inline-block', 'margin-right': '3px'}, href="https://twitter.com/stackblend", target="_blank", internal-fsb-guid="4b06305d")
-                            .internal-fsb-element(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/twitter.png", internal-fsb-forward="1", internal-fsb-guid="224c3238")
+                            .internal-fsb-element(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="224c3238")
                               img(style={'display': 'block', 'height': '50px', 'width': '50px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/twitter.png")
                           a.internal-fsb-element(style={'display': 'inline-block', 'margin-left': '3px'}, href="https://www.facebook.com/stackblend", target="_blank", internal-fsb-guid="bcd58c13")
-                            .internal-fsb-element(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/facebook.png", internal-fsb-forward="1", internal-fsb-guid="a9659697")
+                            .internal-fsb-element(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="a9659697")
                               img(style={'display': 'block', 'height': '50px', 'width': '50px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/facebook.png")
                   .internal-fsb-element(style={'-fsb-background-type': 'linear', 'background': 'linear-gradient(135deg, rgba(255, 255, 255, 0) 39.233038348082594%, rgba(217, 234, 255, 0.2) 45.72271386430678%, rgba(255, 255, 255, 0) 51.91740412979351%)', 'height': '200%', 'padding-left': '0px', 'padding-right': '0px', 'pointer-events': 'none', 'position': 'absolute', 'width': '200%', 'z-index': '1000'}, internal-fsb-guid="e19668b7")
             a.col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={'-moz-text-decoration-line': 'none', '-webkit-text-decoration-line': 'none', 'text-decoration-line': 'none'}, href="https://github.com/SoftenStorm/full-stack-blend", target="_blank", internal-fsb-guid="cae9cdd9")
@@ -81,6 +81,8 @@ html
                   button.btn.btn-md.btn-secondary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(style={'margin-top': '5px'}, type="button", internal-fsb-guid="d85b2bd4")
                     .internal-fsb-element(internal-fsb-guid="d85b2bd4-text")
                       | Development Workarounds
+                  .col-10.internal-fsb-element.offset-1(style={'color': 'rgba(214, 226, 255, 1)', 'font-size': '13px', 'line-height': '1.15em', 'margin-top': '15px', 'text-align': 'center'}, internal-fsb-guid="99d4ab8e")
+                    | We often deploy regular updates on stackblend.org. For any company, please run the editor cloned from releases instead. See workarounds for more information.
               .internal-fsb-element.internal-fsb-strict-layout(style={'-ms-overflow-x': 'hidden', '-ms-overflow-y': 'hidden', '-webkit-border-radius': '0px 0px 3px 3px', 'border-radius': '0px 0px 3px 3px', 'overflow-x': 'hidden', 'overflow-y': 'hidden', 'padding-bottom': '20px', 'padding-top': '100px', 'position': 'relative'}, internal-fsb-class="FlowLayout", internal-fsb-guid="cc58c821")
                 .col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(style={'border-bottom-color': 'rgba(85, 85, 85, 1)', 'border-bottom-width': '2px', 'color': 'rgba(85, 85, 85, 1)', 'font-size': '16px', 'font-weight': '500', 'margin-bottom': '15px', 'text-align': 'center'}, internal-fsb-guid="1aecc192")
                   | StackBlend Studio is incubating and learning additional business requirements at
@@ -163,13 +165,13 @@ html
                         | Guestbook
               .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'border-top-color': 'rgba(3, 115, 252, 1)', 'border-top-style': 'solid', 'border-top-width': '15px', 'margin-top': '1px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="d2c926ad")
         .internal-fsb-element(style={'padding-left': '0px', 'padding-right': '0px', 'width': '100%'}, internal-fsb-guid="b6da7c8e")
-          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png", internal-fsb-forward="1", internal-fsb-guid="98d2830a")
+          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="98d2830a")
             img(style={'display': 'block', 'margin-bottom': '30px', 'margin-top': '45px', 'width': '100%'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png")
-          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/code.png", internal-fsb-forward="1", internal-fsb-guid="474b3846")
+          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="474b3846")
             img(style={'display': 'block', 'margin-bottom': '30px', 'margin-top': '30px', 'width': '100%'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/code.png")
-          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png", internal-fsb-forward="1", internal-fsb-guid="d055083e")
+          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="d055083e")
             img(style={'display': 'block', 'margin-bottom': '45px', 'margin-top': '30px', 'width': '100%'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png")
-          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/timeline.png", internal-fsb-forward="1", internal-fsb-guid="b9a33578")
+          .col-12.col-md-10.internal-fsb-element.offset-0.offset-md-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="b9a33578")
             img(style={'display': 'block', 'margin-bottom': '45px', 'margin-top': '30px', 'width': '100%'}, src="https://stackblend-static-files.s3-us-west-1.amazonaws.com/timeline.png")
         .internal-fsb-element(style={'padding-left': '0px', 'padding-right': '0px', 'width': '100%'}, internal-fsb-guid="40bdc3b7")
           .col-12.col-lg-10.internal-fsb-element.internal-fsb-strict-layout.offset-0.offset-lg-1(style={'-ms-overflow-x': 'hidden', '-ms-overflow-y': 'hidden', '-webkit-border-radius': '3px 3px 3px 3px', '-webkit-box-shadow': '0px 8px 20px rgba(0, 0, 0, 0.375)', 'border-radius': '3px 3px 3px 3px', 'box-shadow': '0px 8px 20px rgba(0, 0, 0, 0.375)', 'overflow-x': 'hidden', 'overflow-y': 'hidden', 'padding-left': '0px', 'padding-right': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="be5edae1")
@@ -269,10 +271,10 @@ html
               // 
               window.location = 'https://www.softenstorm.com/stackblend-policy-and-terms';
           };
-          Controller.prototype.register = function (guid, eventName, functionName, capturing) {
+          Controller.prototype.register = function (guid, eventName, functionName, capturing, forward) {
               if (!this.dictionary[guid])
                   this.dictionary[guid] = {};
-              this.dictionary[guid][eventName] = [functionName, capturing];
+              this.dictionary[guid][eventName] = [functionName, capturing, forward];
           };
           Controller.prototype.listen = function (guid) {
               if (this.dictionary[guid]) {
@@ -281,7 +283,8 @@ html
                           var eventName = key;
                           var functionName = this.dictionary[guid][key][0];
                           var capturing = !!this.dictionary[guid][key][1];
-                          var element = this.getElementUsingGUID(guid);
+                          var forward = this.dictionary[guid][key][2];
+                          var element = (!forward) ? this.getElementUsingGUID(guid) : this.getElementUsingGUID(guid).firstElementChild;
                           element.addEventListener(eventName, this[functionName].bind(this), capturing);
                       }
                   }
@@ -293,16 +296,16 @@ html
           return Controller;
       }());
       var controller = new Controller();
-      controller.register('27a05c1e', 'mouseenter', 'onRectangleMouseEnter_27a05c1e', false);
-      controller.register('27a05c1e', 'mouseleave', 'onRectangleMouseLeave_27a05c1e', false);
-      controller.register('4ceae99b', 'mouseenter', 'onRectangleMouseEnter_4ceae99b', false);
-      controller.register('4ceae99b', 'mouseleave', 'onRectangleMouseLeave_4ceae99b', false);
-      controller.register('651393e4', 'click', 'onButtonClick_651393e4', false);
-      controller.register('513d8787', 'click', 'onButtonClick_513d8787', false);
-      controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4', false);
-      controller.register('45925c27', 'click', 'onButtonClick_45925c27', false);
-      controller.register('d66b00c4', 'click', 'onButtonClick_d66b00c4', false);
-      controller.register('57bd398a', 'click', 'onButtonClick_57bd398a', false);
+      controller.register('27a05c1e', 'mouseenter', 'onRectangleMouseEnter_27a05c1e', false, false);
+      controller.register('27a05c1e', 'mouseleave', 'onRectangleMouseLeave_27a05c1e', false, false);
+      controller.register('4ceae99b', 'mouseenter', 'onRectangleMouseEnter_4ceae99b', false, false);
+      controller.register('4ceae99b', 'mouseleave', 'onRectangleMouseLeave_4ceae99b', false, false);
+      controller.register('651393e4', 'click', 'onButtonClick_651393e4', false, false);
+      controller.register('513d8787', 'click', 'onButtonClick_513d8787', false, false);
+      controller.register('d85b2bd4', 'click', 'onButtonClick_d85b2bd4', false, false);
+      controller.register('45925c27', 'click', 'onButtonClick_45925c27', false, false);
+      controller.register('d66b00c4', 'click', 'onButtonClick_d66b00c4', false, false);
+      controller.register('57bd398a', 'click', 'onButtonClick_57bd398a', false, false);
       TestHelper.identify();
       function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
       ;

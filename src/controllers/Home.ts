@@ -5,6 +5,7 @@ import {Request, Response} from "express";
 import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
+import {SitemapHelper} from "./helpers/SitemapHelper";
 
 import Componentindex from "./components/index";
 import Component9e885d49 from "./components/account/authenticate/_9e885d49";

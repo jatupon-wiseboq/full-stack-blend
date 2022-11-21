@@ -3,7 +3,7 @@
 
 .
   <!DOCTYPE html>
-html
+html(lang=headers && headers.language || 'en')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
@@ -33,10 +33,10 @@ html
           function Controller() {
               this.dictionary = {};
           }
-          Controller.prototype.register = function (guid, eventName, functionName, capturing) {
+          Controller.prototype.register = function (guid, eventName, functionName, capturing, forward) {
               if (!this.dictionary[guid])
                   this.dictionary[guid] = {};
-              this.dictionary[guid][eventName] = [functionName, capturing];
+              this.dictionary[guid][eventName] = [functionName, capturing, forward];
           };
           Controller.prototype.listen = function (guid) {
               if (this.dictionary[guid]) {
@@ -45,7 +45,8 @@ html
                           var eventName = key;
                           var functionName = this.dictionary[guid][key][0];
                           var capturing = !!this.dictionary[guid][key][1];
-                          var element = this.getElementUsingGUID(guid);
+                          var forward = this.dictionary[guid][key][2];
+                          var element = (!forward) ? this.getElementUsingGUID(guid) : this.getElementUsingGUID(guid).firstElementChild;
                           element.addEventListener(eventName, this[functionName].bind(this), capturing);
                       }
                   }

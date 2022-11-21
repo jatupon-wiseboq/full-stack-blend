@@ -3,7 +3,7 @@
 
 .
   <!DOCTYPE html>
-html
+html(lang=headers && headers.language || 'en')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
@@ -23,7 +23,7 @@ html
     include ../../_header.pug
   body(style="font-family: Courier Prime; font-size: 18px")
     
-    .internal-fsb-begin(internal-fsb-animation="1007a040,a58e28b5,d0e675b7", internal-fsb-guid="0")
+    .internal-fsb-begin(internal-fsb-animation="1007a040,a58e28b5,d0e675b7,211b4247", internal-fsb-guid="0")
       .internal-fsb-begin-layout.internal-fsb-strict-layout
         .internal-fsb-element.internal-fsb-inverse.internal-fsb-stretch.internal-fsb-strict-layout(style={'-ms-flex-direction': 'column', '-ms-flex-wrap': 'nowrap', '-webkit-flex-direction': 'column', '-webkit-flex-wrap': 'nowrap', 'flex-direction': 'column', 'flex-wrap': 'nowrap', 'height': '100vh', 'padding-left': '0px', 'padding-right': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="3302e5a4")
           .internal-fsb-element.internal-fsb-strict-layout(style={'-webkit-flex-grow': '1', 'flex-grow': '1', 'padding-left': '15px', 'padding-right': '15px', 'padding-top': '15px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="311c48b8")
@@ -49,23 +49,28 @@ html
               .col-12.internal-fsb-element(style={'-fsb-inherited-presets': ''}, internal-fsb-guid="bd781397")
                 div
                   | 1. Services Exploration
-                  br
                 div
-                  | 2. Graphics &amp; WebGL Element Insertion
+                  | 2. Project Properties
                 div
-                  | 3. The "Global" option of Generalizability
+                  | 3. Scrolling Animation Timeline Composer&nbsp;
                 div
-                  | 4. Audit Log
+                  | 4. Graphics &amp; WebGL Element Insertion
                 div
-                  | 5. Back-End Actions Binding
+                  | 5. The "Global" Option of Generalizability
                 div
-                  | 6. Non-Existing Strategy
+                  | 6. Audit Log
                 div
-                  | 7. Data Mismatch Strategy
+                  | 7. Back-End Actions Binding
                 div
-                  | 8. RESTful Manipulation
+                  | 8. List Formatting
                 div
-                  | 9. {...} and [...] Data Source
+                  | 9. Non-Existing Strategy
+                div
+                  | 10. Data Mismatch Strategy
+                div
+                  | 11. RESTful Manipulation
+                div
+                  | 12. {...} and [...] Data Source
             .col-12.internal-fsb-element(style={'color': 'rgba(3, 115, 252, 1)', 'font-size': '13px', 'margin-top': '15px', 'padding-left': '10px', 'padding-right': '10px', 'text-transform': 'uppercase'}, internal-fsb-guid="ea590452")
               | Workarounds
             .-fsb-preset-a43dc1c9.col-12.internal-fsb-element.internal-fsb-strict-layout(style={'-fsb-inherited-presets': 'a43dc1c9'}, internal-fsb-class="FlowLayout", internal-fsb-guid="13187992")
@@ -80,7 +85,7 @@ html
                   | 4. Silence of Automatic Deploy: go to Heroku.com and see if it's deploying or losing the hooks.
                 div
                   | 5. Failed of Automatic Deploy: clone the project into your local machine and debug it using "npm run build", then try to change the code on StackBlend based on the errors, re-save, run "git reset --hard &amp;&amp; git pull", and run "npm run build" to see if it fixed.
-          .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'-ms-overflow-x': 'hidden', '-ms-overflow-y': 'hidden', '-webkit-flex-basis': '138px', '-webkit-flex-grow': '0', 'flex-basis': '138px', 'flex-grow': '0', 'font-family': 'Roboto', 'overflow-x': 'hidden', 'overflow-y': 'hidden'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9c18e233")
+          .col-12.internal-fsb-element.internal-fsb-layer-off.internal-fsb-strict-layout(style={'-ms-overflow-x': 'hidden', '-ms-overflow-y': 'hidden', '-webkit-flex-basis': '138px', '-webkit-flex-grow': '0', 'flex-basis': '138px', 'flex-grow': '0', 'font-family': 'Roboto', 'overflow-x': 'hidden', 'overflow-y': 'hidden'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9c18e233")
             .col-12.internal-fsb-element.internal-fsb-strict-layout.offset-0(style={'-webkit-background-size': 'cover', 'background-image': 'url("https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy.jpg")', 'background-position': '0px top', 'background-size': 'cover', 'bottom': '-20px', 'left': '0px', 'position': 'absolute', 'right': '0px', 'top': '-20px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9e8b2514")
             .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'padding-bottom': '50px', 'padding-top': '50px', 'position': 'relative'}, internal-fsb-class="FlowLayout", internal-fsb-guid="5aeeda7b")
               button.btn.btn-md.btn-primary.col-8.col-lg-6.internal-fsb-element.offset-2.offset-lg-3(type="button", internal-fsb-guid="a3e05526")
@@ -98,10 +103,10 @@ html
               // 
               window.location = 'https://github.com/SoftenStorm/full-stack-blend/issues';
           };
-          Controller.prototype.register = function (guid, eventName, functionName, capturing) {
+          Controller.prototype.register = function (guid, eventName, functionName, capturing, forward) {
               if (!this.dictionary[guid])
                   this.dictionary[guid] = {};
-              this.dictionary[guid][eventName] = [functionName, capturing];
+              this.dictionary[guid][eventName] = [functionName, capturing, forward];
           };
           Controller.prototype.listen = function (guid) {
               if (this.dictionary[guid]) {
@@ -110,7 +115,8 @@ html
                           var eventName = key;
                           var functionName = this.dictionary[guid][key][0];
                           var capturing = !!this.dictionary[guid][key][1];
-                          var element = this.getElementUsingGUID(guid);
+                          var forward = this.dictionary[guid][key][2];
+                          var element = (!forward) ? this.getElementUsingGUID(guid) : this.getElementUsingGUID(guid).firstElementChild;
                           element.addEventListener(eventName, this[functionName].bind(this), capturing);
                       }
                   }
@@ -122,7 +128,7 @@ html
           return Controller;
       }());
       var controller = new Controller();
-      controller.register('a3e05526', 'click', 'onButtonClick_a3e05526', false);
+      controller.register('a3e05526', 'click', 'onButtonClick_a3e05526', false, false);
       TestHelper.identify();
       function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function (e) { "complete" == document.readyState && a(e); }); }
       ;
