@@ -4453,7 +4453,7 @@ b351d3a2    },
         "</button>",
         "<div",
         "    contenteditable=\"true\"",
-        "    class=\"col-10 internal-fsb-element offset-1\"",
+        "    class=\"col-10 col-lg-8 internal-fsb-element offset-1 offset-lg-2\"",
         "    internal-fsb-guid=\"99d4ab8e\"",
         "    internal-fsb-name=\"TextElement 1\"",
         "    internal-fsb-event-no-propagate=\"1\"",
@@ -5155,6 +5155,6 @@ b351d3a2    },
     "7bc56453": "8155ac24d8bea4e67daedc3fdad14b27bfca4ce7#1198326242",
     "9e885d49": "c427e073afc9d63d5303a122368aacf9b5b4ba7d#-1597433294",
     "b160aa0e": "4529c66196f107cf013d877aeb0bbf5668508b42#1904972771",
-    "index": "6fa82607cb81dfa77ce2935572f9864af6e8c609#-671454824"
+    "index": "d57306c12619f5efcb4ba589c13c8cd9ac180b1f#443644277"
   }
 }
