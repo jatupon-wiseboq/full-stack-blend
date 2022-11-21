@@ -76,16 +76,7 @@
                     .workspace-container.propertiesToolset.toolset(style="display: none;")
                       .workspace-vertical-container
                         .workspace-vertical-panel
-                          .workspace-tab-container
-                            .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
-                              a.btn.btn-secondary.btn-sm.btn-light.text-secondary.sidebar-main-panel.active(data-toggle="tooltip", data-placement="bottom", data-html="true")
-                                input(type='radio', name='options', checked=true, style={width: '86px'})
-                                | Properties
-                      .workspace-vertical-container.full-relative-size
-                        .workspace-vertical-panel
-                          .workspace-panel-container.scrollable
-                            .panel.active
-                              include ../common/coming
+                          include ../common/puzzle
     .workspace-horizontal-panel(id="layering", style="border-left: solid 1px #c8c8c8;")
       .workspace-container(style="width: 259px;")
         .workspace-vertical-container(internal-fsb-for="editing", style="display: none;")

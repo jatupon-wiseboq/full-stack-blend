@@ -185,7 +185,7 @@ class RadioButtonPicker extends Base<Props, State> {
 							        });
 		            		} else {
 			            		perform('update', {
-							            styles: [{
+							            extensions: [{
 							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
 							                value: (currentState) ? null : target
 							            }]
