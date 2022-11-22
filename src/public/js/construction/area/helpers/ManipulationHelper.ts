@@ -1921,7 +1921,7 @@ var ManipulationHelper = {
         break;
     }
     
-    if (['siteButton', 'componentsButton', 'popupsButton', 'dataButton', 'servicesButton'].indexOf(content) != -1) {
+    if (['siteButton', 'componentsButton', 'popupsButton', 'dataButton', 'servicesButton', 'propertiesButton'].indexOf(content) != -1) {
       WorkspaceHelper.setMode(content.replace('Button', ''));
     }
     

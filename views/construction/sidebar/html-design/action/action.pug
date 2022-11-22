@@ -24,6 +24,16 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     .section-body
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-note'], inline: true, button: false, multiline: true}")
     .section-hr
+  .section-container(internal-fsb-for="internal-fsb-class:TextElement")
+    .section-title
+      | Translation
+    .section-subtitle
+      | Secondary Language
+    .section-body
+      +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-translation'], inline: true, button: false, multiline: true}")
+    .section-note
+      | Please use @'[string]' in Coding mode and translate into a secondary language in Properties / Localized Strings.
+    .section-hr
   include ./partials/table
   include ./partials/textbox
   include ./partials/select

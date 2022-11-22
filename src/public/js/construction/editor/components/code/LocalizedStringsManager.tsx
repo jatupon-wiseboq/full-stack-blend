@@ -16,6 +16,7 @@ interface Props extends IProps {
 interface State extends IState {
 	prev: string;
 	key: string;
+	guid: string;
   value: string;
 }
 
@@ -57,7 +58,7 @@ class LocalizedStringsManager extends Base<Props, State> {
         		let splited = value.split('~');
             nodes.push({
             		id: JSON.stringify({key: splited[0], value: splited[1]}),
-                name: `${splited[0]} = ${splited[1]}`,
+                name: `${splited[0].substring(0, 32).trim() + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
                 selectable: true,
                 dropable: false,
 								insertable: true,
@@ -102,6 +103,7 @@ class LocalizedStringsManager extends Base<Props, State> {
         if (value) {
             this.setState({
                 key: '',
+                guid: '',
                 value: ''
             });
         }
@@ -118,6 +120,7 @@ class LocalizedStringsManager extends Base<Props, State> {
             this.setState({
             		prev: info.key,
                 key: info.key,
+                guid: info.key.split('#')[1],
                 value: info.value
             });
         }
@@ -136,7 +139,7 @@ class LocalizedStringsManager extends Base<Props, State> {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
     		    values = values.filter(value => value.indexOf(this.state.key + '~') == -1);
     		    
-    		    values.push(this.state.key + '~' + this.state.value);
+    		    values.push(this.state.key + (this.state.guid ? '#' + this.state.guid : '') + '~' + this.state.value);
     		    
     		    perform('update', {
     		        extensions: [{
@@ -154,7 +157,7 @@ class LocalizedStringsManager extends Base<Props, State> {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
     		    values = values.filter(value => value.indexOf(this.state.prev + '~') == -1);
     		    
-    		    values.push(this.state.key + '~' + this.state.value);
+    		    values.push(this.state.key + (this.state.guid ? '#' + this.state.guid : '') + '~' + this.state.value);
     		    
     		    perform('update', {
     		        extensions: [{
@@ -170,7 +173,7 @@ class LocalizedStringsManager extends Base<Props, State> {
     render() {
         return (
             <FullStackBlend.Components.ListManager customClassName="non-selectable non-insertable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-                <div className="section-container">
+                <div className="section-container" style={{width: '75vw'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Translation" : "Update a Translation"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Original From Workspace</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
@@ -186,6 +189,7 @@ class LocalizedStringsManager extends Base<Props, State> {
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
                     </div>
+                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>{this.state.key}</div>
                 </div>
             </FullStackBlend.Components.ListManager>
         )

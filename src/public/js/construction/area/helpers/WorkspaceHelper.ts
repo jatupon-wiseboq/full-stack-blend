@@ -16,6 +16,7 @@ import {LayoutHelper} from './LayoutHelper';
 import {TimelineHelper} from './TimelineHelper';
 import {StatusHelper} from './StatusHelper';
 import {MalformationRepairHelper} from './MalformationRepairHelper';
+import {LocalizationHelper} from './LocalizationHelper';
 import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS, CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 
 declare let js_beautify;
@@ -272,8 +273,6 @@ var WorkspaceHelper = {
       
       Accessories.overlay.setEnable(false);
     } else if (InternalProjectSettings.currentMode == 'properties') {
-      WorkspaceHelper.loadPageData(InternalProjectSettings.currentMode, null);
-      
       Accessories.overlay.setEnable(false);
     } else if (InternalProjectSettings.currentMode == 'components') {
     	if (InternalProjectSettings.editingComponentID == null) return;
@@ -411,6 +410,8 @@ var WorkspaceHelper = {
       page.automaticSchemata = SchemaHelper.generateAutomaticSchemata();
       page.references = WorkspaceHelper.getAllReferencingKlasses();
       
+      LocalizationHelper.collect(document.body);
+      
       if (reinit) {
         FontHelper.initializeFontData(page.head.fonts);
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -466,6 +467,8 @@ var WorkspaceHelper = {
       component.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       component.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
+      LocalizationHelper.collect(document.body);
+      
       if (reinit) {
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
       	StylesheetHelper.initializeStylesheetData(InternalStylesheets);
@@ -499,6 +502,8 @@ var WorkspaceHelper = {
       let selectingElement = EditorHelper.getSelectingElement();
       popup.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       popup.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
+      
+      LocalizationHelper.collect(document.body);
       
       if (reinit) {
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());

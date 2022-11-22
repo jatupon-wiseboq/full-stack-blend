@@ -21,7 +21,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages"]
+  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages", "customLocalizedStrings", "customFrontEndSettings", "customBackEndSettings", "defaultLanguage"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -413,7 +413,7 @@ class ProjectManager extends Base<Props, State> {
                 if (pages && pages[0]) {
                 	let combinedHTMLPage = `.
   <!DOCTYPE html>
-html(lang=headers && headers.language || 'en')
+html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
