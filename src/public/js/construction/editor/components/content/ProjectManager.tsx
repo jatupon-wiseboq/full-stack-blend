@@ -6,6 +6,7 @@ import {RequestHelper} from '../../../helpers/RequestHelper';
 import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
+import {LocalizationHelper} from '../../../LocalizationHelper';
 
 declare let React: any;
 declare let ReactDOM: any;
@@ -55,6 +56,9 @@ class ProjectManager extends Base<Props, State> {
           return match;
         }
       });
+      textContent = textContent.replace(/\\'/g, '~~R~~').replace(/(\@')([^']*)(')/g, (match, hash, content) => {
+        return `loc('${content}')`;
+      }).replace(/~~R~~/g, "\\'");
       
       return textContent;
     }

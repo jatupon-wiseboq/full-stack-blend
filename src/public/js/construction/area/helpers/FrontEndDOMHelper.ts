@@ -5,6 +5,7 @@ import {StylesheetHelper} from './StylesheetHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 import {WorkspaceHelper} from './WorkspaceHelper';
 import {SchemaHelper} from './SchemaHelper';
+import {LocalizationHelper} from './LocalizationHelper';
 import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
 import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK} from '../../Constants';
 
@@ -148,7 +149,14 @@ ${rootScript}`;
         			return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
         		});
         		
-          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+        		const output = textContent.split('\n').join('\n' + indent + '| ');
+        		if (LocalizationHelper.has(textContent)) {
+        			lines.push(indent + '| ' + textContent.split('\n').map((output) => {
+        				return '#{loc(\'' + output.replace(/'/g, "\\'") + '\')}';
+        			}).join('\n' + indent + '| '));
+        		} else {
+          		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+          	}
           }
         }
       } else {
@@ -681,7 +689,14 @@ ${rootScript}`;
         			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
         		});
         		
-          	lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+        		const output = textContent.split('\n').join('\n' + indent + '| ');
+        		if (LocalizationHelper.has(textContent)) {
+        			lines.push(indent + '| ' + textContent.split('\n').map((output) => {
+        				return '#{loc(\'' + output.replace(/'/g, "\\'") + '\')}';
+        			}).join('\n' + indent + '| '));
+        		} else {
+          		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+          	}
           }
         }
       } else {

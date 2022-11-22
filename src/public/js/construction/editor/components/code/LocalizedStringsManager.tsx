@@ -57,7 +57,7 @@ class LocalizedStringsManager extends Base<Props, State> {
         		let splited = value.split(LOCALIZATION_ITEM_DELIMITER);
             nodes.push({
             		id: JSON.stringify({key: splited[0], value: splited[1]}),
-                name: `${splited[0].substring(0, 32).trim().replace(LOCALIZATION_HASH_DELIMITER, '#') + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
+                name: `${splited[0].substring(0, 32).trim().replace(LOCALIZATION_HASH_DELIMITER, '#').replace(/#$/, '') + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
                 selectable: true,
                 dropable: false,
 								insertable: true,

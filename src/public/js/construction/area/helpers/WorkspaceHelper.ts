@@ -416,7 +416,7 @@ var WorkspaceHelper = {
       page.automaticSchemata = SchemaHelper.generateAutomaticSchemata();
       page.references = WorkspaceHelper.getAllReferencingKlasses();
       
-      LocalizationHelper.collect(document.body);
+      LocalizationHelper.collectFromTexts(document.body);
       
       if (reinit) {
         FontHelper.initializeFontData(page.head.fonts);
@@ -428,6 +428,8 @@ var WorkspaceHelper = {
       	cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()] = WorkspaceHelper.generateFrontEndCodeForCurrentPage()
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
+      	
+      	LocalizationHelper.collectFromShortcuts(cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID]);
       }
       
       if (reinit) {
@@ -473,7 +475,7 @@ var WorkspaceHelper = {
       component.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       component.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
-      LocalizationHelper.collect(document.body);
+      LocalizationHelper.collectFromTexts(document.body);
       
       if (reinit) {
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
@@ -486,6 +488,8 @@ var WorkspaceHelper = {
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
         WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
+      	
+      	LocalizationHelper.collectFromShortcuts(cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()]);
       }
       
       if (reinit) {
@@ -509,7 +513,7 @@ var WorkspaceHelper = {
       popup.accessories.selectingElementGUID = selectingElement && HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
       popup.accessories.currentCursorWalkPath = CursorHelper.findWalkPathForCursor();
       
-      LocalizationHelper.collect(document.body);
+      LocalizationHelper.collectFromTexts(document.body);
       
       if (reinit) {
         FontHelper.initializeFontData(WorkspaceHelper.getAllUsingFonts());
@@ -522,6 +526,8 @@ var WorkspaceHelper = {
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	WorkspaceHelper.generateFrontEndCodeForAnyReferencingComponentsOrPopups();
       	WorkspaceHelper.generateBackEndCodeForAnyReferencingComponentsOrPopups();
+      	
+      	LocalizationHelper.collectFromShortcuts(cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()]);
       }
       
       if (reinit) {
