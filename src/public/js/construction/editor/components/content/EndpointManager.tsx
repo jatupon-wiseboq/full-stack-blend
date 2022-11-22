@@ -412,6 +412,8 @@ ${externalScripts.join('\n')}
 ${customFooterExternalStylesheets.join('\n')}
 ${customFooterExternalScripts.join('\n')}
 script(type="text/javascript" src="/js/Site.bundle.js")
+script(type="text/javascript")
+  | const localizedData = ${this.state.extensionValues['customLocalizedStrings'] && ("'" + this.state.extensionValues['customLocalizedStrings'].replace(/'/, "\\'") + "'") || 'null'};
 `;
       
       let arrayOfControllerScripts = [];
