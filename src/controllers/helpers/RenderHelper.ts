@@ -3,6 +3,7 @@
 
 import {Response} from "express";
 import {DataManipulationHelper} from "./DataManipulationHelper";
+import {loc} from "./LocalizationHelper";
 
 const RenderHelper = {
 	json: (response: Response, data: any) => {
@@ -31,7 +32,8 @@ const RenderHelper = {
 	  response.render(path, {
 	  	DataManipulationHelper: DataManipulationHelper,
 	    data: data || null,
-	    headers: headers || null
+	    headers: headers || null,
+	    loc: loc
 	  });
 	},
 	error: (response: Response, error: Error) => {
