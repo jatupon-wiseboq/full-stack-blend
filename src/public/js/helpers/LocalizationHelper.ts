@@ -28,8 +28,14 @@ const LocalizationHelper = {
 	  return dictionary;
 	},
 	localize: (text) => {
+		const index = window.location.search.indexOf('lang=');
+		if (index == -1) return text;
+		
+		const lang = window.location.search.substring(index).split('&')[0];
+		if (!lang) return text;
+		
 		return LocalizationHelper.getLanguageSpecification[text] || text;
-	}
+	},
 };
 
 const loc = LocalizationHelper.localize;
