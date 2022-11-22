@@ -42,6 +42,8 @@ import './components/code/WizardInputManager';
 import './components/code/BackEndScriptEditor';
 import './components/code/DebuggingConsole';
 import './components/code/ExternalLibrariesManager';
+import './components/code/CustomProjectSettingsManager';
+import './components/code/LocalizedStringsManager';
 
 import './components/content/SitePreview';
 import './components/content/PageManager';

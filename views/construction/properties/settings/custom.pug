@@ -5,10 +5,10 @@ include ../../mixin/CreateReactComponent
   .section-subtitle
     | Front-End Keys
   .section-body
-    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
+    +CreateReactComponent('FullStackBlend.Components.CustomProjectSettingsManager', "{watchingExtensionNames: ['customFrontEndSettings']}")
   .section-subtitle
     | Back-End Keys
   .section-body
-    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
+    +CreateReactComponent('FullStackBlend.Components.CustomProjectSettingsManager', "{watchingExtensionNames: ['customBackEndSettings']}")
   .section-subtitle
     | These will be available via Project.Settings.[key], which can be used in Element Coding, e.g., option or custom code.
