@@ -14,8 +14,6 @@ const LocalizationHelper = {
 	getLanguageSpecification: (): any => {
 		const data = ProjectConfigurationHelper.getLanguageData();
 		
-		console.log(data);
-		
 		if (cachedData != data) {
 			cachedData = data;
 			cachedDictionary = null;
