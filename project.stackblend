@@ -2038,7 +2038,7 @@ e75c4c70          }
       }
     }
   },
-  "footerBlobSHA": "f62ff6ae4800495a536946a73ccfab73a845c7b3#923347631",
+  "footerBlobSHA": "ff4bb4582cfb7b5d4ad07d37b3b55c2acaf95748#-496447180",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "2bdf0deeecae6c065e39a7cdaa44451b8ee45218#-1679251684",
     "Project.Controls.FlowLayout_52d0514b": "aa59aa984992d8480549bd8f07bb58907fa42d97#-1466580067",
@@ -2092,6 +2092,7 @@ e75c4c70          }
     "currentActiveLayerToolAvailable": true,
     "currentMode": "site",
     "customLocalizedStrings": "Get Started~###~651393e4-text~:::~เริ่มต้นใช้งาน",
+    "defaultLocalizedLanguage": "th",
     "editingAnimationID": null,
     "editingComponentID": null,
     "editingKeyframeID": null,
@@ -4112,7 +4113,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-cb2c63a9 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -5177,6 +5178,6 @@ b351d3a2    },
     "7bc56453": "8155ac24d8bea4e67daedc3fdad14b27bfca4ce7#1198326242",
     "9e885d49": "c427e073afc9d63d5303a122368aacf9b5b4ba7d#-1597433294",
     "b160aa0e": "4529c66196f107cf013d877aeb0bbf5668508b42#1904972771",
-    "index": "93dc4ea65ea328d0d33a4961faa6d4fd5e6a75ed#389294651"
+    "index": "82f44c026afc6fa34f8926c0daf0927a65ec33b2#1239484325"
   }
 }

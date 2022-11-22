@@ -7,6 +7,7 @@ import {ValidationHelper} from "../helpers/ValidationHelper";
 import {RenderHelper} from "../helpers/RenderHelper";
 import {DataTableSchema, SchemaHelper} from "../helpers/SchemaHelper";
 import {ProjectConfigurationHelper} from "../helpers/ProjectConfigurationHelper";
+import geoip from "geoip-lite";
 
 class Base {
 	protected request: Request;
@@ -60,6 +61,13 @@ class Base {
       	RenderHelper.json(this.response, await this.get(data));
       	break;
       default:
+      	let ip = this.request.headers['x-forwarded-for'] || this.request.connection.remoteAddress;
+      	if (ip.startsWith('::ffff:')) ip = ip.substr(7);
+				
+      	const geo = geoip.lookup(ip);
+      	this.response.locals.lang = geo && geo.country && geo.country.toLowerCase() || 'en';
+      	this.response.cookie('lang', this.response.locals.lang);
+      	
         switch (this.request.method) {
           case "GET":
             RenderHelper.page(this.response, this.template, await this.get(data), await this.accessories(data));

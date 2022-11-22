@@ -33,7 +33,7 @@ const RenderHelper = {
 	  	DataManipulationHelper: DataManipulationHelper,
 	    data: data || null,
 	    headers: headers || null,
-	    loc: loc
+	    loc: (text) => { return loc(text, response.locals.lang); }
 	  });
 	},
 	error: (response: Response, error: Error) => {

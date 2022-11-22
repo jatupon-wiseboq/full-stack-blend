@@ -82,7 +82,10 @@ const ProjectConfigurationHelper = {
 		}
 	},
 	getLanguageData: (): any => {
-	  return data.globalSettings || data.globalSettings.customLocalizedStrings || null;
+	  return data.globalSettings && data.globalSettings.customLocalizedStrings || null;
+	},
+	getSecondaryLanguage: (): any => {
+	  return data.globalSettings && data.globalSettings.defaultLocalizedLanguage && data.globalSettings.defaultLocalizedLanguage.toLowerCase() || null;
 	}
 };
 
