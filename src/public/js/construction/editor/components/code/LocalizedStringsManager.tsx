@@ -56,7 +56,7 @@ class LocalizedStringsManager extends Base<Props, State> {
         for (let value of values) {
         		let splited = value.split(LOCALIZATION_ITEM_DELIMITER);
             nodes.push({
-            		id: JSON.stringify({key: splited[0], value: splited[1]}),
+            		id: JSON.stringify({key: splited[0].split(LOCALIZATION_HASH_DELIMITER)[0], value: splited[1]}),
                 name: `${splited[0].substring(0, 32).trim().replace(LOCALIZATION_HASH_DELIMITER, '#').replace(/#$/, '') + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
                 selectable: true,
                 dropable: false,
@@ -79,7 +79,7 @@ class LocalizedStringsManager extends Base<Props, State> {
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (reference.id == 'delete') {
     		    let info = JSON.parse(element.id);
-    		    const values = this.getValuesExceptKey(this.state.key);
+    		    const values = this.getValuesExceptKey(info.key);
     		    
     		    perform('update', {
     		        extensions: [{

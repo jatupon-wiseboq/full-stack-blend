@@ -429,6 +429,7 @@ var WorkspaceHelper = {
       		|| cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()];
       	cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID] = WorkspaceHelper.generateBackEndCodeForID(InternalProjectSettings.editingPageID);
       	
+      	LocalizationHelper.collectFromShortcuts(cacheOfGeneratedFrontEndCodeForAllPages[WorkspaceHelper.getCurrentGenerateFrontEndCodeKey()]);
       	LocalizationHelper.collectFromShortcuts(cacheOfGeneratedBackEndCodeForAllPages[InternalProjectSettings.editingPageID]);
       }
       
