@@ -149,11 +149,8 @@ ${rootScript}`;
         			return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
         		});
         		
-        		const output = textContent.split('\n').join('\n' + indent + '| ');
         		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + textContent.split('\n').map((output) => {
-        				return '#{loc(\'' + output.replace(/'/g, "\\'") + '\')}';
-        			}).join('\n' + indent + '| '));
+        			lines.push(indent + '| ' + '#{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}
@@ -689,11 +686,8 @@ ${rootScript}`;
         			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
         		});
         		
-        		const output = textContent.split('\n').join('\n' + indent + '| ');
         		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + textContent.split('\n').map((output) => {
-        				return '#{loc(\'' + output.replace(/'/g, "\\'") + '\')}';
-        			}).join('\n' + indent + '| '));
+        			lines.push(indent + '| ' + '#{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}

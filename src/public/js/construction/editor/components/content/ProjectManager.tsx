@@ -541,7 +541,7 @@ ${customFooterExternalStylesheets.join('\n')}
 ${customFooterExternalScripts.join('\n')}
 script(type="text/javascript" src="/js/Site.bundle.js")
 script(type="text/javascript").
-  const localizedData = ${this.state.extensionValues['customLocalizedStrings'] && ("'" + this.state.extensionValues['customLocalizedStrings'].replace(/'/, "\\'") + "'") || 'null'};
+  const localizedData = ${this.state.extensionValues['customLocalizedStrings'] && ("'" + this.state.extensionValues['customLocalizedStrings'].replace(/'/g, "\\'").replace(/\n/g, "\\n") + "'") || 'null'};
 `;
             
             let arrayOfControllerScripts = [];
