@@ -20,6 +20,16 @@ class Base {
   	this.response = response;
   	this.template = template;
   	this.pageId = template.split("/").splice(-1, 1)[0].replace(/_/g, "");
+  	
+  	if (this.request.query.lang) {
+  		this.response.locals.lang = this.request.query.lang;
+  	} else {
+	  	let ip: string = (this.request.headers && this.request.headers['x-forwarded-for'] && this.request.headers['x-forwarded-for'][0]) || (this.request.connection && this.request.connection.remoteAddress);
+	  	if (ip && ip.startsWith('::ffff:')) ip = ip.substr(7);
+	  	
+	  	const geo = geoip.lookup(ip);
+	    this.response.locals.lang = geo && geo.country && geo.country.toLowerCase() || 'en';
+	  }
   }
 	
 	protected perform(action: ActionType, schema: DataTableSchema, data: Input[]) {
@@ -61,11 +71,6 @@ class Base {
       	RenderHelper.json(this.response, await this.get(data));
       	break;
       default:
-      	let ip = this.request.headers['x-forwarded-for'] || this.request.connection.remoteAddress;
-      	if (ip.startsWith('::ffff:')) ip = ip.substr(7);
-				
-      	const geo = geoip.lookup(ip);
-      	this.response.locals.lang = geo && geo.country && geo.country.toLowerCase() || 'en';
       	this.response.cookie('lang', this.response.locals.lang);
       	
         switch (this.request.method) {
