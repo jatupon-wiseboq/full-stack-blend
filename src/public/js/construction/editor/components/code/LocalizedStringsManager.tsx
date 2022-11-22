@@ -188,7 +188,7 @@ class LocalizedStringsManager extends Base<Props, State> {
     render() {
         return (
             <FullStackBlend.Components.ListManager customClassName="non-selectable non-insertable" nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-                <div className="section-container" style={{width: '75vw'}}>
+                <div className="section-container" style={{maxWidth: '75vw'}}>
                     <div className="section-title">{(this.state.isAdding) ? "New Translation" : "Update a Translation"}</div>
                     <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Original From Workspace</div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
@@ -204,7 +204,8 @@ class LocalizedStringsManager extends Base<Props, State> {
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
                     </div>
-                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>{(this.state.key || '').replace(LOCALIZATION_HASH_DELIMITER, '#')}</div>
+                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'block'}}>Original</div>
+                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'block'}}>{(this.state.key || '').replace(LOCALIZATION_HASH_DELIMITER, '#')}</div>
                 </div>
             </FullStackBlend.Components.ListManager>
         )
