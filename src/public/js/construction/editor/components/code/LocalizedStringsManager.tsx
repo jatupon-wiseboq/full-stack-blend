@@ -3,6 +3,7 @@ import {EventHelper} from '../../../helpers/EventHelper';
 import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
 import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import {ITreeNode} from '../../controls/TreeNode';
+import {LOCALIZATION_LIST_DELIMITER, LOCALIZATION_ITEM_DELIMITER, LOCALIZATION_HASH_DELIMITER} from '../../../Constants';
 import '../../controls/Textbox';
 import '../generic/ListManager';
 
@@ -40,10 +41,8 @@ class LocalizedStringsManager extends Base<Props, State> {
     public update(properties: any) {
         if (!super.update(properties)) return;
         
-        let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-        values = values.filter(value => !!value);
-        
-        let nodes: [ITreeNode] = [{
+        const values = this.getValuesExceptKey(null);
+        const nodes: [ITreeNode] = [{
             id: 'delete',
             name: 'Delete',
             selectable: false,
@@ -55,10 +54,10 @@ class LocalizedStringsManager extends Base<Props, State> {
         }];
         
         for (let value of values) {
-        		let splited = value.split('~');
+        		let splited = value.split(LOCALIZATION_ITEM_DELIMITER);
             nodes.push({
             		id: JSON.stringify({key: splited[0], value: splited[1]}),
-                name: `${splited[0].substring(0, 32).trim() + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
+                name: `${splited[0].substring(0, 32).trim().replace(LOCALIZATION_HASH_DELIMITER, '#') + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
                 selectable: true,
                 dropable: false,
 								insertable: true,
@@ -80,14 +79,12 @@ class LocalizedStringsManager extends Base<Props, State> {
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     		if (reference.id == 'delete') {
     		    let info = JSON.parse(element.id);
-    		    
-    		    let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(info.key + '~') == -1);
+    		    const values = this.getValuesExceptKey(this.state.key);
     		    
     		    perform('update', {
     		        extensions: [{
 		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
+		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
 		        		}]
     		    });
     		}
@@ -115,12 +112,12 @@ class LocalizedStringsManager extends Base<Props, State> {
         });
         
         if (value) {
-            let info = JSON.parse(node.id);
+            const info = JSON.parse(node.id);
             
             this.setState({
-            		prev: info.key,
-                key: info.key,
-                guid: info.key.split('#')[1],
+            		prev: info.key.split(LOCALIZATION_HASH_DELIMITER)[0],
+                key: info.key.split(LOCALIZATION_HASH_DELIMITER)[0],
+                guid: info.key.split(LOCALIZATION_HASH_DELIMITER)[1],
                 value: info.value
             });
         }
@@ -136,15 +133,15 @@ class LocalizedStringsManager extends Base<Props, State> {
     
     private addOnClick(event) {
         if (this.state.key && this.state.value) {
-            let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(this.state.key + '~') == -1);
+            const values = this.getValuesExceptKey(this.state.key);
+    		    const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
     		    
-    		    values.push(this.state.key + (this.state.guid ? '#' + this.state.guid : '') + '~' + this.state.value);
+    		    values.push(value);
     		    
     		    perform('update', {
     		        extensions: [{
 		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
+		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
 		        		}]
     		    });
             
@@ -154,21 +151,39 @@ class LocalizedStringsManager extends Base<Props, State> {
     
     private updateOnClick(event) {
         if (this.state.key && this.state.value) {
-            let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(this.state.prev + '~') == -1);
+            const values = this.getValuesExceptKey(this.state.key);
+    		    const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
     		    
-    		    values.push(this.state.key + (this.state.guid ? '#' + this.state.guid : '') + '~' + this.state.value);
+    		    values.push(value);
     		    
     		    perform('update', {
     		        extensions: [{
 		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
+		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
 		        		}]
     		    });
             
             document.body.click();
         }
     }
+    
+    private getValuesExceptKey(key: string): string[] {
+    	const customLocalizedStrings = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+      
+      let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
+      
+      if (key != null) {
+      	values = values.filter(value => value.indexOf(key + LOCALIZATION_HASH_DELIMITER) != 0);
+      }
+      
+      return values;
+    }
+    
+		private composeValue(key: string, value: string, guid: string='') {
+			if (guid == null) guid = '';
+			
+			return key + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + value;
+		}
     
     render() {
         return (
@@ -189,7 +204,7 @@ class LocalizedStringsManager extends Base<Props, State> {
                     <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
                     </div>
-                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>{this.state.key}</div>
+                    <div className="section-note" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>{(this.state.key || '').replace(LOCALIZATION_HASH_DELIMITER, '#')}</div>
                 </div>
             </FullStackBlend.Components.ListManager>
         )
