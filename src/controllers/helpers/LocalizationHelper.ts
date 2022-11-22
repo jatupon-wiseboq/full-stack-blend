@@ -14,6 +14,8 @@ const LocalizationHelper = {
 	getLanguageSpecification: (): any => {
 		const data = ProjectConfigurationHelper.getLanguageData();
 		
+		console.log(data);
+		
 		if (cachedData != data) {
 			cachedData = data;
 			cachedDictionary = null;
@@ -33,8 +35,11 @@ const LocalizationHelper = {
 	  cachedDictionary = dictionary;
 	  return dictionary;
 	},
-	localize: (text) => {
-		return LocalizationHelper.getLanguageSpecification[text] || text;
+	localize: (text: string, country: string='en') => {
+		if (!country) return text;
+		if (ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) return text;
+		
+		return LocalizationHelper.getLanguageSpecification()[text] || text;
 	}
 };
 
