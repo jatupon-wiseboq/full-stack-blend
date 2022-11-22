@@ -80,6 +80,9 @@ const ProjectConfigurationHelper = {
 		  default:
 		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
 		}
+	},
+	getLanguageData: (): any => {
+	  return data.globalSettings || data.globalSettings.customLocalizedStrings || null;
 	}
 };
 
