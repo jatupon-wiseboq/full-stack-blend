@@ -9,7 +9,7 @@ var LocalizationHelper = {
 		const deleting = {};
 		
 		for (const element of elements) {
-			const text = element.innerText;
+			const text = element.innerText.trim();
 			const translation = HTMLHelper.getAttribute(element, 'internal-fsb-translation');
 			const guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
 			
@@ -35,7 +35,7 @@ var LocalizationHelper = {
 			
 			const matches = sourceCode.toString().match(/(\@')([^']*)(')/g) || [];
 			for (const match of matches) {
-				const text = match.replace(/^\@'/, '').replace(/'$/, '');
+				const text = match.replace(/^\@'/, '').replace(/'$/, '').trim();
 				LocalizationHelper.add(text, text);
 			}
 		}
@@ -45,7 +45,7 @@ var LocalizationHelper = {
 		let found = false;
 		
 		for (const element of elements) {
-			const text = element.innerText;
+			const text = element.innerText.trim();
 			const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
 			
 			const index = customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER);
@@ -58,7 +58,7 @@ var LocalizationHelper = {
 		}
 	},
 	add: function(text: string, translation: string, guid: string='') {
-		LocalizationHelper.remove(text);
+		LocalizationHelper.remove(text, guid);
 		
 		const item = LocalizationHelper.compose(text, translation, guid);
 		
@@ -68,10 +68,19 @@ var LocalizationHelper = {
     
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
 	},
-	remove: function(text: string, guid: string=null) {
-		let values: string[] = InternalProjectSettings.customLocalizedStrings && InternalProjectSettings.customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
-  	values = values.filter(value => value.indexOf(text + LOCALIZATION_HASH_DELIMITER) != 0);
-  	values = values.filter(value => value.indexOf(LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER) == -1);
+	remove: function(text: string, guid: string) {
+		const customLocalizedStrings = InternalProjectSettings.customLocalizedStrings;
+    
+    let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
+    
+    if (text) {
+    	values = values.filter(value => !value.startsWith(text + LOCALIZATION_HASH_DELIMITER));
+    }
+    if (guid) {
+    	values = values.filter(value => value.indexOf(LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER) == -1);
+    }
+    
+    values.sort();
     
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
 	},

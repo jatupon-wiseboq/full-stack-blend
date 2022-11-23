@@ -149,8 +149,8 @@ ${rootScript}`;
         			return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
         		});
         		
-        		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + '!{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+        		if (LocalizationHelper.has(textContent.trim())) {
+        			lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}
@@ -658,11 +658,11 @@ ${rootScript}`;
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (!dangerouslySetInnerHTML) {
-            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText)) {
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
@@ -693,8 +693,8 @@ ${rootScript}`;
         			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
         		});
         		
-        		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + '!{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+        		if (LocalizationHelper.has(textContent.trim())) {
+        			lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}
@@ -1097,11 +1097,11 @@ ${rootScript}`;
               executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
             }
             
-            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText)) {
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
