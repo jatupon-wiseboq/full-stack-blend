@@ -62,8 +62,7 @@ class Base {
       	break;
       default:
       	let ip = this.request.headers['x-forwarded-for'] || this.request.connection.remoteAddress;
-      	if (ip) ip = ip.split(',')[0].trim();
-      	if (ip && ip.startsWith('::ffff:')) ip = ip.substr(7);
+      	if (ip.startsWith('::ffff:')) ip = ip.substr(7);
 				
       	const geo = geoip.lookup(ip);
       	this.response.locals.lang = geo && geo.country && geo.country.toLowerCase() || 'en';
