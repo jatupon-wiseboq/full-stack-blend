@@ -37,7 +37,10 @@ const LocalizationHelper = {
 		if (!country) return text;
 		if (ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) return text;
 		
-		return LocalizationHelper.getLanguageSpecification()[text] || text;
+		return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
+	},
+	encode: (text) => {
+		return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&#34;").replace(/\'/g, "&#39;");
 	}
 };
 
