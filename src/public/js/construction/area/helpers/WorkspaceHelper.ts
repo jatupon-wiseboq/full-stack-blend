@@ -86,6 +86,8 @@ var WorkspaceHelper = {
 	  clonedInternalProjectSettings.editingAnimationID = null;
 	  clonedInternalProjectSettings.editingKeyframeID = null;
 	  clonedInternalProjectSettings.editingSelector = null;
+	  clonedInternalProjectSettings.editingProperties = null;
+	  clonedInternalProjectSettings.preview = null;
     
     let clonedInternalSites = CodeHelper.clone(InternalSites);
     for (let key in clonedInternalSites) {
