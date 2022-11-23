@@ -173,6 +173,7 @@ class LocalizedStringsManager extends Base<Props, State> {
       let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
       
       if (key != null) {
+      	key = this.cleanKeyForComposing(key);
       	values = values.filter(value => value.indexOf(key + LOCALIZATION_HASH_DELIMITER) != 0);
       }
       
@@ -181,9 +182,14 @@ class LocalizedStringsManager extends Base<Props, State> {
     }
     
 		private composeValue(key: string, value: string, guid: string='') {
+			key = this.cleanKeyForComposing(key);
 			if (guid == null) guid = '';
 			
 			return key + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + value;
+		}
+		
+		private cleanKeyForComposing(text: string) {
+			return text.replace(/\n+/g, ' ');
 		}
     
     render() {

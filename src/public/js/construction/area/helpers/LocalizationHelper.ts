@@ -9,7 +9,9 @@ var LocalizationHelper = {
 		const deleting = {};
 		
 		for (const element of elements) {
-			const text = element.innerText.trim();
+			let text = element.innerText.trim();
+			text = LocalizationHelper.cleanKeyForComposing(text);
+			
 			const translation = HTMLHelper.getAttribute(element, 'internal-fsb-translation');
 			const guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
 			
@@ -45,7 +47,8 @@ var LocalizationHelper = {
 		let found = false;
 		
 		for (const element of elements) {
-			const text = element.innerText.trim();
+			let text = element.innerText.trim();
+			text = LocalizationHelper.cleanKeyForComposing(text);
 			const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
 			
 			const index = customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER);
@@ -58,9 +61,10 @@ var LocalizationHelper = {
 		}
 	},
 	add: function(text: string, translation: string, guid: string='') {
+		text = LocalizationHelper.cleanKeyForComposing(text);
 		LocalizationHelper.remove(text, guid);
 		
-		const item = LocalizationHelper.compose(text, translation, guid);
+		const item = LocalizationHelper.composeItemKeyValueToken(text, translation, guid);
 		
 		let values: string[] = InternalProjectSettings.customLocalizedStrings && InternalProjectSettings.customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
     values.push(item);
@@ -69,6 +73,7 @@ var LocalizationHelper = {
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
 	},
 	remove: function(text: string, guid: string) {
+		text = LocalizationHelper.cleanKeyForComposing(text);
 		const customLocalizedStrings = InternalProjectSettings.customLocalizedStrings;
     
     let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
@@ -84,14 +89,19 @@ var LocalizationHelper = {
     
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
 	},
-	compose: function(text: string, translation: string, guid: string='') {
+	has: function(text: string) {
+		text = LocalizationHelper.cleanKeyForComposing(text);
+		const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
+		return customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER) != -1;
+	},
+	composeItemKeyValueToken: function(text: string, translation: string, guid: string='') {
+		text = LocalizationHelper.cleanKeyForComposing(text);
 		if (guid == null) guid = '';
 		
 		return text + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + translation;
 	},
-	has: function(text: string) {
-		const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
-		return customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER) != -1;
+	cleanKeyForComposing: function(text: string) {
+		return text.replace(/\n+/g, ' ');
 	}
 };
 
