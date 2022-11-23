@@ -658,10 +658,17 @@ ${rootScript}`;
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (!dangerouslySetInnerHTML) {
-            lines.push(composed);
-            
-            for (let child of children) {
-              FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactMode && !isFirstElement) ? {} : context);
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.textContent)) {
+              composed += '.';
+              
+              lines.push(composed);
+              lines.push(indent + '  ' + '#{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+            } else {
+              lines.push(composed);
+              
+              for (let child of children) {
+                FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactMode && !isFirstElement) ? {} : context);
+              }
             }
           } else {
             lines.push(composed);
@@ -1077,22 +1084,31 @@ ${rootScript}`;
           
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
-          lines.push(composed);
-          
           if (inline[0]) {
-          	indent += '  ';
-          	composed = indent;
-          	composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
-          	
           	lines.push(composed);
+          	
+            indent += '  ';
+            composed = indent;
+            composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
+            
+            lines.push(composed);
           } else {
-          	if (_localEvents.length != 0) {
-	            executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
-	          }
-	          
-	          for (let child of children) {
-	            FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
-	          }
+            if (_localEvents.length != 0) {
+              executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
+            }
+            
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.textContent)) {
+              composed += '.';
+              
+              lines.push(composed);
+              lines.push(indent + '  ' + '#{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+            } else {
+              lines.push(composed);
+              
+              for (let child of children) {
+                FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
+              }
+            }
           }
         }
       }

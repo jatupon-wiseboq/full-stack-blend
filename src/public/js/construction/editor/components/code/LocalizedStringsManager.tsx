@@ -176,6 +176,7 @@ class LocalizedStringsManager extends Base<Props, State> {
       	values = values.filter(value => value.indexOf(key + LOCALIZATION_HASH_DELIMITER) != 0);
       }
       
+      values.sort();
       return values;
     }
     
