@@ -150,7 +150,7 @@ ${rootScript}`;
         		});
         		
         		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + '#{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+        			lines.push(indent + '| ' + '!{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}
@@ -662,7 +662,7 @@ ${rootScript}`;
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '#{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
@@ -694,7 +694,7 @@ ${rootScript}`;
         		});
         		
         		if (LocalizationHelper.has(textContent)) {
-        			lines.push(indent + '| ' + '#{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+        			lines.push(indent + '| ' + '!{loc(\'' + textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
         		} else {
           		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
           	}
@@ -1101,7 +1101,7 @@ ${rootScript}`;
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '#{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
