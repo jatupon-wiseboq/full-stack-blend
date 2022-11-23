@@ -658,11 +658,11 @@ ${rootScript}`;
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (!dangerouslySetInnerHTML) {
-            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.textContent)) {
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText)) {
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '!{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
@@ -1097,11 +1097,11 @@ ${rootScript}`;
               executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
             }
             
-            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.textContent)) {
+            if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText)) {
               composed += '.';
               
               lines.push(composed);
-              lines.push(indent + '  ' + '!{loc(\'' + element.textContent.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               

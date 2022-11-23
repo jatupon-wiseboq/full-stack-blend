@@ -49,7 +49,7 @@ var LocalizationHelper = {
 			const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
 			
 			const index = customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER);
-			const length = text.length + LOCALIZATION_HASH_DELIMITER.length;
+			const length = LOCALIZATION_LIST_DELIMITER.length + text.length + LOCALIZATION_HASH_DELIMITER.length;
 			
 			if (index == -1) continue;
 			
@@ -71,7 +71,7 @@ var LocalizationHelper = {
 	remove: function(text: string, guid: string=null) {
 		let values: string[] = InternalProjectSettings.customLocalizedStrings && InternalProjectSettings.customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
   	values = values.filter(value => value.indexOf(text + LOCALIZATION_HASH_DELIMITER) != 0);
-  	values = values.filter(value => value.indexOf(LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_HASH_DELIMITER) == -1);
+  	values = values.filter(value => value.indexOf(LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER) == -1);
     
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
 	},
