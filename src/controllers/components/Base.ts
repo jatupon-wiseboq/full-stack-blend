@@ -24,7 +24,8 @@ class Base {
   	if (this.request.query.lang) {
   		this.response.locals.lang = this.request.query.lang;
   	} else {
-	  	let ip: string = (this.request.headers && this.request.headers['x-forwarded-for'] && this.request.headers['x-forwarded-for'][0]) || (this.request.connection && this.request.connection.remoteAddress);
+	  	let ip: string = (this.request.headers && this.request.headers['x-forwarded-for'] && this.request.headers['x-forwarded-for'].toString()) || (this.request.connection && this.request.connection.remoteAddress && this.request.connection.remoteAddress.toString());
+      ip = ip.split(',')[0];
 	  	if (ip && ip.startsWith('::ffff:')) ip = ip.substr(7);
 	  	
 	  	const geo = geoip.lookup(ip);
