@@ -34,10 +34,14 @@ const LocalizationHelper = {
 	  return dictionary;
 	},
 	localize: (text: string, country: string='en') => {
-		if (!country) return text;
-		if (ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) return text;
-		
-		return LocalizationHelper.getLanguageSpecification()[text] || text;
+		if (!country || ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) {
+			return text.replace(/\n\n/g, '<br/>');
+		} else {
+			return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
+		}
+	},
+	encode: (text) => {
+		return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&#34;").replace(/\'/g, "&#39;");
 	}
 };
 
