@@ -1,6 +1,8 @@
 // Layer Manager
 // -------------------------
-.list-manager-container {		
+.list-manager-container {
+	position: relative;
+			
 	.treenode-container {
 		cursor: move;
 		
@@ -86,6 +88,13 @@
   	}
   	
 	  .treenode-outer-container.delete {
+	  	position: absolute;
+	    top: 0;
+	    right: 21px;
+	    left: 21px;
+	    padding: 3px;
+	    opacity: 0.9;
+	    z-index: 100;
 	    display: none;
 	    
 	    .treenode-container {

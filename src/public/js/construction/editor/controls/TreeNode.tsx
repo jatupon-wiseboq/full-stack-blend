@@ -56,6 +56,7 @@ interface IState {
 class TreeNode extends React.Component<IProps, IState> {
 	  private mouseUpDelegate: any = null;
 	  private mouseMoveDelegate: any = null;
+	  private rootContainer: any = null;
 	  
     constructor(props) {
     	super(props);
@@ -153,6 +154,8 @@ class TreeNode extends React.Component<IProps, IState> {
 			this.originalElementPos.x = elementPosition[0];
 			this.originalElementPos.y = elementPosition[1];
 			
+			this.rootContainer = ReactDOM.findDOMNode(this.refs.container);
+			
 			this.installEventHandlers();
 		}
 		private mouseMove(event) {
@@ -207,8 +210,11 @@ class TreeNode extends React.Component<IProps, IState> {
 		}
 		
 		private moveDraggingContent(mousePosition: Point) {
+			const container = HTMLHelper.findTheParentInClassName('tree-container', this.rootContainer);
+			let scrollTop = container.scrollTop;
+			
 			let diffX = mousePosition.x - this.originalMousePos.x;
-			let diffY = mousePosition.y - this.originalMousePos.y;
+			let diffY = mousePosition.y - this.originalMousePos.y - scrollTop;
 			
 			this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
 			this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
