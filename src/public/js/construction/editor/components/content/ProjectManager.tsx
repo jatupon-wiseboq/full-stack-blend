@@ -419,7 +419,6 @@ class ProjectManager extends Base<Props, State> {
   <!DOCTYPE html>
 html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
-    link(rel="icon" href='${this.state.extensionValues['icon'] || ''}')
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
       \#{headers && headers.title || '${title}'}
@@ -455,6 +454,7 @@ html(lang=headers && headers.language || '${this.state.extensionValues['defaultL
             }
             
             let combinedHeaderScripts = `
+link(rel="icon" href='${this.state.extensionValues['icon'] || ''}')
 link(rel="stylesheet" href="/css/embed.css")
 ${externalStylesheets.join('\n')}
 ${customHeaderExternalStylesheets.join('\n')}
