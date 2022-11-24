@@ -9,6 +9,7 @@ import {ValidationInfo, ValidationHelper} from '../../../helpers/ValidationHelpe
 import {RequestHelper} from '../../../helpers/RequestHelper';
 import {RenderHelper} from '../../../helpers/RenderHelper';
 import {SchemaHelper, DataTableSchema} from '../../../helpers/SchemaHelper';
+import {loc} from '../../../helpers/LocalizationHelper';
 import {Base as $Base} from '../../Base';
 
 // Assign to an another one to override the base class.

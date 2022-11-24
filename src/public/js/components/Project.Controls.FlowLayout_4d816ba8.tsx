@@ -9,7 +9,7 @@ import {HTMLHelper} from '../helpers/HTMLHelper';
 import {AnimationHelper} from '../helpers/AnimationHelper';
 import {TestHelper} from '../helpers/TestHelper';
 import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
-import {loc} from '../helpers/LocalizationHelper';
+import {loc as $loc} from '../helpers/LocalizationHelper';
 import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
 
 // Assign to an another one to override the base class.
@@ -31,6 +31,7 @@ declare let pug: any;
 
 let Button = $Button;
 let Project = $Project;
+let loc = $loc;
 
 /*enum SourceType {
   Relational,
@@ -177,8 +178,7 @@ class FlowLayout_4d816ba8 extends Base {
     return pug `
       div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="-fsb-preset-245bc127 internal-fsb-element internal-fsb-strict-layout " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '-1px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '-1px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '-1px'}, internal-fsb-guid="257894ed")
-          .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, internal-fsb-guid="08a05b72").
-            #{loc('StackBlend Studio')}
+          .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, dangerouslySetInnerHTML={__html: loc('StackBlend Studio')}, internal-fsb-guid="08a05b72")
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1', 'width': '100%'}, internal-fsb-guid="e80dd7c1")
           .internal-fsb-element(style={'MozHyphens': 'auto', 'MsHyphens': 'auto', 'MsOverflowY': 'auto', 'MsWordBreak': 'break-word', 'WebkitHyphens': 'auto', 'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '10px', 'hyphens': 'auto', 'overflowY': 'auto', 'textAlign': 'justify', 'textTransform': 'uppercase', 'width': '100%', 'wordBreak': 'break-word'}, internal-fsb-guid="e55072d1")
             div

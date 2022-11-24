@@ -119,10 +119,10 @@ d0e675b7    },
     }
   },
   "backEndControllerBlobSHADict": {
-    "3cb10a6e": "c9f6b79006bfc5d2effdce86fe7e5b5aef861b87#1810209361",
-    "7bc56453": "6c61520e2afb2075193474cefe0568496375f8a3#-961680362",
+    "3cb10a6e": "1e2fa1251b19a064dbd16f25e16ca7da4fce0fd0#1472857917",
+    "7bc56453": "1615ea434d7858ee9e5ddbf92a69af6a233a4828#-86717014",
     "9e885d49": "739d70508da500bd4ffa7c61d1f6824ba4080944#-154002304",
-    "b160aa0e": "4579ac25a2e94b5b7dd684cb3f12bf2766491d28#2146147389",
+    "b160aa0e": "16a9b4bf1a22b587d79a69181ab1367c9b22a3d8#1953985233",
     "index": "6dddd92c86a4b12cd0e8a7c8b1a7061375ea0917#1963384947"
   },
   "components": {
@@ -1121,8 +1121,14 @@ d0e675b7    },
 245bc127        "</div>",
 245bc127        "</div>"
 245bc127      ],
+245bc127      "id": "245bc127",
 245bc127      "klass": "Settings",
-245bc127      "namespace": "Project.Controls"
+245bc127      "name": "Settings",
+245bc127      "namespace": "Project.Controls",
+245bc127      "references": [
+245bc127        "245bc127"
+245bc127      ],
+245bc127      "state": "create"
 245bc127    },
 4d816ba8    "4d816ba8": {
 4d816ba8      "accessories": {},
@@ -1199,7 +1205,8 @@ d0e675b7    },
 4d816ba8        "    internal-fsb-event-no-propagate=\"1\"",
 4d816ba8        "    internal-fsb-guid=\"08a05b72\"",
 4d816ba8        "    internal-fsb-name=\"Product Name\"",
-4d816ba8        "    style=\"color: rgba(255, 255, 255, 1); display: block; font-size: 24px; width: 100%\">StackBlend Studio</div>",
+4d816ba8        "    style=\"color: rgba(255, 255, 255, 1); display: block; font-size: 24px; width: 100%\"",
+4d816ba8        "    internal-fsb-translation=\"StackBlend สตูดิโอ\">StackBlend Studio</div>",
 4d816ba8        "<div",
 4d816ba8        "    class=\"internal-fsb-allow-cursor internal-fsb-element\"",
 4d816ba8        "    internal-fsb-class=\"Rectangle\"",
@@ -1510,10 +1517,13 @@ d0e675b7    },
 4d816ba8      "klass": "FlowLayout_4d816ba8",
 4d816ba8      "name": "Authenticator",
 4d816ba8      "namespace": "Project.Controls",
+4d816ba8      "references": [
+4d816ba8        "4d816ba8"
+4d816ba8      ],
 4d816ba8      "state": "create"
 4d816ba8    }
   },
-  "controllerBlobSHA": "aa8b34ea8e18c07855009cdb61b7f3266bf858d6#986066080",
+  "controllerBlobSHA": "b9a93b077edaf31462913b0813e99e7b3065d1d6#795882480",
   "currentPersistingFiles": [
     "src/controllers/components/account/settings/_3cb10a6e.ts",
     "src/controllers/components/demo/guestbook/_7bc56453.ts",
@@ -2041,11 +2051,11 @@ e75c4c70          }
       }
     }
   },
-  "footerBlobSHA": "6ed1abf786630b08bb5ec58a72ffffc584670f93#728812576",
+  "footerBlobSHA": "518e212c28ae42b55e95ccc9a2b8f5cb10e17623#-1038976057",
   "frontEndComponentsBlobSHADict": {
-    "Project.Controls.FlowLayout_4d816ba8": "cdc99fcec06a981cfb3eccc842fcdc3f3b45faf4#-1211701702",
-    "Project.Controls.FlowLayout_52d0514b": "aa59aa984992d8480549bd8f07bb58907fa42d97#-1466580067",
-    "Project.Controls.Settings": "767f4efc8392d3a8c4540f92fa9f377d3668cfe4#-179601188"
+    "Project.Controls.FlowLayout_4d816ba8": "84424526b776149c7e7575cef3d759a590bb9e63#1368466510",
+    "Project.Controls.FlowLayout_52d0514b": "145c8ff1082331bd942ba93482046724cdfc546d#1112157440",
+    "Project.Controls.Settings": "f4aa6d3b0d4f0839621d8f135a5818a8ebb336ac#-1177691393"
   },
   "globalSettings": {
     "colorSwatches": [
@@ -2257,7 +2267,7 @@ e75c4c70          }
 3cb10a6e        "    style=\"-webkit-background-size: cover; background-image: url(https://stackblend-static-files.s3-us-west-1.amazonaws.com/galaxy_full.jpg); background-position: center center; background-size: cover; position: relative\">",
 3cb10a6e        "<div",
 3cb10a6e        "    class=\"internal-fsb-begin\"",
-3cb10a6e        "    internal-fsb-animation=\"animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-1007a040 animation-group-a58e28b5 animation-group-ad445a62 animation-group-b7965b87 animation-group-d0e675b7\"",
+3cb10a6e        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-71ed425e animation-extension-783c1d40 animation-group-1007a040 animation-group-a58e28b5 animation-group-ad445a62 animation-group-b7965b87 animation-group-d0e675b7\"",
 3cb10a6e        "    internal-fsb-guid=\"0\">",
 3cb10a6e        "<div",
 3cb10a6e        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -2306,7 +2316,7 @@ e75c4c70          }
 3cb10a6e        "</a>",
 3cb10a6e        "</div>",
 3cb10a6e        "<div",
-3cb10a6e        "    class=\"-fsb-self-245bc127 col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-selecting internal-fsb-strict-layout\"",
+3cb10a6e        "    class=\"-fsb-self-245bc127 col-12 internal-fsb-allow-cursor internal-fsb-element internal-fsb-strict-layout\"",
 3cb10a6e        "    internal-fsb-guid=\"245bc127\"",
 3cb10a6e        "    internal-fsb-name=\"Settings\"",
 3cb10a6e        "    internal-fsb-react-mode=\"Site\">",
@@ -3802,7 +3812,7 @@ b160aa0e        "    class=\"\"",
 b160aa0e        "    style=\"font-family: Courier Prime; font-size: 18px\">",
 b160aa0e        "<div",
 b160aa0e        "    class=\"internal-fsb-begin\"",
-b160aa0e        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-1007a040 animation-group-211b4247 animation-group-243eaa41 animation-group-a58e28b5 animation-group-b7965b87 animation-group-d0e675b7\"",
+b160aa0e        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-71ed425e animation-extension-783c1d40 animation-group-1007a040 animation-group-211b4247 animation-group-243eaa41 animation-group-a58e28b5 animation-group-b7965b87 animation-group-d0e675b7\"",
 b160aa0e        "    internal-fsb-guid=\"0\">",
 b160aa0e        "<div",
 b160aa0e        "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4116,7 +4126,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-extension-cb2c63a9 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -4778,7 +4788,9 @@ b351d3a2    },
         "    internal-fsb-guid=\"999a17e1\"",
         "    internal-fsb-name=\"Description\"",
         "    style=\"-fsb-inherited-presets: d2a8edc9\"",
-        "    internal-fsb-translation=\"StackBlend สตูดิโอใช้วิถีการออกแบบโครงสร้างของข้อมูลอันเป็นแบบฉบับของ StackBlend สตูดิโอโดยเฉพาะในการนิยามฯ เพื่อเชื่อมกลุ่มของข้อมูลระหว่างเบื้องหน้าและเบื้องหลังเข้าด้วยกันโดยใช้ dot notations เพียงเท่านั้น อีกทั้งมีตัวเลือกสำหรับจำกัดสิทธิ์ในการเข้าถึงหรือแก้ไขในตารางต่างๆ\n\nและที่มากไปกว่านั้น กลุ่มข้อมูลที่อยู่ระหว่างเบื้องหน้าและเบื้องหลังก็ได้ใช้เทคโนโลยี socket อีกด้วยที่พร้อมจะทำให้ข้อมูลของทั้งสองฝั่งเป็นไปอย่างพร้อมเพรียงกันโดยที่คุณไม่ต้องลงมือเขียนโค้ดเพิ่มเติมแต่อย่างใด\">StackBlend Studio uses its Data Modelling to define data schemata for linking datasets between front-end and back-end by simply using dot notations, together with restriction options, among tables to perform CRUD.<div>",
+        "    internal-fsb-translation=\"StackBlend สตูดิโอใช้วิถีการออกแบบโครงสร้างของข้อมูลอันเป็นแบบฉบับของ StackBlend สตูดิโอโดยเฉพาะในการนิยามฯ เพื่อเชื่อมกลุ่มของข้อมูลระหว่างเบื้องหน้าและเบื้องหลังเข้าด้วยกันโดยใช้ dot notations เพียงเท่านั้น อีกทั้งมีตัวเลือกสำหรับจำกัดสิทธิ์ในการเข้าถึงหรือแก้ไขในตารางต่างๆ",
+        "",
+        "และที่มากไปกว่านั้น กลุ่มข้อมูลที่อยู่ระหว่างเบื้องหน้าและเบื้องหลังก็ได้ใช้เทคโนโลยี socket อีกด้วยที่พร้อมจะทำให้ข้อมูลของทั้งสองฝั่งเป็นไปอย่างพร้อมเพรียงกันโดยที่คุณไม่ต้องลงมือเขียนโค้ดเพิ่มเติมแต่อย่างใด\">StackBlend Studio uses its Data Modelling to define data schemata for linking datasets between front-end and back-end by simply using dot notations, together with restriction options, among tables to perform CRUD.<div>",
         "<br>",
         "</div>",
         "<div>Moreover, the dataset in-between are bonded together with the socket technology, so that they will synchronize without any extra code.</div>",
@@ -5216,10 +5228,10 @@ b351d3a2    },
   },
   "version": 1.3,
   "viewBlobSHADict": {
-    "3cb10a6e": "0b340a05ad37fad294de3fa18182e4f4e9a1c052#369944664",
+    "3cb10a6e": "f18c29361949305a07b4e9cbf4d1376346d3d12b#2062570083",
     "7bc56453": "8155ac24d8bea4e67daedc3fdad14b27bfca4ce7#1198326242",
     "9e885d49": "a4aee59d1377da1e597b5e536a121f78e94cf321#-373877699",
-    "b160aa0e": "4529c66196f107cf013d877aeb0bbf5668508b42#1904972771",
+    "b160aa0e": "b6c19d23443e60f87859f2178b066fbef2cc7221#-1170093132",
     "index": "74b0ea714865904b8453b9ab4e378f575ade5640#-182227453"
   }
 }
