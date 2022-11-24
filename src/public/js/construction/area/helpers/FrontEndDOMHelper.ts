@@ -264,6 +264,13 @@ ${rootScript}`;
           }
         }
         
+        if (!dangerouslySetInnerHTML && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
+        	_attributes.push({
+            name: 'dangerouslySetInnerHTML',
+            value: `{{__html: loc('${element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n")}')}}`
+          });
+        }
+        
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
             let bindingName = attribute.name.replace('internal-fsb-react-style-', '');
@@ -659,10 +666,7 @@ ${rootScript}`;
           
           if (!dangerouslySetInnerHTML) {
             if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
-              composed += '.';
-              
               lines.push(composed);
-              lines.push(indent + '  ' + '!{loc(\'' + element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
               
