@@ -35,7 +35,7 @@ var LocalizationHelper = {
 		for (const sourceCode of atEndInfo) {
 			if (!sourceCode) continue;
 			
-			const matches = sourceCode.toString().match(/(\@')([^']*)(')/g) || [];
+			const matches = sourceCode.toString().match(/(\@')([^~#$^*_`\{\}\|\[\]\\:";'<>]+)(')/g) || [];
 			for (const match of matches) {
 				const text = match.replace(/^\@'/, '').replace(/'$/, '').trim();
 				LocalizationHelper.add(text, text);
