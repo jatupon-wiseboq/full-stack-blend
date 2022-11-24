@@ -28,15 +28,16 @@ const LocalizationHelper = {
 	  return dictionary;
 	},
 	localize: (text) => {
-		const index = decodeURIComponent(document.cookie || '').indexOf('lang=');
-		if (index == -1) return text;
+		const cookie = decodeURIComponent(document.cookie || '');
+		const index = cookie.indexOf('lang=');
+		const lang = (index == -1) ? null : cookie.substring(index + 5).split(';')[0];
+		const key = text.replace(/\n+/g, ' ');
 		
-		const lang = window.location.search.substring(index + 5).split(';')[0];
-		if (!lang) return text;
-		
-		text = text.replace(/\n+/g, ' ');
-		
-		return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
+		if (!lang || !LocalizationHelper.getLanguageSpecification()[key]) {
+			return LocalizationHelper.encode(text).replace(/\n\n/g, '<br/>').replace(/\n/g, '<br/>');
+		} else {
+			return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[key] || text).replace(/\n/g, '<br/>');
+		}
 	},
 	encode: (text) => {
 		return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&#34;").replace(/\'/g, "&#39;");
