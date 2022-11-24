@@ -506,6 +506,7 @@ import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
 import {SitemapHelper} from "./helpers/SitemapHelper";
+import {loc} from "./helpers/LocalizationHelper";
 
 ${Object.keys(routes).sort().map(key => `import Component${routes[key].id} from "./components/${this.getFeatureDirectoryPrefix(routes[key].id)}${this.getRepresentativeName(routes[key].id)}";`).join('\n')}
 ${Object.keys(connectors).sort().map(key => `import Connector${connectors[key]} from "./connectors/${this.getRepresentativeName(connectors[key])}";`).join('\n')}
