@@ -34,6 +34,8 @@ const LocalizationHelper = {
 		const lang = window.location.search.substring(index + 5).split(';')[0];
 		if (!lang) return text;
 		
+		text = text.replace(/\n+/g, ' ');
+		
 		return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
 	},
 	encode: (text) => {

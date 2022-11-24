@@ -35,8 +35,10 @@ const LocalizationHelper = {
 	},
 	localize: (text: string, country: string='en') => {
 		if (!country || ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) {
-			return text.replace(/\n\n/g, '<br/>');
+			return text.replace(/\n\n/g, '<br/>').replace(/\n/g, '<br/>');
 		} else {
+			text = text.replace(/\n+/g, ' ');
+			
 			return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
 		}
 	},
