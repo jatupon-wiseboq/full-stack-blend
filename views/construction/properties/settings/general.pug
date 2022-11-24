@@ -8,3 +8,9 @@ include ../../mixin/CreateReactComponent
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceMode']}")
   .section-note
     | Choose a workspace mode which you will working with. These will disable options, if necessary, to prevent colleague from modifying or ruining the masterpiece. 
+  .section-title
+    | Site Settings
+  .section-subtitle
+    | Application Icon
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['icon'], inline: true, button: false, placeholder: 'URL'}")

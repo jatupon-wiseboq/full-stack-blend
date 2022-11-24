@@ -19,7 +19,7 @@ interface State extends IState {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages", "customLocalizedStrings", "customFrontEndSettings", "customBackEndSettings", "defaultLanguage"]
+  watchingExtensionNames: ["externalLibraries", "customExternalLibraries", "pages", "customLocalizedStrings", "customFrontEndSettings", "customBackEndSettings", "defaultLanguage", "icon"]
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -291,6 +291,7 @@ class EndpointManager extends Base<Props, State> {
   <!DOCTYPE html>
 html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
+    link(rel="icon" href='${this.state.extensionValues['icon'] || ''}')
     meta(name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0")
     title.
       \#{headers && headers.title || '${title}'}
