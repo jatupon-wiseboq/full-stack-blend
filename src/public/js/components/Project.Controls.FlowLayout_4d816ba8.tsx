@@ -184,15 +184,12 @@ class FlowLayout_4d816ba8 extends Base {
         .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
           .internal-fsb-element.internal-fsb-strict-layout(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="35e36a4a")
-            .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, internal-fsb-guid="e439a68e")
-              | Please login or signup to start using StackBlend Studio
+            .col-12.internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'textAlign': 'center'}, dangerouslySetInnerHTML={__html: loc('Please login or signup to start using StackBlend Studio')}, internal-fsb-guid="e439a68e")
             .col-12.internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '15px', 'paddingLeft': '0px', 'paddingRight': '15px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="89972713")
               Button.-fsb-self-d7d59dd2.col-5.internal-fsb-element.offset-1(style={background: (()=>{return (this.state.currentTab == 0) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 0) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 0) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_d7d59dd2.bind(this), internal-fsb-guid="d7d59dd2")
-                .internal-fsb-element(internal-fsb-guid="d7d59dd2-text")
-                  | Login
+                .internal-fsb-element(dangerouslySetInnerHTML={__html: loc('Login')}, internal-fsb-guid="d7d59dd2-text")
               Button.-fsb-preset-d7d59dd2.col-5.internal-fsb-element.offset-0(style={'FsbInheritedPresets': 'd7d59dd2', 'marginLeft': '15px', background: (()=>{return (this.state.currentTab == 1) ? '' : 'transparent';})(), borderBottomStyle: (()=>{return (this.state.currentTab == 1) ? '' : 'none';})(), color: (()=>{return (this.state.currentTab == 1) ? '' : 'rgba(200, 200, 200, 1)';})()}, disabled=this.state.submitting, type="button", onClick=this.onButtonClick_875ac000.bind(this), internal-fsb-guid="875ac000")
-                .internal-fsb-element(internal-fsb-guid="875ac000-text")
-                  | Signup
+                .internal-fsb-element(dangerouslySetInnerHTML={__html: loc('Signup')}, internal-fsb-guid="875ac000-text")
             .-fsb-self-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="1b650e66")
               input.form-control.form-control-sm(placeholder="Email address", type="text", disabled=this.state.submitting, required=true)
             .-fsb-preset-1b650e66.col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="22d343bd")
@@ -201,11 +198,9 @@ class FlowLayout_4d816ba8 extends Base {
               .col-10.internal-fsb-element.offset-1(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="d3de6c93")
                 input.form-control.form-control-sm(style={'display': 'block', 'height': '34px', 'marginTop': '10px', 'width': '100%'}, placeholder="Confirm password", type="password", disabled=this.state.submitting, required=true)
             Button.btn.btn-md.btn-primary.col-6.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 0) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('954a291a', 'User', event, ((results) => { this.manipulate('954a291a', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting || undefined, type="button", onFailed=this.onButtonFailed_954a291a.bind(this), onSubmitting=this.onButtonSubmitting_954a291a.bind(this), internal-fsb-guid="954a291a")
-              .internal-fsb-element(internal-fsb-guid="954a291a-text")
-                | Continue
+              .internal-fsb-element(dangerouslySetInnerHTML={__html: loc('Continue')}, internal-fsb-guid="954a291a-text")
             Button.btn.btn-md.btn-primary.col-6.internal-fsb-element.offset-3(style={'marginTop': '10px', display: (()=>{return (this.state.currentTab == 1) ? 'block' : 'none';})()}, onClick=((event) => { window.internalFsbSubmit('b2b66792', 'User', event, ((results) => { this.manipulate('b2b66792', 'User', results); }).bind(this)); }).bind(this), disabled=this.state.submitting || undefined, type="button", onFailed=this.onButtonFailed_b2b66792.bind(this), onSubmitting=this.onButtonSubmitting_b2b66792.bind(this), internal-fsb-guid="b2b66792")
-              .internal-fsb-element(internal-fsb-guid="b2b66792-text")
-                | Continue
+              .internal-fsb-element(dangerouslySetInnerHTML={__html: loc('Continue')}, internal-fsb-guid="b2b66792-text")
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="d5903637")
     `
   }
