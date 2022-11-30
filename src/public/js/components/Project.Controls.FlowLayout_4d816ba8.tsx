@@ -180,32 +180,7 @@ class FlowLayout_4d816ba8 extends Base {
         .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '-1px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '-1px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '-1px'}, internal-fsb-guid="257894ed")
           .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, dangerouslySetInnerHTML={__html: loc('StackBlend Studio')}, internal-fsb-guid="08a05b72")
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1', 'width': '100%'}, internal-fsb-guid="e80dd7c1")
-          .internal-fsb-element(style={'MozHyphens': 'auto', 'MsHyphens': 'auto', 'MsOverflowY': 'auto', 'MsWordBreak': 'break-word', 'WebkitHyphens': 'auto', 'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '10px', 'hyphens': 'auto', 'overflowY': 'auto', 'textAlign': 'justify', 'textTransform': 'uppercase', 'width': '100%', 'wordBreak': 'break-word'}, internal-fsb-guid="e55072d1")
-            div
-              | ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-            div
-              br
-            div
-              | By using this StackBlend studio, you are further agreeing that your software isn't include content that is offensive, insensitive, upsetting, and intended to disgust, for examples:
-            div
-              | - Defamatory, discriminatory, or mean-spirited content
-            div
-              | - encourage violence
-            div
-              | - encourage illegal or reckless use of weapons
-            div
-              | - sexual or pornographic material
-            div
-              | - inaccurate or misleading quotations of religious
-            div
-              | - False information and features
-            div
-              | - Liquors, beer, narcotic drug, or tobacco
-            div
-              br
-              | Copyright (c) SoftenStorm Foundation and other contributors. All rights reserved under BSD 4-clause license. 
-              span(style={'fontFamily': '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"'})
-                | ANY ALLEGED SOFTWARES ARE SUBJECT TO LOCAL LAW ENFORCEMENT AND WILL BE REMOVED WITHOUT ANY CONSENT.
+          .internal-fsb-element(style={'MozHyphens': 'auto', 'MsHyphens': 'auto', 'MsOverflowY': 'auto', 'MsWordBreak': 'break-word', 'WebkitHyphens': 'auto', 'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '10px', 'hyphens': 'auto', 'overflowY': 'auto', 'textAlign': 'justify', 'textTransform': 'uppercase', 'width': '100%', 'wordBreak': 'break-word'}, dangerouslySetInnerHTML={__html: loc('ALL SOFTWARES AND GENERATED OUTPUT FILES ON GITHUB ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.\n\n\nBY USING THIS STACKBLEND STUDIO, YOU ARE FURTHER AGREEING THAT YOUR SOFTWARE ISN\'T INCLUDE CONTENT THAT IS OFFENSIVE, INSENSITIVE, UPSETTING, AND INTENDED TO DISGUST, FOR EXAMPLES:\n- DEFAMATORY, DISCRIMINATORY, OR MEAN-SPIRITED CONTENT\n- ENCOURAGE VIOLENCE\n- ENCOURAGE ILLEGAL OR RECKLESS USE OF WEAPONS\n- SEXUAL OR PORNOGRAPHIC MATERIAL\n- INACCURATE OR MISLEADING QUOTATIONS OF RELIGIOUS\n- FALSE INFORMATION AND FEATURES\n- LIQUORS, BEER, NARCOTIC DRUG, OR TOBACCO\n\nCOPYRIGHT (C) SOFTENSTORM FOUNDATION AND OTHER CONTRIBUTORS. ALL RIGHTS RESERVED UNDER BSD 4-CLAUSE LICENSE. ANY ALLEGED SOFTWARES ARE SUBJECT TO LOCAL LAW ENFORCEMENT AND WILL BE REMOVED WITHOUT ANY CONSENT.')}, internal-fsb-guid="e55072d1")
         .col-6.internal-fsb-element.offset-6(style={'MsFlexDirection': 'column', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'overflowX': 'hidden', 'overflowY': 'auto', 'position': 'absolute', 'right': '0px', 'top': '0px'}, internal-fsb-guid="b20bb476")
           .internal-fsb-element(style={'WebkitFlexGrow': '1', 'flexGrow': '1'}, internal-fsb-guid="73b5e922")
           .internal-fsb-element.internal-fsb-strict-layout(style={'WebkitFlexBasis': '300px', 'flexBasis': '300px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="35e36a4a")
