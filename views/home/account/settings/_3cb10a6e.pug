@@ -27,11 +27,11 @@ html(lang=headers && headers.language || 'en')
       .internal-fsb-begin-layout.internal-fsb-strict-layout
         .internal-fsb-element.internal-fsb-stretch.internal-fsb-strict-layout(style={'-webkit-justify-content': 'right', 'display': 'block', 'justify-content': 'right', 'padding-right': '15px', 'padding-top': '15px', 'text-align': 'right'}, internal-fsb-class="FlowLayout", internal-fsb-guid="1cdc7660")
           a.btn.btn-danger.btn-sm.internal-fsb-element(style={'-webkit-opacity': '0.9', 'display': 'inline-block', 'margin-right': '5px', 'opacity': '0.9', 'padding-left': '15px', 'padding-right': '15px'}, href="/logout", internal-fsb-guid="a32459c0")
-            .internal-fsb-element(internal-fsb-guid="a32459c0-text")
-              | Logout
+            .internal-fsb-element(internal-fsb-guid="a32459c0-text").
+              !{loc('Logout')}
           a.btn.btn-secondary.btn-sm.internal-fsb-element(style={'-webkit-opacity': '0.9', 'display': 'inline-block', 'opacity': '0.9', 'padding-left': '15px', 'padding-right': '15px'}, href="/editor", internal-fsb-guid="3aa78c1d")
-            .internal-fsb-element(internal-fsb-guid="07bb452d")
-              | Back to Editor
+            .internal-fsb-element(internal-fsb-guid="07bb452d").
+              !{loc('Back to Editor')}
         span(internal-fsb-init-class="Project.Controls.Settings" internal-fsb-init-forward="{'classes': 'col-12', 'styles': {}}")
     script(type="text/javascript" src="/js/libraries/polyfills/polyfill.io.js")
     script(type="text/javascript" src="/js/Embed.bundle.js")
