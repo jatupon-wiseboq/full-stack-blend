@@ -542,7 +542,7 @@ ${customFooterExternalStylesheets.join('\n')}
 ${customFooterExternalScripts.join('\n')}
 script(type="text/javascript").
   window.localizedData = ${this.state.extensionValues['customLocalizedStrings'] && ("'" + this.state.extensionValues['customLocalizedStrings'].replace(/'/g, "\\'").replace(/\n/g, "\\n") + "'") || 'null'};
-script(type="text/javascript" src="/js/Site.bundle.js")
+script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).getTime()}")
 `;
             
             let arrayOfControllerScripts = [];
