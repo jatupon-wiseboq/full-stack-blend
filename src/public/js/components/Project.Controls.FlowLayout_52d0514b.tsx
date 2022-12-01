@@ -177,11 +177,15 @@ class FlowLayout_52d0514b extends Base {
           each data, i in this.getDataFromNotation("guestbook", true, false)
             .internal-fsb-element(style={'WebkitBorderRadius': '5px 5px 5px 5px', 'background': 'rgba(247, 247, 247, 1)', 'borderRadius': '5px 5px 5px 5px', 'marginBottom': '5px', 'paddingBottom': '5px', 'paddingLeft': '5px', 'paddingRight': '5px', 'paddingTop': '5px', 'width': '100%'}, key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || i), data-fsb-index=i, internal-fsb-guid="4d89825a")
               .col-12.internal-fsb-element(style={'marginBottom': '15px', 'textAlign': 'center'}, dangerouslySetInnerHTML={__html: CodeHelper.escape(CodeHelper.toSecuredDataString(this.getDataFromNotation("guestbook[" + i + "].message")))}, internal-fsb-guid="e8a4e015")
-              .col-12.internal-fsb-element(style={'fontSize': '12px', 'textAlign': 'right'}, internal-fsb-guid="d3906688")
-                | Name: #{this.getDataFromNotation("guestbook[" + i + "].name")} At: #{this.getDataFromNotation("guestbook[" + i + "].createdAt")}
+              .internal-fsb-element(style={'paddingLeft': '0px', 'paddingRight': '0px', 'textAlign': 'right', 'width': '100%'}, internal-fsb-guid="82dc32c7")
+                .internal-fsb-element(style={'display': 'inline-block', 'fontSize': '12px', 'paddingLeft': '0px', 'paddingRight': '0px', 'textAlign': 'right'}, dangerouslySetInnerHTML={__html: loc('Name:')}, internal-fsb-guid="d3906688")
+                .internal-fsb-element(style={'display': 'inline-block', 'fontSize': '12px', 'paddingLeft': '0px', 'paddingRight': '0px', 'textAlign': 'right'}, internal-fsb-guid="bac293a0")
+                  | #{this.getDataFromNotation("guestbook[" + i + "].name")} 
+                .internal-fsb-element(style={'display': 'inline-block', 'fontSize': '12px', 'paddingLeft': '0px', 'paddingRight': '0px', 'textAlign': 'right'}, dangerouslySetInnerHTML={__html: loc('At:')}, internal-fsb-guid="da92e48e")
+                .internal-fsb-element(style={'display': 'inline-block', 'fontSize': '12px', 'paddingLeft': '0px', 'paddingRight': '0px', 'textAlign': 'right'}, internal-fsb-guid="ca7910e7")
+                  | #{this.getDataFromNotation("guestbook[" + i + "].createdAt")}
           if this.isEmpty()
-            .internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'marginTop': '15px', 'textAlign': 'center'}, internal-fsb-guid="db5c1b64")
-              | None of comment available.
+            .internal-fsb-element(style={'color': 'rgba(166, 166, 166, 1)', 'fontSize': '13px', 'marginBottom': '15px', 'marginTop': '15px', 'textAlign': 'center'}, dangerouslySetInnerHTML={__html: loc('None of comment available.')}, internal-fsb-guid="db5c1b64")
         .col-12.internal-fsb-element.internal-fsb-strict-layout.offset-0(style={'WebkitBorderRadius': '5px 5px 5px 5px', 'background': 'rgba(3, 115, 252, 0.15)', 'borderRadius': '5px 5px 5px 5px', 'marginTop': '30px', 'paddingBottom': '10px', 'paddingLeft': '10px', 'paddingRight': '10px', 'paddingTop': '10px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="67ee18c3")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="ad367405")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="4d43796a")
@@ -189,23 +193,19 @@ class FlowLayout_52d0514b extends Base {
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="821640a3")
           input.col-12.internal-fsb-element(type="hidden", internal-fsb-guid="174ec3c5")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="9d3a3982")
-            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="7862eb69")
-              | Message:  
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, dangerouslySetInnerHTML={__html: loc('Message:')}, internal-fsb-guid="7862eb69")
             .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="320d25b6")
               textarea.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, rows="3", type="text")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="87a58374")
-            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="78e6d75b")
-              | Name:  
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, dangerouslySetInnerHTML={__html: loc('Name:')}, internal-fsb-guid="78e6d75b")
             .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="37790653")
               input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, required=true, type="text")
           .internal-fsb-element.internal-fsb-strict-layout(style={'marginBottom': '5px', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="96400d41")
-            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, internal-fsb-guid="952bec68")
-              | Verify Human:  
+            .col-4.internal-fsb-element.offset-0(style={'fontSize': '15px', 'paddingRight': '5px', 'paddingTop': '3px', 'textAlign': 'right'}, dangerouslySetInnerHTML={__html: loc('Verify Human:')}, internal-fsb-guid="952bec68")
             .col-8.internal-fsb-element.offset-0(style={padding: '0px'}, internal-fsb-forward="1", internal-fsb-guid="bb881bb6")
               input.form-control.form-control-sm(style={'display': 'block', 'width': '100%'}, placeholder="1 + 2 = ?", required=true, type="text")
           Button.btn.btn-md.btn-primary.col-8.internal-fsb-element.offset-4(onClick=((event) => { window.internalFsbSubmit('65759748', 'guestbook', event, ((results) => { this.manipulate('65759748', 'guestbook', results); }).bind(this)); }).bind(this), type="button", internal-fsb-guid="65759748")
-            .internal-fsb-element(internal-fsb-guid="65759748-text")
-              | Comment
+            .internal-fsb-element(dangerouslySetInnerHTML={__html: loc('Comment')}, internal-fsb-guid="65759748-text")
     `
   }
 }
