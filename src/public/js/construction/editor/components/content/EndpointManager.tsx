@@ -59,9 +59,9 @@ class EndpointManager extends Base<Props, State> {
           return match;
         }
       });
-      textContent = textContent.replace(/\\'/g, '~~R~~').replace(/(\@')([^']*)(')/g, (match, hash, content) => {
+      textContent = textContent.replace(/(\@'\[)([^~#$^*_`\{\}\|\[\]\\:";'<>\n]+)(\]')/g, (match, hash, content) => {
         return `loc('${content}')`;
-      }).replace(/~~R~~/g, "\\'");
+      });
       
       return textContent;
     }
