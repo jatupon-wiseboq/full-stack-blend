@@ -507,6 +507,7 @@ import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
 import {SitemapHelper} from "./helpers/SitemapHelper";
+import {Project} from "./helpers/ProjectConfigurationHelper";
 import {loc} from "./helpers/LocalizationHelper";
 
 ${Object.keys(routes).sort().map(key => `import Component${routes[key].id} from "./components/${this.getFeatureDirectoryPrefix(routes[key].id)}${this.getRepresentativeName(routes[key].id)}";`).join('\n')}
