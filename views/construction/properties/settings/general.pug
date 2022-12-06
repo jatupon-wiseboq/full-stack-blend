@@ -14,3 +14,15 @@ include ../../mixin/CreateReactComponent
     | Application Icon
   .section-body
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['icon'], inline: true, button: false, placeholder: 'URL'}")
+  .section-note
+    br
+  .section-title
+    | Front-End External Libraries
+  .section-subtitle
+    | Presets
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
+  .section-subtitle
+    | Custom URLs
+  .section-body
+    +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")
