@@ -18,6 +18,7 @@ interface State extends IState {
   prev: string;
   src: string;
   mode: string;
+  priority: string;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -25,7 +26,8 @@ Object.assign(ExtendedDefaultState, {
   nodes: [],
   prev: '',
   src: '',
-  mode: ''
+  mode: '',
+  priority: ''
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -62,7 +64,7 @@ class ExternalLibrariesManager extends Base<Props, State> {
         for (let value of values) {
         		let splited = value.split('#');
             nodes.push({
-            		id: JSON.stringify({src: splited[0], mode: splited[1]}),
+            		id: JSON.stringify({src: splited[0], mode: splited[1], priority: splited[2] || ''}),
                 name: splited[0],
                 selectable: true,
                 dropable: false,
@@ -108,7 +110,8 @@ class ExternalLibrariesManager extends Base<Props, State> {
         if (value) {
             this.setState({
                 src: '',
-                mode: 'header'
+                mode: 'header',
+                priority: ''
             });
         }
     }
@@ -124,7 +127,8 @@ class ExternalLibrariesManager extends Base<Props, State> {
             this.setState({
             		prev: info.src,
                 src: info.src,
-                mode: info.mode
+                mode: info.mode,
+                priority: info.priority
             });
         }
     }
@@ -137,12 +141,17 @@ class ExternalLibrariesManager extends Base<Props, State> {
         this.state.mode = value;
     }
     
+    protected priorityOnUpdate(value: any) {
+        this.state.priority = value;
+    }
+    
     private addOnClick(event) {
         if (this.state.src && this.state.mode) {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
     		    values = values.filter(value => value.indexOf(this.state.src + '#') == -1);
     		    
-    		    values.push(this.state.src + '#' + this.state.mode);
+    		    values.push(this.state.src + '#' + this.state.mode + '#' + this.state.priority);
+    		    values.sort((value1, value2) => parseInt(value1.split('#')[2] || '0') > parseInt(value2.split('#')[2] || '0') ? 1 : -1);
     		    
     		    perform('update', {
     		        extensions: [{
@@ -160,7 +169,8 @@ class ExternalLibrariesManager extends Base<Props, State> {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
     		    values = values.filter(value => value.indexOf(this.state.prev + '#') == -1);
     		    
-    		    values.push(this.state.src + '#' + this.state.mode);
+    		    values.push(this.state.src + '#' + this.state.mode + '#' + this.state.priority);
+    		    values.sort((value1, value2) => parseInt(value1.split('#')[2] || '0') > parseInt(value2.split('#')[2] || '0') ? 1 : -1);
     		    
     		    perform('update', {
     		        extensions: [{
@@ -188,6 +198,10 @@ class ExternalLibrariesManager extends Base<Props, State> {
                     			<button className={"btn text-center " + ((this.state.mode != 'footer') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={() => { this.setState({mode: 'header'}); }}>Header</button>
                     			<button className={"btn text-center " + ((this.state.mode == 'footer') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={() => { this.setState({mode: 'footer'}); }}>Footer</button>
 			              		</div>
+                    </div>
+                    <div className="section-subtitle">Priority</div>
+                    <div className="section-body">
+                    		<FullStackBlend.Controls.Textbox ref="priority" value={this.state.priority} placeholder="Priority" preRegExp='[0-9]*' postRegExp='[0-9]*' onUpdate={this.priorityOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
                     </div>
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
