@@ -20,18 +20,32 @@ enum SourceType {
   Collection
 }
 
+const settings: {[Identifier: string]: any} = {};
+const Project = {
+	Settings: settings
+};
 const ProjectConfigurationHelper = {
 	reload: () => {
 		try {
 			file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
 			data = JSON.parse(CodeHelper.unlabel(file));
+			
+			Project.Settings = {};
+			if (data.globalSettings && data.globalSettings.customBackEndSettings) {
+				const items = data.globalSettings.customBackEndSettings.split('`');
+			  
+			  for (const item of items) {
+			  	const tokens = item.split('~');
+			  	Project.Settings[tokens[0]] = tokens[1];
+			  }
+			}
 		} catch(error) {
 			if (process.env.JEST_WORKER_ID !== undefined) {
 				console.log("\x1b[33m", error, "\x1b[0m");
 			} else {
 				console.log("\x1b[31m", error, "\x1b[0m");
 			}
-			data = {};
+			Project.Settings = {};
 		}
 	},
   convertToSchema: (tables: any) => {
@@ -91,7 +105,7 @@ const ProjectConfigurationHelper = {
 
 ProjectConfigurationHelper.reload();
 
-export {ProjectConfigurationHelper, SourceType};
+export {ProjectConfigurationHelper, SourceType, Project};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
