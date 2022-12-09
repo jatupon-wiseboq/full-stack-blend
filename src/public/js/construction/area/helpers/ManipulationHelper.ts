@@ -27,6 +27,7 @@ let isShiftKeyActive: boolean = false;
 let isCtrlKeyActive: boolean = false;
 let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
+let newComposedGUIDs = [];
 
 function removeAllPresetReferences(presetId: string, link: string) {
 	// TODO: should iterate in all documents.
@@ -251,6 +252,8 @@ var ManipulationHelper = {
       	} else {
       	  [accessory, remember, link] = BackEndManipulationHelper.handleInsert(name, content, remember, promise, link);
       	}
+      	
+      	newComposedGUIDs.push(accessory.guid);
         break;
       case 'update':
         [accessory, remember, link, preview] = ManipulationHelper.handleUpdate(name, content, remember, promise, link);
@@ -267,7 +270,7 @@ var ManipulationHelper = {
       	preview = false;
         break;
       case 'move[element]':
-      	if (InternalProjectSettings.workspaceMode == 'business') {
+      	if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content.target) == -1) {
       		alert('Business cannot move any element, please ask the rest of team to perform it.');
       		remember = false;
       	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content.target)) {
@@ -291,7 +294,7 @@ var ManipulationHelper = {
       	
         break;
       case 'delete':
-      	if (InternalProjectSettings.workspaceMode == 'business') {
+      	if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
       		alert('Business cannot delete any element, please ask the rest of team to perform it.');
       		remember = false;
       	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
@@ -318,7 +321,7 @@ var ManipulationHelper = {
       	
         break;
       case 'delete[silence]':
-      	if (InternalProjectSettings.workspaceMode == 'business') {
+      	if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
       		alert('Business cannot delete any element, please ask the rest of team to perform it.');
       		remember = false;
       	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
@@ -345,7 +348,7 @@ var ManipulationHelper = {
       	
         break;
       case 'delete[cut]':
-      	if (InternalProjectSettings.workspaceMode == 'business') {
+      	if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
       		alert('Business cannot cut any element, please ask the rest of team to perform it.');
       		remember = false;
       	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
@@ -401,7 +404,7 @@ var ManipulationHelper = {
       	preview = false;
         break;
       case 'removePreset':
-      	if (InternalProjectSettings.workspaceMode == 'business') {
+      	if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
       		alert('Business cannot remove any preset, please ask the rest of team to perform it.');
       		remember = false;
       	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
