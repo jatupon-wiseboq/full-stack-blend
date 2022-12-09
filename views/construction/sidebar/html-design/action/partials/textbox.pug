@@ -3,38 +3,38 @@
     | Textbox Options
   .section-subtitle
     | Text Mode
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-textbox-mode']}")
   .section-subtitle(internal-fsb-for="internal-fsb-textbox-mode:multiple")
     | Number of Lines
-  .section-body(internal-fsb-for="internal-fsb-textbox-mode:multiple")
+  .section-body(internal-fsb-for="internal-fsb-textbox-mode:multiple", internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['rows'], inline: true, button: false}")
   .section-subtitle(internal-fsb-not-for="internal-fsb-textbox-mode:multiple")
     | Input Type
-  .section-body(internal-fsb-not-for="internal-fsb-textbox-mode:multiple")
+  .section-body(internal-fsb-not-for="internal-fsb-textbox-mode:multiple, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['type'], inline: true, button: false, required: true}")
   .section-subtitle
     | Placeholder
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['placeholder'], inline: true, button: false}")
   .section-subtitle
     | Default Value
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['value'], inline: true, button: false}")
   .section-subtitle
     | Useable
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
   .section-subtitle
     | Editable
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
   .section-subtitle
     | Alternate Text
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['alt'], inline: true, button: false, placeholder: 'ALT'}")
   .section-subtitle
     | Tab Index
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
   .section-hr

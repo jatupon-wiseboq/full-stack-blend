@@ -39,6 +39,14 @@ var StatusHelper = {
   	
   	const style = StylesheetHelper.getStyle(element);
   	if (style && (style + ';').replace(/-fsb-[^;]+;+/g, '').trim()) statuses.push('has-design');
+  	if (style && style.indexOf('-fsb-design-lock') != -1) {
+  		statuses.push('has-design');
+  		statuses.push('has-design-locking');
+  	}
+  	if (style && style.indexOf('-fsb-code-lock') != -1) {
+  		statuses.push('has-coding');
+  		statuses.push('has-code-locking');
+  	}
   	
   	if (AnimationHelper.hasKeyframes(HTMLHelper.getAttribute(element, 'internal-fsb-guid'))) statuses.push('has-animation');
   	
@@ -87,11 +95,34 @@ var StatusHelper = {
   	  statuses.push('-fsb-selecting');
   	}
   	
-  	return statuses.join(' ').trim();
+  	return Array.from(new Set(statuses)).join(' ').trim();
   },
   getElementAuthoringRevision: function() {
     return cachedElementAuthoringRevision;
-  }
+  },
+  hasElementAndDescendantsCodeAuthoringStatus: (element: HTMLElement|string, status: string='has-coding'): boolean => {
+  	if (typeof element === 'string') element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', element);
+  	if (!element) return false;
+  	
+  	console.log(status);
+  	console.log(StatusHelper.getElementAuthoringStatus(element));
+  	
+  	if (HTMLHelper.hasAttribute(element, 'internal-fsb-guid') && StatusHelper.getElementAuthoringStatus(element).indexOf(status) != -1) return true;
+  	else {
+  		let child = element.firstElementChild;
+  		while (child) {
+  			if (StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(child, status)) return true;
+  			
+  			child = element.nextElementChild;
+  		}
+  	}
+  },
+  hasElementAndDescendantsDesignLockAuthoringStatus: (element: HTMLElement|string): boolean => {
+  	return StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(element, 'has-design-locking');
+  },
+  hasElementAndDescendantsCodeLockAuthoringStatus: (element: HTMLElement|string): boolean => {
+  	return StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(element, 'has-code-locking');
+  },
 };
 
 export {StatusHelper};

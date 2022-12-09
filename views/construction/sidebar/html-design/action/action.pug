@@ -5,19 +5,19 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Layer
     .section-subtitle(internal-fsb-not-for="isTableLayoutRow:true")
       | Name
-    .section-body(internal-fsb-not-for="isTableLayoutRow:true")
+    .section-body(internal-fsb-not-for="isTableLayoutRow:true, workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-name'], inline: true, button: false}")
     .section-subtitle
       | Type
-    .section-body
+    .section-body(internal-fsb-not-for="workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-class'], inline: true, button: false, disabled: true}")
     .section-subtitle(internal-fsb-not-for="isTableLayoutRow:true")
       | Globally Unique Identifier
-    .section-body(internal-fsb-not-for="isTableLayoutRow:true")
+    .section-body(internal-fsb-not-for="isTableLayoutRow:true, workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['internal-fsb-guid'], inline: true, button: false, disabled: true}")
     .section-subtitle(internal-fsb-for="internal-fsb-class:Rectangle,internal-fsb-class:FlowLayout,internal-fsb-class:TextElement")
       | PageRank Emphasizer
-    .section-body(internal-fsb-for="internal-fsb-class:Rectangle,internal-fsb-class:FlowLayout,internal-fsb-class:TextElement")
+    .section-body(internal-fsb-for="internal-fsb-class:Rectangle,internal-fsb-class:FlowLayout,internal-fsb-class:TextElement", internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['internal-fsb-seo-emphasizer']}")
     .section-subtitle
       | Note
@@ -52,19 +52,19 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
       | Presets
     .section-subtitle
       | Reusable Name
-    .section-body
+    .section-body(internal-fsb-not-for="workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.CSSPresetName')
     .section-subtitle
       | Priority
-    .section-body
+    .section-body(internal-fsb-not-for="workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{inline: true, button: false, watchingStyleNames: ['-fsb-priority']}")
     .section-subtitle
       | Inheritance
-    .section-body
+    .section-body(internal-fsb-not-for="workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.CSSPresets')
     .section-subtitle
       | Custom CSS Classes
-    .section-body
+    .section-body(internal-fsb-not-for="workspaceMode:business")
       +CreateReactComponent('FullStackBlend.Components.CSSCustomClasses')
     .section-note
       | This will combine both inherited presets and styles into a preset.
@@ -82,11 +82,11 @@ div(internal-fsb-not-for="internal-fsb-inheriting")
     +CreateReactComponent('FullStackBlend.Components.OffsetPicker')
   .section-subtitle
     | Hidden
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.DisplayPicker')
   .section-subtitle
     | Preserve Space
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.PreservePicker')
   .section-note
     | Inherit Direction: Left to Right

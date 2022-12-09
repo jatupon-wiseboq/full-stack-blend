@@ -1,8 +1,17 @@
 .workspace-vertical-container(id='timeline')
   .workspace-vertical-panel.siteToolset.componentsToolset.popupsToolset.toolset
-    include animation/timeline
+    .workspace-container
+      .workspace-vertical-container
+        .workspace-vertical-panel(internal-fsb-not-for="workspaceMode:business")
+          include animation/timeline
+        .workspace-vertical-panel(internal-fsb-for="workspaceMode:business")
+          .workspace-decoration-top-horizontal-line
+          include ../common/lock
   .workspace-vertical-panel.dataToolset.servicesToolset.propertiesToolset.toolset(style="border-top: solid 1px #c8c8c8;")
     include ../common/puzzle
 .workspace-vertical-container(id='codeEditor')
-  .workspace-vertical-panel
+  .workspace-vertical-panel(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     include coding/coding
+  .workspace-vertical-panel(internal-fsb-for="workspaceMode:designer, workspaceMode:business")
+    .workspace-decoration-top-horizontal-line
+    include ../common/lock

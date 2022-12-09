@@ -3,14 +3,14 @@
     | Table Options
   .section-subtitle
     | Design
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.BorderStylePicker', "{watchingStyleNames: ['-fsb-cell-border-style', '-fsb-cell-border-color'], inline: true}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['-fsb-cell-border-size']}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['table-cell-0', '-fsb-cell-style', /^-fsb-cell-([0-9]+)-([0-9]+)-top/, /^-fsb-cell-([0-9]+)-([0-9]+)-right/, /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/, /^-fsb-cell-([0-9]+)-([0-9]+)-left/, /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/, /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/]}")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['table-cell-1', '-fsb-cell-style', /^-fsb-cell-([0-9]+)-([0-9]+)-top/, /^-fsb-cell-([0-9]+)-([0-9]+)-right/, /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/, /^-fsb-cell-([0-9]+)-([0-9]+)-left/, /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/, /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/]}")
   .section-subtitle
     | Rows
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     .btn-group.btn-group-sm.mr-1.mb-1(role="group")
       button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-row-above')")
         | Add Above
@@ -20,7 +20,7 @@
         | Delete
   .section-subtitle
     | Columns
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     .btn-group.btn-group-sm.mr-1.mb-1(role="group")
       button.btn.btn-sm.btn-light.text-center(onClick="perform('table', 'add-column-before')")
         | Add Before
@@ -30,7 +30,7 @@
         | Delete
   .section-subtitle
     | Miscellaneous
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['table-layout']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['border-collapse']}")
     +CreateReactComponent('FullStackBlend.Components.DropDownPicker', "{watchingStyleNames: ['border-spacing']}")

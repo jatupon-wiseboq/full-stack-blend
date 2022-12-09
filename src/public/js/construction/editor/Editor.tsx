@@ -267,8 +267,12 @@ let cachedUpdateEditorProperties = {};
         
         HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-off');
         HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-on');
+        HTMLHelper.removeClass(document.body, 'internal-fsb-workspace-coding-off');
+        HTMLHelper.removeClass(document.body, 'internal-fsb-workspace-coding-on');
         HTMLHelper.addClass(document.body, content && content['extensions'] && content['extensions']['isSelectingElement'] ?
         	'internal-fsb-selecting-on' : 'internal-fsb-selecting-off');
+        HTMLHelper.addClass(document.body, content && content['extensions'] && ['designer', 'business'].indexOf(content['extensions']['workspaceMode']) == -1 ?
+        	'internal-fsb-workspace-coding-on' : 'internal-fsb-workspace-coding-off');
         break;
       case 'click':
         document.body.click();

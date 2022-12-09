@@ -12,17 +12,17 @@ include ../../mixin/CreateReactComponent
     | Site Settings
   .section-subtitle
     | Application Icon
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['icon'], inline: true, button: false, placeholder: 'URL'}")
   .section-note
-    br
+    | The application icon should have the size of 256x256 pixels and .png extension.
   .section-title
     | Front-End External Libraries
   .section-subtitle
     | Presets
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesChooser', "{}")
   .section-subtitle
     | Custom URLs
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.ExternalLibrariesManager', "{}")

@@ -3,26 +3,26 @@
     | Radio Options
   .section-subtitle
     | Group Name
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['name'], inline: true, button: false, placeholder: 'ID'}")
   .section-subtitle
     | Default Checked
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['checked']}")
   .section-subtitle
     | Useable
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['disabled']}")
   .section-subtitle
     | Editable
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['readonly']}")
   .section-subtitle
     | Alternate Text
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['alt'], inline: true, button: false, placeholder: 'ALT'}")
   .section-subtitle
     | Tab Index
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
   .section-hr

@@ -4,11 +4,11 @@ include ../../mixin/CreateReactComponent
     | Default Language
   .section-subtitle
     | Workspace Language
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['defaultLanguage'], inline: true, button: false, placeholder: 'en'}")
   .section-subtitle
     | Second Language
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingExtensionNames: ['defaultLocalizedLanguage'], inline: true, button: false, placeholder: 'th'}")
   .section-note
     | The default localized language will be configurable directly from Sidebar.

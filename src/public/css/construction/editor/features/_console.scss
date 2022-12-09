@@ -4,6 +4,13 @@
   width: 100%;
   height: 100%;
 }
+body.internal-fsb-workspace-coding-off {
+  padding-bottom: 0;
+  
+	.jsconsole {
+  	display: none;
+  }
+}
 .jsconsole .CodeMirror-code pre {
   padding-left: 22px !important;
 }

@@ -19,13 +19,16 @@ interface State extends IState {
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
-	height: 'auto'
+	height: 'auto',
+	designLocked: false,
+	codeLocked: false
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
 	watchingAttributeNames: ['internal-fsb-guid'],
-	watchingExtensionNames: ['currentActiveLayerToolAvailable', 'currentActiveLayerHidden', 'currentActiveLayerRemovable']
+	watchingExtensionNames: ['currentActiveLayerToolAvailable', 'currentActiveLayerHidden', 'currentActiveLayerRemovable', 'workspaceMode'],
+	watchingStyleNames: ['-fsb-code-lock', '-fsb-design-lock']
 });
 
 class LayerToolManager extends Base<Props, State> {
@@ -39,6 +42,11 @@ class LayerToolManager extends Base<Props, State> {
     
     public update(properties: any) {
         if (!super.update(properties)) return;
+        
+        this.state.designLocked = !!this.state.styleValues['-fsb-design-lock'];
+        this.state.codeLocked = !!this.state.styleValues['-fsb-code-lock'];
+        
+        this.forceUpdate();
     }
     
     private onLayerVisibleToggled() {
@@ -56,6 +64,26 @@ class LayerToolManager extends Base<Props, State> {
     		
     		perform('delete', this.state.attributeValues['internal-fsb-guid']);
     }
+    private onLayerDesignLock() {
+    		if (!this.state.extensionValues['currentActiveLayerToolAvailable']) return;
+    		
+  		  perform('update', {
+            styles: [{
+                name: '-fsb-design-lock',
+        				value: this.state.designLocked ? null : '1'
+            }]
+        });
+    }
+    private onLayerCodeLock() {
+    		if (!this.state.extensionValues['currentActiveLayerToolAvailable']) return;
+    		
+    		perform('update', {
+            styles: [{
+                name: '-fsb-code-lock',
+        				value: this.state.codeLocked ? null : '1'
+            }]
+        });
+    }
     
     render() {
       return (
@@ -66,9 +94,25 @@ class LayerToolManager extends Base<Props, State> {
 	    			);
 	    		})()}
 	    		{(() => {
-	    			if (this.state.extensionValues['currentActiveLayerRemovable'])
+	    			if (['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1 && this.state.extensionValues['currentActiveLayerRemovable'])
 	    			return (
 	    				<i className="fa fa-remove" style={{position: "absolute", left: "25px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onLayerRemoved.bind(this)} />
+	    			);
+	    		})()}
+	    		{(() => {
+	    			if (['designer', 'business'].indexOf(this.state.extensionValues['workspaceMode']) == -1 && this.state.extensionValues['currentActiveLayerRemovable'])
+	    			return (
+	    				<span style={{position: "absolute", left: "61px", top: "2px", color: this.state.codeLocked ? "rgba(255, 0, 0, 1.0)" : "rgba(0, 0, 0, 0.35)", cursor: "pointer"}}>
+	    				  c <i className={this.state.codeLocked ? "fa fa-lock" : "fa fa-unlock"} onClick={this.onLayerCodeLock.bind(this)} />
+	    				</span>
+	    			);
+	    		})()}
+	    		{(() => {
+	    			if (['coder', 'business'].indexOf(this.state.extensionValues['workspaceMode']) == -1 && this.state.extensionValues['currentActiveLayerRemovable'])
+	    			return (
+	    				<span style={{position: "absolute", left: "37px", top: "2px", color: this.state.designLocked ? "rgba(255, 0, 0, 1.0)" : "rgba(0, 0, 0, 0.35)", cursor: "pointer"}}>
+	    				  d <i className={this.state.designLocked ? "fa fa-lock" : "fa fa-unlock"} onClick={this.onLayerDesignLock.bind(this)} />
+	    				</span>
 	    			);
 	    		})()}
     		</div>

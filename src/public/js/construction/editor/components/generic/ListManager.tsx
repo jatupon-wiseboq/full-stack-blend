@@ -29,7 +29,7 @@ Object.assign(ExtendedDefaultState, {
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
   	watchingAttributeNames: ['internal-fsb-name'],
-  	watchingExtensionNames: ['elementTreeNodes'],
+  	watchingExtensionNames: ['elementTreeNodes', 'workspaceMode'],
   	nodes: []
 });
 
@@ -53,6 +53,8 @@ class ListManager extends Base<Props, State> {
     }
     
     private onStartDragging(node: ITreeNode) {
+    	if (['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1) return;
+    	
     	if (this.props.onStartDragging != null) {
 				this.props.onStartDragging(node);
 			}
@@ -84,7 +86,11 @@ class ListManager extends Base<Props, State> {
             	{this.props.children}
             </div>
           </FullStackBlend.Controls.Tree>
-      		<FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
+          {['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1 && (() => {
+      			return (
+      				<FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
+      			)
+      		})()}
       	</div>
       );
     }

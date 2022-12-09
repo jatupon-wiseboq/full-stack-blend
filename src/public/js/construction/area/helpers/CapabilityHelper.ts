@@ -244,6 +244,7 @@ var CapabilityHelper = {
     });
   },
   installCapabilityOfBeingMeasure: (_container: HTMLElement) => {
+  	if (['business'].indexOf(InternalProjectSettings.workspaceMode) != -1) return;
   	if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) == -1) return;
   	
   	HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {

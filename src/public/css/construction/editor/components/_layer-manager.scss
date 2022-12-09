@@ -255,6 +255,14 @@
 				}
 			}
 		}
+		&.has-design-locking, &.has-code-locking {
+			> .treenode-container .treenode-title {
+			  &::before {
+					color: rgba(255, 0, 0, 1.0);
+					opacity: 0.75;
+				}
+			}
+		}
 	}
 	
 	.treenode-outer-container.is-containing-preset {

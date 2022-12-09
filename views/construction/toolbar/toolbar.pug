@@ -11,10 +11,10 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
           a.dropdown-item.active(id='siteButton', onclick="swap('#site', '.siteToolset', null, '#exploreIcon', 'fa-sitemap', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Explore Sitemap</b></p><p>This will show all pages on front-end which web cilents can see.</p>")
             i.fa.fa-sitemap
             | Site
-          a.dropdown-item(id='dataButton', onclick="swap('#data', '.dataToolset', null, '#exploreIcon', 'fa-database', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>")
+          a.dropdown-item(id='dataButton', onclick="swap('#data', '.dataToolset', null, '#exploreIcon', 'fa-database', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Design Data Flow</b></p><p>Planing all relational DBMS, document stores, in-memory data stores, background processing queues, schedulers, and relations between them.</p>", internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
             i.fa.fa-database
             | Data
-          a.dropdown-item(id='servicesButton', onclick="swap('#services', '.servicesToolset', null, '#exploreIcon', 'fa-cogs', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>")
+          a.dropdown-item(id='servicesButton', onclick="swap('#services', '.servicesToolset', null, '#exploreIcon', 'fa-cogs', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Customize Services</b></p><p>Manage custom services on server-side to process jobs which require huge CPU and GPU consumption.</p>", internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
             i.fa.fa-cogs
             | Services
           a.dropdown-item(id='componentsButton', onclick="swap('#components', '.componentsToolset', null, '#exploreIcon', 'fa-puzzle-piece', true)", data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Drawing Components</b></p><p>Create and manage all reusable components for placing throughout the site.</p>")
@@ -46,7 +46,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
         i.fa.fa-repeat.m-0
         .title
           | Redo
-      a.btn.btn-sm.btn-light.mr-1.update-button(onclick="update()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Debug</b></p><p>Push code changes to console or terminal for test without saving. To reset the changes, please run &quot;npm run reset&quot;.</p>")
+      a.btn.btn-sm.btn-light.mr-1.update-button(onclick="update()", href='#', role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Debug</b></p><p>Push code changes to console or terminal for test without saving. To reset the changes, please run &quot;npm run reset&quot;.</p>", internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
         i.fa.fa-terminal.m-0
         .title
           | Debug
@@ -98,7 +98,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
         .title
           | Text
       .dropdown.mr-1(style='display: inline;')
-        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
           i.fa.fa-square.m-0
           .title
             | Element
@@ -120,7 +120,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
             i.fa.fa-terminal
             | WebGL
       .dropdown.mr-1(style='display: inline;')
-        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', internal-fsb-not-for="workspaceMode:business")
           i.fa.fa-edit.font-weight-bold.m-0
           .title
             | Form
@@ -143,14 +143,14 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
           a.dropdown-item(onclick='perform("insert", "Label")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Label</b></p><p>Insert a label to contain a form control and other elements so that the form control will be focused after clicking any elements in it.</p>")
             i.fa.fa-font
             | Label
-          a.dropdown-item(onclick='perform("insert", "Hidden")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Hidden Field</b></p><p>This can store a value to be submitted and performing a specific action on back-end.</p>")
+          a.dropdown-item(onclick='perform("insert", "Hidden")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Hidden Field</b></p><p>This can store a value to be submitted and performing a specific action on back-end.</p>", internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
             i.fa.fa-eye-slash
             | Hidden
           a.dropdown-item(onclick='perform("insert", "Button")', data-toggle="tooltip", data-placement="right", data-html="true" title="<p><b>Insert A Button</b></p><p>This button can be either a general one that execute a script, or a submit button which will perform data validation, uploading, saving, or even signing up and signing in.</p>")
             i.fa.fa-magic
             | Button
       .dropdown.mr-1(style='display: inline;')
-        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', internal-fsb-not-for="workspaceMode:business")
           i.fa.fa-image.m-0
           .title
             | Media
@@ -165,7 +165,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
             i.fa.fa-file-movie-o
             | Flash
       .dropdown(style='display: inline;')
-        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 70px;')
+        a.btn.dropdown-toggle.btn-sm.btn-light(href='#', role='button', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false', style='width: 70px;', internal-fsb-not-for="workspaceMode:business")
           i.fa.fa-puzzle-piece.m-0
           .title
             | Component

@@ -3,22 +3,22 @@
     | File Options
   .section-subtitle
     | Multiple Selection
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['multiple']}")
   .section-subtitle
     | File Extensions
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['accept'], inline: true, button: false, placeholder: '*.jpg, *.jpeg, *.png'}")
   .section-subtitle
     | Useable
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['required']}")
   .section-subtitle
     | Alternate Text
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['alt'], inline: true, button: false, placeholder: 'ALT'}")
   .section-subtitle
     | Tab Index
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.NumberPicker', "{watchingAttributeNames: ['tabIndex'], inline: true, button: false}")
   .section-hr

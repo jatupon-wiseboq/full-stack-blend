@@ -3,18 +3,18 @@
     | Link Options
   .section-subtitle
     | Destination
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['href'], inline: true, button: false, placeholder: 'URL'}")
   .section-subtitle
     | PageRank Sculpting
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingAttributeNames: ['rel']}")
   .section-subtitle
     | Target
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:designer, workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['target'], inline: true, button: false, placeholder: '_self'}")
   .section-subtitle
     | Alternate Text
-  .section-body
+  .section-body(internal-fsb-not-for="workspaceMode:business")
     +CreateReactComponent('FullStackBlend.Components.TextPicker', "{watchingAttributeNames: ['alt'], inline: true, button: false, placeholder: 'ALT'}")
   .section-hr

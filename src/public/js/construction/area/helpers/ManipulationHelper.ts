@@ -267,16 +267,109 @@ var ManipulationHelper = {
       	preview = false;
         break;
       case 'move[element]':
-      	[accessory, remember, link] = ManipulationHelper.handleMoveElement(name, content, remember, promise, link);
+      	if (InternalProjectSettings.workspaceMode == 'business') {
+      		alert('Business cannot move any element, please ask the rest of team to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content.target)) {
+      		alert('Designer cannot move any element with code locking, please ask any coder or engineer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content.target)) {
+      		alert('Designer cannot move any element with design locking, please unlock it first.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content.target)) {
+      		alert('Coder cannot move any element with design locking, please ask any designer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content.target)) {
+      		alert('Coder cannot move any element with code locking, please unlock it first.');
+      		remember = false;
+      	} else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content.target) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content.target)) {
+      		alert('Please unlock the layer first.');
+      		remember = false;
+      	} else {
+      		[accessory, remember, link] = ManipulationHelper.handleMoveElement(name, content, remember, promise, link);
+      	}
+      	
         break;
       case 'delete':
-      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
+      	if (InternalProjectSettings.workspaceMode == 'business') {
+      		alert('Business cannot delete any element, please ask the rest of team to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with coding, please ask any coder or engineer to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with code locking, please ask any coder or engineer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with design locking, please unlock it first.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Coder cannot delete any element with design locking, please ask any designer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Coder cannot delete any element with code locking, please unlock it first.');
+      		remember = false;
+      	} else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Please unlock the layer first.');
+      		remember = false;
+      	} else {
+      		[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link);
+      	}
+      	
         break;
       case 'delete[silence]':
-      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, false, true);
+      	if (InternalProjectSettings.workspaceMode == 'business') {
+      		alert('Business cannot delete any element, please ask the rest of team to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with coding, please ask any coder or engineer to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with code locking, please ask any coder or engineer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Designer cannot delete any element with design locking, please unlock it first.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Coder cannot delete any element with design locking, please ask any designer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Coder cannot delete any element with code locking, please unlock it first.');
+      		remember = false;
+      	} else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Please unlock the layer first.');
+      		remember = false;
+      	} else {
+      		[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, false, true);
+      	}
+      	
         break;
       case 'delete[cut]':
-      	[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, true);
+      	if (InternalProjectSettings.workspaceMode == 'business') {
+      		alert('Business cannot cut any element, please ask the rest of team to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with coding, please ask any coder or engineer to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with code locking, please ask any coder or engineer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with design locking, please unlock it first.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Coder cannot cut any element with design locking, please ask any designer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Coder cannot cut any element with code locking, please unlock it first.');
+      		remember = false;
+      	} else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Please unlock the layer first.');
+      		remember = false;
+      	} else {
+      		[accessory, remember, link] = ManipulationHelper.handleDeleteElement(name, content, remember, promise, link, true);
+      	}
+      	
         break;
       case 'table':
       	[accessory, remember, link, content] = ManipulationHelper.handleModifyTable(name, content, remember, promise, link);
@@ -308,7 +401,31 @@ var ManipulationHelper = {
       	preview = false;
         break;
       case 'removePreset':
-      	[accessory, content, remember] = ManipulationHelper.handleRemovePreset(name, content, remember, promise);
+      	if (InternalProjectSettings.workspaceMode == 'business') {
+      		alert('Business cannot remove any preset, please ask the rest of team to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with coding, please ask any coder or engineer to perform it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with code locking, please ask any coder or engineer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Designer cannot cut any element with design locking, please unlock it first.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Coder cannot cut any element with design locking, please ask any designer to unlock it.');
+      		remember = false;
+      	} else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+      		alert('Coder cannot cut any element with code locking, please unlock it first.');
+      		remember = false;
+      	} else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+      		alert('Please unlock the layer first.');
+      		remember = false;
+      	} else {
+      		[accessory, content, remember] = ManipulationHelper.handleRemovePreset(name, content, remember, promise);
+      	}
+      	
       	break;
     }
     
