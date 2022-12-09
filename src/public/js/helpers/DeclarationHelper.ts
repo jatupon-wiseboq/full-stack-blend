@@ -1,7 +1,21 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
+declare let window: any;
+
 const Project: any = {};
+const settings: {[Identifier: string]: any} = {};
+
+Project.Settings = settings;
+
+if (window.settings) {
+	const items = window.settings.toString().split('`');
+  
+  for (const item of items) {
+  	const tokens = item.split('~');
+  	Project.Settings[tokens[0]] = tokens[1];
+  }
+}
 
 const DeclarationHelper = {
   declareNamespace: (path: string) => {
