@@ -913,7 +913,7 @@ const DatabaseHelper = {
 					
 					[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(embeddingQuery, forwardingSchema, true);
 					
-					await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+					await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
 						if (error) {
 							reject(error);
 						} else {
@@ -993,7 +993,7 @@ const DatabaseHelper = {
 						
 						[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(nextResult, nextSchema, true);
 						
-						await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, {$set: properties});
+						await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, {$set: properties}, {session: transaction.documentDatabaseSession});
 						nextResult.columns = Object.assign(nextResult.columns, properties);
 					}
 				}
@@ -1149,7 +1149,7 @@ const DatabaseHelper = {
 									records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
 								}
 							} else if (input.source == SourceType.Document) {
-								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys)))['ops'][0];
+								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys), {session: transaction.documentDatabaseSession}))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, dataColumns, dataKeys)));
@@ -1354,8 +1354,8 @@ const DatabaseHelper = {
 									records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 								}
 							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true});
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true, session: transaction.documentDatabaseSession});
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1550,9 +1550,9 @@ const DatabaseHelper = {
 								records[0] = await map.findOne({where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								if (Object.keys(dataColumns).length != 0) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns});
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns}, {session: transaction.documentDatabaseSession});
 								}
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -2137,7 +2137,7 @@ const DatabaseHelper = {
 								}
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -2149,7 +2149,7 @@ const DatabaseHelper = {
 								for (const record of records) {
 									transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne({
 										'_id': {$eq: new ObjectID(record['_id'])}
-									});
+									}, {session: transaction.documentDatabaseSession});
 								}
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
