@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {DatabaseHelper, ActionType, SourceType} from './DatabaseHelper';
+import {DatabaseHelper, ActionType, SourceType, HierarchicalDataTable} from './DatabaseHelper';
 import {RequestHelper} from './RequestHelper';
 import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from './SchemaHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
@@ -22,24 +22,24 @@ interface Permission {
 }
 
 const PermissionHelper = {
-	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, modifyingColumns: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, modifyingColumns: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (action == ActionType.Insert || action == ActionType.Upsert) {
 					if (schema.modifyingPermission && schema.modifyingPermission.mode == 'relation' && schema.modifyingPermission.relationModeSourceGroup == schema.group) {
-						if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, data)) {
+						if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
 							resolve(false);
 							return;
 						}
 					}
 				} else {
-					if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.retrievingPermission : schema.modifyingPermission, schema, modifyingColumns, session, data)) {
+					if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.retrievingPermission : schema.modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
 						resolve(false);
 						return;
 					} else if (action != ActionType.Retrieve) {
 						for (const key in schema.keys) {
 							if (schema.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission(schema.keys[key].modifyingPermission, schema, modifyingColumns, session, data)) {
+								if (!await PermissionHelper.allowPermission(schema.keys[key].modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
 									resolve(false);
 									return;
 								}
@@ -47,7 +47,7 @@ const PermissionHelper = {
 						}
 						for (const key in schema.columns) {
 							if (schema.columns.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission(schema.columns[key].modifyingPermission, schema, modifyingColumns, session, data)) {
+								if (!await PermissionHelper.allowPermission(schema.columns[key].modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
 									resolve(false);
 									return;
 								}
@@ -62,10 +62,10 @@ const PermissionHelper = {
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any={}, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, data);
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any={}, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, transaction, data);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, referencings: any, session: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, referencings: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (permission == null) {
@@ -205,7 +205,7 @@ const PermissionHelper = {
 										}
 									}
 									
-									const dataset = await DatabaseHelper.retrieve(RequestHelper.createInputs(data), ProjectConfigurationHelper.getDataSchema().tables[current.group], false);
+									const dataset = await DatabaseHelper.retrieve(RequestHelper.createInputs(data), ProjectConfigurationHelper.getDataSchema().tables[current.group], session, false, true, undefined, transaction);
 									
 									if (dataset[current.group].rows.length == 0) {
 										referencings = null;
@@ -240,6 +240,25 @@ const PermissionHelper = {
 			}
 		});
 	},
+	hasPermissionDefining: (action: ActionType, input: {[Identifier: string]: HierarchicalDataTable}, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): boolean => {
+		for (const group in input) {
+			const schema = data.tables[group];
+			
+			if (action == ActionType.Retrieve) {
+				return !!schema.retrievingPermission;
+			} else {
+				return !!schema.modifyingPermission;
+			}
+			
+			for (const row of input[group].rows) {
+				if (PermissionHelper.hasPermissionDefining(action, row.relations, data)) {
+					return true;
+				}
+			}
+		}
+		
+		return false;
+	}
 };
 
 export {Permission, PermissionHelper};
