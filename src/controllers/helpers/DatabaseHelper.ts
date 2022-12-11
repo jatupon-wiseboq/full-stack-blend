@@ -814,8 +814,8 @@ const DatabaseHelper = {
 		return [queryKeys, queryColumns, dataKeys, dataColumns];
 	},
 	forwardRecordSet: async (schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
-		DatabaseHelper.recurrentForwardRecordSet(schema, results, undefined, undefined, transaction);
-		DatabaseHelper.recursiveForwardRecordSet(schema, results, undefined, undefined, transaction);
+		await DatabaseHelper.recurrentForwardRecordSet(schema, results, undefined, undefined, transaction);
+		await DatabaseHelper.recursiveForwardRecordSet(schema, results, undefined, undefined, transaction);
 	},
 	recursiveForwardRecordSet: async (forwardingSchema: DataTableSchema, forwardingResults: HierarchicalDataRow[]=[], nextForwardedSchema: DataTableSchema=null, nextForwardedResults: HierarchicalDataRow[]=[], transaction: any=null, isRoot: boolean=true, walked: string[]=[]) => {
 		if (!forwardingSchema.forward) return;
@@ -999,7 +999,7 @@ const DatabaseHelper = {
 				}
 				
 				if (forwardingSchema.forward.recursive && nextForwardedSchema == null) {
-					DatabaseHelper.recursiveForwardRecordSet(nextSchema, embeddingResults, undefined, undefined, transaction, false, CodeHelper.clone(walked));
+					await DatabaseHelper.recursiveForwardRecordSet(nextSchema, embeddingResults, undefined, undefined, transaction, false, CodeHelper.clone(walked));
 				}
 			}
 		}
@@ -1062,8 +1062,8 @@ const DatabaseHelper = {
 					}, forwardingSchema, dataset, undefined, undefined, undefined, transaction);
 	  		}
 				
-				DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
-				DatabaseHelper.recursiveForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction);
+				await DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
+				await DatabaseHelper.recursiveForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction);
 			}
 		}
 	},
@@ -1234,7 +1234,7 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							  
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
@@ -1453,7 +1453,7 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
@@ -1656,7 +1656,7 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
@@ -2237,7 +2237,7 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 								
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
