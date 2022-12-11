@@ -814,8 +814,8 @@ const DatabaseHelper = {
 		return [queryKeys, queryColumns, dataKeys, dataColumns];
 	},
 	forwardRecordSet: async (schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
-		DatabaseHelper.recurrentForwardRecordSet(schema, results, undefined, undefined, transaction);
-		DatabaseHelper.recursiveForwardRecordSet(schema, results, undefined, undefined, transaction);
+		await DatabaseHelper.recurrentForwardRecordSet(schema, results, undefined, undefined, transaction);
+		await DatabaseHelper.recursiveForwardRecordSet(schema, results, undefined, undefined, transaction);
 	},
 	recursiveForwardRecordSet: async (forwardingSchema: DataTableSchema, forwardingResults: HierarchicalDataRow[]=[], nextForwardedSchema: DataTableSchema=null, nextForwardedResults: HierarchicalDataRow[]=[], transaction: any=null, isRoot: boolean=true, walked: string[]=[]) => {
 		if (!forwardingSchema.forward) return;
@@ -913,7 +913,7 @@ const DatabaseHelper = {
 					
 					[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(embeddingQuery, forwardingSchema, true);
 					
-					await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+					await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
 						if (error) {
 							reject(error);
 						} else {
@@ -993,13 +993,13 @@ const DatabaseHelper = {
 						
 						[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(nextResult, nextSchema, true);
 						
-						await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, {$set: properties});
+						await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, {$set: properties}, {session: transaction.documentDatabaseSession});
 						nextResult.columns = Object.assign(nextResult.columns, properties);
 					}
 				}
 				
 				if (forwardingSchema.forward.recursive && nextForwardedSchema == null) {
-					DatabaseHelper.recursiveForwardRecordSet(nextSchema, embeddingResults, undefined, undefined, transaction, false, CodeHelper.clone(walked));
+					await DatabaseHelper.recursiveForwardRecordSet(nextSchema, embeddingResults, undefined, undefined, transaction, false, CodeHelper.clone(walked));
 				}
 			}
 		}
@@ -1062,18 +1062,18 @@ const DatabaseHelper = {
 					}, forwardingSchema, dataset, undefined, undefined, undefined, transaction);
 	  		}
 				
-				DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
-				DatabaseHelper.recursiveForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction);
+				await DatabaseHelper.recurrentForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction, CodeHelper.clone(walked));
+				await DatabaseHelper.recursiveForwardRecordSet(forwardingSchema, dataset[forwardingSchema.group].rows, forwardedSchema, forwardedResults, transaction);
 			}
 		}
 	},
 	insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		if (!transaction) transaction = await CreateTransaction({});
-  		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema, crossRelationUpsert);
 	  		const results = [];
+	  		
+  			if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Insert, list)});
   		  
   		  for (const key in list) {
   		  	if (list.hasOwnProperty(key)) {
@@ -1138,7 +1138,7 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
 							let records = [];
 							
@@ -1149,7 +1149,7 @@ const DatabaseHelper = {
 									records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
 								}
 							} else if (input.source == SourceType.Document) {
-								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys)))['ops'][0];
+								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys), {session: transaction.documentDatabaseSession}))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, dataColumns, dataKeys)));
@@ -1234,16 +1234,16 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							  
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1275,11 +1275,11 @@ const DatabaseHelper = {
 	},
 	upsert: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		if (!transaction) transaction = await CreateTransaction({});
-  		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Upsert, baseSchema, true);
 	  		const results = [];
+	  		
+  			if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Upsert, list)});
   		  
   		  for (const key in list) {
   		  	if (list.hasOwnProperty(key)) {
@@ -1354,8 +1354,8 @@ const DatabaseHelper = {
 									records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
 								}
 							} else if (input.source == SourceType.Document) {
-								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true});
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
+								await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true, session: transaction.documentDatabaseSession});
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1377,7 +1377,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 								
 							  const result: any = {
 							    keys: {},
@@ -1453,16 +1453,16 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1495,12 +1495,12 @@ const DatabaseHelper = {
 	},
 	update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert=false, session: any=null, leavePermission: boolean=false, innerCircleTags: string[]=[], transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		if (!transaction) transaction = await CreateTransaction({});
-  		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema, crossRelationUpsert);
 	  		const results = [];
 	  		
+  			if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Update, list)});
+  		  
 	  		for (const key in list) {
   		  	if (list.hasOwnProperty(key)) {
 	  		  	const input = list[key];
@@ -1550,9 +1550,9 @@ const DatabaseHelper = {
 								records[0] = await map.findOne({where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
 							} else if (input.source == SourceType.Document) {
 								if (Object.keys(dataColumns).length != 0) {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns});
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns}, {session: transaction.documentDatabaseSession});
 								}
-								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys);
+								records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1579,7 +1579,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 								
 							  const result: any = {
 							    keys: {},
@@ -1656,16 +1656,16 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 							
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.keys[key];
 								  }
 								}
 							}
@@ -1746,12 +1746,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session, transaction)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session, transaction)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1806,12 +1806,12 @@ const DatabaseHelper = {
 	  				  
 	  					  for (const key in baseSchema.columns) {
 	    					  if (baseSchema.columns.hasOwnProperty(key) && row.columns[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.columns[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.columns[key], baseSchema, Object.assign({}, row.columns, row.keys), session, transaction)) delete row.columns[key];
 	    					  }
 	    					}
 	    					for (const key in baseSchema.keys) {
 	    					  if (baseSchema.keys.hasOwnProperty(key) && row.keys[key] !== undefined) {
-	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session)) delete row.keys[key];
+	    					    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(baseSchema.keys[key], baseSchema, Object.assign({}, row.columns, row.keys), session, transaction)) delete row.keys[key];
 	    					  }
 	    					}
 	    					
@@ -1847,7 +1847,7 @@ const DatabaseHelper = {
 	        }
 	        
 	        for (const result of results[baseSchema.group].rows) {
-						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, result.columns, result.keys), session)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, result.columns, result.keys), session, transaction)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 	      	}
 	      	
 	      	resolve(results);
@@ -1921,7 +1921,7 @@ const DatabaseHelper = {
 									  }
 									}
 									
-									if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
+									if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session, connectionInfos)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
 								
 								  const row: any = {
 			  				    keys: {},
@@ -2016,12 +2016,12 @@ const DatabaseHelper = {
 							for (const _row of rows) {
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && _row.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, _row.columns, _row.keys), session)) delete _row.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, _row.columns, _row.keys), session, connectionInfos)) delete _row.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && _row.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, _row.columns, _row.keys), session)) delete _row.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, _row.columns, _row.keys), session, connectionInfos)) delete _row.keys[key];
 								  }
 								}
 								for (const key in _row.relations) {
@@ -2060,12 +2060,12 @@ const DatabaseHelper = {
   },
 	delete: async (data: Input[], baseSchema: DataTableSchema, session: any=null, leavePermission: boolean=false, transaction: any=null): Promise<HierarchicalDataRow[]> => {
 		return new Promise(async (resolve, reject) => {
-  		if (!transaction) transaction = await CreateTransaction({});
-  		
 		  try {
   			const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);
   		  const results = [];
 	  		
+  			if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Delete, list)});
+  		  
   		  for (const key in list) {
   		  	if (list.hasOwnProperty(key)) {
 	  		  	const input = list[key];
@@ -2137,7 +2137,7 @@ const DatabaseHelper = {
 								}
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
-									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+									await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
 										if (error) {
 											reject(error);
 										} else {
@@ -2149,7 +2149,7 @@ const DatabaseHelper = {
 								for (const record of records) {
 									transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne({
 										'_id': {$eq: new ObjectID(record['_id'])}
-									});
+									}, {session: transaction.documentDatabaseSession});
 								}
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
@@ -2172,7 +2172,7 @@ const DatabaseHelper = {
 								  }
 								}
 							
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 								
 							  const row: any = {
 		  				    keys: {},
@@ -2237,16 +2237,16 @@ const DatabaseHelper = {
 									}
 								}
 								
-								DatabaseHelper.forwardRecordSet(schema, [result], transaction);
+								await DatabaseHelper.forwardRecordSet(schema, [result], transaction);
 								
 							  for (const key in schema.columns) {
 								  if (schema.columns.hasOwnProperty(key) && result.columns[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.columns[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.columns[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.columns[key];
 								  }
 								}
 								for (const key in schema.keys) {
 								  if (schema.keys.hasOwnProperty(key) && result.keys[key] !== undefined) {
-								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session)) delete result.keys[key];
+								    if (!leavePermission && !await PermissionHelper.allowOutputOfColumn(schema.keys[key], schema, Object.assign({}, result.columns, result.keys), session, transaction)) delete result.keys[key];
 								  }
 								}
 							}

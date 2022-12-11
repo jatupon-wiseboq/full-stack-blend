@@ -79,22 +79,23 @@ if (process.env.RELATIONAL_DATABASE_KEY) {
 if (process.env.DOCUMENT_DATABASE_KEY) {
 	const connectionURL = process.env[process.env.DOCUMENT_DATABASE_KEY];
 	DocumentDatabaseClient = new MongoClient(connectionURL, {
-		useUnifiedTopology: true,
-		poolSize: 20
+		useUnifiedTopology: true
 	});
 	
 	DocumentDatabaseClient._connect = DocumentDatabaseClient.connect;
 	DocumentDatabaseClient._connection = null;
-	DocumentDatabaseClient.connect = async () => {
-		if (DocumentDatabaseClient._connection == null || !DocumentDatabaseClient._connection.isConnected()) {
-			DocumentDatabaseClient._connection = await DocumentDatabaseClient._connect();
-			
-			DocumentDatabaseClient._connection._close = DocumentDatabaseClient._connection.close;
-			DocumentDatabaseClient._connection.close = () => {};
+	DocumentDatabaseClient.connect = async (share: boolean=true) => {
+		if (share) {
+			if (DocumentDatabaseClient._connection == null || !DocumentDatabaseClient._connection.isConnected()) {
+				DocumentDatabaseClient._connection = await DocumentDatabaseClient._connect();
+				
+				DocumentDatabaseClient._connection._close = DocumentDatabaseClient._connection.close;
+				DocumentDatabaseClient._connection.close = () => {};
+			}
+			return DocumentDatabaseClient._connection;
+		} else {
+			return await DocumentDatabaseClient._connect();
 		}
-		return new Promise<any>((resolve) => {
-			resolve(DocumentDatabaseClient._connection);
-		});
 	};
 }
 if (process.env.PRIORITIZED_WORKER_KEY) {
@@ -121,14 +122,14 @@ const CreateTransaction = async (options) => {
 		relationalDatabaseTransaction = await RelationalDatabaseORMClient.transaction();
 	}
 	if (DocumentDatabaseClient) {
-		documentDatabaseConnection = await DocumentDatabaseClient.connect();
+		documentDatabaseConnection = await DocumentDatabaseClient.connect(options.share || options.share === undefined);
 		if (!options.manual) {
 			try {
-				documentDatabaseSession = DocumentDatabaseClient.startSession({
+				documentDatabaseSession = await DocumentDatabaseClient.startSession({
 					retryWrites: true,
 					causalConsistency: true
 				});
-				documentDatabaseSession.startTransaction({
+				await documentDatabaseSession.startTransaction({
 					readPreference: 'primary',
 					readConcern: {
 						level: 'local'
@@ -147,19 +148,19 @@ const CreateTransaction = async (options) => {
 		commit: async () => {
 			try {
 				if (relationalDatabaseTransaction) await relationalDatabaseTransaction.commit();
-				if (documentDatabaseSession) documentDatabaseSession.commitTransaction();
+				if (documentDatabaseSession) await documentDatabaseSession.commitTransaction();
 			} finally {
-				if (documentDatabaseSession) documentDatabaseSession.endSession();
-				if (documentDatabaseConnection) documentDatabaseConnection.close();
+				if (documentDatabaseSession) await documentDatabaseSession.endSession();
+				if (documentDatabaseConnection) await documentDatabaseConnection.close();
 			}
 		},
 		rollback: async () => {
 			try {
 				if (relationalDatabaseTransaction) await relationalDatabaseTransaction.rollback();
-				if (documentDatabaseSession) documentDatabaseSession.abortTransaction();
+				if (documentDatabaseSession) await documentDatabaseSession.abortTransaction();
 			} finally {
-				if (documentDatabaseSession) documentDatabaseSession.endSession();
-				if (documentDatabaseConnection) documentDatabaseConnection.close();
+				if (documentDatabaseSession) await documentDatabaseSession.endSession();
+				if (documentDatabaseConnection) await documentDatabaseConnection.close();
 			}
 		},
 		get relationalDatabaseTransaction(): any { return relationalDatabaseTransaction; },
