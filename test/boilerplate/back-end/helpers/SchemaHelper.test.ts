@@ -247,34 +247,14 @@ describe('Verification', () => {
 			data1.tables['Business'].relations['User'].targetEntity = '123';
 			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
 		});
-		/* test('source group unavailable', () => {
+		test('unavailable of relation', () => {
 			let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+			let table = data1.tables['Log'].relations['User'];
+			delete data1.tables['Log'].relations['User'];
 			
-			// For any non-referenceable
-			
+			data1.tables['Log'].relations['abc'] = table;
 			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
 		});
-		test('source entity unavailable', () => {
-			let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-			
-			// For any non-referenceable
-			
-			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
-		});
-		test('target group unavailable', () => {
-			let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-			
-			// For any non-referenceable
-			
-			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
-		});
-		test('target entity unavailable', () => {
-			let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-			
-			// For any non-referenceable
-			
-			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
-		}); */
 	});
 	describe('Permission', () => {
 		describe('Relation', () => {
