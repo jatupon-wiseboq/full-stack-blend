@@ -1,4 +1,4 @@
-import {SchemaHelper} from "../../../../src/controllers/helpers/SchemaHelper";
+import {SchemaHelper, FieldType} from "../../../../src/controllers/helpers/SchemaHelper";
 import {ProjectConfigurationHelper} from "../../../../src/controllers/helpers/ProjectConfigurationHelper";
 import {CodeHelper} from "../../../../src/controllers/helpers/CodeHelper";
 
@@ -601,6 +601,19 @@ describe('Verification', () => {
 				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 		});
+	});
+});
+
+describe('Simple Information', () => {
+	test('Field Type', () => {
+		expect(SchemaHelper.getFieldType('auto')).toEqual(FieldType.AutoNumber);
+		expect(SchemaHelper.getFieldType('number')).toEqual(FieldType.Number);
+		expect(SchemaHelper.getFieldType('boolean')).toEqual(FieldType.Boolean);
+		expect(SchemaHelper.getFieldType('datetime')).toEqual(FieldType.DateTime);
+		expect(SchemaHelper.getFieldType(null)).toEqual(FieldType.String);
+		
+		expect(() => { SchemaHelper.getFieldType('Auto'); }).toThrow();
+		expect(() => { SchemaHelper.getFieldType(''); }).toThrow();
 	});
 });
 
