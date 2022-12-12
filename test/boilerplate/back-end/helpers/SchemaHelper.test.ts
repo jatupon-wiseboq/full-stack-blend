@@ -726,7 +726,24 @@ describe('Retrieving Information', () => {
 });
 
 describe('Searching Information', () => {
-	test('Undefined', () => {
+	let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+	
+	test('Recursive', () => {
+		expect(() => { SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['User'], data1); }).not.toThrow();
+		expect(() => { SchemaHelper.findShortestPathOfRelations(null, data1.tables['User'], data1); }).toThrow();
+		expect(() => { SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], null, data1); }).toThrow();
 		
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['User'], data1).map(table => table.group)).toEqual(['Business', 'User']);
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['User'], data1.tables['Business'], data1).map(table => table.group)).toEqual(['User', 'Business']);
+		
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['Log'], data1).map(table => table.group)).toEqual(['Business', 'User', 'Log']);
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Log'], data1.tables['Business'], data1).map(table => table.group)).toEqual(['Log', 'User', 'Business']);
+		
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Employee'], data1.tables['User'], data1).map(table => table.group)).toEqual(['Employee', 'User']);
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['User'], data1.tables['Employee'], data1).map(table => table.group)).toEqual(['User', 'Employee']);
+		
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['Business'], data1).map(table => table.group)).toEqual(['Business']);
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['RESTfulTesting'], data1).map(table => table.group)).toEqual([]);
+		expect(SchemaHelper.findShortestPathOfRelations(data1.tables['VolatileTesting'], data1.tables['VolatileTesting'], data1).map(table => table.group)).toEqual(['VolatileTesting']);
 	});
 });
