@@ -1,4 +1,4 @@
-import {SchemaHelper, FieldType} from "../../../../src/controllers/helpers/SchemaHelper";
+import {DataTableSchema, DataColumnSchema, FieldType, SchemaHelper} from "../../../../src/controllers/helpers/SchemaHelper";
 import {ProjectConfigurationHelper} from "../../../../src/controllers/helpers/ProjectConfigurationHelper";
 import {CodeHelper} from "../../../../src/controllers/helpers/CodeHelper";
 
@@ -604,7 +604,9 @@ describe('Verification', () => {
 	});
 });
 
-describe('Simple Information', () => {
+describe('Retrieving Information', () => {
+	let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+	
 	test('Field Type', () => {
 		expect(SchemaHelper.getFieldType('auto')).toEqual(FieldType.AutoNumber);
 		expect(SchemaHelper.getFieldType('number')).toEqual(FieldType.Number);
@@ -615,15 +617,115 @@ describe('Simple Information', () => {
 		expect(() => { SchemaHelper.getFieldType('Auto'); }).toThrow();
 		expect(() => { SchemaHelper.getFieldType(''); }).toThrow();
 	});
-});
-
-describe('Searching Information', () => {
-	test('Undefined', () => {
+	test('DataTableSchema', () => {
+		// Direct Table
+		//
+		expect(
+			(SchemaHelper.getSchemaFromKey('Business',
+				null,
+				data1, false) as DataTableSchema).group
+		).toEqual('Business');
+		expect(
+			(SchemaHelper.getSchemaFromKey('User',
+				null,
+				data1, false) as DataTableSchema).group
+		).toEqual('User');
+		expect(
+			(SchemaHelper.getSchemaFromKey('Business', // Self Selecting Ability
+				(SchemaHelper.getSchemaFromKey('Business',
+					null,
+					data1, false) as DataTableSchema),
+				data1, false) as DataTableSchema).group
+		).toEqual('Business');
+		expect(
+			(SchemaHelper.getSchemaFromKey('Log', // Fallback Ability
+				(SchemaHelper.getSchemaFromKey('Business',
+					null,
+					data1, false) as DataTableSchema),
+				data1, false) as DataTableSchema).group
+		).toEqual('Log');
+			
+		expect(
+			SchemaHelper.getSchemaFromKey('Abc',
+				null,
+				data1, false)
+		).toEqual(null);
 		
+		// Relation Table
+		//
+		expect(
+			(SchemaHelper.getSchemaFromKey('User',
+				(SchemaHelper.getSchemaFromKey('Business',
+					null,
+					data1, false) as DataTableSchema),
+				data1, false) as DataTableSchema).group
+		).toEqual('User');
+		expect(
+			(SchemaHelper.getSchemaFromKey('Employee',
+				(SchemaHelper.getSchemaFromKey('User',
+					null,
+					data1, false) as DataTableSchema),
+				data1, false) as DataTableSchema).group
+		).toEqual('Employee');
+		
+		expect(
+			SchemaHelper.getSchemaFromKey('Abc',
+				(SchemaHelper.getSchemaFromKey('User',
+					null,
+					data1, false) as DataTableSchema),
+				data1, false)
+		).toEqual(null);
+		
+		expect(() => { SchemaHelper.getSchemaFromKey('', null, data1, false); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('User.', null, data1, false); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('User.abc', null, data1, false); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('.Employee.User', null, data1, false); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('.Employee..User', null, data1, false); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('Business..', null, data1, false); }).toThrow();
+	});
+	test('DataColumnSchema', () => {
+		// Direct Field
+		//
+		expect(
+			SchemaHelper.getSchemaFromKey('bid',
+				null,
+				data1, true)
+		).toEqual(null);
+		expect(
+			SchemaHelper.getSchemaFromKey('name',
+				null,
+				data1, true)
+		).toEqual(null);
+		expect(
+			(SchemaHelper.getSchemaFromKey('bid',
+				(SchemaHelper.getSchemaFromKey('Business',
+					null,
+					data1, false) as DataTableSchema),
+				data1, true) as DataColumnSchema).name
+		).toEqual('bid');
+		expect(
+			(SchemaHelper.getSchemaFromKey('name',
+				(SchemaHelper.getSchemaFromKey('Business',
+					null,
+					data1, false) as DataTableSchema),
+				data1, true) as DataColumnSchema).name
+		).toEqual('name');
+		
+		expect(
+			SchemaHelper.getSchemaFromKey('abc',
+				null,
+				data1, false)
+		).toEqual(null);
+		
+		expect(() => { SchemaHelper.getSchemaFromKey('', null, data1, true); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('User.', null, data1, true); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('.Employee.User', null, data1, true); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('.Employee..User', null, data1, true); }).toThrow();
+		expect(() => { SchemaHelper.getSchemaFromKey('Business..', null, data1, true); }).toThrow();
 	});
 });
 
-describe('Retrieving Information', () => {
+describe('Searching Information', () => {
 	test('Undefined', () => {
 		
 	});

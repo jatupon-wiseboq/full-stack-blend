@@ -192,6 +192,7 @@ const SchemaHelper = {
 	},
 	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
 		CodeHelper.assertOfPresent(key, 'key');
+		if (key.split('.').length != 1) throw new Error('You have specified a notation, not a key.');
 		
 		if (!searchForDataTableSchema) {
 			// Search DataTableSchema
@@ -219,6 +220,7 @@ const SchemaHelper = {
   },
 	getDataTableSchemaFromNotation: (notation: string, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
 		CodeHelper.assertOfPresent(notation, 'notation');
+		CodeHelper.assertOfNotationFormat(notation, 'notation');
 	  
 	  if (!notation) return null;
 	  
