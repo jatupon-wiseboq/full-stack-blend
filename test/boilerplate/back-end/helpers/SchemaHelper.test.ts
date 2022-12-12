@@ -128,6 +128,12 @@ describe('Verification', () => {
 			data1.tables['Note'].columns['note'].name = 'note2';
 			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
 		});
+		test('mismatch of table name', () => {
+			let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+			
+			data1.tables['Log'].group = '123';
+			expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
+		});
 	});
 	describe('Relation', () => {
 		test('base', () => {
@@ -257,54 +263,342 @@ describe('Verification', () => {
 		});
 	});
 	describe('Permission', () => {
+		let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+		
 		describe('Relation', () => {
 			test('base', () => {
-			  let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-			
-				expect(() => { SchemaHelper.verifyDataSchema(data1); }).not.toThrow();
+				let permission = {
+					mode: null,
+				  relationModeSourceGroup: null,
+				  relationModeSourceEntity: null,
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationModeSourceGroup = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationModeSourceEntity = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingMode = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: 'session',
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: 'uid',
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.sessionMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 			});
 			test('missing a source group name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceGroup = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationModeSourceGroup = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationModeSourceGroup = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('missing a source entity name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceEntity = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationModeSourceEntity = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationModeSourceEntity = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('wrong of source group name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceGroup = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('wrong of source entity name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceEntity = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('source group unavailable', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceGroup = 'abc';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('source entity unavailable', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationModeSourceEntity = '123';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('missing a session name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: 'session',
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: 'uid',
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
-			});
-			test('missing a constant value', () => {
+				permission.relationMatchingSessionName = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 				
+				permission.relationMatchingSessionName = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationMatchingSessionName = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('wrong of session name', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: 'session',
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: 'uid',
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.relationMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+			});
+			test('missing a constant value', () => {
+				let permission = {
+					mode: 'relation',
+				  relationModeSourceGroup: 'User',
+				  relationModeSourceEntity: 'uid',
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: '123',
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: null,
+				  sessionMatchingConstantValue: null
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingConstantValue = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationMatchingConstantValue = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.relationMatchingConstantValue = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 		});
 		describe('Session', () => {
 			test('base', () => {
-			  let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-			
-				expect(() => { SchemaHelper.verifyDataSchema(data1); }).not.toThrow();
+				let permission = {
+					mode: 'session',
+				  relationModeSourceGroup: null,
+				  relationModeSourceEntity: null,
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: 'uid',
+				  sessionMatchingConstantValue: '123'
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationModeSourceGroup = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationModeSourceEntity = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingMode = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingConstantValue = NaN;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
+				
+				permission.relationMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 			});
 			test('missing a session name', () => {
+				let permission = {
+					mode: 'session',
+				  relationModeSourceGroup: null,
+				  relationModeSourceEntity: null,
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: 'uid',
+				  sessionMatchingConstantValue: '123'
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.sessionMatchingSessionName = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.sessionMatchingSessionName = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.sessionMatchingSessionName = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('wrong of session name', () => {
+				let permission = {
+					mode: 'session',
+				  relationModeSourceGroup: null,
+				  relationModeSourceEntity: null,
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: 'uid',
+				  sessionMatchingConstantValue: '123'
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.sessionMatchingSessionName = '#$%^&*(';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 			test('missing a constant value', () => {
+				let permission = {
+					mode: 'session',
+				  relationModeSourceGroup: null,
+				  relationModeSourceEntity: null,
+				  relationMatchingMode: null,
+				  relationMatchingConstantValue: null,
+				  relationMatchingSessionName: null,
+				  sessionMatchingSessionName: 'uid',
+				  sessionMatchingConstantValue: '123'
+				};
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
 				
+				permission.sessionMatchingConstantValue = null;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.sessionMatchingConstantValue = undefined;
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
+				
+				permission.sessionMatchingConstantValue = '';
+				expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
 			});
 		});
 	});
