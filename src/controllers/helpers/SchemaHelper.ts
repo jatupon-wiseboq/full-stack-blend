@@ -267,7 +267,7 @@ const SchemaHelper = {
 		
 		const results = [];
 		
-		SchemaHelper.recursiveFindShortestPathOfRelations(from, to, results);
+		SchemaHelper.recursiveFindShortestPathOfRelations(from, to, results, undefined, data);
 		
 		return results;
 	},
