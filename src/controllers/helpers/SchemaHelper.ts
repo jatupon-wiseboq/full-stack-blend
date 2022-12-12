@@ -149,7 +149,8 @@ const SchemaHelper = {
 		return true;
 	},
 	verifyNotations: (tree: any, data: DataSchema=ProjectConfigurationHelper.getDataSchema()) => {
-		// TODO: fix bugs.
+		// TODO: re-enable in the future for notating on page.
+		// 
 		return true;
 		
 		CodeHelper.assertOfPresent(tree, 'tree');
