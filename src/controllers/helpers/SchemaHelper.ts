@@ -184,8 +184,10 @@ const SchemaHelper = {
 				return FieldType.Boolean;
 			case "datetime":
 				return FieldType.DateTime;
-			default:
+			case null:
 				return FieldType.String;
+			default:
+				throw new Error('Wrong type of field.');
 		}
 	},
 	getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema=ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema: boolean=false): DataTableSchema | DataColumnSchema => {
