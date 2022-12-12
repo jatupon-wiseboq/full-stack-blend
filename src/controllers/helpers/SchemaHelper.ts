@@ -235,6 +235,10 @@ const SchemaHelper = {
 		return current;
 	},
   findAllPossibleNotations: (tree: any, accumulatedNotation: string=null, notations: string[]=[]): string[] => {
+    // TODO: re-enable in the future for notating on page.
+		// 
+		return [];
+		
     for (const key in tree) {
       if (tree.hasOwnProperty(key)) {
         let currentNotation = null;
