@@ -6,6 +6,7 @@ import {ActionHelper} from "./helpers/ActionHelper";
 import {WorkerHelper} from "./helpers/WorkerHelper";
 import {SchedulerHelper} from "./helpers/SchedulerHelper";
 import {SitemapHelper} from "./helpers/SitemapHelper";
+import {Project} from "./helpers/ProjectConfigurationHelper";
 import {loc} from "./helpers/LocalizationHelper";
 
 import Componentindex from "./components/index";
