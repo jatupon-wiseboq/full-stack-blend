@@ -97,6 +97,8 @@ const SchemaHelper = {
           if (table.relations.hasOwnProperty(relationTableKey)) {
             const relation = table.relations[relationTableKey];
             
+            CodeHelper.assertOfPresent(data.tables[relationTableKey], relationTableKey, `There was an error verifying data schema (unavailable of relation: ${JSON.stringify(relation)}).`);
+            
 	          CodeHelper.assertOfPresent(relation.sourceGroup, relationTableKey, `There was an error verifying data schema (missing a source group name: ${JSON.stringify(relation)}).`);
 	          CodeHelper.assertOfPresent(relation.sourceEntity, relationTableKey, `There was an error verifying data schema (missing a source entity name: ${JSON.stringify(relation)}).`);
 	          CodeHelper.assertOfPresent(relation.targetGroup, relationTableKey, `There was an error verifying data schema (missing a target group name: ${JSON.stringify(relation)}).`);
