@@ -805,8 +805,8 @@ const DatabaseHelper = {
 		    	dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
 		    } else {
 		    	const value = (typeof row.keys[key] === 'object' && row.keys[key] != null && row.keys[key].constructor.name === 'ObjectID') ? row.keys[key].toString() : row.keys[key];
-		    	queryKeys[key] = row.keys[key];
-		    	dataKeys[key] = row.keys[key];
+		    	queryKeys[key] = value;
+		    	dataKeys[key] = value;
 		    }
 		  }
 		}
@@ -1153,7 +1153,8 @@ const DatabaseHelper = {
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, dataColumns, dataKeys)));
-								records[0] = Object.assign({}, dataColumns, dataKeys);
+								const record = await VolatileMemoryClient.get(_key);
+								records = record && [JSON.parse(record)] || [];
 							}
 							
 							for (const record of records) {
@@ -1220,7 +1221,7 @@ const DatabaseHelper = {
 							  		}
 							  		
 							  		result.relations[nextSchema.group] = {
-				  					  source: SourceType.Relational,
+				  					  source: nextSchema.source,
 											group: nextSchema.group,
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
@@ -1331,7 +1332,7 @@ const DatabaseHelper = {
 								
 								records.push(Object.assign({}, dataColumns, dataKeys));
 							}
-							await map.bulkCreate(records, {updateOnDuplicate: Object.keys(schema.columns).filter(key => !schema.columns[key].unique), transaction: transaction.relationalDatabaseTransaction});
+							await map.bulkCreate(records, {updateOnDuplicate: [...Object.keys(schema.columns).filter(key => !schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction});
 							bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 							
 							input.rows = input.rows.splice(0, bulkResults.length); // Please make sure these won't be used except loop counting.
@@ -1440,7 +1441,7 @@ const DatabaseHelper = {
 							  		}
 							  		
 							  		result.relations[nextSchema.group] = {
-				  					  source: SourceType.Relational,
+				  					  source: nextSchema.source,
 											group: nextSchema.group,
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
@@ -1642,7 +1643,7 @@ const DatabaseHelper = {
 							  		}
 							  		
 							  		result.relations[nextSchema.group] = {
-				  					  source: SourceType.Relational,
+				  					  source: nextSchema.source,
 											group: nextSchema.group,
 										  rows: [],
 							  			notification: (row.relations[key].notify !== undefined) ? NotificationHelper.getTableUpdatingIdentity(nextSchema, _nextKeys, session, innerCircleTags) : undefined
@@ -1889,7 +1890,7 @@ const DatabaseHelper = {
 							if (!results.relations || !results.relations[schema.group] || results.relations[schema.group].forwarded !== true) {
 								let records;
 								if (input.source == SourceType.Relational) {
-									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
+									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys), transaction: connectionInfos.relationalDatabaseTransaction}) || [];
 								} else if (input.source == SourceType.Document) {
 									if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
 									records = await new Promise(async (resolve, reject) => {
@@ -2116,7 +2117,7 @@ const DatabaseHelper = {
 								records.push(Object.assign({}, queryColumns, queryKeys));
 							}
 							bulkResults = await map.findAll({where: {[Op.or]: records}, transaction: transaction.relationalDatabaseTransaction});
-							await map.destroy({where: {[Op.or]: records}}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+							await map.destroy({where: {[Op.or]: records}, force: true, transaction: transaction.relationalDatabaseTransaction});
 						}
 						
 						for (const row of input.rows) {
@@ -2132,8 +2133,8 @@ const DatabaseHelper = {
 		  				  if (input.rows.length > 1 && allowBulkProcess) {
 									records = bulkResults;
 								} else {
-									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys)}) || [];
-		  				  	await map.destroy({where: Object.assign({}, queryColumns, queryKeys)}, {force: true, transaction: transaction.relationalDatabaseTransaction});
+									records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys), transaction: transaction.relationalDatabaseTransaction}) || [];
+		  				  	await map.destroy({where: Object.assign({}, queryColumns, queryKeys), force: true, transaction: transaction.relationalDatabaseTransaction});
 								}
 							} else if (input.source == SourceType.Document) {
 								records = await new Promise(async (resolve, reject) => {
@@ -2226,7 +2227,7 @@ const DatabaseHelper = {
 							  		}
 							  		
 							  		result.relations[nextSchema.group] = result.relations[nextSchema.group] || {
-				  					  source: SourceType.Relational,
+				  					  source: nextSchema.source,
 											group: nextSchema.group,
 										  rows: []
 									  };
