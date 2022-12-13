@@ -18,6 +18,7 @@ describe('DatabaseHelper', () => {
 		return Md5.init(seed.toString()).substring(0, 6);
 	};
 	
+	// Testing relations
 	// **************************************************************************
 	// [primary-int01]     [primary-int03]     [primary-str10] ----> ref  check
 	// [column -bol02]     [primary-bol02]     [column -int03] ----> ref  check
@@ -26,6 +27,7 @@ describe('DatabaseHelper', () => {
 	// [column -dat05]     [column -dat08]     [column -dat12] ----> diff check
 	// [column -int06]     [column -int09]     [column -flt13] ----> diff check
 	// **************************************************************************
+	
 	const primaryDict = {
 		'int01': 0,
 		'int03': 1,
@@ -86,6 +88,23 @@ describe('DatabaseHelper', () => {
 		return data;
 	};
 	
+	// Expanding rowOrder
+	// **************************************************************************
+	// 2 * 2 * 3  =  12
+	// 
+	// 0 x 0 x 0 --> 0 x 0 x 0
+	// 0 x 0 x 1 --> 0 x 0 x 1
+	// 0 x 0 x 2 --> 0 x 0 x 2
+	// 0 x 1 x 0 --> 0 x 1 x 3
+	// 0 x 1 x 1 --> 0 x 1 x 4
+	// 0 x 1 x 2 --> 0 x 1 x 5
+	// 1 x 0 x 0 --> 1 x 2 x 0
+	// 1 x 0 x 1 --> 1 x 2 x 1
+	// 1 x 0 x 2 --> 1 x 2 x 2
+	// 1 x 1 x 0 --> 1 x 3 x 3
+	// 1 x 1 x 1 --> 1 x 3 x 4
+	// 1 x 1 x 2 --> 1 x 3 x 5
+	// **************************************************************************
 	const createRows = (type: SourceType, crossingOrder: number, numberOfRows: number, updatingRound: number=1, originate: any=null) => {
 		let results = originate;
 		if (originate == null) {
@@ -118,7 +137,7 @@ describe('DatabaseHelper', () => {
 					  relations: {}
 					};
 					
-					const data = createData(crossingOrder, (i + 1) * numberOfRows + j, updatingRound);
+					const data = createData(crossingOrder, i * numberOfRows + j, updatingRound);
 					
 					for (const _key in data) {
 						if (crossDict[_key].indexOf(crossingOrder) != -1) {
@@ -200,9 +219,10 @@ describe('DatabaseHelper', () => {
 			expect(createRows(SourceType.Relational, 0, 5)['Relational0'].rows.length).toEqual(5);
 			expect(createRows(SourceType.Document, 1, 3)['Document1'].rows.length).toEqual(3);
 			
-			expect(createRows(SourceType.Document, 1, 3)['Document1'].rows[1].columns['int01']).toEqual(createData(1, 1 * 3 + 1)['int01']);
+			expect(createRows(SourceType.Document, 1, 3)['Document1'].rows[1].columns['int01']).toEqual(createData(1, 1)['int01']);
 			expect(createRows(SourceType.Relational, 1, 10, 1, createRows(SourceType.Document, 0, 2))['Document0'].rows[1].relations['Relational1'].rows.length).toEqual(10);
-			expect(createRows(SourceType.Relational, 1, 10, 1, createRows(SourceType.Document, 0, 2))['Document0'].rows[1].relations['Relational1'].rows[5].columns['dat08']).toEqual(createData(1, 2 * 10 + 5)['dat08']);
+			expect(createRows(SourceType.Relational, 1, 10, 1, createRows(SourceType.Document, 0, 2))['Document0'].rows[1].relations['Relational1'].rows[5].columns['dat08']).toEqual(createData(1, 1 * 10 + 5)['dat08']);
+			expect(createRows(SourceType.Relational, 1, 5, 1, createRows(SourceType.Document, 0, 10))['Document0'].rows[5].relations['Relational1'].rows[4].columns['dat08']).toEqual(createData(1, 5 * 5 + 4)['dat08']);
 		});
 	});
 	describe('Utilities', () => {
