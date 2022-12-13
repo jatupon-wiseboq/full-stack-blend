@@ -1,6 +1,6 @@
 describe('ConnectionHelper', () => {
-	describe('Group', () => {
-		test('Test', () => {
+	describe('Connection Abilities', () => {
+		test('Transaction', () => {
 			expect(1+2).toEqual(3);
 		});
 	});

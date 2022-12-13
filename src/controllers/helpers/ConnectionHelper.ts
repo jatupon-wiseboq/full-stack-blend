@@ -68,12 +68,7 @@ if (process.env.RELATIONAL_DATABASE_KEY) {
 	};
 	RelationalDatabaseClient = new Pool(dbconfig);
 	RelationalDatabaseORMClient = new Sequelize(process.env[process.env.RELATIONAL_DATABASE_KEY], {
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false
-      }
-    }
+    dialectOptions: {}
   });
 }
 if (process.env.DOCUMENT_DATABASE_KEY) {

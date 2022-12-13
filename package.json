@@ -56,7 +56,6 @@
     "express-validator": "^6.2.0",
     "fbgraph": "^1.4.4",
     "geoip-lite": "^1.4.6",
-    "jest": "^26.1.0",
     "kill-port": "^1.6.1",
     "lodash": "^4.17.21",
     "lusca": "^1.6.1",
