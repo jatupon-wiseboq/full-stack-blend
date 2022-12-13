@@ -105,7 +105,7 @@ describe('DatabaseHelper', () => {
 	// 1 x 1 x 1 --> 1 x 3 x 4
 	// 1 x 1 x 2 --> 1 x 3 x 5
 	// **************************************************************************
-	const createRows = (type: SourceType, crossingOrder: number, numberOfRows: number, updatingRound: number=1, originate: any=null) => {
+	const createRows = (type: SourceType, crossingOrder: number, numberOfRows: number, updatingRound: number=1, originate: any=null, hasOnlyKeys: boolean=false, hasOnlyFirstColumn: boolean=false) => {
 		let results = originate;
 		if (originate == null) {
 			results = {};
@@ -138,13 +138,15 @@ describe('DatabaseHelper', () => {
 					};
 					
 					const data = createData(crossingOrder, i * numberOfRows + j, updatingRound);
+					let addedColumnTotal = 0;
 					
 					for (const _key in data) {
 						if (crossDict[_key].indexOf(crossingOrder) != -1) {
 							if (primaryDict[_key] == crossingOrder) {
 								table.rows[j].keys[_key] = data[_key];
-							} else {
+							} else if (!hasOnlyKeys && (!hasOnlyFirstColumn || addedColumnTotal == 0)) {
 								table.rows[j].columns[_key] = data[_key];
+								addedColumnTotal++;
 							}
 						}
 					}
@@ -223,6 +225,9 @@ describe('DatabaseHelper', () => {
 			expect(createRows(SourceType.Relational, 1, 10, 1, createRows(SourceType.Document, 0, 2))['Document0'].rows[1].relations['Relational1'].rows.length).toEqual(10);
 			expect(createRows(SourceType.Relational, 1, 10, 1, createRows(SourceType.Document, 0, 2))['Document0'].rows[1].relations['Relational1'].rows[5].columns['dat08']).toEqual(createData(1, 1 * 10 + 5)['dat08']);
 			expect(createRows(SourceType.Relational, 1, 5, 1, createRows(SourceType.Document, 0, 10))['Document0'].rows[5].relations['Relational1'].rows[4].columns['dat08']).toEqual(createData(1, 5 * 5 + 4)['dat08']);
+			expect(createRows(SourceType.Relational, 1, 5, 1, createRows(SourceType.Document, 0, 10))['Document0'].rows[5].relations['Relational1'].rows[4].keys['int03']).toEqual(createData(1, 5 * 5 + 4)['int03']);
+			expect(createRows(SourceType.Relational, 1, 5, 1, createRows(SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['Relational1'].rows[4].columns['int01']).toEqual(undefined);
+			expect(createRows(SourceType.Relational, 1, 5, 1, createRows(SourceType.Document, 0, 10), false, true)['Document0'].rows[5].relations['Relational1'].rows[4].columns['int01']).toEqual(createData(1, 5 * 5 + 4)['int01']);
 		});
 	});
 	describe('Utilities', () => {
@@ -246,7 +251,15 @@ describe('DatabaseHelper', () => {
 		describe('Satisfy', () => {
 			describe('Relational', () => {
 				test('Relational', () => {
-					expect(1+2).toEqual(3);
+					// Create --> Retrieve
+					
+					// Update --> Retrieve
+					
+					// Upsert --> Retrieve
+					
+					// Delete --> Retrieve
+					
+					// Upsert --> Retrieve
 				});
 				test('Relational x Relational', () => {
 					expect(1+2).toEqual(3);
@@ -356,10 +369,26 @@ describe('DatabaseHelper', () => {
 		describe('Relational', () => {
 			describe('Relational', () => {
 				test('Single', () => {
-					expect(1+2).toEqual(3);
+					// Create --> Retrieve
+					
+					// Update --> Retrieve
+					
+					// Upsert --> Retrieve
+					
+					// Delete --> Retrieve
+					
+					// Upsert --> Retrieve
 				});
 				test('Multiple', () => {
-					expect(1+2).toEqual(3);
+					// Create --> Retrieve
+					
+					// Update --> Retrieve
+					
+					// Upsert --> Retrieve
+					
+					// Delete --> Retrieve
+					
+					// Upsert --> Retrieve
 				});
 			});
 			describe('Relational x Relational', () => {
