@@ -119,23 +119,19 @@ const CreateTransaction = async (options) => {
 	if (DocumentDatabaseClient) {
 		documentDatabaseConnection = await DocumentDatabaseClient.connect(options.share || options.share === undefined);
 		if (!options.manual) {
-			try {
-				documentDatabaseSession = await DocumentDatabaseClient.startSession({
-					retryWrites: true,
-					causalConsistency: true
-				});
-				await documentDatabaseSession.startTransaction({
-					readPreference: 'primary',
-					readConcern: {
-						level: 'local'
-					},
-					writeConcern: {
-						w: 'majority'
-					}
-		    });
-		 	} catch {
-		 		documentDatabaseSession = null;
-		 	}
+			documentDatabaseSession = await DocumentDatabaseClient.startSession({
+				retryWrites: true,
+				causalConsistency: true
+			});
+			await documentDatabaseSession.startTransaction({
+				readPreference: 'primary',
+				readConcern: {
+					level: 'local'
+				},
+				writeConcern: {
+					w: 'majority'
+				}
+	    });
 	 	}
 	}
 	

@@ -1894,7 +1894,7 @@ const DatabaseHelper = {
 								} else if (input.source == SourceType.Document) {
 									if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
 									records = await new Promise(async (resolve, reject) => {
-										await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys)).toArray((error: any, results: any) => {
+										await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), {session: connectionInfos['documentDatabaseSession']}).toArray((error: any, results: any) => {
 											if (error) {
 												reject(error);
 											} else {
