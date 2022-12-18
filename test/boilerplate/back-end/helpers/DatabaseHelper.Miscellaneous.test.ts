@@ -1,4 +1,4 @@
-import {createData, createRows, SourceType, createUniqueNumber, createUniqueString, primaryDict} from "./DatabaseHelper.TestUtilities";
+import {createData, createRows, SourceType, createUniqueNumber, createUniqueString, primaryDict, next, prepareDataForComparing} from "./DatabaseHelper.TestUtilities";
 import flushPromises from "flush-promises";
 
 describe('DatabaseHelper', () => {
@@ -54,33 +54,85 @@ describe('DatabaseHelper', () => {
 			}
 		});
 		test('createRows', () => {
-			expect(createRows(1, SourceType.Relational, 0, 2)).toEqual(createRows(1, SourceType.Relational, 0, 2));
-			expect(createRows(2, SourceType.Relational, 1, 2)).toEqual(createRows(2, SourceType.Relational, 1, 2));
-			expect(createRows(1, SourceType.Relational, 1, 2)).not.toEqual(createRows(2, SourceType.Relational, 1, 2));
-			expect(createRows(1, SourceType.Relational, 0, 2)).not.toEqual(createRows(1, SourceType.Relational, 1, 2));
-			expect(createRows(1, SourceType.Relational, 0, 2)).not.toEqual(createRows(1, SourceType.Document, 0, 2));
+			expect(createRows(1, SourceType.Relational, 0, 2)).toEqual(createRows(1, SourceType.Relational, 0, 2)); // always same
+			expect(createRows(2, SourceType.Relational, 1, 2)).toEqual(createRows(2, SourceType.Relational, 1, 2)); // always same
 			
-			expect(createRows(1, SourceType.Relational, 0, 5)['relational0'].rows.length).toEqual(5);
-			expect(createRows(1, SourceType.Document, 1, 3)['Document1'].rows.length).toEqual(3);
+			next();
 			
-			expect(createRows(1, SourceType.Document, 1, 3)['Document1'].rows[1].columns['int01']).toEqual(createData(1, 1, 1)['int01']);
-			expect(createRows(1, SourceType.Relational, 1, 10, 1, createRows(1, SourceType.Document, 0, 2))['Document0'].rows[1].relations['relational1'].rows.length).toEqual(10);
-			expect(createRows(1, SourceType.Relational, 1, 10, 1, createRows(1, SourceType.Document, 0, 2))['Document0'].rows[1].relations['relational1'].rows[5].columns['dat08']).toEqual(createData(1, 1, 1 * 10 + 5)['dat08']);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['relational1'].rows[4].columns['dat08']).toEqual(createData(1, 1, 5 * 5 + 4)['dat08']);
+			expect(createRows(1, SourceType.Relational, 0, 2)).toEqual(createRows(1, SourceType.Relational, 0, 2)); // next round always same
+			expect(createRows(2, SourceType.Relational, 1, 2)).toEqual(createRows(2, SourceType.Relational, 1, 2)); // next round always same
 			
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined)['relational1'].rows[4].columns['int01']).toEqual(createData(1, 1, 4)['int01']);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined, true)['relational1'].rows[4].columns['int01']).toEqual(undefined);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined, true)['relational1'].rows[4].columns['grp01']).toEqual(createData(1, 1, 4)['grp01']);
+			const previous1 = createRows(1, SourceType.Relational, 0, 2);
+			const previous2 = createRows(2, SourceType.Relational, 1, 2);
 			
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['relational1'].rows[4].keys['int03']).toEqual(createData(1, 1, 5 * 5 + 4)['int03']);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].keys['int03']).toEqual(undefined);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].columns['int01']).toEqual(undefined);
-			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].columns['grp01']).toEqual(createData(1, 1, 5 * 5 + 4)['grp01']);
+			next();
 			
-			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['Document1'].rows[4].columns['dat08']).not.toEqual('string');
-			expect(typeof createRows(1, SourceType.VolatileMemory, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['VolatileMemory1'].rows[4].columns['dat08']).toEqual('string');
-			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].columns['dat05']).not.toEqual('string');
-			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.VolatileMemory, 0, 10))['VolatileMemory0'].rows[5].columns['dat05']).toEqual('string');
+			expect(previous1).not.toEqual(createRows(1, SourceType.Relational, 0, 2)); // next round != previous
+			expect(previous2).not.toEqual(createRows(2, SourceType.Relational, 1, 2)); // next round != previous
+			
+			expect(createRows(1, SourceType.Relational, 1, 2)).not.toEqual(createRows(2, SourceType.Relational, 1, 2)); // different set
+			expect(createRows(1, SourceType.Relational, 0, 2)).not.toEqual(createRows(1, SourceType.Relational, 1, 2)); // same set, different configure
+			expect(createRows(1, SourceType.Relational, 0, 2)).not.toEqual(createRows(1, SourceType.Document, 0, 2)); // same set, same configure, different table
+			
+			expect(createRows(1, SourceType.Relational, 0, 5)['relational0'].rows.length).toEqual(5); // length of rows
+			expect(createRows(1, SourceType.Document, 1, 3)['Document1'].rows.length).toEqual(3); // length of rows
+			expect(createRows(1, SourceType.Document, 1, 3)['Document1'].rows[1].columns['int01']).toEqual(createData(1, 1, 1)['int01']); // value of columns
+			expect(createRows(1, SourceType.Document, 1, 3)['Document1'].rows[1].columns['str07']).toEqual(createData(1, 1, 1)['str07']); // value of columns
+			
+			expect(createRows(1, SourceType.Relational, 1, 10, 1, createRows(1, SourceType.Document, 0, 2))['Document0'].rows[1].relations['relational1'].rows.length).toEqual(10); // length of rows with one-cross relation
+			expect(createRows(1, SourceType.Relational, 1, 10, 1, createRows(1, SourceType.Document, 0, 2))['Document0'].rows[1].relations['relational1'].rows[5].columns['dat08']).toEqual(createData(1, 1, 1 * 10 + 5)['dat08']); // value of columns with one-cross relation
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['relational1'].rows[4].columns['dat08']).toEqual(createData(1, 1, 5 * 5 + 4)['dat08']); // value of columns with one-cross relation
+			
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined)['relational1'].rows[4].columns['int01']).toEqual(createData(1, 1, 4)['int01']); // default configure (control)
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined, true)['relational1'].rows[4].columns['int01']).toEqual(undefined); // grp only configure
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, undefined, true)['relational1'].rows[4].columns['grp01']).toEqual(createData(1, 1, 4)['grp01']); // grp only configure's value
+			
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['relational1'].rows[4].keys['int03']).toEqual(createData(1, 1, 5 * 5 + 4)['int03']); // default configure with one-cross relation
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].keys['int03']).toEqual(undefined); // default configure with one-cross relation
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].columns['int01']).toEqual(undefined); // grp only configure with one-cross relation
+			expect(createRows(1, SourceType.Relational, 1, 5, 1, createRows(1, SourceType.Document, 0, 10), true)['Document0'].rows[5].relations['relational1'].rows[4].columns['grp01']).toEqual(createData(1, 1, 5 * 5 + 4)['grp01']); // grp only configure with one-cross relation
+			
+			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['Document1'].rows[4].columns['dat08']).not.toEqual('string'); // default configure with one-cross relation (control)
+			expect(typeof createRows(1, SourceType.VolatileMemory, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].relations['VolatileMemory1'].rows[4].columns['dat08']).toEqual('string'); // date in string with one-cross relation
+			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.Document, 0, 10))['Document0'].rows[5].columns['dat05']).not.toEqual('string'); // default configure with one-cross relation (control)
+			expect(typeof createRows(1, SourceType.Document, 1, 5, 1, createRows(1, SourceType.VolatileMemory, 0, 10))['VolatileMemory0'].rows[5].columns['dat05']).toEqual('string'); // date in string with one-cross relation
+		});
+		test('prepareDataForComparing', () => {
+			expect(prepareDataForComparing(createRows(1, SourceType.Relational, 0, 2))).toEqual(createRows(1, SourceType.Relational, 0, 2)); // always same
+			expect(prepareDataForComparing(createRows(2, SourceType.Relational, 1, 2))).toEqual(createRows(2, SourceType.Relational, 1, 2)); // always same
+			
+			let reordering = createRows(2, SourceType.Relational, 1, 2);
+			reordering['relational1'].rows.reverse();
+			
+			expect(reordering).not.toEqual(createRows(2, SourceType.Relational, 1, 2)); // no prepare
+			expect(prepareDataForComparing(reordering)).toEqual(createRows(2, SourceType.Relational, 1, 2)); // prepare and same
+			
+			reordering = createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5));
+			
+			for (let i=0; i<16; i++) {
+				reordering['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+				reordering['Document1'].rows.forEach((row) => {
+					row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+				});
+				
+				expect(reordering).not.toEqual(createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5))); // no prepare
+				expect(prepareDataForComparing(reordering)).toEqual(createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5))); // prepare and same
+			}
+			
+			reordering = createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5, 2, createRows(2, SourceType.Document, 0, 20)));
+			
+			for (let i=0; i<16; i++) {
+				reordering['Document0'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+				reordering['Document0'].rows.forEach((row) => {
+					row.relations['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+					row.relations['Document1'].rows.forEach((row) => {
+						row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+					});
+				});
+				
+				expect(reordering).not.toEqual(createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5, 2, createRows(2, SourceType.Document, 0, 20)))); // no prepare
+				expect(prepareDataForComparing(reordering)).toEqual(createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5, 2, createRows(2, SourceType.Document, 0, 20)))); // prepare and same
+			}
 		});
 	});
 	describe('Utilities', () => {

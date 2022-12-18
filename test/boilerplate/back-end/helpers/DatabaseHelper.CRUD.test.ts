@@ -107,7 +107,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.VolatileMemory]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						// Create --> Retrieve
 						await crud(
@@ -205,7 +204,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						const control0 = createRows(2, type, 0, 1, 1, undefined, true);
 						
@@ -307,7 +305,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(3, type, 1, 1, 1, createRows(3, type, 0, 1, 1, undefined, true), true);
 						let control00 = createRows(3, type, 0, 1, 1, undefined, true);
@@ -457,7 +454,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.VolatileMemory]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						// Create --> Retrieve
 						await crud(
@@ -591,7 +587,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(4, type, 1, 1, 1, createRows(4, type, 0, 1, 1, undefined, true), true);
 						let control00 = createRows(4, type, 0, 1, 1, undefined, true);
@@ -734,7 +729,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(5, type, 2, 1, 1, createRows(5, type, 1, 1, 1, createRows(5, type, 0, 1, 1, undefined, true), true), true);
 						let control00 = createRows(5, type, 0, 1, 1, undefined, true);
@@ -897,7 +891,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.VolatileMemory]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						// Create --> Retrieve
 						await crud(
@@ -1042,7 +1035,6 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(6, type, 2, 1, 1, createRows(6, type, 1, 1, 1, createRows(6, type, 0, 1, 1, undefined, true), true), true);
 						let control00 = createRows(6, type, 0, 1, 1, undefined, true);
@@ -1211,7 +1203,6 @@ describe('DatabaseHelper', () => {
 				
 					test(`${tableMap[type1]} x ${tableMap[type2]}`, async () => {
 						await flushPromises();
-						next();
 							
 						let control0 = createRows(7, type2, 1, 1, 1, createRows(7, type1, 0, 1, 1, undefined, true), true);
 						let control00 = createRows(7, type1, 0, 1, 1, undefined, true);
@@ -1342,7 +1333,6 @@ describe('DatabaseHelper', () => {
 				
 					test(`${tableMap[type1]} x ${tableMap[type2]}`, async () => {
 						await flushPromises();
-						next();
 						
 						// Create --> Retrieve
 						await crud(
@@ -1446,7 +1436,6 @@ describe('DatabaseHelper', () => {
 				
 					test(`${tableMap[type1]} x ${tableMap[type2]}`, async () => {
 						await flushPromises();
-						next();
 							
 						let control0 = createRows(8, type2, 1, 1, 1, createRows(8, type1, 0, 1, 1, undefined, true), true);
 						let control00 = createRows(8, type1, 0, 1, 1, undefined, true);
@@ -1570,7 +1559,6 @@ describe('DatabaseHelper', () => {
 					
 					test(`${tableMap[type1]} x ${tableMap[type2]} x ${tableMap[type3]}`, async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(9, type3, 2, 1, 1, createRows(9, type2, 1, 1, 1, createRows(9, type1, 0, 1, 1, undefined, true), true), true);
 						let control00 = createRows(9, type1, 0, 1, 1, undefined, true);
@@ -1727,7 +1715,6 @@ describe('DatabaseHelper', () => {
 					
 					test(`${tableMap[type1]} x ${tableMap[type2]} x ${tableMap[type3]}`, async () => {
 						await flushPromises();
-						next();
 						
 						// Create --> Retrieve
 						await crud(
