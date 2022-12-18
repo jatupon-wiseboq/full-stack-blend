@@ -315,6 +315,16 @@ describe('DatabaseHelper', () => {
 								null,
 								null
 							);
+							const partial = createRows(21, type, 0, 10, 9);
+							partial[tableMap[type] + '0'].rows = partial[tableMap[type] + '0'].rows.splice(3, 3);
+							await crud(
+								21,
+								CRUD.Retrieve,
+								partial,
+								partial,
+								null,
+								null
+							);
 						});
 					}
 				});
@@ -962,11 +972,16 @@ describe('DatabaseHelper', () => {
 							null,
 							null
 						);
+						const partial = createRows(41, type, 1, 15, 9, createRows(41, type, 0, 20, 9));
+						partial[tableMap[type] + '0'].rows = partial[tableMap[type] + '0'].rows.splice(5, 10);
+						partial[tableMap[type] + '0'].rows.forEach(data => {
+							data.relations[tableMap[type] + '1'].rows = data.relations[tableMap[type] + '1'].rows.splice(5, 5);
+						});
 						await crud(
 							41,
 							CRUD.Retrieve,
-							createRows(41, type, 0, 20, 9),
-							createRows(41, type, 0, 20, 9),
+							partial,
+							partial,
 							null,
 							null
 						);
@@ -1454,10 +1469,26 @@ describe('DatabaseHelper', () => {
 							null
 						);
 						await crud(
-							41,
+							61,
 							CRUD.Retrieve,
 							createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23)),
 							createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23)),
+							null,
+							null
+						);
+						const partial = createRows(61, type, 2, 10, 23, createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23)));
+						partial[tableMap[type] + '0'].rows = partial[tableMap[type] + '0'].rows.splice(2, 2);
+						partial[tableMap[type] + '0'].rows.forEach(data => {
+							data.relations[tableMap[type] + '1'].rows = data.relations[tableMap[type] + '1'].rows.splice(2, 3);
+							data.relations[tableMap[type] + '1'].rows.forEach(data => {
+								data.relations[tableMap[type] + '2'].rows = data.relations[tableMap[type] + '2'].rows.splice(5, 4);
+							});
+						});
+						await crud(
+							61,
+							CRUD.Retrieve,
+							partial,
+							partial,
 							null,
 							null
 						);
