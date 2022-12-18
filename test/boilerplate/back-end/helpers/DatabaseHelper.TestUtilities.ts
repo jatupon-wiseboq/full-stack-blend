@@ -200,8 +200,8 @@ const createRows = (set: number, type: SourceType, crossingOrder: number, number
 const prepareDataForComparing = (data: any) => {
 	if (Array.isArray(data)) {
 		data = data.sort((row1, row2) => {
-			if (row1.columns['int06']) return (row1.columns['int06'] > row2.columns['int06']) ? 1 : -1;
-			else if (row1.columns['dat08']) return (row1.columns['dat08'] > row2.columns['dat08']) ? 1 : -1;
+			if (row1.columns['dat08']) return (row1.columns['dat08'] > row2.columns['dat08']) ? 1 : -1;
+			else if (row1.columns['int06']) return (row1.columns['int06'] > row2.columns['int06']) ? 1 : -1;
 			else if (row1.columns['flt13']) return (row1.columns['flt13'] > row2.columns['flt13']) ? 1 : -1;
 			else return 0;
 		});
