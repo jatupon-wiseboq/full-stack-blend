@@ -962,6 +962,14 @@ describe('DatabaseHelper', () => {
 							null,
 							null
 						);
+						await crud(
+							41,
+							CRUD.Retrieve,
+							createRows(41, type, 0, 20, 9),
+							createRows(41, type, 0, 20, 9),
+							null,
+							null
+						);
 					});
 				}
 			});
@@ -1442,6 +1450,14 @@ describe('DatabaseHelper', () => {
 							CRUD.Retrieve,
 							createRows(61, type, 0, 3, 23),
 							createRows(61, type, 0, 3, 23),
+							null,
+							null
+						);
+						await crud(
+							41,
+							CRUD.Retrieve,
+							createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23)),
+							createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23)),
 							null,
 							null
 						);
