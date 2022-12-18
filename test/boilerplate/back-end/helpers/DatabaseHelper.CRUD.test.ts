@@ -277,7 +277,7 @@ describe('DatabaseHelper', () => {
 								[]
 							);
 							
-							// Upsert --> Retrieve
+							// Exclusive Upsert --> Retrieve
 							await crud(
 								2,
 								CRUD.Upsert,
@@ -287,7 +287,7 @@ describe('DatabaseHelper', () => {
 								createRows(2, type, 0, 15, 10)
 							);
 							
-							// Delete --> Retrieve
+							// Exclusive Delete --> Retrieve
 							await crud(
 								2,
 								CRUD.Delete,
@@ -295,6 +295,25 @@ describe('DatabaseHelper', () => {
 								createRows(2, type, 0, 15, 10),
 								control0,
 								[]
+							);
+							
+							// Mutually Exclusive Retrieve
+							// 
+							await crud(
+								21,
+								CRUD.Create,
+								createRows(21, type, 0, 10, 9),
+								createRows(21, type, 0, 10, 9),
+								createRows(21, type, 0, 1, 9),
+								createRows(21, type, 0, 1, 9)
+							);
+							await crud(
+								21,
+								CRUD.Retrieve,
+								createRows(21, type, 0, 3, 9),
+								createRows(21, type, 0, 3, 9),
+								null,
+								null
 							);
 						});
 					}
@@ -479,7 +498,7 @@ describe('DatabaseHelper', () => {
 								[]
 							);
 							
-							// Upsert --> Retrieve
+							// Exclusive Upsert --> Retrieve
 							await crud(
 								2,
 								CRUD.Upsert,
@@ -489,7 +508,7 @@ describe('DatabaseHelper', () => {
 								createRows(2, type, 0, 15, 10)
 							);
 							
-							// Delete --> Retrieve
+							// Exclusive Delete --> Retrieve
 							await crud(
 								2,
 								CRUD.Delete,
@@ -893,7 +912,7 @@ describe('DatabaseHelper', () => {
 							[]
 						);
 						
-						// Upsert --> Retrieve
+						// Exclusive Upsert --> Retrieve
 						control0 = createRows(40, type, 1, 1, 1, createRows(40, type, 0, 1, 1, undefined, true), true);
 						control00 = createRows(40, type, 0, 1, 1, undefined, true);
 						control01 = createRows(40, type, 1, 1, 1, undefined, true);
@@ -907,7 +926,7 @@ describe('DatabaseHelper', () => {
 							createRows(40, type, 1, 15, 10, createRows(40, type, 0, 10, 10))
 						);
 						
-						// Delete --> Retrieve
+						// Exclusive Delete --> Retrieve
 						await crud(
 							40,
 							CRUD.Delete,
@@ -921,6 +940,25 @@ describe('DatabaseHelper', () => {
 							CRUD.Retrieve,
 							control01,
 							[],
+							null,
+							null
+						);
+							
+						// Mutually Exclusive Retrieve
+						// 
+						await crud(
+							41,
+							CRUD.Create,
+							createRows(41, type, 1, 15, 9, createRows(41, type, 0, 20, 9)),
+							createRows(41, type, 1, 15, 9, createRows(41, type, 0, 20, 9)),
+							createRows(41, type, 1, 1, 9, createRows(41, type, 0, 1, 9)),
+							createRows(41, type, 1, 1, 9, createRows(41, type, 0, 1, 9)),
+						);
+						await crud(
+							41,
+							CRUD.Retrieve,
+							createRows(41, type, 0, 10, 9),
+							createRows(41, type, 0, 10, 9),
 							null,
 							null
 						);
@@ -1348,7 +1386,7 @@ describe('DatabaseHelper', () => {
 							null
 						);
 						
-						// Upsert --> Retrieve
+						// Exclusive Upsert --> Retrieve
 						control0 = createRows(60, type, 2, 1, 1, createRows(60, type, 1, 1, 1, createRows(60, type, 0, 1, 1, undefined, true), true), true);
 						control00 = createRows(60, type, 0, 1, 1, undefined, true);
 						control01 = createRows(60, type, 1, 1, 1, undefined, true);
@@ -1363,7 +1401,7 @@ describe('DatabaseHelper', () => {
 							createRows(60, type, 2, 10, 24, createRows(60, type, 1, 15, 24, createRows(60, type, 0, 20, 24)))
 						);
 						
-						// Delete --> Retrieve
+						// Exclusive Delete --> Retrieve
 						await crud(
 							60,
 							CRUD.Delete,
@@ -1385,6 +1423,25 @@ describe('DatabaseHelper', () => {
 							CRUD.Retrieve,
 							control02,
 							[],
+							null,
+							null
+						);
+							
+						// Mutually Exclusive Retrieve
+						// 
+						await crud(
+							61,
+							CRUD.Create,
+							createRows(61, type, 2, 10, 23, createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23))),
+							createRows(61, type, 2, 10, 23, createRows(61, type, 1, 7, 23, createRows(61, type, 0, 5, 23))),
+							createRows(61, type, 2, 1, 23, createRows(61, type, 1, 1, 23, createRows(61, type, 0, 1, 23))),
+							createRows(61, type, 2, 1, 23, createRows(61, type, 1, 1, 23, createRows(61, type, 0, 1, 23)))
+						);
+						await crud(
+							61,
+							CRUD.Retrieve,
+							createRows(61, type, 0, 3, 23),
+							createRows(61, type, 0, 3, 23),
 							null,
 							null
 						);
@@ -1712,7 +1769,7 @@ describe('DatabaseHelper', () => {
 							null	
 						);
 						
-						// Upsert --> Retrieve
+						// Exclusive Upsert --> Retrieve
 						control0 = createRows(80, type2, 1, 1, 1, createRows(80, type1, 0, 1, 1, undefined, true), true);
 						control00 = createRows(80, type1, 0, 1, 1, undefined, true);
 						control01 = createRows(80, type2, 1, 1, 1, undefined, true);
@@ -1726,7 +1783,7 @@ describe('DatabaseHelper', () => {
 							createRows(80, type2, 1, 15, 10, createRows(80, type1, 0, 10, 10))
 						);
 						
-						// Delete --> Retrieve
+						// Exclusive Delete --> Retrieve
 						await crud(
 							80,
 							CRUD.Delete,
@@ -2109,7 +2166,7 @@ describe('DatabaseHelper', () => {
 							null
 						);
 						
-						// Upsert --> Retrieve
+						// Exclusive Upsert --> Retrieve
 						control0 = createRows(100, type3, 2, 1, 1, createRows(100, type2, 1, 1, 1, createRows(100, type1, 0, 1, 1, undefined, true), true), true);
 						control00 = createRows(100, type1, 0, 1, 1, undefined, true);
 						control01 = createRows(100, type2, 1, 1, 1, undefined, true);
@@ -2124,7 +2181,7 @@ describe('DatabaseHelper', () => {
 							createRows(100, type3, 2, 5, 5, createRows(100, type2, 1, 7, 5, createRows(100, type1, 0, 5, 5)))
 						);
 						
-						// Delete --> Retrieve
+						// Exclusive Delete --> Retrieve
 						await crud(
 							100,
 							CRUD.Delete,
