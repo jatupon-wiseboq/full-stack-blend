@@ -1973,7 +1973,7 @@ const DatabaseHelper = {
 							results[schema.group] = {
 							  source: schema.source,
 							  group: schema.group,
-							  rows: rows,
+							  rows: [...(results[schema.group] && results[schema.group].rows || []), ...rows],
 							  notification: (notifyUpdates) ? notificationURI : null
 							};
 							
