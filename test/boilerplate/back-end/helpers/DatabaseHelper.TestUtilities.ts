@@ -21,7 +21,7 @@ const createUniqueString = (seed: number=unique) => {
 	return Md5.init(seed.toString()).substring(0, 6);
 };
 const next = () => {
-	// unique++;
+	unique++;
 };
 
 // Testing relations
