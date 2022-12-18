@@ -316,5 +316,8 @@ const crud = async (set: number, type: CRUD, operation_input: any, operation_out
 		throw error;
 	}
 };
+const establishTransaction = async (enable: boolean) => {
+  transaction = await CreateTransaction({manual: !enable, share: false});
+};
 
-export {createUniqueNumber, createUniqueString, next, createData, createRows, prepareDataForComparing, crud, CRUD, SourceType, primaryDict, tableMap};
+export {createUniqueNumber, createUniqueString, next, createData, createRows, prepareDataForComparing, crud, CRUD, SourceType, primaryDict, tableMap, establishTransaction};

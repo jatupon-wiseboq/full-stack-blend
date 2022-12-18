@@ -1,303 +1,506 @@
 import {CodeHelper} from "../../../../src/controllers/helpers/CodeHelper";
-import {createRows, crud, CRUD, SourceType, next, tableMap} from "./DatabaseHelper.TestUtilities";
+import {createRows, crud, CRUD, SourceType, next, tableMap, establishTransaction} from "./DatabaseHelper.TestUtilities";
 import flushPromises from "flush-promises";
 
 describe('DatabaseHelper', () => {
 	describe('Uniform Operation', () => {
 		describe('T', () => {
-			describe('Single', () => {
-				for (const type of [SourceType.Relational, SourceType.Document]) {
-					test(tableMap[type], async () => {
-						await flushPromises();
-						next();
-						
-						let control0 = createRows(1, type, 0, 1, 1, undefined, true);
-						
-						// Create --> Retrieve
-						await crud(
-							1,
-							CRUD.Create,
-							createRows(1, type, 0, 1, 1),
-							createRows(1, type, 0, 1, 1),
-							control0,
-							createRows(1, type, 0, 1, 1)
-						);
-						
-						// Update --> Retrieve
-						await crud(
-							1,
-							CRUD.Update,
-							createRows(1, type, 0, 1, 2),
-							createRows(1, type, 0, 1, 2),
-							control0,
-							createRows(1, type, 0, 1, 2)
-						);
-						expect(async () => {
+			describe('Without Transaction', () => {
+				describe('Single', () => {
+					for (const type of [SourceType.Relational, SourceType.Document]) {
+						test(tableMap[type], async () => {
+							await flushPromises();
+							
+							let control0 = createRows(1, type, 0, 1, 1, undefined, true);
+							
+							// Create --> Retrieve
 							await crud(
 								1,
-								CRUD.Retrieve,
+								CRUD.Create,
+								createRows(1, type, 0, 1, 1),
+								createRows(1, type, 0, 1, 1),
 								control0,
-								createRows(1, type, 0, 1, 1),
-								null,
-								null
+								createRows(1, type, 0, 1, 1)
 							);
-						}).rejects.toThrow();
-						
-						// Upsert --> Retrieve
-						await crud(
-							1,
-							CRUD.Upsert,
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3),
-							control0,
-							createRows(1, type, 0, 1, 3)
-						);
-						expect(async () => {
+							
+							// Update --> Retrieve
 							await crud(
 								1,
-								CRUD.Retrieve,
-								control0,
-								createRows(1, type, 0, 1, 1),
-								null,
-								null
-							);
-						}).rejects.toThrow();
-						expect(async () => {
-							await crud(
-								1,
-								CRUD.Retrieve,
-								control0,
-								createRows(1, type, 0, 1, 2),
-								null,
-								null
-							);
-						}).rejects.toThrow();
-						
-						// Delete --> Retrieve
-						await crud(
-							1,
-							CRUD.Delete,
-							control0,
-							createRows(1, type, 0, 1, 3),
-							control0,
-							[]
-						);
-						
-						// Upsert --> Retrieve
-						await crud(
-							1,
-							CRUD.Upsert,
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							control0,
-							createRows(1, type, 0, 1, 5)
-						);
-						
-						// Delete --> Retrieve
-						await crud(
-							1,
-							CRUD.Delete,
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							control0,
-							[]
-						);
-					});
-				}
-				for (const type of [SourceType.VolatileMemory]) {
-					test(tableMap[type], async () => {
-						await flushPromises();
-						
-						// Create --> Retrieve
-						await crud(
-							1,
-							CRUD.Create,
-							createRows(1, type, 0, 1, 1),
-							createRows(1, type, 0, 1, 1),
-							createRows(1, type, 0, 1, 1),
-							createRows(1, type, 0, 1, 1)
-						);
-						
-						// Update --> Retrieve
-						await crud(
-							1,
-							CRUD.Update,
-							createRows(1, type, 0, 1, 2),
-							createRows(1, type, 0, 1, 2),
-							createRows(1, type, 0, 1, 2),
-							createRows(1, type, 0, 1, 2)
-						);
-						expect(async () => {
-							await crud(
-								1,
-								CRUD.Retrieve,
-								createRows(1, type, 0, 1, 1),
-								createRows(1, type, 0, 1, 1),
-								null,
-								null
-							);
-						}).rejects.toThrow();
-						
-						// Upsert --> Retrieve
-						await crud(
-							1,
-							CRUD.Upsert,
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3)
-						);
-						expect(async () => {
-							await crud(
-								1,
-								CRUD.Retrieve,
-								createRows(1, type, 0, 1, 1),
-								createRows(1, type, 0, 1, 1),
-								null,
-								null
-							);
-						}).rejects.toThrow();
-						expect(async () => {
-							await crud(
-								1,
-								CRUD.Retrieve,
+								CRUD.Update,
 								createRows(1, type, 0, 1, 2),
 								createRows(1, type, 0, 1, 2),
-								null,
-								null
+								control0,
+								createRows(1, type, 0, 1, 2)
 							);
-						}).rejects.toThrow();
-						
-						// Delete --> Retrieve
-						await crud(
-							1,
-							CRUD.Delete,
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3),
-							createRows(1, type, 0, 1, 3),
-							[]
-						);
-						
-						// Upsert --> Retrieve
-						await crud(
-							1,
-							CRUD.Upsert,
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5)
-						);
-						
-						// Delete --> Retrieve
-						await crud(
-							1,
-							CRUD.Delete,
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							createRows(1, type, 0, 1, 5),
-							[]
-						);
-					});
-				}
-			});
-			describe('Multiple', () => {
-				for (const type of [SourceType.Relational, SourceType.Document]) {
-					test(tableMap[type], async () => {
-						await flushPromises();
-						
-						const control0 = createRows(2, type, 0, 1, 1, undefined, true);
-						
-						// Create --> Retrieve
-						await crud(
-							2,
-							CRUD.Create,
-							createRows(2, type, 0, 5, 6),
-							createRows(2, type, 0, 5, 6),
-							control0,
-							createRows(2, type, 0, 5, 6)
-						);
-						
-						// Update --> Retrieve
-						await crud(
-							2,
-							CRUD.Update,
-							createRows(2, type, 0, 5, 7),
-							createRows(2, type, 0, 5, 7),
-							control0,
-							createRows(2, type, 0, 5, 7)
-						);
-						expect(async () => {
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								control0,
+								createRows(1, type, 0, 1, 3)
+							);
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 2),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								control0,
+								createRows(1, type, 0, 1, 3),
+								control0,
+								[]
+							);
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								control0,
+								createRows(1, type, 0, 1, 5)
+							);
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								control0,
+								[]
+							);
+						});
+					}
+					for (const type of [SourceType.VolatileMemory]) {
+						test(tableMap[type], async () => {
+							await flushPromises();
+							
+							// Create --> Retrieve
+							await crud(
+								1,
+								CRUD.Create,
+								createRows(1, type, 0, 1, 1),
+								createRows(1, type, 0, 1, 1),
+								createRows(1, type, 0, 1, 1),
+								createRows(1, type, 0, 1, 1)
+							);
+							
+							// Update --> Retrieve
+							await crud(
+								1,
+								CRUD.Update,
+								createRows(1, type, 0, 1, 2),
+								createRows(1, type, 0, 1, 2),
+								createRows(1, type, 0, 1, 2),
+								createRows(1, type, 0, 1, 2)
+							);
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									createRows(1, type, 0, 1, 1),
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3)
+							);
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									createRows(1, type, 0, 1, 1),
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									createRows(1, type, 0, 1, 2),
+									createRows(1, type, 0, 1, 2),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								[]
+							);
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5)
+							);
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								[]
+							);
+						});
+					}
+				});
+				describe('Multiple', () => {
+					for (const type of [SourceType.Relational, SourceType.Document]) {
+						test(tableMap[type], async () => {
+							await flushPromises();
+							
+							const control0 = createRows(2, type, 0, 1, 1, undefined, true);
+							
+							// Create --> Retrieve
 							await crud(
 								2,
-								CRUD.Retrieve,
-								control0,
+								CRUD.Create,
 								createRows(2, type, 0, 5, 6),
-								null,
-								null
-							);
-						}).rejects.toThrow();
-						
-						// Upsert --> Retrieve
-						await crud(
-							2,
-							CRUD.Upsert,
-							createRows(2, type, 0, 10, 8),
-							createRows(2, type, 0, 10, 8),
-							control0,
-							createRows(2, type, 0, 10, 8)
-						);
-						expect(async () => {
-							await crud(
-								2,
-								CRUD.Retrieve,
-								control0,
 								createRows(2, type, 0, 5, 6),
-								null,
-								null
+								control0,
+								createRows(2, type, 0, 5, 6)
 							);
-						}).rejects.toThrow();
-						expect(async () => {
+							
+							// Update --> Retrieve
 							await crud(
 								2,
-								CRUD.Retrieve,
-								control0,
+								CRUD.Update,
 								createRows(2, type, 0, 5, 7),
-								null,
-								null
+								createRows(2, type, 0, 5, 7),
+								control0,
+								createRows(2, type, 0, 5, 7)
 							);
-						}).rejects.toThrow();
-						
-						// Delete --> Retrieve
-						await crud(
-							2,
-							CRUD.Delete,
-							control0,
-							createRows(2, type, 0, 10, 8),
-							control0,
-							[]
-						);
-						
-						// Upsert --> Retrieve
-						await crud(
-							2,
-							CRUD.Upsert,
-							createRows(2, type, 0, 15, 10),
-							createRows(2, type, 0, 15, 10),
-							control0,
-							createRows(2, type, 0, 15, 10)
-						);
-						
-						// Delete --> Retrieve
-						await crud(
-							2,
-							CRUD.Delete,
-							createRows(2, type, 0, 15, 10),
-							createRows(2, type, 0, 15, 10),
-							control0,
-							[]
-						);
-					});
-				}
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 6),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Upsert --> Retrieve
+							await crud(
+								2,
+								CRUD.Upsert,
+								createRows(2, type, 0, 10, 8),
+								createRows(2, type, 0, 10, 8),
+								control0,
+								createRows(2, type, 0, 10, 8)
+							);
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 6),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 7),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Delete --> Retrieve
+							await crud(
+								2,
+								CRUD.Delete,
+								control0,
+								createRows(2, type, 0, 10, 8),
+								control0,
+								[]
+							);
+							
+							// Upsert --> Retrieve
+							await crud(
+								2,
+								CRUD.Upsert,
+								createRows(2, type, 0, 15, 10),
+								createRows(2, type, 0, 15, 10),
+								control0,
+								createRows(2, type, 0, 15, 10)
+							);
+							
+							// Delete --> Retrieve
+							await crud(
+								2,
+								CRUD.Delete,
+								createRows(2, type, 0, 15, 10),
+								createRows(2, type, 0, 15, 10),
+								control0,
+								[]
+							);
+						});
+					}
+				});
+			});
+			describe('With Transaction', () => {
+				describe('Single', () => {
+					for (const type of [SourceType.Relational, SourceType.Document]) {
+						test(tableMap[type], async () => {
+							await flushPromises();
+						  await establishTransaction(true);
+							
+							let control0 = createRows(1, type, 0, 1, 1, undefined, true);
+							
+							// Create --> Retrieve
+							await crud(
+								1,
+								CRUD.Create,
+								createRows(1, type, 0, 1, 1),
+								createRows(1, type, 0, 1, 1),
+								control0,
+								createRows(1, type, 0, 1, 1)
+							);
+							
+							// Update --> Retrieve
+							await crud(
+								1,
+								CRUD.Update,
+								createRows(1, type, 0, 1, 2),
+								createRows(1, type, 0, 1, 2),
+								control0,
+								createRows(1, type, 0, 1, 2)
+							);
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 3),
+								createRows(1, type, 0, 1, 3),
+								control0,
+								createRows(1, type, 0, 1, 3)
+							);
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 1),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							expect(async () => {
+								await crud(
+									1,
+									CRUD.Retrieve,
+									control0,
+									createRows(1, type, 0, 1, 2),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								control0,
+								createRows(1, type, 0, 1, 3),
+								control0,
+								[]
+							);
+							
+							// Upsert --> Retrieve
+							await crud(
+								1,
+								CRUD.Upsert,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								control0,
+								createRows(1, type, 0, 1, 5)
+							);
+							
+							// Delete --> Retrieve
+							await crud(
+								1,
+								CRUD.Delete,
+								createRows(1, type, 0, 1, 5),
+								createRows(1, type, 0, 1, 5),
+								control0,
+								[]
+							);
+						});
+					}
+				});
+				describe('Multiple', () => {
+					for (const type of [SourceType.Relational, SourceType.Document]) {
+						test(tableMap[type], async () => {
+							await flushPromises();
+						  await establishTransaction(true);
+							
+							const control0 = createRows(2, type, 0, 1, 1, undefined, true);
+							
+							// Create --> Retrieve
+							await crud(
+								2,
+								CRUD.Create,
+								createRows(2, type, 0, 5, 6),
+								createRows(2, type, 0, 5, 6),
+								control0,
+								createRows(2, type, 0, 5, 6)
+							);
+							
+							// Update --> Retrieve
+							await crud(
+								2,
+								CRUD.Update,
+								createRows(2, type, 0, 5, 7),
+								createRows(2, type, 0, 5, 7),
+								control0,
+								createRows(2, type, 0, 5, 7)
+							);
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 6),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Upsert --> Retrieve
+							await crud(
+								2,
+								CRUD.Upsert,
+								createRows(2, type, 0, 10, 8),
+								createRows(2, type, 0, 10, 8),
+								control0,
+								createRows(2, type, 0, 10, 8)
+							);
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 6),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							expect(async () => {
+								await crud(
+									2,
+									CRUD.Retrieve,
+									control0,
+									createRows(2, type, 0, 5, 7),
+									null,
+									null
+								);
+							}).rejects.toThrow();
+							
+							// Delete --> Retrieve
+							await crud(
+								2,
+								CRUD.Delete,
+								control0,
+								createRows(2, type, 0, 10, 8),
+								control0,
+								[]
+							);
+							
+							// Upsert --> Retrieve
+							await crud(
+								2,
+								CRUD.Upsert,
+								createRows(2, type, 0, 15, 10),
+								createRows(2, type, 0, 15, 10),
+								control0,
+								createRows(2, type, 0, 15, 10)
+							);
+							
+							// Delete --> Retrieve
+							await crud(
+								2,
+								CRUD.Delete,
+								createRows(2, type, 0, 15, 10),
+								createRows(2, type, 0, 15, 10),
+								control0,
+								[]
+							);
+						});
+					}
+				});
 			});
 		});
 		describe('T x T', () => {
@@ -305,6 +508,7 @@ describe('DatabaseHelper', () => {
 				for (const type of [SourceType.Relational, SourceType.Document]) {
 					test(tableMap[type], async () => {
 						await flushPromises();
+						await establishTransaction(false);
 						
 						let control0 = createRows(3, type, 1, 1, 1, createRows(3, type, 0, 1, 1, undefined, true), true);
 						let control00 = createRows(3, type, 0, 1, 1, undefined, true);
@@ -1834,7 +2038,6 @@ describe('DatabaseHelper', () => {
 					
 					test(`${tableMap[type1]} x ${tableMap[type2]} x ${tableMap[type3]}`, async () => {
 						await flushPromises();
-						next();
 						
 						let control0 = createRows(10, type3, 2, 1, 1, createRows(10, type2, 1, 1, 1, createRows(10, type1, 0, 1, 1, undefined, true), true), true);
 						let control00 = createRows(10, type1, 0, 1, 1, undefined, true);
