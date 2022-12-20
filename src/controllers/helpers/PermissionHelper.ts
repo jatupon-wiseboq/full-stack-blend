@@ -22,48 +22,77 @@ interface Permission {
 }
 
 const PermissionHelper = {
-	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, modifyingColumns: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowActionOnTable: async (action: ActionType, schema: DataTableSchema, requestModifyingKeys: string[], modifyingFields: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
 			try {
-				if (action == ActionType.Insert || action == ActionType.Upsert) {
-					if (schema.modifyingPermission && schema.modifyingPermission.mode == 'relation' && schema.modifyingPermission.relationModeSourceGroup == schema.group) {
-						if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
-							resolve(false);
-							return;
+				if (action != ActionType.Retrieve) {
+					if (schema.modifyingPermission) {
+						switch (schema.modifyingPermission.mode) {
+							case 'always':
+							case 'relation':
+							case 'session':
+								if (!await PermissionHelper.allowPermission(schema.modifyingPermission, schema, modifyingFields, session, transaction, data)) {
+									resolve(false);
+									return;
+								}
+								break;
+							default:
+								throw new Error('P1 Error: no implementation.');
 						}
 					}
+					
+					for (const key in schema.keys) {
+						if (schema.keys.hasOwnProperty(key) && requestModifyingKeys.indexOf(key) != -1 && modifyingFields[key] !== undefined) {
+							if (!await PermissionHelper.allowModifyOfColumn(schema.keys[key], schema, modifyingFields, session, transaction, data)) {
+								resolve(false);
+								return;
+							}
+						}
+					}
+					for (const key in schema.columns) {
+						if (schema.columns.hasOwnProperty(key) && requestModifyingKeys.indexOf(key) != -1 && modifyingFields[key] !== undefined) {
+							if (!await PermissionHelper.allowModifyOfColumn(schema.columns[key], schema, modifyingFields, session, transaction, data)) {
+								resolve(false);
+								return;
+							}
+						}
+					}
+					
+					resolve(true);
+				} else if (action == ActionType.Retrieve) {
+					if (schema.retrievingPermission) {
+						switch (schema.retrievingPermission.mode) {
+							case 'always':
+							case 'relation':
+							case 'session':
+								if (!await PermissionHelper.allowPermission(schema.retrievingPermission, schema, modifyingFields, session, transaction, data)) {
+									resolve(false);
+									return;
+								}
+								break;
+							default:
+								throw new Error('P1 Error: no implementation.');
+						}
+					}
+					
+					resolve(true);
 				} else {
-					if (!await PermissionHelper.allowPermission((action == ActionType.Retrieve) ? schema.retrievingPermission : schema.modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
-						resolve(false);
-						return;
-					} else if (action != ActionType.Retrieve) {
-						for (const key in schema.keys) {
-							if (schema.keys.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission(schema.keys[key].modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
-									resolve(false);
-									return;
-								}
-							}
-						}
-						for (const key in schema.columns) {
-							if (schema.columns.hasOwnProperty(key) && modifyingColumns[key] !== undefined) {
-								if (!await PermissionHelper.allowPermission(schema.columns[key].modifyingPermission, schema, modifyingColumns, session, transaction, data)) {
-									resolve(false);
-									return;
-								}
-							}
-						}
-					}
+					throw new Error('P1 Error: no implementation.');
 				}
-				
-				resolve(true);
 			} catch(error) {
 				reject(error);
 			}
 		});
 	},
-	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingColumns: any={}, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
-		return PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingColumns, session, transaction, data);
+	allowModifyOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingFields: any={}, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		if (!column.modifyingPermission) return true;
+		
+		return await PermissionHelper.allowPermission(column.modifyingPermission, schema, modifyingFields, session, transaction, data);
+	},
+	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingFields: any={}, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+		if (!column.retrievingPermission) return true;
+		
+		return await PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingFields, session, transaction, data);
 	},
 	allowPermission: async (permission: Permission, target: DataTableSchema, referencings: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
@@ -72,6 +101,9 @@ const PermissionHelper = {
 					resolve(true);
 					return;
 				}
+				
+				if (target.source == SourceType.Relational && !transaction.relationalDatabaseTransaction) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (relational).');
+				if (target.source == SourceType.Document && !transaction.documentDatabaseSession) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (document).');
 				
 				switch (permission.mode) {
 					case 'block':
@@ -85,14 +117,15 @@ const PermissionHelper = {
 						
 						let finalEntity = null;
 						let finalValue;
-						let flag = true;
+						let flag = false;
 						
 						switch (permission.relationMatchingMode) {
 							case 'session':
-								finalValue = session[permission.relationMatchingSessionName];
 								finalEntity = permission.relationModeSourceEntity;
+								finalValue = session[permission.relationMatchingSessionName];
 								break;
 							default:
+								finalEntity = permission.relationModeSourceEntity;
 								finalValue = permission.relationMatchingConstantValue;
 								break;
 						}
@@ -103,8 +136,8 @@ const PermissionHelper = {
 						
 						for (const schema of unitedShortestPath) {
 							if (currentSource != null && currentSource != schema.source) {
-								if (currentSource) separatedSourceShortestPath.push(currentSourceShortestPath);
-								currentSourceShortestPath = [schema];
+								separatedSourceShortestPath.push(currentSourceShortestPath);
+								currentSourceShortestPath = [];
 								currentSource = null;
 							}
 							
@@ -112,26 +145,24 @@ const PermissionHelper = {
 							currentSource = schema.source;
 						}
 						
-						if (currentSource) separatedSourceShortestPath.push(currentSourceShortestPath);
+						separatedSourceShortestPath.push(currentSourceShortestPath);
 						
 						for (const [index, shortestPath] of separatedSourceShortestPath.entries()) {
-							if (!flag) break;
+							if (shortestPath.length == 0) {
+								flag = false;
+								break;
+							}
 							
 							const last = shortestPath[shortestPath.length - 1];
 	      			const nextShortestPath = separatedSourceShortestPath[index + 1] || null;
 	      			let targetEntity;
+							const isLastGroup = (index == separatedSourceShortestPath.length - 1);
+							let previousGroup = null;
 	      			
 	      			if (nextShortestPath) {
 	      				targetEntity = nextShortestPath[0].relations[last.group].sourceEntity;
 	      			} else {
 	      				targetEntity = finalEntity;
-	      				
-	      				if (shortestPath.length > 1) {
-	      					const previous = shortestPath[shortestPath.length - 2];
-	      					targetEntity = last.relations[previous.group].sourceEntity;
-	      				} else {
-	      					targetEntity = Object.keys(last.keys)[0];
-	      				}
 	      			}
 							
 							if (shortestPath[0].source == SourceType.Relational) {
@@ -149,82 +180,108 @@ const PermissionHelper = {
 								INNER_JOIN.reverse();
 								
 								const from = shortestPath[0];
-								for (const key in from.keys) {
-									if (from.keys.hasOwnProperty(key) && referencings[key] !== undefined && referencings[key] !== null) {
-										WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
-										VALUES.push(referencings[key]);
-									}
+								for (const key in referencings) {
+		      				if (referencings.hasOwnProperty(key)) {
+										if ((from.keys.hasOwnProperty(key) || from.columns.hasOwnProperty(key)) && !!referencings[key]) {
+											WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
+											VALUES.push(referencings[key]);
+										}
+		      				}
 								}
 								
-								const COMMAND = `SELECT * FROM ${shortestPath[shortestPath.length - 1].group} ${INNER_JOIN.join(' ')} WHERE ${WHERE_CLAUSE.join(' AND ')} LIMIT 1`;
-			      		
-			      		const cachedPermissionMD5Key = session.id + Md5.init(JSON.stringify([COMMAND, finalValue]));
-			      		if (!!cachedPermissions[cachedPermissionMD5Key]) {
-			      			continue;
-			      		}
+								if (WHERE_CLAUSE.length == 0) throw new Error('P1 Error: must have at least one condition.');
 								
-								referencings = await new Promise<any>((resolve, reject) => {
-									RelationalDatabaseClient.query(COMMAND, VALUES, (function(error, results, fields) {
-				            if (error) {
-				              reject(error);
-				      			} else if (results.length > 0) {
-				      				resolve(results[0]);
-				      			} else {
-				      				resolve(null);
-				      			}
-				      		}).bind(this));
-								});
+								const COMMAND = `SELECT * FROM ${shortestPath[shortestPath.length - 1].group} ${INNER_JOIN.join(' ')} WHERE ${WHERE_CLAUSE.join(' AND ')} LIMIT 1`;
+								
+			      		const cachedPermissionMD5Key = session.id + Md5.init(JSON.stringify([COMMAND, finalValue]));
+								// TODO: find the proper way to cache.
+			      		// if (!!cachedPermissions[cachedPermissionMD5Key]) {
+			      		// 	flag = (cachedPermissions[cachedPermissionMD5Key] == '__TRUE__');
+			      		//	 continue;
+			      		// }
+								
+								referencings = await RelationalDatabaseClient.query(COMMAND, {replacements: VALUES, transaction: transaction && transaction.relationalDatabaseTransaction || undefined});
+								referencings = referencings && referencings[0] && referencings[0][0] || null;
+								previousGroup = shortestPath[shortestPath.length - 1].group;
+								
+								if (process.env.debug) console.log(JSON.stringify(['referencings', 'SourceType.Relational', referencings]));
 								
 								if (referencings == null) {
-			      			cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
+									// TODO: find the proper way to cache.
+			      			// cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
 			      			flag = false;
+			      			break;
 			      		} else if (!cachedPermissions[cachedPermissionMD5Key]) {
-			      			flag = (finalValue == referencings[targetEntity]);
-									cachedPermissions[cachedPermissionMD5Key] = (!flag) ? '__FALSE__' : '__TRUE__';
+			      			if (index == separatedSourceShortestPath.length - 1) {
+			      				flag = (finalValue == referencings[targetEntity]);
+			      			}
+			      			
+									// TODO: find the proper way to cache.
+									// cachedPermissions[cachedPermissionMD5Key] = (!flag) ? '__FALSE__' : '__TRUE__';
 			      		}
 			      	} else {
 		      			const cachedPermissionMD5Key = session.id + Md5.init(JSON.stringify([shortestPath, finalValue]));
-			      		if (!!cachedPermissions[cachedPermissionMD5Key]) {
-			      			continue;
+								// TODO: find the proper way to cache.
+								// if (!!cachedPermissions[cachedPermissionMD5Key]) {
+			      		//	 flag = (cachedPermissions[cachedPermissionMD5Key] == '__TRUE__');
+			      		//	 continue;
+			      		// }
+			      		
+			      		for (let i=0; i < shortestPath.length; i++) {
+			      			const current = shortestPath[i];
+			      			const data = {};
+			      			
+			      			if (previousGroup != null) {
+				      			for (const key in referencings) {
+				      				if (referencings.hasOwnProperty(key)) {
+												if (current.relations[previousGroup].targetEntity == key && !!referencings[key]) {
+													data[`${current.group}.${current.relations[previousGroup].sourceEntity}`] = referencings[key].toString();
+												}
+				      				}
+										}
+										
+										const baseSchema = ProjectConfigurationHelper.getDataSchema().tables[current.group];
+										const query = RequestHelper.createInputs(data);
+										const dataset = {};
+										await DatabaseHelper.performRecursiveRetrieve(
+											DatabaseHelper.prepareData(query, ActionType.Retrieve, baseSchema)[current.group],
+											baseSchema,
+											dataset,
+											session,
+											false,
+											true,
+											transaction
+										);
+										
+										if (dataset[current.group].rows.length == 0) {
+											referencings = null;
+											break;
+										} else {
+											referencings = Object.assign({}, dataset[current.group].rows[0].columns, dataset[current.group].rows[0].keys);
+										}
+									}
+									
+									previousGroup = current.group;
 			      		}
 								
-								let i = 1;
-								do {
-									const previous = shortestPath[i-1];
-									const current = shortestPath[i];
-									const data = {};
-									
-									for (const key in previous.keys) {
-										if (previous.keys.hasOwnProperty(key) && referencings[key] !== undefined && referencings[key] !== null && current.relations[previous.group].targetEntity == key) {
-											data[`${current.group}.${current.relations[previous.group].sourceEntity}`] = referencings[key].toString();
-										}
-									}
-									for (const key in previous.columns) {
-										if (previous.columns.hasOwnProperty(key) && referencings[key] !== undefined && referencings[key] !== null && current.relations[previous.group].targetEntity == key) {
-											data[`${current.group}.${current.relations[previous.group].sourceEntity}`] = referencings[key].toString();
-										}
-									}
-									
-									const dataset = await DatabaseHelper.retrieve(RequestHelper.createInputs(data), ProjectConfigurationHelper.getDataSchema().tables[current.group], session, false, true, undefined, transaction);
-									
-									if (dataset[current.group].rows.length == 0) {
-										referencings = null;
-										break;
-									} else {
-										referencings = Object.assign({}, dataset[current.group].rows[0].columns, dataset[current.group].rows[0].keys);
-									}
-								} while (referencings != null && ++i < shortestPath.length);
+								if (process.env.debug) console.log(JSON.stringify(['referencings', 'SourceType.Others', referencings]));
 								
 			      		if (referencings == null) {
-			      			cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
+									// TODO: find the proper way to cache.
+			      			// cachedPermissions[cachedPermissionMD5Key] = '__FALSE__';
 			      			flag = false;
+			      			break;
 			      		} else if (!cachedPermissions[cachedPermissionMD5Key]) {
-			      			flag = (finalValue == referencings[targetEntity]);
-									cachedPermissions[cachedPermissionMD5Key] = (!flag) ? '__FALSE__' : '__TRUE__';
+			      			if (index == separatedSourceShortestPath.length - 1) {
+			      				flag = (finalValue == referencings[targetEntity]);
+			      			}
+			      			
+									// TODO: find the proper way to cache.
+									// cachedPermissions[cachedPermissionMD5Key] = (!flag) ? '__FALSE__' : '__TRUE__';
 			      		}
 			      	}
 						}
-						
+			     	
 						resolve(flag);
 						break;
 					case 'session':
@@ -244,10 +301,25 @@ const PermissionHelper = {
 		for (const group in input) {
 			const schema = data.tables[group];
 			
-			if (action == ActionType.Retrieve) {
-				return !!schema.retrievingPermission;
-			} else {
-				return !!schema.modifyingPermission;
+			if (action == ActionType.Retrieve && !!schema.retrievingPermission) {
+				return true;
+			} else if (action != ActionType.Retrieve && !!schema.modifyingPermission) {
+				return true;
+			}
+			
+			for (const key in schema.keys) {
+				if (action == ActionType.Retrieve && !!schema.keys[key].retrievingPermission) {
+					return true;
+				} else if (action != ActionType.Retrieve && !!schema.keys[key].modifyingPermission) {
+					return true;
+				}
+			}
+			for (const key in schema.columns) {
+				if (action == ActionType.Retrieve && !!schema.columns[key].retrievingPermission) {
+					return true;
+				} else if (action != ActionType.Retrieve && !!schema.columns[key].modifyingPermission) {
+					return true;
+				}
 			}
 			
 			for (const row of input[group].rows) {

@@ -1854,10 +1854,9 @@ describe('DatabaseHelper', () => {
 		describe('T x T x T', () => {
 			describe('Single', () => {
 				const crossTribles = [
-					[SourceType.Relational, SourceType.Document, SourceType.Relational],
+					[SourceType.Relational, SourceType.Document, SourceType.Document],
 					[SourceType.Document, SourceType.Relational, SourceType.Document],
-					[SourceType.Relational, SourceType.Relational, SourceType.Document],
-					[SourceType.Document, SourceType.Relational, SourceType.Relational]
+					[SourceType.Relational, SourceType.Relational, SourceType.Document]
 				];
 				
 				for (const trible of crossTribles) {
@@ -2010,10 +2009,9 @@ describe('DatabaseHelper', () => {
 				}
 				
 				const noGrpCrossTribles = [
-					[SourceType.VolatileMemory, SourceType.Document, SourceType.Relational],
-					[SourceType.Document, SourceType.Relational, SourceType.VolatileMemory],
-					[SourceType.Relational, SourceType.VolatileMemory, SourceType.Document],
-					[SourceType.Document, SourceType.VolatileMemory, SourceType.VolatileMemory]
+					[SourceType.Relational, SourceType.Document, SourceType.Document],
+					[SourceType.Document, SourceType.Relational, SourceType.Document],
+					[SourceType.Relational, SourceType.Relational, SourceType.Document]
 				];
 				
 				for (const trible of noGrpCrossTribles) {
@@ -2129,7 +2127,7 @@ describe('DatabaseHelper', () => {
 			
 			describe('Multiple', () => {
 				const crossTribles = [
-					[SourceType.Relational, SourceType.Document, SourceType.Relational],
+					[SourceType.Relational, SourceType.Document, SourceType.Document],
 					[SourceType.Document, SourceType.Relational, SourceType.Document],
 					[SourceType.Relational, SourceType.Relational, SourceType.Document],
 					[SourceType.Document, SourceType.Relational, SourceType.Relational]
