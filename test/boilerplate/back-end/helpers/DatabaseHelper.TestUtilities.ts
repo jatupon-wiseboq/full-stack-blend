@@ -34,28 +34,30 @@ const next = () => {
 // [column -dat05]     [column -dat08]     [column -dat12] ----> diff check
 // [column -int06]     [column -int09]     [column -flt13] ----> diff check
 // **************************************************************************
+// tables-03,04 are the same as tables-02 but with no any relation.
+// **************************************************************************
 
 const primaryDict = {
 	'int01': [0],
-	'int03': [1, 2],
+	'int03': [1, 2, 3, 4],
 	'bol02': [1],
-	'str10': [2]
+	'str10': [2, 3, 4]
 };
 const crossDict = {
-	'grp01': [0, 1, 2],
+	'grp01': [0, 1, 2, 3, 4],
 	'int01': [0, 1],
-	'bol02': [0, 1, 2],
-	'int03': [0, 1, 2],
+	'bol02': [0, 1, 2, 3, 4],
+	'int03': [0, 1, 2, 3, 4],
 	'str04': [0],
 	'dat05': [0],
 	'int06': [0],
 	'str07': [1],
 	'dat08': [1],
 	'int09': [1],
-	'str10': [2],
-	'str11': [2],
-	'dat12': [2],
-	'flt13': [2]
+	'str10': [2, 3, 4],
+	'str11': [2, 3, 4],
+	'dat12': [2, 3, 4],
+	'flt13': [2, 3, 4]
 };
 
 const tableMap = {};
@@ -66,6 +68,8 @@ tableMap[SourceType.VolatileMemory] = 'VolatileMemory';
 tableMap[SourceType.RESTful] = 'RESTful';
 tableMap[SourceType.Dictionary] = 'Dictionary';
 tableMap[SourceType.Collection] = 'Collection';
+let enablePermissionChecking = false;
+let enablePermissionCheckingSessionVariables = {};
 
 const createData = (set: number, crossingOrder: number, rowOrder: number, updatingRound: number=1, useDateInString: boolean=false, useGroupSelector: boolean=false) => {
 	const max = 4096;
@@ -226,6 +230,55 @@ let transaction = null
 const crud = async (set: number, type: CRUD, operation_input: any, operation_output: any, retrieve_input: any, retrieve_output: any) => {
 	transaction = transaction || await CreateTransaction({manual: true});
 	
+	let group = Object.keys(operation_input)[0];
+	
+	try {
+		if (type == CRUD.Create) {
+			const results = await crud_base(set, type, operation_input);
+			
+			expect(prepareDataForComparing(results)).toEqual(operation_output[group].rows);
+		} else if (type == CRUD.Retrieve) {
+			const results = await crud_base(set, type, operation_input);
+			const output = prepareDataForComparing(results);
+			
+			if (Array.isArray(operation_output)) {
+				expect(output[group].rows).toEqual(operation_output);
+			} else {
+				expect(output).toEqual(operation_output);
+			}
+		} else if (type == CRUD.Update) {
+			const results = await crud_base(set, type, operation_input);
+			
+			expect(prepareDataForComparing(results)).toEqual(operation_output[group].rows);
+		} else if (type == CRUD.Upsert) {
+			const results = await crud_base(set, type, operation_input);
+			
+			expect(prepareDataForComparing(results)).toEqual(operation_output[group].rows);
+		} else if (type == CRUD.Delete) {
+			const results = await crud_base(set, type, operation_input);
+			
+			expect(prepareDataForComparing(results)).toEqual(operation_output[group].rows);
+		}
+		
+		if (retrieve_input && retrieve_input[group]) {
+			group = Object.keys(retrieve_input)[0];
+			
+			const results = await crud_base(set, CRUD.Retrieve, retrieve_input);
+			const output = prepareDataForComparing(results);
+			
+			if (Array.isArray(retrieve_output)) {
+				expect(output[group].rows).toEqual(retrieve_output);
+			} else {
+				expect(output).toEqual(retrieve_output);
+			}
+		}
+	} catch(error) {
+		throw error;
+	}
+};
+const crud_base = async (set: number, type: CRUD, operation_input: any): Promise<any> => {
+	transaction = transaction || await CreateTransaction({manual: true});
+	
 	let arrayResults = [];
 	let dictResults = {};
 	let group = Object.keys(operation_input)[0];
@@ -239,26 +292,18 @@ const crud = async (set: number, type: CRUD, operation_input: any, operation_out
 				arrayResults,
 				transaction,
 				undefined,
-				true);
-			expect(prepareDataForComparing(arrayResults)).toEqual(operation_output[group].rows);
+				enablePermissionCheckingSessionVariables,
+				!enablePermissionChecking);
 		} else if (type == CRUD.Retrieve) {
 			dictResults = {};
 			await DatabaseHelper.performRecursiveRetrieve(
 				operation_input[group],
 				ProjectConfigurationHelper.getDataSchema().tables[group],
 				dictResults,
-				{},
+				enablePermissionCheckingSessionVariables,
 				undefined,
-				true,
+				!enablePermissionChecking,
 				transaction);
-			
-			const output = prepareDataForComparing(dictResults);
-			
-			if (Array.isArray(operation_output)) {
-				expect(output[group].rows).toEqual(operation_output);
-			} else {
-				expect(output).toEqual(operation_output);
-			}
 		} else if (type == CRUD.Update) {
 			await DatabaseHelper.performRecursiveUpdate(
 				operation_input[group],
@@ -266,58 +311,46 @@ const crud = async (set: number, type: CRUD, operation_input: any, operation_out
 				arrayResults,
 				transaction,
 				undefined,
-				undefined,
-				true);
-			expect(prepareDataForComparing(arrayResults)).toEqual(operation_output[group].rows);
+				enablePermissionCheckingSessionVariables,
+				!enablePermissionChecking);
 		} else if (type == CRUD.Upsert) {
 			await DatabaseHelper.performRecursiveUpsert(
 				operation_input[group],
 				ProjectConfigurationHelper.getDataSchema().tables[group],
 				arrayResults,
 				transaction,
-				undefined,
-				true);
-			
-			expect(prepareDataForComparing(arrayResults)).toEqual(operation_output[group].rows);
+				enablePermissionCheckingSessionVariables,
+				!enablePermissionChecking);
 		} else if (type == CRUD.Delete) {
 			await DatabaseHelper.performRecursiveDelete(
 				operation_input[group],
 				ProjectConfigurationHelper.getDataSchema().tables[group],
 				arrayResults,
 				transaction,
-				undefined,
-				true);
-			
-			expect(prepareDataForComparing(arrayResults)).toEqual(operation_output[group].rows);
+				enablePermissionCheckingSessionVariables,
+				!enablePermissionChecking);
 		}
 		
-		if (retrieve_input && retrieve_input[group]) {
-			group = Object.keys(retrieve_input)[0];
-		
-			dictResults = {};
-			await DatabaseHelper.performRecursiveRetrieve(
-				retrieve_input[group],
-				ProjectConfigurationHelper.getDataSchema().tables[group],
-				dictResults,
-				{},
-				undefined,
-				true,
-				transaction);
-			
-			const output = prepareDataForComparing(dictResults);
-			
-			if (Array.isArray(retrieve_output)) {
-				expect(output[group].rows).toEqual(retrieve_output);
-			} else {
-				expect(output).toEqual(retrieve_output);
-			}
-		}
+		if (type == CRUD.Retrieve) return dictResults;
+		else return arrayResults;
 	} catch(error) {
 		throw error;
 	}
 };
 const establishTransaction = async (enable: boolean) => {
-  transaction = await CreateTransaction({manual: !enable, share: false});
+	try {
+		await transaction.rollback();
+	} catch (error) {
+		
+	} finally {
+		transaction = await CreateTransaction({manual: !enable, share: true});
+	}
+	
+	return transaction;
+};
+const establishPermissionChecking = (enable: boolean, session: any={}) => {
+  enablePermissionChecking = enable;
+  enablePermissionCheckingSessionVariables = session;
 };
 
-export {createUniqueNumber, createUniqueString, next, createData, createRows, prepareDataForComparing, crud, CRUD, SourceType, primaryDict, tableMap, establishTransaction};
+export {createUniqueNumber, createUniqueString, next, createData, createRows, prepareDataForComparing, crud, crud_base, CRUD, SourceType, primaryDict, tableMap, establishTransaction, establishPermissionChecking};

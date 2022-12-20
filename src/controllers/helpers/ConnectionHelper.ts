@@ -58,18 +58,10 @@ if (process.env.VOLATILE_MEMORY_KEY) {
 	};
 }
 if (process.env.RELATIONAL_DATABASE_KEY) {
-	const connectionURL = new URL(process.env[process.env.RELATIONAL_DATABASE_KEY]);
-	const dbconfig = {
-	  connectionLimit : 10,
-	  host     : connectionURL.host.split(':')[0],
-	  user     : connectionURL.username,
-	  password : connectionURL.password,
-	  database : connectionURL.pathname.split("/")[1]
-	};
-	RelationalDatabaseClient = new Pool(dbconfig);
 	RelationalDatabaseORMClient = new Sequelize(process.env[process.env.RELATIONAL_DATABASE_KEY], {
     dialectOptions: {}
   });
+	RelationalDatabaseClient = RelationalDatabaseORMClient.getQueryInterface().sequelize;
 }
 if (process.env.DOCUMENT_DATABASE_KEY) {
 	const connectionURL = process.env[process.env.DOCUMENT_DATABASE_KEY];

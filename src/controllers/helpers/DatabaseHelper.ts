@@ -1130,6 +1130,8 @@ const DatabaseHelper = {
 							if (input.rows.length != bulkResults.length) throw new Error('Cannot matching all of results to inputs while performing bulk insertion.');
 						}
 						
+						const persistingDictForVolatileMemory = {};
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1138,7 +1140,9 @@ const DatabaseHelper = {
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+							const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
+							
+							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 							
 							let records = [];
 							
@@ -1152,9 +1156,8 @@ const DatabaseHelper = {
 								records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys), {session: transaction.documentDatabaseSession}))['ops'][0];
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, dataColumns, dataKeys)));
-								const record = await VolatileMemoryClient.get(_key);
-								records = record && [JSON.parse(record)] || [];
+								records[0] = Object.assign({}, dataColumns, dataKeys);
+								persistingDictForVolatileMemory[_key] = JSON.stringify(records[0]);
 							}
 							
 							for (const record of records) {
@@ -1250,6 +1253,12 @@ const DatabaseHelper = {
 							}
 						}
 						
+						// TODO: making volatile memory reversible, when transaction fail.
+						// 
+						for (const key in persistingDictForVolatileMemory) {
+							await VolatileMemoryClient.set(key, persistingDictForVolatileMemory[key]);
+						}
+						
 						NotificationHelper.notifyUpdates(ActionType.Insert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
@@ -1338,6 +1347,8 @@ const DatabaseHelper = {
 							input.rows = input.rows.splice(0, bulkResults.length); // Please make sure these won't be used except loop counting.
 						}
 						
+						const persistingDictForVolatileMemory = {};
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1345,6 +1356,8 @@ const DatabaseHelper = {
 							let dataColumns: {[Identifier: string]: any} = {};
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
+							
+							const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 							
 							let records = [];
 							
@@ -1360,8 +1373,8 @@ const DatabaseHelper = {
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], dataColumns, dataKeys)));
-								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
+								records[0] = Object.assign({}, records[0], dataColumns, dataKeys);
+								persistingDictForVolatileMemory[_key] = JSON.stringify(records[0]);
 							}
 							
 							for (const record of records) {
@@ -1378,7 +1391,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 								
 							  const result: any = {
 							    keys: {},
@@ -1469,6 +1482,12 @@ const DatabaseHelper = {
 							}
 						}
 						
+						// TODO: making volatile memory reversible, when transaction fail.
+						// 
+						for (const key in persistingDictForVolatileMemory) {
+							await VolatileMemoryClient.set(key, persistingDictForVolatileMemory[key]);
+						}
+						
 						NotificationHelper.notifyUpdates(ActionType.Upsert, schema, results);
 		    		break;
 		    	case SourceType.PrioritizedWorker:
@@ -1536,6 +1555,8 @@ const DatabaseHelper = {
 						
 						const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 						
+						const persistingDictForVolatileMemory = {};
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -1543,6 +1564,8 @@ const DatabaseHelper = {
 							let dataColumns: {[Identifier: string]: any} = {};
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
+							
+							const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 							
 							let records = [];
 							
@@ -1557,8 +1580,8 @@ const DatabaseHelper = {
 							} else if (input.source == SourceType.VolatileMemory) {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
-								await VolatileMemoryClient.set(_key, JSON.stringify(Object.assign({}, records[0], dataColumns, dataKeys)));
-								records[0] = JSON.parse(await VolatileMemoryClient.get(_key));
+								records[0] = Object.assign({}, records[0], dataColumns, dataKeys);
+								persistingDictForVolatileMemory[_key] = JSON.stringify(records[0]);
 							}
 							
 						  if (!records[0]) {
@@ -1580,7 +1603,7 @@ const DatabaseHelper = {
 								  }
 								}
 								
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 								
 							  const result: any = {
 							    keys: {},
@@ -1670,6 +1693,12 @@ const DatabaseHelper = {
 								  }
 								}
 							}
+						}
+						
+						// TODO: making volatile memory reversible, when transaction fail.
+						// 
+						for (const key in persistingDictForVolatileMemory) {
+							await VolatileMemoryClient.set(key, persistingDictForVolatileMemory[key]);
 						}
 						
 						NotificationHelper.notifyUpdates(ActionType.Update, schema, results);
@@ -1848,7 +1877,7 @@ const DatabaseHelper = {
 	        }
 	        
 	        for (const result of results[baseSchema.group].rows) {
-						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, Object.assign({}, result.columns, result.keys), session, transaction)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
+						if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, baseSchema, [], Object.assign({}, result.columns, result.keys), session, transaction)) throw new Error(`You have no permission to retrieve any row in ${baseSchema.group}.`);
 	      	}
 	      	
 	      	resolve(results);
@@ -1922,7 +1951,7 @@ const DatabaseHelper = {
 									  }
 									}
 									
-									if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, Object.assign({}, dataColumns, dataKeys), session, connectionInfos)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
+									if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, [], Object.assign({}, dataColumns, dataKeys), session, connectionInfos)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
 								
 								  const row: any = {
 			  				    keys: {},
@@ -2120,6 +2149,8 @@ const DatabaseHelper = {
 							await map.destroy({where: {[Op.or]: records}, force: true, transaction: transaction.relationalDatabaseTransaction});
 						}
 						
+						const persistingDictForVolatileMemory = {};
+						
 						for (const row of input.rows) {
 							let queryKeys: {[Identifier: string]: any} = {};
 							let queryColumns: {[Identifier: string]: any} = {};
@@ -2127,6 +2158,8 @@ const DatabaseHelper = {
 							let dataColumns: {[Identifier: string]: any} = {};
 							
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
+							
+							const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 							
 							let records = [];
 							if (input.source == SourceType.Relational) {
@@ -2156,7 +2189,7 @@ const DatabaseHelper = {
 								const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
 								const record = await VolatileMemoryClient.get(_key);
 								records = record && [JSON.parse(record)] || [];
-								await VolatileMemoryClient.del(_key);
+								persistingDictForVolatileMemory[_key] = true;
 							}
 							
 							for (const record of records) {
@@ -2173,7 +2206,7 @@ const DatabaseHelper = {
 								  }
 								}
 							
-								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 								
 							  const row: any = {
 		  				    keys: {},
@@ -2257,6 +2290,12 @@ const DatabaseHelper = {
 				  				break;
 				  			}
 				  		}
+						}
+						
+						// TODO: making volatile memory reversible, when transaction fail.
+						// 
+						for (const key in persistingDictForVolatileMemory) {
+							await VolatileMemoryClient.del(key);
 						}
 						
 						NotificationHelper.notifyUpdates(ActionType.Delete, schema, results);
