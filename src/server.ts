@@ -1,4 +1,7 @@
 import * as SocketIO from "socket.io";
+import cluster from "cluster";
+import redisAdapter from "socket.io-redis";
+import { setupMaster, setupWorker } from "@socket.io/sticky";
 import fs from "fs";
 import dotenv from "dotenv";
 import Redis from "ioredis";
@@ -12,6 +15,7 @@ console.log("Initializing server and socket..");
 
 let socket = null;
 let server = null;
+const numCPUs = require("os").cpus().length;
 
 if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
@@ -40,6 +44,40 @@ if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_
 	// [TODO] Replace and configure production SSL
   server = http.createServer(app).listen(process.env.PORT || 8000);
 	socket = SocketIO.listen(server);
+}
+
+// Socket.IO Official Reference: https://socket.io/docs/v3/using-multiple-nodes/
+// Heroku Session Affinity Reference: https://devcenter.heroku.com/articles/session-affinity
+// 
+if (cluster.isMaster) {
+  console.log(`Master ${process.pid} is running`);
+  
+  setupMaster(server, {
+    loadBalancingMethod: "least-connection", // either "random", "round-robin" or "least-connection"
+  });
+  
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+  
+  cluster.on("exit", (worker) => {
+    console.log(`Worker ${worker.process.pid} died`);
+    cluster.fork();
+  });
+} else {
+  console.log(`Worker ${process.pid} started`);
+  
+  if (process.env[process.env.VOLATILE_MEMORY_KEY]) {
+  	const connectionURL = new URL(process.env[process.env.VOLATILE_MEMORY_KEY]);
+  	
+  	socket.adapter(redisAdapter({
+  		host     : connectionURL.host.split(':')[0],
+		  user     : connectionURL.username,
+		  password : connectionURL.password,
+		  port     : connectionURL.port
+  	}));
+  	setupWorker(socket);
+  }
 }
 
 NotificationHelper.setup(socket);

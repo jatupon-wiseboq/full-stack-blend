@@ -8,12 +8,15 @@ import {Md5} from "md5-typescript";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
+const ACTIONS = [ActionType.Insert, ActionType.Update, ActionType.Upsert, ActionType.Delete];
+
 const notificationInfos = {};
 const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
 const sessionLookupTable: {[Identifier: string]: any[]} = {};
 const disconnectingSockets: {[Identifier: string]: any[]} = {};
 const disposingInstances: {[Identifier: string]: any[]} = {};
 const confirmingMessages: {[Identifier: string]: {[Identifier: string]: any}} = {};
+
 let disconnectingTimer = null;
 
 if (["staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
@@ -402,6 +405,28 @@ const NotificationHelper = {
 		}
   },
   notifyUpdates: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): string => {
+  	if (socket == null) return;
+  	
+  	socket.to(Md5.init(process.env.SESSION_SECRET)).emit(JSON.stringify({
+  		action: ACTIONS.indexOf(action),
+  		schema: schema.group,
+  		results: results
+  	}));
+  },
+  listenUpdatesUsingMultipleNodesOfSocketIO: () => {
+  	socket.join(Md5.init(process.env.SESSION_SECRET));
+  	socket.on("broadcast", (message: any) => {
+  		const action = ACTIONS[message.action];
+  		const schema = SchemaHelper.getDataTableSchemaFromNotation(message.schema);
+  		const results = message.results;
+  		
+  		NotificationHelper.notifyUpdatesUsingMultipleNodesOfSocketIO(action, schema, results);
+  	});
+  },
+  notifyUpdatesUsingMultipleNodesOfSocketIO: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): string => {
+  	// Socket.IO Official Reference: https://socket.io/docs/v3/using-multiple-nodes/
+		// Heroku Session Affinity Reference: https://devcenter.heroku.com/articles/session-affinity
+		// 
   	if (socket == null) return;
   	
   	const identities = NotificationHelper.getUniqueListOfIdentities(action, schema, results);
