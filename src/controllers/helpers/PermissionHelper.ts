@@ -65,7 +65,7 @@ const PermissionHelper = {
 							case 'always':
 							case 'relation':
 							case 'session':
-								if (!await PermissionHelper.allowPermission(schema.retrievingPermission, schema, modifyingFields, session, transaction, data)) {
+								if (!await PermissionHelper.allowPermission(schema.retrievingPermission, schema, modifyingFields, session, transaction, data, false)) {
 									resolve(false);
 									return;
 								}
@@ -92,9 +92,9 @@ const PermissionHelper = {
 	allowOutputOfColumn: async (column: DataColumnSchema, schema: DataTableSchema, modifyingFields: any={}, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
 		if (!column.retrievingPermission) return true;
 		
-		return await PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingFields, session, transaction, data);
+		return await PermissionHelper.allowPermission(column.retrievingPermission, schema, modifyingFields, session, transaction, data, false);
 	},
-	allowPermission: async (permission: Permission, target: DataTableSchema, referencings: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema()): Promise<boolean> => {
+	allowPermission: async (permission: Permission, target: DataTableSchema, referencings: any, session: any=null, transaction: any=null, data: DataSchema=ProjectConfigurationHelper.getDataSchema(), isRequiringTransaction: boolean=true): Promise<boolean> => {
 		return new Promise(async (resolve, reject) => {
 			try {
 				if (permission == null) {
@@ -102,8 +102,8 @@ const PermissionHelper = {
 					return;
 				}
 				
-				if (target.source == SourceType.Relational && !transaction.relationalDatabaseTransaction) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (relational).');
-				if (target.source == SourceType.Document && !transaction.documentDatabaseSession) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (document).');
+				if (isRequiringTransaction && target.source == SourceType.Relational && !transaction.relationalDatabaseTransaction) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (relational).');
+				if (isRequiringTransaction && target.source == SourceType.Document && !transaction.documentDatabaseSession) throw new Error('P1 Error: using permission, you have to turn on the transaction feature (document).');
 				
 				switch (permission.mode) {
 					case 'block':
