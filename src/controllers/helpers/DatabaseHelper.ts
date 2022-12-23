@@ -1141,9 +1141,7 @@ const DatabaseHelper = {
 							[queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 							
 							const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
-							
-							if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
-							
+														
 							let records = [];
 							
 							if (input.source == SourceType.Relational) {
@@ -1161,6 +1159,21 @@ const DatabaseHelper = {
 							}
 							
 							for (const record of records) {
+								if (record['_id']) record['id'] = record['_id'].toString();
+							  
+								for (const key in schema.columns) {
+								  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataColumns[key] = record[key];
+								  }
+								}
+								for (const key in schema.keys) {
+								  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+								    dataKeys[key] = record[key];
+								  }
+								}
+								
+								if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+								
 							  const result: any = {
 							    keys: {},
 							    columns: {},
