@@ -54,6 +54,9 @@ if (process.env.VOLATILE_MEMORY_KEY) {
 					else resolve(reply);
 				});
 			});
+		},
+		quit: () => {
+		  _default.quit();
 		}
 	};
 }
