@@ -4,7 +4,7 @@ import redisAdapter from "socket.io-redis";
 import { setupMaster, setupWorker } from "@socket.io/sticky";
 import fs from "fs";
 import dotenv from "dotenv";
-import Redis from "ioredis";
+import { createClient } from "ioredis";
 import * as child from "child_process";
 import { base64id } from "base64id";
 import { NotificationHelper } from './controllers/helpers/NotificationHelper';
@@ -81,6 +81,7 @@ if (cluster.isMaster) {
 }
 
 NotificationHelper.setup(socket);
+NotificationHelper.listenUpdatesUsingMultipleNodesOfSocketIO();
 
 // Resque
 //
@@ -92,16 +93,8 @@ let finalize: () => void = null;
 const complete = {};
 
 if (process.env.PRIORITIZED_WORKER_KEY) {
-	const redisConnectionURL = new URL(process.env[process.env.PRIORITIZED_WORKER_KEY]);
-	const redisConnectionSettings = {
-		host: redisConnectionURL.host.split(":")[0],
-		port: parseInt(redisConnectionURL.port),
-		db: 0,
-		password: redisConnectionURL.password,
-		enableReadyCheck: true,
-		autoResubscribe: true
-	};
-	const redisClientForResque = new Redis(redisConnectionSettings);
+	const redisConnectionURL = process.env[process.env.PRIORITIZED_WORKER_KEY];
+	const redisClientForResque = createClient(redisConnectionURL);
 	const redisConnectionSettingForResque = {
 		redis: redisClientForResque
 	};
@@ -197,7 +190,11 @@ finalize = () => {
 	finalize = null;
 	
 	console.log("Registering jobs..");
-	require("./controllers/Home");
+	try {
+		require("./controllers/Home");
+	} catch(error) {
+		console.log(error);
+	}
 	console.log("Registered.");
 	console.log("Initialized server and socket.");
 		

@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.0.0-beta.55",
+    "@socket.io/redis-adapter": "^8.0.0",
     "@types/socket.io": "^2.1.11",
     "amd-module": "0.0.20151203",
     "assert": "^2.0.0",
