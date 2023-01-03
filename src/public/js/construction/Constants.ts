@@ -422,6 +422,7 @@ export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-non
 export const WORKSPACE_LOCK_MODE = [["workspaceMode", null, ["d-none", "Full-Stack"]], ["workspaceMode", "coder", ["d-none", "Coder"]], ["workspaceMode", "designer", ["d-none", "Designer"]], ["workspaceMode", "business", ["d-none", "Business"]]];
 export const WORKSPACE_STRICTNESS_GRADE = [["workspaceStrictnessGrade", null, ["d-none", "Prototype"]], ["workspaceStrictnessGrade", "pitching", ["d-none", "Pitching"]], ["workspaceStrictnessGrade", "start-up", ["d-none", "Start-Up"]], ["workspaceStrictnessGrade", "company", ["d-none", "Company"]], ["workspaceStrictnessGrade", "enterprise", ["d-none", "Enterprise"]]];
 export const WORKSPACE_STRICTNESS_SENTENCE_MODE = [["workspaceStrictnessSentenceMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessSentenceMode", "sentence", ["d-none", "Full Sentence"]], ["workspaceStrictnessSentenceMode", "meaningful", ["d-none", "Meaningful Sentence"]]];
+export const WORKSPACE_STRICTNESS_REUSEABILITY_MODE = [["workspaceStrictnessReusabilityMode", null, ["d-none", "Block Duplicating Code"]], ["workspaceStrictnessReusabilityMode", "loosen", ["d-none", "Duplicatable in Separated Branch"]], ["workspaceStrictnessReusabilityMode", "freestyle", ["d-none", "No Commit Blocking"]]];
 export const WORKSPACE_STRICTNESS_CODE_REVIEW_MODE = [["workspaceStrictnessCodeReviewMode", "block", ["d-none", "Block From Working"]], ["workspaceStrictnessCodeReviewMode", null, ["d-none", "Always Notify"]], ["workspaceStrictnessCodeReviewMode", "incline", ["d-none", "Incline Mode"]]];
 export const WORKSPACE_STRICTNESS_RISKY_MODE = [["workspaceStrictnessRiskyMode", null, ["d-none", "Protect Creditworthy"]], ["workspaceStrictnessRiskyMode", "risk", ["d-none", "Allow and Take a Risk"]]];
 export const WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS = [["workspaceStrictnessPrototypeEmphasizingMode", null, ["d-none", "Automatic A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "selective", ["d-none", "Selective A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "decisive", ["d-none", "Decisiveness"]]];
@@ -532,6 +533,7 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "workspaceMode": WORKSPACE_LOCK_MODE,
   "workspaceStrictnessGrade": WORKSPACE_STRICTNESS_GRADE,
   "workspaceStrictnessSentenceMode": WORKSPACE_STRICTNESS_SENTENCE_MODE,
+  "workspaceStrictnessReusabilityMode": WORKSPACE_STRICTNESS_REUSEABILITY_MODE,
   "workspaceStrictnessRiskyMode": WORKSPACE_STRICTNESS_RISKY_MODE,
   "workspaceStrictnessCodeReviewMode": WORKSPACE_STRICTNESS_CODE_REVIEW_MODE,
   "workspaceStrictnessPrototypeEmphasizingMode": WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS
