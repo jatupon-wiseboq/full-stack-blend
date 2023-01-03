@@ -54,6 +54,11 @@ class PropertyManager extends Base<Props, State> {
         name: 'Localization',
         selected: (selecting == 'localization'),
         nodes: []
+      }, {
+        id: 'property-strictness',
+        name: 'Strictness',
+        selected: (selecting == 'strictness'),
+        nodes: []
       }];
       
       return (

@@ -21,6 +21,12 @@
                 a.btn.btn-secondary.btn-sm.btn-light.text-secondary(onclick="swap('.properties-properties-custom', null, null, null, null, true)")
                   input(type='radio', name='options', checked=true)
                   | Localized Strings
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:strictness")
+            .workspace-tab-container
+              .btn-group.btn-group-toggle.d-flex(data-toggle='buttons')
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(onclick="swap('.properties-strictness-general', null, null, null, null, true)")
+                  input(type='radio', name='options', checked=true)
+                  | Evolvement
         .workspace-vertical-container.full-relative-size
           .workspace-vertical-panel(internal-fsb-for="editingProperties:settings", style="border-top: none;")
             .workspace-panel-container.scrollable
@@ -34,3 +40,7 @@
                 include ./localization/general
               .panel.properties-properties-custom
                 include ./localization/custom
+          .workspace-vertical-panel(internal-fsb-for="editingProperties:strictness", style="border-top: none;")
+            .workspace-panel-container.scrollable
+              .panel.properties-strictness-general.active
+                include ./strictness/general

@@ -50,7 +50,7 @@
 		    cursor: default;
       }
       
-      &#property-localization, &#property-settings {
+      &#property-localization, &#property-settings, &#property-strictness {
 				> .treenode-container .treenode-title {
 					&::before {
 						display: inline-block;
@@ -74,6 +74,13 @@
 				> .treenode-container .treenode-title {
 					&::before {
 						content: '\f0e7';
+					}
+				}
+			}
+			&#property-strictness {
+				> .treenode-container .treenode-title {
+					&::before {
+						content: '\f0eb';
 					}
 				}
 			}
