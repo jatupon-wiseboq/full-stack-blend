@@ -31,25 +31,25 @@ const CodeHelper = {
         p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
   },
   escape: (unsafe: string) => {
-  	unsafe = unsafe || '';
-  	return unsafe
-			.replace(/&/g, "&amp;")
-			.replace(/</g, "&lt;")
-			.replace(/>/g, "&gt;")
-			.replace(/"/g, "&quot;")
-			.replace(/'/g, "&#039;");
+    unsafe = unsafe || '';
+    return unsafe
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   },
   toSecuredDataString: (data: any): string => {
-  	switch (typeof data) {
-  		case 'string':
-  			return data;
-  		case 'number':
-  		case 'boolean':
-  			return data.toString();
-  		case 'object':
-  		case 'undefined':
-  			return '';
-  	}
+    switch (typeof data) {
+      case 'string':
+        return data;
+      case 'number':
+      case 'boolean':
+        return data.toString();
+      case 'object':
+      case 'undefined':
+        return '';
+    }
   },
   label: (data: string): string => {
     let current: string = null;
@@ -59,16 +59,16 @@ const CodeHelper = {
     for (let i=0; i<lines.length; i++) {
       const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})",/);
       const ending = ((category == 1 && (lines[i] == '    }' || lines[i] == '    },')) ||
-      								(category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
+                      (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
       
       if (starting != null) {
-      	category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
+        category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
-      	if (category == 2) {
-      		if (lines[i-1].indexOf('}') == -1) lines[i-1] = `${current}${lines[i-1]}`;
-      		if (lines[i-2].indexOf('}') == -1) lines[i-2] = `${current}${lines[i-2]}`;
-      	}
+        if (category == 2) {
+          if (lines[i-1].indexOf('}') == -1) lines[i-1] = `${current}${lines[i-1]}`;
+          if (lines[i-2].indexOf('}') == -1) lines[i-2] = `${current}${lines[i-2]}`;
+        }
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
         current = null;

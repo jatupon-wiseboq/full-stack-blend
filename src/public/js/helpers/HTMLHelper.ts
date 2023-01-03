@@ -2,8 +2,8 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 const HTMLHelper = {
-	// Document Object Model (DOM) Queries
-	// 
+  // Document Object Model (DOM) Queries
+  // 
   getElementById: (id: string, container: any=document): any => {
     return container.getElementById(id);
   },
@@ -42,20 +42,20 @@ const HTMLHelper = {
     return results;
   },
   getAttribute: (element: any, name: string): string => {
-  	if (!element || !element.getAttribute) return null;
-  	return element.getAttribute(name);
+    if (!element || !element.getAttribute) return null;
+    return element.getAttribute(name);
   },
   setAttribute: (element: any, name: string, value: any) => {    
-  	if (!element || !element.getAttribute || !element.setAttribute) return;
-  	return element.setAttribute(name, value);
+    if (!element || !element.getAttribute || !element.setAttribute) return;
+    return element.setAttribute(name, value);
   },
   removeAttribute: (element: any, name: string) => {
-  	if (!element || !element.getAttribute || !element.removeAttribute) return;
-  	return element.removeAttribute(name);
+    if (!element || !element.getAttribute || !element.removeAttribute) return;
+    return element.removeAttribute(name);
   },
   hasAttribute: (element: any, name: string): boolean => {
-  	if (!element || !element.getAttribute || !element.hasAttribute) return null;
-  	return element.hasAttribute(name);
+    if (!element || !element.getAttribute || !element.hasAttribute) return null;
+    return element.hasAttribute(name);
   },
   findTheParentInClassName: (className: string, element: any, isIncludingSelf: boolean=false): any => { // the closet one
     let current = (!isIncludingSelf) ? element.parentNode : element;
@@ -102,7 +102,7 @@ const HTMLHelper = {
   },
   
   // Cascading Style Sheets' Class Queries
-	// 
+  // 
   hasClass: (element: any, name: string): boolean => {
     let classAttributeValue: string = element;
     if (typeof element === 'object') {
@@ -136,7 +136,7 @@ const HTMLHelper = {
   },
   
   // Cascading Style Sheets' Inline Style Queries
-	// 
+  // 
   setInlineStyle: (inlineStyle: string, styleName: string, styleValue: string) => {
     let splited = (inlineStyle || '').replace(/;$/, '').split('; ');
     let found = false;
@@ -145,9 +145,9 @@ const HTMLHelper = {
       if (splited[i].indexOf(styleName + ': ') == 0) {
         found = true;
         if (styleValue) {
-        	splited[i] = styleName + ': ' + styleValue;
+          splited[i] = styleName + ': ' + styleValue;
         } else {
-        	splited.splice(i, 1);
+          splited.splice(i, 1);
         }
         break;
       }
@@ -160,7 +160,7 @@ const HTMLHelper = {
     return splited.join('; ');
   },
   getInlineStyle: (inlineStyle: string, styleName: string): string => {
-  	if (!inlineStyle) return null;
+    if (!inlineStyle) return null;
     if (('; ' + inlineStyle).indexOf('; ' + styleName + ': ') == -1) return null;
     
     let splited = inlineStyle.replace(/;$/, '').split('; ');
@@ -175,7 +175,7 @@ const HTMLHelper = {
     return null;
   },
   getHashMapFromInlineStyle: (inlineStyle: string): any => {
-  	if (!inlineStyle) return {};
+    if (!inlineStyle) return {};
     let splited = inlineStyle.replace(/;$/, '').split('; ');
     let hashMap = {};
     
@@ -197,7 +197,7 @@ const HTMLHelper = {
   },
   
   // Size and Position Queries
-	// 
+  // 
   getPosition: (object: any, ofDocument: boolean=true): [number, number] => {
     var curleft = 0;
     var curtop = 0;

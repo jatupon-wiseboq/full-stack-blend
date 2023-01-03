@@ -5,18 +5,18 @@ import {ActionType} from "../helpers/DatabaseHelper";
 import {DataTableSchema} from "../helpers/SchemaHelper";
 
 class Base {
-	constructor() {
-	  this.setup();
-	  this.initialize();
+  constructor() {
+    this.setup();
+    this.initialize();
   }
-	
-	protected setup() {
-		void(0);
-	}
-	
-	protected initialize() {
-		void(0);
-	}
+  
+  protected setup() {
+    void(0);
+  }
+  
+  protected initialize() {
+    void(0);
+  }
 }
 
 export {Base};

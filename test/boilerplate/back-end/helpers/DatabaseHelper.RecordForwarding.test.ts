@@ -14,58 +14,58 @@ enum CRUD {
 }
 
 describe('DatabaseHelper', () => {
-	describe('Recordset Forwarding', () => {
-		describe('Recursive', () => {
-			describe('Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-			describe('Document x Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-			describe('Document x Document x Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-		});
-		describe('Recurrent', () => {
-			describe('Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-			describe('Document x Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-			describe('Document x Document x Document', () => {
-				test('Single Record', () => {
-					expect(1+2).toEqual(3);
-				});
-				test('Multiple Records', () => {
-					expect(1+2).toEqual(3);
-				});
-			});
-		});
-	});
+  describe('Recordset Forwarding', () => {
+    describe('Recursive', () => {
+      describe('Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+      describe('Document x Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+      describe('Document x Document x Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+    });
+    describe('Recurrent', () => {
+      describe('Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+      describe('Document x Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+      describe('Document x Document x Document', () => {
+        test('Single Record', () => {
+          expect(1+2).toEqual(3);
+        });
+        test('Multiple Records', () => {
+          expect(1+2).toEqual(3);
+        });
+      });
+    });
+  });
 });
