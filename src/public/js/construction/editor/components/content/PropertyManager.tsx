@@ -21,7 +21,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-	watchingExtensionNames: ['editingProperties']
+  watchingExtensionNames: ['editingProperties']
 });
 
 class PropertyManager extends Base<Props, State> {
@@ -34,7 +34,7 @@ class PropertyManager extends Base<Props, State> {
     }
     
     private onClick(node: ITreeNode) {
-    		perform('update', {
+        perform('update', {
             extensions: [{
                 name: this.props.watchingExtensionNames[0],
                 value: node.id.replace('property-', '')
@@ -43,23 +43,23 @@ class PropertyManager extends Base<Props, State> {
     }
     
     render() {
-    	const selecting = this.state.extensionValues[this.props.watchingExtensionNames[0]];
-    	const nodes = [{
-    		id: 'property-settings',
-			  name: 'Settings',
-			  selected: (selecting == 'settings'),
-			  nodes: []
-    	}, {
-    		id: 'property-localization',
-			  name: 'Localization',
-			  selected: (selecting == 'localization'),
-			  nodes: []
-    	}];
-    	
+      const selecting = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+      const nodes = [{
+        id: 'property-settings',
+        name: 'Settings',
+        selected: (selecting == 'settings'),
+        nodes: []
+      }, {
+        id: 'property-localization',
+        name: 'Localization',
+        selected: (selecting == 'localization'),
+        nodes: []
+      }];
+      
       return (
-      	<div ref="container" className="property-manager">
-      		<FullStackBlend.Controls.Tree enableDragging={false} nodes={nodes} onClick={this.onClick.bind(this)} />
-      	</div>
+        <div ref="container" className="property-manager">
+          <FullStackBlend.Controls.Tree enableDragging={false} nodes={nodes} onClick={this.onClick.bind(this)} />
+        </div>
       );
     }
 }

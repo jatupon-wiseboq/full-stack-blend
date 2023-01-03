@@ -146,26 +146,26 @@ var EditorHelper = {
     // Restore element selecting and cursor placement.
     // 
     if (restoreAccessoryStates) {
-    	let selectingElementGUID = null;
-    	let currentCursorWalkPath = null;
-    	
-    	switch (InternalProjectSettings.currentMode) {
-    		case 'site':
-    			const page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
-    			selectingElementGUID = page.accessories.selectingElementGUID;
-    			currentCursorWalkPath = page.accessories.currentCursorWalkPath;
-    			break;
-    		case 'components':
-    			const component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
-    			selectingElementGUID = component.accessories.selectingElementGUID;
-    			currentCursorWalkPath = component.accessories.currentCursorWalkPath;
-    			break;
-    		case 'popups':
-    			const popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
-    			selectingElementGUID = popup.accessories.selectingElementGUID;
-    			currentCursorWalkPath = popup.accessories.currentCursorWalkPath;
-    			break;
-    	}
+      let selectingElementGUID = null;
+      let currentCursorWalkPath = null;
+      
+      switch (InternalProjectSettings.currentMode) {
+        case 'site':
+          const page = WorkspaceHelper.getPageData(InternalProjectSettings.editingPageID);
+          selectingElementGUID = page.accessories.selectingElementGUID;
+          currentCursorWalkPath = page.accessories.currentCursorWalkPath;
+          break;
+        case 'components':
+          const component = WorkspaceHelper.getComponentData(InternalProjectSettings.editingComponentID);
+          selectingElementGUID = component.accessories.selectingElementGUID;
+          currentCursorWalkPath = component.accessories.currentCursorWalkPath;
+          break;
+        case 'popups':
+          const popup = WorkspaceHelper.getPopupData(InternalProjectSettings.editingPopupID);
+          selectingElementGUID = popup.accessories.selectingElementGUID;
+          currentCursorWalkPath = popup.accessories.currentCursorWalkPath;
+          break;
+      }
       
       if (selectingElementGUID) {
         let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', selectingElementGUID);
@@ -181,48 +181,48 @@ var EditorHelper = {
   },
   
   perform: (name: string, content: any) => {
-  	ManipulationHelper.perform(name, content);
+    ManipulationHelper.perform(name, content);
   },
   synchronize: (name: string, content: any) => {
-  	if (name == 'updateEditorProperties') {
-  		window.clearTimeout(updateEditorPropertiesTimer);
-  		updateEditorPropertiesTimer = window.setTimeout(() => {
-  			let recent = cachedUpdateEditorProperties;
-	  		cachedUpdateEditorProperties = Object.assign({}, content);
-	  		
-	  		for (let key in content) {
-	  			if (content.hasOwnProperty(key)) {
-	  				if (recent[key] == content[key]) {
-	  					content[key] = '~';
-	  				} else if (key === 'extensions') {
-	  					let extensions = content[key] || {};
-		  				let recentExtensions = recent[key] || {};
-		  				for (let extensionKey in extensions) {
-				  			if (extensions.hasOwnProperty(extensionKey)) {
-				  				if (recentExtensions[extensionKey] == extensions[extensionKey]) {
-				  					extensions[extensionKey] = '~';
-				  				}
-				  			}
-				  		}
-		  			}
-	  			}
-	  		}
-	  		
-	  		const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
-		    window.top.postMessage(stringifyIfNeed({
-		    	target: 'editor',
-		      name: name,
-		      content: content
-		    }), '*');
-  		}, 200);
-  	} else {
-	  	const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
-	    window.top.postMessage(stringifyIfNeed({
-	    	target: 'editor',
-	      name: name,
-	      content: content
-	    }), '*');
-  	}
+    if (name == 'updateEditorProperties') {
+      window.clearTimeout(updateEditorPropertiesTimer);
+      updateEditorPropertiesTimer = window.setTimeout(() => {
+        let recent = cachedUpdateEditorProperties;
+        cachedUpdateEditorProperties = Object.assign({}, content);
+        
+        for (let key in content) {
+          if (content.hasOwnProperty(key)) {
+            if (recent[key] == content[key]) {
+              content[key] = '~';
+            } else if (key === 'extensions') {
+              let extensions = content[key] || {};
+              let recentExtensions = recent[key] || {};
+              for (let extensionKey in extensions) {
+                if (extensions.hasOwnProperty(extensionKey)) {
+                  if (recentExtensions[extensionKey] == extensions[extensionKey]) {
+                    extensions[extensionKey] = '~';
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
+        window.top.postMessage(stringifyIfNeed({
+          target: 'editor',
+          name: name,
+          content: content
+        }), '*');
+      }, 200);
+    } else {
+      const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
+      window.top.postMessage(stringifyIfNeed({
+        target: 'editor',
+        name: name,
+        content: content
+      }), '*');
+    }
   },
   update: (tag: string=null) => {
     var event = document.createEvent("Event");
@@ -235,52 +235,52 @@ var EditorHelper = {
     
     let current = element;
     let found = false;
-   	while (current) {
-   		if (HTMLHelper.getAttribute(current, 'internal-fsb-guid') == '0') {
-   			found = true;
-   			break;
-   		}
-   		current = current.parentNode;
-   	}
-   	if (!found) element = null;
-   	
+     while (current) {
+       if (HTMLHelper.getAttribute(current, 'internal-fsb-guid') == '0') {
+         found = true;
+         break;
+       }
+       current = current.parentNode;
+     }
+     if (!found) element = null;
+     
     if (element == null) {
-    	EditorHelper.synchronize('updateEditorProperties', {
-    		attributes: HTMLHelper.getAttributes(document.body, false),
-	      extensions: Object.assign({}, InternalProjectSettings, {
-	        isSelectingElement: false,
-	        isInputElement: false,
-      		isFirstElementOfComponent: false,
-	        hasParentReactComponent: false,
-	        isInheritingComponent: false,
-	        isNotContainingInFlexbox: true,
-	        isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
-	        elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
-	        elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
-	        elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
-	        elementAuthoringRevision: StatusHelper.getElementAuthoringRevision(),
-	        timelineTreeNodes: editorCurrentMode == 'animation' && TimelineHelper.getElementTreeNodes(),
-	        schemataTreeNodes: InternalProjectSettings.currentMode == 'data' && SchemaHelper.getElementTreeNodes() || [],
-	        elementComputedStyleNodes: [],
-	        editorCurrentMode: editorCurrentMode,
-	        editorCurrentExplore: InternalProjectSettings.currentMode,
-	        editing: WorkspaceHelper.getEditable(),
-	        editingProperties: InternalProjectSettings.editingProperties || 'settings',
-	       	areFormatAndStyleOptionsAvailable: (editorCurrentMode != 'animation' ||
-	      		(InternalProjectSettings.editingAnimationID != null && InternalProjectSettings.editingKeyframeID != null)),
-        	autoGeneratedCodeForMergingBackEndScript: BackEndDOMHelper.generateCodeForMergingSection(document.body, document.body, InternalProjectSettings.editingPageID),
-        	animationGroupName: AnimationHelper.getAnimationGroupName(),
-        	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
-        	animationGroupState: AnimationHelper.getAnimationGroupState(),
-        	animationGroupTestState: AnimationHelper.getAnimationGroupTestState(),
-        	animationGroupMode: AnimationHelper.getAnimationGroupMode(),
-        	animationSynchronizeMode: AnimationHelper.getAnimationSynchronizeMode(),
-	        animationRepeatMode: null,
-	        animationRepeatTime: null
-	      }),
-	      tag: tag
-	    });
-    	return;
+      EditorHelper.synchronize('updateEditorProperties', {
+        attributes: HTMLHelper.getAttributes(document.body, false),
+        extensions: Object.assign({}, InternalProjectSettings, {
+          isSelectingElement: false,
+          isInputElement: false,
+          isFirstElementOfComponent: false,
+          hasParentReactComponent: false,
+          isInheritingComponent: false,
+          isNotContainingInFlexbox: true,
+          isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
+          elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
+          elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
+          elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
+          elementAuthoringRevision: StatusHelper.getElementAuthoringRevision(),
+          timelineTreeNodes: editorCurrentMode == 'animation' && TimelineHelper.getElementTreeNodes(),
+          schemataTreeNodes: InternalProjectSettings.currentMode == 'data' && SchemaHelper.getElementTreeNodes() || [],
+          elementComputedStyleNodes: [],
+          editorCurrentMode: editorCurrentMode,
+          editorCurrentExplore: InternalProjectSettings.currentMode,
+          editing: WorkspaceHelper.getEditable(),
+          editingProperties: InternalProjectSettings.editingProperties || 'settings',
+           areFormatAndStyleOptionsAvailable: (editorCurrentMode != 'animation' ||
+            (InternalProjectSettings.editingAnimationID != null && InternalProjectSettings.editingKeyframeID != null)),
+          autoGeneratedCodeForMergingBackEndScript: BackEndDOMHelper.generateCodeForMergingSection(document.body, document.body, InternalProjectSettings.editingPageID),
+          animationGroupName: AnimationHelper.getAnimationGroupName(),
+          animationGroupNote: AnimationHelper.getAnimationGroupNote(),
+          animationGroupState: AnimationHelper.getAnimationGroupState(),
+          animationGroupTestState: AnimationHelper.getAnimationGroupTestState(),
+          animationGroupMode: AnimationHelper.getAnimationGroupMode(),
+          animationSynchronizeMode: AnimationHelper.getAnimationSynchronizeMode(),
+          animationRepeatMode: null,
+          animationRepeatTime: null
+        }),
+        tag: tag
+      });
+      return;
     }
     
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
@@ -288,34 +288,34 @@ var EditorHelper = {
     let attributes = null;
     
     if (EditorHelper.getEditorCurrentMode() == 'animation') {
-    	attributes = HTMLHelper.getAttributes(element, false, {
+      attributes = HTMLHelper.getAttributes(element, false, {
         style: AnimationHelper.getStylesheetDefinition(presetId)
       });
     } else {
-	    if (reusablePresetName) {
-	      attributes = HTMLHelper.getAttributes(element, false, {
-	        style: StylesheetHelper.getStylesheetDefinition(presetId)
-	      });
-	    } else {
-	      attributes = HTMLHelper.getAttributes(element, false);
-	    }
-	  }
-	  
-	  const parentElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', element);
-	  const displayStyle = parentElement && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(parentElement, 'style'), 'display') || null;
-	  const isFlexContainer = HTMLHelper.getAttribute(parentElement, 'internal-fsb-class') == 'FlowLayout' || displayStyle == 'flex';
+      if (reusablePresetName) {
+        attributes = HTMLHelper.getAttributes(element, false, {
+          style: StylesheetHelper.getStylesheetDefinition(presetId)
+        });
+      } else {
+        attributes = HTMLHelper.getAttributes(element, false);
+      }
+    }
+    
+    const parentElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', element);
+    const displayStyle = parentElement && HTMLHelper.getInlineStyle(HTMLHelper.getAttribute(parentElement, 'style'), 'display') || null;
+    const isFlexContainer = HTMLHelper.getAttribute(parentElement, 'internal-fsb-class') == 'FlowLayout' || displayStyle == 'flex';
     
     EditorHelper.synchronize('updateEditorProperties', {
       attributes: attributes,
       extensions: Object.assign({}, InternalProjectSettings, {
-      	isSelectingElement: true,
-      	isInputElement: (INPUT_ELEMENT_TAGS.indexOf(element.firstElementChild && element.firstElementChild.tagName || null) != -1 || INPUT_ELEMENT_TAGS.indexOf(element && element.tagName || null) != -1),
-      	isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
-      	isTableLayoutRow: (element.tagName == 'TR'),
-      	isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
-	      isNotContainingInFlexbox: !isFlexContainer,
-	      isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
-	      hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
+        isSelectingElement: true,
+        isInputElement: (INPUT_ELEMENT_TAGS.indexOf(element.firstElementChild && element.firstElementChild.tagName || null) != -1 || INPUT_ELEMENT_TAGS.indexOf(element && element.tagName || null) != -1),
+        isFirstElementOfComponent: (["components", "popups"].indexOf(WorkspaceHelper.getEditable()) != -1) && EditorHelper.getIsFirstElement(element),
+        isTableLayoutRow: (element.tagName == 'TR'),
+        isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
+        isNotContainingInFlexbox: !isFlexContainer,
+        isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
+        hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),
         stylesheetDefinitionRevision: StylesheetHelper.getStylesheetDefinitionRevision(),
@@ -325,46 +325,46 @@ var EditorHelper = {
         elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
         elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
         elementAuthoringRevision: StatusHelper.getElementAuthoringRevision(),
-	      timelineTreeNodes: editorCurrentMode == 'animation' && TimelineHelper.getElementTreeNodes(),
+        timelineTreeNodes: editorCurrentMode == 'animation' && TimelineHelper.getElementTreeNodes(),
         schemataTreeNodes: InternalProjectSettings.currentMode == 'data' && SchemaHelper.getElementTreeNodes() || [],
         elementComputedStyleNodes: StyleHelper.getElementComputedStyleNodes(element),
         autoGeneratedCodeForRenderMethod: FrontEndDOMHelper.generateCodeForReactRenderMethod(document.body, element),
         autoGeneratedCodeForMergingRenderMethod: FrontEndDOMHelper.generateCodeForMergingSection(document.body, element),
         autoGeneratedCodeForMergingBackEndScript: (WorkspaceHelper.getEditable() != 'data') ? BackEndDOMHelper.generateCodeForMergingSection(document.body, document.body, InternalProjectSettings.editingPageID) : BackEndDOMHelper.generateCodeForMergingSectionInData(element),
         editorCurrentMode: editorCurrentMode,
-	      editorCurrentExplore: InternalProjectSettings.currentMode,
-	      editing: WorkspaceHelper.getEditable(),
-	      editingProperties: InternalProjectSettings.editingProperties || 'settings',
-	      areFormatAndStyleOptionsAvailable: (editorCurrentMode != 'animation' ||
-	      	(InternalProjectSettings.editingAnimationID != null && InternalProjectSettings.editingKeyframeID != null)),
-      	animationGroupName: AnimationHelper.getAnimationGroupName(),
-      	animationGroupNote: AnimationHelper.getAnimationGroupNote(),
-      	animationGroupState: AnimationHelper.getAnimationGroupState(),
-      	animationGroupTestState: AnimationHelper.getAnimationGroupTestState(),
+        editorCurrentExplore: InternalProjectSettings.currentMode,
+        editing: WorkspaceHelper.getEditable(),
+        editingProperties: InternalProjectSettings.editingProperties || 'settings',
+        areFormatAndStyleOptionsAvailable: (editorCurrentMode != 'animation' ||
+          (InternalProjectSettings.editingAnimationID != null && InternalProjectSettings.editingKeyframeID != null)),
+        animationGroupName: AnimationHelper.getAnimationGroupName(),
+        animationGroupNote: AnimationHelper.getAnimationGroupNote(),
+        animationGroupState: AnimationHelper.getAnimationGroupState(),
+        animationGroupTestState: AnimationHelper.getAnimationGroupTestState(),
         animationGroupMode: AnimationHelper.getAnimationGroupMode(),
         animationSynchronizeMode: AnimationHelper.getAnimationSynchronizeMode(),
         animationRepeatMode: AnimationHelper.getAnimationRepeatMode(presetId),
         animationRepeatTime: AnimationHelper.getAnimationRepeatTime(presetId)
       }, Accessories.cellFormater.getInfo()),
-	    tag: tag
+      tag: tag
     });
   },
   updateExternalLibraries: () => {
     let externalStylesheets = [];
-		let externalScripts = [];
-		let selectedLibraries: string[] = (InternalProjectSettings.externalLibraries || '').split(' ');
+    let externalScripts = [];
+    let selectedLibraries: string[] = (InternalProjectSettings.externalLibraries || '').split(' ');
     for (let library of LIBRARIES) {
         if (selectedLibraries.indexOf(library.id) != -1) {
             if (library.development.stylesheets) {
                 for (let stylesheet of library.development.stylesheets) {
-                		if (HTMLHelper.getElementByAttributeNameAndValue('href', stylesheet) == null) {
-	                      let element = document.createElement('link');
-	                      element.setAttribute('rel', 'stylesheet');
-	                      element.setAttribute('type', 'text/css');
-	                      element.setAttribute('href', stylesheet);
-	                      element.setAttribute('internal-stylesheet-element', library.id);
-	                      document.head.appendChild(element);
-	                  }
+                    if (HTMLHelper.getElementByAttributeNameAndValue('href', stylesheet) == null) {
+                        let element = document.createElement('link');
+                        element.setAttribute('rel', 'stylesheet');
+                        element.setAttribute('type', 'text/css');
+                        element.setAttribute('href', stylesheet);
+                        element.setAttribute('internal-stylesheet-element', library.id);
+                        document.head.appendChild(element);
+                    }
                 }
             }
         } else {
@@ -377,46 +377,46 @@ var EditorHelper = {
     
     let elements = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-stylesheet-element', 'custom')];
     
-		let externalLibraries: string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
+    let externalLibraries: string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
     for (let externalLibrary of externalLibraries) {
-			  if (!externalLibrary) continue;
-			  
-	    	let splited = externalLibrary.split('#');
-	    	if (splited[0].toLowerCase().indexOf('.css') != -1) {
-	    			let filters = elements.filter(element => element.getAttribute('rel') === 'stylesheet' && element.getAttribute('href') === splited[0]);
-	    			
-	    			if (filters.length == 0) {
-			    			let element = document.createElement('link');
-		            element.setAttribute('rel', 'stylesheet');
-		            element.setAttribute('type', 'text/css');
-		            element.setAttribute('href', splited[0]);
-		            element.setAttribute('internal-stylesheet-element', 'custom');
-		            document.head.appendChild(element);
-	          } else {
-	          		elements = elements.filter(element => filters.indexOf(element) == -1);
-	          }
-		    }
+        if (!externalLibrary) continue;
+        
+        let splited = externalLibrary.split('#');
+        if (splited[0].toLowerCase().indexOf('.css') != -1) {
+            let filters = elements.filter(element => element.getAttribute('rel') === 'stylesheet' && element.getAttribute('href') === splited[0]);
+            
+            if (filters.length == 0) {
+                let element = document.createElement('link');
+                element.setAttribute('rel', 'stylesheet');
+                element.setAttribute('type', 'text/css');
+                element.setAttribute('href', splited[0]);
+                element.setAttribute('internal-stylesheet-element', 'custom');
+                document.head.appendChild(element);
+            } else {
+                elements = elements.filter(element => filters.indexOf(element) == -1);
+            }
+        }
     }
     
     for (let element of elements) {
-    		element.parentNode.removeChild(element);
+        element.parentNode.removeChild(element);
     }
   },
   
   select: (element: HTMLElement) => {
-  	InternalProjectSettings.currentActiveLayerToolAvailable = !!element;
-  	InternalProjectSettings.currentActiveLayerHidden = false;
-  	InternalProjectSettings.currentActiveLayerRemovable = !!element;
-  	
+    InternalProjectSettings.currentActiveLayerToolAvailable = !!element;
+    InternalProjectSettings.currentActiveLayerHidden = false;
+    InternalProjectSettings.currentActiveLayerRemovable = !!element;
+    
     if (!element) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
-    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
-    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
-    	
-    	HTMLHelper.addClass(element, 'internal-fsb-selecting');
-    	
-    	InternalProjectSettings.currentActiveLayerHidden = HTMLHelper.hasClass(element, 'internal-fsb-layer-off');
-    	
+      const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+      if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+      
+      HTMLHelper.addClass(element, 'internal-fsb-selecting');
+      
+      InternalProjectSettings.currentActiveLayerHidden = HTMLHelper.hasClass(element, 'internal-fsb-layer-off');
+      
       element.appendChild(Accessories.resizer.getDOMNode());
       element.appendChild(Accessories.redLine.getDOMNode());
       
@@ -426,10 +426,10 @@ var EditorHelper = {
       let current = element;
       while (current != null) {
         if ((current != element && HTMLHelper.getAttribute(current, 'internal-fsb-class') == 'FlowLayout') ||
-        		HTMLHelper.hasClass(current, 'internal-fsb-begin-layout') ||
-        		(HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
+            HTMLHelper.hasClass(current, 'internal-fsb-begin-layout') ||
+            (HTMLHelper.hasClass(current, 'internal-fsb-allow-cursor') && current.tagName == 'TD')) {
           current.insertBefore(Accessories.guide.getDOMNode(), current.firstElementChild);
-      		Accessories.guide.invalidate();
+          Accessories.guide.invalidate();
           break;
         }
         current = current.parentNode;
@@ -445,30 +445,30 @@ var EditorHelper = {
       EditorHelper.synchronize('select', HTMLHelper.getAttribute(element, 'internal-fsb-class'));
       EditorHelper.update();
     } else if (element.tagName == 'TR') {
-    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
-    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
-    	
-    	Accessories.guide.getDOMNode().remove();
-    	Accessories.resizer.getDOMNode().remove();
-    	
-    	HTMLHelper.addClass(element, 'internal-fsb-selecting');
+      const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+      if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+      
+      Accessories.guide.getDOMNode().remove();
+      Accessories.resizer.getDOMNode().remove();
+      
+      HTMLHelper.addClass(element, 'internal-fsb-selecting');
     }
     if (element.tagName == 'TABLE') {
-	    Accessories.cellFormater.setTableElement(element);
-	  } else {
-	  	Accessories.cellFormater.setTableElement(null);
-	  }
+      Accessories.cellFormater.setTableElement(element);
+    } else {
+      Accessories.cellFormater.setTableElement(null);
+    }
   },
   deselect: () => {
     if (Accessories.resizer && Accessories.resizer.getDOMNode().parentNode != null) {
-    	const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
-    	if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
-    	
+      const selecting = HTMLHelper.getElementByClassName('internal-fsb-selecting');
+      if (selecting) HTMLHelper.removeClass(selecting, 'internal-fsb-selecting');
+      
       if (Accessories.resizer.getDOMNode().parentNode) {
-      	Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
+        Accessories.resizer.getDOMNode().parentNode.removeChild(Accessories.resizer.getDOMNode());
       }
       if (Accessories.redLine.getDOMNode().parentNode) {
-      	Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
+        Accessories.redLine.getDOMNode().parentNode.removeChild(Accessories.redLine.getDOMNode());
       }
       
       Accessories.redLine.reset();
@@ -491,8 +491,8 @@ var EditorHelper = {
     }
   },
   getSelectingElement: (_window: any=window, _document: any=window.document) => {
-  	if (Accessories.resizer == null) return null;
-  	
+    if (Accessories.resizer == null) return null;
+    
     let current = Accessories.resizer.getDOMNode();
     while (current != null && current != _document.body) {
       current = current.parentNode;
@@ -505,20 +505,20 @@ var EditorHelper = {
     }
   },
   move: (target: HTMLElement, destination: HTMLElement, direction: string) => {
-  	switch (direction) {
-    	case 'insertBefore':
-    		destination.parentNode.insertBefore(target, destination);
-  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
-    		break;
-    	case 'appendChild':
-    		destination.appendChild(target);
-  			destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstElementChild);
-    		break;
-    	case 'insertAfter':
-    		destination.parentNode.insertBefore(target, HTMLHelper.getNextSibling(destination));
-  			destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
-    		break;
-  	}
+    switch (direction) {
+      case 'insertBefore':
+        destination.parentNode.insertBefore(target, destination);
+        destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
+        break;
+      case 'appendChild':
+        destination.appendChild(target);
+        destination.insertBefore(Accessories.guide.getDOMNode(), destination.firstElementChild);
+        break;
+      case 'insertAfter':
+        destination.parentNode.insertBefore(target, HTMLHelper.getNextSibling(destination));
+        destination.parentNode.insertBefore(Accessories.guide.getDOMNode(), destination.parentNode.firstElementChild);
+        break;
+    }
     
     Accessories.guide.invalidate();
   },
@@ -529,15 +529,15 @@ var EditorHelper = {
     editorCurrentMode = mode;
   },
   hasParentReactComponent: (element: HTMLElement) => {
-		if (element == document) return false;
-		
-  	const _document = element.ownerDocument;
-		const _window = _document.defaultView || _document.parentWindow;
-		
-  	return HTMLHelper.findAllParentValuesInAttributeName("internal-fsb-react-mode", element, _window.document.body, true).length != 0;
+    if (element == document) return false;
+    
+    const _document = element.ownerDocument;
+    const _window = _document.defaultView || _document.parentWindow;
+    
+    return HTMLHelper.findAllParentValuesInAttributeName("internal-fsb-react-mode", element, _window.document.body, true).length != 0;
   },
   getIsFirstElement: (element: HTMLElement) => {
-  	return element && HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout') || false;
+    return element && HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout') || false;
   }
 };
 

@@ -12,16 +12,16 @@ export const index = async (req: Request, res: Response) => {
     else if (req.query.evaluation === 'basic') user = await User.findOne({email: 'evaluation+basic@softenstorm.com'});
     else if (req.query.evaluation === 'community') user = await User.findOne({email: 'evaluation@softenstorm.com'});
     else if (!!req.query.evaluation) {
-    	res.redirect('/editor?evaluation=community');
-    	return;
+      res.redirect('/editor?evaluation=community');
+      return;
     }
     
     if (!user) {
-    	res.redirect('/account/authenticate');
+      res.redirect('/account/authenticate');
     } else {
-	    res.render("construction/index", {
-	    	user: user
-	    });
+      res.render("construction/index", {
+        user: user
+      });
     }
 };
 
@@ -31,13 +31,13 @@ export const index = async (req: Request, res: Response) => {
  */
 export const html = async (req: Request, res: Response) => {
     let user = req.user as UserDocument;
-		if (!user) user = await User.findOne({email: 'evaluation@softenstorm.com'});
-		
-		if (!user) {
-    	res.redirect('/account/authenticate');
+    if (!user) user = await User.findOne({email: 'evaluation@softenstorm.com'});
+    
+    if (!user) {
+      res.redirect('/account/authenticate');
     } else {
-	    res.render("construction/area/html/index", {
-	    	user: user
-	    });
+      res.render("construction/area/html/index", {
+        user: user
+      });
     }
 };

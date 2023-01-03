@@ -37,10 +37,10 @@ var HTMLHelper = {
     }
   },
   getElementsBySelector: (selector: string, container: HTMLElement=document) => {
-  	return container.querySelectorAll(selector);
+    return container.querySelectorAll(selector);
   },
   getElementBySelector: (selector: string, container: HTMLElement=document) => {
-  	return HTMLHelper.getElementsBySelector(selector, container)[0] || null;
+    return HTMLHelper.getElementsBySelector(selector, container)[0] || null;
   },
   getElementByAttributeNameAndValue: (attributeName: string, value: string, container: HTMLElement=document) => {
     return container.querySelectorAll('[' + attributeName + '="' + value + '"]')[0];
@@ -61,24 +61,24 @@ var HTMLHelper = {
     return container.getElementsByTagName(tagName);
   },
   getNextSibling: (element: HTMLElement, skipIds: string[]=[]) => {
-  	if (!element) return null;
-  	while (element.nextSibling) {
-  		element = element.nextSibling;
-  		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
-  		if (!element.tagName) continue;
-  		return element;
-  	}
-  	return null;
+    if (!element) return null;
+    while (element.nextSibling) {
+      element = element.nextSibling;
+      if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+      if (!element.tagName) continue;
+      return element;
+    }
+    return null;
   },
   getPreviousSibling: (element: HTMLElement, skipIds: string[]=[]) => {
-  	if (!element) return null;
-  	while (element.previousSibling) {
-  		element = element.previousSibling;
-  		if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
-  		if (!element.tagName) continue;
-  		return element;
-  	}
-  	return null;
+    if (!element) return null;
+    while (element.previousSibling) {
+      element = element.previousSibling;
+      if (skipIds.indexOf(HTMLHelper.getAttribute(element, 'id')) != -1) continue;
+      if (!element.tagName) continue;
+      return element;
+    }
+    return null;
   },
   getAttributes: (element: HTMLElement, array: boolean=false, mergeAttributes: any={}, reverseForwarding: boolean=true) => {
     if (array) {
@@ -122,17 +122,17 @@ var HTMLHelper = {
       }
       
       elementAttributes.sort((a: any, b: any) => {
-      	return (a.name > b.name) ? 1 : -1;
+        return (a.name > b.name) ? 1 : -1;
       });
       
       const _elementAttributes = [];
       const _insertedKeys = {};
       
       for (let _element of elementAttributes) {
-      	if (_insertedKeys[_element.name] === true) continue;
-      	_insertedKeys[_element.name] = true;
-      	
-      	_elementAttributes.push(_element);
+        if (_insertedKeys[_element.name] === true) continue;
+        _insertedKeys[_element.name] = true;
+        
+        _elementAttributes.push(_element);
       }
       
       return _elementAttributes;
@@ -163,53 +163,53 @@ var HTMLHelper = {
     return (element && element.getAttribute && element.getAttribute('style') == '-fsb-empty' && HTMLHelper.hasAttribute(element, 'internal-fsb-guid'));
   },
   getAttribute: (element: HTMLElement, name: string) => {
-  	if (!element || !element.getAttribute) return null;
-  	if (name == 'style' && HTMLHelper.isForChildren(element)) {
-  		return element.firstElementChild.getAttribute(name);
-  	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
-  		return [element.getAttribute(name) || '', element.firstElementChild.getAttribute(name) || ''].join(' ');
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstElementChild.getAttribute(name);
-  	} else {
-  		return element.getAttribute(name);
-  	}
+    if (!element || !element.getAttribute) return null;
+    if (name == 'style' && HTMLHelper.isForChildren(element)) {
+      return element.firstElementChild.getAttribute(name);
+    } else if (name == 'class' && HTMLHelper.isForChildren(element)) {
+      return [element.getAttribute(name) || '', element.firstElementChild.getAttribute(name) || ''].join(' ');
+    } else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
+      return element.firstElementChild.getAttribute(name);
+    } else {
+      return element.getAttribute(name);
+    }
   },
   setAttribute: (element: HTMLElement, name: string, value: any) => {    
-  	if (!element || !element.getAttribute || !element.setAttribute) return;
-  	if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
-  		element.setAttribute(name, '-fsb-empty');
-  		return element.firstElementChild.setAttribute(name, value);
-  	} else if (name == 'class' && HTMLHelper.isForChildren(element)) {
-  		element.setAttribute(name, CodeHelper.getInternalClasses(value));
-  		return element.firstElementChild.setAttribute(name, CodeHelper.getCustomClasses(value));
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstElementChild.setAttribute(name, value);
-  	} else {
-  		return element.setAttribute(name, value);
-  	}
+    if (!element || !element.getAttribute || !element.setAttribute) return;
+    if (name == 'style' && HTMLHelper.getInlineStyle(value, '-fsb-for-children') == 'true') {
+      element.setAttribute(name, '-fsb-empty');
+      return element.firstElementChild.setAttribute(name, value);
+    } else if (name == 'class' && HTMLHelper.isForChildren(element)) {
+      element.setAttribute(name, CodeHelper.getInternalClasses(value));
+      return element.firstElementChild.setAttribute(name, CodeHelper.getCustomClasses(value));
+    } else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
+      return element.firstElementChild.setAttribute(name, value);
+    } else {
+      return element.setAttribute(name, value);
+    }
   },
   removeAttribute: (element: HTMLElement, name: string) => {
-  	if (!element || !element.getAttribute || !element.removeAttribute) return;
-  	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
-  		element.removeAttribute(name);
-  		element.firstElementChild.removeAttribute(name);
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstElementChild.removeAttribute(name);
-  	} else {
-  		return element.removeAttribute(name);
-  	}
+    if (!element || !element.getAttribute || !element.removeAttribute) return;
+    if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
+      element.removeAttribute(name);
+      element.firstElementChild.removeAttribute(name);
+    } else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
+      return element.firstElementChild.removeAttribute(name);
+    } else {
+      return element.removeAttribute(name);
+    }
   },
   hasAttribute: (element: HTMLElement, name: string) => {
-  	if (!element || !element.getAttribute || !element.hasAttribute) return null;
-  	if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
-  		return element.firstElementChild.hasAttribute(name);
-  	} else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
-  		return element.firstElementChild.hasAttribute(name);
-  	} else {
-  		return element.hasAttribute(name);
-  	}
-  },	
-	
+    if (!element || !element.getAttribute || !element.hasAttribute) return null;
+    if (name == 'style' && element.getAttribute(name) == '-fsb-empty') {
+      return element.firstElementChild.hasAttribute(name);
+    } else if (FORWARED_ATTRIBUTES_FOR_CHILDREN.indexOf(name) != -1 && HTMLHelper.isForChildren(element)) {
+      return element.firstElementChild.hasAttribute(name);
+    } else {
+      return element.hasAttribute(name);
+    }
+  },  
+  
   findTheParentInClassName: (className: string, element: HTMLElement, isIncludingSelf: boolean=false) => { // the closet one
     let current = (!isIncludingSelf) ? element.parentNode : element;
     while (current != null) {
@@ -305,9 +305,9 @@ var HTMLHelper = {
       if (splited[i].indexOf(styleName + ': ') == 0) {
         found = true;
         if (styleValue) {
-        	splited[i] = styleName + ': ' + styleValue;
+          splited[i] = styleName + ': ' + styleValue;
         } else {
-        	splited.splice(i, 1);
+          splited.splice(i, 1);
         }
         break;
       }
@@ -320,7 +320,7 @@ var HTMLHelper = {
     return splited.sort().join('; ');
   },
   getInlineStyle: (inlineStyle: string, styleName: string) => {
-  	if (!inlineStyle) return null;
+    if (!inlineStyle) return null;
     if (('; ' + inlineStyle).indexOf('; ' + styleName + ': ') == -1) return null;
     
     let splited = inlineStyle.replace(/;$/, '').split('; ');
@@ -335,7 +335,7 @@ var HTMLHelper = {
     return null;
   },
   getHashMapFromInlineStyle: (inlineStyle: string) => {
-  	if (!inlineStyle) return {};
+    if (!inlineStyle) return {};
     let splited = inlineStyle.replace(/;$/, '').split('; ');
     let hashMap = {};
     
@@ -350,7 +350,7 @@ var HTMLHelper = {
     let results = [];
     for (var key in hash) {
       if (hash.hasOwnProperty(key) && hash[key] != null) {
-    		if (rejectInternalStyle && hash[key].indexOf('coding') != -1) continue;
+        if (rejectInternalStyle && hash[key].indexOf('coding') != -1) continue;
         results.push(key + ': ' + hash[key]);
       }
     }
@@ -360,9 +360,9 @@ var HTMLHelper = {
     let results = [];
     for (var key in hash) {
       if (hash.hasOwnProperty(key) && hash[key] != null) {
-    		if (hash[key].indexOf('coding') != -1 && (!strip || key.indexOf('-fsb-') == -1)) {
-        	results.push(key);
-    		}
+        if (hash[key].indexOf('coding') != -1 && (!strip || key.indexOf('-fsb-') == -1)) {
+          results.push(key);
+        }
       }
     }
     return results.sort();
@@ -434,14 +434,14 @@ var HTMLHelper = {
     return vendor_prefixes_hash[prefix + name] === true;
   },
   sortAttributes: (container: HTMLElement=document) => {
-  	HTMLHelper.recursiveSortAttributes([document.body]);
+    HTMLHelper.recursiveSortAttributes([document.body]);
   },
-	recursiveSortAttributes: (elements: any) => {
+  recursiveSortAttributes: (elements: any) => {
     for (let j = 0; j < elements.length; j++) {
-    	if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
-    	
-    	const attributes = [];
-    	if (elements[j].hasAttributes()) {
+      if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
+      
+      const attributes = [];
+      if (elements[j].hasAttributes()) {
         let attrs = elements[j].attributes;
         for (let attr of attrs) {
           attributes.push({
@@ -450,40 +450,40 @@ var HTMLHelper = {
           });
         }
       }
-			
+      
       for (let i = 0; i < attributes.length; i++) {
         elements[j].removeAttribute(attributes[i].name);
       }
 
       for (let i = 0; i < attributes.length; i++) {
-      	HTMLHelper.sortAttributeValues(attributes[i]);
-      	
+        HTMLHelper.sortAttributeValues(attributes[i]);
+        
         elements[j].setAttribute(attributes[i].name, attributes[i].value);
       }
       
       elements[j].children && HTMLHelper.recursiveSortAttributes(elements[j].children);
     }
-	},
-	sortAttributeValues: (attribute: any) => {
-		switch (attribute.name) {
-  		case 'style':
-  			if (attribute.value) {
-  				attribute.value = attribute.value.split('; ').sort().join('; ');
-  			}
-  			break;
-  		case 'class':
-  			if (attribute.value) {
-  				attribute.value = attribute.value.split(' ').sort().join(' ');
-  			}
-  			break;
-  		case 'internal-fsb-data-controls':
-  		case 'internal-fsb-animation':
-  			if (attribute.value) {
-  				attribute.value = attribute.value.trim().split(' ').sort().join(' ');
-  			}
-  			break;
-  	}
-	}
+  },
+  sortAttributeValues: (attribute: any) => {
+    switch (attribute.name) {
+      case 'style':
+        if (attribute.value) {
+          attribute.value = attribute.value.split('; ').sort().join('; ');
+        }
+        break;
+      case 'class':
+        if (attribute.value) {
+          attribute.value = attribute.value.split(' ').sort().join(' ');
+        }
+        break;
+      case 'internal-fsb-data-controls':
+      case 'internal-fsb-animation':
+        if (attribute.value) {
+          attribute.value = attribute.value.trim().split(' ').sort().join(' ');
+        }
+        break;
+    }
+  }
 };
 
 export {HTMLHelper};

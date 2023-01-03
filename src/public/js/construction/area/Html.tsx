@@ -10,21 +10,21 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   let isLoaded: boolean = false;
   
   const checkTextElementIfBlank = () => {
-		const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement');
-		
-		for (const element of elements) {
-			// When switching off and deselecting, causes the innerText to be empty,
-			// and we should prevent it.
-			if (HTMLHelper.findTheParentInClassName(element, 'internal-fsb-layer-off', true)) continue;
-			
-			if (element && element.textContent.trim() == '') {
-				const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
-				
-				element.innerHTML = 'Text';
-				
-				for (const accessory of accessories) element.appendChild(accessory);
-			}
-		}
+    const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement');
+    
+    for (const element of elements) {
+      // When switching off and deselecting, causes the innerText to be empty,
+      // and we should prevent it.
+      if (HTMLHelper.findTheParentInClassName(element, 'internal-fsb-layer-off', true)) continue;
+      
+      if (element && element.textContent.trim() == '') {
+        const accessories = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-accessory', element));
+        
+        element.innerHTML = 'Text';
+        
+        for (const accessory of accessories) element.appendChild(accessory);
+      }
+    }
   };
   
   window.addEventListener("load", (event) => {
@@ -40,22 +40,22 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   });
   
   window.addEventListener('contextmenu', (event: any) => {
-  	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
-  	
-  	try {
-  		if (!top._contextMenuNotice) {
-	  		alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
-	  		top._contextMenuNotice = true;
-	  	}
-  	} catch(error) {
-  		if (!window._contextMenuNotice) {
-	  		alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
-	  		window._contextMenuNotice = true;
-	  	}
-  	}
-  	
-		return EventHelper.cancel(event);
-	}, true);
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
+    
+    try {
+      if (!top._contextMenuNotice) {
+        alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
+        top._contextMenuNotice = true;
+      }
+    } catch(error) {
+      if (!window._contextMenuNotice) {
+        alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
+        window._contextMenuNotice = true;
+      }
+    }
+    
+    return EventHelper.cancel(event);
+  }, true);
   
   // Bind events.
   //
@@ -67,12 +67,12 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   window.messageFnArray = window.messageFnArray || [];
   window.messageFnArray.push(messageFn);
   window.postMessage = (data: any) => {
-  	if (typeof data === 'string') data = JSON.parse(data);
-  	for (const messageFn of window.messageFnArray) {
-  		messageFn({
-  			data: data
-  		});
-  	}
+    if (typeof data === 'string') data = JSON.parse(data);
+    for (const messageFn of window.messageFnArray) {
+      messageFn({
+        data: data
+      });
+    }
   };
   
   window.addEventListener("keydown", (event) => {
@@ -82,7 +82,7 @@ import {AnimationHelper} from './helpers/AnimationHelper';
         if ((document.activeElement.innerText == '\n' || document.activeElement.innerText == '') && event.keyCode == 8) {
           EditorHelper.perform('keydown', event.keyCode);
           
-  				checkTextElementIfBlank();
+          checkTextElementIfBlank();
           HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
     
           return EventHelper.cancel(event);
@@ -96,23 +96,23 @@ import {AnimationHelper} from './helpers/AnimationHelper';
       switch (event.keyCode) {
         case 27:
           if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
-          	document.activeElement.blur();
-          	return EventHelper.cancel(event);
+            document.activeElement.blur();
+            return EventHelper.cancel(event);
           } else {
-          	document.activeElement.blur();
+            document.activeElement.blur();
           }
           break;
         case 67:
         case 86:
         case 88:
-        	// Allow cut, copy, and paste events.
-        	//
-        	if (!window.clipboardData) return;
-        	break;
+          // Allow cut, copy, and paste events.
+          //
+          if (!window.clipboardData) return;
+          break;
       }
       
       EditorHelper.perform('keydown', event.keyCode);
-    	
+      
       return EventHelper.cancel(event);
     }
   }, false);
@@ -132,14 +132,14 @@ import {AnimationHelper} from './helpers/AnimationHelper';
   }, true);
   window.addEventListener("focus", (event) => {
     if (document.activeElement && HTMLHelper.getAttribute(document.activeElement, 'internal-fsb-class') === 'TextElement' &&
-    	HTMLHelper.hasClass(document.activeElement, 'internal-fsb-selecting')) {
+      HTMLHelper.hasClass(document.activeElement, 'internal-fsb-selecting')) {
       HTMLHelper.addClass(document.body, 'internal-fsb-focusing-text-element');
     } else {
-    	document.activeElement && document.activeElement.blur();
+      document.activeElement && document.activeElement.blur();
     }
   }, true);
   window.addEventListener("blur", (event) => {
-  	checkTextElementIfBlank();
+    checkTextElementIfBlank();
     HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
   let previousWindowSize = {width: null, height: null};
@@ -153,7 +153,7 @@ import {AnimationHelper} from './helpers/AnimationHelper';
     }
   });
   window.generateFrontEndCodeForCurrentPage = (() => {
-  	return WorkspaceHelper.generateFrontEndCodeForCurrentPage();
+    return WorkspaceHelper.generateFrontEndCodeForCurrentPage();
   });
   window.generateFrontEndCodeForAllPages = (() => {
     return WorkspaceHelper.generateFrontEndCodeForAllPages();
@@ -162,24 +162,24 @@ import {AnimationHelper} from './helpers/AnimationHelper';
     return WorkspaceHelper.generateBackEndCodeForAllPages();
   });
   window.generateConnectorCode = (() => {
-  	return WorkspaceHelper.generateConnectorCode();
+    return WorkspaceHelper.generateConnectorCode();
   });
   window.generateWorkerCode = (() => {
-  	return WorkspaceHelper.generateWorkerCode();
+    return WorkspaceHelper.generateWorkerCode();
   });
   window.generateSchedulerCode = (() => {
-  	return WorkspaceHelper.generateSchedulerCode();
+    return WorkspaceHelper.generateSchedulerCode();
   });
   window.getCommonExpandingFeatureScripts = (() => {
     return WorkspaceHelper.getCommonExpandingFeatureScripts();
   });
   window.generateWorkspaceData = (() => {
-  	return WorkspaceHelper.generateWorkspaceData();
+    return WorkspaceHelper.generateWorkspaceData();
   });
   window.clearFullStackCodeForAllPages = ((data) => {
-  	return WorkspaceHelper.clearFullStackCodeForAllPages(data);
+    return WorkspaceHelper.clearFullStackCodeForAllPages(data);
   });
- 	window.initializeWorkspaceData = ((data) => {
-  	return WorkspaceHelper.initializeWorkspaceData(data);
+   window.initializeWorkspaceData = ((data) => {
+    return WorkspaceHelper.initializeWorkspaceData(data);
   });
 })();

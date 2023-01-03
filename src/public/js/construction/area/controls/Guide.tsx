@@ -9,12 +9,12 @@ interface Props {
 }
 
 interface State {
-		paddingLeft: number,
-		paddingRight: number
+    paddingLeft: number,
+    paddingRight: number
 }
 
 class Guide extends React.Component<Props, State> {
-		state: State = {paddingLeft: 0, paddingRight: 0};
+    state: State = {paddingLeft: 0, paddingRight: 0};
     static defaultProps: Props = {
     }
     
@@ -39,8 +39,8 @@ class Guide extends React.Component<Props, State> {
         let computedStyle;
         
         const getSize = (computedStyle, key1, key2) => {
-        	const value = parseFloat(computedStyle[key1] || computedStyle[key2]);
-        	return (isNaN(value)) ? 0 : value;
+          const value = parseFloat(computedStyle[key1] || computedStyle[key2]);
+          return (isNaN(value)) ? 0 : value;
         };
         
         let paddingLeft = 0;
@@ -54,9 +54,9 @@ class Guide extends React.Component<Props, State> {
         }
         
         if (parent) {
-	        paddingLeft += getSize(computedStyle, 'paddingLeft', 'padding-left');
-	        paddingRight += getSize(computedStyle, 'paddingRight', 'padding-right');
-	      }
+          paddingLeft += getSize(computedStyle, 'paddingLeft', 'padding-left');
+          paddingRight += getSize(computedStyle, 'paddingRight', 'padding-right');
+        }
         
         this.setState({
             paddingLeft: paddingLeft,

@@ -8,14 +8,14 @@ let cachedPrioritizedKeysRevision = -1;
 
 var StylesheetHelper = {
   generateStylesheetData: () => {
-  	for (let key in stylesheetDefinitions) {
-  		if (stylesheetDefinitions.hasOwnProperty(key)) {
-  			if (stylesheetDefinitions[key]) {
-  				stylesheetDefinitions[key] = stylesheetDefinitions[key].split('; ').sort().join('; ');
-  			}
-  		}
-  	}
-  	
+    for (let key in stylesheetDefinitions) {
+      if (stylesheetDefinitions.hasOwnProperty(key)) {
+        if (stylesheetDefinitions[key]) {
+          stylesheetDefinitions[key] = stylesheetDefinitions[key].split('; ').sort().join('; ');
+        }
+      }
+    }
+    
     return stylesheetDefinitions;
   },
   initializeStylesheetData: (data: any) => {
@@ -26,7 +26,7 @@ var StylesheetHelper = {
     
     StylesheetHelper.renderStylesheetElement();
   },
-	setStyle: function(element: HTMLElement, style: string) {
+  setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     
@@ -37,7 +37,7 @@ var StylesheetHelper = {
     }
   },
   getStyle: function(element: HTMLElement) {
-  	let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
+    let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     let style = (reusablePresetName) ? StylesheetHelper.getStylesheetDefinition(presetId) : HTMLHelper.getAttribute(element, 'style');
     
@@ -85,17 +85,17 @@ var StylesheetHelper = {
       });
       
       cachedPrioritizedKeys = cachedPrioritizedKeys.map((presetId) => {
-      	let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
-      	let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
-      	let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
-      	let priority = parseInt(HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-priority') || '0');
-      	
-      	return {
-      		id: presetId,
-	      	name: presetName || 'Untitled',
-	      	priority: priority,
-	      	inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
-	      }
+        let presetName = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-reusable-name');
+        let _presetId = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-preset-id');
+        let inheritedPresets = HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-inherited-presets');
+        let priority = parseInt(HTMLHelper.getInlineStyle(stylesheetDefinitions[presetId], '-fsb-priority') || '0');
+        
+        return {
+          id: presetId,
+          name: presetName || 'Untitled',
+          priority: priority,
+          inheritances: inheritedPresets && inheritedPresets.split(', ').filter(presetId => presetId != _presetId) || []
+        }
       });
     }
     
@@ -121,27 +121,27 @@ var StylesheetHelper = {
     let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
     let inversedReferenceHash = {};
     let wysiwygCSSSelectorPrefixes = (production) ? [''] : ['.internal-fsb-strict-layout > .internal-fsb-element',
-    	'.internal-fsb-absolute-layout > .internal-fsb-element',
-    	'.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
-    	'.internal-fsb-absolute-layout > .internal-fsb-inheriting-element',
-    	'.internal-fsb-element > .internal-fsb-element',
-    	'.internal-fsb-element > .internal-fsb-inheriting-element',
-    	'.internal-fsb-inheriting-element > .internal-fsb-element',
-    	'.internal-fsb-inheriting-element > .internal-fsb-inheriting-element'];
+      '.internal-fsb-absolute-layout > .internal-fsb-element',
+      '.internal-fsb-strict-layout > .internal-fsb-inheriting-element',
+      '.internal-fsb-absolute-layout > .internal-fsb-inheriting-element',
+      '.internal-fsb-element > .internal-fsb-element',
+      '.internal-fsb-element > .internal-fsb-inheriting-element',
+      '.internal-fsb-inheriting-element > .internal-fsb-element',
+      '.internal-fsb-inheriting-element > .internal-fsb-inheriting-element'];
     
-  	for (let info of prioritizedKeys) {
-  		let references = info.inheritances.filter(token => token != '');
-  		
-  		for (let reference of references) {
-  			if (!inversedReferenceHash[reference]) {
-  					inversedReferenceHash[reference] = [];
-  			}
-  			
-  			if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
-  					inversedReferenceHash[reference].push(info.id);
-  			}
-  		}
-  	}
+    for (let info of prioritizedKeys) {
+      let references = info.inheritances.filter(token => token != '');
+      
+      for (let reference of references) {
+        if (!inversedReferenceHash[reference]) {
+            inversedReferenceHash[reference] = [];
+        }
+        
+        if (inversedReferenceHash[reference].indexOf(info.id) == -1) {
+            inversedReferenceHash[reference].push(info.id);
+        }
+      }
+    }
     
     for (let i=prioritizedKeys.length-1; i>=0; i--) {
       let info = prioritizedKeys[i];
@@ -150,32 +150,32 @@ var StylesheetHelper = {
       let suffix = (isForChildren) ? ' > :first-child' : '';
       
       for (let prefix of wysiwygCSSSelectorPrefixes) {
-	      prefixes.push(prefix + '.internal-fsb-element.-fsb-self-' + info.id + suffix);
-	      prefixes.push(prefix + '.internal-fsb-element.-fsb-preset-' + info.id + suffix);
-	      
-	      if (!production) {
-	      	prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-self-' + info.id + suffix);
-	      	prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-preset-' + info.id + suffix);
-	      }
-	    }
+        prefixes.push(prefix + '.internal-fsb-element.-fsb-self-' + info.id + suffix);
+        prefixes.push(prefix + '.internal-fsb-element.-fsb-preset-' + info.id + suffix);
+        
+        if (!production) {
+          prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-self-' + info.id + suffix);
+          prefixes.push(prefix + '.internal-fsb-inheriting-element.-fsb-preset-' + info.id + suffix);
+        }
+      }
       
       // Inheritance
       //
       let inversedReferences = inversedReferenceHash[info.id] || [];
       inversedReferences.sort((a, b) => {
-      	let pa = prioritizedKeys.indexOf(a);
-      	let pb = prioritizedKeys.indexOf(b);
-      	
-      	if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
-      	if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
-      	
-      	return (pa > pb) ? 1 : -1;
+        let pa = prioritizedKeys.indexOf(a);
+        let pb = prioritizedKeys.indexOf(b);
+        
+        if (pa == -1) pa = Number.MAX_SAFE_INTEGER;
+        if (pb == -1) pa = Number.MAX_SAFE_INTEGER;
+        
+        return (pa > pb) ? 1 : -1;
       });
       
       for (let inheritingKey of inversedReferences) {
-      	for (let prefix of wysiwygCSSSelectorPrefixes) {
-		      prefixes.push(prefix + '.internal-fsb-element.-fsb-preset-' + inheritingKey + suffix);
-		    }
+        for (let prefix of wysiwygCSSSelectorPrefixes) {
+          prefixes.push(prefix + '.internal-fsb-element.-fsb-preset-' + inheritingKey + suffix);
+        }
       }
       
       lines.push(prefixes.join(', ') + ' { ' + stylesheetDefinitions[info.id] + ' }');
@@ -184,15 +184,15 @@ var StylesheetHelper = {
       // 
       let tableCellDefinitions = stylesheetDefinitions[info.id].match(CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL);
       if (tableCellDefinitions !== null) {
-  	   	for (let tableCellDefinition of tableCellDefinitions) {
-     			let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
-     			
-     			for (let prefix of prefixes) {
-     				lines.push(prefix + ' tbody > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
-     								 ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
-     			}
-  	   	}
-  	  }
+         for (let tableCellDefinition of tableCellDefinitions) {
+           let matchedInfo = tableCellDefinition.match(CELL_STYLE_ATTRIBUTE_REGEX_LOCAL);
+           
+           for (let prefix of prefixes) {
+             lines.push(prefix + ' tbody > tr:nth-child(' + (parseInt(matchedInfo[2]) + 1) + ') > td:nth-child(' + (parseInt(matchedInfo[1]) + 1) +
+                      ') { border-' + matchedInfo[3] + ': ' + matchedInfo[4] + ' }');
+           }
+         }
+      }
     }
     let source = lines.join(' ');
     

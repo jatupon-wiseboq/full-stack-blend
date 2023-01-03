@@ -17,7 +17,7 @@ import * as CONSTANTS from '../../../Constants';
 
 const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
 for (const property of CONSTANTS.ANIMATABLE_CSS_PROPERTIES) {
-	ANIMATABLE_CSS_PROPERTIES_DICTIONARY[property] = true;
+  ANIMATABLE_CSS_PROPERTIES_DICTIONARY[property] = true;
 }
 
 let options = {
@@ -132,11 +132,11 @@ let reject = {
         let family = scope.state.styleValues['font-family'];
         
         if (!family && scope.state.extensionValues['elementComputedStyleNodes']) {
-        	const computedStyleNode = scope.state.extensionValues['elementComputedStyleNodes'].filter(node => node.tag.name == 'fontFamily')[0];
-        	
-        	if (computedStyleNode) {
-        		family = computedStyleNode.tag.style;
-        	}
+          const computedStyleNode = scope.state.extensionValues['elementComputedStyleNodes'].filter(node => node.tag.name == 'fontFamily')[0];
+          
+          if (computedStyleNode) {
+            family = computedStyleNode.tag.style;
+          }
         }
         
         let normals = (scope.state.styleValues['font-style'] == 'italic') ?
@@ -279,20 +279,20 @@ class DropDownPicker extends Base<Props, State> {
             case '{TEXT}':
                 return this.refs.text.getValue();
             case '{COLOR}':
-            		if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
-            			let rgba = this.refs.color.getValue();
-            			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
-            			
-            			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
-            			current = current && current.replace(/(,[ ]*)/g, ',') || current;
-            			
-            			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
-            			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
-            			
-            			return composed;
-            		} else {
-            			return this.refs.color.getValue();
-            		}
+                if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+                  let rgba = this.refs.color.getValue();
+                  rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+                  
+                  let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+                  current = current && current.replace(/(,[ ]*)/g, ',') || current;
+                  
+                  let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+                  composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+                  
+                  return composed;
+                } else {
+                  return this.refs.color.getValue();
+                }
             case '{BROWSE}':
                 return this.refs.file.getValue();
             case '{SETTING}':
@@ -335,22 +335,22 @@ class DropDownPicker extends Base<Props, State> {
             <span>
                 {(() => {
                     if (this.props.watchingStyleNames.length != 0) {
-                    		const isSupportAnimatable = (ANIMATABLE_CSS_PROPERTIES_DICTIONARY[this.props.watchingStyleNames[0].split('[')[0]] === true);
+                        const isSupportAnimatable = (ANIMATABLE_CSS_PROPERTIES_DICTIONARY[this.props.watchingStyleNames[0].split('[')[0]] === true);
                         return (
                             <div className={"btn-group btn-group-sm mr-1 mb-1 dropdown-picker" + (!isSupportAnimatable ? ' is-not-animatable' : '')} role="group" internal-fsb-not-for="editorCurrentMode:coding">
                                 <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width} isSupportAnimatable={isSupportAnimatable}>
                                     <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span>
                                     {(() => {
-                    									if (this.state.styleValues[this.props.watchingStyleNames[0]] != 'coding') {
-                    										return (
-                    											<span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
-                    										);
-                    									} else {
-                    										return (
-                    											<span><i className='fa fa-code m-0' /></span>
-                    										);
-                    									}
-                    								})()}
+                                      if (this.state.styleValues[this.props.watchingStyleNames[0]] != 'coding') {
+                                        return (
+                                          <span>{(this.props.watchingStyleNames[0].indexOf('-image') == -1) ? this.state.styleValues[this.props.watchingStyleNames[0]] : (this.state.styleValues[this.props.watchingStyleNames[0]] ? 'selected' : '')}</span>
+                                        );
+                                      } else {
+                                        return (
+                                          <span><i className='fa fa-code m-0' /></span>
+                                        );
+                                      }
+                                    })()}
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
                         )
@@ -363,16 +363,16 @@ class DropDownPicker extends Base<Props, State> {
                                 <FullStackBlend.Controls.DropDownList customClassName={this.state.attributeValues[this.props.watchingAttributeNames[0]] ? 'btn-primary' : ''} options={["{SETTING}", "{PROPERTY}", "{STATE}", "{CODE}"]} controls={this.state.controls} width={Math.max(500, this.props.width)} optionPadding={0}>
                                     <span>{(map[this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')] || this.props.watchingAttributeNames[0].replace('internal-fsb-react-style-', '')).replace(/(border|background|object|text|list)\-/, '')}: </span>
                                     {(() => {
-                    									if (this.state.attributeValues[this.props.watchingAttributeNames[0]] != 'coding') {
-                    										return (
-                    											<span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
-                    										);
-                    									} else {
-                    										return (
-                    											<span><i className='fa fa-code m-0' /></span>
-                    										);
-                    									}
-                    								})()}
+                                      if (this.state.attributeValues[this.props.watchingAttributeNames[0]] != 'coding') {
+                                        return (
+                                          <span><i className={this.state.attributeValues[this.props.watchingAttributeNames[0]] && iconDict[this.state.attributeValues[this.props.watchingAttributeNames[0]].split('[')[0]] + ' m-0'} /></span>
+                                        );
+                                      } else {
+                                        return (
+                                          <span><i className='fa fa-code m-0' /></span>
+                                        );
+                                      }
+                                    })()}
                                 </FullStackBlend.Controls.DropDownList>
                             </div>
                         )

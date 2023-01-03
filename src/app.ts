@@ -5,7 +5,6 @@ import session from "express-session";
 import bodyParser from "body-parser";
 import lusca from "lusca";
 import mongo from "connect-mongo";
-import flash from "express-flash";
 import path from "path";
 import mongoose from "mongoose";
 import bluebird from "bluebird";
@@ -31,7 +30,7 @@ import * as contactController from "./controllers/contact";
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
 } else {
-	dotenv.config();
+  dotenv.config();
 }
 
 // Create Express server
@@ -65,7 +64,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
         url: process.env[process.env.DOCUMENT_DATABASE_KEY],
         autoReconnect: true,
         mongoOptions: {
-        	useUnifiedTopology: true
+          useUnifiedTopology: true
         }
     }) || null,
     cookie: { secure: true }
@@ -76,10 +75,10 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
-				url: process.env[process.env.DOCUMENT_DATABASE_KEY],
-				autoReconnect: true,
+        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+        autoReconnect: true,
         mongoOptions: {
-        	useUnifiedTopology: true
+          useUnifiedTopology: true
         }
     }) || null,
     cookie: {}
@@ -93,10 +92,9 @@ app.use(bodyParser.json({limit: "50mb"}));
 app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(flash());
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	app.use(lusca.xframe("SAMEORIGIN"));
+  app.use(lusca.xframe("SAMEORIGIN"));
 }
 
 app.use(lusca.xssProtection(true));
@@ -123,9 +121,9 @@ app.use((req, res, next) => {
 // CORS configuration
 // 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	app.use(cors());
+  app.use(cors());
 } else {
-	// app.use(cors());
+  // app.use(cors());
 }
 
 /**
@@ -174,14 +172,14 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     }
   }).then(function(bundle) {
     res.set('Content-Type', 'text/javascript');
-  	res.send(Buffer.from(bundle));
+    res.send(Buffer.from(bundle));
   });
 });
 
 // Serve sitemap.xml
 app.get("/sitemap.xml", (req, res) => {
   res.set('Content-Type', 'text/xml');
-	res.send(SitemapHelper.generateXMLDocument());
+  res.send(SitemapHelper.generateXMLDocument());
 });
 
 // StackBlend code editor's endpoint
@@ -189,19 +187,19 @@ app.get("/sitemap.xml", (req, res) => {
 import * as endpoint from "./controllers/Endpoint";
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
-	endpoint.clearRecentError();
-	app.post("/endpoint/update/content", endpoint.updateContent);
-	app.post("/endpoint/reset/content", endpoint.resetContent);
-	app.post("/endpoint/pull/content", endpoint.pullContent);
-	app.get("/endpoint/recent/error", endpoint.getRecentError);
-	
-	app.use((err, req, res, next) => {
+  endpoint.clearRecentError();
+  app.post("/endpoint/update/content", endpoint.updateContent);
+  app.post("/endpoint/reset/content", endpoint.resetContent);
+  app.post("/endpoint/pull/content", endpoint.pullContent);
+  app.get("/endpoint/recent/error", endpoint.getRecentError);
+  
+  app.use((err, req, res, next) => {
     endpoint.addRecentError(err);
     next();
   });
   process.on("uncaughtException", (err) => {
-  	endpoint.addRecentError(err);
-	});
+    endpoint.addRecentError(err);
+  });
 }
 
 export default app;

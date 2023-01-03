@@ -19,7 +19,7 @@ class Overlay extends React.Component<Props, State> {
     static defaultProps: Props = {
     }
     
-	  private domElement: HTMLElement = null;  
+    private domElement: HTMLElement = null;  
     
     constructor() {
       super();
@@ -49,10 +49,10 @@ class Overlay extends React.Component<Props, State> {
       }
     }
     public renderAllRelations() {
-    	this._renderAllRelations();
-    	window.setTimeout((() => {
-    		this._renderAllRelations();
-    	}).bind(this), 1000);
+      this._renderAllRelations();
+      window.setTimeout((() => {
+        this._renderAllRelations();
+      }).bind(this), 1000);
     }
     private _renderAllRelations() {
       if (!this.state.enabled) return;

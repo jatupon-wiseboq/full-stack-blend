@@ -9,13 +9,13 @@ const sitemapDictionary = {};
 
 const SitemapHelper = {
   register: (path: string, frequency: string='weekly', priority: number=0.5) => {
-  	sitemapDictionary[path] = {
-  		frequency: frequency,
-  		priority: priority
-  	};
+    sitemapDictionary[path] = {
+      frequency: frequency,
+      priority: priority
+    };
   },
   generateXMLDocument: () => {
-  	return `<?xml version="1.0" encoding="UTF-8"?>
+    return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
       ${Object.keys(sitemapDictionary).map((key) => `
    <url>

@@ -108,7 +108,7 @@ class Transformer extends Base<Props, State> {
         this.initControl();
         
         window.setTimeout(this.render3D.bind(this), 1000);
-		}
+    }
     initWebGLRenderer(width: number, height: number) {
         // WebGL Renderer
         //
@@ -188,8 +188,8 @@ class Transformer extends Base<Props, State> {
     }
     
     modeOnClick(mode) {
-    		if (!this.state.attributeValues['internal-fsb-guid']) return;
-    		
+        if (!this.state.attributeValues['internal-fsb-guid']) return;
+        
         perform('update', {
             styles: [{
                 name: '-fsb-mode',
@@ -230,7 +230,7 @@ class Transformer extends Base<Props, State> {
         if (this.state.scaleZ != this.webGLMesh.scale.z) updatingState.scaleZ = this.webGLMesh.scale.z.toFixed(8);
         
         if (Object.keys(updatingState).length != 0) {
-        	this.setState(updatingState);
+          this.setState(updatingState);
         }
         
         this.css3DRenderer.render(this.css3DScene, this.css3DCamera);
@@ -247,9 +247,9 @@ class Transformer extends Base<Props, State> {
         }
         
         let fsbTransform = [
-        	this.webGLMesh.position.x.toFixed(8), this.webGLMesh.position.y.toFixed(8), this.webGLMesh.position.z.toFixed(8),
-        	this.webGLMesh.quaternion.x.toFixed(8), this.webGLMesh.quaternion.y.toFixed(8), this.webGLMesh.quaternion.z.toFixed(8),
-        	this.webGLMesh.scale.x.toFixed(8), this.webGLMesh.scale.y.toFixed(8), this.webGLMesh.scale.z.toFixed(8)
+          this.webGLMesh.position.x.toFixed(8), this.webGLMesh.position.y.toFixed(8), this.webGLMesh.position.z.toFixed(8),
+          this.webGLMesh.quaternion.x.toFixed(8), this.webGLMesh.quaternion.y.toFixed(8), this.webGLMesh.quaternion.z.toFixed(8),
+          this.webGLMesh.scale.x.toFixed(8), this.webGLMesh.scale.y.toFixed(8), this.webGLMesh.scale.z.toFixed(8)
         ].join(' ');
         
         if (this.currentTransform != fsbTransform) {
@@ -258,131 +258,131 @@ class Transformer extends Base<Props, State> {
             this.currentTransform = (fsbTransform != Default) ? fsbTransform : null;
             this.currentMode = this.state.styleValues['-fsb-mode'];
             
-    				if (this.state.attributeValues['internal-fsb-guid']) {
-		            perform('update', {
-		                styles: [
-		                    {
-		                        name: '-fsb-mode',
-		                        value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
-		                    },
-		                    {
-		                        name: 'perspective',
-		                        value: (isPerspectiveCamera) ? '236px' : null
-		                    },
-		                    {
-		                        name: '-child-transform-style',
-		                        value: (isPerspectiveCamera) ? 'preserve-3d' : null
-		                    },
-		                    {
-		                        name: '-child-transform',
-		                        value: null
-		                    },
-		                    {
-		                        name: 'transform',
-		                        value: (fsbTransform != Default) ? transform : null
-		                    },
-		                    {
-		                        name: '-fsb-transform',
-		                        value: (fsbTransform != Default) ? fsbTransform : null
-		                    }
-		                ],
-		                replace: '-fsb-transform'
-		            });
-		         }
+            if (this.state.attributeValues['internal-fsb-guid']) {
+                perform('update', {
+                    styles: [
+                        {
+                            name: '-fsb-mode',
+                            value: (isPerspectiveCamera || isOrthographicCamera) ? this.state.styleValues['-fsb-mode'] : null
+                        },
+                        {
+                            name: 'perspective',
+                            value: (isPerspectiveCamera) ? '236px' : null
+                        },
+                        {
+                            name: '-child-transform-style',
+                            value: (isPerspectiveCamera) ? 'preserve-3d' : null
+                        },
+                        {
+                            name: '-child-transform',
+                            value: null
+                        },
+                        {
+                            name: 'transform',
+                            value: (fsbTransform != Default) ? transform : null
+                        },
+                        {
+                            name: '-fsb-transform',
+                            value: (fsbTransform != Default) ? fsbTransform : null
+                        }
+                    ],
+                    replace: '-fsb-transform'
+                });
+             }
         }
         
         this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
     }
     
     textboxOnUpdateTranslateX(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.position.x = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.position.x = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateTranslateY(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.position.y = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.position.y = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateTranslateZ(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.position.z = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.position.z = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateRotateX(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	if (number == 0) number = ZERO;
-    	
-    	this.webGLMesh.quaternion.x = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      if (number == 0) number = ZERO;
+      
+      this.webGLMesh.quaternion.x = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateRotateY(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	if (number == 0) number = ZERO;
-    	
-    	this.webGLMesh.quaternion.y = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      if (number == 0) number = ZERO;
+      
+      this.webGLMesh.quaternion.y = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateRotateZ(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	if (number == 0) number = ZERO;
-    	
-    	this.webGLMesh.quaternion.z = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      if (number == 0) number = ZERO;
+      
+      this.webGLMesh.quaternion.z = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateScaleX(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.scale.x = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.scale.x = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateScaleY(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.scale.y = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.scale.y = number;
+      
+      this.render3D();
     }
     
     textboxOnUpdateScaleZ(value: string) {
-    	let number = parseFloat(value);    	
-    	if (isNaN(number)) number = 0;
-    	
-    	this.webGLMesh.scale.z = number;
-    	
-    	this.render3D();
+      let number = parseFloat(value);      
+      if (isNaN(number)) number = 0;
+      
+      this.webGLMesh.scale.z = number;
+      
+      this.render3D();
     }
     
     render() {
-    	const Textbox = FullStackBlend.Controls.Textbox;
-    	const floatingPointPreRegex = "-?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?";
-    	const floatingPointPostRegex = "-?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))";
-    	
+      const Textbox = FullStackBlend.Controls.Textbox;
+      const floatingPointPreRegex = "-?(([0-9])|([0-9][\.])|([0-9][\.][0-9]*)|([1-9][0-9]*)|([1-9][0-9]*[\.])|([1-9][0-9]*[\.][0-9]*)|([1-9][0-9]*))?";
+      const floatingPointPostRegex = "-?(([0][\.][0-9]+)|([1-9][0-9]*[\.][0-9]+)|([1-9][0-9]*)|([0]))";
+      
       return (
         pug `
           div

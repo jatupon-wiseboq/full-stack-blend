@@ -52,18 +52,18 @@ class DebuggingConsole extends Base<Props, State> {
         this.repl = repl;
         
         if (this.props.window == window) {
-        	window.repl = repl;
-        	
+          window.repl = repl;
+          
           this.props.window.error = ((msg, url, line, col, error) => {
             this.props.window.setTimeout((() => {
-            	this.makeDebuggerPanelActive();
+              this.makeDebuggerPanelActive();
             }).bind(this), 0);
             repl.print(`${msg} (line: ${line}, col: ${col}) ${url}`, 'type-error');
           }).bind(this);
           this.props.window.onerror = this.props.window.error;
           
           this.props.window.console.log = ((...args) => {
-          	repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
+            repl.print(this.props.window.repl.simpleFormatter(...args), 'message');
           });
           this.props.window.console.log("The debugging information of StackBlend Studio will appear here.");
           this.props.window.console.log("Since being deployed regularly, the most of failures will disappear after refreshing your browser. You may go to github.com/SoftenStorm/full-stack-blend to check all recent commits.");
@@ -72,14 +72,14 @@ class DebuggingConsole extends Base<Props, State> {
             this.props.window.setTimeout((() => {
               this.makeDebuggerPanelActive();
             }).bind(this), 0);
-  	        repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
+            repl.print(this.props.window.repl.simpleFormatter(...args), 'type-error');
           }).bind(this);
           
           let output = document.createElement('div');
           output.className = 'jsconsole eclipse';
           output.append(HTMLHelper.getElementByClassName('jsconsole-input'));
           document.body.append(output);
-        	
+          
           repl.on('entry', ((event) => {
             this.props.window.setTimeout((() => {
               this.makeDebuggerPanelActive();
@@ -93,13 +93,13 @@ class DebuggingConsole extends Base<Props, State> {
             repl.resetInput();
           }, 20);
         } else {
-        	repl.evaluate = (code: any) => {
-		        var out = {};
-		        out.completionValue = 'executed';
-		        return out;
-		      };
-        	
-        	const messageFn = ((event: any) => {
+          repl.evaluate = (code: any) => {
+            var out = {};
+            out.completionValue = 'executed';
+            return out;
+          };
+          
+          const messageFn = ((event: any) => {
             let data = null;
             try {
               data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
@@ -119,21 +119,21 @@ class DebuggingConsole extends Base<Props, State> {
             }
             
             repl.on('entry', (event) => {
-	  					const stringifyIfNeed = this.props.window.messageFnArray ? (data: any) => data : JSON.stringify;
+              const stringifyIfNeed = this.props.window.messageFnArray ? (data: any) => data : JSON.stringify;
               this.props.window.postMessage(stringifyIfNeed({
-          	    type: 'execute',
-          	    statement: event.input
-          	  }), '*');
+                type: 'execute',
+                statement: event.input
+              }), '*');
             });
           }).bind(this);
           top.addEventListener("message", messageFn);
-			    top.messageFnArray = window.messageFnArray || [];
-			    top.messageFnArray.push(messageFn);
+          top.messageFnArray = window.messageFnArray || [];
+          top.messageFnArray.push(messageFn);
         }
     }
     
     public reset() {
-    		this.repl.resetOutput();
+        this.repl.resetOutput();
     }
     
     public update(properties: any) {
@@ -141,7 +141,7 @@ class DebuggingConsole extends Base<Props, State> {
     }
     
     private makeDebuggerPanelActive() {
-      	const codingButton = HTMLHelper.getElementById('codingButton');
+        const codingButton = HTMLHelper.getElementById('codingButton');
         if (!HTMLHelper.hasClass(codingButton, 'active')) codingButton.click();
         HTMLHelper.getElementById('footerConsole').click();
     }

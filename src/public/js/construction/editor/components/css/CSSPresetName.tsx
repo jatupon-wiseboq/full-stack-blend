@@ -42,7 +42,7 @@ class CSSPresetName extends Base<Props, State> {
         if (!value && this.state.value && !confirm('Remove inheriting from the preset "' + this.state.value + '"?')) {
             return this.state.value;
         } else {
-        		let shouldReturn = false;
+            let shouldReturn = false;
             if (stylesheetDefinitionKeys.indexOf(value) != -1) {
               value = value + ' ';
               shouldReturn = true;
@@ -68,7 +68,7 @@ class CSSPresetName extends Base<Props, State> {
             });
             
             if (shouldReturn) {
-            	return value.replace(/_/g, ' ');
+              return value.replace(/_/g, ' ');
             }
         }
     }

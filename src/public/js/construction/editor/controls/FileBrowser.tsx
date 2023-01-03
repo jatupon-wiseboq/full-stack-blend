@@ -119,7 +119,7 @@ class FileBrowser extends React.Component<Props, State> {
     }
     
     initGitHubInstance() {
-     	  let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
+         let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
         if (GITHUB_TOKEN.length == 0) {
             alert('You cannot save until you have connected to a GitHub account.');
             return null;
@@ -127,11 +127,11 @@ class FileBrowser extends React.Component<Props, State> {
         
         GITHUB_TOKEN = GITHUB_TOKEN[0].accessToken;
         
-      	var gh = new GitHub({
-    			  token: GITHUB_TOKEN
-    		});
-    		return gh;
-   	}
+        var gh = new GitHub({
+            token: GITHUB_TOKEN
+        });
+        return gh;
+     }
     
     render() {
       return (

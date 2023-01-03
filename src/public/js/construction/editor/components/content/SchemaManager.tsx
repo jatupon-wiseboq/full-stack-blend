@@ -21,7 +21,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-	watchingExtensionNames: ['schemataTreeNodes']
+  watchingExtensionNames: ['schemataTreeNodes']
 });
 
 class SchemaManager extends Base<Props, State> {
@@ -35,9 +35,9 @@ class SchemaManager extends Base<Props, State> {
     
     render() {
       return (
-      	<div ref="container" className="schema-manager">
-      		<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
-      	</div>
+        <div ref="container" className="schema-manager">
+          <FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
+        </div>
       );
     }
 }

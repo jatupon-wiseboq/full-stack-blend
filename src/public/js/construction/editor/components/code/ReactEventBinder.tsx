@@ -6,11 +6,11 @@ import '../generic/TextPicker';
 import * as CONSTANTS from '../../../Constants';
 
 const options = {
-		"onfsbsubmitting": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
-		"onfsbsubmitted": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
-		"onfsbfailed": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
-		"onfsbsuccess": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
-		"onfsbclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
+    "onfsbsubmitting": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+    "onfsbsubmitted": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+    "onfsbfailed": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+    "onfsbsuccess": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS,
+    "onfsbclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
     "onfsbdblclick": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
     "onfsbmousedown": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
     "onfsbmousemove": CONSTANTS.MOUSE_EVENT_HANDLING_OPTIONS,
@@ -92,30 +92,30 @@ declare let React: any;
 declare let ReactDOM: any;
 
 interface Props extends IProps {
-		mode: string;
+    mode: string;
 }
 
 interface State extends IState {
-		enabled: boolean;
-		visible: boolean;
+    enabled: boolean;
+    visible: boolean;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-		mode: 'coding'
+    mode: 'coding'
 });
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
-		enabled: false,
-		visible: false
+    enabled: false,
+    visible: false
 });
 
 class ReactEventBinder extends Base<Props, State> {
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
-    		super(props);
+        super(props);
     }
     
     public update(properties: any) {
@@ -125,7 +125,7 @@ class ReactEventBinder extends Base<Props, State> {
         option = option && JSON.parse(option) || {};
         
         this.setState({
-        	enabled: (option.event === true)
+          enabled: (option.event === true)
         });
         
         if (this.refs.dropdown && this.state.visible) this.refs.dropdown.updateHeight();
@@ -140,60 +140,60 @@ class ReactEventBinder extends Base<Props, State> {
     }
     
     private dropDownOnVisibleChanged(visible: boolean, tag: any) {
-    		this.state.visible = visible;
+        this.state.visible = visible;
     }
     
     render() {
         return (
             <div className="btn-group btn-group-sm">
                 <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
-                	{(() => {
-                		if (this.props.mode == 'coding') {
-                			return (
-		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
-	                        <div className="section-container" style={{width: '225px'}}>
-			                        <div className="section-title">Customize Binding</div>
-			                        <div className="section-subtitle">Binding</div>
-			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        <div className="section-subtitle">Execute at First</div>
-			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        <div className="section-subtitle">No Propagation</div>
-			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
-			                    </div>
-		                    </FullStackBlend.Controls.DropDownControl>
-                			)
-                		} else {
-                			return (
-		                		<FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
-	                        <div className="section-container" style={{width: '225px'}}>
-			                        <div className="section-title">Customize Binding</div>
-			                        <div className="section-subtitle">Binding</div>
-			                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        <div className="animation-picker-container" style={{display: this.state.enabled ? 'block' : 'none'}}>
-				                        <div className="section-subtitle">Add Tracks</div>
-				                        <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'add-animation-tracks'} /></div>
-				                        <div className="section-subtitle">Auto Remove Tracks When Finish</div>
-				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-reset": true}', ["fa-power-off", "enable"]]]}/></div>
-				                        <div className="section-subtitle">Remove Tracks</div>
-				                        <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'remove-animation-tracks'} /></div>
-				                        <div className="section-subtitle">Perform at Element</div>
-				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-at-element": true}', ["fa-power-off", "enable"]]]}/></div>
-				                        <div style={{display: `${this.state.attributeValues[this.props.watchingAttributeNames[0]]}`.indexOf('animation-at-element') == -1 && 'none'}}>
-				                        	<div className="section-subtitle">Custom Targeting Element</div>
-					                      	<div className="section-body"><FullStackBlend.Components.TextPicker watchingAttributeNames={[this.props.watchingAttributeNames[0].replace('onfsb', 'internal-fsb-targeting-')]} inline={true} placeholder='GUID' /></div>
-				                        </div>
-					                      <div className="section-subtitle">Execute at First</div>
-				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
-				                        <div className="section-subtitle">No Propagation</div>
-				                        <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
-			                        </div>
-			                        <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
-			                    </div>
-		                    </FullStackBlend.Controls.DropDownControl>
-                			)
-                		}
-                	})()}
+                  {(() => {
+                    if (this.props.mode == 'coding') {
+                      return (
+                        <FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
+                          <div className="section-container" style={{width: '225px'}}>
+                              <div className="section-title">Customize Binding</div>
+                              <div className="section-subtitle">Binding</div>
+                              <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
+                              <div className="section-subtitle">Execute at First</div>
+                              <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
+                              <div className="section-subtitle">No Propagation</div>
+                              <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
+                              <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
+                          </div>
+                        </FullStackBlend.Controls.DropDownControl>
+                      )
+                    } else {
+                      return (
+                        <FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
+                          <div className="section-container" style={{width: '225px'}}>
+                              <div className="section-title">Customize Binding</div>
+                              <div className="section-subtitle">Binding</div>
+                              <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]}/></div>
+                              <div className="animation-picker-container" style={{display: this.state.enabled ? 'block' : 'none'}}>
+                                <div className="section-subtitle">Add Tracks</div>
+                                <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'add-animation-tracks'} /></div>
+                                <div className="section-subtitle">Auto Remove Tracks When Finish</div>
+                                <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-reset": true}', ["fa-power-off", "enable"]]]}/></div>
+                                <div className="section-subtitle">Remove Tracks</div>
+                                <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'remove-animation-tracks'} /></div>
+                                <div className="section-subtitle">Perform at Element</div>
+                                <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-at-element": true}', ["fa-power-off", "enable"]]]}/></div>
+                                <div style={{display: `${this.state.attributeValues[this.props.watchingAttributeNames[0]]}`.indexOf('animation-at-element') == -1 && 'none'}}>
+                                  <div className="section-subtitle">Custom Targeting Element</div>
+                                  <div className="section-body"><FullStackBlend.Components.TextPicker watchingAttributeNames={[this.props.watchingAttributeNames[0].replace('onfsb', 'internal-fsb-targeting-')]} inline={true} placeholder='GUID' /></div>
+                                </div>
+                                <div className="section-subtitle">Execute at First</div>
+                                <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"capture": true}', ["fa-power-off", "enable"]]]}/></div>
+                                <div className="section-subtitle">No Propagation</div>
+                                <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"no-propagation": true}', ["fa-power-off", "enable"]]]}/></div>
+                              </div>
+                              <div className="section-note">Disabling event binding will take effect on both animation and coding.</div>
+                          </div>
+                        </FullStackBlend.Controls.DropDownControl>
+                      )
+                    }
+                  })()}
                 </a>
             </div>
         )

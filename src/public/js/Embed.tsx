@@ -8,8 +8,8 @@ import * as Ruffle from '../../../dist/public/js/ruffle.js';
 declare let window: any;
 
 (() => {
-	// Auto Height Layout
-	// 
+  // Auto Height Layout
+  // 
   function update(event) {  
     let elements: any[] = Array.from(document.body.getElementsByClassName('internal-fsb-absolute-layout'));
     elements.reverse().forEach((element) => {
@@ -53,5 +53,5 @@ declare let window: any;
     "upgradeToHttps": window.location.protocol === "https:",
     "maxExecutionDuration": {"secs": 15, "nanos": 0},
     "logLevel": "error"
-	});
+  });
 })();

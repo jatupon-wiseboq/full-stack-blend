@@ -50,17 +50,17 @@ class Textbox extends React.Component<Props, State> {
         if (document.activeElement == input) return;
         
         if (this.props.value !== input.value) {
-        		switch (typeof this.props.value) {
-        			case 'string':
-        				input.value = this.props.value || '';
-        				break;
-        			case 'number':
-        				input.value = this.props.value.toString();
-        				break;
-        			default:
-        				input.value = '';
-        				break;
-        		}
+            switch (typeof this.props.value) {
+              case 'string':
+                input.value = this.props.value || '';
+                break;
+              case 'number':
+                input.value = this.props.value.toString();
+                break;
+              default:
+                input.value = '';
+                break;
+            }
         }
     }
     

@@ -38,16 +38,16 @@ class CSSCustomClasses extends Base<Props, State> {
     }
     
     protected textboxOnUpdate(value: any) {
-    		let filteredValue = CodeHelper.getCustomClasses(value);
-    		
-    		if (this.state.value != filteredValue) {
-    		    this.state.value = filteredValue;
-    		    
+        let filteredValue = CodeHelper.getCustomClasses(value);
+        
+        if (this.state.value != filteredValue) {
+            this.state.value = filteredValue;
+            
             perform('update', {
-            		attributes: [{
-        						name: 'class',
-        						value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), filteredValue].sort().join(' ')
-        				}],
+                attributes: [{
+                    name: 'class',
+                    value: [CodeHelper.getInternalClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]), filteredValue].sort().join(' ')
+                }],
                 replace: 'custom-classname'
             });
         }

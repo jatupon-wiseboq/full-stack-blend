@@ -65,7 +65,7 @@ class DisplayPicker extends Base<Props, State> {
         }
         
         if (count == 5) {
-        	elementClassName = originalElementClassName;
+          elementClassName = originalElementClassName;
         }
         
         this.forceUpdate();

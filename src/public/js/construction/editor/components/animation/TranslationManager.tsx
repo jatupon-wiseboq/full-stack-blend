@@ -69,26 +69,26 @@ class TranslationManager extends Base<Props, State> {
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		let index = this.state.nodes.indexOf(element);
-    		this.state.nodes.splice(index, 1);
-    		let refIndex = this.state.nodes.indexOf(reference);
-    		
-    		switch (direction) {
-    				case InsertDirection.TOP:
-    					this.state.nodes.splice(refIndex, 0, element);
-    					break;
-    				case InsertDirection.INSIDE:
-    					break;
-    				case InsertDirection.BOTTOM:
-    					this.state.nodes.splice(refIndex + 1, 0, element);
-    					break;
-    				default:
-    					return;
-    		}
-    		
-    		this.performUpdate();
-    		
-    		document.body.click();
+        let index = this.state.nodes.indexOf(element);
+        this.state.nodes.splice(index, 1);
+        let refIndex = this.state.nodes.indexOf(reference);
+        
+        switch (direction) {
+            case InsertDirection.TOP:
+              this.state.nodes.splice(refIndex, 0, element);
+              break;
+            case InsertDirection.INSIDE:
+              break;
+            case InsertDirection.BOTTOM:
+              this.state.nodes.splice(refIndex + 1, 0, element);
+              break;
+            default:
+              return;
+        }
+        
+        this.performUpdate();
+        
+        document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -129,8 +129,8 @@ class TranslationManager extends Base<Props, State> {
                 name: this.state.name + ' (' + this.state.value + ')',
                 selectable: true,
                 dropable: false,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: false,
                 selected: false,
                 nodes: [],

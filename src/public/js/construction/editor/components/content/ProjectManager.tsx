@@ -89,10 +89,10 @@ class ProjectManager extends Base<Props, State> {
     getGitHubInstance() {
       let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
       if (GITHUB_TOKEN.length == 0) {
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
-      	
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
+        
         alert('You cannot save until you have connected to a GitHub account.');
         return null;
       }
@@ -107,10 +107,10 @@ class ProjectManager extends Base<Props, State> {
     getGitHubInstance() {
       let GITHUB_TOKEN = window.TOKENS.filter(token => token.kind == 'github');
       if (GITHUB_TOKEN.length == 0) {
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-      	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
-      	
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
+        
         alert('You cannot save until you have connected to a GitHub account.');
         return null;
       }
@@ -129,8 +129,8 @@ class ProjectManager extends Base<Props, State> {
       let repo = gh.getRepo(GITHUB_ALIAS, GITHUB_PROJECT);
       
       repo.getSingleCommit = (ref, cb) => {
-	      ref = ref || '';
-	      return repo._request('GET', `/repos/${repo.__fullname}/commits/${ref}?cache=${Math.random()}`, null, cb);
+        ref = ref || '';
+        return repo._request('GET', `/repos/${repo.__fullname}/commits/${ref}?cache=${Math.random()}`, null, cb);
       };
       repo.createBlob = (content, previousSHA, cb) => {
         if (content) {
@@ -187,18 +187,18 @@ class ProjectManager extends Base<Props, State> {
     }
     public load(callback: any = null) {
       window.GITHUB_FEATURE_BRANCH = window.location.hash.replace('#', '') || window.GITHUB_FEATURE_BRANCH;
-			if (window.GITHUB_FEATURE_BRANCH) window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
-			
-			window.addEventListener('hashchange', () => {
-				const branch = window.location.hash.replace('#', '');
-				if (branch) {
-					if (branch != window.GITHUB_FEATURE_BRANCH) {
-						window.location.reload(true);
-					}
-				} else {
-					window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
-				}
-			});
+      if (window.GITHUB_FEATURE_BRANCH) window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
+      
+      window.addEventListener('hashchange', () => {
+        const branch = window.location.hash.replace('#', '');
+        if (branch) {
+          if (branch != window.GITHUB_FEATURE_BRANCH) {
+            window.location.reload(true);
+          }
+        } else {
+          window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
+        }
+      });
       
       let construction = document.getElementById('area');
       let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
@@ -274,8 +274,8 @@ class ProjectManager extends Base<Props, State> {
         
       repo.getSingleCommit('heads/' + GITHUB_FEATURE_BRANCH, (error, result, request) => {
         if (error) {
-      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      		
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+          
           alert(`There was an error while retrieving the last commit, please try again.`);
           return;
         }
@@ -287,8 +287,8 @@ class ProjectManager extends Base<Props, State> {
         
         repo.getTree(baseTreeSHA, (error, result, request) => {
           if (error) {
-      			HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      			
+            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+            
             alert(`There was an error while retrieving project tree:\n${this.extractErrorMessage(error)}`);
             return;
           }
@@ -310,17 +310,17 @@ class ProjectManager extends Base<Props, State> {
             let nextProjectData = {};
             
             for (const page of this.state.extensionValues['pages']) {
-      				const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27')
-            	const sitemap = page.sitemap || false;
-	            const frequency = page.frequency || undefined;
-	            const priority = page.priority || undefined;
-	            
-	            if (sitemap == 'true') {
-	            	sitemapInfoDict[`${path}`] = {
-	              	frequency: frequency,
-	              	priority: priority
-	            	};
-	            }
+              const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27')
+              const sitemap = page.sitemap || false;
+              const frequency = page.frequency || undefined;
+              const priority = page.priority || undefined;
+              
+              if (sitemap == 'true') {
+                sitemapInfoDict[`${path}`] = {
+                  frequency: frequency,
+                  priority: priority
+                };
+              }
             }
             
             Object.assign(nextProjectData, previousProjectData);
@@ -398,9 +398,9 @@ class ProjectManager extends Base<Props, State> {
                 
                 let compiledCombinedMinimalFeatureScripts = '';
                 if (combinedMinimalFeatureScripts) {
-	                compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
-	                compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
-	              }
+                  compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
+                  compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+                }
                 
                 let pages = this.state.extensionValues['pages'];
                 let editingPageID = key;
@@ -415,7 +415,7 @@ class ProjectManager extends Base<Props, State> {
                 if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
                 
                 if (pages && pages[0]) {
-                	let combinedHTMLPage = `.
+                  let combinedHTMLPage = `.
   <!DOCTYPE html>
 html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
@@ -640,20 +640,20 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                   this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
                     const process = (headerBlobError, headerBlobResult, footerBlobError, footerBlobResult) => {
                       if (headerBlobError) {
-							      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-							      		
+                        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                        
                         alert(`There was an error while creating blob:\n${this.extractErrorMessage(headerBlobError)}`);
                         return;
                       }
                       if (footerBlobError) {
-							      		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-							      		
+                        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                        
                         alert(`There was an error while creating blob:\n${this.extractErrorMessage(footerBlobError)}`);
                         return;
                       }
                       const headerBlobSHA = headerBlobResult && headerBlobResult.sha || nextProjectData.headerBlobSHA;
                       const footerBlobSHA = footerBlobResult && footerBlobResult.sha || nextProjectData.footerBlobSHA;
-                    	
+                      
                       this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict: any) => {
                         
                         nextProjectData.routeBlobSHA = routeBlobSHA;
@@ -696,14 +696,14 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                           
                           for (let key in nextProjectData.backEndControllerBlobSHADict) {
                             if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                            	if (connectorControllerInfoDict.hasOwnProperty(key)) {
-                            		nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
-                            	} else if (workers.indexOf(key) != -1) {
-                            		nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
-                            	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-                            		nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
-                            	} else {
-                              	nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
+                              if (connectorControllerInfoDict.hasOwnProperty(key)) {
+                                nextPersistingFiles.push(`src/controllers/connectors/${this.getRepresentativeName(key)}.ts`);
+                              } else if (workers.indexOf(key) != -1) {
+                                nextPersistingFiles.push(`src/controllers/workers/${this.getRepresentativeName(key)}.ts`);
+                              } else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+                                nextPersistingFiles.push(`src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`);
+                              } else {
+                                nextPersistingFiles.push(`src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`);
                               }
                             }
                           }
@@ -723,8 +723,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                           
                           const createTree = (error, result, request) => {
                             if (error) {
-							      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-							      					
+                              HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                              
                               alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                               return;
                             }
@@ -766,35 +766,35 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                             
                             for (let key in nextProjectData.backEndControllerBlobSHADict) {
                               if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
-                              	if (connectorControllerInfoDict.hasOwnProperty(key)) {
-                              		tree.push({
+                                if (connectorControllerInfoDict.hasOwnProperty(key)) {
+                                  tree.push({
                                     path: `src/controllers/connectors/${this.getRepresentativeName(key)}.ts`,
                                     mode: "100644",
                                     type: "blob",
                                     sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
                                   });
-                              	} else if (workers.indexOf(key) != -1) {
-                              		tree.push({
+                                } else if (workers.indexOf(key) != -1) {
+                                  tree.push({
                                     path: `src/controllers/workers/${this.getRepresentativeName(key.split(':')[0])}.ts`,
                                     mode: "100644",
                                     type: "blob",
                                     sha: nextProjectData.backEndControllerBlobSHADict[key.split(':')[0]].split('#')[0]
                                   });
-                              	} else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-                              		tree.push({
+                                } else if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+                                  tree.push({
                                     path: `src/controllers/schedulers/${this.getRepresentativeName(key)}.ts`,
                                     mode: "100644",
                                     type: "blob",
                                     sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
                                   });
-                              	} else {
-                              		tree.push({
+                                } else {
+                                  tree.push({
                                     path: `src/controllers/components/${this.getFeatureDirectoryPrefix(key)}${this.getRepresentativeName(key)}.ts`,
                                     mode: "100644",
                                     type: "blob",
                                     sha: nextProjectData.backEndControllerBlobSHADict[key].split('#')[0]
                                   });
-                              	}
+                                }
                               }
                             }
                             for (let key in nextProjectData.frontEndComponentsBlobSHADict) {
@@ -820,8 +820,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                             
                             repo.createTree(tree, baseTreeSHA, (error, result, request) => {
                               if (error) {
-								      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-								      					
+                                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                
                                 alert(`There was an error while creating a new tree:\n${this.extractErrorMessage(error)}`);
                                 return;
                               }
@@ -834,8 +834,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                               if (message !== null && message.trim() !== "") {
                                 repo.commit(baseCommitSHA, updatedTreeSHA, message, (error, result, request) => {
                                   if (error) {
-										      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-										      					
+                                    HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                    
                                     alert(`There was an error while committing a new change:\n${this.extractErrorMessage(error)}`);
                                     return;
                                   }
@@ -845,8 +845,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                                   
                                   repo.updateHead('heads/' + GITHUB_FEATURE_BRANCH, recentCommitSHA, true, (error, result, request) => {
                                     if (error) {
-											      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-											      					
+                                      HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                      
                                       alert(`There was an error while updating head for the current branch:\n${this.extractErrorMessage(error)}`);
                                       return;
                                     }
@@ -862,31 +862,31 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                                     StorageHelper.setCookie('recentCommitMessage', recentCommitMessage);
                                     
                                     this.deleteFiles(repo, deletingPersistingFiles, () => {
-																      let endpoint = window.ENDPOINT;
-																     	if (endpoint.indexOf('https://localhost') == 0) {
-																     		endpoint = 'https://localhost.stackblend.org';
-																     	}
+                                      let endpoint = window.ENDPOINT;
+                                       if (endpoint.indexOf('https://localhost') == 0) {
+                                         endpoint = 'https://localhost.stackblend.org';
+                                       }
                                     
                                       RequestHelper.post(`${endpoint}/endpoint/reset/content`, {}).then(() => {
                                         RequestHelper.post(`${endpoint}/endpoint/pull/content`, {}).then(() => {
-													      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-													      					
+                                          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                          
                                           alert('Your changes have been saved successfully.');
                                         }).catch(() => {
-													      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-													      					
+                                          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                          
                                           alert('Your changes have been saved successfully.');
                                         });
                                       }).catch(() => {
-												      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-												      					
+                                        HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                        
                                         alert('Your changes have been saved successfully.');
                                       });
                                     });
                                   });
                                 });
                               } else {
-                              	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
                               }
                             });
                           };
@@ -897,14 +897,14 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                     };
                     
                     if (Object.keys(frontEndCodeInfoDict).length != 0) {
-	                    repo.createBlob(combinedHeaderScripts, nextProjectData.headerBlobSHA, (headerBlobError, headerBlobResult, request) => {
-	                      repo.createBlob(combinedFooterScripts, nextProjectData.footerBlobSHA, (footerBlobError, footerBlobResult, request) => {
-	                      	process(headerBlobError, headerBlobResult, footerBlobError, footerBlobResult);
-	                    	});
-	                    });
-	                  } else {
-	                  	process(null, null, null, null);
-	                  }
+                      repo.createBlob(combinedHeaderScripts, nextProjectData.headerBlobSHA, (headerBlobError, headerBlobResult, request) => {
+                        repo.createBlob(combinedFooterScripts, nextProjectData.footerBlobSHA, (footerBlobError, footerBlobResult, request) => {
+                          process(headerBlobError, headerBlobResult, footerBlobError, footerBlobResult);
+                        });
+                      });
+                    } else {
+                      process(null, null, null, null);
+                    }
                   });
                 });
               });
@@ -914,8 +914,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
           if (previousProjectDataSHA) {
             repo.getBlob(previousProjectDataSHA, (error, result, response) => {
              if (error) {
-      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      					
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                
                 alert(`There was an error while retrieving data:\n${this.extractErrorMessage(error)}`);
                 return;
               }
@@ -927,8 +927,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
               } catch(ex) { /* void */ }
               
               if (typeof result !== 'object') {
-      					HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-      					
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                
                 alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
                 return;
               }
@@ -943,8 +943,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
     }
     public merge() {
       let repo = this.getGitHubRepo();
-			
-			HTMLHelper.addClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+      
+      HTMLHelper.addClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
       
       repo.createPullRequest({
         title: `Merging ${GITHUB_FEATURE_BRANCH} into ${GITHUB_DEVELOP_BRANCH}`,
@@ -952,71 +952,71 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
         base: GITHUB_DEVELOP_BRANCH
       }, (error, result, request) => {
         if (error) {
-        	const message = this.extractErrorMessage(error);
-      		const isNoCommitsBetween = (message.indexOf('No commits between') != -1);
-      		
-        	if (!isNoCommitsBetween) {
-        		HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-        	
-          	alert(`There was an error while creating a pull request:\n${message}`);
+          const message = this.extractErrorMessage(error);
+          const isNoCommitsBetween = (message.indexOf('No commits between') != -1);
+          
+          if (!isNoCommitsBetween) {
+            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+          
+            alert(`There was an error while creating a pull request:\n${message}`);
           } else {
-	          this.afterMerge(repo);
+            this.afterMerge(repo);
           }
         } else {
-        	let pullRequestNumber = result.number;
-        	if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+          let pullRequestNumber = result.number;
+          if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
         
-	        repo.mergePullRequest(pullRequestNumber, {
-	        }, (error, result, request) => {
-	          if (error) {
-		        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-		        	
-	            alert(`There was an error while merging a pull request into a develop branch. However, your changes didn't lose and you can go to your GitHub.com and perform it later.'`);
-	          } else {
-	          	this.afterMerge(repo);
-	          }
-	        });
+          repo.mergePullRequest(pullRequestNumber, {
+          }, (error, result, request) => {
+            if (error) {
+              HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+              
+              alert(`There was an error while merging a pull request into a develop branch. However, your changes didn't lose and you can go to your GitHub.com and perform it later.'`);
+            } else {
+              this.afterMerge(repo);
+            }
+          });
         }
       });
     }
     private afterMerge(repo: any) {
-    	if (!confirm(`Your changes have been merged for other colleagues. Do you want to merge their changes and reload the project?`)) {
+      if (!confirm(`Your changes have been merged for other colleagues. Do you want to merge their changes and reload the project?`)) {
         HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
       } else {
-	      repo.createPullRequest({
-	        title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_FEATURE_BRANCH}`,
-	        head: GITHUB_DEVELOP_BRANCH,
-	        base: GITHUB_FEATURE_BRANCH
-	      }, (error, result, request) => {
-	        if (error) {
-	        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-	        	
-	          alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
-	        } else {
-						let pullRequestNumber = result.number;
-		        if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
-		        
-		        repo.mergePullRequest(pullRequestNumber, {
-		        }, (error, result, request) => {
-		          if (error) {
-			        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-			        	
-		            alert(`There was an error while merging a pull request into your feature branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}'`);
-		            return;
-		          }
-		          
-		          window.setTimeout(() => {
-		          	window.overrideBeforeUnload = true;
-		          	
-		            alert(`Your feature branch has been updated and required reloading.`)
-		            window.location.reload(true);
-		            
-		            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
-		          }, 10000);
-		        });
-	        }
-	      });
-	    }
+        repo.createPullRequest({
+          title: `Merging ${GITHUB_DEVELOP_BRANCH} into ${GITHUB_FEATURE_BRANCH}`,
+          head: GITHUB_DEVELOP_BRANCH,
+          base: GITHUB_FEATURE_BRANCH
+        }, (error, result, request) => {
+          if (error) {
+            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+            
+            alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
+          } else {
+            let pullRequestNumber = result.number;
+            if (DEBUG_GITHUB_UPLOADER) console.log('pullRequestNumber', pullRequestNumber);
+            
+            repo.mergePullRequest(pullRequestNumber, {
+            }, (error, result, request) => {
+              if (error) {
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+                
+                alert(`There was an error while merging a pull request into your feature branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}'`);
+                return;
+              }
+              
+              window.setTimeout(() => {
+                window.overrideBeforeUnload = true;
+                
+                alert(`Your feature branch has been updated and required reloading.`)
+                window.location.reload(true);
+                
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
+              }, 10000);
+            });
+          }
+        });
+      }
     }
     public deploy() {
       let repo = this.getGitHubRepo();
@@ -1029,8 +1029,8 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
         base: GITHUB_STAGING_BRANCH
       }, (error, result, request) => {
         if (error) {
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
-        	
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
+          
           alert(`There was an error while creating a pull request:\n${this.extractErrorMessage(error)}`);
           return;
         }
@@ -1041,14 +1041,14 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
         repo.mergePullRequest(pullRequestNumber, {
         }, (error, result, request) => {
           if (error) {
-	        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
-	        	
+            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
+            
             alert(`There was an error while merging a pull request into a staging branch, please go to your GitHub.com and perform it.\n\n${this.extractErrorMessage(error)}`);
             return;
           }
           
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
-        	
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('deploy-button'), 'in-progress');
+          
           alert(`Your changes have been deployed on ${GITHUB_STAGING_BRANCH} and is ready for automatic deployment.`);
         });
       });
@@ -1072,8 +1072,8 @@ export default route;
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-        	
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+          
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
         }
@@ -1112,8 +1112,8 @@ ${Object.keys(sitemapInfoDict).sort().map(key => `SitemapHelper.register('${key}
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-        	
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+          
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
         }
@@ -1138,8 +1138,8 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
 //- <--- Auto[Generating:V1]
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[keys[index]] || null, (error, result, request) => {
           if (error) {
-	        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-	        	
+            HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+            
             alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
             return;
           }
@@ -1178,8 +1178,8 @@ ${tokens[1]}
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[tokens[0]] || null, (error, result, request) => {
               if (error) {
-			        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-			        	
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                
                 alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                 return;
               }
@@ -1223,8 +1223,8 @@ ${this.replaceShortcuts(tokens[1])}
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHADict && previousSHADict[tokens[0]] || null, (error, result, request) => {
               if (error) {
-			        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-			        	
+                HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+                
                 alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
                 return;
               }
@@ -1273,7 +1273,7 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
 }
 
 window.internalFsbOpen = (initClass: string, data: any) => {
-	let container = document.createElement('div');
+  let container = document.createElement('div');
   ReactDOM.render(React.createElement(DeclarationHelper.get(initClass), {data: data || window.data}, null), container);
   document.getElementsByClassName('internal-fsb-begin')[0].appendChild(container.firstElementChild);
 }
@@ -1281,8 +1281,8 @@ window.internalFsbOpen = (initClass: string, data: any) => {
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`, previousSHA, (error, result, request) => {
         if (error) {
-        	HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
-        	
+          HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
+          
           alert(`There was an error while creating blob:\n${this.extractErrorMessage(error)}`);
           return;
         }

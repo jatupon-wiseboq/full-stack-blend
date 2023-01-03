@@ -31,11 +31,11 @@ class EndpointManager extends Base<Props, State> {
     protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
     
-		private incrementalUpdatingFrontEndCodeInfoDict: any = {};
-		private incrementalUpdatingBackEndControllerInfoDict: any = {};
-		private incrementalUpdatingConnectorControllerInfoDict: any = {};
-		private incrementalUpdatingWorkerControllerInfoDict: any = {};
-		private incrementalUpdatingSchedulerControllerInfoDict: any = {};
+    private incrementalUpdatingFrontEndCodeInfoDict: any = {};
+    private incrementalUpdatingBackEndControllerInfoDict: any = {};
+    private incrementalUpdatingConnectorControllerInfoDict: any = {};
+    private incrementalUpdatingWorkerControllerInfoDict: any = {};
+    private incrementalUpdatingSchedulerControllerInfoDict: any = {};
 
     constructor(props) {
       super(props);
@@ -85,28 +85,28 @@ class EndpointManager extends Base<Props, State> {
     
     files: any = [];
     private create(path: string, content: string) {
-    	if (content === false) {
-    		return new Promise((resolve) => {
-	        resolve();
-	      });
-    	} else {
-	      return new Promise((resolve) => {
-	        this.files.push({
-	          path: path,
-	          content: content
-	        });
-	        resolve();
-	      });
-	    }
+      if (content === false) {
+        return new Promise((resolve) => {
+          resolve();
+        });
+      } else {
+        return new Promise((resolve) => {
+          this.files.push({
+            path: path,
+            content: content
+          });
+          resolve();
+        });
+      }
     }
     private commit(incremental: boolean=false) {
       let _files = this.files;
       this.files = [];
       
       let endpoint = window.ENDPOINT;
-     	if (endpoint.indexOf('https://localhost') == 0) {
-     		endpoint = 'https://localhost.stackblend.org';
-     	}
+       if (endpoint.indexOf('https://localhost') == 0) {
+         endpoint = 'https://localhost.stackblend.org';
+       }
       
       return RequestHelper.post(`${endpoint}/endpoint/update/content`, {
         files: _files
@@ -135,65 +135,65 @@ class EndpointManager extends Base<Props, State> {
       let nextProjectData = {};
       
       for (const page of this.state.extensionValues['pages']) {
-      	const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-      	const sitemap = page.sitemap || false;
+        const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+        const sitemap = page.sitemap || false;
         const frequency = page.frequency || undefined;
         const priority = page.priority || undefined;
         
         if (sitemap == 'true') {
-        	sitemapInfoDict[`${path}`] = {
-          	frequency: frequency,
-          	priority: priority
-        	};
+          sitemapInfoDict[`${path}`] = {
+            frequency: frequency,
+            priority: priority
+          };
         }
       }
       
       if (incremental) {
-      	const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
-      	const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
-      	const _incrementalUpdatingConnectorControllerInfoDict = this.incrementalUpdatingConnectorControllerInfoDict;
-      	const _incrementalUpdatingWorkerControllerInfoDict = this.incrementalUpdatingWorkerControllerInfoDict;
-      	const _incrementalUpdatingSchedulerControllerInfoDict = this.incrementalUpdatingSchedulerControllerInfoDict;
-      	
-      	for (const key of Object.keys(frontEndCodeInfoDict)) {
-      		if (frontEndCodeInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingFrontEndCodeInfoDict[key]) == JSON.stringify(frontEndCodeInfoDict[key])) {
-      				delete frontEndCodeInfoDict[key];
-      			}
-      		}
-      	}
-      	
-      	for (const key of Object.keys(backEndControllerInfoDict)) {
-      		if (backEndControllerInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
-      				delete backEndControllerInfoDict[key];
-      			}
-      		}
-      	}
-      	
-      	for (const key of Object.keys(connectorControllerInfoDict)) {
-      		if (connectorControllerInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingConnectorControllerInfoDict[key]) == JSON.stringify(connectorControllerInfoDict[key])) {
-      				delete connectorControllerInfoDict[key];
-      			}
-      		}
-      	}
-      	
-      	for (const key of Object.keys(workerControllerInfoDict)) {
-      		if (workerControllerInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]]) == JSON.stringify(workerControllerInfoDict[key])) {
-      				delete workerControllerInfoDict[key];
-      			}
-      		}
-      	}
-      	
-      	for (const key of Object.keys(schedulerControllerInfoDict)) {
-      		if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-      			if (JSON.stringify(_incrementalUpdatingSchedulerControllerInfoDict[key]) == JSON.stringify(schedulerControllerInfoDict[key])) {
-      				delete schedulerControllerInfoDict[key];
-      			}
-      		}
-      	}
+        const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
+        const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
+        const _incrementalUpdatingConnectorControllerInfoDict = this.incrementalUpdatingConnectorControllerInfoDict;
+        const _incrementalUpdatingWorkerControllerInfoDict = this.incrementalUpdatingWorkerControllerInfoDict;
+        const _incrementalUpdatingSchedulerControllerInfoDict = this.incrementalUpdatingSchedulerControllerInfoDict;
+        
+        for (const key of Object.keys(frontEndCodeInfoDict)) {
+          if (frontEndCodeInfoDict.hasOwnProperty(key)) {
+            if (JSON.stringify(_incrementalUpdatingFrontEndCodeInfoDict[key]) == JSON.stringify(frontEndCodeInfoDict[key])) {
+              delete frontEndCodeInfoDict[key];
+            }
+          }
+        }
+        
+        for (const key of Object.keys(backEndControllerInfoDict)) {
+          if (backEndControllerInfoDict.hasOwnProperty(key)) {
+            if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
+              delete backEndControllerInfoDict[key];
+            }
+          }
+        }
+        
+        for (const key of Object.keys(connectorControllerInfoDict)) {
+          if (connectorControllerInfoDict.hasOwnProperty(key)) {
+            if (JSON.stringify(_incrementalUpdatingConnectorControllerInfoDict[key]) == JSON.stringify(connectorControllerInfoDict[key])) {
+              delete connectorControllerInfoDict[key];
+            }
+          }
+        }
+        
+        for (const key of Object.keys(workerControllerInfoDict)) {
+          if (workerControllerInfoDict.hasOwnProperty(key)) {
+            if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]]) == JSON.stringify(workerControllerInfoDict[key])) {
+              delete workerControllerInfoDict[key];
+            }
+          }
+        }
+        
+        for (const key of Object.keys(schedulerControllerInfoDict)) {
+          if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+            if (JSON.stringify(_incrementalUpdatingSchedulerControllerInfoDict[key]) == JSON.stringify(schedulerControllerInfoDict[key])) {
+              delete schedulerControllerInfoDict[key];
+            }
+          }
+        }
       }
       
       Object.assign(nextProjectData, {});
@@ -287,7 +287,7 @@ class EndpointManager extends Base<Props, State> {
           if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
           
           if (pages && pages[0]) {
-          	let combinedHTMLPage = `.
+            let combinedHTMLPage = `.
   <!DOCTYPE html>
 html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
@@ -453,16 +453,16 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                       this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
                         this.commit(incremental).then(() => {
                           if (incremental) {
-	                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
-	      										$this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
-	      										$this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(_connectorControllerInfoDict);
-	      										$this.incrementalUpdatingWorkerControllerInfoDict = {};
-	      										for (const key in _workerControllerInfoDict) {
-	      											if (_workerControllerInfoDict.hasOwnProperty(key)) {
-	      												$this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = _workerControllerInfoDict[key];
-	      											}
-	      										}
-	      										$this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(_schedulerControllerInfoDict);
+                            $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
+                            $this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
+                            $this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(_connectorControllerInfoDict);
+                            $this.incrementalUpdatingWorkerControllerInfoDict = {};
+                            for (const key in _workerControllerInfoDict) {
+                              if (_workerControllerInfoDict.hasOwnProperty(key)) {
+                                $this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = _workerControllerInfoDict[key];
+                              }
+                            }
+                            $this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(_schedulerControllerInfoDict);
                           }
                           
                           cb(true);
@@ -657,7 +657,7 @@ window.internalFsbSubmit = (guid: string, notation: string, event, callback: any
 }
 
 window.internalFsbOpen = (initClass: string, data: any) => {
-	let container = document.createElement('div');
+  let container = document.createElement('div');
   ReactDOM.render(React.createElement(DeclarationHelper.get(initClass), {data: data || window.data}, null), container);
   document.getElementsByClassName('internal-fsb-begin')[0].appendChild(container.firstElementChild);
 }

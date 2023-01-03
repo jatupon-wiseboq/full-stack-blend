@@ -231,17 +231,17 @@ var FrontEndManipulationHelper = {
         isComponentInsertion = true;
         break;
       case 'Pasteboard':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element.innerHTML = content.html;
         element = element.firstElementChild;
-      	
-      	content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+        
+        content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
         content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
         
         WorkspaceHelper.updateInheritingComponents(element);
         
         isComponentInsertion = true;
-      	break;
+        break;
     }
     
     if (element !== null) {
@@ -274,7 +274,7 @@ var FrontEndManipulationHelper = {
         alert("The editor doesn't allow nest of components.");
         remember = false;
       } if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Button' && HTMLHelper.findAllParentsInClassName('internal-fsb-element', Accessories.cursor.getDOMNode()).some(element => element.getAttribute('internal-fsb-class') == 'Button')) {
-      	alert("The editor doesn't allow nest of buttons.");
+        alert("The editor doesn't allow nest of buttons.");
         remember = false;
       } else {
         if (HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {

@@ -16,7 +16,7 @@ const GitHubStrategy = passportGitHub.Strategy;
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   dotenv.config();
 } else {
-	dotenv.config();
+  dotenv.config();
 }
 
 passport.serializeUser<any, any>((user, done) => {

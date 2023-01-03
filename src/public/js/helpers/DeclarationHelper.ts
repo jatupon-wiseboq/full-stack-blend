@@ -9,11 +9,11 @@ const settings: {[Identifier: string]: any} = {};
 Project.Settings = settings;
 
 if (window.settings) {
-	const items = window.settings.toString().split('`');
+  const items = window.settings.toString().split('`');
   
   for (const item of items) {
-  	const tokens = item.split('~');
-  	Project.Settings[tokens[0]] = tokens[1];
+    const tokens = item.split('~');
+    Project.Settings[tokens[0]] = tokens[1];
   }
 }
 

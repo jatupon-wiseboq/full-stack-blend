@@ -1,8 +1,8 @@
 import {DataManipulationHelper} from '../../helpers/DataManipulationHelper';
 
 (() => {
-	// Auto Height Layout
-	// 
+  // Auto Height Layout
+  // 
   function update(event) {  
     let elements = [...document.body.getElementsByClassName('internal-fsb-absolute-layout')];
     elements.reverse().forEach((element) => {

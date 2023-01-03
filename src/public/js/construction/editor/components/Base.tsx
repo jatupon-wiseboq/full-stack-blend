@@ -55,30 +55,30 @@ class Base extends React.Component {
         controls.push(this);
         
         this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
-        		keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
+            keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
             classNameStatuses[nameOrRegularExpression] = null;
         });
         this.props.watchingStyleNames.forEach((nameOrRegularExpression: string) => {
-        		keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
+            keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
             styleValues[nameOrRegularExpression] = null;
         });
         this.props.watchingAttributeNames.forEach((nameOrRegularExpression: string) => {
-        		keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
+            keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
             attributeValues[nameOrRegularExpression] = null;
         });
         this.props.watchingExtensionNames.forEach((nameOrRegularExpression: string) => {
-        		keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
+            keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
             extensionValues[nameOrRegularExpression] = null;
         });
     }
     
     componentDidMount() { 
-				this.mounted = true;
-		}
-		
-		componentWillUnmount() {
-				this.mounted = false;
-		}
+        this.mounted = true;
+    }
+    
+    componentWillUnmount() {
+        this.mounted = false;
+    }
     
     public update(properties: any) {
         let changed = false;
@@ -88,8 +88,8 @@ class Base extends React.Component {
             
             for (let nameOrRegularExpression in classNameStatuses) {
                 if (classNameStatuses.hasOwnProperty(nameOrRegularExpression)) {
-                		nameOrRegularExpression = keysMapping[nameOrRegularExpression];
-                		
+                    nameOrRegularExpression = keysMapping[nameOrRegularExpression];
+                    
                     if (!!nameOrRegularExpression) {
                         if (typeof nameOrRegularExpression === 'object') { // Regular Expression
                             let value = recentElementClassName.match(nameOrRegularExpression);
@@ -109,25 +109,25 @@ class Base extends React.Component {
             
             for (let nameOrRegularExpression in styleValues) {
                 if (styleValues.hasOwnProperty(nameOrRegularExpression)) {
-                		nameOrRegularExpression = keysMapping[nameOrRegularExpression];
-                		
+                    nameOrRegularExpression = keysMapping[nameOrRegularExpression];
+                    
                     if (!!nameOrRegularExpression) {
-                    		if (typeof nameOrRegularExpression === 'object') { // Regular Expression
-                    				let value = recentElementStyle.match(nameOrRegularExpression);
+                        if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                            let value = recentElementStyle.match(nameOrRegularExpression);
                             styleValues[nameOrRegularExpression] = value;
-                    		} else {
-		                        let splited = nameOrRegularExpression.split('[');
-		                        let value = hashMap[splited[0]] || null;
-		                        
-		                        if (value != null && splited[1]) {
-		                            let tokens = splited[1].split(',');
-		                            let index = parseInt(tokens[0]);
-		                            
-		                            value = value.replace(/(,[ ]*)/g, ',').split(' ')[index]
-		                            value = value && value.replace(/(,[ ]*)/g, ', ') || value;
-		                        }
-		                        styleValues[nameOrRegularExpression] = value;
-		                    }
+                        } else {
+                            let splited = nameOrRegularExpression.split('[');
+                            let value = hashMap[splited[0]] || null;
+                            
+                            if (value != null && splited[1]) {
+                                let tokens = splited[1].split(',');
+                                let index = parseInt(tokens[0]);
+                                
+                                value = value.replace(/(,[ ]*)/g, ',').split(' ')[index]
+                                value = value && value.replace(/(,[ ]*)/g, ', ') || value;
+                            }
+                            styleValues[nameOrRegularExpression] = value;
+                        }
                     }
                 }
             }
@@ -139,27 +139,27 @@ class Base extends React.Component {
             
             for (let nameOrRegularExpression in attributeValues) {
                 if (attributeValues.hasOwnProperty(nameOrRegularExpression)) {
-                		nameOrRegularExpression = keysMapping[nameOrRegularExpression];
-                		
+                    nameOrRegularExpression = keysMapping[nameOrRegularExpression];
+                    
                     if (!!nameOrRegularExpression) {
-                    		if (typeof nameOrRegularExpression === 'object') { // Regular Expression
-                    				if (!assigned[nameOrRegularExpression]) {
-                    						assigned[nameOrRegularExpression] = true;
-                    						attributeValues[nameOrRegularExpression] = {};
-                    				}
-                    				for (let name in recentElementAttributes) {
-                    						if (recentElementAttributes.hasOwnProperty(name) && name.match(nameOrRegularExpression)) {
-                    								attributeValues[nameOrRegularExpression][name] = recentElementAttributes[name];
-                    						}
-                    				}
-                    		} else {
-		                        let value = recentElementAttributes[nameOrRegularExpression];
-		                        if (value !== undefined) {
-		                            attributeValues[nameOrRegularExpression] = value;
-		                        } else {
-		                            attributeValues[nameOrRegularExpression] = null;
-		                        }
-		                    }
+                        if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                            if (!assigned[nameOrRegularExpression]) {
+                                assigned[nameOrRegularExpression] = true;
+                                attributeValues[nameOrRegularExpression] = {};
+                            }
+                            for (let name in recentElementAttributes) {
+                                if (recentElementAttributes.hasOwnProperty(name) && name.match(nameOrRegularExpression)) {
+                                    attributeValues[nameOrRegularExpression][name] = recentElementAttributes[name];
+                                }
+                            }
+                        } else {
+                            let value = recentElementAttributes[nameOrRegularExpression];
+                            if (value !== undefined) {
+                                attributeValues[nameOrRegularExpression] = value;
+                            } else {
+                                attributeValues[nameOrRegularExpression] = null;
+                            }
+                        }
                     }
                 }
             }
@@ -171,27 +171,27 @@ class Base extends React.Component {
             
             for (let nameOrRegularExpression in extensionValues) {
                 if (extensionValues.hasOwnProperty(nameOrRegularExpression)) {
-                		nameOrRegularExpression = keysMapping[nameOrRegularExpression];
-                		
+                    nameOrRegularExpression = keysMapping[nameOrRegularExpression];
+                    
                     if (!!nameOrRegularExpression) {
-                    		if (typeof nameOrRegularExpression === 'object') { // Regular Expression
-                    				if (!assigned[nameOrRegularExpression]) {
-                    						assigned[nameOrRegularExpression] = true;
-                    						extensionValues[nameOrRegularExpression] = {};
-                    				}
-                    				for (let name in recentElementExtensions) {
-                    						if (recentElementExtensions.hasOwnProperty(name) && name.match(nameOrRegularExpression)) {
-                    								extensionValues[nameOrRegularExpression][name] = recentElementExtensions[name];
-                    						}
-                    				}
-                    		} else {
-		                        let value = recentElementExtensions[nameOrRegularExpression];
-		                        if (value !== undefined) {
-		                            extensionValues[nameOrRegularExpression] = value;
-		                        } else {
-		                            extensionValues[nameOrRegularExpression] = null;
-		                        }
-		                    }
+                        if (typeof nameOrRegularExpression === 'object') { // Regular Expression
+                            if (!assigned[nameOrRegularExpression]) {
+                                assigned[nameOrRegularExpression] = true;
+                                extensionValues[nameOrRegularExpression] = {};
+                            }
+                            for (let name in recentElementExtensions) {
+                                if (recentElementExtensions.hasOwnProperty(name) && name.match(nameOrRegularExpression)) {
+                                    extensionValues[nameOrRegularExpression][name] = recentElementExtensions[name];
+                                }
+                            }
+                        } else {
+                            let value = recentElementExtensions[nameOrRegularExpression];
+                            if (value !== undefined) {
+                                extensionValues[nameOrRegularExpression] = value;
+                            } else {
+                                extensionValues[nameOrRegularExpression] = null;
+                            }
+                        }
                     }
                 }
             }

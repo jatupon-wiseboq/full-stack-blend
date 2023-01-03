@@ -179,17 +179,17 @@ var BackEndManipulationHelper = {
         `, element);
         break;
       case 'Pasteboard':
-      	element = document.createElement('div');
+        element = document.createElement('div');
         element.innerHTML = content.html;
         element = element.firstElementChild;
         
         if (!BackEndManipulationHelper.validateCursorPosition(HTMLHelper.getAttribute(element, 'internal-fsb-class'))) return [accessory, false, link];
-      	
-      	content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
+        
+        content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
         content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
         
         isComponentInsertion = true;
-      	break;
+        break;
     }
     
     if (element !== null) {
@@ -232,113 +232,113 @@ var BackEndManipulationHelper = {
     return [accessory, remember, link];
   },
   validateCursorPosition: (klass: string) => {
-  	switch (klass) {
+    switch (klass) {
       case 'RelationalDatabase':
-      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside any element to insert a relational database.');
-      		return false;
-      	}
+        if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+          alert('Please place a cursor outside any element to insert a relational database.');
+          return false;
+        }
         break;
       case 'RelationalTable':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RelationalDatabase') {
-      		alert('Please place a cursor inside a relational database to insert a relational table.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RelationalDatabase') {
+          alert('Please place a cursor inside a relational database to insert a relational table.');
+          return false;
+        }
         break;
       case 'RelationalColumn':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RelationalTable') {
-      		alert('Please place a cursor inside a relational table to insert a relational column.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RelationalTable') {
+          alert('Please place a cursor inside a relational table to insert a relational column.');
+          return false;
+        }
         break;
       case 'DocumentDatabase':
-      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside any element to insert a document database.');
-      		return false;
-      	}
+        if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+          alert('Please place a cursor outside any element to insert a document database.');
+          return false;
+        }
         break;
       case 'DocumentTable':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'DocumentDatabase') {
-      		alert('Please place a cursor inside a document database to insert a document table.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'DocumentDatabase') {
+          alert('Please place a cursor inside a document database to insert a document table.');
+          return false;
+        }
         break;
       case 'DocumentNotation':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'DocumentTable') {
-      		alert('Please place a cursor inside a document table to insert a document notation.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'DocumentTable') {
+          alert('Please place a cursor inside a document table to insert a document notation.');
+          return false;
+        }
         break;
       case 'Queue':
-      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
-      		alert('Please place a cursor outside any element or inside a database element to insert a queue.');
-      		return false;
-      	}
+        if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+          ['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
+          alert('Please place a cursor outside any element or inside a database element to insert a queue.');
+          return false;
+        }
         break;
       case 'Parameter':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Queue') {
-      		alert('Please place a cursor inside a Queue to insert a Parameter.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Queue') {
+          alert('Please place a cursor inside a Queue to insert a Parameter.');
+          return false;
+        }
         break;
       case 'Scheduler':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
-      		alert('Please place a cursor outside any element for cross database scheduling, or inside a database element for cross table scheduling.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+          ['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
+          alert('Please place a cursor outside any element for cross database scheduling, or inside a database element for cross table scheduling.');
+          return false;
+        }
         break;
       case 'Timing':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Scheduler') {
-      		alert('Please place a cursor inside a scheduler to insert a scheduler timing.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'Scheduler') {
+          alert('Please place a cursor inside a scheduler to insert a scheduler timing.');
+          return false;
+        }
         break;
       case 'VolatileMemory':
-      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
-      		alert('Please place a cursor outside any element or inside a database element to insert a volatile memory.');
-      		return false;
-      	}
+        if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+          ['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
+          alert('Please place a cursor outside any element or inside a database element to insert a volatile memory.');
+          return false;
+        }
         break;
       case 'VolatilePrefix':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'VolatileMemory') {
-      		alert('Please place a cursor inside a volatile memory to insert a volatile prefix.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'VolatileMemory') {
+          alert('Please place a cursor inside a volatile memory to insert a volatile prefix.');
+          return false;
+        }
         break;
       case 'Connection':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
-      		['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
-      		alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!Accessories.cursor || (!HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout') &&
+          ['RelationalDatabase', 'DocumentDatabase'].indexOf(HTMLHelper.getAttribute(parent, 'internal-fsb-class')) == -1)) {
+          alert('Please place a cursor outside any element for cross database relation, or inside a database element for cross table relation.');
+          return false;
+        }
         break;
       case 'RESTful':
-      	if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
-      		alert('Please place a cursor outside any element to insert a RESTful collection.');
-      		return false;
-      	}
+        if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
+          alert('Please place a cursor outside any element to insert a RESTful collection.');
+          return false;
+        }
         break;
       case 'Verb':
-      	parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
-      	if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RESTful') {
-      		alert('Please place a cursor inside a RESTful collection to insert a verb.');
-      		return false;
-      	}
+        parent = HTMLHelper.findTheParentInClassName('internal-fsb-element', Accessories.cursor.getDOMNode());
+        if (!parent || HTMLHelper.getAttribute(parent, 'internal-fsb-class') != 'RESTful') {
+          alert('Please place a cursor inside a RESTful collection to insert a verb.');
+          return false;
+        }
         break;
       case 'Pasteboard':
-      	break;
+        break;
     }
     
     return true;

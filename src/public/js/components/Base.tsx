@@ -11,20 +11,20 @@ declare let ReactDOM: any;
 declare let DataManipulationHelper: any;
 
 interface IBaseProps {
-	row: HierarchicalDataRow;
-	data: {[Identifier: string]: HierarchicalDataTable};
+  row: HierarchicalDataRow;
+  data: {[Identifier: string]: HierarchicalDataTable};
 }
 
 interface IBaseState {
-	data: {[Identifier: string]: HierarchicalDataTable};
+  data: {[Identifier: string]: HierarchicalDataTable};
 }
 
 let DefaultBaseProps: any = {
-	row: null,
-	data: null
+  row: null,
+  data: null
 };
 let DefaultBaseState: any = {
-	data: null
+  data: null
 };
 
 const controls: any = [];
@@ -42,35 +42,35 @@ class Base extends React.Component {
     controls.push(this);
     
     if (props.data) {
-    	NotificationHelper.registerTableUpdates(props.data);
+      NotificationHelper.registerTableUpdates(props.data);
     }
     
     window.addEventListener('tableUpdated', (() => {
-    	this.forceUpdate();
+      this.forceUpdate();
     }).bind(this));
   }
   
   public update(data: any, manipulateInto: string) {
-  	if (!manipulateInto) {
-	  	const previous = this.state.data || this.props.data || {};
-	  	const next = Object.assign({}, previous, data || {})
-	  	
-	  	NotificationHelper.unregisterTableUpdates(previous);
-	  	NotificationHelper.registerTableUpdates(next);
-	  	
-	    this.setState({
-	      data: next
-	    });
-	  } else {
-	  	const premise = this.getDataFromNotation(manipulateInto);
-	  	const previous = premise.relations || {};
-	  	const next = Object.assign({}, previous, data || {})
-	  	
-	  	NotificationHelper.unregisterTableUpdates(previous);
-	  	NotificationHelper.registerTableUpdates(next);
-	  	
-	    premise.relations = next;
-	  }
+    if (!manipulateInto) {
+      const previous = this.state.data || this.props.data || {};
+      const next = Object.assign({}, previous, data || {})
+      
+      NotificationHelper.unregisterTableUpdates(previous);
+      NotificationHelper.registerTableUpdates(next);
+      
+      this.setState({
+        data: next
+      });
+    } else {
+      const premise = this.getDataFromNotation(manipulateInto);
+      const previous = premise.relations || {};
+      const next = Object.assign({}, previous, data || {})
+      
+      NotificationHelper.unregisterTableUpdates(previous);
+      NotificationHelper.registerTableUpdates(next);
+      
+      premise.relations = next;
+    }
   }
   
   protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
@@ -80,20 +80,20 @@ class Base extends React.Component {
       console.error("There was an error processing hierarchical data on client side (notation isn't a string).");
       result = [];
     } else {
-	    if (this.props.row) {
-	    	result = DataManipulationHelper.getDataFromNotation(notation, this.props.row, inArray);
-	    } else if (this.state.data) {
-	    	result = DataManipulationHelper.getDataFromNotation(notation, this.state.data, inArray);
-	    } else if (this.props.data) {
-	    	result = DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
-	    } else {
-	      result = [''];
-	    }
-	  }
-	  
-	  if (always && inArray && result.length == 0) result.push('');
-	  
-	  return result;
+      if (this.props.row) {
+        result = DataManipulationHelper.getDataFromNotation(notation, this.props.row, inArray);
+      } else if (this.state.data) {
+        result = DataManipulationHelper.getDataFromNotation(notation, this.state.data, inArray);
+      } else if (this.props.data) {
+        result = DataManipulationHelper.getDataFromNotation(notation, this.props.data, inArray);
+      } else {
+        result = [''];
+      }
+    }
+    
+    if (always && inArray && result.length == 0) result.push('');
+    
+    return result;
   }
   
   public manipulate(guid: string, notation: string, results: any) {
@@ -104,18 +104,18 @@ class Base extends React.Component {
     
     switch (action) {
       case 'insert':
-	    	data = notation && this.getDataFromNotation(notation) || null;
-	    	if (data == null) return;
-	    	
+        data = notation && this.getDataFromNotation(notation) || null;
+        if (data == null) return;
+        
         for (let result of results) {
-        	let found = null;
-        	
-        	for (let row of data) {
-        		found = row;
-        		for (let key in result.keys) {
+          let found = null;
+          
+          for (let row of data) {
+            found = row;
+            for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                	found = null;
+                  found = null;
                   break;
                 }
               }
@@ -124,7 +124,7 @@ class Base extends React.Component {
           }
           
           if (!found) {
-          	data.push(result);
+            data.push(result);
           }
         }
         
@@ -137,18 +137,18 @@ class Base extends React.Component {
         });
         break;
       case 'update':
-	    	data = notation && this.getDataFromNotation(notation) || null;
-	    	if (data == null) return;
-	    	
+        data = notation && this.getDataFromNotation(notation) || null;
+        if (data == null) return;
+        
         for (let result of results) {
-        	let found = null;
-        		
-        	for (let row of data) {
-        		found = row;
-        		for (let key in result.keys) {
+          let found = null;
+            
+          for (let row of data) {
+            found = row;
+            for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                	found = null;
+                  found = null;
                   break;
                 }
               }
@@ -157,18 +157,18 @@ class Base extends React.Component {
           }
             
           if (found) {
-          	for (let key in result.keys) {
+            for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 found.keys[key] = result.keys[key];
               }
             }
-          	for (let key in result.columns) {
+            for (let key in result.columns) {
               if (result.columns.hasOwnProperty(key)) {
                 found.columns[key] = result.columns[key];
               }
             }
           }
-      	}
+        }
         
         NotificationHelper.registerTableUpdates({
           collection: {
@@ -179,18 +179,18 @@ class Base extends React.Component {
         });
         break;
       case 'upsert':
-	    	data = notation && this.getDataFromNotation(notation) || null;
-	    	if (data == null) return;
-	    	
+        data = notation && this.getDataFromNotation(notation) || null;
+        if (data == null) return;
+        
         for (let result of results) {
-        	let found = null;
-        	
-        	for (let row of data) {
-        		found = row;
-        		for (let key in result.keys) {
+          let found = null;
+          
+          for (let row of data) {
+            found = row;
+            for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 if (row.keys[key] != result.keys[key]) {
-                	found = null;
+                  found = null;
                   break;
                 }
               }
@@ -199,18 +199,18 @@ class Base extends React.Component {
           }
           
           if (found) {
-          	for (let key in result.keys) {
+            for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
                 found.keys[key] = result.keys[key];
               }
             }
-          	for (let key in result.columns) {
+            for (let key in result.columns) {
               if (result.columns.hasOwnProperty(key)) {
                 found.columns[key] = result.columns[key];
               }
             }
           } else {
-          	data.push(result);
+            data.push(result);
           }
         }
         
@@ -223,9 +223,9 @@ class Base extends React.Component {
         });
         break;
       case 'delete':
-	    	data = notation && this.getDataFromNotation(notation) || null;
-	    	if (data == null) return;
-	    	
+        data = notation && this.getDataFromNotation(notation) || null;
+        if (data == null) return;
+        
         for (let result of results) {
           let collection = data.filter((row) => {
             for (let key in row.keys) {
@@ -236,10 +236,10 @@ class Base extends React.Component {
             return true;
           });
           for (let item of collection) {
-          	let index = data.indexOf(item);
-          	data.splice(index, 1);
-          	
-          	NotificationHelper.unregisterTableUpdates(item.relations);
+            let index = data.indexOf(item);
+            data.splice(index, 1);
+            
+            NotificationHelper.unregisterTableUpdates(item.relations);
           }
         }
         break;
@@ -265,25 +265,25 @@ class Base extends React.Component {
 DeclarationHelper.declare('Site', 'Components.Base', Base);
 
 class Button extends React.Component {
-	constructor(props) {
+  constructor(props) {
     super(props);
   }
   
   componentDidMount() {
-  	let button = ReactDOM.findDOMNode(this.refs.button);
-  	
-  	if (this.props.onSubmitting) {
-  		button.addEventListener('submitting', this.props.onSubmitting, false);
-  	}
-  	if (this.props.onSubmitted) {
-  		button.addEventListener('submitted', this.props.onSubmitted, false);
-  	}
-  	if (this.props.onFailed) {
-  		button.addEventListener('failed', this.props.onFailed, false);
-  	}
-  	if (this.props.onSuccess) {
-  		button.addEventListener('success', this.props.onSuccess, false);
-  	}
+    let button = ReactDOM.findDOMNode(this.refs.button);
+    
+    if (this.props.onSubmitting) {
+      button.addEventListener('submitting', this.props.onSubmitting, false);
+    }
+    if (this.props.onSubmitted) {
+      button.addEventListener('submitted', this.props.onSubmitted, false);
+    }
+    if (this.props.onFailed) {
+      button.addEventListener('failed', this.props.onFailed, false);
+    }
+    if (this.props.onSuccess) {
+      button.addEventListener('success', this.props.onSuccess, false);
+    }
   }
   
   protected render(): any {

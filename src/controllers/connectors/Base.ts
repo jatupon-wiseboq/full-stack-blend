@@ -7,72 +7,72 @@ import {DataTableSchema} from "../helpers/SchemaHelper";
 const dictionary: {[Identifier: string]: (Event) => Promise<HierarchicalDataRow[]>} = {};
 
 class Base {
-	private source: DataTableSchema = null;
-	private target: DataTableSchema = null;
+  private source: DataTableSchema = null;
+  private target: DataTableSchema = null;
 
-	constructor(source: DataTableSchema, target: DataTableSchema) {
-		this.source = source;
-		this.target = target;
-		
-		this.setup();
-		this.initialize();
+  constructor(source: DataTableSchema, target: DataTableSchema) {
+    this.source = source;
+    this.target = target;
+    
+    this.setup();
+    this.initialize();
   }
   
-	protected register(action: ActionType, source: DataTableSchema, method: (Event) => Promise<HierarchicalDataRow[]>) {
-  	if (source.group == this.source.group) {
-  		dictionary[`${this.source.guid}:${this.target.guid}:${action}`] = method;
-  	} else {
-  		dictionary[`${this.target.guid}:${this.source.guid}:${action}`] = method;
-  	}
-	}
-	
-	protected setup() {
-		void(0);
-	}
-	
-	protected initialize() {
-		void(0);
-	}
-	
-	static async perform(action: ActionType, source: DataTableSchema, target: DataTableSchema, rows: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean, session: any, leavePermission: boolean, innerCircleTags: string[]): Promise<HierarchicalDataRow[]> {
-		let type: string = null;
-		switch (action) {
-			case ActionType.Insert:
-				type = 'Insert';
-				break;
-			case ActionType.Update:
-				type = 'Update';
-				break;
-			case ActionType.Upsert:
-				type = 'Upsert';
-				break;
-			case ActionType.Delete:
-				type = 'Delete';
-				break;
-			case ActionType.Retrieve:
-				type = 'Retrieve';
-				break;
-			default:
-				throw new Error('Wrong of an action.');
-		}
-		
-		const info = {
-			source: source,
-			target: target,
-			rows: rows,
-			transaction: transaction,
-			crossRelationUpsert: crossRelationUpsert,
-			session: session,
-			leavePermission: leavePermission,
-			innerCircleTags: innerCircleTags
-		};
+  protected register(action: ActionType, source: DataTableSchema, method: (Event) => Promise<HierarchicalDataRow[]>) {
+    if (source.group == this.source.group) {
+      dictionary[`${this.source.guid}:${this.target.guid}:${action}`] = method;
+    } else {
+      dictionary[`${this.target.guid}:${this.source.guid}:${action}`] = method;
+    }
+  }
+  
+  protected setup() {
+    void(0);
+  }
+  
+  protected initialize() {
+    void(0);
+  }
+  
+  static async perform(action: ActionType, source: DataTableSchema, target: DataTableSchema, rows: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean, session: any, leavePermission: boolean, innerCircleTags: string[]): Promise<HierarchicalDataRow[]> {
+    let type: string = null;
+    switch (action) {
+      case ActionType.Insert:
+        type = 'Insert';
+        break;
+      case ActionType.Update:
+        type = 'Update';
+        break;
+      case ActionType.Upsert:
+        type = 'Upsert';
+        break;
+      case ActionType.Delete:
+        type = 'Delete';
+        break;
+      case ActionType.Retrieve:
+        type = 'Retrieve';
+        break;
+      default:
+        throw new Error('Wrong of an action.');
+    }
+    
+    const info = {
+      source: source,
+      target: target,
+      rows: rows,
+      transaction: transaction,
+      crossRelationUpsert: crossRelationUpsert,
+      session: session,
+      leavePermission: leavePermission,
+      innerCircleTags: innerCircleTags
+    };
 
-		if (dictionary[`${source.guid}:${target.guid}:${action}`]) {		
-			return await dictionary[`${source.guid}:${target.guid}:${action}`](info);
-		} else {
-			return rows;
-		}
-	}
+    if (dictionary[`${source.guid}:${target.guid}:${action}`]) {    
+      return await dictionary[`${source.guid}:${target.guid}:${action}`](info);
+    } else {
+      return rows;
+    }
+  }
 }
 
 export {Base};

@@ -37,7 +37,7 @@ class CustomCodePicker extends Base<Props, State> {
         
         let original = null;
         if (this.props.watchingAttributeNames[0]) {
-        		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+            original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         }
         
         if (original && original.indexOf("CODE[") == 0) {

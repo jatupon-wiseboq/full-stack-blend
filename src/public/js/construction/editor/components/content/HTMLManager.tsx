@@ -60,35 +60,35 @@ class HTMLManager extends Base<Props, State> {
     }
     
     private onStartDragging(node: ITreeNode) {
-    		let container = ReactDOM.findDOMNode(this.refs.listManager);
-    		let deleteElement = HTMLHelper.getElementByClassName('delete', container);
-    		
-    		deleteElement.style.top = (container.firstElementChild.scrollTop + 3) + 'px';
+        let container = ReactDOM.findDOMNode(this.refs.listManager);
+        let deleteElement = HTMLHelper.getElementByClassName('delete', container);
+        
+        deleteElement.style.top = (container.firstElementChild.scrollTop + 3) + 'px';
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		if (reference.id == 'delete') {
-    		    if (element.tag.id == 'index') {
-	    		    	alert('You cannot delete home page.');
-	    		    	return;
-    		    }
-    		    
-    		    element.tag.state = 'delete';
-    		    
-    		    perform('update', {
-    		        extensions: [{
-    		            name: this.props.watchingExtensionNames[0],
-    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
-    		        },{
-    		            name: this.props.watchingExtensionNames[1],
-    		            value: null
-    		        }]
-    		    });
-    		    
-    		    this.refresh();
-    		}
-    		
-    		document.body.click();
+        if (reference.id == 'delete') {
+            if (element.tag.id == 'index') {
+                alert('You cannot delete home page.');
+                return;
+            }
+            
+            element.tag.state = 'delete';
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
+                },{
+                    name: this.props.watchingExtensionNames[1],
+                    value: null
+                }]
+            });
+            
+            this.refresh();
+        }
+        
+        document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -130,11 +130,11 @@ class HTMLManager extends Base<Props, State> {
             });
         
             perform('update', {
-    		        extensions: [{
-    		            name: this.props.watchingExtensionNames[1],
-    		            value: node.id
-    		        }]
-    		    });
+                extensions: [{
+                    name: this.props.watchingExtensionNames[1],
+                    value: node.id
+                }]
+            });
         }
     }
     
@@ -193,8 +193,8 @@ class HTMLManager extends Base<Props, State> {
                 name: this.getDisplay(item),
                 selectable: true,
                 dropable: false,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: false,
                 selected: false,
                 customClassName: 'item',
@@ -203,11 +203,11 @@ class HTMLManager extends Base<Props, State> {
             });
           
             perform('update', {
-    		        extensions: [{
-    		            name: this.props.watchingExtensionNames[0],
-    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
-    		        }]
-    		    });
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
+                }]
+            });
             
             this.refresh();
             
@@ -229,13 +229,13 @@ class HTMLManager extends Base<Props, State> {
             item.state = 'update';
           
             perform('update', {
-    		        extensions: [{
-    		            name: this.props.watchingExtensionNames[0],
-    		            value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
-    		        }]
-    		    });
-    		    
-    		    this.refresh();
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: this.state.nodes.filter(node => node.id !== 'delete').map(node => node.tag)
+                }]
+            });
+            
+            this.refresh();
             
             document.body.click();
         }
@@ -253,11 +253,11 @@ class HTMLManager extends Base<Props, State> {
             nodes: []
         }];
         
-    		if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
-    				this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
-    					return (a[this.props.sortFieldName] < b[this.props.sortFieldName]) ? -1 : 1;
-    				});
-    		}
+        if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
+            this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
+              return (a[this.props.sortFieldName] < b[this.props.sortFieldName]) ? -1 : 1;
+            });
+        }
         
         let items = this.state.extensionValues[this.props.watchingExtensionNames[0]];
         let editingID = this.state.extensionValues[this.props.watchingExtensionNames[1]];
@@ -271,8 +271,8 @@ class HTMLManager extends Base<Props, State> {
                 name: this.getDisplay(item),
                 selectable: true,
                 dropable: false,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: false,
                 selected: (item.id == editingID),
                 customClassName: 'html',
@@ -288,11 +288,11 @@ class HTMLManager extends Base<Props, State> {
                 this.state.extensionValues[this.props.watchingExtensionNames[1]] = nodes[0].id;
                 
                 perform('update', {
-        		        extensions: [{
-        		            name: this.props.watchingExtensionNames[1],
-        		            value: nodes[0].id
-        		        }]
-        		    });
+                    extensions: [{
+                        name: this.props.watchingExtensionNames[1],
+                        value: nodes[0].id
+                    }]
+                });
             }
         }
         
@@ -308,7 +308,7 @@ class HTMLManager extends Base<Props, State> {
     }
     
     render() {
-    		const currentMode = this.props && this.props.watchingExtensionNames && this.props.watchingExtensionNames[0];
+        const currentMode = this.props && this.props.watchingExtensionNames && this.props.watchingExtensionNames[0];
         return (
             <FullStackBlend.Components.ListManager ref="listManager" customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
                 <div className="section-container" style={{width: '225px'}}>
@@ -319,37 +319,37 @@ class HTMLManager extends Base<Props, State> {
                     </div>
                     <div className="section-subtitle" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>Path</div>
                     <div internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
-                    	<div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
-                        	<FullStackBlend.Controls.Textbox ref="value" value={this.state.path} placeholder="/path/name/:a/:b" preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-                    	</div>
+                      <div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
+                          <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} placeholder="/path/name/:a/:b" preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                      </div>
                     </div>
                     <div className="section-subtitle">Description</div>
                     <div className="section-body">
                         <FullStackBlend.Controls.Textbox ref="description" value={this.state.description} preRegExp='.*' postRegExp='.*' onUpdate={this.descriptionOnUpdate.bind(this)} maxLength={165} multiline={true} resizable={false}></FullStackBlend.Controls.Textbox>
                     </div>
                     {['components', 'popups'].indexOf(currentMode) == -1 && (
-                    	<div>
-		                    <div className="section-subtitle">Keywords</div>
-		                    <div className="section-body" internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
-		                        <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} maxLength={1000} multiline={true} resizable={false}></FullStackBlend.Controls.Textbox>
-		                    </div>
-		                    <div className="section-subtitle">Image</div>
-		                    <div className="section-body" internal-fsb-not-for="workspaceMode:business">
-		                        <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} placeholder="URL" preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
-		                    </div>
-		                    <div className="section-subtitle">Sitemap Option</div>
-		                    <div className="section-body" internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
-		                    		<FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "enable for this page"]]]}/>
-		                    		<div style={{opacity: this.state.sitemap ? '' : '0.15', pointerEvents: this.state.sitemap ? '' : 'none', height: '64px'}}>
-		                    				<FullStackBlend.Controls.DropDownList options={SEO_FREQUENCY_OPTIONS} onUpdate={this.frequencyOnUpdate.bind(this)} inline={true}>
-                                	<span>frequency: {this.state.frequency}</span>
+                      <div>
+                        <div className="section-subtitle">Keywords</div>
+                        <div className="section-body" internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
+                            <FullStackBlend.Controls.Textbox ref="keywords" value={this.state.keywords} placeholder="keyword, abc, ..." preRegExp='.*' postRegExp='.*' onUpdate={this.keywordsOnUpdate.bind(this)} rows={2} maxLength={1000} multiline={true} resizable={false}></FullStackBlend.Controls.Textbox>
+                        </div>
+                        <div className="section-subtitle">Image</div>
+                        <div className="section-body" internal-fsb-not-for="workspaceMode:business">
+                            <FullStackBlend.Controls.Textbox ref="image" value={this.state.image} placeholder="URL" preRegExp='.*' postRegExp='.*' onUpdate={this.imageOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+                        </div>
+                        <div className="section-subtitle">Sitemap Option</div>
+                        <div className="section-body" internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
+                            <FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "enable for this page"]]]}/>
+                            <div style={{opacity: this.state.sitemap ? '' : '0.15', pointerEvents: this.state.sitemap ? '' : 'none', height: '64px'}}>
+                                <FullStackBlend.Controls.DropDownList options={SEO_FREQUENCY_OPTIONS} onUpdate={this.frequencyOnUpdate.bind(this)} inline={true}>
+                                  <span>frequency: {this.state.frequency}</span>
                                 </FullStackBlend.Controls.DropDownList>
-		                    				<FullStackBlend.Controls.DropDownList options={SEO_PRIORITY_OPTIONS} onUpdate={this.priorityOnUpdate.bind(this)} inline={true}>
-                                	<span>priority: {this.state.priority}</span>
+                                <FullStackBlend.Controls.DropDownList options={SEO_PRIORITY_OPTIONS} onUpdate={this.priorityOnUpdate.bind(this)} inline={true}>
+                                  <span>priority: {this.state.priority}</span>
                                 </FullStackBlend.Controls.DropDownList>
-		                    		</div>
-		                    </div>
-		                  </div>
+                            </div>
+                        </div>
+                      </div>
                     )}
                     <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
                         <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>

@@ -1,7 +1,7 @@
 var StorageHelper = {
-	/* credit: https://stackoverflow.com/questions/28654595/how-do-you-create-a-cookie-in-javascript-without-jquery */
+  /* credit: https://stackoverflow.com/questions/28654595/how-do-you-create-a-cookie-in-javascript-without-jquery */
   getCookie: (name: string, value: string, days: number=365) => {
-  	if (days) {
+    if (days) {
         var date = new Date();
         date.setTime(date.getTime()+(days*24*60*60*1000));
         var expires = "; expires="+date.toGMTString();
@@ -10,7 +10,7 @@ var StorageHelper = {
     document.cookie = name+"="+value+expires+"; path=/";
   },
   setCookie: (name: string) => {
-  	var nameEQ = name + "=";
+    var nameEQ = name + "=";
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
         var c = ca[i];
@@ -20,7 +20,7 @@ var StorageHelper = {
     return null;
   },
   deleteCookie: (name: string) => {
-  	StorageHelper.createCookie(name,"",-1);
+    StorageHelper.createCookie(name,"",-1);
   }
 };
 

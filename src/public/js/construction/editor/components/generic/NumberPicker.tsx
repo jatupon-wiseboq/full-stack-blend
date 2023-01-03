@@ -63,13 +63,13 @@ class NumberPicker extends Base<Props, State> {
         
         let original = null;
         if (this.props.watchingStyleNames[0]) {
-        		original = this.state.styleValues[this.props.watchingStyleNames[0]];
+            original = this.state.styleValues[this.props.watchingStyleNames[0]];
         } else if (this.props.watchingAttributeNames[0]) {
-        		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+            original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         } else if (this.props.watchingExtensionNames[0]) {
-        		original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+            original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
         } else {
-        		original = this.props.value;
+            original = this.props.value;
         }
         
         if (original !== null) {
@@ -112,42 +112,42 @@ class NumberPicker extends Base<Props, State> {
                 replace: this.props.watchingExtensionNames[0]
             });
         } else if (this.props.onUpdate) {
-       			this.props.onUpdate(value);
+             this.props.onUpdate(value);
         }
     }
     
     private composeValue(value: any) {
-    		switch (typeof value) {
-    			case 'string':
-    				if (!value) return null;
-    				break;
-    			case 'number':
-    				if (isNaN(value)) return null;
-    				break;
-    			default:
-    				return null;
-    		}
-    	
+        switch (typeof value) {
+          case 'string':
+            if (!value) return null;
+            break;
+          case 'number':
+            if (isNaN(value)) return null;
+            break;
+          default:
+            return null;
+        }
+      
         if (this.props.watchingStyleNames[0]) {
-    				if (this.props.watchingStyleNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value.toString(), this.state.styleValues[this.props.watchingStyleNames[1]], '0');
-        		} else {
-        				return value.toString();
-        		}
+            if (this.props.watchingStyleNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], value.toString(), this.state.styleValues[this.props.watchingStyleNames[1]], '0');
+            } else {
+                return value.toString();
+            }
         } else if (this.props.watchingAttributeNames[0]) {
-        		if (this.props.watchingAttributeNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], value.toString(), this.state.attributeValues[this.props.watchingAttributeNames[1]], '0');
-        		} else {
-        				return value.toString();
-        		}
+            if (this.props.watchingAttributeNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], value.toString(), this.state.attributeValues[this.props.watchingAttributeNames[1]], '0');
+            } else {
+                return value.toString();
+            }
         } else if (this.props.watchingExtensionNames[0]) {
-        		if (this.props.watchingExtensionNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingExtensionNames[0], value.toString(), this.state.extensionValues[this.props.watchingExtensionNames[1]], '0');
-        		} else {
-        				return value.toString();
-        		}
+            if (this.props.watchingExtensionNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingExtensionNames[0], value.toString(), this.state.extensionValues[this.props.watchingExtensionNames[1]], '0');
+            } else {
+                return value.toString();
+            }
         } else {
-        		return value.toString();
+            return value.toString();
         }
     }
     

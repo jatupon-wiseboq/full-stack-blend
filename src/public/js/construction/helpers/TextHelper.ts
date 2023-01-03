@@ -27,40 +27,40 @@ var TextHelper = {
     return tokens.join(' ');
   },
   mergeClassNameWithPrefixedClasses: function(original: string, prefix: string, targets: string[]): string {
- 		let klasses = original && original.split(' ') || [];
- 		klasses = klasses.filter(klass => klass.indexOf(prefix) != 0);
- 		
- 		for (let target of targets) {
- 			if (!target) continue;
- 			klasses.push(prefix + target);
- 		}
+     let klasses = original && original.split(' ') || [];
+     klasses = klasses.filter(klass => klass.indexOf(prefix) != 0);
+     
+     for (let target of targets) {
+       if (!target) continue;
+       klasses.push(prefix + target);
+     }
     
     return klasses.join(' ').trim();
- 	},
- 	removeMultipleBlankLines: function(code: string): string {
- 		const MULTIPLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/g;
- 		const MULTIPLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/;
- 		
- 		return code.replace(MULTIPLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
- 			return `${blankLines.match(MULTIPLE_BLANK_LINES_REGEX_LOCAL)[1]}\n`;
- 		});
- 	},
- 	removeBlankLines: function(code: string): string {
- 		const SINGLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)+(\n)/g;
- 		const SINGLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)+(\n)/;
- 		
- 		return code.replace(SINGLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
- 			return `\n`;
- 		});
- 	},
-	trim: function(str, ch): string {
-		let start = 0, end = str.length;
-		
-		while(start < end && str[start] === ch) ++start;
-		while(end > start && str[end - 1] === ch) --end;
-		
-		return (start > 0 || end < str.length) ? str.substring(start, end) : str;
-	}
+   },
+   removeMultipleBlankLines: function(code: string): string {
+     const MULTIPLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/g;
+     const MULTIPLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/;
+     
+     return code.replace(MULTIPLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
+       return `${blankLines.match(MULTIPLE_BLANK_LINES_REGEX_LOCAL)[1]}\n`;
+     });
+   },
+   removeBlankLines: function(code: string): string {
+     const SINGLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)+(\n)/g;
+     const SINGLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)+(\n)/;
+     
+     return code.replace(SINGLE_BLANK_LINES_REGEX_GLOBAL, (blankLines) => {
+       return `\n`;
+     });
+   },
+  trim: function(str, ch): string {
+    let start = 0, end = str.length;
+    
+    while(start < end && str[start] === ch) ++start;
+    while(end > start && str[end - 1] === ch) --end;
+    
+    return (start > 0 || end < str.length) ? str.substring(start, end) : str;
+  }
 };
 
 export {TextHelper};

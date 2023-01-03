@@ -59,34 +59,34 @@ class ColorPicker extends Base<Props, State> {
         
         this.state.value = rgba;
         this.refs.swatchPicker.setCurrentSwatchColor(rgba);
-      	
-      	if (!this.props.manual) {
-	        	if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
-	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
-	        			
-	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
-	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
-	        			
-	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
-	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
-	        			
-	        			perform('update', {
-				            styles: [{
-				                name: this.props.watchingStyleNames[0].split('[')[0],
-				                value: composed
-				            }],
-				            replace: this.props.watchingStyleNames[0]
-				        });
-        		} else {
-        				perform('update', {
-				            styles: [{
-				                name: this.props.watchingStyleNames[0].split('[')[0],
-				                value: rgba
-				            }],
-				            replace: this.props.watchingStyleNames[0]
-			        	});
-        		}
-	      }
+        
+        if (!this.props.manual) {
+            if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+                rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+                
+                let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+                current = current && current.replace(/(,[ ]*)/g, ',') || current;
+                
+                let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+                composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+                
+                perform('update', {
+                    styles: [{
+                        name: this.props.watchingStyleNames[0].split('[')[0],
+                        value: composed
+                    }],
+                    replace: this.props.watchingStyleNames[0]
+                });
+            } else {
+                perform('update', {
+                    styles: [{
+                        name: this.props.watchingStyleNames[0].split('[')[0],
+                        value: rgba
+                    }],
+                    replace: this.props.watchingStyleNames[0]
+                });
+            }
+        }
     }
     
     protected onVisibleChanged(visible: boolean, tag: any) {
@@ -114,46 +114,46 @@ class ColorPicker extends Base<Props, State> {
         });
         this.refs.colorPicker.setCurrentColor(color);
         
-	      if (!this.props.manual) {
-	      		if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
-	        			let rgba = color;
-	        			rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
-	        			
-	        			let current = this.state.styleValues[this.props.watchingStyleNames[1]];
-	        			current = current && current.replace(/(,[ ]*)/g, ',') || current;
-	        			
-	        			let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
-	        			composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
-	        			
-	        			perform('update', {
-				            styles: [{
-				                name: this.props.watchingStyleNames[0].split('[')[0],
-				                value: composed
-				            }],
-				            replace: this.props.watchingStyleNames[0]
-				        });
-        		} else {
-        				perform('update', {
-				            styles: [{
-				                name: this.props.watchingStyleNames[0].split('[')[0],
-				                value: color
-				            }],
-				            replace: this.props.watchingStyleNames[0]
-			        	});
-        		}
-	      }
+        if (!this.props.manual) {
+            if (this.props.watchingStyleNames[0].indexOf('[') != -1) {
+                let rgba = color;
+                rgba = rgba && rgba.replace(/(,[ ]*)/g, ',') || rgba;
+                
+                let current = this.state.styleValues[this.props.watchingStyleNames[1]];
+                current = current && current.replace(/(,[ ]*)/g, ',') || current;
+                
+                let composed = TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], rgba, current, '0px');
+                composed = composed && composed.replace(/(,[ ]*)/g, ', ') || composed;
+                
+                perform('update', {
+                    styles: [{
+                        name: this.props.watchingStyleNames[0].split('[')[0],
+                        value: composed
+                    }],
+                    replace: this.props.watchingStyleNames[0]
+                });
+            } else {
+                perform('update', {
+                    styles: [{
+                        name: this.props.watchingStyleNames[0].split('[')[0],
+                        value: color
+                    }],
+                    replace: this.props.watchingStyleNames[0]
+                });
+            }
+        }
     }
     
     protected colorPickerOnUnset() {
-    		if (!this.props.manual) {
-	        perform('update', {
-	            styles: [{
-	                name: this.props.watchingStyleNames[0].split('[')[0],
-	                value: null
-	            }],
-	            replace: this.props.watchingStyleNames[0]
-	        });
-	      }
+        if (!this.props.manual) {
+          perform('update', {
+              styles: [{
+                  name: this.props.watchingStyleNames[0].split('[')[0],
+                  value: null
+              }],
+              replace: this.props.watchingStyleNames[0]
+          });
+        }
     }
     
     render() {
@@ -187,31 +187,31 @@ class ColorPicker extends Base<Props, State> {
                     <button className={"btn btn-light color-picker p-0 " + this.props.additionalClassName}>
                         <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={"<div style=\"width: 36px; height: 28px; padding: 4px 8px;\"><div style=\"width: 20px; height: 20px; background-color: " + this.state.value + "; \" />" + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? '' : '<i class="m-0 fa fa-code" style="color: #777;" />') + "</div>"} onVisibleChanged={this.onVisibleChanged.bind(this)}>
                              <div className="section-container">
-                             		{(() => {
-                             			if (this.state.extensionValues['editorCurrentMode'] === 'animation') {
-	                             			return (
-	                             				<div>
-		                             				<div className="section-subtitle">Swatches</div>
-		                                		<div className="section-body">
-			                             				<div role="group" className="btn-group btn-group-sm radio-button mr-1 mb-1">
-			                             					<div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.colorPickerOnUnset.bind(this)}>Solid</div>
-			                             					<div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.onColorPicked.bind(this, 'coding')}>Coding</div>
-			                             				</div>
-			                             			</div>
-			                             		</div>
-							                      );
-							                    }
-					                      })()}
-			                      		<div style={{display: (this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'block' : 'none'}}>
-	                                <div className="section-subtitle">Swatches</div>
-	                                <div className="section-body">
-	                                    <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
-	                                </div>
-	                                <div className="section-subtitle">Color</div>
-	                                <div className="section-body">
-	                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
-	                                </div>
-	                              </div>
+                                 {(() => {
+                                   if (this.state.extensionValues['editorCurrentMode'] === 'animation') {
+                                     return (
+                                       <div>
+                                         <div className="section-subtitle">Swatches</div>
+                                        <div className="section-body">
+                                           <div role="group" className="btn-group btn-group-sm radio-button mr-1 mb-1">
+                                             <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.colorPickerOnUnset.bind(this)}>Solid</div>
+                                             <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.onColorPicked.bind(this, 'coding')}>Coding</div>
+                                           </div>
+                                         </div>
+                                       </div>
+                                    );
+                                  }
+                                })()}
+                                <div style={{display: (this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'block' : 'none'}}>
+                                  <div className="section-subtitle">Swatches</div>
+                                  <div className="section-body">
+                                      <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
+                                  </div>
+                                  <div className="section-subtitle">Color</div>
+                                  <div className="section-body">
+                                      <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                  </div>
+                                </div>
                             </div>
                         </FullStackBlend.Controls.DropDownControl>
                     </button>

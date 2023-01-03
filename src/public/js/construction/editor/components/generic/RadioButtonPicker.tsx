@@ -43,7 +43,7 @@ class RadioButtonPicker extends Base<Props, State> {
     protected static defaultProps: Props = ExtendedDefaultProps;
     
     constructor(props) {
-    		super(props);
+        super(props);
     }
     
     public update(properties: any) {
@@ -51,67 +51,67 @@ class RadioButtonPicker extends Base<Props, State> {
     }
     
     protected buttonOnClick(value: any, mode: Mode) {
-    		let currentState = this.getState(value, mode);
-    		let nameOrArrayOfRegularExpression = value[0];
-    		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
-    		
-    		if (this.props.required && currentState) return;
-    		
+        let currentState = this.getState(value, mode);
+        let nameOrArrayOfRegularExpression = value[0];
+        let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
+        
+        if (this.props.required && currentState) return;
+        
         if (typeof nameOrArrayOfRegularExpression === 'object') { // Array of Regular Expression
-		        let list = [];
-        		
-        		for (let regularExpression of nameOrArrayOfRegularExpression) {
-        				let results: any = null;
-        			
-		          	switch(mode) {
-				            case Mode.STYLE:
-					            	results = this.state.styleValues[regularExpression];
-								        break;
-				            case Mode.ATTRIBUTE:
-		                		results = this.state.attributeValues[regularExpression];
-								        break;
-				            case Mode.EXTENSION:
-		                		results = this.state.extensionValues[regularExpression];
-								        break;
-		            }
-		            
-		            let keys = Object.keys(results || {});
-		            
-		            for (let key of keys) {
-				      			list.push({
-				                name: key.split(':').splice(-1)[0],
-				                value: (currentState) ? null : target
-				            });
-								}
-		        }
-		        
+            let list = [];
+            
+            for (let regularExpression of nameOrArrayOfRegularExpression) {
+                let results: any = null;
+              
+                switch(mode) {
+                    case Mode.STYLE:
+                        results = this.state.styleValues[regularExpression];
+                        break;
+                    case Mode.ATTRIBUTE:
+                        results = this.state.attributeValues[regularExpression];
+                        break;
+                    case Mode.EXTENSION:
+                        results = this.state.extensionValues[regularExpression];
+                        break;
+                }
+                
+                let keys = Object.keys(results || {});
+                
+                for (let key of keys) {
+                    list.push({
+                        name: key.split(':').splice(-1)[0],
+                        value: (currentState) ? null : target
+                    });
+                }
+            }
+            
             switch(mode) {
-		            case Mode.STYLE:
-		            case Mode.EXTENSION:
-		        				perform('update', {
-						            styles: list
-						        });
-						        break;
-		            case Mode.ATTRIBUTE:
-                		perform('update', {
-						            attributes: list
-						        });
-						        break;
+                case Mode.STYLE:
+                case Mode.EXTENSION:
+                    perform('update', {
+                        styles: list
+                    });
+                    break;
+                case Mode.ATTRIBUTE:
+                    perform('update', {
+                        attributes: list
+                    });
+                    break;
             }
         } else if (this.getOptions()[0][1] && this.getOptions()[0][1][0] == '{') {
             let target = this.getOptions()[0][1];
             let current;
             
             switch(mode) {
-		            case Mode.STYLE:
-		            		current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
-		            case Mode.ATTRIBUTE:
-		            		current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
-		            case Mode.EXTENSION:
-		            		current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
+                case Mode.STYLE:
+                    current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
+                case Mode.ATTRIBUTE:
+                    current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
+                case Mode.EXTENSION:
+                    current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
             }
             
             let currentDict = JSON.parse(current || '{}');
@@ -132,66 +132,66 @@ class RadioButtonPicker extends Base<Props, State> {
             }
             
             switch(mode) {
-		            case Mode.STYLE:
-		            		perform('update', {
-						            styles: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: JSON.stringify(currentDict)
-						            }]
-						        });
-						        break;
-		            case Mode.ATTRIBUTE:
-		            		perform('update', {
-						            attributes: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: JSON.stringify(currentDict)
-						            }]
-						        });
-						        break;
-		            case Mode.EXTENSION:
-		            		perform('style', {
-						            styles: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: JSON.stringify(currentDict)
-						            }]
-						        });
-						        break;
+                case Mode.STYLE:
+                    perform('update', {
+                        styles: [{
+                            name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                            value: JSON.stringify(currentDict)
+                        }]
+                    });
+                    break;
+                case Mode.ATTRIBUTE:
+                    perform('update', {
+                        attributes: [{
+                            name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                            value: JSON.stringify(currentDict)
+                        }]
+                    });
+                    break;
+                case Mode.EXTENSION:
+                    perform('style', {
+                        styles: [{
+                            name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                            value: JSON.stringify(currentDict)
+                        }]
+                    });
+                    break;
             }
         } else {
             switch(mode) {
-		            case Mode.STYLE:
-		            		perform('update', {
-						            styles: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: (currentState) ? null : target
-						            }]
-						        });
-						        break;
-		            case Mode.ATTRIBUTE:
-		            		perform('update', {
-						            attributes: [{
-						                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-						                value: (currentState) ? null : target
-						            }]
-						        });
-						        break;
-		            case Mode.EXTENSION:
-		            		if (this.props.todoOverriding) {
-		            			perform('update', {
-							            extensions: [{
-							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-							                value: (currentState) ? null : target
-							            }]
-							        });
-		            		} else {
-			            		perform('update', {
-							            extensions: [{
-							                name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
-							                value: (currentState) ? null : target
-							            }]
-							        });
-							      }
-						        break;
+                case Mode.STYLE:
+                    perform('update', {
+                        styles: [{
+                            name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                            value: (currentState) ? null : target
+                        }]
+                    });
+                    break;
+                case Mode.ATTRIBUTE:
+                    perform('update', {
+                        attributes: [{
+                            name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                            value: (currentState) ? null : target
+                        }]
+                    });
+                    break;
+                case Mode.EXTENSION:
+                    if (this.props.todoOverriding) {
+                      perform('update', {
+                          extensions: [{
+                              name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                              value: (currentState) ? null : target
+                          }]
+                      });
+                    } else {
+                      perform('update', {
+                          extensions: [{
+                              name: map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression,
+                              value: (currentState) ? null : target
+                          }]
+                      });
+                    }
+                    break;
             }
         }
         
@@ -199,63 +199,63 @@ class RadioButtonPicker extends Base<Props, State> {
     }
     
     private getState(value: any, mode: Mode): boolean {
-    		let nameOrArrayOfRegularExpression = value[0];
-    		let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
-    		
+        let nameOrArrayOfRegularExpression = value[0];
+        let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
+        
         if (typeof nameOrArrayOfRegularExpression === 'object') { // Array of Regular Expression
-    				let results = {};
-          	switch(mode) {
-	            case Mode.STYLE:
-	            		results = this.state.styleValues;
-		            	break;
-	            case Mode.ATTRIBUTE:
-	            		results = this.state.attributeValues;
-		            	break;
-	            case Mode.EXTENSION:
-	            		results = this.state.extensionValues;
-		            	break;
-	            case Mode.CUSTOM:
-	            		results = this.props.value;
-     				}
-     				
-     				let found = true;
-     				for (let regularExpression of nameOrArrayOfRegularExpression) {
-     							if (!results[regularExpression]) {
-     									found = false;
-     									break;
-     							} else {
-     									let keys = Object.keys(results[regularExpression]);
-     									if (keys.length == 0) {
-     											found = false;
-     											break;
-     									} else {
-		     									for (let key of keys) {
-		     											if (!results[regularExpression][key]) {
-		     													found = false;
-		     													break;
-		     											}
-		     									}
-		     							}
-     							}
-     				}
-     				
-     				return found;
+            let results = {};
+            switch(mode) {
+              case Mode.STYLE:
+                  results = this.state.styleValues;
+                  break;
+              case Mode.ATTRIBUTE:
+                  results = this.state.attributeValues;
+                  break;
+              case Mode.EXTENSION:
+                  results = this.state.extensionValues;
+                  break;
+              case Mode.CUSTOM:
+                  results = this.props.value;
+             }
+             
+             let found = true;
+             for (let regularExpression of nameOrArrayOfRegularExpression) {
+                   if (!results[regularExpression]) {
+                       found = false;
+                       break;
+                   } else {
+                       let keys = Object.keys(results[regularExpression]);
+                       if (keys.length == 0) {
+                           found = false;
+                           break;
+                       } else {
+                           for (let key of keys) {
+                               if (!results[regularExpression][key]) {
+                                   found = false;
+                                   break;
+                               }
+                           }
+                       }
+                   }
+             }
+             
+             return found;
         } else if (this.getOptions()[0][1] && this.getOptions()[0][1][0] == '{') {
             let _target = this.getOptions()[0][1];
             let current;
             
             switch(mode) {
-		            case Mode.STYLE:
-		            		current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
-		            case Mode.ATTRIBUTE:
-		            		current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
-		            case Mode.EXTENSION:
-		            		current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
-		            		break;
-		            case Mode.CUSTOM:
-		            		current = this.props.value;
+                case Mode.STYLE:
+                    current = this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
+                case Mode.ATTRIBUTE:
+                    current = this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
+                case Mode.EXTENSION:
+                    current = this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression];
+                    break;
+                case Mode.CUSTOM:
+                    current = this.props.value;
             }
             
             let currentDict = JSON.parse(current || '{}');
@@ -273,21 +273,21 @@ class RadioButtonPicker extends Base<Props, State> {
             return isHavingAll;
         } else {
             switch(mode) {
-		            case Mode.STYLE:
-		            		return this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
-		            case Mode.ATTRIBUTE:
-		            		return this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
-		            case Mode.EXTENSION:
-		            		return this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
-		            case Mode.CUSTOM:
-		            		current = this.props.value[nameOrArrayOfRegularExpression] == target;
+                case Mode.STYLE:
+                    return this.state.styleValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
+                case Mode.ATTRIBUTE:
+                    return this.state.attributeValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
+                case Mode.EXTENSION:
+                    return this.state.extensionValues[map[nameOrArrayOfRegularExpression] || nameOrArrayOfRegularExpression] == target;
+                case Mode.CUSTOM:
+                    current = this.props.value[nameOrArrayOfRegularExpression] == target;
             }
         }
     }
     
     private getOptions() {
-    		let _options = null
-    		
+        let _options = null
+        
         if (this.props.watchingStyleNames[0]) {
             _options = options[this.props.watchingStyleNames[0]] || this.props.options;
         } else if (this.props.watchingAttributeNames[0]) {
@@ -295,13 +295,13 @@ class RadioButtonPicker extends Base<Props, State> {
         } else if (this.props.watchingExtensionNames[0]) {
             _options = options[this.props.watchingExtensionNames[0]] || this.props.options;
         } else {
-        		_options = this.props.options;
+            _options = this.props.options;
         }
         
         if (_options && _options[0] && _options[0][0] == '-fsb-background-type') {
-        		if (this.state.extensionValues['editorCurrentMode'] !== 'animation') {
-        				_options = _options.slice(0, 3);
-        		}
+            if (this.state.extensionValues['editorCurrentMode'] !== 'animation') {
+                _options = _options.slice(0, 3);
+            }
         }
         
         return _options;

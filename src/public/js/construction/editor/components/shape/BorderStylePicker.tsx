@@ -86,7 +86,7 @@ class BorderStylePicker extends Base<Props, State> {
     }
     
     protected colorPickerOnUnset() {
-    		perform('update', {
+        perform('update', {
             styles: [{
                 name: this.props.watchingStyleNames[1],
                 value: null
@@ -116,57 +116,57 @@ class BorderStylePicker extends Base<Props, State> {
     }
     
     render() {
-    		if (this.props.inline) {
-		        return (
-		            <div className={"btn-group btn-group-sm mr-1 mb-1"}>
-		            		<a className="btn text-center btn-light">
-				                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={'<div style="width: 90px;"><div style="border-width: 6px; border-style: ' + this.state.styleValues[this.props.watchingStyleNames[0]] + '; border-color: ' + this.state.styleValues[this.props.watchingStyleNames[1]] + '; height: 16px;"/></div>'} onVisibleChanged={this.onVisibleChanged.bind(this)}>
-				                    <div className="section-container">
-				                        <div className="section-title">Border</div>
-				                        <div className="section-subtitle">Border Style</div>
-				                        <div className="section-body">
-				                            <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-				                                <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
-				                            </FullStackBlend.Controls.DropDownList>
-				                        </div>
+        if (this.props.inline) {
+            return (
+                <div className={"btn-group btn-group-sm mr-1 mb-1"}>
+                    <a className="btn text-center btn-light">
+                        <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={'<div style="width: 90px;"><div style="border-width: 6px; border-style: ' + this.state.styleValues[this.props.watchingStyleNames[0]] + '; border-color: ' + this.state.styleValues[this.props.watchingStyleNames[1]] + '; height: 16px;"/></div>'} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                            <div className="section-container">
+                                <div className="section-title">Border</div>
+                                <div className="section-subtitle">Border Style</div>
+                                <div className="section-body">
+                                    <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                                        <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
+                                    </FullStackBlend.Controls.DropDownList>
+                                </div>
                                 <div className="section-subtitle">Swatches</div>
                                 <div className="section-body">
                                     <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
                                 </div>
-				                        <div className="section-subtitle">Border Color</div>
-				                        <div className="section-body">
-				                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
-				                        </div>
-				                    </div>
-				                </FullStackBlend.Controls.DropDownControl>
-				            </a>
-		            </div>
-		        )
-		    } else {
-		    		return (
-		            <div className={"style-picker " + this.props.additionalClassName}>
-		                <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_REPRESENTING[this.state.borderStyleIndex]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
-		                    <div className="section-container">
-		                        <div className="section-title">Border</div>
-		                        <div className="section-subtitle">Border Style</div>
-		                        <div className="section-body">
-		                            <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-		                                <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
-		                            </FullStackBlend.Controls.DropDownList>
-		                        </div>
+                                <div className="section-subtitle">Border Color</div>
+                                <div className="section-body">
+                                    <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                                </div>
+                            </div>
+                        </FullStackBlend.Controls.DropDownControl>
+                    </a>
+                </div>
+            )
+        } else {
+            return (
+                <div className={"style-picker " + this.props.additionalClassName}>
+                    <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={BORDER_STYLES_IN_REPRESENTING[this.state.borderStyleIndex]} onVisibleChanged={this.onVisibleChanged.bind(this)}>
+                        <div className="section-container">
+                            <div className="section-title">Border</div>
+                            <div className="section-subtitle">Border Style</div>
+                            <div className="section-body">
+                                <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
+                                    <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
+                                </FullStackBlend.Controls.DropDownList>
+                            </div>
                             <div className="section-subtitle">Swatches</div>
                             <div className="section-body">
                                 <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
                             </div>
-		                        <div className="section-subtitle">Border Color</div>
-		                        <div className="section-body">
-		                            <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
-		                        </div>
-		                    </div>
-		                </FullStackBlend.Controls.DropDownControl>
-		            </div>
-		        )
-		    }
+                            <div className="section-subtitle">Border Color</div>
+                            <div className="section-body">
+                                <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[1]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
+                            </div>
+                        </div>
+                    </FullStackBlend.Controls.DropDownControl>
+                </div>
+            )
+        }
     }
 }
 

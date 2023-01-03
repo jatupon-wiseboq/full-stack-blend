@@ -22,32 +22,32 @@ enum SourceType {
 
 const settings: {[Identifier: string]: any} = {};
 const Project = {
-	Settings: settings
+  Settings: settings
 };
 const ProjectConfigurationHelper = {
-	reload: () => {
-		try {
-			file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
-			data = JSON.parse(CodeHelper.unlabel(file));
-			
-			Project.Settings = {};
-			if (data.globalSettings && data.globalSettings.customBackEndSettings) {
-				const items = data.globalSettings.customBackEndSettings.split('`');
-			  
-			  for (const item of items) {
-			  	const tokens = item.split('~');
-			  	Project.Settings[tokens[0]] = tokens[1];
-			  }
-			}
-		} catch(error) {
-			if (process.env.JEST_WORKER_ID !== undefined) {
-				console.log("\x1b[33m", error, "\x1b[0m");
-			} else {
-				console.log("\x1b[31m", error, "\x1b[0m");
-			}
-			Project.Settings = {};
-		}
-	},
+  reload: () => {
+    try {
+      file = fs.readFileSync(path.resolve(__dirname, "../../../project.stackblend"), "utf8");
+      data = JSON.parse(CodeHelper.unlabel(file));
+      
+      Project.Settings = {};
+      if (data.globalSettings && data.globalSettings.customBackEndSettings) {
+        const items = data.globalSettings.customBackEndSettings.split('`');
+        
+        for (const item of items) {
+          const tokens = item.split('~');
+          Project.Settings[tokens[0]] = tokens[1];
+        }
+      }
+    } catch(error) {
+      if (process.env.JEST_WORKER_ID !== undefined) {
+        console.log("\x1b[33m", error, "\x1b[0m");
+      } else {
+        console.log("\x1b[31m", error, "\x1b[0m");
+      }
+      Project.Settings = {};
+    }
+  },
   convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
       if (tables.hasOwnProperty(tableKey)) {
@@ -69,38 +69,38 @@ const ProjectConfigurationHelper = {
     
     return tables;
   },
-	getDataSchema: (): DataSchema => {
-	  if (!cachedSchema) cachedSchema = ProjectConfigurationHelper.convertToSchema(data.flows && data.flows.schema || {});
-	  
-	  return {
-	    tables: cachedSchema
-	  };
-	},
-	getDotNotationPossibilities: (page: string): any => {
-	  return data.sites && data.sites[page] && data.sites[page].notations || [];
-	},
-	getSourceType: (value: string): SourceType => {
-		switch (value) {
-			case 'relational':
-				return SourceType.Relational;
-			case 'document':
-				return SourceType.Document;
-			case 'volatile-memory':
-				return SourceType.VolatileMemory;
-			case 'RESTful':
-				return SourceType.RESTful;
-			case 'worker':
-				return SourceType.PrioritizedWorker;
-		  default:
-		    throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
-		}
-	},
-	getLanguageData: (): any => {
-	  return data.globalSettings && data.globalSettings.customLocalizedStrings || null;
-	},
-	getSecondaryLanguage: (): any => {
-	  return data.globalSettings && data.globalSettings.defaultLocalizedLanguage && data.globalSettings.defaultLocalizedLanguage.toLowerCase() || null;
-	}
+  getDataSchema: (): DataSchema => {
+    if (!cachedSchema) cachedSchema = ProjectConfigurationHelper.convertToSchema(data.flows && data.flows.schema || {});
+    
+    return {
+      tables: cachedSchema
+    };
+  },
+  getDotNotationPossibilities: (page: string): any => {
+    return data.sites && data.sites[page] && data.sites[page].notations || [];
+  },
+  getSourceType: (value: string): SourceType => {
+    switch (value) {
+      case 'relational':
+        return SourceType.Relational;
+      case 'document':
+        return SourceType.Document;
+      case 'volatile-memory':
+        return SourceType.VolatileMemory;
+      case 'RESTful':
+        return SourceType.RESTful;
+      case 'worker':
+        return SourceType.PrioritizedWorker;
+      default:
+        throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
+    }
+  },
+  getLanguageData: (): any => {
+    return data.globalSettings && data.globalSettings.customLocalizedStrings || null;
+  },
+  getSecondaryLanguage: (): any => {
+    return data.globalSettings && data.globalSettings.defaultLocalizedLanguage && data.globalSettings.defaultLocalizedLanguage.toLowerCase() || null;
+  }
 };
 
 ProjectConfigurationHelper.reload();

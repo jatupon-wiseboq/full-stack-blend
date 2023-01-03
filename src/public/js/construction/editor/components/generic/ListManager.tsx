@@ -28,9 +28,9 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-  	watchingAttributeNames: ['internal-fsb-name'],
-  	watchingExtensionNames: ['elementTreeNodes', 'workspaceMode'],
-  	nodes: []
+    watchingAttributeNames: ['internal-fsb-name'],
+    watchingExtensionNames: ['elementTreeNodes', 'workspaceMode'],
+    nodes: []
 });
 
 class ListManager extends Base<Props, State> {
@@ -53,15 +53,15 @@ class ListManager extends Base<Props, State> {
     }
     
     private onStartDragging(node: ITreeNode) {
-    	if (['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1) return;
-    	
-    	if (this.props.onStartDragging != null) {
-				this.props.onStartDragging(node);
-			}
+      if (['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1) return;
+      
+      if (this.props.onStartDragging != null) {
+        this.props.onStartDragging(node);
+      }
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		if (this.props.onDragged) {
+        if (this.props.onDragged) {
             this.props.onDragged(element, reference, direction);
         }
     }
@@ -80,18 +80,18 @@ class ListManager extends Base<Props, State> {
     
     render() {
       return (
-      	<div className={"list-manager-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')}>
-      	  <FullStackBlend.Controls.Tree customDraggerClassName={this.props.customDraggerClassName} enableDragging={['designer', 'business'].indexOf(this.state.extensionValues['workspaceMode']) == -1} draggableAfterSelected={false} nodes={this.props.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={FullStackBlend.Controls.DropDownControl}>
+        <div className={"list-manager-container" + (this.props.customClassName ? ' ' + this.props.customClassName : '')}>
+          <FullStackBlend.Controls.Tree customDraggerClassName={this.props.customDraggerClassName} enableDragging={['designer', 'business'].indexOf(this.state.extensionValues['workspaceMode']) == -1} draggableAfterSelected={false} nodes={this.props.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)} editingControl={FullStackBlend.Controls.DropDownControl}>
             <div internal-fsb-event-no-propagate="mousedown">
-            	{this.props.children}
+              {this.props.children}
             </div>
           </FullStackBlend.Controls.Tree>
           {['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1 && (() => {
-      			return (
-      				<FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
-      			)
-      		})()}
-      	</div>
+            return (
+              <FullStackBlend.Controls.DropDownControl representing="+" customClassName="btn btn-light add" onVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)}>{this.props.children}</FullStackBlend.Controls.DropDownControl>
+            )
+          })()}
+        </div>
       );
     }
 }

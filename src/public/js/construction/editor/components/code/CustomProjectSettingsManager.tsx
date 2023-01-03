@@ -14,8 +14,8 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-	prev: string;
-	key: string;
+  prev: string;
+  key: string;
   value: string;
 }
 
@@ -54,14 +54,14 @@ class CustomProjectSettingsManager extends Base<Props, State> {
         }];
         
         for (let value of values) {
-        		let splited = value.split('~');
+            let splited = value.split('~');
             nodes.push({
-            		id: JSON.stringify({key: splited[0], value: splited[1]}),
+                id: JSON.stringify({key: splited[0], value: splited[1]}),
                 name: `${splited[0]} = ${splited[1]}`,
                 selectable: true,
                 dropable: false,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: false,
                 selected: false,
                 nodes: []
@@ -77,21 +77,21 @@ class CustomProjectSettingsManager extends Base<Props, State> {
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		if (reference.id == 'delete') {
-    		    let info = JSON.parse(element.id);
-    		    
-    		    let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(info.key + '~') == -1);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
-		        		}]
-    		    });
-    		}
-    		
-    		document.body.click();
+        if (reference.id == 'delete') {
+            let info = JSON.parse(element.id);
+            
+            let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
+            values = values.filter(value => value.indexOf(info.key + '~') == -1);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join('`')
+                }]
+            });
+        }
+        
+        document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -116,7 +116,7 @@ class CustomProjectSettingsManager extends Base<Props, State> {
             let info = JSON.parse(node.id);
             
             this.setState({
-            		prev: info.key,
+                prev: info.key,
                 key: info.key,
                 value: info.value
             });
@@ -134,16 +134,16 @@ class CustomProjectSettingsManager extends Base<Props, State> {
     private addOnClick(event) {
         if (this.state.key && this.state.value) {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(this.state.key + '~') == -1);
-    		    
-    		    values.push(this.state.key + '~' + this.state.value);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
-		        		}]
-    		    });
+            values = values.filter(value => value.indexOf(this.state.key + '~') == -1);
+            
+            values.push(this.state.key + '~' + this.state.value);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join('`')
+                }]
+            });
             
             document.body.click();
         }
@@ -152,16 +152,16 @@ class CustomProjectSettingsManager extends Base<Props, State> {
     private updateOnClick(event) {
         if (this.state.key && this.state.value) {
             let values: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split('`');
-    		    values = values.filter(value => value.indexOf(this.state.prev + '~') == -1);
-    		    
-    		    values.push(this.state.key + '~' + this.state.value);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join('`')
-		        		}]
-    		    });
+            values = values.filter(value => value.indexOf(this.state.prev + '~') == -1);
+            
+            values.push(this.state.key + '~' + this.state.value);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join('`')
+                }]
+            });
             
             document.body.click();
         }

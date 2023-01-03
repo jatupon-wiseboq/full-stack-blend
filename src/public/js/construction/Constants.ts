@@ -89,16 +89,16 @@ let table_cell_left = /^-fsb-cell-([0-9]+)-([0-9]+)-left/;
 let table_cell_vertical = /^-fsb-cell-([0-9]+)-([0-9]+)-vertical/;
 let table_cell_horizontal = /^-fsb-cell-([0-9]+)-([0-9]+)-horizontal/;
 export const TABLE_CELL_0_OPTIONS = [
-	[[table_cell_top], table_cell_applying_style_function, "custom-icon-table-top"],
-	[[table_cell_right], table_cell_applying_style_function, "custom-icon-table-right"],
-	[[table_cell_bottom], table_cell_applying_style_function, "custom-icon-table-bottom"],
-	[[table_cell_left], table_cell_applying_style_function, "custom-icon-table-left"]
+  [[table_cell_top], table_cell_applying_style_function, "custom-icon-table-top"],
+  [[table_cell_right], table_cell_applying_style_function, "custom-icon-table-right"],
+  [[table_cell_bottom], table_cell_applying_style_function, "custom-icon-table-bottom"],
+  [[table_cell_left], table_cell_applying_style_function, "custom-icon-table-left"]
 ];
 export const TABLE_CELL_1_OPTIONS = [
-	[[table_cell_vertical], table_cell_applying_style_function, "custom-icon-table-vertical"],
-	[[table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-horizontal"],
-	[[table_cell_vertical, table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-center"],
-	[[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
+  [[table_cell_vertical], table_cell_applying_style_function, "custom-icon-table-vertical"],
+  [[table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-horizontal"],
+  [[table_cell_vertical, table_cell_horizontal], table_cell_applying_style_function, "custom-icon-table-center"],
+  [[table_cell_top, table_cell_right, table_cell_bottom, table_cell_left], table_cell_applying_style_function, "custom-icon-table-outline"]
 ];
 export const FONT_FAMILY_OPTIONS = [null, ...FontHelper.listAllFonts()];
 export const _FONT_STYLE_OPTIONS = [null, "italic"];
@@ -421,7 +421,7 @@ export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-
 export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
 export const WORKSPACE_LOCK_MODE = [["workspaceMode", null, ["d-none", "Full-Stack"]], ["workspaceMode", "coder", ["d-none", "Coder"]], ["workspaceMode", "designer", ["d-none", "Designer"]], ["workspaceMode", "business", ["d-none", "Business"]]];
 export const EASING_COEFFICIENT = {
-	ease: 0.42
+  ease: 0.42
 };
 export const ANIMATION_REPEATING_MODE = [["animationRepeatMode", null, ["fa-hourglass", "Infinite"]], ["animationRepeatMode", "time", ["fa-hourglass-1", "Time"]], ["animationRepeatMode", "disabled", ["fa-hourglass-o", "Disabled"]]];
 export const ANIMATION_DEFAULT_STATE = [["animationGroupState", null, ["fa-circle", "Add"]], ["animationGroupState", "off", ["fa-circle-o", "Remove"]]];
@@ -442,8 +442,8 @@ export const WORKSPACE_TOGGLING_ATTRIBUTES = ['internal-fsb-class', 'internal-fs
 export const WORKSPACE_TOGGLING_STYLES = ['-fsb-animation-timing-mode'];
 export const WORKSPACE_TOGGLING_EXTENSIONS = ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox', 'editingProperties', 'workspaceMode', 'editorCurrentExplore', 'isDesignWithCodingMode'];
 export const GENERIC_RADIO_OPTION_PRESETS = {
-	// Front-End Options
-	// 
+  // Front-End Options
+  // 
   "text-align": TEXT_ALIGN_OPTIONS,
   "font-style": FONT_STYLE_OPTIONS,
   "table-cell-0": TABLE_CELL_0_OPTIONS,
@@ -476,55 +476,55 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "internal-fsb-seo-emphasizer": SEO_EMPHASIZE_OPTIONS,
   
   // Back-End Options
-	// 
-	"data-column-type": BACKEND_DATA_COLUMN_TYPE,
-	"data-field-type-1": BACKEND_DATA_FIELD_TYPE_1,
-	"data-field-type-2": BACKEND_DATA_FIELD_TYPE_2,
-	"data-field-type-3": BACKEND_DATA_FIELD_TYPE_3,
-	"data-field-type-4": BACKEND_DATA_FIELD_TYPE_4,
-	"data-required": BACKEND_DATA_REQUIRED,
-	"data-unique": BACKEND_DATA_UNIQUE,
-	"data-force-constraint": BACKEND_DATA_FORCE_CONSTRAINT,
-	"data-lock-mode": BACKEND_DATA_LOCK_MODE,
-	"data-lock-matching-mode": BACKEND_DATA_LOCK_MATCHING_MODE,
-	"data-rendering-condition-mode": BACKEND_DATA_RENDERING_CONDITION_MODE,
-	"data-rendering-condition-matching-mode": BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
-	"data-verb": BACKEND_VERB,
-	"data-forward-mode": BACKEND_FORWARD_MODE_OPTIONS,
-	"data-forward-option": BACKEND_FORWARD_OPTIONS,
-	"data-forward-recursive": BACKEND_FORWARD_RECURSIVE_OPTIONS,
-	"data-missing-enable": BACKEND_SCHEMA_MISSING_ENABLE_OPTIONS,
-	"data-missing-default": BACKEND_SCHEMA_MISSING_DEFAULT_OPTIONS,
-	"data-missing-action-development": BACKEND_SCHEMA_MISSING_ACTION_DEVELOPMENT_OPTIONS,
-	"data-missing-action-production": BACKEND_SCHEMA_MISSING_ACTION_PRODUCTION_OPTIONS,
-	"data-mismatch-enable": BACKEND_SCHEMA_MISMATCH_ENABLE_OPTIONS,
-	"data-mismatch-default": BACKEND_SCHEMA_MISMATCH_DEFAULT_OPTIONS,
-	"data-mismatch-action-development": BACKEND_SCHEMA_MISMATCH_ACTION_DEVELOPMENT_OPTIONS,
-	"data-mismatch-action-production": BACKEND_SCHEMA_MISMATCH_ACTION_PRODUCTION_OPTIONS,
-	"data-mismatch-action": BACKEND_SCHEMA_MISMATCH_ACTION_OPTIONS,
-	"data-timing-days": BACKEND_TIMING_DAYS_OPTIONS,
-	"data-timing-minutes-1": BACKEND_TIMING_MINUTES_OPTIONS_1,
-	"data-timing-minutes-2": BACKEND_TIMING_MINUTES_OPTIONS_2,
-	"data-audit-collecting-option": BACKEND_AUDIT_COLLECTING_OPTIONS,
-	"data-worker-group-1": BACKEND_DATA_WORKER_QUEUE_GROUP_1,
-	"data-worker-group-2": BACKEND_DATA_WORKER_QUEUE_GROUP_2,
+  // 
+  "data-column-type": BACKEND_DATA_COLUMN_TYPE,
+  "data-field-type-1": BACKEND_DATA_FIELD_TYPE_1,
+  "data-field-type-2": BACKEND_DATA_FIELD_TYPE_2,
+  "data-field-type-3": BACKEND_DATA_FIELD_TYPE_3,
+  "data-field-type-4": BACKEND_DATA_FIELD_TYPE_4,
+  "data-required": BACKEND_DATA_REQUIRED,
+  "data-unique": BACKEND_DATA_UNIQUE,
+  "data-force-constraint": BACKEND_DATA_FORCE_CONSTRAINT,
+  "data-lock-mode": BACKEND_DATA_LOCK_MODE,
+  "data-lock-matching-mode": BACKEND_DATA_LOCK_MATCHING_MODE,
+  "data-rendering-condition-mode": BACKEND_DATA_RENDERING_CONDITION_MODE,
+  "data-rendering-condition-matching-mode": BACKEND_DATA_RENDERING_CONDITION_MATCHING_MODE,
+  "data-verb": BACKEND_VERB,
+  "data-forward-mode": BACKEND_FORWARD_MODE_OPTIONS,
+  "data-forward-option": BACKEND_FORWARD_OPTIONS,
+  "data-forward-recursive": BACKEND_FORWARD_RECURSIVE_OPTIONS,
+  "data-missing-enable": BACKEND_SCHEMA_MISSING_ENABLE_OPTIONS,
+  "data-missing-default": BACKEND_SCHEMA_MISSING_DEFAULT_OPTIONS,
+  "data-missing-action-development": BACKEND_SCHEMA_MISSING_ACTION_DEVELOPMENT_OPTIONS,
+  "data-missing-action-production": BACKEND_SCHEMA_MISSING_ACTION_PRODUCTION_OPTIONS,
+  "data-mismatch-enable": BACKEND_SCHEMA_MISMATCH_ENABLE_OPTIONS,
+  "data-mismatch-default": BACKEND_SCHEMA_MISMATCH_DEFAULT_OPTIONS,
+  "data-mismatch-action-development": BACKEND_SCHEMA_MISMATCH_ACTION_DEVELOPMENT_OPTIONS,
+  "data-mismatch-action-production": BACKEND_SCHEMA_MISMATCH_ACTION_PRODUCTION_OPTIONS,
+  "data-mismatch-action": BACKEND_SCHEMA_MISMATCH_ACTION_OPTIONS,
+  "data-timing-days": BACKEND_TIMING_DAYS_OPTIONS,
+  "data-timing-minutes-1": BACKEND_TIMING_MINUTES_OPTIONS_1,
+  "data-timing-minutes-2": BACKEND_TIMING_MINUTES_OPTIONS_2,
+  "data-audit-collecting-option": BACKEND_AUDIT_COLLECTING_OPTIONS,
+  "data-worker-group-1": BACKEND_DATA_WORKER_QUEUE_GROUP_1,
+  "data-worker-group-2": BACKEND_DATA_WORKER_QUEUE_GROUP_2,
   "internal-fsb-ssr-accumulate": SSR_ACCUMULATE_OPTIONS,
   "internal-fsb-ssr-display-logic": SSR_DISPLAY_LOGIC_OPTIONS,
 
-	// Animations
-	// 
-	"animation-mode": ANIMATION_TIMING_MODE,
-	"animation-scrolling-triggering": ANIMATION_SCROLLING_TRIGGERING,
-	"animation-easing-mode": ANIMATION_EASING_MODE,
-	"animation-easing-fn-1": ANIMATION_EASING_FN_1,
-	"animation-repeating-mode": ANIMATION_REPEATING_MODE,
-	"animation-state": ANIMATION_DEFAULT_STATE,
-	"animation-test-state": ANIMATION_DEFAULT_TEST_STATE,
-	"animation-synchronize": ANIMATION_SYNCHRONIZE_MODE,
-	
-	// Editor
-	//
-	"workspaceMode": WORKSPACE_LOCK_MODE
+  // Animations
+  // 
+  "animation-mode": ANIMATION_TIMING_MODE,
+  "animation-scrolling-triggering": ANIMATION_SCROLLING_TRIGGERING,
+  "animation-easing-mode": ANIMATION_EASING_MODE,
+  "animation-easing-fn-1": ANIMATION_EASING_FN_1,
+  "animation-repeating-mode": ANIMATION_REPEATING_MODE,
+  "animation-state": ANIMATION_DEFAULT_STATE,
+  "animation-test-state": ANIMATION_DEFAULT_TEST_STATE,
+  "animation-synchronize": ANIMATION_SYNCHRONIZE_MODE,
+  
+  // Editor
+  //
+  "workspaceMode": WORKSPACE_LOCK_MODE
 };
 export const GENERIC_RADIO_OPTION_PRESETS_MAPPING = {
   "data-source-type-1": "internal-fsb-data-source-type",

@@ -117,7 +117,7 @@ ${rootScript}`;
     let lines: string[] = [];
     
     if (EditorHelper.hasParentReactComponent(element)) {
-    	executions.push(`    TestHelper.identify();`);
+      executions.push(`    TestHelper.identify();`);
       executions.push(`    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
         `);
       FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(body, element, '      ', executions, lines);
@@ -141,19 +141,19 @@ ${rootScript}`;
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
           if (['style', 'script'].indexOf(element.parentNode.tagName && element.parentNode.tagName.toLowerCase() || null) != -1) {
-        		lines[lines.length - 1] += '.';
-        		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
-        	} else {
-        		let textContent = element.textContent;
-        		textContent = textContent.replace(/(\@)\{([A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*)\}/g, (match, hash, suffix) => {
-        			return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
-        		});
-        		
-        		if (LocalizationHelper.has(textContent.trim())) {
-        			lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
-        		} else {
-          		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
-          	}
+            lines[lines.length - 1] += '.';
+            lines.push(indent + element.textContent.split('\n').join('\n' + indent));
+          } else {
+            let textContent = element.textContent;
+            textContent = textContent.replace(/(\@)\{([A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*)\}/g, (match, hash, suffix) => {
+              return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
+            });
+            
+            if (LocalizationHelper.has(textContent.trim())) {
+              lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+            } else {
+              lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+            }
           }
         }
       } else {
@@ -265,7 +265,7 @@ ${rootScript}`;
         }
         
         if (!dangerouslySetInnerHTML && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
-        	_attributes.push({
+          _attributes.push({
             name: 'dangerouslySetInnerHTML',
             value: `{{__html: loc('${element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n")}')}}`
           });
@@ -304,10 +304,10 @@ ${rootScript}`;
         }
         
         for (let attribute of _attributes) {
-        	if (attribute.value === null) continue;
-        	
-        	attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
-        	
+          if (attribute.value === null) continue;
+          
+          attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
+          
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-walking', '').replace('internal-fsb-allow-cursor', '').replace('internal-fsb-placing-cursor', '').trim().replace(/[\ ]+/g, ' ');
@@ -395,12 +395,12 @@ ${rootScript}`;
               if (!!attribute.value) submitCrossType = attribute.value;
               break;
             case 'internal-fsb-data-wizard-real-time-update':
-            	if (!!attribute.value) realTimeUpdate = attribute.value;
-            	break;
+              if (!!attribute.value) realTimeUpdate = attribute.value;
+              break;
             case 'internal-fsb-data-wizard-retrieve-into':
             case 'internal-fsb-data-wizard-manipulate-into':
-            	if (!!attribute.value) manipulateInto = attribute.value;
-            	break;
+              if (!!attribute.value) manipulateInto = attribute.value;
+              break;
             case 'internal-fsb-class':
               if (!!attribute.value) reactClassComposingInfoClassName = attribute.value;
               if (['FlowLayout'].indexOf(attribute.value) != -1) _props.push('internal-fsb-class="' + attribute.value + '"');
@@ -427,10 +427,10 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
-                  	if (attribute.name == 'onfsbready') {
-                    	_globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
+                    if (attribute.name == 'onfsbready') {
+                      _globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
                     } else {
-                    	_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on(Document)?/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this), " + !!value.capture + ");");
+                      _globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on(Document)?/, '').toLowerCase() + "', this." + FUNCTION_NAME + ".bind(this), " + !!value.capture + ");");
                     }
                   } else {
                     _localEvents.push(CAMEL_OF_EVENTS_DICTIONARY[attribute.name] + (value.capture ? 'Capture' : '') + '=this.' + FUNCTION_NAME + '.bind(this)');
@@ -461,8 +461,8 @@ ${rootScript}`;
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
           
-	        if (manipulateInto) manipulateInto = '() => { return eval("\\"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[\\" + ($1) + \\"]') + '\\""); }';
-	        else manipulateInto = '() => { return null; }';
+          if (manipulateInto) manipulateInto = '() => { return eval("\\"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[\\" + ($1) + \\"]') + '\\""); }';
+          else manipulateInto = '() => { return null; }';
           
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${manipulateInto}});`);
           
@@ -491,7 +491,7 @@ ${rootScript}`;
           
           attributes.push(`onClick=((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)`);
         } else if (reactClassForPopup) {
-        	attributes.push(`onClick=((event) => { window.internalFsbOpen('${reactClassForPopup}', this.state.data || this.props.data); }).bind(this)`);
+          attributes.push(`onClick=((event) => { window.internalFsbOpen('${reactClassForPopup}', this.state.data || this.props.data); }).bind(this)`);
         }
         
         for (let key in bindingStyles) {
@@ -512,10 +512,10 @@ ${rootScript}`;
         }
         
         if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
-        	_forwardAttributes = [..._props, ..._localEvents];
+          _forwardAttributes = [..._props, ..._localEvents];
         } else {
-        	attributes = [...attributes, ..._props, ..._localEvents];
-        	_forwardAttributes = [];
+          attributes = [...attributes, ..._props, ..._localEvents];
+          _forwardAttributes = [];
         }
         
         if (_globalEvents.length != 0) executions.push(`    ${_globalEvents.join('\n    ')}`);
@@ -588,14 +588,14 @@ ${rootScript}`;
         // Rendering Logic
         // 
         if (reactDisplayLogic == 'statement' && (!reactMode || isFirstElement)) {
-        	lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
-        	indent += '  ';
+          lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
+          indent += '  ';
         }
         
         // Include Another React Class Feature
         // 
         if (reactMode && !isFirstElement) {
-        	const namespace = reactNamespace + '.' + reactClass;
+          const namespace = reactNamespace + '.' + reactClass;
           
           if (context[namespace] === undefined) context[namespace] = 0;
           else context[namespace]++;
@@ -688,20 +688,20 @@ ${rootScript}`;
     if (element) {
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
-        	if (['style', 'script'].indexOf(element.parentNode.tagName && element.parentNode.tagName.toLowerCase() || null) != -1) {
-        		lines[lines.length - 1] += '.';
-        		lines.push(indent + element.textContent.split('\n').join('\n' + indent));
-        	} else {
-        		let textContent = element.textContent;
-        		textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
-        			return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
-        		});
-        		
-        		if (LocalizationHelper.has(textContent.trim())) {
-        			lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
-        		} else {
-          		lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
-          	}
+          if (['style', 'script'].indexOf(element.parentNode.tagName && element.parentNode.tagName.toLowerCase() || null) != -1) {
+            lines[lines.length - 1] += '.';
+            lines.push(indent + element.textContent.split('\n').join('\n' + indent));
+          } else {
+            let textContent = element.textContent;
+            textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
+              return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
+            });
+            
+            if (LocalizationHelper.has(textContent.trim())) {
+              lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
+            } else {
+              lines.push(indent + '| ' + textContent.split('\n').join('\n' + indent + '| '));
+            }
           }
         }
       } else {
@@ -817,15 +817,15 @@ ${rootScript}`;
         }
         
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
-        	bindingStyles = {}; // Disable custom binding.
+          bindingStyles = {}; // Disable custom binding.
           bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
         
         for (let attribute of _attributes) {
-        	if (attribute.value === null) continue;
-        	
-        	attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
-        	
+          if (attribute.value === null) continue;
+          
+          attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
+          
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-walking', '').replace('internal-fsb-allow-cursor', '').replace('internal-fsb-placing-cursor', '').trim();
@@ -916,17 +916,17 @@ ${rootScript}`;
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
                   
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
-                  	if (attribute.name == 'onfsbready') {
-                  		_globalEvents.push("ready(controller." + FUNCTION_NAME + ".bind(controller));");
-                  	} else {
-                  		_globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on(Document)?/, '').toLowerCase() + "', controller." + FUNCTION_NAME + ".bind(controller), " + !!value.capture + ");");
-                  	}
+                    if (attribute.name == 'onfsbready') {
+                      _globalEvents.push("ready(controller." + FUNCTION_NAME + ".bind(controller));");
+                    } else {
+                      _globalEvents.push("document.addEventListener('" + CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on(Document)?/, '').toLowerCase() + "', controller." + FUNCTION_NAME + ".bind(controller), " + !!value.capture + ");");
+                    }
                   } else {
                     _localEvents.push([CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, '').toLowerCase(), FUNCTION_NAME, !!value.capture]);
                   }
                 }
               } else if (attribute.consumable) {
-              	attributes.push(attribute.name + '=' + attribute.value);
+                attributes.push(attribute.name + '=' + attribute.value);
               } else {
                 if (['required', 'disabled', 'readonly'].indexOf(attribute.name) == -1) {
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : '"' + attribute.value.split('"').join('&quot;') + '"'));
@@ -949,14 +949,14 @@ ${rootScript}`;
         }
         
         if (submitControls) {
-        	let splited = submitControls && submitControls.split(' ') || [];
-        	splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
-        	
+          let splited = submitControls && submitControls.split(' ') || [];
+          splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
+          
           executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
           
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         } else if (reactClassForPopup) {
-        	attributes.push(`onClick="internalFsbOpen('${reactClassForPopup}')"`);
+          attributes.push(`onClick="internalFsbOpen('${reactClassForPopup}')"`);
         }
         
         for (let key in bindingStyles) {
@@ -973,10 +973,10 @@ ${rootScript}`;
         }
         
         if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
-        	_forwardAttributes = [..._props];
+          _forwardAttributes = [..._props];
         } else {
-        	attributes = [...attributes, ..._props];
-        	_forwardAttributes = [];
+          attributes = [...attributes, ..._props];
+          _forwardAttributes = [];
         }
         
         if (_globalEvents.length != 0) executions.push(_globalEvents.join('\n'));
@@ -1040,8 +1040,8 @@ ${rootScript}`;
         // Rendering Logic
         // 
         if (ssrDisplayLogic == 'statement') {
-        	lines.push(`${indent}if ${ssrDisplayStatement || 'true'}`);
-        	indent += '  ';
+          lines.push(`${indent}if ${ssrDisplayStatement || 'true'}`);
+          indent += '  ';
         }
         
         // Dot Notation Feature (Continue 1/2)
@@ -1089,8 +1089,8 @@ ${rootScript}`;
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
           
           if (inline[0]) {
-          	lines.push(composed);
-          	
+            lines.push(composed);
+            
             indent += '  ';
             composed = indent;
             composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
@@ -1185,10 +1185,10 @@ ${rootScript}`;
     return (current == null);
   },
   generateImageDataURLWithRatio: (width: number, height: number): string => {
-  	const canvas = document.createElement("canvas");
-		canvas.width = width;
-		canvas.height = height;
-		return canvas.toDataURL();
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    return canvas.toDataURL();
   }
 };
 

@@ -52,11 +52,11 @@ class TextPicker extends Base<Props, State> {
         
         let original = '';
         if (this.props.watchingStyleNames[0]) {
-        		original = this.state.styleValues[this.props.watchingStyleNames[0]];
+            original = this.state.styleValues[this.props.watchingStyleNames[0]];
         } else if (this.props.watchingAttributeNames[0]) {
-        		original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+            original = this.state.attributeValues[this.props.watchingAttributeNames[0]];
         } else if (this.props.watchingExtensionNames[0]) {
-        		original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+            original = this.state.extensionValues[this.props.watchingExtensionNames[0]];
         }
         
         if (original) {
@@ -99,24 +99,24 @@ class TextPicker extends Base<Props, State> {
     }
     
     private composeValue(value: any) {
-    		if (this.props.watchingStyleNames[0]) {
-    				if (this.props.watchingStyleNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
-        		} else {
-        				return value;
-        		}
+        if (this.props.watchingStyleNames[0]) {
+            if (this.props.watchingStyleNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
+            } else {
+                return value;
+            }
         } else if (this.props.watchingAttributeNames[0]) {
-        		if (this.props.watchingAttributeNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], "'" + value + "'", this.state.attributeValues[this.props.watchingAttributeNames[1]], "''");
-        		} else {
-        				return value;
-        		}
+            if (this.props.watchingAttributeNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingAttributeNames[0], "'" + value + "'", this.state.attributeValues[this.props.watchingAttributeNames[1]], "''");
+            } else {
+                return value;
+            }
         } else if (this.props.watchingExtensionNames[0]) {
-        		if (this.props.watchingExtensionNames[1]) {
-        				return TextHelper.composeIntoMultipleValue(this.props.watchingExtensionNames[0], "'" + value + "'", this.state.extensionValues[this.props.watchingExtensionNames[1]], "''");
-        		} else {
-        				return value;
-        		}
+            if (this.props.watchingExtensionNames[1]) {
+                return TextHelper.composeIntoMultipleValue(this.props.watchingExtensionNames[0], "'" + value + "'", this.state.extensionValues[this.props.watchingExtensionNames[1]], "''");
+            } else {
+                return value;
+            }
         }
     }
     
@@ -135,12 +135,12 @@ class TextPicker extends Base<Props, State> {
                     {(() => {
                         if (this.props.button) {
                             return (
-						                    <div className="input-group-append">
-						                        <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
-						                            <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
-						                        </div>
-						                    </div>
-						                )
+                                <div className="input-group-append">
+                                    <div className="btn btn-sm btn-secondary" internal-fsb-event-always-propagate="click">
+                                        <i className="fa fa-check-circle m-0" internal-fsb-event-always-propagate="click" />
+                                    </div>
+                                </div>
+                            )
                         }
                     })()}
                 </div>

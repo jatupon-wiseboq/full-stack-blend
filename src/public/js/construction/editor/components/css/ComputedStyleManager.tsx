@@ -19,7 +19,7 @@ Object.assign(ExtendedDefaultState, {
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-	watchingExtensionNames: ['elementComputedStyleNodes']
+  watchingExtensionNames: ['elementComputedStyleNodes']
 });
 
 class ComputedStyleManager extends Base<Props, State> {
@@ -33,9 +33,9 @@ class ComputedStyleManager extends Base<Props, State> {
     
     render() {
       return (
-      	<div className="computed-style-manager-container">
-      		<FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
-      	</div>
+        <div className="computed-style-manager-container">
+          <FullStackBlend.Controls.Tree enableDragging={false} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} />
+        </div>
       );
     }
 }

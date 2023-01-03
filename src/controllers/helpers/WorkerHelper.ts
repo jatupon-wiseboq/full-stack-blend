@@ -10,34 +10,34 @@ const groupDictionary: {[Identifier: string]: any} = {};
 
 const WorkerHelper = {
   register: <T extends Worker>(worker: new (data: HierarchicalDataTable) => T, name: string, group: string='general') => {
-  	instanceDictionary[name] = worker;
-  	groupDictionary[name] = group || 'general';
+    instanceDictionary[name] = worker;
+    groupDictionary[name] = group || 'general';
   },
   enqueue: (table: HierarchicalDataTable) => {
-  	for (const row of table.rows) {
-  		queue && queue.enqueue(groupDictionary[table.group], "perform", [{
-  			source: SourceType.PrioritizedWorker,
-				group: table.group,
-			  rows: [row]
-  		}]);
-  	}
+    for (const row of table.rows) {
+      queue && queue.enqueue(groupDictionary[table.group], "perform", [{
+        source: SourceType.PrioritizedWorker,
+        group: table.group,
+        rows: [row]
+      }]);
+    }
   },
   perform: async (table: HierarchicalDataTable): Promise<void> => {
-  	if (!instanceDictionary[table.group]) {
-  		WorkerHelper.reject(groupDictionary[table.group], "perform", table);
-  	} else {
-  		const worker = new instanceDictionary[table.group](table);
-  		await worker.run();
-  	}
+    if (!instanceDictionary[table.group]) {
+      WorkerHelper.reject(groupDictionary[table.group], "perform", table);
+    } else {
+      const worker = new instanceDictionary[table.group](table);
+      await worker.run();
+    }
   },
   reject: async (q: string, func: string, table: HierarchicalDataTable): Promise<void> => {
-  	for (const row of table.rows) {
-	    await queue.connection.redis
-	      .multi()
-	      .sadd(queue.connection.key("queues"), q)
-	      .rpush(queue.connection.key("queue", q), queue.encode(q, func, [table]))
-	      .exec();
-  	}
+    for (const row of table.rows) {
+      await queue.connection.redis
+        .multi()
+        .sadd(queue.connection.key("queues"), q)
+        .rpush(queue.connection.key("queue", q), queue.encode(q, func, [table]))
+        .exec();
+    }
   }
 };
 

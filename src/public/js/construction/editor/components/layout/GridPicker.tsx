@@ -45,7 +45,7 @@ class GridPicker extends Base<Props, State> {
     
     public update(properties: any) {
         this.recentElementClassName = properties.attributes && properties.attributes['class'] || '';
-    		
+        
         super.update(properties);
     }
     

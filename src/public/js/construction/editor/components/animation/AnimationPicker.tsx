@@ -43,19 +43,19 @@ class AnimationPicker extends Base<Props, State> {
         let items = dict[this.props.keyName] || [];
         
         if (properties.extensions && properties.extensions.animationDefinitionKeys) {
-		        for (let info of properties.extensions.animationDefinitionKeys) {
-		            nodes.push({
-		            		id: info.id,
-		                name: info.name || 'Untitled',
-		                selectable: true,
-										insertable: true,
-										dragable: true,
-		                disabled: false,
-		                selected: (items.indexOf(info.id) != -1),
-		                nodes: []
-		            });
-		        }
-      	}
+            for (let info of properties.extensions.animationDefinitionKeys) {
+                nodes.push({
+                    id: info.id,
+                    name: info.name || 'Untitled',
+                    selectable: true,
+                    insertable: true,
+                    dragable: true,
+                    disabled: false,
+                    selected: (items.indexOf(info.id) != -1),
+                    nodes: []
+                });
+            }
+        }
         
         this.state.nodes = nodes;
         
@@ -75,10 +75,10 @@ class AnimationPicker extends Base<Props, State> {
         dict[this.props.keyName] = items;
         
         perform('update', {
-        		attributes: [{
-        				name: this.props.watchingAttributeNames[0],
-        				value: JSON.stringify(dict)
-        		}]
+            attributes: [{
+                name: this.props.watchingAttributeNames[0],
+                value: JSON.stringify(dict)
+            }]
         });
     }
     

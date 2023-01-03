@@ -6,7 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
 var CursorHelper = {
-	moveCursorToTheEndOfDocument: (remember: boolean=true) => {
+  moveCursorToTheEndOfDocument: (remember: boolean=true) => {
     let element = HTMLHelper.getElementByClassName('internal-fsb-begin');
     if (element) {
       ManipulationHelper.perform('move[cursor]', CursorHelper.createWalkPathForCursor(), remember);
@@ -15,17 +15,17 @@ var CursorHelper = {
     }
   },
   moveCursorToTheLeft: (link: any=Math.random()) => {
-  	const cursorElement = Accessories.cursor.getDOMNode();
-  	const isSkipEntering = cursorElement.previousElementSibling && !HTMLHelper.hasClass(cursorElement.previousElementSibling, 'internal-fsb-allow-cursor') || undefined;
+    const cursorElement = Accessories.cursor.getDOMNode();
+    const isSkipEntering = cursorElement.previousElementSibling && !HTMLHelper.hasClass(cursorElement.previousElementSibling, 'internal-fsb-allow-cursor') || undefined;
     let {theAllowCursorElement, theAllowCursorPosition} = CursorHelper.recusiveFindOnTheLeft(Accessories.cursor.getDOMNode(), isSkipEntering);
     
     if (theAllowCursorElement.tagName == 'TR') {
-    	const cursorElement = Accessories.cursor.getDOMNode();
-    	theAllowCursorElement = cursorElement.parentNode.previousElementSibling || null;
-    	
-    	if (theAllowCursorElement == null) return;
-    	
-    	theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
+      const cursorElement = Accessories.cursor.getDOMNode();
+      theAllowCursorElement = cursorElement.parentNode.previousElementSibling || null;
+      
+      if (theAllowCursorElement == null) return;
+      
+      theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
     }
     
     const walkPath = CursorHelper.findWalkPathForElement(theAllowCursorElement);
@@ -34,46 +34,46 @@ var CursorHelper = {
     ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
   },
   recusiveFindOnTheLeft: (element: HTMLElement, isSkipEntering: boolean=false, willSkipOnce: boolean=true) => {
-  	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) {
-  		if (element.parentNode.firstElementChild == element) {
-  			return CursorHelper.recusiveFindOnTheLeft(element.parentNode, true, true);
-  		} else if (element.previousElementSibling) {
-  			return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, willSkipOnce);
-  		} else {
-  			return CursorHelper.recusiveFindOnTheLeft(element.parentNode, isSkipEntering, willSkipOnce);
-  		}
-  	} else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
-  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
-				if (element.lastElementChild) {
-					return CursorHelper.recusiveFindOnTheLeft(element.lastElementChild, true, false);
-				} else {
-					return {theAllowCursorElement: element, theAllowCursorPosition: 0};
-				}
-  		} else {
-  			if (willSkipOnce) {
-  				// TODO: Will be removed when there isn't a case that the previousElementSibling may be an internal-fsb-accessory.
-  				if (element.previousElementSibling && !HTMLHelper.hasClass(element.previousElementSibling, 'internal-fsb-accessory')) {
-  					isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
-  					
-		  			return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, false);
-		  		} else {
-		  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: 0};
-		  		}
-  			} else {
-	  			let theAllowCursorElement = element.parentNode;
-		  		let theAllowCursorPosition = [...theAllowCursorElement.children].indexOf(element) + 1;
-		  		
-		  		return {theAllowCursorElement, theAllowCursorPosition};
-		  	}
-  		}
-  	} else {
-  		// TODO: Will be removed when there isn't a case that the previousElementSibling may be an internal-fsb-accessory.
-  		if (element.previousElementSibling && !HTMLHelper.hasClass(element.previousElementSibling, 'internal-fsb-accessory')) {
-  			return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, false);
-  		} else {
-  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: 0};
-  		}
-  	}
+    if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) {
+      if (element.parentNode.firstElementChild == element) {
+        return CursorHelper.recusiveFindOnTheLeft(element.parentNode, true, true);
+      } else if (element.previousElementSibling) {
+        return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, willSkipOnce);
+      } else {
+        return CursorHelper.recusiveFindOnTheLeft(element.parentNode, isSkipEntering, willSkipOnce);
+      }
+    } else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
+      if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+        if (element.lastElementChild) {
+          return CursorHelper.recusiveFindOnTheLeft(element.lastElementChild, true, false);
+        } else {
+          return {theAllowCursorElement: element, theAllowCursorPosition: 0};
+        }
+      } else {
+        if (willSkipOnce) {
+          // TODO: Will be removed when there isn't a case that the previousElementSibling may be an internal-fsb-accessory.
+          if (element.previousElementSibling && !HTMLHelper.hasClass(element.previousElementSibling, 'internal-fsb-accessory')) {
+            isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
+            
+            return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, false);
+          } else {
+            return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: 0};
+          }
+        } else {
+          let theAllowCursorElement = element.parentNode;
+          let theAllowCursorPosition = [...theAllowCursorElement.children].indexOf(element) + 1;
+          
+          return {theAllowCursorElement, theAllowCursorPosition};
+        }
+      }
+    } else {
+      // TODO: Will be removed when there isn't a case that the previousElementSibling may be an internal-fsb-accessory.
+      if (element.previousElementSibling && !HTMLHelper.hasClass(element.previousElementSibling, 'internal-fsb-accessory')) {
+        return CursorHelper.recusiveFindOnTheLeft(element.previousElementSibling, isSkipEntering, false);
+      } else {
+        return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: 0};
+      }
+    }
   },
   moveCursorUp: () => {
     let walkPath = [...CursorHelper.findWalkPathForCursor()];
@@ -98,12 +98,12 @@ var CursorHelper = {
     let {theAllowCursorElement, theAllowCursorPosition} = CursorHelper.recusiveFindOnTheRight(Accessories.cursor.getDOMNode());
     
     if (theAllowCursorElement.tagName == 'TR') {
-    	const cursorElement = Accessories.cursor.getDOMNode();
-    	theAllowCursorElement = cursorElement.parentNode.nextElementSibling || null;
-    	
-    	if (theAllowCursorElement == null) return;
-    	
-    	theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
+      const cursorElement = Accessories.cursor.getDOMNode();
+      theAllowCursorElement = cursorElement.parentNode.nextElementSibling || null;
+      
+      if (theAllowCursorElement == null) return;
+      
+      theAllowCursorPosition = theAllowCursorElement && theAllowCursorElement.children.length;
     }
     
     let walkPath = CursorHelper.findWalkPathForElement(theAllowCursorElement);
@@ -112,42 +112,42 @@ var CursorHelper = {
     ManipulationHelper.perform('move[cursor]', walkPath, true, false, link);
   },
   recusiveFindOnTheRight: (element: HTMLElement, isSkipEntering: boolean=false, willSkipOnce: boolean=true) => {
-  	if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) {
-  		if (element.parentNode.lastElementChild == element) {
-  			return CursorHelper.recusiveFindOnTheRight(element.parentNode, true, true);
-  		} else if (element.nextElementSibling) {
-  			return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
-  		} else {
-  			return CursorHelper.recusiveFindOnTheRight(element.parentNode, isSkipEntering, willSkipOnce);
-  		}
-  	} else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
-  		if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
-  			return {theAllowCursorElement: element, theAllowCursorPosition: 0};
-  		} else {
-  			if (willSkipOnce) {
-  				// TODO: Will be removed when there isn't a case that the nextElementSibling may be an internal-fsb-accessory.
-  				if (element.nextElementSibling && !HTMLHelper.hasClass(element.nextElementSibling, 'internal-fsb-accessory')) {
-  					isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
-  					
-		  			return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
-		  		} else {
-		  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: element.parentNode.children.length};
-		  		}
-  			} else {
-	  			let theAllowCursorElement = element.parentNode;
-		  		let theAllowCursorPosition = [...theAllowCursorElement.children].indexOf(element);
-		  		
-		  		return {theAllowCursorElement, theAllowCursorPosition};
-		  	}
-  		}
-  	} else {
-  		// TODO: Will be removed when there isn't a case that the nextElementSibling may be an internal-fsb-accessory.
-  		if (element.nextElementSibling && !HTMLHelper.hasClass(element.nextElementSibling, 'internal-fsb-accessory')) {
-  			return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
-  		} else {
-  			return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: element.parentNode.children.length};
-  		}
-  	}
+    if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) {
+      if (element.parentNode.lastElementChild == element) {
+        return CursorHelper.recusiveFindOnTheRight(element.parentNode, true, true);
+      } else if (element.nextElementSibling) {
+        return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
+      } else {
+        return CursorHelper.recusiveFindOnTheRight(element.parentNode, isSkipEntering, willSkipOnce);
+      }
+    } else if (HTMLHelper.hasClass(element.parentNode, 'internal-fsb-allow-cursor')) {
+      if (!isSkipEntering && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor') && !HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting')) {
+        return {theAllowCursorElement: element, theAllowCursorPosition: 0};
+      } else {
+        if (willSkipOnce) {
+          // TODO: Will be removed when there isn't a case that the nextElementSibling may be an internal-fsb-accessory.
+          if (element.nextElementSibling && !HTMLHelper.hasClass(element.nextElementSibling, 'internal-fsb-accessory')) {
+            isSkipEntering = isSkipEntering || HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting');
+            
+            return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
+          } else {
+            return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: element.parentNode.children.length};
+          }
+        } else {
+          let theAllowCursorElement = element.parentNode;
+          let theAllowCursorPosition = [...theAllowCursorElement.children].indexOf(element);
+          
+          return {theAllowCursorElement, theAllowCursorPosition};
+        }
+      }
+    } else {
+      // TODO: Will be removed when there isn't a case that the nextElementSibling may be an internal-fsb-accessory.
+      if (element.nextElementSibling && !HTMLHelper.hasClass(element.nextElementSibling, 'internal-fsb-accessory')) {
+        return CursorHelper.recusiveFindOnTheRight(element.nextElementSibling, isSkipEntering, false);
+      } else {
+        return {theAllowCursorElement: element.parentNode, theAllowCursorPosition: element.parentNode.children.length};
+      }
+    }
   },
   moveCursorDown: () => {
     let walkPath = [...CursorHelper.findWalkPathForCursor()];
@@ -205,12 +205,12 @@ var CursorHelper = {
     
     return {allAllowCursorElements, allAllowCursorPositions};
   },
-	findWalkPathForElement: function(allowCursorElement: HTMLElement) {
+  findWalkPathForElement: function(allowCursorElement: HTMLElement) {
     let referenceElement = HTMLHelper.findTheParentInClassName('internal-fsb-element', allowCursorElement, true) || HTMLHelper.getElementByClassName('internal-fsb-begin');
     let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
     
     if (isReferenceElementASingleDomElement) {
-    	referenceElement = allowCursorElement;
+      referenceElement = allowCursorElement;
     }
     
     if (referenceElement) {
@@ -269,19 +269,19 @@ var CursorHelper = {
     return [referenceElementGUID, indexOfAllowCursorElement, positionXInTheAllowCursorElement, positionYInTheAllowCursorElement];
   },
   placingCursorUsingWalkPath: function(walkPath: [string, number, number, number]) {
-  	const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking'));
+    const walkings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-walking'));
     for (const walking of walkings) {
-   		HTMLHelper.removeClass(walking, 'internal-fsb-walking');
-   	}
-   	
-  	const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor'));
+       HTMLHelper.removeClass(walking, 'internal-fsb-walking');
+     }
+     
+    const placings = Array.from(HTMLHelper.getElementsByClassName('internal-fsb-placing-cursor'));
     for (const placing of placings) {
-   		HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
-   	}
+       HTMLHelper.removeClass(placing, 'internal-fsb-placing-cursor');
+     }
     
     let referenceElement = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', walkPath[0]);
     if (referenceElement) {
-    	let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
+      let isReferenceElementASingleDomElement = (SINGLE_DOM_CONTAINER_ELEMENTS.indexOf(HTMLHelper.getAttribute(referenceElement, 'internal-fsb-class')) != -1);
       let allowCursorElements = isReferenceElementASingleDomElement ?
         [referenceElement] : [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', referenceElement, 'internal-fsb-element')];
       let theAllowCursorElement = allowCursorElements[walkPath[1]];

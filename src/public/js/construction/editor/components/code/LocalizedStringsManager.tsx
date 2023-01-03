@@ -15,9 +15,9 @@ interface Props extends IProps {
 }
 
 interface State extends IState {
-	prev: string;
-	key: string;
-	guid: string;
+  prev: string;
+  key: string;
+  guid: string;
   value: string;
 }
 
@@ -54,14 +54,14 @@ class LocalizedStringsManager extends Base<Props, State> {
         }];
         
         for (let value of values) {
-        		let splited = value.split(LOCALIZATION_ITEM_DELIMITER);
+            let splited = value.split(LOCALIZATION_ITEM_DELIMITER);
             nodes.push({
-            		id: JSON.stringify({key: splited[0].split(LOCALIZATION_HASH_DELIMITER)[0], value: splited[1]}),
+                id: JSON.stringify({key: splited[0].split(LOCALIZATION_HASH_DELIMITER)[0], value: splited[1]}),
                 name: `${splited[0].substring(0, 32).trim().replace(LOCALIZATION_HASH_DELIMITER, '#').replace(/#$/, '') + ((splited[0].length > 32) ? '...' : '')} = ${splited[1].substring(0, 32).trim() + ((splited[1].length > 32) ? '...' : '')}`,
                 selectable: true,
                 dropable: false,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: false,
                 selected: false,
                 nodes: []
@@ -77,19 +77,19 @@ class LocalizedStringsManager extends Base<Props, State> {
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		if (reference.id == 'delete') {
-    		    let info = JSON.parse(element.id);
-    		    const values = this.getValuesExceptKey(info.key);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
-		        		}]
-    		    });
-    		}
-    		
-    		document.body.click();
+        if (reference.id == 'delete') {
+            let info = JSON.parse(element.id);
+            const values = this.getValuesExceptKey(info.key);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join(LOCALIZATION_LIST_DELIMITER)
+                }]
+            });
+        }
+        
+        document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -115,7 +115,7 @@ class LocalizedStringsManager extends Base<Props, State> {
             const info = JSON.parse(node.id);
             
             this.setState({
-            		prev: info.key.split(LOCALIZATION_HASH_DELIMITER)[0],
+                prev: info.key.split(LOCALIZATION_HASH_DELIMITER)[0],
                 key: info.key.split(LOCALIZATION_HASH_DELIMITER)[0],
                 guid: info.key.split(LOCALIZATION_HASH_DELIMITER)[1],
                 value: info.value
@@ -134,16 +134,16 @@ class LocalizedStringsManager extends Base<Props, State> {
     private addOnClick(event) {
         if (this.state.key && this.state.value) {
             const values = this.getValuesExceptKey(this.state.key);
-    		    const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
-    		    
-    		    values.push(value);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
-		        		}]
-    		    });
+            const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
+            
+            values.push(value);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join(LOCALIZATION_LIST_DELIMITER)
+                }]
+            });
             
             document.body.click();
         }
@@ -152,45 +152,45 @@ class LocalizedStringsManager extends Base<Props, State> {
     private updateOnClick(event) {
         if (this.state.key && this.state.value) {
             const values = this.getValuesExceptKey(this.state.key);
-    		    const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
-    		    
-    		    values.push(value);
-    		    
-    		    perform('update', {
-    		        extensions: [{
-		        				name: this.props.watchingExtensionNames[0],
-		        				value: values.join(LOCALIZATION_LIST_DELIMITER)
-		        		}]
-    		    });
+            const value = this.composeValue(this.state.key, this.state.value, this.state.guid);
+            
+            values.push(value);
+            
+            perform('update', {
+                extensions: [{
+                    name: this.props.watchingExtensionNames[0],
+                    value: values.join(LOCALIZATION_LIST_DELIMITER)
+                }]
+            });
             
             document.body.click();
         }
     }
     
     private getValuesExceptKey(key: string): string[] {
-    	const customLocalizedStrings = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+      const customLocalizedStrings = this.state.extensionValues[this.props.watchingExtensionNames[0]];
       
       let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
       
       if (key != null) {
-      	key = this.cleanKeyForComposing(key);
-      	values = values.filter(value => value.indexOf(key + LOCALIZATION_HASH_DELIMITER) != 0);
+        key = this.cleanKeyForComposing(key);
+        values = values.filter(value => value.indexOf(key + LOCALIZATION_HASH_DELIMITER) != 0);
       }
       
       values.sort();
       return values;
     }
     
-		private composeValue(key: string, value: string, guid: string='') {
-			key = this.cleanKeyForComposing(key);
-			if (guid == null) guid = '';
-			
-			return key + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + value;
-		}
-		
-		private cleanKeyForComposing(text: string) {
-			return text.replace(/\n+/g, ' ');
-		}
+    private composeValue(key: string, value: string, guid: string='') {
+      key = this.cleanKeyForComposing(key);
+      if (guid == null) guid = '';
+      
+      return key + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + value;
+    }
+    
+    private cleanKeyForComposing(text: string) {
+      return text.replace(/\n+/g, ' ');
+    }
     
     render() {
         return (

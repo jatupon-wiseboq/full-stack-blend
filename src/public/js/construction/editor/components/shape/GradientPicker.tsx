@@ -46,14 +46,14 @@ class GradientPicker extends Base<Props, State> {
     private documentOnKeyDownDelegate: any;
     
     private originalMousePos: Point = {
-  			x: 0,
-  			y: 0
-		};
-		private originalElementPos: Point = {
-  			x: 0,
-  			y: 0
-		};
-		private containerWidth: number = 0;
+        x: 0,
+        y: 0
+    };
+    private originalElementPos: Point = {
+        x: 0,
+        y: 0
+    };
+    private containerWidth: number = 0;
     
     constructor(props) {
         super(props);

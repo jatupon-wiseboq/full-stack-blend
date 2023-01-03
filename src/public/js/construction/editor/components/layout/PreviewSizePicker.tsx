@@ -30,30 +30,30 @@ class PreviewSizePicker extends Base<Props, State> {
       if (!super.update(properties)) return;
       
       let areaContainer = document.getElementById('area-container');
-    	let width = null;
-    	let content = this.state.extensionValues['preview'] || null;
-    	if (content != null) {
-      	width = SCREEN_SIZE[content[0]];
-    	}
-    	areaContainer.style.width = (width == null) ? '100%' : (width + content[1]) + 'px';
+      let width = null;
+      let content = this.state.extensionValues['preview'] || null;
+      if (content != null) {
+        width = SCREEN_SIZE[content[0]];
+      }
+      areaContainer.style.width = (width == null) ? '100%' : (width + content[1]) + 'px';
     }
     
     choose(size: number, direction: number) {
-    	if (this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == size && this.state.extensionValues['preview'][1] == direction) {
-    		perform('update', {
-	          extensions: [{
-	              name: 'preview',
-	              value: null
-	          }]
-	      });
-    	} else {
-	    	perform('update', {
-	          extensions: [{
-	              name: 'preview',
-	              value: [size, direction]
-	          }]
-	      });
-	    }
+      if (this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == size && this.state.extensionValues['preview'][1] == direction) {
+        perform('update', {
+            extensions: [{
+                name: 'preview',
+                value: null
+            }]
+        });
+      } else {
+        perform('update', {
+            extensions: [{
+                name: 'preview',
+                value: [size, direction]
+            }]
+        });
+      }
     }
     
     render() {

@@ -28,7 +28,7 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class SitePreview extends Base<Props, State> {
-		protected state: State = {};
+    protected state: State = {};
     protected static defaultProps: Props = ExtendedDefaultProps;
 
     constructor(props) {
@@ -41,56 +41,56 @@ class SitePreview extends Base<Props, State> {
     }
     
     public open() {
-    		this.refs.console && this.refs.console.reset();
+        this.refs.console && this.refs.console.reset();
         this.setState({loading: true, location: 'about:blank'});
         HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
     }
     
     public start(display: boolean=true) {
-    		this.setState({loading: true});
+        this.setState({loading: true});
         HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
-    		
-    		let preview = ReactDOM.findDOMNode(this.refs.preview);
-    		let pages = this.state.extensionValues['pages'];
+        
+        let preview = ReactDOM.findDOMNode(this.refs.preview);
+        let pages = this.state.extensionValues['pages'];
         let editingPageID = this.state.extensionValues['editingPageID'];
         
         pages = pages.filter(page => page.id == editingPageID);
         let PATH = pages && pages[0] && pages[0].path || null;
-       	
-       	let endpoint = window.ENDPOINT;
-       	if (endpoint.indexOf('https://localhost') == 0) {
-       		endpoint = 'https://localhost.stackblend.org';
-       	}
-       	
-       	RequestHelper.get(`${endpoint}${PATH}`).then((() => {
-	       	if (endpoint.indexOf('https://localhost') == 0) {
-	       		const construction = document.getElementById('area');
-      			let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-      			
-      			constructionWindow = constructionWindow.document || constructionWindow;
-      			
-      			constructionWindow.domain = 'stackblend.org';
-	       		document.domain = 'stackblend.org';
-	       	}
-       	
-       		this.setState({location: `${endpoint}${PATH}`});
-       	}).bind(this));
+         
+         let endpoint = window.ENDPOINT;
+         if (endpoint.indexOf('https://localhost') == 0) {
+           endpoint = 'https://localhost.stackblend.org';
+         }
+         
+         RequestHelper.get(`${endpoint}${PATH}`).then((() => {
+           if (endpoint.indexOf('https://localhost') == 0) {
+             const construction = document.getElementById('area');
+            let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+            
+            constructionWindow = constructionWindow.document || constructionWindow;
+            
+            constructionWindow.domain = 'stackblend.org';
+             document.domain = 'stackblend.org';
+           }
+         
+           this.setState({location: `${endpoint}${PATH}`});
+         }).bind(this));
     }
     
     public load() {
-    		if (this.state.location == 'about:blank' || this.state.location == null) return;
+        if (this.state.location == 'about:blank' || this.state.location == null) return;
         this.setState({loading: false});
     }
     
     private close(error) {
         if (error && error.message) console.error(error.message);
-      	
+        
         this.setState({loading: false, location: 'about:blank'});
-    		HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
+        HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
     }
     
     public isOpening() {
-    		return this.state.loading;
+        return this.state.loading;
     }
     
     render() {

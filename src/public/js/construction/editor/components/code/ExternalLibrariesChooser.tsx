@@ -43,11 +43,11 @@ class ExternalLibrariesChooser extends Base<Props, State> {
         let nodes: [ITreeNode] = [];
         for (let library of LIBRARIES) {
             nodes.push({
-            		id: library.id,
+                id: library.id,
                 name: library.name + ' ' + library.version,
                 selectable: true,
-								insertable: true,
-								dragable: true,
+                insertable: true,
+                dragable: true,
                 disabled: library.prerequisite,
                 selected: values.indexOf(library.id) != -1,
                 nodes: []
@@ -68,10 +68,10 @@ class ExternalLibrariesChooser extends Base<Props, State> {
         presets.sort();
         
         perform('update', {
-        		extensions: [{
-        				name: this.props.watchingExtensionNames[0],
-        				value: presets.join(' ')
-        		}]
+            extensions: [{
+                name: this.props.watchingExtensionNames[0],
+                value: presets.join(' ')
+            }]
         });
     }
     

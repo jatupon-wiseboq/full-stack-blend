@@ -77,8 +77,8 @@ class AttributeManager extends Base<Props, State> {
                     name: CodeHelper.replaceDashIntoCamelCase(name) + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
                     selectable: true,
                     dropable: false,
-										insertable: true,
-										dragable: true,
+                    insertable: true,
+                    dragable: true,
                     disabled: false,
                     selected: false,
                     nodes: []
@@ -94,20 +94,20 @@ class AttributeManager extends Base<Props, State> {
     }
     
     private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
-    		if (reference.id == 'delete') {
-    		    let info = JSON.parse(element.id);
-    		    
-    		    delete this.state.attributeValues[CodeHelper.replaceCamelIntoDashCase(info.name)];
-    		    
-    		    perform('update', {
-    		        attributes: [{
-    		            name: CodeHelper.replaceCamelIntoDashCase(info.name),
-    		            value: null
-    		        }]
-    		    });
-    		}
-    		
-    		document.body.click();
+        if (reference.id == 'delete') {
+            let info = JSON.parse(element.id);
+            
+            delete this.state.attributeValues[CodeHelper.replaceCamelIntoDashCase(info.name)];
+            
+            perform('update', {
+                attributes: [{
+                    name: CodeHelper.replaceCamelIntoDashCase(info.name),
+                    value: null
+                }]
+            });
+        }
+        
+        document.body.click();
     }
     
     private onInsertOptionVisibleChanged(value: boolean) {
@@ -170,11 +170,11 @@ class AttributeManager extends Base<Props, State> {
             });
           
             perform('update', {
-    		        attributes: [{
-    		            name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
-    		            value: this.state.value
-    		        }]
-    		    });
+                attributes: [{
+                    name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
+                    value: this.state.value
+                }]
+            });
             
             document.body.click();
         }
@@ -183,11 +183,11 @@ class AttributeManager extends Base<Props, State> {
     private updateOnClick(event) {
         if (this.state.name && this.state.value) {
             perform('update', {
-    		        attributes: [{
-    		            name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
-    		            value: this.state.value
-    		        }]
-    		    });
+                attributes: [{
+                    name: CodeHelper.replaceCamelIntoDashCase(this.state.name),
+                    value: this.state.value
+                }]
+            });
             
             document.body.click();
         }

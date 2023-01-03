@@ -15,7 +15,7 @@ const InsertDirection = Object.freeze({
 });
 
 interface ITreeNode {
-	id: string,
+  id: string,
   name: string,
   deselectable: boolean,
   selectable: boolean,
@@ -54,34 +54,34 @@ interface IState {
 }
 
 class TreeNode extends React.Component<IProps, IState> {
-	  private mouseUpDelegate: any = null;
-	  private mouseMoveDelegate: any = null;
-	  private rootContainer: any = null;
-	  
+    private mouseUpDelegate: any = null;
+    private mouseMoveDelegate: any = null;
+    private rootContainer: any = null;
+    
     constructor(props) {
-    	super(props);
-    	
-	    this.mouseUpDelegate = this.mouseUp.bind(this);
-	    this.mouseMoveDelegate = this.mouseMove.bind(this);
+      super(props);
+      
+      this.mouseUpDelegate = this.mouseUp.bind(this);
+      this.mouseMoveDelegate = this.mouseMove.bind(this);
     }
     
     private originalMousePos: Point = {
-			x: 0,
-			y: 0
-		};
-		private originalElementPos: Point = {
-			x: 0,
-			y: 0
-		};
-		private originalElement: HTMLElement = null;
-		
-		private isMouseMoveReachedThreshold: boolean = false;
-		private draggingElement: HTMLElement = null;
+      x: 0,
+      y: 0
+    };
+    private originalElementPos: Point = {
+      x: 0,
+      y: 0
+    };
+    private originalElement: HTMLElement = null;
+    
+    private isMouseMoveReachedThreshold: boolean = false;
+    private draggingElement: HTMLElement = null;
     
     protected onChange(node) {
-  		if (!node.selectable) return;
-  		if (node.selected && node.deselectable === false) return;
-  		
+      if (!node.selectable) return;
+      if (node.selected && node.deselectable === false) return;
+      
       node.selected = !node.selected;
       
       this.forceUpdate();
@@ -92,145 +92,145 @@ class TreeNode extends React.Component<IProps, IState> {
     }
     
     private installEventHandlers() {
-			document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
-			document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
-			window.top.document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
-			window.top.document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
-		}
-		private uninstallEventHandlers() {
-			document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
-			document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
-			window.top.document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
-			window.top.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
-		}
-		private createDraggingElement(title: string, width: number) {
-			if (this.draggingElement == null) {
-				this.draggingElement = document.createElement('div');
-				this.draggingElement.className = 'layer-manager-container dragger' + ((this.props.customDraggerClassName) ? ' ' + this.props.customDraggerClassName : '');
-				this.draggingElement.innerHTML = '<div class="treenode-container selected"><div class="treenode-body"><div class="treenode-title"></div></div></div>';
-			}
-			
-			this.draggingElement.style.width = width + 'px';
-			this.draggingElement.firstElementChild.firstElementChild.firstElementChild.innerHTML = title;
-			
-			document.body.appendChild(this.draggingElement);
-		}
-		private destoryDraggingElement() {
-			if (this.draggingElement && this.draggingElement.parentNode) {
-				this.draggingElement.parentNode.removeChild(this.draggingElement);
-				this.draggingElement = null;
-			}
-		}
-		
-		private onClick(event) {
-			if (this.props.enableDragging) return;
-			
-			if (this.props.onClick != null) {
-				const originalElement = EventHelper.getCurrentElement(event);
-				const node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
-				
-				this.props.onClick(node);
-			}
-		}
+      document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+      document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
+      window.top.document.body.addEventListener('mouseup', this.mouseUpDelegate, false);
+      window.top.document.body.addEventListener('mousemove', this.mouseMoveDelegate, false);
+    }
+    private uninstallEventHandlers() {
+      document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+      document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
+      window.top.document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
+      window.top.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
+    }
+    private createDraggingElement(title: string, width: number) {
+      if (this.draggingElement == null) {
+        this.draggingElement = document.createElement('div');
+        this.draggingElement.className = 'layer-manager-container dragger' + ((this.props.customDraggerClassName) ? ' ' + this.props.customDraggerClassName : '');
+        this.draggingElement.innerHTML = '<div class="treenode-container selected"><div class="treenode-body"><div class="treenode-title"></div></div></div>';
+      }
+      
+      this.draggingElement.style.width = width + 'px';
+      this.draggingElement.firstElementChild.firstElementChild.firstElementChild.innerHTML = title;
+      
+      document.body.appendChild(this.draggingElement);
+    }
+    private destoryDraggingElement() {
+      if (this.draggingElement && this.draggingElement.parentNode) {
+        this.draggingElement.parentNode.removeChild(this.draggingElement);
+        this.draggingElement = null;
+      }
+    }
+    
+    private onClick(event) {
+      if (this.props.enableDragging) return;
+      
+      if (this.props.onClick != null) {
+        const originalElement = EventHelper.getCurrentElement(event);
+        const node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
+        
+        this.props.onClick(node);
+      }
+    }
     
     private mouseDown(event) {
-			if (!this.props.enableDragging) return;
-			if (EventHelper.checkIfDenyForHandle(event)) return;
-			
-			let originalElement = EventHelper.getCurrentElement(event);
-			
-			let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
-    	if (!node.dragable) return;
-			if (this.props.draggableAfterSelected && (!node.selectable || !node.selected)) return;
-			
-			this.originalElement = originalElement;
-			
-			let mousePosition = EventHelper.getMousePosition(event);
-			let elementPosition = HTMLHelper.getPosition(this.originalElement);
-			
-			this.originalMousePos.x = mousePosition[0];
-			this.originalMousePos.y = mousePosition[1];
-			
-			this.originalElementPos.x = elementPosition[0];
-			this.originalElementPos.y = elementPosition[1];
-			
-			this.rootContainer = ReactDOM.findDOMNode(this.refs.container);
-			
-			this.installEventHandlers();
-		}
-		private mouseMove(event) {
-			let mousePosition = EventHelper.getMousePosition(event);
-			let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
-			
-			if (!this.isMouseMoveReachedThreshold &&
-					Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
-					Math.abs(mousePositionInPoint.y - this.originalMousePos.y) < 5) {
-				return;
-			}
-			
-			if (!this.isMouseMoveReachedThreshold) {
-				this.isMouseMoveReachedThreshold = true;
-				
-				document.getElementById('area').style.pointerEvents = 'none';
-				
-				let node = this.getNode(HTMLHelper.getAttribute(this.originalElement, 'node'));
-				let elementSize = HTMLHelper.getSize(this.originalElement);
-				this.createDraggingElement(node.name, elementSize[0]);
-				
-				if (this.props.onStartDragging != null) {
-					this.props.onStartDragging(node);
-				}
-			}
-				
-			if (this.props.onDragging != null) {
-				this.props.onDragging(mousePositionInPoint);
-			}
-			
-		  if (this.isMouseMoveReachedThreshold) {
-		    this.moveDraggingContent(mousePositionInPoint);
-		  }
-		}
-		private mouseUp(event) {
-			this.uninstallEventHandlers();
-			this.destoryDraggingElement();
-			
-			document.getElementById('area').style.pointerEvents = 'all';
-			
-			if (this.props.onEndDragging != null) {
-				this.props.onEndDragging();
-			}
-			
-			if (this.isMouseMoveReachedThreshold) {
-			  EventHelper.setDenyForHandle('click', true);
-			  EventHelper.setDenyForHandle('click', false, 100);
-			}
-			this.isMouseMoveReachedThreshold = false;
-			
-			return EventHelper.cancel(event);
-		}
-		
-		private moveDraggingContent(mousePosition: Point) {
-			const container = HTMLHelper.findTheParentInClassName('tree-container', this.rootContainer);
-			let scrollTop = container.scrollTop;
-			
-			let diffX = mousePosition.x - this.originalMousePos.x;
-			let diffY = mousePosition.y - this.originalMousePos.y - scrollTop;
-			
-			this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
-			this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
-		}
-		private getNode(id: string, nodes: [ITreeNode]=this.props.nodes) {
-			for (let node of nodes) {
-				if (node.id == id) {
-					return node;
-				}
-				let result = this.getNode(id, node.nodes);
-				if (result != null) {
-					return result;
-				}
-			}
-			return null;
-		}
+      if (!this.props.enableDragging) return;
+      if (EventHelper.checkIfDenyForHandle(event)) return;
+      
+      let originalElement = EventHelper.getCurrentElement(event);
+      
+      let node = this.getNode(HTMLHelper.getAttribute(originalElement, 'node'));
+      if (!node.dragable) return;
+      if (this.props.draggableAfterSelected && (!node.selectable || !node.selected)) return;
+      
+      this.originalElement = originalElement;
+      
+      let mousePosition = EventHelper.getMousePosition(event);
+      let elementPosition = HTMLHelper.getPosition(this.originalElement);
+      
+      this.originalMousePos.x = mousePosition[0];
+      this.originalMousePos.y = mousePosition[1];
+      
+      this.originalElementPos.x = elementPosition[0];
+      this.originalElementPos.y = elementPosition[1];
+      
+      this.rootContainer = ReactDOM.findDOMNode(this.refs.container);
+      
+      this.installEventHandlers();
+    }
+    private mouseMove(event) {
+      let mousePosition = EventHelper.getMousePosition(event);
+      let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
+      
+      if (!this.isMouseMoveReachedThreshold &&
+          Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
+          Math.abs(mousePositionInPoint.y - this.originalMousePos.y) < 5) {
+        return;
+      }
+      
+      if (!this.isMouseMoveReachedThreshold) {
+        this.isMouseMoveReachedThreshold = true;
+        
+        document.getElementById('area').style.pointerEvents = 'none';
+        
+        let node = this.getNode(HTMLHelper.getAttribute(this.originalElement, 'node'));
+        let elementSize = HTMLHelper.getSize(this.originalElement);
+        this.createDraggingElement(node.name, elementSize[0]);
+        
+        if (this.props.onStartDragging != null) {
+          this.props.onStartDragging(node);
+        }
+      }
+        
+      if (this.props.onDragging != null) {
+        this.props.onDragging(mousePositionInPoint);
+      }
+      
+      if (this.isMouseMoveReachedThreshold) {
+        this.moveDraggingContent(mousePositionInPoint);
+      }
+    }
+    private mouseUp(event) {
+      this.uninstallEventHandlers();
+      this.destoryDraggingElement();
+      
+      document.getElementById('area').style.pointerEvents = 'all';
+      
+      if (this.props.onEndDragging != null) {
+        this.props.onEndDragging();
+      }
+      
+      if (this.isMouseMoveReachedThreshold) {
+        EventHelper.setDenyForHandle('click', true);
+        EventHelper.setDenyForHandle('click', false, 100);
+      }
+      this.isMouseMoveReachedThreshold = false;
+      
+      return EventHelper.cancel(event);
+    }
+    
+    private moveDraggingContent(mousePosition: Point) {
+      const container = HTMLHelper.findTheParentInClassName('tree-container', this.rootContainer);
+      let scrollTop = container.scrollTop;
+      
+      let diffX = mousePosition.x - this.originalMousePos.x;
+      let diffY = mousePosition.y - this.originalMousePos.y - scrollTop;
+      
+      this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
+      this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
+    }
+    private getNode(id: string, nodes: [ITreeNode]=this.props.nodes) {
+      for (let node of nodes) {
+        if (node.id == id) {
+          return node;
+        }
+        let result = this.getNode(id, node.nodes);
+        if (result != null) {
+          return result;
+        }
+      }
+      return null;
+    }
     
     private onVisibleChanged(value: boolean, tag: any) {
         if (this.props.onUpdateOptionVisibleChanged) {
@@ -238,25 +238,25 @@ class TreeNode extends React.Component<IProps, IState> {
         }
     }
     private onNodeVisibleToggled(node: ITreeNode) {
-    		if (this.props.onNodeVisibleToggled) {
+        if (this.props.onNodeVisibleToggled) {
             this.props.onNodeVisibleToggled(node);
         }
     }
     private onNodeRemoved(node: ITreeNode) {
-    		if (this.props.onNodeRemoved) {
+        if (this.props.onNodeRemoved) {
             this.props.onNodeRemoved(node);
         }
     }
     private recursiveCheckForContaining(node: ITreeNode): boolean {
-    	if (node.selected) return true;
-    	else {
-    		for (let child of node.nodes) {
-    			if (this.recursiveCheckForContaining(child)) {
-    				return true;
-    			}
-    		}
-    		return false;
-    	}
+      if (node.selected) return true;
+      else {
+        for (let child of node.nodes) {
+          if (this.recursiveCheckForContaining(child)) {
+            return true;
+          }
+        }
+        return false;
+      }
     }
     
     render() {
@@ -266,21 +266,21 @@ class TreeNode extends React.Component<IProps, IState> {
             return (
               <div key={'node-' + index} className={"treenode-outer-container" + (node.customClassName ? ' ' + node.customClassName : '') + (this.recursiveCheckForContaining(node) ? ' contained' : '')} id={node.id} filter={this.props.filter}>
                 <div className={"treenode-container row" + (node.selected ? " selected" : "") + (node.disabled ? " disabled" : "") + (!node.selectable ? " freezed" : "") + (node.dragging ? " dragging" : "") + ((node.insert == InsertDirection.TOP) ? " insert-top" : "") + ((node.insert == InsertDirection.INSIDE) ? " insert-inside" : "") + ((node.insert == InsertDirection.BOTTOM) ? " insert-bottom" : "") + (node.dragable ? " dragable" : "")}>
-					    		{(() => {
-					    			if (node.id !== 'selector' && this.props.visibility === true)
-					    			return (
-					    				<i className={(node.tag.display) ? "fa fa-eye" : "fa fa-eye-slash"} style={{position: "absolute", left: "215px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeVisibleToggled.bind(this, node)} />
-					    			);
-					    		})()}
-					    		{(() => {
-					    			if (node.id !== 'selector' && this.props.removability === true)
-					    			return (
-					    				<i className="fa fa-remove" style={{position: "absolute", left: "234px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeRemoved.bind(this, node)} />
-					    			);
-					    		})()}
-                	{(() => {
+                  {(() => {
+                    if (node.id !== 'selector' && this.props.visibility === true)
+                    return (
+                      <i className={(node.tag.display) ? "fa fa-eye" : "fa fa-eye-slash"} style={{position: "absolute", left: "215px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeVisibleToggled.bind(this, node)} />
+                    );
+                  })()}
+                  {(() => {
+                    if (node.id !== 'selector' && this.props.removability === true)
+                    return (
+                      <i className="fa fa-remove" style={{position: "absolute", left: "234px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeRemoved.bind(this, node)} />
+                    );
+                  })()}
+                  {(() => {
                     if (this.props.extendingControl) {
-                    	const ExtendingControl = this.props.extendingControl;
+                      const ExtendingControl = this.props.extendingControl;
                       return (
                         <ExtendingControl tag={node}>
                         </ExtendingControl>
@@ -290,7 +290,7 @@ class TreeNode extends React.Component<IProps, IState> {
                   <div className={"treenode-body col offset-" + this.props.deep + (this.props.filter && (([node.name, node.id].join(' ').toLowerCase().indexOf(this.props.filter) != -1) ? ' matched' : ' unmatched') || '')} onMouseDown={this.mouseDown.bind(this)} node={node.id} onClick={this.onClick.bind(this)}>
                     {(() => {
                       if (this.props.children && this.props.editingControl) {
-                      	const EditingControl = this.props.editingControl;
+                        const EditingControl = this.props.editingControl;
                         return (
                           <EditingControl representing="ICON:fa fa-edit" onVisibleChanged={this.onVisibleChanged.bind(this)} tag={node}>
                             {this.props.children}
@@ -307,9 +307,9 @@ class TreeNode extends React.Component<IProps, IState> {
                   </div>
                 </div>
                 <div style={{display: (node.insert == InsertDirection.BOTTOM || node.dragging) ? 'none' : 'inherit'}}>
-                	<FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl} filter={this.props.filter}>
-                	  {this.props.children}
-                	</FullStackBlend.Controls.TreeNode>
+                  <FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl} filter={this.props.filter}>
+                    {this.props.children}
+                  </FullStackBlend.Controls.TreeNode>
                 </div>
               </div>
             )

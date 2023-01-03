@@ -55,7 +55,7 @@ var EventHelper = {
   },
   
   pasteEventInTextPlain: (event) => {
-		let text = '';
+    let text = '';
     
     if (event.clipboardData || event.originalEvent.clipboardData) {
       text = (event.originalEvent || event).clipboardData.getData('text/plain');
@@ -67,8 +67,8 @@ var EventHelper = {
     } else {
       document.execCommand('paste', false, text);
     }
-		
-		return EventHelper.cancel(event);
+    
+    return EventHelper.cancel(event);
   }
 };
 
