@@ -15,7 +15,14 @@ include ../../mixin/CreateReactComponent
     | This evolvement is for enthusiasts, students, or start-ups, who are going to provide the services to beta customers and companies. This period won't mind all of the enterprise workplace's environment practices.
   .section-title
     | Pitching Grade
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching", internal-fsb-not-for="workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    | Branching Mode
   .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching", internal-fsb-not-for="workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessBranchingMode']}")
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching", internal-fsb-not-for="workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    | Automatically Reverting
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching", internal-fsb-not-for="workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessRevertMode']}")
   .section-note
     | This evolvement period will focus on speedy and cost effective, including productionalize to be able to serve the services to any company's firms. Excellency in coding isn't neccessary in this period. But product's bugless, compatibility, and rapid fixing are the most important. 
   .section-title

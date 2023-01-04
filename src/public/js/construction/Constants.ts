@@ -421,6 +421,8 @@ export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-
 export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
 export const WORKSPACE_LOCK_MODE = [["workspaceMode", null, ["d-none", "Full-Stack"]], ["workspaceMode", "coder", ["d-none", "Coder"]], ["workspaceMode", "designer", ["d-none", "Designer"]], ["workspaceMode", "business", ["d-none", "Business"]]];
 export const WORKSPACE_STRICTNESS_GRADE = [["workspaceStrictnessGrade", null, ["d-none", "Prototype"]], ["workspaceStrictnessGrade", "pitching", ["d-none", "Pitching"]], ["workspaceStrictnessGrade", "start-up", ["d-none", "Start-Up"]], ["workspaceStrictnessGrade", "company", ["d-none", "Company"]], ["workspaceStrictnessGrade", "enterprise", ["d-none", "Enterprise"]]];
+export const WORKSPACE_STRICTNESS_BRANCHING_MODE = [["workspaceStrictnessBranchingMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessBranchingMode", "master", ["d-none", "Enforce Master Branch"]], ["workspaceStrictnessBranchingMode", "feature", ["d-none", "Enforce Feature Branch"]]];
+export const WORKSPACE_STRICTNESS_REVERT_MODE = [["workspaceStrictnessRevertMode", null, ["d-none", "Manually"]], ["workspaceStrictnessRevertMode", "P0", ["d-none", "Revert for P0"]], ["workspaceStrictnessRevertMode", "P1", ["d-none", "Revert for P1"]], ["workspaceStrictnessRevertMode", "P2", ["d-none", "Revert for P2"]]];
 export const WORKSPACE_STRICTNESS_SENTENCE_MODE = [["workspaceStrictnessSentenceMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessSentenceMode", "sentence", ["d-none", "Full Sentence"]], ["workspaceStrictnessSentenceMode", "meaningful", ["d-none", "Meaningful Sentence"]]];
 export const WORKSPACE_STRICTNESS_REUSEABILITY_MODE = [["workspaceStrictnessReusabilityMode", null, ["d-none", "Block Duplicating Code"]], ["workspaceStrictnessReusabilityMode", "loosen", ["d-none", "Duplicatable in Separated Branch"]], ["workspaceStrictnessReusabilityMode", "freestyle", ["d-none", "No Commit Blocking"]]];
 export const WORKSPACE_STRICTNESS_CODE_REVIEW_MODE = [["workspaceStrictnessCodeReviewMode", "block", ["d-none", "Block From Working"]], ["workspaceStrictnessCodeReviewMode", null, ["d-none", "Always Notify"]], ["workspaceStrictnessCodeReviewMode", "incline", ["d-none", "Incline Mode"]]];
@@ -535,6 +537,8 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   //
   "workspaceMode": WORKSPACE_LOCK_MODE,
   "workspaceStrictnessGrade": WORKSPACE_STRICTNESS_GRADE,
+  "workspaceStrictnessBranchingMode": WORKSPACE_STRICTNESS_BRANCHING_MODE,
+  "workspaceStrictnessRevertMode": WORKSPACE_STRICTNESS_REVERT_MODE,
   "workspaceStrictnessSentenceMode": WORKSPACE_STRICTNESS_SENTENCE_MODE,
   "workspaceStrictnessReusabilityMode": WORKSPACE_STRICTNESS_REUSEABILITY_MODE,
   "workspaceStrictnessRiskyMode": WORKSPACE_STRICTNESS_RISKY_MODE,
