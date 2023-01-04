@@ -425,7 +425,10 @@ export const WORKSPACE_STRICTNESS_SENTENCE_MODE = [["workspaceStrictnessSentence
 export const WORKSPACE_STRICTNESS_REUSEABILITY_MODE = [["workspaceStrictnessReusabilityMode", null, ["d-none", "Block Duplicating Code"]], ["workspaceStrictnessReusabilityMode", "loosen", ["d-none", "Duplicatable in Separated Branch"]], ["workspaceStrictnessReusabilityMode", "freestyle", ["d-none", "No Commit Blocking"]]];
 export const WORKSPACE_STRICTNESS_CODE_REVIEW_MODE = [["workspaceStrictnessCodeReviewMode", "block", ["d-none", "Block From Working"]], ["workspaceStrictnessCodeReviewMode", null, ["d-none", "Always Notify"]], ["workspaceStrictnessCodeReviewMode", "incline", ["d-none", "Incline Mode"]]];
 export const WORKSPACE_STRICTNESS_RISKY_MODE = [["workspaceStrictnessRiskyMode", null, ["d-none", "Protect Creditworthy"]], ["workspaceStrictnessRiskyMode", "risk", ["d-none", "Allow and Take a Risk"]]];
-export const WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS = [["workspaceStrictnessPrototypeEmphasizingMode", null, ["d-none", "Automatic A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "selective", ["d-none", "Selective A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "decisive", ["d-none", "Decisiveness"]]];
+export const WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS_MODE= [["workspaceStrictnessPrototypeEmphasizingMode", null, ["d-none", "Automatic A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "selective", ["d-none", "Selective A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "decisive", ["d-none", "Decisiveness"]]];
+export const WORKSPACE_STRICTNESS_PRODUCT_TRACKING_MODE = [["workspaceStrictnessProductTrackingMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductTrackingMode", "bugs", ["d-none", "Only Bugs"]], ["workspaceStrictnessProductTrackingMode", "product", ["d-none", "Bugs and Features"]]];
+export const WORKSPACE_STRICTNESS_PRODUCT_CHECK_IN_MODE = [["workspaceStrictnessProductCheckInMode", "freestyle", ["d-none", "Freestyle"]], ["workspaceStrictnessProductCheckInMode", null, ["d-none", "Compilable"]], ["workspaceStrictnessProductCheckInMode", "testing", ["d-none", "Tested"]]];
+export const WORKSPACE_STRICTNESS_PRODUCT_COMMIT_MODE = [["workspaceStrictnessProductCommitMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Spatially Rebased"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Continuously Rebased"]]];
 export const EASING_COEFFICIENT = {
   ease: 0.42
 };
@@ -536,7 +539,10 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "workspaceStrictnessReusabilityMode": WORKSPACE_STRICTNESS_REUSEABILITY_MODE,
   "workspaceStrictnessRiskyMode": WORKSPACE_STRICTNESS_RISKY_MODE,
   "workspaceStrictnessCodeReviewMode": WORKSPACE_STRICTNESS_CODE_REVIEW_MODE,
-  "workspaceStrictnessPrototypeEmphasizingMode": WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS
+  "workspaceStrictnessPrototypeEmphasizingMode": WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS_MODE,
+  "workspaceStrictnessProductTrackingMode": WORKSPACE_STRICTNESS_PRODUCT_TRACKING_MODE,
+  "workspaceStrictnessProductCheckInMode": WORKSPACE_STRICTNESS_PRODUCT_CHECK_IN_MODE,
+  "workspaceStrictnessProductCommitMode": WORKSPACE_STRICTNESS_PRODUCT_COMMIT_MODE
 };
 export const GENERIC_RADIO_OPTION_PRESETS_MAPPING = {
   "data-source-type-1": "internal-fsb-data-source-type",

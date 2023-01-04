@@ -15,39 +15,50 @@ include ../../mixin/CreateReactComponent
     | This evolvement is for enthusiasts, students, or start-ups, who are going to provide the services to beta customers and companies. This period won't mind all of the enterprise workplace's environment practices.
   .section-title
     | Pitching Grade
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching", internal-fsb-not-for="workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
   .section-note
     | This evolvement period will focus on speedy and cost effective, including productionalize to be able to serve the services to any company's firms. Excellency in coding isn't neccessary in this period. But product's bugless, compatibility, and rapid fixing are the most important. 
   .section-title
     | Start-Up Grade
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up", internal-fsb-not-for="workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
     | Commit Message
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up", internal-fsb-not-for="workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessSentenceMode']}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up", internal-fsb-not-for="workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
     | Code Reusablity
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up", internal-fsb-not-for="workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessReusabilityMode']}")
   .section-note
     | This start-up environment grade may have any high professional colleague joining your company. You have to watch out on code quality, readability, and there might be some code refractoring, too. You have to choose to own the code together, transfer, or separate all of the coding credits.
   .section-title
     | Company Grade
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     | Code Review
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessCodeReviewMode']}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     | Riskiest Assumption and Test
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessRiskyMode']}")
-  .section-subtitle
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     | Emphasizing Prototyping
-  .section-body
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company", internal-fsb-not-for="workspaceStrictnessGrade:enterprise")
     +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessPrototypeEmphasizingMode']}")
   .section-note
     | Any new business savvy people will join the business, but it doesn't mean that they know how they work together. They will start thinking how to improve the company, and some of methodologies will be changed. While the cost effective is still important, the rest of the team will have to defend any pathway of all along of evolvement, to reduce the wasteful costs.
-  .section-title
+  .section-title(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
     | Enterprise Grade
-  .section-body
+  .section-subtitle(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    | Product Tracking
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessProductTrackingMode']}")
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    | Checking-In
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessProductCheckInMode']}")
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    | Consecutive Commiting
+  .section-body(internal-fsb-for="workspaceStrictnessGrade:pitching, workspaceStrictnessGrade:start-up, workspaceStrictnessGrade:company, workspaceStrictnessGrade:enterprise")
+    +CreateReactComponent('FullStackBlend.Components.RadioButtonPicker', "{watchingExtensionNames: ['workspaceStrictnessProductCommitMode']}")
   .section-note
     | This period has a lot of resource and time, including monetary and laboring. Your colleagues will work hard, too, but the performance monitoring is starting to be crucial in this period. All of hard works need to be unbiased for everyone, especially business team.
