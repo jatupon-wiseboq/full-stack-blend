@@ -421,13 +421,16 @@ export const ANIMATION_EASING_MODE = [["-fsb-animation-easing-mode", "in", ["fa-
 export const ANIMATION_EASING_FN_1 = [["-fsb-animation-easing-fn", null, ["d-none", "Linear"]], ["-fsb-animation-easing-fn", "ease", ["d-none", "Ease"]]];
 export const WORKSPACE_LOCK_MODE = [["workspaceMode", null, ["d-none", "Full-Stack"]], ["workspaceMode", "coder", ["d-none", "Coder"]], ["workspaceMode", "designer", ["d-none", "Designer"]], ["workspaceMode", "business", ["d-none", "Business"]]];
 export const WORKSPACE_STRICTNESS_GRADE = [["workspaceStrictnessGrade", null, ["d-none", "Prototype"]], ["workspaceStrictnessGrade", "pitching", ["d-none", "Pitching"]], ["workspaceStrictnessGrade", "start-up", ["d-none", "Start-Up"]], ["workspaceStrictnessGrade", "company", ["d-none", "Company"]], ["workspaceStrictnessGrade", "enterprise", ["d-none", "Enterprise"]]];
+export const WORKSPACE_STRICTNESS_PROTECT_MERGING_MODE = [["workspaceStrictnessProtectMergingMode", null, ["d-none", "Always Merging"]], ["workspaceStrictnessProtectMergingMode", "confirm", ["d-none", "Protective Confirming"]]];
+export const WORKSPACE_STRICTNESS_PROTECT_LAUCHING_MODE = [["workspaceStrictnessProtectLauchingMode", null, ["d-none", "Always Lauching"]], ["workspaceStrictnessProtectLauchingMode", "confirm", ["d-none", "Protective Confirming"]]];
 export const WORKSPACE_STRICTNESS_BRANCHING_MODE = [["workspaceStrictnessBranchingMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessBranchingMode", "master", ["d-none", "Enforce Master Branch"]], ["workspaceStrictnessBranchingMode", "feature", ["d-none", "Enforce Feature Branch"]]];
 export const WORKSPACE_STRICTNESS_REVERT_MODE = [["workspaceStrictnessRevertMode", null, ["d-none", "Manually"]], ["workspaceStrictnessRevertMode", "P0", ["d-none", "Revert for P0"]], ["workspaceStrictnessRevertMode", "P1", ["d-none", "Revert for P1"]], ["workspaceStrictnessRevertMode", "P2", ["d-none", "Revert for P2"]]];
 export const WORKSPACE_STRICTNESS_SENTENCE_MODE = [["workspaceStrictnessSentenceMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessSentenceMode", "sentence", ["d-none", "Full Sentence"]], ["workspaceStrictnessSentenceMode", "meaningful", ["d-none", "Meaningful Sentence"]]];
 export const WORKSPACE_STRICTNESS_REUSEABILITY_MODE = [["workspaceStrictnessReusabilityMode", null, ["d-none", "Block Duplicating Code"]], ["workspaceStrictnessReusabilityMode", "loosen", ["d-none", "Duplicatable in Separated Branch"]], ["workspaceStrictnessReusabilityMode", "freestyle", ["d-none", "No Commit Blocking"]]];
 export const WORKSPACE_STRICTNESS_CODE_REVIEW_MODE = [["workspaceStrictnessCodeReviewMode", "block", ["d-none", "Block From Working"]], ["workspaceStrictnessCodeReviewMode", null, ["d-none", "Always Notify"]], ["workspaceStrictnessCodeReviewMode", "incline", ["d-none", "Incline Mode"]]];
 export const WORKSPACE_STRICTNESS_RISKY_MODE = [["workspaceStrictnessRiskyMode", null, ["d-none", "Protect Creditworthy"]], ["workspaceStrictnessRiskyMode", "risk", ["d-none", "Allow and Take a Risk"]]];
-export const WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS_MODE= [["workspaceStrictnessPrototypeEmphasizingMode", null, ["d-none", "Automatic A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "selective", ["d-none", "Selective A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "decisive", ["d-none", "Decisiveness"]]];
+export const WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS_MODE = [["workspaceStrictnessPrototypeEmphasizingMode", null, ["d-none", "Automatic A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "selective", ["d-none", "Selective A/B Testing"]], ["workspaceStrictnessPrototypeEmphasizingMode", "decisive", ["d-none", "Decisiveness"]]];
+export const WORKSPACE_STRICTNESS_LAUCHING_MODE = [["workspaceStrictnessLauchingMode", null, ["d-none", "Compilable"]], ["workspaceStrictnessLauchingMode", "tested", ["d-none", "Tested Only"]], ["workspaceStrictnessLauchingMode", "approved", ["d-none", "Approved Only"]]];
 export const WORKSPACE_STRICTNESS_PRODUCT_TRACKING_MODE = [["workspaceStrictnessProductTrackingMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductTrackingMode", "bugs", ["d-none", "Only Bugs"]], ["workspaceStrictnessProductTrackingMode", "product", ["d-none", "Bugs and Features"]]];
 export const WORKSPACE_STRICTNESS_PRODUCT_CHECK_IN_MODE = [["workspaceStrictnessProductCheckInMode", "freestyle", ["d-none", "Freestyle"]], ["workspaceStrictnessProductCheckInMode", null, ["d-none", "Compilable"]], ["workspaceStrictnessProductCheckInMode", "testing", ["d-none", "Tested"]]];
 export const WORKSPACE_STRICTNESS_PRODUCT_COMMIT_MODE = [["workspaceStrictnessProductCommitMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Spatially Rebased"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Continuously Rebased"]]];
@@ -451,7 +454,7 @@ export const BOX_SHADOW_3_OPTIONS = [null, "{COLOR}"];
 export const SCREEN_SIZE = [320, 576, 768, 992, 1200, 1920];
 export const WORKSPACE_TOGGLING_ATTRIBUTES = ['internal-fsb-class', 'internal-fsb-react-mode', 'internal-fsb-data-source-type', 'internal-fsb-textbox-mode', 'internal-fsb-inheriting', 'required', 'data-field-type', 'internal-fsb-data-wizard-type', 'internal-fsb-data-value-source', 'data-lock-mode', 'data-lock-matching-mode', 'data-rendering-condition-mode', 'data-rendering-condition-matching-mode', 'internal-fsb-animation-timing-mode', 'internal-fsb-data-validation-format', 'internal-fsb-react-display-logic', 'internal-fsb-react-division', 'data-forward-option', 'data-forward-mode', 'data-missing-enable', 'data-missing-default', 'data-mismatch-enable', 'data-mismatch-default', 'data-mismatch-action', 'internal-fsb-ssr-display-logic'];
 export const WORKSPACE_TOGGLING_STYLES = ['-fsb-animation-timing-mode'];
-export const WORKSPACE_TOGGLING_EXTENSIONS = ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox', 'editingProperties', 'workspaceMode', 'editorCurrentExplore', 'isDesignWithCodingMode'];
+export const WORKSPACE_TOGGLING_EXTENSIONS = ['editorCurrentMode', 'hasParentReactComponent', 'editing', 'editingAnimationID', 'editingKeyframeID', 'areFormatAndStyleOptionsAvailable', 'animationGroupMode', 'animationRepeatMode', 'isTableLayoutRow', 'isFirstElementOfComponent', 'isInheritingComponent', 'isNotContainingInFlexbox', 'editingProperties', 'workspaceMode', 'editorCurrentExplore', 'isDesignWithCodingMode', 'workspaceStrictnessGrade'];
 export const GENERIC_RADIO_OPTION_PRESETS = {
   // Front-End Options
   // 
@@ -537,6 +540,8 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   //
   "workspaceMode": WORKSPACE_LOCK_MODE,
   "workspaceStrictnessGrade": WORKSPACE_STRICTNESS_GRADE,
+  "workspaceStrictnessProtectLauchingMode": WORKSPACE_STRICTNESS_PROTECT_LAUCHING_MODE,
+  "workspaceStrictnessProtectMergingMode": WORKSPACE_STRICTNESS_PROTECT_MERGING_MODE,
   "workspaceStrictnessBranchingMode": WORKSPACE_STRICTNESS_BRANCHING_MODE,
   "workspaceStrictnessRevertMode": WORKSPACE_STRICTNESS_REVERT_MODE,
   "workspaceStrictnessSentenceMode": WORKSPACE_STRICTNESS_SENTENCE_MODE,
@@ -544,6 +549,7 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "workspaceStrictnessRiskyMode": WORKSPACE_STRICTNESS_RISKY_MODE,
   "workspaceStrictnessCodeReviewMode": WORKSPACE_STRICTNESS_CODE_REVIEW_MODE,
   "workspaceStrictnessPrototypeEmphasizingMode": WORKSPACE_STRICTNESS_PROTOTYPING_WORTHINESS_MODE,
+  "workspaceStrictnessLauchingMode": WORKSPACE_STRICTNESS_LAUCHING_MODE,
   "workspaceStrictnessProductTrackingMode": WORKSPACE_STRICTNESS_PRODUCT_TRACKING_MODE,
   "workspaceStrictnessProductCheckInMode": WORKSPACE_STRICTNESS_PRODUCT_CHECK_IN_MODE,
   "workspaceStrictnessProductCommitMode": WORKSPACE_STRICTNESS_PRODUCT_COMMIT_MODE
