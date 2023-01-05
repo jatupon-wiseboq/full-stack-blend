@@ -49,8 +49,8 @@ let loc = $loc;
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-  source: SourceType;
-  group: string;
+	source: SourceType;
+	group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
@@ -110,7 +110,7 @@ class FlowLayout_4d816ba8 extends Base {
   }
   
   protected componentDidMount(): void {
-    this.register();
+  	this.register();
   }
   
   protected componentWillUnmount(): void {
