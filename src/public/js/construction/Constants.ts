@@ -434,6 +434,7 @@ export const WORKSPACE_STRICTNESS_LAUCHING_MODE = [["workspaceStrictnessLauching
 export const WORKSPACE_STRICTNESS_PRODUCT_TRACKING_MODE = [["workspaceStrictnessProductTrackingMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductTrackingMode", "bugs", ["d-none", "Only Bugs"]], ["workspaceStrictnessProductTrackingMode", "product", ["d-none", "Bugs and Features"]]];
 export const WORKSPACE_STRICTNESS_PRODUCT_CHECK_IN_MODE = [["workspaceStrictnessProductCheckInMode", "freestyle", ["d-none", "Freestyle"]], ["workspaceStrictnessProductCheckInMode", null, ["d-none", "Compilable"]], ["workspaceStrictnessProductCheckInMode", "testing", ["d-none", "Tested"]]];
 export const WORKSPACE_STRICTNESS_PRODUCT_COMMIT_MODE = [["workspaceStrictnessProductCommitMode", null, ["d-none", "Freestyle"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Spatially Rebased"]], ["workspaceStrictnessProductCommitMode", "rebased", ["d-none", "Continuously Rebased"]]];
+export const WORKSPACE_STRICTNESS_WORKING_MEASUREMENT_MODE = [["workspaceStrictnessWorkingMeasurementMode", null, ["d-none", "Any-Time Productive"]], ["workspaceStrictnessWorkingMeasurementMode", "offset", ["d-none", "Offset-Able Productive"]], ["workspaceStrictnessWorkingMeasurementMode", "strict", ["d-none", "Strict Working Shift"]]];
 export const EASING_COEFFICIENT = {
   ease: 0.42
 };
@@ -540,6 +541,7 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   //
   "workspaceMode": WORKSPACE_LOCK_MODE,
   "workspaceStrictnessGrade": WORKSPACE_STRICTNESS_GRADE,
+  "workspaceStrictnessWorkingMeasurementMode": WORKSPACE_STRICTNESS_WORKING_MEASUREMENT_MODE,
   "workspaceStrictnessProtectLauchingMode": WORKSPACE_STRICTNESS_PROTECT_LAUCHING_MODE,
   "workspaceStrictnessProtectMergingMode": WORKSPACE_STRICTNESS_PROTECT_MERGING_MODE,
   "workspaceStrictnessBranchingMode": WORKSPACE_STRICTNESS_BRANCHING_MODE,
