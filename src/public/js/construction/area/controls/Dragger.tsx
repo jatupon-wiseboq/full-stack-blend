@@ -13,7 +13,7 @@ interface Props {
 interface State {
 }
 
-class Dragger extends React.Component<IProps, IState> {
+class Dragger extends React.Component<Props, State> {
   static defaultProps: Props = {
   }
 
@@ -21,10 +21,6 @@ class Dragger extends React.Component<IProps, IState> {
 
   constructor(props) {
     super(props);
-  }
-
-  constructor() {
-    super();
   }
 
   componentDidMount() {

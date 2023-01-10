@@ -10,7 +10,7 @@ class TestController extends Base {
   constructor(request: Request, response: Response, template: string) {
     super(request, response, template);
     try {
-      let [action, schema, data] = this.initialize(request);
+      const [action, schema, data] = this.initialize(request);
       this.perform(action, schema, data);
     } catch (error) {
       RenderHelper.error(response, error);
@@ -227,4 +227,4 @@ class TestController extends Base {
 
 export const index = (req: Request, res: Response) => {
   new TestController(req, res, "test");
-}
+};

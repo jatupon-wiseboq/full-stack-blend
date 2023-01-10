@@ -39,7 +39,7 @@ afterAll(async () => {
 });
 
 describe('HTTP(s) Requests', () => {
-  let perform = async (func: any, protocal: string, port: number, method: string, data: any) => {
+  const perform = async (func: any, protocal: string, port: number, method: string, data: any) => {
     let output: any;
     let random: any;
     
@@ -1342,7 +1342,7 @@ describe('Extract Inputs', () => {
       'collection3n1.field3n3[3]': undefined,
       'collection4n1.field4n7[3,0,-2]': undefined,
       'collection5n1.field5n7[3,1]': undefined
-    }, schemata);0
+    }, schemata);0;
     expected = data.map((input) => input['guid']);
     data.sort(() => .5 - Math.random());
     expect(data.map((input) => input['guid'])).not.toEqual(expected);

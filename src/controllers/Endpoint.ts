@@ -16,8 +16,8 @@ export const addRecentError = (error: any) => {
 };
 
 const convertUnixIntoWindowPathIfNeed = (path: any) => {
-  if (__dirname.indexOf("\\") != -1) {
-    path = path.replace(/\//g, "\\");
+  if (__dirname.indexOf('\\') != -1) {
+    path = path.replace(/\//g, '\\');
   }
 
   return path;

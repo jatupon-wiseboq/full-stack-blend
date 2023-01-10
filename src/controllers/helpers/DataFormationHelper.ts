@@ -38,12 +38,12 @@ const DataFormationHelper = {
         group: 'Children',
         rows: []
       };
-      for (let item of data) {
+      for (const item of data) {
         table.rows.push(DataFormationHelper.recursiveExtractNodesIntoDataRow(item));
       }
       row.relations['Children'] = table;
     } else if (typeof data === 'object' && data !== null) {
-      for (let key in data) {
+      for (const key in data) {
         if (data.hasOwnProperty(key)) {
           CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
 
@@ -53,7 +53,7 @@ const DataFormationHelper = {
               group: key,
               rows: []
             };
-            for (let item of data[key]) {
+            for (const item of data[key]) {
               table.rows.push(DataFormationHelper.recursiveExtractNodesIntoDataRow(item));
             }
             row.relations[key] = table;
@@ -93,39 +93,39 @@ const DataFormationHelper = {
     } else {
       const dictionary = {};
 
-      for (let key in row.keys) {
+      for (const key in row.keys) {
         CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
 
         if (row.keys.hasOwnProperty(key)) {
           dictionary['$' + key] = row.keys[key];
         }
       }
-      for (let key in row.columns) {
+      for (const key in row.columns) {
         CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
 
         if (row.columns.hasOwnProperty(key)) {
           dictionary[key] = row.columns[key];
         }
       }
-      for (let key in row.relations) {
+      for (const key in row.relations) {
         CodeHelper.assertOfKeyName(key, 'key');
 
         if (row.relations.hasOwnProperty(key)) {
           if (key == 'Children') {
             const results = [];
 
-            for (let _row of row.relations['Children'].rows) {
+            for (const _row of row.relations['Children'].rows) {
               results.push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
             }
 
             return results;
           } else {
             if (row.relations[key].source == SourceType.Dictionary) {
-              dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0])
+              dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0]);
             } else {
               dictionary[key] = [];
 
-              for (let _row of row.relations[key].rows) {
+              for (const _row of row.relations[key].rows) {
                 dictionary[key].push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
               }
             }

@@ -110,9 +110,9 @@ describe('DatabaseHelper', () => {
       reordering = createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5));
       
       for (let i=0; i<16; i++) {
-        reordering['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+        reordering['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1; });
         reordering['Document1'].rows.forEach((row) => {
-          row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+          row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1; });
         });
         
         expect(reordering).not.toEqual(createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5))); // no prepare
@@ -122,11 +122,11 @@ describe('DatabaseHelper', () => {
       reordering = createRows(2, SourceType.Document, 2, 10, 1, createRows(2, SourceType.Document, 1, 5, 2, createRows(2, SourceType.Document, 0, 20)));
       
       for (let i=0; i<16; i++) {
-        reordering['Document0'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+        reordering['Document0'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1; });
         reordering['Document0'].rows.forEach((row) => {
-          row.relations['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+          row.relations['Document1'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1; });
           row.relations['Document1'].rows.forEach((row) => {
-            row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1 });
+            row.relations['Document2'].rows.sort(() => { return Math.random() < 0.5 ? -1 : 1; });
           });
         });
         

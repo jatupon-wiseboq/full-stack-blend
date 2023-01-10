@@ -226,7 +226,7 @@ const prepareDataForComparing = (data: any) => {
   
   return data;
 };
-let transaction = null
+let transaction = null;
 const crud = async (set: number, type: CRUD, operation_input: any, operation_output: any, retrieve_input: any, retrieve_output: any) => {
   transaction = transaction || await CreateTransaction({manual: true});
   
@@ -279,9 +279,9 @@ const crud = async (set: number, type: CRUD, operation_input: any, operation_out
 const crud_base = async (set: number, type: CRUD, operation_input: any): Promise<any> => {
   transaction = transaction || await CreateTransaction({manual: true});
   
-  let arrayResults = [];
+  const arrayResults = [];
   let dictResults = {};
-  let group = Object.keys(operation_input)[0];
+  const group = Object.keys(operation_input)[0];
   
   console.log('\x1b[32mcrud', set, type, group, '\x1b[0m');
   try {

@@ -1,7 +1,7 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {DatabaseHelper, ActionType, SourceType, HierarchicalDataTable} from './DatabaseHelper';
+import {DatabaseHelper, ActionType, SourceType, HierarchicalDataTable, fixType} from './DatabaseHelper';
 import {RequestHelper} from './RequestHelper';
 import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper, FieldType} from './SchemaHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
