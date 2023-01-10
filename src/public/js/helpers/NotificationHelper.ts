@@ -62,6 +62,11 @@ const NotificationHelper = {
             break;
         }
       });
+			window.document.addEventListener("visibilitychange", () => {
+			  if (document.visibilityState === 'visible' && !sockets[socketUrl].connected) {
+			    sockets[socketUrl].connect();
+			  }
+			});
     }
 
     notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];
