@@ -1,13 +1,13 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper';
-import {CodeHelper} from '../../helpers/CodeHelper';
-import {TextHelper} from '../../helpers/TextHelper';
-import {StylesheetHelper} from './StylesheetHelper';
-import {Accessories, EditorHelper} from './EditorHelper';
-import {WorkspaceHelper} from './WorkspaceHelper';
-import {SchemaHelper} from './SchemaHelper';
-import {LocalizationHelper} from './LocalizationHelper';
-import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
-import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK} from '../../Constants';
+import { HTMLHelper } from '../../helpers/HTMLHelper';
+import { CodeHelper } from '../../helpers/CodeHelper';
+import { TextHelper } from '../../helpers/TextHelper';
+import { StylesheetHelper } from './StylesheetHelper';
+import { Accessories, EditorHelper } from './EditorHelper';
+import { WorkspaceHelper } from './WorkspaceHelper';
+import { SchemaHelper } from './SchemaHelper';
+import { LocalizationHelper } from './LocalizationHelper';
+import { FrontEndReactHelper, DEFAULTS } from '../../helpers/FrontEndReactHelper';
+import { CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK } from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -19,31 +19,31 @@ var FrontEndDOMHelper = {
     cachedGenerateCodeForReactRenderMethodElement = null;
     cachedGenerateCodeForReactRenderMethodResults = null;
   },
-  generateFrontEndCode: function(body: HTMLElement=document.body, container: HTMLElement=HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
+  generateFrontEndCode: function(body : HTMLElement = document.body, container : HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
     // Document Level
     // 
     let generatedRenderMethodRootResult = FrontEndDOMHelper.generateCodeForReactRenderMethod(body, container);
     let generatedMergingSectionRootResult = FrontEndDOMHelper.generateCodeForMergingSection(body, container);
-    
+
     let functionDeclarations = generatedMergingSectionRootResult[1];
     let functionBindings = generatedMergingSectionRootResult[0];
     let rootHTML = generatedRenderMethodRootResult[1];
     let rootScript = generatedRenderMethodRootResult[0];
-    
+
     // Generate Scripts
     // SEO: Optimize Score of Google PageSpeed Insights.
     // 
-    let executions: string[] = [];
-    let lines: string[] = [];
-    
+    let executions : string[] = [];
+    let lines : string[] = [];
+
     FrontEndDOMHelper.recursiveGenerateCodeForPage(body, container, '    ', executions, lines);
-    
+
     let allReactComponentsScript = lines.join('\n');
     let allReactPrerequisiteScript = executions.join('\n');
-    
+
     let combinedHTMLTags = `${rootHTML}`;
-    let combinedMinimalFeatureScripts = 
-`class Controller {
+    let combinedMinimalFeatureScripts =
+      `class Controller {
   dictionary: {} = {};
   
   ${functionDeclarations}
@@ -75,47 +75,47 @@ let controller = new Controller();
 ${functionBindings}
 ${rootScript}`;
     let combinedExpandingFeatureScripts = `${allReactPrerequisiteScript}${allReactComponentsScript}`;
-    
+
     let links = HTMLHelper.getElementsByAttribute('internal-fsb-link', body);
     links = links.map(link => link.outerHTML);
     let combinedFontTags = links;
-    
+
     let combinedInlineBodyStyle = HTMLHelper.getAttribute(container.ownerDocument.body, 'style');
-    
+
     return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle];
   },
-  recursiveGenerateCodeForPage: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true) {
+  recursiveGenerateCodeForPage: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
-    
+
     if (element && element.tagName) {
       if (!isFirstElement && HTMLHelper.getAttribute(element, 'internal-fsb-react-mode') && !HTMLHelper.getAttribute(element, 'internal-fsb-inheriting') && !HTMLHelper.hasClass(element, 'internal-fsb-plug')) {
         let _info = HTMLHelper.getAttributes(element, false);
-        
+
         _info.autoGeneratedCodeForRenderMethod = FrontEndDOMHelper.generateCodeForReactRenderMethod(body, element);
         _info.autoGeneratedCodeForMergingRenderMethod = FrontEndDOMHelper.generateCodeForMergingSection(body, element);
-        
+
         let _code, _mapping;
         [_code, _mapping] = FrontEndReactHelper.generateReactCode(_info);
-        
+
         lines.push(_code);
       }
-      
+
       let children = [...element.childNodes];
-      
+
       children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
-      
+
       for (let child of children) {
         FrontEndDOMHelper.recursiveGenerateCodeForPage(body, child, indent, executions, lines, false);
       }
     }
   },
-  generateCodeForReactRenderMethod: function(body: HTMLElement, element: HTMLElement) {
+  generateCodeForReactRenderMethod: function(body : HTMLElement, element : HTMLElement) {
     if (cachedGenerateCodeForReactRenderMethodElement == element && cachedGenerateCodeForReactRenderMethodResults)
       return cachedGenerateCodeForReactRenderMethodResults;
-    
-    let executions: string[] = [];
-    let lines: string[] = [];
-    
+
+    let executions : string[] = [];
+    let lines : string[] = [];
+
     if (EditorHelper.hasParentReactComponent(element)) {
       executions.push(`    TestHelper.identify();`);
       executions.push(`    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
@@ -127,16 +127,16 @@ ${rootScript}`;
         `);
       FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, element, '    ', executions, lines);
     }
-    
+
     cachedGenerateCodeForReactRenderMethodElement = element;
     cachedGenerateCodeForReactRenderMethodResults = ['\n' + executions.join('\n'), '\n' + lines.join('\n')];
-    
+
     return cachedGenerateCodeForReactRenderMethodResults;
   },
-  recursiveGenerateCodeForReactRenderMethod: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null, context: any={}) {
+  recursiveGenerateCodeForReactRenderMethod: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true, cumulatedDotNotation : string = "", dotNotationChar : string = 'i', forwardAttributes : string[] = null, context : any = {}) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
-    
+
     if (element) {
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
@@ -148,7 +148,7 @@ ${rootScript}`;
             textContent = textContent.replace(/(\@)\{([A-Za-z0-9_]+(\.[A-Za-z0-9_]+)*)\}/g, (match, hash, suffix) => {
               return `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}`;
             });
-            
+
             if (LocalizationHelper.has(textContent.trim())) {
               lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
@@ -159,7 +159,7 @@ ${rootScript}`;
       } else {
         let tag = element.tagName.toLowerCase().replace('ruffle-embed', 'embed');
         if (tag === 'button') tag = 'Button';
-        
+
         let _attributes = HTMLHelper.getAttributes(element, true, {}, false);
         let _props = [];
         let _globalEvents = [];
@@ -195,17 +195,17 @@ ${rootScript}`;
         let manipulateInto = null;
         let customEvents = [];
         let isPopup = (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Popup');
-        
+
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST.filter(item => (item[0] == tag))[0];
         let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
         let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
-            element : element.parentNode, 'internal-fsb-react-data');
+          element : element.parentNode, 'internal-fsb-react-data');
         let dangerouslySetInnerHTML = false
-        
+
         if (dotNotation) {
           if (consumableTagItem) {
             dangerouslySetInnerHTML = consumableTagItem[1] == 'dangerouslySetInnerHTML';
-            
+
             if (tag == 'input') {
               if (['hidden'].indexOf(HTMLHelper.getAttribute(element, 'type')) != -1) {
                 consumableTagItem = CodeHelper.clone(consumableTagItem);
@@ -222,7 +222,7 @@ ${rootScript}`;
                 consumableTagItem[3] = ' === true}';
               }
             }
-            
+
             let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
             if (index != -1) {
               _attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
@@ -233,10 +233,10 @@ ${rootScript}`;
               });
             }
           }
-          
+
           if (consumableClassItem) {
             dangerouslySetInnerHTML = consumableClassItem[1] == 'dangerouslySetInnerHTML';
-            
+
             let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
             if (index != -1) {
               _attributes[index].value = consumableClassItem[2] + `___DATA___` + consumableClassItem[3];
@@ -248,11 +248,11 @@ ${rootScript}`;
             }
           }
         }
-        
+
         let innerHTML = HTMLHelper.getAttribute(element, 'internal-fsb-inner-html') || '';
         if (innerHTML.trim() != '') {
-          dangerouslySetInnerHTML = true; 
-          
+          dangerouslySetInnerHTML = true;
+
           let index = _attributes.findIndex(attribute => (attribute.name == 'dangerouslySetInnerHTML'));
           if (index != -1) {
             _attributes[index].value = `{{__html: ${JSON.stringify(innerHTML)}}}`;
@@ -263,25 +263,25 @@ ${rootScript}`;
             });
           }
         }
-        
+
         if (!dangerouslySetInnerHTML && HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
           _attributes.push({
             name: 'dangerouslySetInnerHTML',
             value: `{{__html: loc('${element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n")}')}}`
           });
         }
-        
+
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
             let bindingName = attribute.name.replace('internal-fsb-react-style-', '');
             let bindingType = attribute.value.split('[')[0];
             let bindingValue = attribute.value.match(/^[A-Z]+\[(.+)\]$/)[1];
-            
+
             if (bindingName === 'background-color') {
               attribute.name = 'internal-fsb-react-style-background-color';
               bindingName = 'background';
             }
-            
+
             switch (bindingType) {
               case 'SETTING':
                 bindingStyles[bindingName] = 'Project.Settings.' + bindingValue;
@@ -298,23 +298,23 @@ ${rootScript}`;
             }
           }
         }
-        
+
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
           bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
-        
+
         for (let attribute of _attributes) {
           if (attribute.value === null) continue;
-          
+
           attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
-          
+
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-walking', '').replace('internal-fsb-allow-cursor', '').replace('internal-fsb-placing-cursor', '').trim().replace(/[\ ]+/g, ' ');
-              
+
               let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
               let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
-              
+
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
@@ -332,19 +332,19 @@ ${rootScript}`;
                   if (camelKey.indexOf('FsbForChildren') == 0 && hashMap[key] == 'true') {
                     continue;
                   }
-                  
+
                   if (bindingStyles[key]) {
                     let token = "'" + camelKey + "': " + bindingStyles[key] + " || '" + hashMap[key] + "'";
                     styles.push(token);
                     delete bindingStyles[key];
-                  
+
                     if (isPopup || INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
                       inheritingStyles.push(token);
                     }
                   } else {
                     let token = "'" + camelKey + "': '" + hashMap[key] + "'";
                     styles.push(token);
-                  
+
                     if (isPopup || INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
                       inheritingStyles.push(token);
                     }
@@ -422,10 +422,10 @@ ${rootScript}`;
                 let value = null;
                 if (attribute.value) value = JSON.parse(attribute.value);
                 else value = {};
-                
+
                 if (value.event) {
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-                  
+
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
                     if (attribute.name == 'onfsbready') {
                       _globalEvents.push("ready(this." + FUNCTION_NAME + ".bind(this));");
@@ -442,7 +442,7 @@ ${rootScript}`;
                 } else {
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
-                
+
                 if (isPopup || INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
                   inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
                 }
@@ -450,26 +450,26 @@ ${rootScript}`;
               break;
           }
         }
-        
+
         // In case of no attribute "style":
         //
         if (element.getAttribute('style') === '-fsb-empty' || element.parentNode.getAttribute('style') === '-fsb-empty') {
           isForChildren = true;
         }
-        
+
         if (submitControls) {
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
-          
+
           if (manipulateInto) manipulateInto = '() => { return eval("\\"' + manipulateInto.replace(/\[([^0-9\[\]]+)\]/g, '[\\" + ($1) + \\"]') + '\\""); }';
           else manipulateInto = '() => { return null; }';
-          
+
           executions.push(`    DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: ${JSON.stringify(realTimeUpdate === 'true')}, manipulateInto: ${manipulateInto}});`);
-          
+
           let notation = cumulatedDotNotation.split('[')[0];
           let minimumNumberOfDots = Number.MAX_SAFE_INTEGER;
           let assigned = false;
-          
+
           for (let submitControl of splited) {
             let control = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body);
             if (control) {
@@ -480,20 +480,19 @@ ${rootScript}`;
                   minimumNumberOfDots = numberOfDots;
                   notation = dataSourceName.split('.')[0];
                 }
-                if (!assigned) 
-                {
+                if (!assigned) {
                   notation = dataSourceName.split('.')[0];
                   assigned = true;
                 }
               }
             }
           }
-          
+
           attributes.push(`onClick=((event) => { window.internalFsbSubmit('${reactClassComposingInfoGUID}', '${notation}', event, ((results) => { this.manipulate('${reactClassComposingInfoGUID}', '${notation}', results); }).bind(this)); }).bind(this)`);
         } else if (reactClassForPopup) {
           attributes.push(`onClick=((event) => { window.internalFsbOpen('${reactClassForPopup}', this.state.data || this.props.data); }).bind(this)`);
         }
-        
+
         for (let key in bindingStyles) {
           if (bindingStyles.hasOwnProperty(key)) {
             if (styles == null) styles = [];
@@ -501,7 +500,7 @@ ${rootScript}`;
             styles.push(camelKey + ': ' + bindingStyles[key]);
           }
         }
-        
+
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
           attributes.push(`internal-fsb-forward="1"`);
@@ -510,141 +509,141 @@ ${rootScript}`;
           reactID = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-id');
           reactData = HTMLHelper.getAttribute(element.parentNode, 'internal-fsb-react-data') || null;
         }
-        
+
         if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
           _forwardAttributes = [..._props, ..._localEvents];
         } else {
           attributes = [...attributes, ..._props, ..._localEvents];
           _forwardAttributes = [];
         }
-        
+
         if (_globalEvents.length != 0) executions.push(`    ${_globalEvents.join('\n    ')}`);
-        
+
         if (!reactNamespace) {
           reactNamespace = 'Project.Controls';
         }
-        
+
         if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
         }
-        
+
         if (reactMode == 'Site' && isFirstElement) {
           if (classes) classes = classes.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '').trim().replace(/[\ ]+/g, ' ');
           if (!isPopup && styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
         }
-        
+
         if (!inheritingID && WorkspaceHelper.getComponentData(reactClassComposingInfoGUID)) {
           inheritingID = reactClassComposingInfoGUID;
         }
-        
+
         if (inheritingID) {
           let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
           if (componentInfo) {
             reactMode = 'Inheriting';
             reactNamespace = componentInfo.namespace;
             reactClass = componentInfo.klass;
-            
+
             inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
           } else {
             inheritingID = null;
           }
         }
-        
+
         if (isFirstElement) {
           reactData = null;
           attributes = attributes.filter(token => token.indexOf('internal-fsb-class') == 0);
         } else if (reactMode) {
           attributes = attributes.filter(token => token.indexOf('internal-fsb-class') != 0);
         }
-        
+
         // For react rendering method:
         // 
         if (reactID && (!isForChildren || classes.indexOf('internal-fsb-element') == -1)) {
           attributes.splice(0, 0, 'ref="' + reactID + '"');
         }
-        
+
         // Dot Notation Feature
         // 
         if (reactAccumulateNotation == 'reset') cumulatedDotNotation = '';
         if (reactData) reactData = reactData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
-        
+
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + reactData);
         let _nodeData = 'data';
         if (reactData !== null) {
           if (!_leafNode) {
             lines.push(indent + 'each data, ' + dotNotationChar + ' in this.getDataFromNotation("' + cumulatedDotNotation + reactData + '", true, ' + (reactDisplayLogic == 'always') + ')');
-            
+
             indent += '  ';
-            
+
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '[" + ' + dotNotationChar + ' + "].';
           } else {
             _nodeData = 'this.getDataFromNotation("' + cumulatedDotNotation + reactData + '")';
-            
+
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + reactData + '.';
           }
         }
-        
+
         // Rendering Logic
         // 
         if (reactDisplayLogic == 'statement' && (!reactMode || isFirstElement)) {
           lines.push(`${indent}if ${reactDisplayStatement || 'true'}`);
           indent += '  ';
         }
-        
+
         // Include Another React Class Feature
         // 
         if (reactMode && !isFirstElement) {
           const namespace = reactNamespace + '.' + reactClass;
-          
+
           if (context[namespace] === undefined) context[namespace] = 0;
           else context[namespace]++;
-          
+
           let composed = indent;
           composed += `- const ${(namespace).split('.').join('_')}_${context[namespace]}_ = ${namespace};`
           lines.push(composed);
-          
+
           let _attributes = _props || [];
           if (reactData) _attributes.push('key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + ((reactFieldDivision == 'statement') ? (reactFieldDivisionStatement || '0') : dotNotationChar) : ''));
           if (reactID && !reactData) _attributes.push('ref="' + reactID + '" ');
           if (reactID && reactData) _attributes.push('ref="' + reactID + '[" + ' + dotNotationChar + ' + "]"');
           if (reactData) _attributes.push('row=' + _nodeData);
           if (inheritingID) _attributes.push(`forward={${inheritingAttributes.join(', ')}}`);
-          
+
           _attributes = Array.from(new Set(_attributes));
-          
+
           composed = indent;
           composed += '_' + (namespace).split('.').join('_') + '_' + context[namespace] + '_(' + _attributes.join(', ') + ')';
           lines.push(composed);
         }
-        
+
         // Dot Notation Feature (Continue 1/2)
         // 
         if (reactData && !_leafNode) {
           attributes.splice(0, 0, 'key="item_" + (data && data.keys && Object.keys(data.keys).map((key)=>{return key + ":" + data.keys[key];}).join("_") || ' + dotNotationChar + ')' + ((reactFieldDivision !== 'flatten') ? ', data-fsb-index=' + ((reactFieldDivision == 'statement') ? (reactFieldDivisionStatement || '0') : dotNotationChar) : ''));
         }
-        
+
         if (reactData !== null || (reactMode && !isFirstElement)) {
           if (!_leafNode) {
             let charcode = dotNotationChar.charCodeAt() + 1;
             dotNotationChar = String.fromCharCode(charcode);
           }
         }
-        
+
         // Recursive Children Feature
         //
         if (!reactMode || isFirstElement) {
           let composed = indent;
           let children = [...element.childNodes];
-          
+
           children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1 && (!!element.tagName || element.textContent.trim() != ''));
-          
+
           if (tag === 'div') {
             if (classes == '') composed += tag;
           } else {
             composed += tag;
           }
-          
+
           if (classes != '') {
             if (!isFirstElement) composed += '.' + TextHelper.removeExtraWhitespaces(classes).split(' ').join('.');
             else {
@@ -659,17 +658,17 @@ ${rootScript}`;
             attributes.splice(0, 0, 'style=Object.assign({}, this.props.forward && this.props.forward.styles || {})');
           }
           if (composed == indent) composed += 'div';
-          
+
           attributes = Array.from(new Set(attributes));
-          
+
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
-          
+
           if (!dangerouslySetInnerHTML) {
             if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
               lines.push(composed);
             } else {
               lines.push(composed);
-              
+
               for (let child of children) {
                 FrontEndDOMHelper.recursiveGenerateCodeForReactRenderMethod(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes, (reactMode && !isFirstElement) ? {} : context);
               }
@@ -681,10 +680,10 @@ ${rootScript}`;
       }
     }
   },
-  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean=true, cumulatedDotNotation: string="", dotNotationChar: string='i', forwardAttributes: string[]=null) {
+  recursiveGenerateCodeForFallbackRendering: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true, cumulatedDotNotation : string = "", dotNotationChar : string = 'i', forwardAttributes : string[] = null) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
-    
+
     if (element) {
       if (!element.tagName) {
         if (element.textContent.trim() != '') {
@@ -696,7 +695,7 @@ ${rootScript}`;
             textContent = textContent.replace(/(\#)?\{([A-Za-z0-9_]+(\.[A-Za-z0-9_])*)\}/g, (match, hash, suffix) => {
               return (hash == null) ? `\#{this.getDataFromNotation("${cumulatedDotNotation}${suffix}")}` : match;
             });
-            
+
             if (LocalizationHelper.has(textContent.trim())) {
               lines.push(indent + '| ' + '!{loc(\'' + textContent.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
@@ -735,12 +734,12 @@ ${rootScript}`;
         let submitType = null;
         let submitCrossType = null;
         let activeAnimation = null;
-        
+
         let consumableTagItem = DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK.filter(item => (item[0] == tag))[0];
         let consumableClassItem = DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK.filter(item => (item[0] == HTMLHelper.getAttribute(element, 'internal-fsb-class')))[0];
         let dotNotation = HTMLHelper.getAttribute(HTMLHelper.hasClass(element, 'internal-fsb-element') ?
-            element : element.parentNode, 'internal-fsb-ssr-data');
-        
+          element : element.parentNode, 'internal-fsb-ssr-data');
+
         if (dotNotation) {
           if (consumableTagItem) {
             if (tag == 'input') {
@@ -759,7 +758,7 @@ ${rootScript}`;
                 consumableTagItem[3] = ' === true)';
               }
             }
-            
+
             let index = _attributes.findIndex(attribute => (attribute.name == consumableTagItem[1]));
             if (index != -1) {
               _attributes[index].value = consumableTagItem[2] + `___DATA___` + consumableTagItem[3];
@@ -772,7 +771,7 @@ ${rootScript}`;
               });
             }
           }
-          
+
           if (consumableClassItem) {
             let index = _attributes.findIndex(attribute => (attribute.name == consumableClassItem[1]));
             if (index != -1) {
@@ -787,18 +786,18 @@ ${rootScript}`;
             }
           }
         }
-        
+
         for (let attribute of _attributes) {
           if (attribute.name.indexOf('internal-fsb-react-style-') == 0 && attribute.value) {
             let bindingName = attribute.name.replace('internal-fsb-react-style-', '');
             let bindingType = attribute.value.split('[')[0];
             let bindingValue = attribute.value.match(/^[A-Z]+\[(.+)\]$/)[1];
-            
+
             if (bindingName === 'background-color') {
               attribute.name = 'internal-fsb-react-style-background-color';
               bindingName = 'background';
             }
-            
+
             switch (bindingType) {
               case 'SETTING':
                 bindingStyles[bindingName] = 'Project.Settings.' + bindingValue;
@@ -815,24 +814,24 @@ ${rootScript}`;
             }
           }
         }
-        
+
         if (FORWARD_STYLE_TO_CHILDREN_CLASS_LIST.indexOf(HTMLHelper.getAttribute(element, 'internal-fsb-class')) != -1) {
           bindingStyles = {}; // Disable custom binding.
           bindingStyles['padding'] = bindingStyles['padding'] || "'0px'";
         }
-        
+
         for (let attribute of _attributes) {
           if (attribute.value === null) continue;
-          
+
           attribute.name = CodeHelper.replaceDashIntoCamelCase(attribute.name);
-          
+
           switch (attribute.name) {
             case 'class':
               classes = attribute.value.replace('internal-fsb-selecting', '').replace('internal-fsb-walking', '').replace('internal-fsb-allow-cursor', '').replace('internal-fsb-placing-cursor', '').trim();
-              
+
               let sizeMatches = attribute.value.match(ALL_RESPONSIVE_SIZE_REGEX) || [];
               let offsetMatches = attribute.value.match(ALL_RESPONSIVE_OFFSET_REGEX) || [];
-              
+
               inheritingAttributes.push("'classes': '" + [...sizeMatches, ...offsetMatches].join(' ') + "'");
               break;
             case 'style':
@@ -850,7 +849,7 @@ ${rootScript}`;
                   }
                   let token = "'" + key + "': '" + hashMap[key] + "'";
                   styles.push(token);
-                
+
                   if (INHERITING_COMPONENT_RESERVED_STYLE_NAMES.indexOf(key) != -1) {
                     inheritingStyles.push(token);
                   }
@@ -911,10 +910,10 @@ ${rootScript}`;
                 let value = null;
                 if (attribute.value) value = JSON.parse(attribute.value);
                 else value = {};
-                
+
                 if (value.event) {
                   let FUNCTION_NAME = CAMEL_OF_EVENTS_DICTIONARY[attribute.name].replace(/^on/, 'on' + HTMLHelper.getAttribute(element, 'internal-fsb-class')) + '_' + HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-                  
+
                   if (ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(attribute.name) != -1) {
                     if (attribute.name == 'onfsbready') {
                       _globalEvents.push("ready(controller." + FUNCTION_NAME + ".bind(controller));");
@@ -933,7 +932,7 @@ ${rootScript}`;
                 } else {
                   _props.push(attribute.name + '=' + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : attribute.value));
                 }
-                
+
                 if (INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES.indexOf(attribute.name) != -1) {
                   inheritingAttributes.push("'" + attribute.name + "': " + ((attribute.value[0] == '{') ? attribute.value.replace(/(^{|}$)/g, '') : "'" + attribute.value.split('"').join('&quot;') + "'"));
                 }
@@ -941,24 +940,24 @@ ${rootScript}`;
               break;
           }
         }
-        
+
         // In case of no attribute "style":
         //
         if (element.getAttribute('style') === '-fsb-empty' || element.parentNode.getAttribute('style') === '-fsb-empty') {
           isForChildren = true;
         }
-        
+
         if (submitControls) {
           let splited = submitControls && submitControls.split(' ') || [];
           splited = splited.filter(submitControl => !!HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', submitControl, body));
-          
+
           executions.push(`DataManipulationHelper.register(${JSON.stringify(reactClassComposingInfoGUID)}, ${JSON.stringify(submitType)}, ${JSON.stringify(splited)}, {initClass: ${JSON.stringify(reactClassForPopup)}, submitCrossType: ${JSON.stringify(submitCrossType)}, enabledRealTimeUpdate: false}});`);
-          
+
           attributes.push(`onClick="internalFsbSubmit('${reactClassComposingInfoGUID}', null, event, null)"`);
         } else if (reactClassForPopup) {
           attributes.push(`onClick="internalFsbOpen('${reactClassForPopup}')"`);
         }
-        
+
         for (let key in bindingStyles) {
           if (bindingStyles.hasOwnProperty(key)) {
             if (styles == null) styles = [];
@@ -966,59 +965,59 @@ ${rootScript}`;
             styles.push(camelKey + ': ' + bindingStyles[key]);
           }
         }
-        
+
         if (isForChildren && classes.indexOf('internal-fsb-element') != -1) {
           classes = CodeHelper.getInternalClasses(classes);
           attributes.push(`internal-fsb-forward="1"`);
         }
-        
+
         if (FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST.indexOf(reactClassComposingInfoClassName) != -1) {
           _forwardAttributes = [..._props];
         } else {
           attributes = [...attributes, ..._props];
           _forwardAttributes = [];
         }
-        
+
         if (_globalEvents.length != 0) executions.push(_globalEvents.join('\n'));
-        
+
         if (!reactNamespace) {
           reactNamespace = 'Project.Controls';
         }
-        
+
         if (!reactClass && reactClassComposingInfoClassName && reactClassComposingInfoGUID) {
           reactClass = reactClassComposingInfoClassName + '_' + reactClassComposingInfoGUID;
         }
-        
+
         if (reactMode == 'Site' && isFirstElement) {
           if (classes) classes = classes.replace(ALL_RESPONSIVE_SIZE_REGEX, '').replace(ALL_RESPONSIVE_OFFSET_REGEX, '').trim().replace(/[\ ]+/g, ' ');
           if (styles) styles = styles.filter(style => INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL.indexOf(style.split("':")[0].split("'")[1]) == -1);
         }
-        
+
         if (!inheritingID && WorkspaceHelper.getComponentData(reactClassComposingInfoGUID)) {
           inheritingID = reactClassComposingInfoGUID;
         }
-        
+
         if (inheritingID) {
           let componentInfo = WorkspaceHelper.getComponentData(inheritingID);
           if (componentInfo) {
             reactMode = 'Inheriting';
             reactNamespace = componentInfo.namespace;
             reactClass = componentInfo.klass;
-            
+
             inheritingAttributes.push("'styles': {" + inheritingStyles.join(', ') + "}");
           } else {
             inheritingID = null;
           }
         }
-        
+
         // For HTML5 fallback rendering:
         //
-        
+
         // Dot Notation Feature
         // 
         if (ssrAccumulateNotation == 'reset') cumulatedDotNotation = '';
         if (ssrData) ssrData = ssrData.replace(/\[([^0-9\[\]]+)\]/g, '[" + ($1) + "]');
-        
+
         let _indent = indent;
         let _leafNode = FrontEndDOMHelper.isNotationLeafNode(cumulatedDotNotation + ssrData);
         let _splited = cumulatedDotNotation.trim().split('.').filter(item => item != '');
@@ -1027,88 +1026,88 @@ ${rootScript}`;
         if (ssrData !== null) {
           if (!_leafNode) {
             lines.push(indent + 'each data, ' + dotNotationChar + ' in DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation + ssrData + '", undefined, true, ' + (ssrDisplayLogic == 'always') + ')');
-            
+
             indent += '  ';
-            
+
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '[" + ' + dotNotationChar + ' + "].';
           } else {
             cumulatedDotNotation += (!cumulatedDotNotation || cumulatedDotNotation.endsWith('.') ? '' : '.') + ssrData + '.';
           }
         }
         _nodeData = _nodeData || 'DataManipulationHelper.getDataFromNotation("' + cumulatedDotNotation.replace(/\.$/, '') + '")';
-        
+
         // Rendering Logic
         // 
         if (ssrDisplayLogic == 'statement') {
           lines.push(`${indent}if ${ssrDisplayStatement || 'true'}`);
           indent += '  ';
         }
-        
+
         // Dot Notation Feature (Continue 1/2)
         // 
         if (ssrData && !_leafNode) {
           attributes.splice(0, 0, 'data-fsb-index=' + dotNotationChar);
         }
-        
+
         if (ssrData !== null) {
           if (!_leafNode) {
             let charcode = dotNotationChar.charCodeAt() + 1;
             dotNotationChar = String.fromCharCode(charcode);
           }
         }
-        
+
         // Include Another React Class Feature
         // 
         if (reactMode && !isFirstElement) {
-          lines.push(indent + 'span(internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ?' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + ')');
+          lines.push(indent + 'span(internal-fsb-init-class="' + reactNamespace + '.' + reactClass + '"' + (inheritingID ? ' internal-fsb-init-forward="{' + inheritingAttributes.join(', ') + '}"' : '') + ')');
         }
-        
+
         // Recursive Children Feature
         //
         if (!reactMode || isFirstElement) {
           let composed = indent;
           let children = [...element.childNodes];
-          
+
           children = children.filter(element => [Accessories.cursor.getDOMNode(), Accessories.resizer.getDOMNode(), Accessories.guide.getDOMNode()].indexOf(element) == -1);
-          
+
           if (tag === 'div') {
             if (classes == '') composed += tag;
           } else {
             composed += tag;
           }
-          
+
           if (classes != '') composed += '.' + TextHelper.removeExtraWhitespaces(classes).split(' ').join('.');
           if (reactClassComposingInfoGUID != null) attributes.push('internal-fsb-guid="' + reactClassComposingInfoGUID + '"');
           if (styles != null) attributes.splice(0, 0, 'style={' + styles.join(', ') + '}');
           if (composed == indent) composed += 'div';
-          
+
           const inline = attributes.filter(attribute => attribute.startsWith('__INLINE__'));
           attributes = attributes.filter(attribute => !attribute.startsWith('__INLINE__'));
           attributes = Array.from(new Set(attributes));
-          
+
           if (attributes.length != 0) composed += '(' + attributes.join(', ').replace(/___DATA___/g, _nodeData) + ')';
-          
+
           if (inline[0]) {
             lines.push(composed);
-            
+
             indent += '  ';
             composed = indent;
             composed += `| ${inline[0].replace('__INLINE__=', '').replace(/___DATA___/g, _nodeData)}`;
-            
+
             lines.push(composed);
           } else {
             if (_localEvents.length != 0) {
               executions.push(`controller.listen('${reactClassComposingInfoGUID}');`);
             }
-            
+
             if (reactClassComposingInfoClassName == 'TextElement' && LocalizationHelper.has(element.innerText.trim())) {
               composed += '.';
-              
+
               lines.push(composed);
               lines.push(indent + '  ' + '!{loc(\'' + element.innerText.trim().replace(/'/g, "\\'").replace(/\n/g, "\\n") + '\')}');
             } else {
               lines.push(composed);
-              
+
               for (let child of children) {
                 FrontEndDOMHelper.recursiveGenerateCodeForFallbackRendering(body, child, indent + '  ', executions, lines, false, cumulatedDotNotation, dotNotationChar, _forwardAttributes);
               }
@@ -1118,24 +1117,24 @@ ${rootScript}`;
       }
     }
   },
-  generateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement) {
-    let executions: string[] = [];
-    let lines: string[] = [];
+  generateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement) {
+    let executions : string[] = [];
+    let lines : string[] = [];
     FrontEndDOMHelper.recursiveGenerateCodeForMergingSection(body, element, executions, lines, true, EditorHelper.hasParentReactComponent(element));
-    
+
     return [executions.join('\n'), lines.join('\n')];
   },
-  recursiveGenerateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement, executions: string[], lines: string[], isFirstElement: boolean=true, hasParentReactComponent: boolean=true) {
+  recursiveGenerateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement, executions : string[], lines : string[], isFirstElement : boolean = true, hasParentReactComponent : boolean = true) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
-    
+
     if (element && element.tagName) {
       if (!isFirstElement && HTMLHelper.getAttribute(element, 'internal-fsb-react-mode')) return;
-      
+
       if (!isFirstElement) {
         let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
         let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
         let attributes = null;
-        
+
         if (reusablePresetName) {
           attributes = HTMLHelper.getAttributes(element, false, {
             style: StylesheetHelper.getStylesheetDefinition(presetId)
@@ -1143,23 +1142,23 @@ ${rootScript}`;
         } else {
           attributes = HTMLHelper.getAttributes(element, false);
         }
-        
+
         let code, mapping;
         [code, mapping] = FrontEndReactHelper.generateMergingCode(attributes, hasParentReactComponent ? null : executions, true);
-        
+
         if (code) lines.push(code);
       }
-      
+
       let children = [...element.childNodes];
       for (let child of children) {
         FrontEndDOMHelper.recursiveGenerateCodeForMergingSection(body, child, executions, lines, false, hasParentReactComponent);
       }
     }
   },
-  getDataTableSchemaFromKey: (key: string, current: any, data: any): any => {
+  getDataTableSchemaFromKey: (key : string, current : any, data : any) : any => {
     const relation = (current && current.relations || {})[key];
     const table = (data.tables || {})[key];
-    
+
     if (relation) {
       return (data.tables || {})[relation.targetGroup] || null;
     } else if (table) {
@@ -1168,23 +1167,23 @@ ${rootScript}`;
       return null;
     }
   },
-  isNotationLeafNode: (notation: string): boolean => {
+  isNotationLeafNode: (notation : string) : boolean => {
     const data = {
       tables: WorkspaceHelper.getDataFlows()
     }
-    
+
     const splited = notation.replace(/\[[^\[\]]*\]/g, '').split(".");
-    let shifted: string = splited.shift();
-    let current: any = null;
-    
+    let shifted : string = splited.shift();
+    let current : any = null;
+
     do {
       current = FrontEndDOMHelper.getDataTableSchemaFromKey(shifted, current, data);
       shifted = splited.shift();
     } while (current && shifted);
-    
+
     return (current == null);
   },
-  generateImageDataURLWithRatio: (width: number, height: number): string => {
+  generateImageDataURLWithRatio: (width : number, height : number) : string => {
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
@@ -1192,4 +1191,4 @@ ${rootScript}`;
   }
 };
 
-export {FrontEndDOMHelper};
+export { FrontEndDOMHelper };

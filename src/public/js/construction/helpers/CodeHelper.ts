@@ -1,39 +1,39 @@
-import {TextHelper} from './TextHelper';
-import {RandomHelper} from './RandomHelper';
-import {HTMLHelper} from './HTMLHelper';
-import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../Constants';
+import { TextHelper } from './TextHelper';
+import { RandomHelper } from './RandomHelper';
+import { HTMLHelper } from './HTMLHelper';
+import { INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS } from '../Constants';
 
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-function utf8_encode(source: string) {
-    source = source.replace(/\r\n/g,"\n");
-    var utftext = "";
+function utf8_encode(source : string) {
+  source = source.replace(/\r\n/g, "\n");
+  var utftext = "";
 
-    for (var n = 0; n < source.length; n++) {
-        var c = source.charCodeAt(n);
+  for (var n = 0; n < source.length; n++) {
+    var c = source.charCodeAt(n);
 
-        if (c < 128) {
-            utftext += String.fromCharCode(c);
-        }
-        else if((c > 127) && (c < 2048)) {
-            utftext += String.fromCharCode((c >> 6) | 192);
-            utftext += String.fromCharCode((c & 63) | 128);
-        }
-        else {
-            utftext += String.fromCharCode((c >> 12) | 224);
-            utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-            utftext += String.fromCharCode((c & 63) | 128);
-        }
+    if (c < 128) {
+      utftext += String.fromCharCode(c);
     }
+    else if ((c > 127) && (c < 2048)) {
+      utftext += String.fromCharCode((c >> 6) | 192);
+      utftext += String.fromCharCode((c & 63) | 128);
+    }
+    else {
+      utftext += String.fromCharCode((c >> 12) | 224);
+      utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+      utftext += String.fromCharCode((c & 63) | 128);
+    }
+  }
 
-    return utftext;
+  return utftext;
 }
 
 var CodeHelper = {
-  clone: (obj: any) => {
+  clone: (obj : any) => {
     return JSON.parse(JSON.stringify(obj));
   },
-  convertToBase64: (source: string) => {
+  convertToBase64: (source : string) => {
     var output = "";
     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
     var i = 0;
@@ -57,21 +57,21 @@ var CodeHelper = {
       }
 
       output = output +
-      KEYSTRING.charAt(enc1) + KEYSTRING.charAt(enc2) +
-      KEYSTRING.charAt(enc3) + KEYSTRING.charAt(enc4);
+        KEYSTRING.charAt(enc1) + KEYSTRING.charAt(enc2) +
+        KEYSTRING.charAt(enc3) + KEYSTRING.charAt(enc4);
     }
-    
+
     return output;
   },
-  getCustomClasses: (value: string) => {
+  getCustomClasses: (value : string) => {
     return (value || '').replace(INTERNAL_CLASSES_GLOBAL_REGEX, '').replace(NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, ' ').trimStart();
-  },  
-  getInternalClasses: (value: string) => {
+  },
+  getInternalClasses: (value : string) => {
     return (value || '').match(INTERNAL_CLASSES_GLOBAL_REGEX).join(' ');
   },
-  convertDictionaryIntoPairs: (dictionary: {[Identifier: string]: any}) => {
+  convertDictionaryIntoPairs: (dictionary : { [Identifier : string] : any }) => {
     let pairs = [];
-    
+
     for (let key in dictionary) {
       if (dictionary.hasOwnProperty(key)) {
         pairs.push({
@@ -80,10 +80,10 @@ var CodeHelper = {
         });
       }
     }
-    
+
     return pairs;
   },
-  equals: (x: any, y: any) => {
+  equals: (x : any, y : any) => {
     'use strict';
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
@@ -105,13 +105,13 @@ var CodeHelper = {
 
     // recursive object equality check
     var p = Object.keys(x);
-    return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
-        p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
+    return Object.keys(y).every(function(i) { return p.indexOf(i) !== -1; }) &&
+      p.every(function(i) { return CodeHelper.equals(x[i], y[i]); });
   },
-  sortHashtable: (object: any) => {
+  sortHashtable: (object : any) => {
     return CodeHelper.recursiveSortHashtable(object);
   },
-  recursiveSortHashtable: (object: any) => {
+  recursiveSortHashtable: (object : any) => {
     if (Array.isArray(object)) {
       if (object[0] && !!object[0].id) {
         object.sort((a, b) => {
@@ -119,11 +119,11 @@ var CodeHelper = {
           else return null;
         });
       }
-      
-      for (let i=0; i<object.length; i++) {
+
+      for (let i = 0; i < object.length; i++) {
         object[i] = CodeHelper.recursiveSortHashtable(object[i]);
       }
-      
+
       return object;
     } else if ((typeof object === 'object') && object != null) {
       let keys = Object.keys(object);
@@ -132,7 +132,7 @@ var CodeHelper = {
         else if (b.indexOf('__') == 0 && a.indexOf('__') != 0) return -1;
         else return (a < b) ? -1 : 1;
       });
-      
+
       let result = {};
       for (let key of keys) {
         result[key] = CodeHelper.recursiveSortHashtable(object[key]);
@@ -142,8 +142,8 @@ var CodeHelper = {
       return object;
     }
   },
-  deleteEmptyKeys: (object: any) => {
-    let result: boolean;
+  deleteEmptyKeys: (object : any) => {
+    let result : boolean;
     do {
       result = false;
       const keys = Object.keys(object);
@@ -152,9 +152,9 @@ var CodeHelper = {
       }
     } while (result);
   },
-  recursiveDeleteEmptyKeys: (object: any, previousKey: string): boolean => {
+  recursiveDeleteEmptyKeys: (object : any, previousKey : string) : boolean => {
     if ((typeof object[previousKey] !== 'object') || object[previousKey] === null || object[previousKey] === undefined) return false;
-    
+
     const keys = Object.keys(object[previousKey]);
     if (keys.length == 0) {
       delete object[previousKey];
@@ -167,92 +167,92 @@ var CodeHelper = {
       return result;
     }
   },
-  replaceCamelIntoDashCase: (camelCase: string): string => {
+  replaceCamelIntoDashCase: (camelCase : string) : string => {
     if (camelCase.indexOf('internal-fsb-') != -1) return camelCase;
     if (camelCase.indexOf('data-') == 0) return camelCase;
     if (CAMEL_OF_EVENTS_DICTIONARY[camelCase.toLowerCase()]) return camelCase;
     if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(camelCase.toLowerCase()) != -1) return camelCase;
-    
+
     return TextHelper.trim(camelCase.replace(/[A-Z]/g, token => `-${token.toLowerCase()}`), '-');
   },
-  replaceDashIntoCamelCase: (dashCase: string): string => {
+  replaceDashIntoCamelCase: (dashCase : string) : string => {
     if (dashCase.indexOf('internal-fsb-') != -1) return dashCase;
     if (dashCase.indexOf('data-') == 0) return dashCase;
     if (CAMEL_OF_EVENTS_DICTIONARY[dashCase.toLowerCase()]) return dashCase;
     if (NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS.indexOf(dashCase.toLowerCase()) != -1) return dashCase;
-    
+
     return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
   },
-  preparePastingContent: (html: string, cut: boolean=false): string => {
+  preparePastingContent: (html : string, cut : boolean = false) : string => {
     let contentHolder = document.createElement('div');
     contentHolder.innerHTML = html;
-    
+
     CodeHelper.recursivePreparePastingContent(contentHolder, cut);
-    
+
     return contentHolder.innerHTML;
   },
-  recursivePreparePastingContent: (current: any, cut: boolean=false, isContainingInComponent: boolean=false) => {
+  recursivePreparePastingContent: (current : any, cut : boolean = false, isContainingInComponent : boolean = false) => {
     if (!cut && HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
       const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
       const classes = (current.className || '').split(' ');
-      
+
       for (let classname of classes) {
         if (classname.indexOf('-fsb-self-') == 0) {
           HTMLHelper.removeClass(current, classname);
         }
       }
-      
+
       HTMLHelper.addClass(current, '-fsb-preset-' + guid);
-      
+
       let _inlineStyle = HTMLHelper.getAttribute(current, 'style') || '';
       _inlineStyle = HTMLHelper.setInlineStyle(_inlineStyle, '-fsb-inherited-presets', guid);
-      
+
       HTMLHelper.setAttribute(current, 'style', _inlineStyle);
       HTMLHelper.removeAttribute(current, 'internal-fsb-reusable-preset-name');
     }
-    
+
     if (!cut && !isContainingInComponent && HTMLHelper.hasAttribute(current, 'internal-fsb-guid')) {
       HTMLHelper.setAttribute(current, 'internal-fsb-guid', RandomHelper.generateGUID());
     }
-    
+
     if (HTMLHelper.hasClass(current, 'internal-fsb-selecting')) {
       HTMLHelper.removeClass(current, 'internal-fsb-selecting');
     }
-    
+
     if (HTMLHelper.hasClass(current, 'internal-fsb-walking')) {
       HTMLHelper.removeClass(current, 'internal-fsb-walking');
     }
-    
+
     if (HTMLHelper.hasClass(current, 'internal-fsb-placing-cursor')) {
       HTMLHelper.removeClass(current, 'internal-fsb-placing-cursor');
     }
-    
+
     if (HTMLHelper.hasClass(current, 'internal-fsb-accessory')) {
       current.parentNode && current.parentNode.removeChild(current);
-      return; 
+      return;
     }
-    
+
     for (let element of current.children) {
       CodeHelper.recursivePreparePastingContent(element, cut, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
     }
   },
-  label: (data: string): string => {
-    let current: string = null;
-    let category: number = 0;
+  label: (data : string) : string => {
+    let current : string = null;
+    let category : number = 0;
     const lines = data.split('\n');
-    
-    for (let i=0; i<lines.length; i++) {
+
+    for (let i = 0; i < lines.length; i++) {
       const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})",/);
       const ending = ((category == 1 && (lines[i] == '    }' || lines[i] == '    },')) ||
-                      (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
-      
+        (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
+
       if (starting != null) {
         category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
         if (category == 2) {
-          if (lines[i-1].indexOf('}') == -1) lines[i-1] = `${current}${lines[i-1]}`;
-          if (lines[i-2].indexOf('}') == -1) lines[i-2] = `${current}${lines[i-2]}`;
+          if (lines[i - 1].indexOf('}') == -1) lines[i - 1] = `${current}${lines[i - 1]}`;
+          if (lines[i - 2].indexOf('}') == -1) lines[i - 2] = `${current}${lines[i - 2]}`;
         }
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
@@ -262,21 +262,21 @@ var CodeHelper = {
         lines[i] = `${current}${lines[i]}`;
       }
     }
-    
+
     return lines.join('\n');
   },
-  unlabel: (data: string): string => {
+  unlabel: (data : string) : string => {
     const lines = data.split('\n');
-    
-    for (let i=0; i<lines.length; i++) {
+
+    for (let i = 0; i < lines.length; i++) {
       const matched = lines[i].match(/^([0-9a-f]{8,8}) (.*)/);
       if (matched) {
         lines[i] = ` ${matched[2]}`;
       }
     }
-    
+
     return lines.join('\n');
   }
 };
 
-export {CodeHelper};
+export { CodeHelper };

@@ -13,36 +13,36 @@ const envPath = path.resolve(__dirname, "../../.env");
 
 if ((develop || test) && fs.existsSync(envPath)) {
 
-    logger.debug("Using .env file to supply config environment variables");
-    dotenv.config({path: envPath});
+  logger.debug("Using .env file to supply config environment variables");
+  dotenv.config({ path: envPath });
 
 } else {
 
-    logger.debug("Using system to supply config environment variables");
+  logger.debug("Using system to supply config environment variables");
 
 }
 
-export const {SESSION_SECRET} = process.env;
+export const { SESSION_SECRET } = process.env;
 export const MONGODB_URI = prod ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
 
 if (!SESSION_SECRET) {
 
-    logger.error("No client secret. Set SESSION_SECRET environment variable.");
-    process.exit(1);
+  logger.error("No client secret. Set SESSION_SECRET environment variable.");
+  process.exit(1);
 
 }
 
 if (!MONGODB_URI) {
 
-    if (prod) {
+  if (prod) {
 
-        logger.error("No mongo connection string. Set MONGODB_URI environment variable.");
+    logger.error("No mongo connection string. Set MONGODB_URI environment variable.");
 
-    } else {
+  } else {
 
-        logger.error("No mongo connection string. Set MONGODB_URI_LOCAL environment variable.");
+    logger.error("No mongo connection string. Set MONGODB_URI_LOCAL environment variable.");
 
-    }
-    process.exit(1);
+  }
+  process.exit(1);
 
 }

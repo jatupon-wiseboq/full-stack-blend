@@ -1,52 +1,52 @@
-import {HTMLHelper} from '../../../helpers/HTMLHelper';
-import {RandomHelper} from '../../../helpers/RandomHelper';
-import {Accessories, EditorHelper} from '../EditorHelper';
-import {WorkspaceHelper} from '../WorkspaceHelper';
-import {SchemaHelper} from '../SchemaHelper';
-import {LayoutHelper} from '../LayoutHelper';
-import {StylesheetHelper} from '../StylesheetHelper';
-import {CapabilityHelper} from '../CapabilityHelper';
-import {ManipulationHelper} from '../ManipulationHelper';
-import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
+import { HTMLHelper } from '../../../helpers/HTMLHelper';
+import { RandomHelper } from '../../../helpers/RandomHelper';
+import { Accessories, EditorHelper } from '../EditorHelper';
+import { WorkspaceHelper } from '../WorkspaceHelper';
+import { SchemaHelper } from '../SchemaHelper';
+import { LayoutHelper } from '../LayoutHelper';
+import { StylesheetHelper } from '../StylesheetHelper';
+import { CapabilityHelper } from '../CapabilityHelper';
+import { ManipulationHelper } from '../ManipulationHelper';
+import { FrontEndDOMHelper } from '../FrontEndDOMHelper';
 
-let composedUntitledNameCount: any = {};
-let composedUntitledNameDictionary: any = {};
+let composedUntitledNameCount : any = {};
+let composedUntitledNameDictionary : any = {};
 
 var BackEndManipulationHelper = {
-  handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+  handleInsert: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
     let accessory = null;
     let element = null;
-    
+
     if (!Accessories.cursor || !Accessories.cursor.getDOMNode().parentNode) {
       alert('Please place a cursor anywhere before performing insertion.');
       return [accessory, false, link];
     }
-    
+
     if (typeof content === 'string') {
       if (composedUntitledNameCount[content] === undefined) {
         composedUntitledNameCount[content] = 0;
       }
       composedUntitledNameCount[content]++;
-          
+
       content = {
         klass: content,
         guid: RandomHelper.generateGUID(),
         name: content + ' ' + composedUntitledNameCount[content]
       }
     }
-    
+
     accessory = content;
-    
-    let style: string;
-    let parent: any;
-    let isComponentInsertion: boolean = false;
-    
+
+    let style : string;
+    let parent : any;
+    let isComponentInsertion : boolean = false;
+
     if (!BackEndManipulationHelper.validateCursorPosition(content.klass)) return [accessory, false, link];
-    
+
     switch (content.klass) {
       case 'RelationalDatabase':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Database
@@ -56,7 +56,7 @@ var BackEndManipulationHelper = {
         break;
       case 'RelationalTable':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Relational Table
@@ -66,7 +66,7 @@ var BackEndManipulationHelper = {
         break;
       case 'RelationalColumn':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Relational Column
@@ -74,7 +74,7 @@ var BackEndManipulationHelper = {
         break;
       case 'DocumentDatabase':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Document Database
@@ -84,7 +84,7 @@ var BackEndManipulationHelper = {
         break;
       case 'DocumentTable':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Document Table
@@ -94,7 +94,7 @@ var BackEndManipulationHelper = {
         break;
       case 'DocumentNotation':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Document Column
@@ -102,7 +102,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Queue':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Queue
@@ -112,7 +112,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Parameter':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Parameter
@@ -120,7 +120,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Scheduler':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Scheduler Instance
@@ -130,7 +130,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Timing':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Timing
@@ -138,7 +138,7 @@ var BackEndManipulationHelper = {
         break;
       case 'VolatileMemory':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | Volatile Memory
@@ -148,7 +148,7 @@ var BackEndManipulationHelper = {
         break;
       case 'VolatilePrefix':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | Volatile Prefix
@@ -156,13 +156,13 @@ var BackEndManipulationHelper = {
         break;
       case 'Connection':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.internal-fsb-dragging-handle(data-title-name='')
         `, element);
         break;
       case 'RESTful':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element(data-title-name='')
             .internal-fsb-title.internal-fsb-dragging-handle
               | RESTful
@@ -172,7 +172,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Verb':
         element = document.createElement('div');
-        element = ReactDOM.render(pug `
+        element = ReactDOM.render(pug`
           .internal-fsb-element.col-12(data-title-name='')
             .internal-fsb-title
               | name
@@ -182,35 +182,35 @@ var BackEndManipulationHelper = {
         element = document.createElement('div');
         element.innerHTML = content.html;
         element = element.firstElementChild;
-        
+
         if (!BackEndManipulationHelper.validateCursorPosition(HTMLHelper.getAttribute(element, 'internal-fsb-class'))) return [accessory, false, link];
-        
+
         content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
         content.name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
-        
+
         isComponentInsertion = true;
         break;
     }
-    
+
     if (element !== null) {
       // Assign GUID and name.
       // 
       HTMLHelper.setAttribute(element, 'internal-fsb-guid', content.guid);
       HTMLHelper.setAttribute(element, 'internal-fsb-name', content.name);
-      
+
       // Install capabilities
       // 
       CapabilityHelper.installCapabilitiesForInternalElements(element);
-      
+
       if (!link) link = Math.random();
       promise.then(() => {
         ManipulationHelper.perform('select', content.guid, true, false, link);
       });
-      
+
       // Insert the element before the cursor.
       //
       if (!isComponentInsertion) HTMLHelper.setAttribute(element, 'internal-fsb-class', content.klass);
-      
+
       if (Accessories.cursor && HTMLHelper.getAttribute(Accessories.cursor.getDOMNode(), 'internal-cursor-mode') == 'relative') {
         Accessories.cursor.getDOMNode().parentNode.insertBefore(element, Accessories.cursor.getDOMNode());
       } else {
@@ -219,19 +219,19 @@ var BackEndManipulationHelper = {
         StylesheetHelper.setStyleAttribute(element, 'width', '150px');
         Accessories.cursor.getDOMNode().parentNode.appendChild(element);
       }
-    
+
       // Update Editor UI
       EditorHelper.updateEditorProperties();
     }
-    
+
     ManipulationHelper.updateComponentData(element);
     LayoutHelper.invalidate();
     SchemaHelper.invalidate();
     FrontEndDOMHelper.invalidate();
-    
+
     return [accessory, remember, link];
   },
-  validateCursorPosition: (klass: string) => {
+  validateCursorPosition: (klass : string) => {
     switch (klass) {
       case 'RelationalDatabase':
         if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
@@ -340,9 +340,9 @@ var BackEndManipulationHelper = {
       case 'Pasteboard':
         break;
     }
-    
+
     return true;
   }
 }
 
-export {BackEndManipulationHelper}
+export { BackEndManipulationHelper }

@@ -1,51 +1,51 @@
-import {CodeHelper} from '../../../helpers/CodeHelper';
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import { CodeHelper } from '../../../helpers/CodeHelper';
+import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
+import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let perform: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let perform : any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-    components: [any]
+  components : [any]
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
-    components: []
+  components: []
 });
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingExtensionNames: ['components', 'editingComponentID']
+  watchingExtensionNames: ['components', 'editingComponentID']
 });
 
 class ComponentMenu extends Base<Props, State> {
-    protected state: State = {};
-    protected static defaultProps: Props = ExtendedDefaultProps;
+  protected state : State = {};
+  protected static defaultProps : Props = ExtendedDefaultProps;
 
-    constructor(props) {
-        super(props);
-        Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
+  constructor(props) {
+    super(props);
+    Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
+  }
+
+  public update(properties : any) {
+    if (!super.update(properties)) return;
+
+    if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
+      this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
+        return (a['name'] < b['name']) ? -1 : 1;
+      });
+
+      this.forceUpdate();
     }
-    
-    public update(properties: any) {
-        if (!super.update(properties)) return;
-        
-        if (this.state.extensionValues[this.props.watchingExtensionNames[0]]) {
-            this.state.extensionValues[this.props.watchingExtensionNames[0]].sort((a, b) => {
-              return (a['name'] < b['name']) ? -1 : 1;
-            });
-            
-            this.forceUpdate();
-        }
-    }
-    
-    render() {
-        return pug `
+  }
+
+  render() {
+    return pug`
           div
             each component, index in (this.state.extensionValues[this.props.watchingExtensionNames[0]] || [])
               if component.state != 'delete'
@@ -57,9 +57,9 @@ class ComponentMenu extends Base<Props, State> {
                     i.fa.fa-puzzle-piece
                     = component.name
         `
-    }
+  }
 }
 
 DeclarationHelper.declare('Components.ComponentMenu', ComponentMenu);
 
-export {ComponentMenu};
+export { ComponentMenu };

@@ -2,19 +2,19 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 // Auto[Import]--->
-import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
-import {CodeHelper} from '../helpers/CodeHelper';
-import {EventHelper} from '../helpers/EventHelper';
-import {HTMLHelper} from '../helpers/HTMLHelper';
-import {AnimationHelper} from '../helpers/AnimationHelper';
-import {TestHelper} from '../helpers/TestHelper';
-import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
-import {loc as $loc} from '../helpers/LocalizationHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
+import { Project as $Project, DeclarationHelper } from '../helpers/DeclarationHelper';
+import { CodeHelper } from '../helpers/CodeHelper';
+import { EventHelper } from '../helpers/EventHelper';
+import { HTMLHelper } from '../helpers/HTMLHelper';
+import { AnimationHelper } from '../helpers/AnimationHelper';
+import { TestHelper } from '../helpers/TestHelper';
+import { SourceType, HierarchicalDataTable, HierarchicalDataRow } from '../helpers/DataManipulationHelper';
+import { loc as $loc } from '../helpers/LocalizationHelper';
+import { IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base } from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base : any = $Base;
 
 // <---Auto[Import]
 
@@ -23,11 +23,11 @@ let Base: any = $Base;
 
 // Auto[Declare]--->
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let window: any;
-declare let DataManipulationHelper: any;
-declare let pug: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let window : any;
+declare let DataManipulationHelper : any;
+declare let pug : any;
 
 let Button = $Button;
 let Project = $Project;
@@ -49,8 +49,8 @@ let loc = $loc;
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-	source: SourceType;
-	group: string;
+    source: SourceType;
+    group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
@@ -59,7 +59,7 @@ interface HierarchicalDataRow {
   relations: {[Identifier: string]: HierarchicalDataTable};
 }*/
 interface IAutoBaseProps extends IBaseProps {
-  forward: {classes: String, styles: any};
+  forward : { classes : String, styles : any };
 }
 interface IAutoBaseState extends IBaseState {
 }
@@ -68,15 +68,15 @@ interface IAutoBaseState extends IBaseState {
 // Declare or extend interfaces here:
 //
 interface IProps extends IAutoBaseProps {
-  
+
 }
-interface IState extends IAutoBaseState { 
-  currentTab: number;
-  submitting: boolean;
+interface IState extends IAutoBaseState {
+  currentTab : number;
+  submitting : boolean;
 }
 
 let DefaultProps = Object.assign({}, DefaultBaseProps, {
-  
+
 });
 let DefaultState = Object.assign({}, DefaultBaseState, {
   currentTab: 0,
@@ -85,136 +85,136 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 
 // Auto[ClassBegin]--->
 class Settings extends Base {
-  state: IState = null;
-  protected static defaultProps: IProps = DefaultProps;
-  
+  state : IState = null;
+  protected static defaultProps : IProps = DefaultProps;
+
   constructor(props) {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
-    
+
     this.initialize();
   }
-  
+
   register() {
     TestHelper.identify();
-    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
-        
-    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","49da134d","74d68ec6","d3e700b6","ece2d619"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
+    function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function(e) { "complete" == document.readyState && a(e) }) };
+
+    DataManipulationHelper.register("ea9268d1", "update", ["0762b97d", "098c6ea6", "1da99335", "25254217", "27d35136", "33832ba7", "3478b9ac", "49da134d", "74d68ec6", "d3e700b6", "ece2d619"], { initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; } });
   }
   // <---Auto[ClassBegin]
-  
+
   // Declare class variables and functions here:
   //
-  protected initialize(): void {
+  protected initialize() : void {
   }
-  
-  protected componentDidMount(): void {
-  	this.register();
+
+  protected componentDidMount() : void {
+    this.register();
   }
-  
-  protected componentWillUnmount(): void {
+
+  protected componentWillUnmount() : void {
   }
-  
+
   // Providing data array base on dot notation:
   // 
-  protected getDataFromNotation(notation: string, inArray: boolean=false): any {
+  protected getDataFromNotation(notation : string, inArray : boolean = false) : any {
     return super.getDataFromNotation(notation, inArray);
   }
-  
+
   // Auto[Merging]--->
-  protected onRectangleClick_14382c35(event: Event) {
+  protected onRectangleClick_14382c35(event : Event) {
 
     // Handle the event of onRectangleClick (Profile Menu) here:
     // 
-    this.setState({currentTab: 0});
-    
+    this.setState({ currentTab: 0 });
+
   }
 
-  protected onRectangleClick_5b9e63bb(event: Event) {
+  protected onRectangleClick_5b9e63bb(event : Event) {
 
     // Handle the event of onRectangleClick (Repository Menu) here:
     // 
-    this.setState({currentTab: 1});
-    
+    this.setState({ currentTab: 1 });
+
   }
 
-  protected onRectangleClick_dbcddce6(event: Event) {
+  protected onRectangleClick_dbcddce6(event : Event) {
 
     // Handle the event of onRectangleClick (Account Menu) here:
     // 
-    this.setState({currentTab: 2});
-    
+    this.setState({ currentTab: 2 });
+
   }
 
-  protected onButtonSubmitting_ea9268d1(event: CustomEvent) {
+  protected onButtonSubmitting_ea9268d1(event : CustomEvent) {
 
     // Handle the event of onButtonSubmitting (Button 2) here:
     // 
-    this.setState({submitting: true});
-    
+    this.setState({ submitting: true });
+
   }
 
-  protected onButtonSubmitted_ea9268d1(event: CustomEvent) {
+  protected onButtonSubmitted_ea9268d1(event : CustomEvent) {
 
     // Handle the event of onButtonSubmitted (Button 2) here:
     // 
-    this.setState({submitting: false});
-    
+    this.setState({ submitting: false });
+
   }
 
-  protected onButtonClick_68840b17(event: Event) {
+  protected onButtonClick_68840b17(event : Event) {
 
     // Handle the event of onButtonClick (Button 8) here:
     // 
     window.location = '/auth/github';
-    
+
   }
 
-  protected onButtonClick_b391283e(event: Event) {
+  protected onButtonClick_b391283e(event : Event) {
 
     // Handle the event of onButtonClick (Button 3) here:
     // 
     window.location = '/account/delete';
-    
+
   }
 
-  protected onButtonClick_187c250b(event: Event) {
+  protected onButtonClick_187c250b(event : Event) {
 
     // Handle the event of onButtonClick (Button 4) here:
     // 
     window.location = '/auth/facebook';
-    
+
   }
 
-  protected onButtonClick_551c67a8(event: Event) {
+  protected onButtonClick_551c67a8(event : Event) {
 
     // Handle the event of onButtonClick (Button 5) here:
     // 
     window.location = '/auth/github';
-    
+
   }
 
-  protected onButtonClick_82975b43(event: Event) {
+  protected onButtonClick_82975b43(event : Event) {
 
     // Handle the event of onButtonClick (Button 6) here:
     // 
     window.location = '/account/unlink/facebook';
-    
+
   }
 
-  protected onButtonClick_4e677128(event: Event) {
+  protected onButtonClick_4e677128(event : Event) {
 
     // Handle the event of onButtonClick (Button 7) here:
     // 
     window.location = '/account/unlink/github';
-    
+
   }
   // <---Auto[Merging]
-  
+
   // Auto[ClassEnd]--->
-  protected render(): any {
+  protected render() : any {
     TestHelper.identify();
-    return pug `
+    return pug`
       div(style=Object.assign({}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="-fsb-self-245bc127 internal-fsb-element internal-fsb-strict-layout " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="245bc127")
         .col-3.internal-fsb-element(style={'MsFlexDirection': 'column', 'WebkitFlexDirection': 'column', 'bottom': '0px', 'display': 'flex', 'flexDirection': 'column', 'left': '0px', 'paddingLeft': '0px', 'paddingRight': '0px', 'position': 'absolute', 'top': '0px'}, internal-fsb-guid="e2601245")
           .-fsb-self-14382c35.internal-fsb-element(style={'FsbReusableId': '14382c35', 'FsbReusableName': '', 'background': (()=>{return (this.state.currentTab == 0) ? 'transparent' : 'rgba(3, 115, 252, 1)';})() || 'rgba(255, 255, 255, 1)', 'paddingBottom': '10px', 'paddingLeft': '15px', 'paddingTop': '10px', cursor: (()=>{return (this.state.currentTab == 0) ? 'default' : 'pointer';})()}, onClick=this.onRectangleClick_14382c35.bind(this), internal-fsb-guid="14382c35")
@@ -337,7 +337,7 @@ DeclarationHelper.declare('Site', 'Controls.Settings', Settings);
 
 // Export variables here:
 //
-export {IProps, IState, DefaultProps, DefaultState};
+export { IProps, IState, DefaultProps, DefaultState };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

@@ -1,15 +1,15 @@
-import {CodeHelper} from '../../../helpers/CodeHelper';
-import {HTMLHelper} from '../../../helpers/HTMLHelper';
-import {TextHelper} from '../../../helpers/TextHelper';
-import {RequestHelper} from '../../../helpers/RequestHelper';
-import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
-import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
-import {LocalizationHelper} from '../../../LocalizationHelper';
+import { CodeHelper } from '../../../helpers/CodeHelper';
+import { HTMLHelper } from '../../../helpers/HTMLHelper';
+import { TextHelper } from '../../../helpers/TextHelper';
+import { RequestHelper } from '../../../helpers/RequestHelper';
+import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
+import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import { LIBRARIES, DEBUG_GITHUB_UPLOADER } from '../../../Constants';
+import { LocalizationHelper } from '../../../LocalizationHelper';
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let ts: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let ts : any;
 
 interface Props extends IProps {
 }
@@ -28,266 +28,266 @@ Object.assign(ExtendedDefaultState, {
 
 // TODO: Inherit Components.ProjectManager instead.
 class EndpointManager extends Base<Props, State> {
-    protected state: State = {};
-    protected static defaultProps: Props = ExtendedDefaultProps;
-    
-    private incrementalUpdatingFrontEndCodeInfoDict: any = {};
-    private incrementalUpdatingBackEndControllerInfoDict: any = {};
-    private incrementalUpdatingConnectorControllerInfoDict: any = {};
-    private incrementalUpdatingWorkerControllerInfoDict: any = {};
-    private incrementalUpdatingSchedulerControllerInfoDict: any = {};
+  protected state : State = {};
+  protected static defaultProps : Props = ExtendedDefaultProps;
 
-    constructor(props) {
-      super(props);
-      Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
-    }
-    
-    componentDidMount() {
-    }
-    
-    public update(properties: any) {
-      if (!super.update(properties)) return;
-    }
-    
-    replaceShortcuts(textContent: any) {
-      textContent = textContent.replace(/(\@)(\{[^{}]*(\{[^{}]*(\{[^{}]*(\{[^{}]*[^{}]+[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\})([\t\r\n ]*,[\t\r\n ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, a, b, c, table) => {
-        try {
-          const createInputs = `RequestHelper.createInputs(${content})`;
-          if (!table) return createInputs;
-          else return `${createInputs}, ProjectConfigurationHelper.getDataSchema().tables[${table.split(',')[1].trim()}]`;
-        } catch(error) {
-          return match;
-        }
+  private incrementalUpdatingFrontEndCodeInfoDict : any = {};
+  private incrementalUpdatingBackEndControllerInfoDict : any = {};
+  private incrementalUpdatingConnectorControllerInfoDict : any = {};
+  private incrementalUpdatingWorkerControllerInfoDict : any = {};
+  private incrementalUpdatingSchedulerControllerInfoDict : any = {};
+
+  constructor(props) {
+    super(props);
+    Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
+  }
+
+  componentDidMount() {
+  }
+
+  public update(properties : any) {
+    if (!super.update(properties)) return;
+  }
+
+  replaceShortcuts(textContent : any) {
+    textContent = textContent.replace(/(\@)(\{[^{}]*(\{[^{}]*(\{[^{}]*(\{[^{}]*[^{}]+[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\})([\t\r\n ]*,[\t\r\n ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, a, b, c, table) => {
+      try {
+        const createInputs = `RequestHelper.createInputs(${content})`;
+        if (!table) return createInputs;
+        else return `${createInputs}, ProjectConfigurationHelper.getDataSchema().tables[${table.split(',')[1].trim()}]`;
+      } catch (error) {
+        return match;
+      }
+    });
+    textContent = textContent.replace(/(\@'\[)([^~#$^*_`\{\}\|\[\]\\:";'<>\n]+)(\]')/g, (match, hash, content) => {
+      return `loc('${content}')`;
+    });
+
+    return textContent;
+  }
+  getRepresentativeName(key : string) {
+    if (key == 'index') return key;
+    else return `_${key}`;
+  }
+  getFeatureDirectoryPrefix(key : string) {
+    let pages = this.state.extensionValues['pages'];
+    let editingPageID = key;
+    pages = pages.filter(page => page.id == editingPageID);
+
+    let path = pages && pages[0] && pages[0].path || '';
+    path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
+
+    return (path) ? path + '/' : '';
+  }
+  getRootDirectory(key : string) {
+    return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
+  }
+
+  files : any = [];
+  private create(path : string, content : string) {
+    if (content === false) {
+      return new Promise((resolve) => {
+        resolve();
       });
-      textContent = textContent.replace(/(\@'\[)([^~#$^*_`\{\}\|\[\]\\:";'<>\n]+)(\]')/g, (match, hash, content) => {
-        return `loc('${content}')`;
+    } else {
+      return new Promise((resolve) => {
+        this.files.push({
+          path: path,
+          content: content
+        });
+        resolve();
       });
-      
-      return textContent;
     }
-    getRepresentativeName(key: string) {
-      if (key == 'index') return key;
-      else return `_${key}`;
+  }
+  private commit(incremental : boolean = false) {
+    let _files = this.files;
+    this.files = [];
+
+    let endpoint = window.ENDPOINT;
+    if (endpoint.indexOf('https://localhost') == 0) {
+      endpoint = 'https://localhost.stackblend.org';
     }
-    getFeatureDirectoryPrefix(key: string) {
-      let pages = this.state.extensionValues['pages'];
-      let editingPageID = key;
-      pages = pages.filter(page => page.id == editingPageID);
-      
-      let path = pages && pages[0] && pages[0].path || '';
-      path = path.split(':')[0].replace(/(^\/|\/$)/g, '');
-      
-      return (path) ? path + '/' : '';
-    }
-    getRootDirectory(key: string) {
-      return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
-    }
-    
-    files: any = [];
-    private create(path: string, content: string) {
-      if (content === false) {
-        return new Promise((resolve) => {
-          resolve();
-        });
-      } else {
-        return new Promise((resolve) => {
-          this.files.push({
-            path: path,
-            content: content
-          });
-          resolve();
-        });
+
+    return RequestHelper.post(`${endpoint}/endpoint/update/content`, {
+      files: _files
+    })
+  }
+
+  public save(cb : any, incremental : boolean = false) {
+    if (!window.ENDPOINT) return cb();
+
+    const $this = this;
+
+    let construction = document.getElementById('area');
+    let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
+
+    let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
+    let constructionEditorData = this.generateWorkspaceData() || {};
+    let frontEndCodeInfoDict = Object.assign({}, constructionWindow.generateFrontEndCodeForAllPages(true));
+    let backEndControllerInfoDict = Object.assign({}, constructionWindow.generateBackEndCodeForAllPages(true));
+    let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
+    let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
+    let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
+    let _connectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
+    let _workerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
+    let _schedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
+    const sitemapInfoDict = {}
+    let nextProjectData = {};
+
+    for (const page of this.state.extensionValues['pages']) {
+      const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+      const sitemap = page.sitemap || false;
+      const frequency = page.frequency || undefined;
+      const priority = page.priority || undefined;
+
+      if (sitemap == 'true') {
+        sitemapInfoDict[`${path}`] = {
+          frequency: frequency,
+          priority: priority
+        };
       }
     }
-    private commit(incremental: boolean=false) {
-      let _files = this.files;
-      this.files = [];
-      
-      let endpoint = window.ENDPOINT;
-       if (endpoint.indexOf('https://localhost') == 0) {
-         endpoint = 'https://localhost.stackblend.org';
-       }
-      
-      return RequestHelper.post(`${endpoint}/endpoint/update/content`, {
-        files: _files
-      })
-    }
-    
-    public save(cb: any, incremental: boolean=false) {
-      if (!window.ENDPOINT) return cb();
-      
-      const $this = this;
-      
-      let construction = document.getElementById('area');
-      let constructionWindow = construction.contentWindow || construction.contentDocument.document || construction.contentDocument;
-      
-      let constructionAreaHTMLData = constructionWindow.generateWorkspaceData() || {};
-      let constructionEditorData = this.generateWorkspaceData() || {};
-      let frontEndCodeInfoDict = Object.assign({}, constructionWindow.generateFrontEndCodeForAllPages(true));
-      let backEndControllerInfoDict = Object.assign({}, constructionWindow.generateBackEndCodeForAllPages(true));
-      let connectorControllerInfoDict = CodeHelper.clone(constructionWindow.generateConnectorCode());
-      let workerControllerInfoDict = CodeHelper.clone(constructionWindow.generateWorkerCode());
-      let schedulerControllerInfoDict = CodeHelper.clone(constructionWindow.generateSchedulerCode());
-      let _connectorControllerInfoDict = CodeHelper.clone(connectorControllerInfoDict);
-      let _workerControllerInfoDict = CodeHelper.clone(workerControllerInfoDict);
-      let _schedulerControllerInfoDict = CodeHelper.clone(schedulerControllerInfoDict);
-      const sitemapInfoDict = {}
-      let nextProjectData = {};
-      
-      for (const page of this.state.extensionValues['pages']) {
-        const path = (page.path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-        const sitemap = page.sitemap || false;
-        const frequency = page.frequency || undefined;
-        const priority = page.priority || undefined;
-        
-        if (sitemap == 'true') {
-          sitemapInfoDict[`${path}`] = {
-            frequency: frequency,
-            priority: priority
-          };
-        }
-      }
-      
-      if (incremental) {
-        const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
-        const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
-        const _incrementalUpdatingConnectorControllerInfoDict = this.incrementalUpdatingConnectorControllerInfoDict;
-        const _incrementalUpdatingWorkerControllerInfoDict = this.incrementalUpdatingWorkerControllerInfoDict;
-        const _incrementalUpdatingSchedulerControllerInfoDict = this.incrementalUpdatingSchedulerControllerInfoDict;
-        
-        for (const key of Object.keys(frontEndCodeInfoDict)) {
-          if (frontEndCodeInfoDict.hasOwnProperty(key)) {
-            if (JSON.stringify(_incrementalUpdatingFrontEndCodeInfoDict[key]) == JSON.stringify(frontEndCodeInfoDict[key])) {
-              delete frontEndCodeInfoDict[key];
-            }
-          }
-        }
-        
-        for (const key of Object.keys(backEndControllerInfoDict)) {
-          if (backEndControllerInfoDict.hasOwnProperty(key)) {
-            if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
-              delete backEndControllerInfoDict[key];
-            }
-          }
-        }
-        
-        for (const key of Object.keys(connectorControllerInfoDict)) {
-          if (connectorControllerInfoDict.hasOwnProperty(key)) {
-            if (JSON.stringify(_incrementalUpdatingConnectorControllerInfoDict[key]) == JSON.stringify(connectorControllerInfoDict[key])) {
-              delete connectorControllerInfoDict[key];
-            }
-          }
-        }
-        
-        for (const key of Object.keys(workerControllerInfoDict)) {
-          if (workerControllerInfoDict.hasOwnProperty(key)) {
-            if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]]) == JSON.stringify(workerControllerInfoDict[key])) {
-              delete workerControllerInfoDict[key];
-            }
-          }
-        }
-        
-        for (const key of Object.keys(schedulerControllerInfoDict)) {
-          if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-            if (JSON.stringify(_incrementalUpdatingSchedulerControllerInfoDict[key]) == JSON.stringify(schedulerControllerInfoDict[key])) {
-              delete schedulerControllerInfoDict[key];
-            }
-          }
-        }
-      }
-      
-      Object.assign(nextProjectData, {});
-      Object.assign(nextProjectData, constructionAreaHTMLData);
-      Object.assign(nextProjectData, constructionEditorData);
-      
-      let externalStylesheets = [];
-      let externalScripts = [];
-      let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
-      for (let library of LIBRARIES) {
-          if (selectedLibraries.indexOf(library.id) != -1) {
-              if (library.production.stylesheets) {
-                  for (let stylesheet of library.production.stylesheets) {
-                      externalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + stylesheet + '")');
-                  }
-              }
-              if (library.production.scripts) {
-                  for (let script of library.production.scripts) {
-                      externalScripts.push('script(type="text/javascript" src="' + script + '")');
-                  }
-              }
-          }
-      }
-      
-      let customHeaderExternalStylesheets = [];
-      let customHeaderExternalScripts = [];
-      let customFooterExternalStylesheets = [];
-      let customFooterExternalScripts = [];
-      
-      let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
-      for (let externalLibrary of externalLibraries) {
-        if (!externalLibrary) continue;
-        
-        let splited = externalLibrary.split('#');
-        if (splited[1] != 'footer') {
-          if (splited[0].toLowerCase().indexOf('.css') != -1) {
-            customHeaderExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
-          } else {
-            customHeaderExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
-          }
-        } else {
-          if (splited[0].toLowerCase().indexOf('.css') != -1) {
-            customFooterExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
-          } else {
-            customFooterExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
-          }
-        }
-      }
-      
-      let combinedHTMLPageDict = {};
-      let globalCombinedStylesheet = false;
-      let globalCombinedStylesheetExtension = false;
-      let arrayOfCombinedExpandingFeatureScripts = [];
-      for (let key in frontEndCodeInfoDict) {
+
+    if (incremental) {
+      const _incrementalUpdatingFrontEndCodeInfoDict = this.incrementalUpdatingFrontEndCodeInfoDict;
+      const _incrementalUpdatingBackEndControllerInfoDict = this.incrementalUpdatingBackEndControllerInfoDict;
+      const _incrementalUpdatingConnectorControllerInfoDict = this.incrementalUpdatingConnectorControllerInfoDict;
+      const _incrementalUpdatingWorkerControllerInfoDict = this.incrementalUpdatingWorkerControllerInfoDict;
+      const _incrementalUpdatingSchedulerControllerInfoDict = this.incrementalUpdatingSchedulerControllerInfoDict;
+
+      for (const key of Object.keys(frontEndCodeInfoDict)) {
         if (frontEndCodeInfoDict.hasOwnProperty(key)) {
-          let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension;
-          [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension] = frontEndCodeInfoDict[key];
-          
-          let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
-          
-          if (combinedHTMLTags) combinedHTMLTags = combinedHTMLTags.replace(REGEX, '/uploaded');
-          if (combinedMinimalFeatureScripts) combinedMinimalFeatureScripts = combinedMinimalFeatureScripts.replace(REGEX, '/uploaded');
-          if (combinedExpandingFeatureScripts) combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(REGEX, '/uploaded');
-          if (combinedFontTags) combinedFontTags = combinedFontTags.map((tag) => {
-            return tag.replace(REGEX, '/uploaded');
-          });
-          if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
-          if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
-          if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
-          if (combinedStylesheetExtension) globalCombinedStylesheetExtension = combinedStylesheetExtension;
-          
-          if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
-          else combinedInlineBodyStyle = '';
-          
-          let compiledCombinedMinimalFeatureScripts = '';
-          if (combinedMinimalFeatureScripts) {
-            compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
-            compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+          if (JSON.stringify(_incrementalUpdatingFrontEndCodeInfoDict[key]) == JSON.stringify(frontEndCodeInfoDict[key])) {
+            delete frontEndCodeInfoDict[key];
           }
-          
-          let pages = this.state.extensionValues['pages'];
-          let editingPageID = key;
-          pages = pages.filter(page => page.id == editingPageID);
-          
-          let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
-          
-          if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
-          
-          if (pages && pages[0]) {
-            let combinedHTMLPage = `.
+        }
+      }
+
+      for (const key of Object.keys(backEndControllerInfoDict)) {
+        if (backEndControllerInfoDict.hasOwnProperty(key)) {
+          if (JSON.stringify(_incrementalUpdatingBackEndControllerInfoDict[key]) == JSON.stringify(backEndControllerInfoDict[key])) {
+            delete backEndControllerInfoDict[key];
+          }
+        }
+      }
+
+      for (const key of Object.keys(connectorControllerInfoDict)) {
+        if (connectorControllerInfoDict.hasOwnProperty(key)) {
+          if (JSON.stringify(_incrementalUpdatingConnectorControllerInfoDict[key]) == JSON.stringify(connectorControllerInfoDict[key])) {
+            delete connectorControllerInfoDict[key];
+          }
+        }
+      }
+
+      for (const key of Object.keys(workerControllerInfoDict)) {
+        if (workerControllerInfoDict.hasOwnProperty(key)) {
+          if (JSON.stringify(_incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]]) == JSON.stringify(workerControllerInfoDict[key])) {
+            delete workerControllerInfoDict[key];
+          }
+        }
+      }
+
+      for (const key of Object.keys(schedulerControllerInfoDict)) {
+        if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+          if (JSON.stringify(_incrementalUpdatingSchedulerControllerInfoDict[key]) == JSON.stringify(schedulerControllerInfoDict[key])) {
+            delete schedulerControllerInfoDict[key];
+          }
+        }
+      }
+    }
+
+    Object.assign(nextProjectData, {});
+    Object.assign(nextProjectData, constructionAreaHTMLData);
+    Object.assign(nextProjectData, constructionEditorData);
+
+    let externalStylesheets = [];
+    let externalScripts = [];
+    let selectedLibraries : string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+    for (let library of LIBRARIES) {
+      if (selectedLibraries.indexOf(library.id) != -1) {
+        if (library.production.stylesheets) {
+          for (let stylesheet of library.production.stylesheets) {
+            externalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + stylesheet + '")');
+          }
+        }
+        if (library.production.scripts) {
+          for (let script of library.production.scripts) {
+            externalScripts.push('script(type="text/javascript" src="' + script + '")');
+          }
+        }
+      }
+    }
+
+    let customHeaderExternalStylesheets = [];
+    let customHeaderExternalScripts = [];
+    let customFooterExternalStylesheets = [];
+    let customFooterExternalScripts = [];
+
+    let externalLibraries : string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+    for (let externalLibrary of externalLibraries) {
+      if (!externalLibrary) continue;
+
+      let splited = externalLibrary.split('#');
+      if (splited[1] != 'footer') {
+        if (splited[0].toLowerCase().indexOf('.css') != -1) {
+          customHeaderExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+        } else {
+          customHeaderExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+        }
+      } else {
+        if (splited[0].toLowerCase().indexOf('.css') != -1) {
+          customFooterExternalStylesheets.push('link(rel="stylesheet" type="text/css" href="' + splited[0] + '")');
+        } else {
+          customFooterExternalScripts.push('script(type="text/javascript" src="' + splited[0] + '")');
+        }
+      }
+    }
+
+    let combinedHTMLPageDict = {};
+    let globalCombinedStylesheet = false;
+    let globalCombinedStylesheetExtension = false;
+    let arrayOfCombinedExpandingFeatureScripts = [];
+    for (let key in frontEndCodeInfoDict) {
+      if (frontEndCodeInfoDict.hasOwnProperty(key)) {
+        let combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension;
+        [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle, combinedStylesheet, combinedStylesheetExtension] = frontEndCodeInfoDict[key];
+
+        let REGEX = /https:[\/a-zA-Z0-9_\-]+\/images\/uploaded/g;
+
+        if (combinedHTMLTags) combinedHTMLTags = combinedHTMLTags.replace(REGEX, '/uploaded');
+        if (combinedMinimalFeatureScripts) combinedMinimalFeatureScripts = combinedMinimalFeatureScripts.replace(REGEX, '/uploaded');
+        if (combinedExpandingFeatureScripts) combinedExpandingFeatureScripts = combinedExpandingFeatureScripts.replace(REGEX, '/uploaded');
+        if (combinedFontTags) combinedFontTags = combinedFontTags.map((tag) => {
+          return tag.replace(REGEX, '/uploaded');
+        });
+        if (combinedInlineBodyStyle) combinedInlineBodyStyle = combinedInlineBodyStyle.replace(REGEX, '/uploaded');
+        if (combinedStylesheet) combinedStylesheet = combinedStylesheet.replace(REGEX, '/uploaded');
+        if (combinedStylesheet) globalCombinedStylesheet = combinedStylesheet;
+        if (combinedStylesheetExtension) globalCombinedStylesheetExtension = combinedStylesheetExtension;
+
+        if (combinedInlineBodyStyle) combinedInlineBodyStyle = `(style="${combinedInlineBodyStyle.replace(/"/g, "'")}")`;
+        else combinedInlineBodyStyle = '';
+
+        let compiledCombinedMinimalFeatureScripts = '';
+        if (combinedMinimalFeatureScripts) {
+          compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, { compilerOptions: { module: ts.ModuleKind.COMMONJS } }).outputText;
+          compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
+        }
+
+        let pages = this.state.extensionValues['pages'];
+        let editingPageID = key;
+        pages = pages.filter(page => page.id == editingPageID);
+
+        let title = (pages && pages[0] && pages[0].name || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+        let description = (pages && pages[0] && pages[0].description || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+        let keywords = (pages && pages[0] && pages[0].keywords || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+        let image = (pages && pages[0] && pages[0].image || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+        let path = (pages && pages[0] && pages[0].path || '').replace(/"/g, '\\x22').replace(/'/g, '\\x27');
+
+        if (combinedHTMLTags) combinedHTMLTags = TextHelper.removeBlankLines(combinedHTMLTags);
+
+        if (pages && pages[0]) {
+          let combinedHTMLPage = `.
   <!DOCTYPE html>
 html(lang=headers && headers.language || '${this.state.extensionValues['defaultLanguage'] || 'en'}')
   head
@@ -318,14 +318,14 @@ html(lang=headers && headers.language || '${this.state.extensionValues['defaultL
       window.data = !{JSON.stringify(data)};
     include ${this.getRootDirectory(key)}_footer.pug
 `
-            combinedHTMLPageDict[key] = combinedHTMLPage;
-          }
-          
-          if (combinedExpandingFeatureScripts) arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
+          combinedHTMLPageDict[key] = combinedHTMLPage;
         }
+
+        if (combinedExpandingFeatureScripts) arrayOfCombinedExpandingFeatureScripts.push(combinedExpandingFeatureScripts);
       }
-      
-      let combinedHeaderScripts = (globalCombinedStylesheet !== false && globalCombinedStylesheetExtension !== false) ? `
+    }
+
+    let combinedHeaderScripts = (globalCombinedStylesheet !== false && globalCombinedStylesheetExtension !== false) ? `
 link(rel="icon" href='${this.state.extensionValues['icon'] || ''}')
 link(rel="stylesheet" href="/css/embed.css")
 ${externalStylesheets.join('\n')}
@@ -408,7 +408,7 @@ script(type="text/javascript").
   };
   ${globalCombinedStylesheetExtension}
 ` : false;
-  let combinedFooterScripts = `
+    let combinedFooterScripts = `
 ${externalScripts.join('\n')}
 ${customFooterExternalStylesheets.join('\n')}
 ${customFooterExternalScripts.join('\n')}
@@ -416,59 +416,58 @@ script(type="text/javascript").
   window.localizedData = ${this.state.extensionValues['customLocalizedStrings'] && ("'" + this.state.extensionValues['customLocalizedStrings'].replace(/'/g, "\\'").replace(/\n/g, "\\n") + "'") || 'null'};
 script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).getTime()}")
 `;
-      
-      let arrayOfControllerScripts = [];
-      for (let key in backEndControllerInfoDict) {
-        if (backEndControllerInfoDict.hasOwnProperty(key)) {
-          arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
-        }
+
+    let arrayOfControllerScripts = [];
+    for (let key in backEndControllerInfoDict) {
+      if (backEndControllerInfoDict.hasOwnProperty(key)) {
+        arrayOfControllerScripts.push(backEndControllerInfoDict[key][0]);
       }
-      for (let key in connectorControllerInfoDict) {
-        if (connectorControllerInfoDict.hasOwnProperty(key)) {
-          arrayOfControllerScripts.push(connectorControllerInfoDict[key][0]);
-        }
+    }
+    for (let key in connectorControllerInfoDict) {
+      if (connectorControllerInfoDict.hasOwnProperty(key)) {
+        arrayOfControllerScripts.push(connectorControllerInfoDict[key][0]);
       }
-      for (let key in workerControllerInfoDict) {
-        if (workerControllerInfoDict.hasOwnProperty(key)) {
-          arrayOfControllerScripts.push(workerControllerInfoDict[key][0]);
-        }
+    }
+    for (let key in workerControllerInfoDict) {
+      if (workerControllerInfoDict.hasOwnProperty(key)) {
+        arrayOfControllerScripts.push(workerControllerInfoDict[key][0]);
       }
-      for (let key in schedulerControllerInfoDict) {
-        if (schedulerControllerInfoDict.hasOwnProperty(key)) {
-          arrayOfControllerScripts.push(schedulerControllerInfoDict[key][0]);
-        }
+    }
+    for (let key in schedulerControllerInfoDict) {
+      if (schedulerControllerInfoDict.hasOwnProperty(key)) {
+        arrayOfControllerScripts.push(schedulerControllerInfoDict[key][0]);
       }
-      
-      this.createRoute(nextProjectData.globalSettings.pages, () => {
-        this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), sitemapInfoDict, () => {
-          this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-            this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(_schedulerControllerInfoDict), () => {
-              this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
-                this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
-                  this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
-                    let nextFrontEndComponentsBlobSHADict = Object.assign({}, nextProjectData.frontEndComponentsBlobSHADict || {});
-                    Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
-                
-                    this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
-                      this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
-                        this.commit(incremental).then(() => {
-                          if (incremental) {
-                            $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
-                            $this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
-                            $this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(_connectorControllerInfoDict);
-                            $this.incrementalUpdatingWorkerControllerInfoDict = {};
-                            for (const key in _workerControllerInfoDict) {
-                              if (_workerControllerInfoDict.hasOwnProperty(key)) {
-                                $this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = _workerControllerInfoDict[key];
-                              }
+    }
+
+    this.createRoute(nextProjectData.globalSettings.pages, () => {
+      this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), sitemapInfoDict, () => {
+        this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
+          this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(_schedulerControllerInfoDict), () => {
+            this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
+              this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
+                this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
+                  let nextFrontEndComponentsBlobSHADict = Object.assign({}, nextProjectData.frontEndComponentsBlobSHADict || {});
+                  Object.assign(nextFrontEndComponentsBlobSHADict, frontEndComponentsBlobSHADict);
+
+                  this.createSiteBundle(nextProjectData.globalSettings.pages, nextFrontEndComponentsBlobSHADict, () => {
+                    this.create('../../project.stackblend', CodeHelper.label(JSON.stringify(CodeHelper.recursiveSortHashtable(nextProjectData), null, 2))).then(() => {
+                      this.commit(incremental).then(() => {
+                        if (incremental) {
+                          $this.incrementalUpdatingFrontEndCodeInfoDict = CodeHelper.clone(frontEndCodeInfoDict);
+                          $this.incrementalUpdatingBackEndControllerInfoDict = CodeHelper.clone(backEndControllerInfoDict);
+                          $this.incrementalUpdatingConnectorControllerInfoDict = CodeHelper.clone(_connectorControllerInfoDict);
+                          $this.incrementalUpdatingWorkerControllerInfoDict = {};
+                          for (const key in _workerControllerInfoDict) {
+                            if (_workerControllerInfoDict.hasOwnProperty(key)) {
+                              $this.incrementalUpdatingWorkerControllerInfoDict[key.split(':')[0]] = _workerControllerInfoDict[key];
                             }
-                            $this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(_schedulerControllerInfoDict);
                           }
-                          
-                          cb(true);
-                        }).catch(() => {
-                          cb(incremental);
-                        });
+                          $this.incrementalUpdatingSchedulerControllerInfoDict = CodeHelper.clone(_schedulerControllerInfoDict);
+                        }
+
+                        cb(true);
+                      }).catch(() => {
+                        cb(incremental);
                       });
                     });
                   });
@@ -478,9 +477,10 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
           });
         });
       });
-    }
-    createRoute(routes: string[], cb: any) {
-      this.create('../route.ts', `// Auto[Generating:V1]--->
+    });
+  }
+  createRoute(routes : string[], cb : any) {
+    this.create('../route.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import * as homeController from './controllers/Home';
@@ -490,16 +490,16 @@ ${routes.map(route => ` app.get("${route.path}", homeController.${this.getRepres
  app.post("${route.path}", homeController.${this.getRepresentativeName(route.id)});
  app.put("${route.path}", homeController.${this.getRepresentativeName(route.id)});
  app.delete("${route.path}", homeController.${this.getRepresentativeName(route.id)});`).join('\n')
-}
+      }
 }
 
 export default route;
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-    }
-    createController(routes: string[], connectors: string[], workers: string[], schedulers: string[], sitemapInfoDict: any={}, cb: any) {
-      this.create('./Home.ts', `// Auto[Generating:V1]--->
+  }
+  createController(routes : string[], connectors : string[], workers : string[], schedulers : string[], sitemapInfoDict : any = {}, cb : any) {
+    this.create('./Home.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Request, Response} from "express";
@@ -526,112 +526,112 @@ ${Object.keys(sitemapInfoDict).sort().map(key => `SitemapHelper.register('${key}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-    }
-    createView(inputDict: any, pages: any, cb: any) {
-      let keys = Object.keys(inputDict);
-      let nextViewDataSHADict = {};
-      
-      let process = ((index: number) => {
-        let page = pages.filter(page => page.id == keys[index]);
-        
-        this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
+  }
+  createView(inputDict : any, pages : any, cb : any) {
+    let keys = Object.keys(inputDict);
+    let nextViewDataSHADict = {};
+
+    let process = ((index : number) => {
+      let page = pages.filter(page => page.id == keys[index]);
+
+      this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name || 'Untitled')}
 
 //- <--- Auto[Generating:V1]
 //- PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
-          if (index + 1 < keys.length) {
-            process(index + 1);
-          } else {
-            cb();
-          }
-        });
-      }).bind(this);
-      if (keys.length > 0) process(0);
-      else cb(nextViewDataSHADict);
-    }
-    createFrontEndComponents(arrayOfContent: string[], cb: any) {
-      let nextFrontEndComponentsDataSHADict = {};
-      let mainprocess = ((mainIndex: number) => {
-        let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
-        if (results.length < 2) {
-          if (mainIndex + 1 < arrayOfContent.length) {
-            mainprocess(mainIndex + 1);
-          } else {
-            cb(nextFrontEndComponentsDataSHADict);
-          }
+        if (index + 1 < keys.length) {
+          process(index + 1);
         } else {
-          let subprocess = ((subIndex: number) => {
-            let tokens = results[subIndex].split("\n// <---Auto[File]");
-            
-            this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
+          cb();
+        }
+      });
+    }).bind(this);
+    if (keys.length > 0) process(0);
+    else cb(nextViewDataSHADict);
+  }
+  createFrontEndComponents(arrayOfContent : string[], cb : any) {
+    let nextFrontEndComponentsDataSHADict = {};
+    let mainprocess = ((mainIndex : number) => {
+      let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
+      if (results.length < 2) {
+        if (mainIndex + 1 < arrayOfContent.length) {
+          mainprocess(mainIndex + 1);
+        } else {
+          cb(nextFrontEndComponentsDataSHADict);
+        }
+      } else {
+        let subprocess = ((subIndex : number) => {
+          let tokens = results[subIndex].split("\n// <---Auto[File]");
+
+          this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${tokens[1]}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
-              nextFrontEndComponentsDataSHADict[tokens[0]] = '';
+            nextFrontEndComponentsDataSHADict[tokens[0]] = '';
 
-              if (subIndex + 1 < results.length) {
-                subprocess(subIndex + 1);
-              } else if (mainIndex + 1 < arrayOfContent.length) {
-                mainprocess(mainIndex + 1);
-              } else {
-                cb(nextFrontEndComponentsDataSHADict);
-              }
-            });
-          }).bind(this);
-          subprocess(1);
-        }
-      }).bind(this);
-      if (arrayOfContent.length != 0) mainprocess(0);
-      else cb(nextFrontEndComponentsDataSHADict);
-    }
-    createBackEndController(arrayOfContent: string[], connectors: string[], workers: string[], schedulers: string[], cb: any) {
-      let nextBackEndControllersDataSHAInfos = [];
-      let mainprocess = ((mainIndex: number) => {
-        let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
-        if (results.length < 2) {
-          if (mainIndex + 1 < arrayOfContent.length) {
-            mainprocess(mainIndex + 1);
-          } else {
-            cb();
-          }
+            if (subIndex + 1 < results.length) {
+              subprocess(subIndex + 1);
+            } else if (mainIndex + 1 < arrayOfContent.length) {
+              mainprocess(mainIndex + 1);
+            } else {
+              cb(nextFrontEndComponentsDataSHADict);
+            }
+          });
+        }).bind(this);
+        subprocess(1);
+      }
+    }).bind(this);
+    if (arrayOfContent.length != 0) mainprocess(0);
+    else cb(nextFrontEndComponentsDataSHADict);
+  }
+  createBackEndController(arrayOfContent : string[], connectors : string[], workers : string[], schedulers : string[], cb : any) {
+    let nextBackEndControllersDataSHAInfos = [];
+    let mainprocess = ((mainIndex : number) => {
+      let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
+      if (results.length < 2) {
+        if (mainIndex + 1 < arrayOfContent.length) {
+          mainprocess(mainIndex + 1);
         } else {
-          let subprocess = ((subIndex: number) => {
-            let tokens = results[subIndex].split("\n// <---Auto[File]");
-            let path = './components/';
-            
-            if (connectors.indexOf(tokens[0]) != -1) path = './connectors/';
-            else if (workers.indexOf(tokens[0]) != -1) path = './workers/';
-            else if (schedulers.indexOf(tokens[0]) != -1) path = './schedulers/';
-            
-            this.create(`${path}${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
+          cb();
+        }
+      } else {
+        let subprocess = ((subIndex : number) => {
+          let tokens = results[subIndex].split("\n// <---Auto[File]");
+          let path = './components/';
+
+          if (connectors.indexOf(tokens[0]) != -1) path = './connectors/';
+          else if (workers.indexOf(tokens[0]) != -1) path = './workers/';
+          else if (schedulers.indexOf(tokens[0]) != -1) path = './schedulers/';
+
+          this.create(`${path}${this.getFeatureDirectoryPrefix(tokens[0])}${this.getRepresentativeName(tokens[0])}.ts`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 ${this.replaceShortcuts(tokens[1])}
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(() => {
-              if (subIndex + 1 < results.length) {
-                subprocess(subIndex + 1);
-              } else if (mainIndex + 1 < arrayOfContent.length) {
-                mainprocess(mainIndex + 1);
-              } else {
-                cb();
-              }
-            });
-          }).bind(this);
-          subprocess(1);
-        }
-      }).bind(this);
-      if (arrayOfContent.length != 0) mainprocess(0);
-      else cb();
-    }
-    createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
-      this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
+            if (subIndex + 1 < results.length) {
+              subprocess(subIndex + 1);
+            } else if (mainIndex + 1 < arrayOfContent.length) {
+              mainprocess(mainIndex + 1);
+            } else {
+              cb();
+            }
+          });
+        }).bind(this);
+        subprocess(1);
+      }
+    }).bind(this);
+    if (arrayOfContent.length != 0) mainprocess(0);
+    else cb();
+  }
+  createSiteBundle(routes : string[], frontEndComponentsBlobSHADict : any, cb : any) {
+    this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 import {Project, DeclarationHelper} from './helpers/DeclarationHelper';
@@ -664,19 +664,19 @@ window.internalFsbOpen = (initClass: string, data: any) => {
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
-    }
-    generateWorkspaceData() {
-      return {};
-    }
-    initializeWorkspaceData(data) {
-      
-    }
-    
-    render() {
-      return pug `div`
-    }
+  }
+  generateWorkspaceData() {
+    return {};
+  }
+  initializeWorkspaceData(data) {
+
+  }
+
+  render() {
+    return pug`div`
+  }
 }
 
 DeclarationHelper.declare('Components.EndpointManager', EndpointManager);
 
-export {Props, State, EndpointManager};
+export { Props, State, EndpointManager };

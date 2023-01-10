@@ -2,19 +2,19 @@
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
 // Auto[Import]--->
-import {Project as $Project, DeclarationHelper} from '../helpers/DeclarationHelper';
-import {CodeHelper} from '../helpers/CodeHelper';
-import {EventHelper} from '../helpers/EventHelper';
-import {HTMLHelper} from '../helpers/HTMLHelper';
-import {AnimationHelper} from '../helpers/AnimationHelper';
-import {TestHelper} from '../helpers/TestHelper';
-import {SourceType, HierarchicalDataTable, HierarchicalDataRow} from '../helpers/DataManipulationHelper';
-import {loc as $loc} from '../helpers/LocalizationHelper';
-import {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base} from './Base';
+import { Project as $Project, DeclarationHelper } from '../helpers/DeclarationHelper';
+import { CodeHelper } from '../helpers/CodeHelper';
+import { EventHelper } from '../helpers/EventHelper';
+import { HTMLHelper } from '../helpers/HTMLHelper';
+import { AnimationHelper } from '../helpers/AnimationHelper';
+import { TestHelper } from '../helpers/TestHelper';
+import { SourceType, HierarchicalDataTable, HierarchicalDataRow } from '../helpers/DataManipulationHelper';
+import { loc as $loc } from '../helpers/LocalizationHelper';
+import { IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button as $Button, Base as $Base } from './Base';
 
 // Assign to an another one to override the base class.
 // 
-let Base: any = $Base;
+let Base : any = $Base;
 
 // <---Auto[Import]
 
@@ -23,11 +23,11 @@ let Base: any = $Base;
 
 // Auto[Declare]--->
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let window: any;
-declare let DataManipulationHelper: any;
-declare let pug: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let window : any;
+declare let DataManipulationHelper : any;
+declare let pug : any;
 
 let Button = $Button;
 let Project = $Project;
@@ -49,8 +49,8 @@ let loc = $loc;
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-	source: SourceType;
-	group: string;
+    source: SourceType;
+    group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
@@ -59,7 +59,7 @@ interface HierarchicalDataRow {
   relations: {[Identifier: string]: HierarchicalDataTable};
 }*/
 interface IAutoBaseProps extends IBaseProps {
-  forward: {classes: String, styles: any};
+  forward : { classes : String, styles : any };
 }
 interface IAutoBaseState extends IBaseState {
 }
@@ -68,41 +68,41 @@ interface IAutoBaseState extends IBaseState {
 // Declare or extend interfaces here:
 //
 interface IProps extends IAutoBaseProps {
-  
+
 }
-interface IState extends IAutoBaseState { 
+interface IState extends IAutoBaseState {
 }
 
 let DefaultProps = Object.assign({}, DefaultBaseProps, {
-  
+
 });
 let DefaultState = Object.assign({}, DefaultBaseState, {
-  
+
 });
 
 // Auto[ClassBegin]--->
 class FlowLayout_52d0514b extends Base {
-  state: IState = null;
-  protected static defaultProps: IProps = DefaultProps;
-  
+  state : IState = null;
+  protected static defaultProps : IProps = DefaultProps;
+
   constructor(props) {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
-    
+
     this.initialize();
   }
-  
+
   register() {
     TestHelper.identify();
-    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
-        
-    DataManipulationHelper.register("65759748", "insert", ["174ec3c5","320d25b6","37790653","4d43796a","7311c62a","821640a3","ad367405","bb881bb6"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); }});
+    function ready(a) { "loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function(e) { "complete" == document.readyState && a(e) }) };
+
+    DataManipulationHelper.register("65759748", "insert", ["174ec3c5", "320d25b6", "37790653", "4d43796a", "7311c62a", "821640a3", "ad367405", "bb881bb6"], { initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return eval("\"guestbook\""); } });
   }
   // <---Auto[ClassBegin]
-  
+
   // Declare class variables and functions here:
   //
-  protected initialize(): void {
+  protected initialize() : void {
     // This is an example of creating a static collection and use in data binding:
     // 
     /* this.state.data = this.state.data || this.props.data || window.data || {};
@@ -121,15 +121,15 @@ class FlowLayout_52d0514b extends Base {
     // Don't forget to create the mockup's schemata in Explore / Data.
     // 
   }
-  
-  protected componentDidMount(): void {
-  	this.register();
+
+  protected componentDidMount() : void {
+    this.register();
   }
-  
-  protected componentWillUnmount(): void {
+
+  protected componentWillUnmount() : void {
   }
-  
-  protected componentWillReceiveProps(nextProps: any): void {
+
+  protected componentWillReceiveProps(nextProps : any) : void {
     // This is an example of creating a dynamic collection and use in data binding:
     // 
     /* this.state.data = this.state.data || this.props.data || window.data || {};
@@ -149,29 +149,29 @@ class FlowLayout_52d0514b extends Base {
     // Don't forget to create the mockup's schemata in Explore / Data.
     // 
   }
-  
+
   // Providing data array base on dot notation:
   // 
-  protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
+  protected getDataFromNotation(notation : string, inArray : boolean = false, always : boolean = false) : any {
     // Redirect the target by overriding the notation value, for example:
     // 
     // notation = `collection[${notation.split(',')[1]}].collection`;
     //
-    
+
     return super.getDataFromNotation(notation, inArray, always);
   }
-  
-  private isEmpty(): boolean {
+
+  private isEmpty() : boolean {
     return this.getDataFromNotation('guestbook', true).length == 0;
   }
-  
+
   // Auto[Merging]--->
   // <---Auto[Merging]
-  
+
   // Auto[ClassEnd]--->
-  protected render(): any {
+  protected render() : any {
     TestHelper.identify();
-    return pug `
+    return pug`
       div(style=Object.assign({'marginBottom': '20px', 'marginTop': '20px', 'paddingLeft': '0px', 'paddingRight': '0px'}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="col-6 internal-fsb-element internal-fsb-strict-layout offset-3 " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="52d0514b")
         .col-12.internal-fsb-element.internal-fsb-inverse.internal-fsb-strict-layout.offset-0(style={'MsFlexDirection': 'column-reverse', 'MsOverflowY': 'scroll', 'WebkitFlexDirection': 'column-reverse', 'display': 'flex', 'flexDirection': 'column-reverse', 'maxHeight': '75vh', 'overflowY': 'scroll', 'paddingLeft': '0px', 'paddingRight': '0px'}, internal-fsb-class="FlowLayout", internal-fsb-guid="46de0c81")
           each data, i in this.getDataFromNotation("guestbook", true, false)
@@ -214,7 +214,7 @@ DeclarationHelper.declare('Document', 'Controls.FlowLayout_52d0514b', FlowLayout
 
 // Export variables here:
 //
-export {IProps, IState, DefaultProps, DefaultState};
+export { IProps, IState, DefaultProps, DefaultState };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.

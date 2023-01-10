@@ -1,8 +1,8 @@
-import {HTMLHelper} from '../../helpers/HTMLHelper';
-import {RandomHelper} from '../../helpers/RandomHelper';
-import {AnimationHelper} from './AnimationHelper';
-import {InternalProjectSettings} from './WorkspaceHelper';
-import {Accessories, EditorHelper} from './EditorHelper';
+import { HTMLHelper } from '../../helpers/HTMLHelper';
+import { RandomHelper } from '../../helpers/RandomHelper';
+import { AnimationHelper } from './AnimationHelper';
+import { InternalProjectSettings } from './WorkspaceHelper';
+import { Accessories, EditorHelper } from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 
@@ -10,16 +10,16 @@ var TimelineHelper = {
   invalidate: function() {
     cachedElementTreeNodes = null;
   },
-  getElementTreeNodes: function(nodes: array=[], container: any=document.body) {
+  getElementTreeNodes: function(nodes : array = [], container : any = document.body) {
     if (cachedElementTreeNodes) return cachedElementTreeNodes;
-    
+
     let infos = AnimationHelper.getStylesheetDefinitionKeys();
-    
+
     if (!InternalProjectSettings.editingAnimationID) {
       AnimationHelper.setAnimationGroup(RandomHelper.generateGUID());
       infos = AnimationHelper.getStylesheetDefinitionKeys();
     }
-    
+
     for (let info of infos) {
       nodes.push({
         id: info.id,
@@ -41,16 +41,16 @@ var TimelineHelper = {
         }
       });
     }
-    
+
     cachedElementTreeNodes = nodes;
     return cachedElementTreeNodes;
   },
-  recursiveGetElementTreeNodes: function(nodes: array=[], container: any=document.body, key: string=null) {
+  recursiveGetElementTreeNodes: function(nodes : array = [], container : any = document.body, key : string = null) {
     if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
-    
+
     for (let element of container.childNodes) {
       if (!element.getAttribute) continue;
-      
+
       let name = HTMLHelper.getAttribute(element, 'internal-fsb-name');
       let klass = HTMLHelper.getAttribute(element, 'internal-fsb-class');
       let guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
@@ -58,7 +58,7 @@ var TimelineHelper = {
       let isTheBeginElement = HTMLHelper.hasClass(element, 'internal-fsb-begin');
       let isTableLayoutCell = (element.tagName == 'TD' && HTMLHelper.hasClass(element, 'internal-fsb-allow-cursor'));
       let id = (isTableLayoutCell) ? HTMLHelper.getAttribute(element.parentNode.parentNode.parentNode, 'internal-fsb-guid') : HTMLHelper.getAttribute(element, 'internal-fsb-guid');
-      
+
       if ((id || isTableLayoutCell) && !isTheBeginElement) {
         if (AnimationHelper.hasStylesheetDefinition(id, key) || (element == EditorHelper.getSelectingElement() && key == InternalProjectSettings.editingAnimationID)) {
           nodes.push({
@@ -117,4 +117,4 @@ var TimelineHelper = {
   }
 };
 
-export {TimelineHelper};
+export { TimelineHelper };

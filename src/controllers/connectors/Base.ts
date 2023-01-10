@@ -1,41 +1,41 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataRow, ActionType} from "../helpers/DatabaseHelper";
-import {DataTableSchema} from "../helpers/SchemaHelper";
+import { HierarchicalDataRow, ActionType } from "../helpers/DatabaseHelper";
+import { DataTableSchema } from "../helpers/SchemaHelper";
 
-const dictionary: {[Identifier: string]: (Event) => Promise<HierarchicalDataRow[]>} = {};
+const dictionary : { [Identifier : string] : (Event) => Promise<HierarchicalDataRow[]> } = {};
 
 class Base {
-  private source: DataTableSchema = null;
-  private target: DataTableSchema = null;
+  private source : DataTableSchema = null;
+  private target : DataTableSchema = null;
 
-  constructor(source: DataTableSchema, target: DataTableSchema) {
+  constructor(source : DataTableSchema, target : DataTableSchema) {
     this.source = source;
     this.target = target;
-    
+
     this.setup();
     this.initialize();
   }
-  
-  protected register(action: ActionType, source: DataTableSchema, method: (Event) => Promise<HierarchicalDataRow[]>) {
+
+  protected register(action : ActionType, source : DataTableSchema, method : (Event) => Promise<HierarchicalDataRow[]>) {
     if (source.group == this.source.group) {
       dictionary[`${this.source.guid}:${this.target.guid}:${action}`] = method;
     } else {
       dictionary[`${this.target.guid}:${this.source.guid}:${action}`] = method;
     }
   }
-  
+
   protected setup() {
-    void(0);
+    void (0);
   }
-  
+
   protected initialize() {
-    void(0);
+    void (0);
   }
-  
-  static async perform(action: ActionType, source: DataTableSchema, target: DataTableSchema, rows: HierarchicalDataRow[], transaction: any, crossRelationUpsert: boolean, session: any, leavePermission: boolean, innerCircleTags: string[]): Promise<HierarchicalDataRow[]> {
-    let type: string = null;
+
+  static async perform(action : ActionType, source : DataTableSchema, target : DataTableSchema, rows : HierarchicalDataRow[], transaction : any, crossRelationUpsert : boolean, session : any, leavePermission : boolean, innerCircleTags : string[]) : Promise<HierarchicalDataRow[]> {
+    let type : string = null;
     switch (action) {
       case ActionType.Insert:
         type = 'Insert';
@@ -55,7 +55,7 @@ class Base {
       default:
         throw new Error('Wrong of an action.');
     }
-    
+
     const info = {
       source: source,
       target: target,
@@ -67,7 +67,7 @@ class Base {
       innerCircleTags: innerCircleTags
     };
 
-    if (dictionary[`${source.guid}:${target.guid}:${action}`]) {    
+    if (dictionary[`${source.guid}:${target.guid}:${action}`]) {
       return await dictionary[`${source.guid}:${target.guid}:${action}`](info);
     } else {
       return rows;
@@ -75,7 +75,7 @@ class Base {
   }
 }
 
-export {Base};
+export { Base };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

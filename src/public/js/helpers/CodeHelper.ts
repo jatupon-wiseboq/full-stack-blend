@@ -2,10 +2,10 @@
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
 const CodeHelper = {
-  clone: (obj: any) => {
+  clone: (obj : any) => {
     return JSON.parse(JSON.stringify(obj));
   },
-  equals: (x: any, y: any) => {
+  equals: (x : any, y : any) => {
     'use strict';
 
     if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
@@ -27,10 +27,10 @@ const CodeHelper = {
 
     // recursive object equality check
     var p = Object.keys(x);
-    return Object.keys(y).every(function (i) { return p.indexOf(i) !== -1; }) &&
-        p.every(function (i) { return CodeHelper.equals(x[i], y[i]); });
+    return Object.keys(y).every(function(i) { return p.indexOf(i) !== -1; }) &&
+      p.every(function(i) { return CodeHelper.equals(x[i], y[i]); });
   },
-  escape: (unsafe: string) => {
+  escape: (unsafe : string) => {
     unsafe = unsafe || '';
     return unsafe
       .replace(/&/g, "&amp;")
@@ -39,7 +39,7 @@ const CodeHelper = {
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#039;");
   },
-  toSecuredDataString: (data: any): string => {
+  toSecuredDataString: (data : any) : string => {
     switch (typeof data) {
       case 'string':
         return data;
@@ -51,23 +51,23 @@ const CodeHelper = {
         return '';
     }
   },
-  label: (data: string): string => {
-    let current: string = null;
-    let category: number = 0;
+  label: (data : string) : string => {
+    let current : string = null;
+    let category : number = 0;
     const lines = data.split('\n');
-    
-    for (let i=0; i<lines.length; i++) {
+
+    for (let i = 0; i < lines.length; i++) {
       const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})",/);
       const ending = ((category == 1 && (lines[i] == '    }' || lines[i] == '    },')) ||
-                      (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
-      
+        (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
+
       if (starting != null) {
         category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
         if (category == 2) {
-          if (lines[i-1].indexOf('}') == -1) lines[i-1] = `${current}${lines[i-1]}`;
-          if (lines[i-2].indexOf('}') == -1) lines[i-2] = `${current}${lines[i-2]}`;
+          if (lines[i - 1].indexOf('}') == -1) lines[i - 1] = `${current}${lines[i - 1]}`;
+          if (lines[i - 2].indexOf('}') == -1) lines[i - 2] = `${current}${lines[i - 2]}`;
         }
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
@@ -77,24 +77,24 @@ const CodeHelper = {
         lines[i] = `${current}${lines[i]}`;
       }
     }
-    
+
     return lines.join('\n');
   },
-  unlabel: (data: string): string => {
+  unlabel: (data : string) : string => {
     const lines = data.split('\n');
-    
-    for (let i=0; i<lines.length; i++) {
+
+    for (let i = 0; i < lines.length; i++) {
       const matched = lines[i].match(/^([0-9a-f]{8,8}) (.*)/);
       if (matched) {
         lines[i] = ` ${matched[2]}`;
       }
     }
-    
+
     return lines.join('\n');
   }
 };
 
-export {CodeHelper};
+export { CodeHelper };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

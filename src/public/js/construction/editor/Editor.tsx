@@ -1,8 +1,8 @@
-import {FullStackBlend} from '../helpers/DeclarationHelper';
-import {EventHelper} from '../helpers/EventHelper';
-import {HTMLHelper} from '../helpers/HTMLHelper';
-import {RequestHelper} from '../helpers/RequestHelper';
-import {WORKSPACE_TOGGLING_ATTRIBUTES, WORKSPACE_TOGGLING_STYLES, WORKSPACE_TOGGLING_EXTENSIONS} from '../Constants';
+import { FullStackBlend } from '../helpers/DeclarationHelper';
+import { EventHelper } from '../helpers/EventHelper';
+import { HTMLHelper } from '../helpers/HTMLHelper';
+import { RequestHelper } from '../helpers/RequestHelper';
+import { WORKSPACE_TOGGLING_ATTRIBUTES, WORKSPACE_TOGGLING_STYLES, WORKSPACE_TOGGLING_EXTENSIONS } from '../Constants';
 
 import './components/layout/GridPicker';
 import './components/layout/OffsetPicker';
@@ -62,32 +62,32 @@ import './components/animation/Keyframe';
 
 //import GitHub from 'github-api';
 
-declare let React: any;
-declare let ReactDOM: any;
+declare let React : any;
+declare let ReactDOM : any;
 
 let Accessories = {
   preview: null
 };
 
-let recentExtraPanelSelector: string = null;
+let recentExtraPanelSelector : string = null;
 let cachedUpdateEditorProperties = {};
 
 (function() {
-  window.perform = (name: string, content: any) => {
+  window.perform = (name : string, content : any) => {
     if (['undo', 'redo'].indexOf(name) != -1) {
       document.body.click();
     }
-    
+
     const element = document.getElementById('area') as HTMLFrameElement;
     const contentWindow = element.contentWindow;
-     const stringifyIfNeed = contentWindow.messageFnArray ? (data: any) => data : JSON.stringify;
+    const stringifyIfNeed = contentWindow.messageFnArray ? (data : any) => data : JSON.stringify;
     contentWindow.postMessage(stringifyIfNeed({
       name: name,
       content: content
     }), '*');
   };
-  
-  window.toggle = (name: string, iconSelector: string) => {
+
+  window.toggle = (name : string, iconSelector : string) => {
     let icon = HTMLHelper.getElementBySelector(iconSelector);
     if (HTMLHelper.hasClass(icon, 'fa-toggle-on')) {
       HTMLHelper.removeClass(icon, 'fa-toggle-on');
@@ -96,7 +96,7 @@ let cachedUpdateEditorProperties = {};
       HTMLHelper.removeClass(icon, 'fa-toggle-off');
       HTMLHelper.addClass(icon, 'fa-toggle-on');
     }
-    
+
     switch (name) {
       case 'explorer':
         HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
@@ -105,25 +105,25 @@ let cachedUpdateEditorProperties = {};
         HTMLHelper.getElementById(name).style.display = HTMLHelper.hasClass(icon, 'fa-toggle-on') ? '' : 'none';
         break;
     }
-    
+
     perform('toggle', name);
-    
+
     synchronize('click');
   };
-  
-  window.swap = (selector: string, toolsetSelector: string=null, extraPanelSelector: string=null, replacingIconSelector: string=null, iconClass: string=null, skipExtraPanel: boolean=false) => {
+
+  window.swap = (selector : string, toolsetSelector : string = null, extraPanelSelector : string = null, replacingIconSelector : string = null, iconClass : string = null, skipExtraPanel : boolean = false) => {
     const button = EventHelper.getCurrentElement(event);
     if (button.tagName != 'A') button = button.parentNode;
-    
+
     const accessory = HTMLHelper.getAttribute(HTMLHelper.getElementBySelector('a.active', button.parentNode) || button, 'id');
     const isSwappingEditingMode = ['#design', '#animation', '#coding'].indexOf(selector) != -1;
     const isTogglingOff = isSwappingEditingMode && HTMLHelper.hasClass(button, 'active');
-    
+
     HTMLHelper.getElementsBySelector('a.active', button.parentNode).forEach((value, index) => {
       if (value.parentNode != button.parentNode) return;
       HTMLHelper.removeClass(value, 'active');
     });
-    
+
     if (isTogglingOff) {
       if (isSwappingEditingMode) {
         HTMLHelper.getElementBySelector('.workspace-panel-container.sidebar').style.display = 'none';
@@ -136,12 +136,12 @@ let cachedUpdateEditorProperties = {};
         HTMLHelper.getElementById('timeline').style.display = '';
         HTMLHelper.getElementById('codeEditor').style.display = '';
       }
-      
+
       HTMLHelper.addClass(button, 'active');
     }
-    
+
     const panel = HTMLHelper.getElementsBySelector('.panel' + selector);
-    
+
     panel.forEach((value, index) => {
       HTMLHelper.getElementsBySelector('.panel', value.parentNode).forEach((p, index) => {
         if (p.parentNode != value.parentNode) return;
@@ -149,30 +149,30 @@ let cachedUpdateEditorProperties = {};
       });
       HTMLHelper.addClass(value, 'active');
     });
-    
+
     if (replacingIconSelector != null) {
       HTMLHelper.getElementsBySelector(replacingIconSelector).forEach((replacingIconElement) => {
         if (!replacingIconElement.className || typeof replacingIconElement.className !== 'string') return;
         replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
       });
     }
-    
+
     if (!skipExtraPanel) {
       if (recentExtraPanelSelector != null) {
         HTMLHelper.getElementsBySelector(recentExtraPanelSelector).forEach((recentExtraPanel) => {
           HTMLHelper.removeClass(recentExtraPanel, 'active');
         });
       }
-      
+
       if (extraPanelSelector != null) {
         const extraPanel = HTMLHelper.getElementsBySelector(extraPanelSelector).forEach((extraPanel) => {
           HTMLHelper.addClass(extraPanel, 'active');
         });
       }
-      
+
       recentExtraPanelSelector = extraPanelSelector;
     }
-    
+
     if (toolsetSelector) {
       HTMLHelper.getElementsBySelector('.toolset').forEach((value, index) => {
         value.style.display = 'none';
@@ -181,7 +181,7 @@ let cachedUpdateEditorProperties = {};
         toolset.style.display = '';
       });
     }
-    
+
     if (HTMLHelper.getAttribute(button, 'skip-perform') !== 'true') {
       perform('swap', {
         id: HTMLHelper.getAttribute(button, 'id'),
@@ -189,9 +189,9 @@ let cachedUpdateEditorProperties = {};
       });
     }
     HTMLHelper.removeAttribute(button, 'skip-perform');
-    
+
     synchronize('click');
-    
+
     // Fix console's element sizing bug.
     // 
     window.setTimeout(() => {
@@ -201,15 +201,15 @@ let cachedUpdateEditorProperties = {};
       window.repl.input.focus();
       window.repl.resetInput();
     }, 20);
-    
+
     if (event) return EventHelper.cancel(event);
   };
-  
+
   window.FullStackBlend = FullStackBlend;
-  
+
   window.controls = [];
-  
-  var synchronize = (name: string, content: any) => {
+
+  var synchronize = (name : string, content : any) => {
     switch (name) {
       case 'select':
         break;
@@ -232,10 +232,10 @@ let cachedUpdateEditorProperties = {};
             }
           }
         }
-        
+
         cachedUpdateEditorProperties = Object.assign({}, content);
         prepareUpdateOptionalVisibilities();
-        
+
         if (content && content['attributes']) {
           for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
             let value = content['attributes'][key];
@@ -254,17 +254,17 @@ let cachedUpdateEditorProperties = {};
           document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
           if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
           if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
-          
+
           for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
             let value = content['extensions'][key];
             if (value) updateOptionalVisibilities(key, value);
           }
         }
-        
+
         window.controls.forEach((control) => {
           control.update(content);
         });
-        
+
         HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-off');
         HTMLHelper.removeClass(document.body, 'internal-fsb-selecting-on');
         HTMLHelper.removeClass(document.body, 'internal-fsb-workspace-coding-off');
@@ -312,83 +312,83 @@ let cachedUpdateEditorProperties = {};
       value.style.display = 'none';
     });
   };
-  
-  window.addEventListener("keydown", (event: any) => {
+
+  window.addEventListener("keydown", (event : any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
-    
+
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       if (element.className && element.className.indexOf('ace_') == 0) return;
       if (HTMLHelper.hasClass(document.body, 'internal-fsb-preview-on')) return;
       if (HTMLHelper.hasClass(document.body, 'internal-fsb-external-on')) return;
-      
+
       perform('keydown', event.keyCode);
-    
+
       switch (event.keyCode) {
         case 67:
         case 86:
         case 88:
           return;
       }
-      
+
       return EventHelper.cancel(event);
     }
   });
-  window.addEventListener("keyup", (event: any) => {
+  window.addEventListener("keyup", (event : any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
-    
+
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       if (element.className && element.className.indexOf('ace_') == 0) return;
-      
+
       perform('keyup', event.keyCode);
-      
+
       return EventHelper.cancel(event);
     }
   });
-  window.addEventListener("cut", (event: any) => {
+  window.addEventListener("cut", (event : any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
-    
+
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       if (element.className && element.className.indexOf('ace_') == 0) return;
-      
+
       const iframe = document.getElementById('area') as HTMLFrameElement;
       const contentWindow = iframe.contentWindow;
-      
+
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("cut", event);
     }
   });
-  window.addEventListener("copy", (event: any) => {
+  window.addEventListener("copy", (event : any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
-    
+
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       if (element.className && element.className.indexOf('ace_') == 0) return;
-      
+
       const iframe = document.getElementById('area') as HTMLFrameElement;
       const contentWindow = iframe.contentWindow;
-      
+
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("copy", event);
     }
   });
-  window.addEventListener("paste", (event: any) => {
+  window.addEventListener("paste", (event : any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
-    
+
     let element = EventHelper.getOriginalElement(event);
     if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
       if (element.className && element.className.indexOf('ace_') == 0) return;
-      
+
       const iframe = document.getElementById('area') as HTMLFrameElement;
       const contentWindow = iframe.contentWindow;
-      
+
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("paste", event);
     }
   });
-  window.addEventListener("scroll", (event: any) => {
+  window.addEventListener("scroll", (event : any) => {
     window.scrollTo(0, 0);
   });
-  
+
   const messageFn = (event) => {
     try {
       let data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
@@ -402,7 +402,7 @@ let cachedUpdateEditorProperties = {};
   window.addEventListener("message", messageFn);
   window.messageFnArray = window.messageFnArray || [];
   window.messageFnArray.push(messageFn);
-  window.postMessage = (data: any) => {
+  window.postMessage = (data : any) => {
     if (typeof data === 'string') data = JSON.parse(data);
     for (const messageFn of window.messageFnArray) {
       messageFn({
@@ -410,27 +410,27 @@ let cachedUpdateEditorProperties = {};
       });
     }
   };
-  
-  window.addEventListener("beforeunload", (event: any) => {
+
+  window.addEventListener("beforeunload", (event : any) => {
     if (!window.overrideBeforeUnload) {
       event.preventDefault();
       event.returnValue = 'Your changes may be lost. Are you sure you want to exit the editor?';
-      
+
       return 'Your changes may be lost. Are you sure you want to exit the editor?';
     }
   });
-  
-  window.addEventListener('contextmenu', (event: any) => {
+
+  window.addEventListener('contextmenu', (event : any) => {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
-    
+
     if (!top._contextMenuNotice) {
       alert("The system's context menu isn't supported. Please use ctrl+c, ctrl+x, and ctrl+v for copy-and-paste text and element instead.");
       top._contextMenuNotice = true;
     }
-    
+
     return EventHelper.cancel(event);
   }, true);
-  
+
   window.setup = (() => {
     HTMLHelper.getElementsBySelector('.workspace-panel-container.scrollable').forEach((value, index) => {
       value.addEventListener('scroll', (event) => {
@@ -441,7 +441,7 @@ let cachedUpdateEditorProperties = {};
   });
   window.update = (() => {
     HTMLHelper.addClass(HTMLHelper.getElementByClassName('update-button'), 'in-progress');
-  
+
     Accessories.endpointManager.current.save(() => {
       HTMLHelper.removeClass(HTMLHelper.getElementByClassName('update-button'), 'in-progress');
     }, true);
@@ -455,37 +455,37 @@ let cachedUpdateEditorProperties = {};
   window.deploy = (() => {
     Accessories.projectManager.current.deploy();
   });
-  
+
   let latestRevision = 0;
   let currentRevision = null;
   let timerIncrementalUpdate = null;
-  
-  window.preview = ((incremental: boolean=false) => {
+
+  window.preview = ((incremental : boolean = false) => {
     if (incremental) {
       window.clearTimeout(timerIncrementalUpdate);
       timerIncrementalUpdate = window.setTimeout(() => {
-         Accessories.endpointManager.current.save(() => {}, true);
+        Accessories.endpointManager.current.save(() => { }, true);
       }, 2500);
     } else {
       latestRevision += 1;
       currentRevision = latestRevision;
-      
+
       Accessories.preview.current.open();
-      
+
       HTMLHelper.getElementBySelector('#siteButton').click();
-      
+
       window.setTimeout(() => {
         Accessories.endpointManager.current.save((success) => {
           if (!Accessories.preview.current.isOpening()) return;
           if (success) {
             window.setTimeout(() => {
               Accessories.preview.current.start();
-              
+
               let endpoint = window.ENDPOINT;
-               if (endpoint.indexOf('https://localhost') == 0) {
-                 endpoint = 'https://localhost.stackblend.org';
-               }
-              
+              if (endpoint.indexOf('https://localhost') == 0) {
+                endpoint = 'https://localhost.stackblend.org';
+              }
+
               RequestHelper.get(`${endpoint}/endpoint/recent/error?r=${Math.floor(Math.random() * 999999)}`).then((results) => {
                 if (currentRevision == latestRevision) {
                   if (!results.success) {
@@ -503,23 +503,23 @@ let cachedUpdateEditorProperties = {};
         });
       }, 1000);
     }
-   });
-   
-   let setup = (() => {
-     let previewContainer = document.createElement('div');
+  });
+
+  let setup = (() => {
+    let previewContainer = document.createElement('div');
     Accessories.preview = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.SitePreview ref={Accessories.preview} />, previewContainer);
     document.body.appendChild(previewContainer);
-    
+
     let projectManagerContainer = document.createElement('div');
     Accessories.projectManager = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.ProjectManager ref={Accessories.projectManager} />, projectManagerContainer);
     document.body.appendChild(projectManagerContainer);
-    
+
     let endpointManagerContainer = document.createElement('div');
     Accessories.endpointManager = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.EndpointManager ref={Accessories.endpointManager} />, endpointManagerContainer);
     document.body.appendChild(endpointManagerContainer);
-   });
-   setup();
+  });
+  setup();
 })();

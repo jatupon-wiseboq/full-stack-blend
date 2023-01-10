@@ -13,7 +13,7 @@ import fs from "fs";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
-import {SitemapHelper} from './controllers/helpers/SitemapHelper';
+import { SitemapHelper } from './controllers/helpers/SitemapHelper';
 
 // API keys and Passport configuration
 import passport from "passport";
@@ -39,15 +39,17 @@ const app = express();
 // Connect to MongoDB
 const mongoUrl = process.env[process.env.DOCUMENT_DATABASE_KEY];
 mongoose.Promise = bluebird;
-mongoose.connect(mongoUrl, {useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */ }).
-    catch((err) => {
+mongoose.connect(mongoUrl, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology: true
+}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */ }).
+  catch((err) => {
 
-        console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`);
-        // Process.exit();
+    console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`);
+    // Process.exit();
 
-    });
+  });
 
 app.use(secure);
 app.enable("trust proxy");
@@ -61,11 +63,11 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
-        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
-        autoReconnect: true,
-        mongoOptions: {
-          useUnifiedTopology: true
-        }
+      url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+      autoReconnect: true,
+      mongoOptions: {
+        useUnifiedTopology: true
+      }
     }) || null,
     cookie: { secure: true }
   }));
@@ -75,11 +77,11 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
-        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
-        autoReconnect: true,
-        mongoOptions: {
-          useUnifiedTopology: true
-        }
+      url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+      autoReconnect: true,
+      mongoOptions: {
+        useUnifiedTopology: true
+      }
     }) || null,
     cookie: {}
   }));
@@ -88,8 +90,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -99,23 +101,23 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 
 app.use(lusca.xssProtection(true));
 app.use((req, res, next) => {
-    res.locals.user = req.user;
-    next();
+  res.locals.user = req.user;
+  next();
 });
 app.use((req, res, next) => {
-    // After successful login, redirect back to the intended page
-    if (!req.user &&
+  // After successful login, redirect back to the intended page
+  if (!req.user &&
     req.path !== "/login" &&
     req.path !== "/signup" &&
     !req.path.match(/^\/auth/) &&
     !req.path.match(/\./)) {
-        req.session.returnTo = req.path;
-    
-    } else if (req.user &&
+    req.session.returnTo = req.path;
+
+  } else if (req.user &&
     req.path == "/account/settings") {
-        req.session.returnTo = req.path;
-    }
-    next();
+    req.session.returnTo = req.path;
+  }
+  next();
 });
 
 // CORS configuration
@@ -138,20 +140,22 @@ app.get("/account/unlink/:provider", passportConfig.isAuthenticated, userControl
 /**
  * OAuth authentication routes. (Sign in)
  */
-app.get("/auth/facebook", passport.authenticate("facebook", {scope: ["email",
-    "public_profile"]}));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/account/authenticate"}), (req, res) => {
-    res.redirect("/account/settings");
+app.get("/auth/facebook", passport.authenticate("facebook", {
+  scope: ["email",
+    "public_profile"]
+}));
+app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/account/authenticate" }), (req, res) => {
+  res.redirect("/account/settings");
 });
-app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
-app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/account/authenticate"}), (req, res) => {
-    res.redirect("/account/settings");
+app.get("/auth/github", passport.authenticate("github", { scope: ["repo"] }));
+app.get("/auth/github/callback", passport.authenticate("github", { failureRedirect: "/account/authenticate" }), (req, res) => {
+  res.redirect("/account/settings");
 });
 
 // Cache configuration
 // 
 app.use(
-    express.static(path.join(__dirname, "public"), { maxAge: 0 })
+  express.static(path.join(__dirname, "public"), { maxAge: 0 })
 );
 
 // Error handler
@@ -192,7 +196,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
   app.post("/endpoint/reset/content", endpoint.resetContent);
   app.post("/endpoint/pull/content", endpoint.pullContent);
   app.get("/endpoint/recent/error", endpoint.getRecentError);
-  
+
   app.use((err, req, res, next) => {
     endpoint.addRecentError(err);
     next();

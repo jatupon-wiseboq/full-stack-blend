@@ -1,37 +1,37 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
-import {CodeHelper} from "./CodeHelper";
+import { HierarchicalDataTable, HierarchicalDataRow, SourceType } from "./DatabaseHelper";
+import { CodeHelper } from "./CodeHelper";
 import { strict as assert } from 'assert';
 
 const DataFormationHelper = {
-  convertFromJSONToHierarchicalDataTable: (data: any, group: string="Collection"): HierarchicalDataTable => {
+  convertFromJSONToHierarchicalDataTable: (data : any, group : string = "Collection") : HierarchicalDataTable => {
     CodeHelper.assertOfPresent(data, 'data');
     CodeHelper.assertOfKeyName(group, 'group');
-    CodeHelper.recursiveEvaluate(data, (obj: any) => {
+    CodeHelper.recursiveEvaluate(data, (obj : any) => {
       CodeHelper.assertOfSimpleType(obj, 'data');
     });
-    
+
     const table = {
       source: SourceType.Collection,
       group: group,
       rows: []
     };
-    
+
     table.rows.push(DataFormationHelper.recursiveExtractNodesIntoDataRow(data));
-    
+
     return table;
   },
-  recursiveExtractNodesIntoDataRow: (data: any): HierarchicalDataRow => {
+  recursiveExtractNodesIntoDataRow: (data : any) : HierarchicalDataRow => {
     CodeHelper.assertOfNotUndefined(data, 'data');
-    
+
     const row = {
       keys: {},
       columns: {},
       relations: {}
     };
-    
+
     if (Array.isArray(data)) {
       const table = {
         source: SourceType.Collection,
@@ -46,7 +46,7 @@ const DataFormationHelper = {
       for (let key in data) {
         if (data.hasOwnProperty(key)) {
           CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
-          
+
           if (Array.isArray(data[key])) {
             const table = {
               source: SourceType.Collection,
@@ -77,54 +77,54 @@ const DataFormationHelper = {
     } else {
       row.columns['_'] = data;
     }
-    
+
     return row;
   },
-  convertFromHierarchicalDataTableToJSON: (data: HierarchicalDataTable): any => {
+  convertFromHierarchicalDataTableToJSON: (data : HierarchicalDataTable) : any => {
     CodeHelper.assertOfPresent(data, 'data');
-    
+
     return DataFormationHelper.recursiveExtractNodesIntoDictionary(data.rows[0]);
   },
-  recursiveExtractNodesIntoDictionary: (row: HierarchicalDataRow): any => {
+  recursiveExtractNodesIntoDictionary: (row : HierarchicalDataRow) : any => {
     CodeHelper.assertOfPresent(row, 'row');
-    
+
     if (row.columns.hasOwnProperty('_')) {
       return row.columns['_'];
     } else {
       const dictionary = {};
-    
+
       for (let key in row.keys) {
         CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
-        
+
         if (row.keys.hasOwnProperty(key)) {
           dictionary['$' + key] = row.keys[key];
         }
       }
       for (let key in row.columns) {
         CodeHelper.assertOfKeyName(key.replace(/^\$/, ''), 'key');
-        
+
         if (row.columns.hasOwnProperty(key)) {
           dictionary[key] = row.columns[key];
         }
       }
       for (let key in row.relations) {
         CodeHelper.assertOfKeyName(key, 'key');
-        
+
         if (row.relations.hasOwnProperty(key)) {
           if (key == 'Children') {
             const results = [];
-            
+
             for (let _row of row.relations['Children'].rows) {
               results.push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
             }
-            
+
             return results;
           } else {
             if (row.relations[key].source == SourceType.Dictionary) {
               dictionary[key] = DataFormationHelper.recursiveExtractNodesIntoDictionary(row.relations[key].rows[0])
             } else {
               dictionary[key] = [];
-              
+
               for (let _row of row.relations[key].rows) {
                 dictionary[key].push(DataFormationHelper.recursiveExtractNodesIntoDictionary(_row));
               }
@@ -132,13 +132,13 @@ const DataFormationHelper = {
           }
         }
       }
-      
+
       return dictionary;
     }
   },
 };
 
-export {DataFormationHelper};
+export { DataFormationHelper };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

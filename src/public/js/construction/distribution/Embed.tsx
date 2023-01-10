@@ -1,9 +1,9 @@
-import {DataManipulationHelper} from '../../helpers/DataManipulationHelper';
+import { DataManipulationHelper } from '../../helpers/DataManipulationHelper';
 
 (() => {
   // Auto Height Layout
   // 
-  function update(event) {  
+  function update(event) {
     let elements = [...document.body.getElementsByClassName('internal-fsb-absolute-layout')];
     elements.reverse().forEach((element) => {
       let children = [...element.children];
@@ -18,8 +18,8 @@ import {DataManipulationHelper} from '../../helpers/DataManipulationHelper';
       element.style.minHeight = maximum + 'px';
     });
   }
-  
-  let previousWindowSize = {width: null, height: null};
+
+  let previousWindowSize = { width: null, height: null };
   window.addEventListener('resize', (event) => {
     if (previousWindowSize.width != window.innerWidth || previousWindowSize.height != window.innerHeight) {
       previousWindowSize.width = window.innerWidth;

@@ -1,4 +1,4 @@
-import {FontHelper} from './helpers/FontHelper';
+import { FontHelper } from './helpers/FontHelper';
 
 export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col\-md\-([0-9]+)/, /col\-lg\-([0-9]+)/, /col\-xl\-([0-9]+)/];
 export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/, /offset\-xl\-([0-9]+)/];
@@ -107,7 +107,8 @@ export const _FONT_COLOR_OPTIONS = [null, "{TEXT}"];
 export const _TEXT_DECORATION_COLOR_OPTIONS = [null, "{TEXT}"];
 export const REACT_MODE_OPTIONS = [["internal-fsb-react-mode", "Document", ["fa-thumb-tack", "Document"]], ["internal-fsb-react-mode", "Site", ["fa-puzzle-piece", "Site"]], ["internal-fsb-react-mode", "Global", ["fa-globe", "Global"]]];
 export const CAMEL_OF_EVENTS_DICTIONARY = {
-  'onfsbclick': 'onClick', 'onfsbdblclick': 'onDblClick', 'onfsbmousedown': 'onMouseDown', 'onfsbmousemove': 'onMouseMove', 'onfsbmouseout': 'onMouseOut', 'onfsbmouseover': 'onMouseOver', 'onfsbmouseenter': 'onMouseEnter', 'onfsbmouseleave': 'onMouseLeave', 'onfsbmouseup': 'onMouseUp', 'onfsbmousewheel': 'onMouseWheel', 'onfsbwheel': 'onWheel', 'onfsbkeydown': 'onKeyDown', 'onfsbkeypress': 'onKeyPress', 'onfsbkeyup': 'onKeyUp', 'onfsbtouchstart': 'onTouchStart', 'onfsbtouchmove': 'onTouchMove', 'onfsbtouchend': 'onTouchEnd', 'onfsbtouchcancel': 'onTouchCancel', 'onfsbdocumentclick': 'onDocumentClick', 'onfsbdocumentdblclick': 'onDocumentDblClick', 'onfsbdocumentmousedown': 'onDocumentMouseDown', 'onfsbdocumentmousemove': 'onDocumentMouseMove', 'onfsbdocumentmouseout': 'onDocumentMouseOut', 'onfsbdocumentmouseover': 'onDocumentMouseOver', 'onfsbdocumentmouseenter': 'onDocumentMouseEnter', 'onfsbdocumentmouseleave': 'onDocumentMouseLeave', 'onfsbdocumentmouseup': 'onDocumentMouseUp', 'onfsbdocumentmousewheel': 'onDocumentMouseWheel', 'onfsbdocumentwheel': 'onDocumentWheel', 'onfsbdocumentkeydown': 'onDocumentKeyDown', 'onfsbdocumentkeypress': 'onDocumentKeyPress', 'onfsbdocumentkeyup': 'onDocumentKeyUp', 'onfsbdocumenttouchstart': 'onDocumentTouchStart', 'onfsbdocumenttouchmove': 'onDocumentTouchMove', 'onfsbdocumenttouchend': 'onDocumentTouchEnd', 'onfsbdocumenttouchcancel': 'onDocumentTouchCancel', 'onfsbdocumentdrag': 'onDocumentDrag', 'onfsbdocumentdragend': 'onDocumentDragend', 'onfsbdocumentdragenter': 'onDocumentDragEnter', 'onfsbdocumentdragleave': 'onDocumentDragLeave', 'onfsbdocumentdragover': 'onDocumentDragOver', 'onfsbdocumentdragstart': 'onDocumentDragStart', 'onfsbdocumentdrop': 'onDocumentDrop', 'onfsbdocumentscroll': 'onDocumentScroll', 'onfsbdrag': 'onDrag', 'onfsbdragend': 'onDragend', 'onfsbdragenter': 'onDragEnter', 'onfsbdragleave': 'onDragLeave', 'onfsbdragover': 'onDragOver', 'onfsbdragstart': 'onDragStart', 'onfsbdrop': 'onDrop', 'onfsbscroll': 'onScroll', 'onfsbblur': 'onBlur', 'onfsbchange': 'onChange', 'onfsbcontextmenu': 'onContextMenu', 'onfsbfocus': 'onFocus', 'onfsbinput': 'onInput', 'onfsbinvalid': 'onInvalid', 'onfsbreset': 'onReset', 'onfsbsearch': 'onSearch', 'onfsbselect': 'onSelect', 'onfsbsubmit': 'onSubmit', 'onfsbafterprint': 'onAfterPrint', 'onfsbbeforeprint': 'onBeforePrint', 'onfsbbeforeunload': 'onBeforeUnload', 'onfsberror': 'onError', 'onfsbhashchange': 'onHashChange', 'onfsbload': 'onLoad', 'onfsbmessage': 'onMessage', 'onfsboffline': 'onOffline', 'onfsbonline': 'onOnline', 'onfsbpagehide': 'onPageHide', 'onfsbpageshow': 'onPageShow', 'onfsbpopstate': 'onPopState', 'onfsbready': 'onReady', 'onfsbresize': 'onResize', 'onfsbstorage': 'onStorage', 'onfsbunload': 'onUnload', 'onfsbcopy': 'onCopy', 'onfsbcut': 'onCut', 'onfsbpaste': 'onPaste', 'onfsbabort': 'onAbort', 'onfsbcanplay': 'onCanplay', 'onfsbcanplaythrough': 'onCanplayThrough', 'onfsbcuechange': 'onCueChange', 'onfsbdurationchange': 'onDurationChange', 'onfsbemptied': 'onEmptied', 'onfsbended': 'onEnded', 'onfsberror': 'onError', 'onfsbloadeddata': 'onLoadedData', 'onfsbloadedmetadata': 'onLoadedMetadata', 'onfsbloadstart': 'onLoadStart', 'onfsbpause': 'onPause', 'onfsbplay': 'onPlay', 'onfsbplaying': 'onPlaying', 'onfsbprogress': 'onProgress', 'onfsbratechange': 'onRateChange', 'onfsbseeked': 'onSeeked', 'onfsbseeking': 'onSeeking', 'onfsbstalled': 'onStalled', 'onfsbsuspend': 'onSuspend', 'onfsbtimeupdate': 'onTimeUpdate', 'onfsbvolumechange': 'onVolumeChange', 'onfsbwaiting': 'onWaiting', 'onfsbsubmitting': 'onSubmitting', 'onfsbsubmitted': 'onSubmitted', 'onfsbfailed': 'onFailed', 'onfsbsuccess': 'onSuccess', 'onfsbsourceinsert': 'onSourceInsert', 'onfsbsourceupsert': 'onSourceUpsert', 'onfsbsourceupdate': 'onSourceUpdate', 'onfsbsourcedelete': 'onSourceDelete', 'onfsbsourceretrieve': 'onSourceRetrieve', 'onfsbtargetinsert': 'onTargetInsert', 'onfsbtargetupsert': 'onTargetUpsert', 'onfsbtargetupdate': 'onTargetUpdate', 'onfsbtargetdelete': 'onTargetDelete', 'onfsbtargetretrieve': 'onTargetRetrieve'};
+  'onfsbclick': 'onClick', 'onfsbdblclick': 'onDblClick', 'onfsbmousedown': 'onMouseDown', 'onfsbmousemove': 'onMouseMove', 'onfsbmouseout': 'onMouseOut', 'onfsbmouseover': 'onMouseOver', 'onfsbmouseenter': 'onMouseEnter', 'onfsbmouseleave': 'onMouseLeave', 'onfsbmouseup': 'onMouseUp', 'onfsbmousewheel': 'onMouseWheel', 'onfsbwheel': 'onWheel', 'onfsbkeydown': 'onKeyDown', 'onfsbkeypress': 'onKeyPress', 'onfsbkeyup': 'onKeyUp', 'onfsbtouchstart': 'onTouchStart', 'onfsbtouchmove': 'onTouchMove', 'onfsbtouchend': 'onTouchEnd', 'onfsbtouchcancel': 'onTouchCancel', 'onfsbdocumentclick': 'onDocumentClick', 'onfsbdocumentdblclick': 'onDocumentDblClick', 'onfsbdocumentmousedown': 'onDocumentMouseDown', 'onfsbdocumentmousemove': 'onDocumentMouseMove', 'onfsbdocumentmouseout': 'onDocumentMouseOut', 'onfsbdocumentmouseover': 'onDocumentMouseOver', 'onfsbdocumentmouseenter': 'onDocumentMouseEnter', 'onfsbdocumentmouseleave': 'onDocumentMouseLeave', 'onfsbdocumentmouseup': 'onDocumentMouseUp', 'onfsbdocumentmousewheel': 'onDocumentMouseWheel', 'onfsbdocumentwheel': 'onDocumentWheel', 'onfsbdocumentkeydown': 'onDocumentKeyDown', 'onfsbdocumentkeypress': 'onDocumentKeyPress', 'onfsbdocumentkeyup': 'onDocumentKeyUp', 'onfsbdocumenttouchstart': 'onDocumentTouchStart', 'onfsbdocumenttouchmove': 'onDocumentTouchMove', 'onfsbdocumenttouchend': 'onDocumentTouchEnd', 'onfsbdocumenttouchcancel': 'onDocumentTouchCancel', 'onfsbdocumentdrag': 'onDocumentDrag', 'onfsbdocumentdragend': 'onDocumentDragend', 'onfsbdocumentdragenter': 'onDocumentDragEnter', 'onfsbdocumentdragleave': 'onDocumentDragLeave', 'onfsbdocumentdragover': 'onDocumentDragOver', 'onfsbdocumentdragstart': 'onDocumentDragStart', 'onfsbdocumentdrop': 'onDocumentDrop', 'onfsbdocumentscroll': 'onDocumentScroll', 'onfsbdrag': 'onDrag', 'onfsbdragend': 'onDragend', 'onfsbdragenter': 'onDragEnter', 'onfsbdragleave': 'onDragLeave', 'onfsbdragover': 'onDragOver', 'onfsbdragstart': 'onDragStart', 'onfsbdrop': 'onDrop', 'onfsbscroll': 'onScroll', 'onfsbblur': 'onBlur', 'onfsbchange': 'onChange', 'onfsbcontextmenu': 'onContextMenu', 'onfsbfocus': 'onFocus', 'onfsbinput': 'onInput', 'onfsbinvalid': 'onInvalid', 'onfsbreset': 'onReset', 'onfsbsearch': 'onSearch', 'onfsbselect': 'onSelect', 'onfsbsubmit': 'onSubmit', 'onfsbafterprint': 'onAfterPrint', 'onfsbbeforeprint': 'onBeforePrint', 'onfsbbeforeunload': 'onBeforeUnload', 'onfsberror': 'onError', 'onfsbhashchange': 'onHashChange', 'onfsbload': 'onLoad', 'onfsbmessage': 'onMessage', 'onfsboffline': 'onOffline', 'onfsbonline': 'onOnline', 'onfsbpagehide': 'onPageHide', 'onfsbpageshow': 'onPageShow', 'onfsbpopstate': 'onPopState', 'onfsbready': 'onReady', 'onfsbresize': 'onResize', 'onfsbstorage': 'onStorage', 'onfsbunload': 'onUnload', 'onfsbcopy': 'onCopy', 'onfsbcut': 'onCut', 'onfsbpaste': 'onPaste', 'onfsbabort': 'onAbort', 'onfsbcanplay': 'onCanplay', 'onfsbcanplaythrough': 'onCanplayThrough', 'onfsbcuechange': 'onCueChange', 'onfsbdurationchange': 'onDurationChange', 'onfsbemptied': 'onEmptied', 'onfsbended': 'onEnded', 'onfsberror': 'onError', 'onfsbloadeddata': 'onLoadedData', 'onfsbloadedmetadata': 'onLoadedMetadata', 'onfsbloadstart': 'onLoadStart', 'onfsbpause': 'onPause', 'onfsbplay': 'onPlay', 'onfsbplaying': 'onPlaying', 'onfsbprogress': 'onProgress', 'onfsbratechange': 'onRateChange', 'onfsbseeked': 'onSeeked', 'onfsbseeking': 'onSeeking', 'onfsbstalled': 'onStalled', 'onfsbsuspend': 'onSuspend', 'onfsbtimeupdate': 'onTimeUpdate', 'onfsbvolumechange': 'onVolumeChange', 'onfsbwaiting': 'onWaiting', 'onfsbsubmitting': 'onSubmitting', 'onfsbsubmitted': 'onSubmitted', 'onfsbfailed': 'onFailed', 'onfsbsuccess': 'onSuccess', 'onfsbsourceinsert': 'onSourceInsert', 'onfsbsourceupsert': 'onSourceUpsert', 'onfsbsourceupdate': 'onSourceUpdate', 'onfsbsourcedelete': 'onSourceDelete', 'onfsbsourceretrieve': 'onSourceRetrieve', 'onfsbtargetinsert': 'onTargetInsert', 'onfsbtargetupsert': 'onTargetUpsert', 'onfsbtargetupdate': 'onTargetUpdate', 'onfsbtargetdelete': 'onTargetDelete', 'onfsbtargetretrieve': 'onTargetRetrieve'
+};
 export const CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS = ['onfsbsubmitting', 'onfsbsubmitted', 'onfsbfailed', 'onfsbsuccess'];
 export const NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS = ['onfsbsubmitting', 'onfsbsubmitted', 'onfsbfailed', 'onfsbsuccess'];
 export const ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS = ['onfsbafterprint', 'onfsbbeforeprint', 'onfsbbeforeunload', 'onfsberror', 'onfsbhashchange', 'onfsbload', 'onfsbmessage', 'onfsboffline', 'onfsbonline', 'onfsbpagehide', 'onfsbpageshow', 'onfsbpopstate', 'onfsbready', 'onfsbresize', 'onfsbstorage', 'onfsbunload', 'onfsbdocumentclick', 'onfsbdocumentdblclick', 'onfsbdocumentmousedown', 'onfsbdocumentmousemove', 'onfsbdocumentmouseout', 'onfsbdocumentmouseover', 'onfsbdocumentmouseenter', 'onfsbdocumentmouseleave', 'onfsbdocumentmouseup', 'onfsbdocumentmousewheel', 'onfsbdocumentwheel', 'onfsbdocumentkeydown', 'onfsbdocumentkeypress', 'onfsbdocumentkeyup', 'onfsbdocumenttouchstart', 'onfsbdocumenttouchmove', 'onfsbdocumenttouchend', 'onfsbdocumenttouchcancel', 'onfsbdocumentdrag', 'onfsbdocumentdragend', 'onfsbdocumentdragenter', 'onfsbdocumentdragleave', 'onfsbdocumentdragover', 'onfsbdocumentdragstart', 'onfsbdocumentdrop', 'onfsbdocumentscroll'];
@@ -143,7 +144,7 @@ export const LIBRARIES = [{
       "/js/libraries/socket.io@2/socket.io-2.3.0.js"
     ]
   }
-},{
+}, {
   id: 'jquery-core@3',
   name: 'Jquery',
   prerequisite: false,
@@ -160,7 +161,7 @@ export const LIBRARIES = [{
       "/js/libraries/jquery@3/jquery-3.5.1.js"
     ]
   }
-},{
+}, {
   id: 'jquery-core@2',
   name: 'Jquery',
   prerequisite: false,
@@ -177,7 +178,7 @@ export const LIBRARIES = [{
       "/js/libraries/jquery@2/jquery-2.2.4.js"
     ]
   }
-},{
+}, {
   id: 'jquery-core@1',
   name: 'Jquery',
   prerequisite: false,
@@ -194,7 +195,7 @@ export const LIBRARIES = [{
       "/js/libraries/jquery@1/jquery-1.12.4.js"
     ]
   }
-},{
+}, {
   id: 'bootstrap@4',
   name: 'Bootstrap',
   prerequisite: false,
@@ -215,7 +216,7 @@ export const LIBRARIES = [{
       "/js/libraries/bootstrap@4/bootstrap-4.4.1.min.js"
     ]
   }
-},{
+}, {
   id: 'bootstrap@3',
   name: 'Bootstrap',
   prerequisite: false,
@@ -236,7 +237,7 @@ export const LIBRARIES = [{
       "/js/libraries/bootstrap@3/bootstrap-3.4.1.min.js"
     ]
   }
-},{
+}, {
   id: 'bootstrap@2',
   name: 'Bootstrap',
   prerequisite: false,
@@ -257,7 +258,7 @@ export const LIBRARIES = [{
       "/js/libraries/bootstrap@2/bootstrap-2.3.2.min.js"
     ]
   }
-},{
+}, {
   id: 'underscore@1',
   name: 'Underscore',
   prerequisite: false,
@@ -274,7 +275,7 @@ export const LIBRARIES = [{
       "/js/libraries/underscore@1/underscore-1.9.1.js"
     ]
   }
-},{
+}, {
   id: 'underscore',
   name: 'Underscore',
   prerequisite: false,
@@ -291,7 +292,7 @@ export const LIBRARIES = [{
       "/js/libraries/underscore@0/underscore-0.6.0.js"
     ]
   }
-},{
+}, {
   id: 'backbone@1',
   name: 'Backbone',
   prerequisite: false,
@@ -308,7 +309,7 @@ export const LIBRARIES = [{
       "/js/libraries/backbone@1/backbone-1.4.0.js"
     ]
   }
-},{
+}, {
   id: 'backbone',
   name: 'Backbone',
   prerequisite: false,
@@ -489,7 +490,7 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "internal-fsb-react-accumulate": REACT_ACCUMULATE_OPTIONS,
   "internal-fsb-react-display-logic": REACT_DISPLAY_LOGIC_OPTIONS,
   "internal-fsb-seo-emphasizer": SEO_EMPHASIZE_OPTIONS,
-  
+
   // Back-End Options
   // 
   "data-column-type": BACKEND_DATA_COLUMN_TYPE,
@@ -536,7 +537,7 @@ export const GENERIC_RADIO_OPTION_PRESETS = {
   "animation-state": ANIMATION_DEFAULT_STATE,
   "animation-test-state": ANIMATION_DEFAULT_TEST_STATE,
   "animation-synchronize": ANIMATION_SYNCHRONIZE_MODE,
-  
+
   // Editor
   //
   "workspaceMode": WORKSPACE_LOCK_MODE,

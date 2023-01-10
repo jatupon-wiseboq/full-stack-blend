@@ -1,5 +1,5 @@
 const RequestHelper = {
-  request: async (method: string, url: string, body: string, responseType: string=null, retryCount: number=10): Promise<any> => {
+  request: async (method : string, url : string, body : string, responseType : string = null, retryCount : number = 10) : Promise<any> => {
     return new Promise((resolve, reject) => {
       const process = (() => {
         const xmlhttp = new XMLHttpRequest();
@@ -33,30 +33,30 @@ const RequestHelper = {
       process();
     });
   },
-  get: (url: string, responseType: string=null): Promise<any> => {
+  get: (url : string, responseType : string = null) : Promise<any> => {
     let method = 'GET';
     let bodyString = null;
-    
+
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  post: (url: string, body: any, responseType: string=null): Promise<any> => {
+  post: (url : string, body : any, responseType : string = null) : Promise<any> => {
     let method = 'POST';
     let bodyString = JSON.stringify(body);
-    
+
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  put: (url: string, body: any, responseType: string=null): Promise<any> => {
+  put: (url : string, body : any, responseType : string = null) : Promise<any> => {
     let method = 'PUT';
     let bodyString = JSON.stringify(body);
-    
+
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  delete: (url: string, body: any, responseType: string=null): Promise<any> => {
+  delete: (url : string, body : any, responseType : string = null) : Promise<any> => {
     let method = 'DELETE';
     let bodyString = JSON.stringify(body);
-    
+
     return RequestHelper.request(method, url, bodyString, responseType);
   }
 };
 
-export {RequestHelper};
+export { RequestHelper };

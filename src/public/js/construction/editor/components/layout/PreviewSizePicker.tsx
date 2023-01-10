@@ -1,10 +1,10 @@
-import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
-import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
-import {SCREEN_SIZE} from '../../../Constants';
+import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
+import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import { SCREEN_SIZE } from '../../../Constants';
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let perform: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let perform : any;
 
 interface Props extends IProps {
 }
@@ -16,49 +16,49 @@ let ExtendedDefaultState = Object.assign({}, DefaultState);
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
 Object.assign(ExtendedDefaultProps, {
-    watchingExtensionNames: ['preview']
+  watchingExtensionNames: ['preview']
 });
 
 class PreviewSizePicker extends Base<Props, State> {
-    protected static defaultProps: Props = ExtendedDefaultProps;
-    
-    constructor(props) {
-      super(props);
+  protected static defaultProps : Props = ExtendedDefaultProps;
+
+  constructor(props) {
+    super(props);
+  }
+
+  public update(properties : any) {
+    if (!super.update(properties)) return;
+
+    let areaContainer = document.getElementById('area-container');
+    let width = null;
+    let content = this.state.extensionValues['preview'] || null;
+    if (content != null) {
+      width = SCREEN_SIZE[content[0]];
     }
-    
-    public update(properties: any) {
-      if (!super.update(properties)) return;
-      
-      let areaContainer = document.getElementById('area-container');
-      let width = null;
-      let content = this.state.extensionValues['preview'] || null;
-      if (content != null) {
-        width = SCREEN_SIZE[content[0]];
-      }
-      areaContainer.style.width = (width == null) ? '100%' : (width + content[1]) + 'px';
+    areaContainer.style.width = (width == null) ? '100%' : (width + content[1]) + 'px';
+  }
+
+  choose(size : number, direction : number) {
+    if (this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == size && this.state.extensionValues['preview'][1] == direction) {
+      perform('update', {
+        extensions: [{
+          name: 'preview',
+          value: null
+        }]
+      });
+    } else {
+      perform('update', {
+        extensions: [{
+          name: 'preview',
+          value: [size, direction]
+        }]
+      });
     }
-    
-    choose(size: number, direction: number) {
-      if (this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == size && this.state.extensionValues['preview'][1] == direction) {
-        perform('update', {
-            extensions: [{
-                name: 'preview',
-                value: null
-            }]
-        });
-      } else {
-        perform('update', {
-            extensions: [{
-                name: 'preview',
-                value: [size, direction]
-            }]
-        });
-      }
-    }
-    
-    render() {
-      return (
-        pug `
+  }
+
+  render() {
+    return (
+      pug`
           .preview-size-picker.btn-group
             each index in [1, 2, 3, 4]
               - const middle = Math.floor((SCREEN_SIZE[index] - SCREEN_SIZE[index-1]) / 2)
@@ -75,10 +75,10 @@ class PreviewSizePicker extends Base<Props, State> {
                   span
                     i(className="fa fa-long-arrow-right")
         `
-      )
-    }
+    )
+  }
 }
 
 DeclarationHelper.declare('Components.PreviewSizePicker', PreviewSizePicker);
 
-export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, PreviewSizePicker};
+export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, PreviewSizePicker };
