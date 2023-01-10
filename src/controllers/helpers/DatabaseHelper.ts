@@ -1142,8 +1142,6 @@ const DatabaseHelper = {
 
               const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 
-              if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
-
               let records = [];
 
               if (input.source == SourceType.Relational) {
@@ -1161,6 +1159,21 @@ const DatabaseHelper = {
               }
 
               for (const record of records) {
+                if (record['_id']) record['id'] = record['_id'].toString();
+
+                for (const key in schema.columns) {
+                  if (schema.columns.hasOwnProperty(key) && record[key] !== undefined) {
+                    dataColumns[key] = record[key];
+                  }
+                }
+                for (const key in schema.keys) {
+                  if (schema.keys.hasOwnProperty(key) && record[key] !== undefined) {
+                    dataKeys[key] = record[key];
+                  }
+                }
+
+                if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
+
                 const result : any = {
                   keys: {},
                   columns: {},
@@ -2131,6 +2144,7 @@ const DatabaseHelper = {
             const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 
             let bulkResults = [];
+            let runBulkProcess = false;
             let allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
             const recent = new Date();
             if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
@@ -2143,10 +2157,16 @@ const DatabaseHelper = {
 
                 [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 
+                const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
+
+                if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
+
                 records.push(Object.assign({}, queryColumns, queryKeys));
               }
               bulkResults = await map.findAll({ where: { [Op.or]: records }, transaction: transaction.relationalDatabaseTransaction });
               await map.destroy({ where: { [Op.or]: records }, force: true, transaction: transaction.relationalDatabaseTransaction });
+
+              runBulkProcess = true;
             }
 
             const persistingDictForVolatileMemory = {};
@@ -2160,6 +2180,8 @@ const DatabaseHelper = {
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 
               const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
+
+              if (!runBulkProcess && !leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 
               let records = [];
               if (input.source == SourceType.Relational) {
@@ -2205,8 +2227,6 @@ const DatabaseHelper = {
                     dataKeys[key] = record[key];
                   }
                 }
-
-                if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Delete, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to delete any row in ${schema.group}.`);
 
                 const row : any = {
                   keys: {},

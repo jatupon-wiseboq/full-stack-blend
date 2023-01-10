@@ -431,28 +431,6 @@ const NotificationHelper = {
     // 
     if (socket == null) return;
 
-    socket.to(Md5.init(process.env.SESSION_SECRET)).emit(JSON.stringify({
-      action: ACTIONS.indexOf(action),
-      schema: schema.group,
-      results: results
-    }));
-  },
-  listenUpdatesUsingMultipleNodesOfSocketIO: () => {
-    socket.join(Md5.init(process.env.SESSION_SECRET));
-    socket.on("broadcast", (message : any) => {
-      const action = ACTIONS[message.action];
-      const schema = SchemaHelper.getDataTableSchemaFromNotation(message.schema);
-      const results = message.results;
-
-      NotificationHelper.notifyUpdatesUsingMultipleNodesOfSocketIO(action, schema, results);
-    });
-  },
-  notifyUpdatesUsingMultipleNodesOfSocketIO: (action : ActionType, schema : DataTableSchema, results : HierarchicalDataRow[]) : string => {
-    // Socket.IO Official Reference: https://socket.io/docs/v3/using-multiple-nodes/
-    // Heroku Session Affinity Reference: https://devcenter.heroku.com/articles/session-affinity
-    // 
-    if (socket == null) return;
-
     const identities = NotificationHelper.getUniqueListOfIdentities(action, schema, results);
 
     for (const identity in identities) {

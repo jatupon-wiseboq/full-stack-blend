@@ -34,7 +34,7 @@ const fieldManipulatorsInfoDict : any = {};
 const actionManipulatorsInfoDict : any = {};
 const optionsManipulatorsInfoDict : any = {};
 const isDevelopmentMachine = ['localhost:3000', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host) != -1;
-const registeredEndpoint : string = (isDevelopmentMachine) ? (window.ENDPOINT.indexOf('https://localhost') == 0 ? 'https://localhost.stackblend.org' : window.ENDPOINT) || null : null;
+const registeredEndpoint : string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
 const currentPath : string = (isDevelopmentMachine) ? window.PATH || null : null;
 
 const removeAndRestoreDisabledAttributeForInvoking = (button : any, callback : any) => {

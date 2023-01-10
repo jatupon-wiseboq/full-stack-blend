@@ -160,8 +160,7 @@ const TestHelper = {
 
     const _error = window.onerror;
     const error = ((msg, url, line, col, error) => {
-      const stringifyIfNeed = top.messageFnArray ? (data : any) => data : JSON.stringify;
-      top.postMessage(stringifyIfNeed({
+      top.postMessage(JSON.stringify({
         type: 'error',
         msg: msg,
         url: url,
@@ -174,24 +173,22 @@ const TestHelper = {
     window.onerror = error;
 
     window.console.log = ((...args) => {
-      const stringifyIfNeed = top.messageFnArray ? (data : any) => data : JSON.stringify;
-      top.postMessage(stringifyIfNeed({
+      top.postMessage(JSON.stringify({
         type: 'console.log',
         args: args
       }), '*');
     });
     window.console.error = ((...args) => {
-      const stringifyIfNeed = top.messageFnArray ? (data : any) => data : JSON.stringify;
-      top.postMessage(stringifyIfNeed({
+      top.postMessage(JSON.stringify({
         type: 'console.error',
         args: args
       }), '*');
     });
 
-    const messageFn = ((event : any) => {
+    window.addEventListener("message", ((event : any) => {
       let data = null;
       try {
-        data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
+        data = JSON.parse(event.data);
       } catch { /*void*/ }
 
       switch (data.type) {
@@ -203,10 +200,7 @@ const TestHelper = {
           }
           break;
       }
-    }).bind(this);
-    window.addEventListener("message", messageFn);
-    window.messageFnArray = window.messageFnArray || [];
-    window.messageFnArray.push(messageFn);
+    }).bind(this));
   },
   installTestingConsole: () => {
     if (window.installedTestingConsole === true) return;
