@@ -161,7 +161,6 @@ const CreateTransaction = async (options) => {
 
 const terminate = () => {
   if (VolatileMemoryClient) VolatileMemoryClient.quit();
-  if (RelationalDatabaseClient) RelationalDatabaseClient.end();
   if (RelationalDatabaseORMClient) RelationalDatabaseORMClient.close();
   if (DocumentDatabaseClient) DocumentDatabaseClient.close();
   if (PrioritizedWorkerVolatileMemoryClient) PrioritizedWorkerVolatileMemoryClient.quit();
