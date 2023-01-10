@@ -46,7 +46,7 @@ class Base extends React.Component {
     }
 
     window.addEventListener('tableUpdated', (() => {
-      this.forceUpdate();
+      this.setState({});
     }).bind(this));
   }
 

@@ -184,7 +184,7 @@ const NotificationHelper = {
           if (typeof data === 'object') {
             data.timestamp = `${(new Date()).getTime()}.${socket.emitCount++}`;
 
-            if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > 100) {
+            if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > (process.env.NOTIFICATION_BUFFER_LENGTH || 128)) {
               delete confirmingMessages[uniqueId];
               socket.unconfirmEmit("command", "refresh");
             } else {

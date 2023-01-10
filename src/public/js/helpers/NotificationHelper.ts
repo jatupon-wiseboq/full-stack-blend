@@ -135,6 +135,7 @@ const NotificationHelper = {
     });
     socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
       if (message.id == identity) {
+        let flag = false;
         for (let result of message.results) {
           let found = null;
 
@@ -152,6 +153,8 @@ const NotificationHelper = {
           }
 
           if (found) {
+            flag = true;
+            
             if (found.timestamp && result.timestamp && found.timestamp >= result.timestamp) continue;
             found.timestamp = result.timestamp;
 
@@ -168,11 +171,13 @@ const NotificationHelper = {
           }
         }
 
-        NotificationHelper.registerTableUpdates({
-          collection: table
-        });
-        NotificationHelper.notifyTableUpdates(message);
-
+        if (flag) {
+          NotificationHelper.registerTableUpdates({
+            collection: table
+          });
+          NotificationHelper.notifyTableUpdates(message);
+        }
+        
         socket.emit("acknowledge", {
           timestamp: message.timestamp
         });
