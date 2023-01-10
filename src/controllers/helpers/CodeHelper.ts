@@ -143,17 +143,24 @@ const CodeHelper = {
     const lines = data.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
-      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})",/);
+      const starting = lines[i].match(/^    "([0-9a-f]{8,8})": {/) || lines[i].match(/^            "guid": "([0-9a-f]{8,8})",/) || lines[i].match(/^      "    internal-fsb-guid=\\"([0-9a-f]{8,8})\\""/);
       const ending = ((category == 1 && (lines[i] == '    }' || lines[i] == '    },')) ||
-        (category == 2 && (lines[i] == '          }' || lines[i] == '          },')));
+        (category == 2 && (lines[i] == '          }' || lines[i] == '          },')) ||
+        (category == 3 && (lines[i] == '      "<div",')));
 
       if (starting != null) {
         category = (lines[i].indexOf('            "guid": "') == -1) ? 1 : 2;
+        if (lines[i].indexOf('internal-fsb-guid') != -1) category = 3;
+        
         current = starting[1];
         lines[i] = `${current}${lines[i]}`;
         if (category == 2) {
           if (lines[i - 1].indexOf('}') == -1) lines[i - 1] = `${current}${lines[i - 1]}`;
           if (lines[i - 2].indexOf('}') == -1) lines[i - 2] = `${current}${lines[i - 2]}`;
+        } else if (category == 3) {
+          if (lines[i - 1].indexOf('>') == -1) lines[i - 1] = `${current}${lines[i - 1]}`;
+          if (lines[i - 2].indexOf('>') == -1) lines[i - 2] = `${current}${lines[i - 2]}`;
+          if (lines[i - 3].indexOf('>') == -1) lines[i - 3] = `${current}${lines[i - 3]}`;
         }
       } else if (current && ending) {
         lines[i] = `${current}${lines[i]}`;
