@@ -1,5 +1,5 @@
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/DropDownControl';
 import '../generic/RadioButtonPicker';
 import * as CONSTANTS from '../../../Constants';
@@ -17,16 +17,16 @@ let options = {
   "onfsbtargetretrieve": CONSTANTS.REACT_EVENT_HANDLING_OPTIONS
 }
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  mode : string;
+  mode: string;
 }
 
 interface State extends IState {
-  enabled : boolean;
-  visible : boolean;
+  enabled: boolean;
+  visible: boolean;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -41,18 +41,18 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class BackEndEventBinder extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     this.refs.picker.update(properties);
 
     if (!super.update(properties)) return;
 
-    let option : any = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+    let option: any = this.state.attributeValues[this.props.watchingAttributeNames[0]];
     option = option && JSON.parse(option) || {};
 
     this.setState({
@@ -70,18 +70,18 @@ class BackEndEventBinder extends Base<Props, State> {
     return (value.event == true);
   }
 
-  private dropDownOnVisibleChanged(visible : boolean, tag : any) {
+  private dropDownOnVisibleChanged(visible: boolean, tag: any) {
     this.state.visible = visible;
   }
 
   render() {
     return (
       <div className="btn-group btn-group-sm">
-        <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{ fontSize: '12px', color: (this.getState()) ? "#ffffff" : "" }}>
+        <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
           {(() => {
             return (
               <FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(source|target)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
-                <div className="section-container" style={{ width: '225px' }}>
+                <div className="section-container" style={{width: '225px'}}>
                   <div className="section-title">Customize Binding</div>
                   <div className="section-subtitle">Binding</div>
                   <div className="section-body"><FullStackBlend.Components.RadioButtonPicker ref="picker" watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]} /></div>
@@ -97,4 +97,4 @@ class BackEndEventBinder extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.BackEndEventBinder', BackEndEventBinder);
 
-export { ExtendedDefaultProps, ExtendedDefaultState, BackEndEventBinder };
+export {ExtendedDefaultProps, ExtendedDefaultState, BackEndEventBinder};

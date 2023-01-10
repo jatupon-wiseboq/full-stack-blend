@@ -1,25 +1,25 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { EventHelper } from '../../helpers/EventHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  representing : string;
-  onVisibleChanged(visible : boolean, tag : any);
-  autohide : boolean;
-  offsetX : number;
-  offsetY : number;
-  width : number;
-  tag : any;
+  representing: string;
+  onVisibleChanged(visible: boolean, tag: any);
+  autohide: boolean;
+  offsetX: number;
+  offsetY: number;
+  width: number;
+  tag: any;
 }
 
 interface State extends IState {
 }
 
 class DropDownControl extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
     options: [],
     autohide: true,
     offsetX: 0,
@@ -28,8 +28,8 @@ class DropDownControl extends React.Component<Props, State> {
     tag: null
   }
 
-  private documentOnClickDelegate : Function = null;
-  private maximumWidth : number = 0;
+  private documentOnClickDelegate: Function = null;
+  private maximumWidth: number = 0;
 
   constructor(props) {
     super(props);
@@ -72,7 +72,7 @@ class DropDownControl extends React.Component<Props, State> {
     }
   }
 
-  private measureAndPosition(recalculate : boolean = false) {
+  private measureAndPosition(recalculate: boolean = false) {
     let button = ReactDOM.findDOMNode(this.refs.button);
     let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
 
@@ -129,7 +129,7 @@ class DropDownControl extends React.Component<Props, State> {
     this.measureAndPosition();
   }
 
-  public hide(invokeEvent : boolean = true) {
+  public hide(invokeEvent: boolean = true) {
     let group = ReactDOM.findDOMNode(this.refs.group);
     let dropdown = ReactDOM.findDOMNode(this.refs.dropdown);
 
@@ -176,4 +176,4 @@ class DropDownControl extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.DropDownControl', DropDownControl);
 
-export { Props, State, DropDownControl };
+export {Props, State, DropDownControl};

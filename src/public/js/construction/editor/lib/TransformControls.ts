@@ -66,10 +66,10 @@ var TransformControls = function(camera, domElement) {
   defineProperty("showY", true);
   defineProperty("showZ", true);
 
-  var changeEvent = { type: "change" };
-  var mouseDownEvent = { type: "mouseDown" };
-  var mouseUpEvent = { type: "mouseUp", mode: scope.mode };
-  var objectChangeEvent = { type: "objectChange" };
+  var changeEvent = {type: "change"};
+  var mouseDownEvent = {type: "mouseDown"};
+  var mouseUpEvent = {type: "mouseUp", mode: scope.mode};
+  var objectChangeEvent = {type: "objectChange"};
 
   // Reusable utility variables
 
@@ -208,7 +208,7 @@ var TransformControls = function(camera, domElement) {
           _plane[propName] = value;
           _gizmo[propName] = value;
 
-          scope.dispatchEvent({ type: propName + "-changed", value: value });
+          scope.dispatchEvent({type: propName + "-changed", value: value});
           scope.dispatchEvent(changeEvent);
 
         }
@@ -1552,7 +1552,7 @@ var TransformControlsPlane = function() {
 
   Mesh.call(this,
     new PlaneBufferGeometry(100000, 100000, 2, 2),
-    new MeshBasicMaterial({ visible: false, wireframe: true, side: DoubleSide, transparent: true, opacity: 0.1 })
+    new MeshBasicMaterial({visible: false, wireframe: true, side: DoubleSide, transparent: true, opacity: 0.1})
   );
 
   this.type = 'TransformControlsPlane';
@@ -1652,4 +1652,4 @@ TransformControlsPlane.prototype = Object.assign(Object.create(Mesh.prototype), 
 
 });
 
-export { TransformControls, TransformControlsGizmo, TransformControlsPlane };
+export {TransformControls, TransformControlsGizmo, TransformControlsPlane};

@@ -1,9 +1,9 @@
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { EventHelper } from '../../helpers/EventHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {EventHelper} from '../../helpers/EventHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
 }
@@ -12,17 +12,17 @@ interface State {
 }
 
 class RedLine extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
-  private domElement : HTMLElement = null;
-  private currentMeasuringToElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
+  private currentMeasuringToElement: HTMLElement = null;
 
-  private redLineOnTop : HTMLElement = null;
-  private redLineOnRight : HTMLElement = null;
-  private redLineOnBottom : HTMLElement = null;
-  private redLineOnLeft : HTMLElement = null;
-  private redLineInfo : HTMLElement = null;
+  private redLineOnTop: HTMLElement = null;
+  private redLineOnRight: HTMLElement = null;
+  private redLineOnBottom: HTMLElement = null;
+  private redLineOnLeft: HTMLElement = null;
+  private redLineInfo: HTMLElement = null;
 
   constructor() {
     super();
@@ -53,7 +53,7 @@ class RedLine extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
@@ -73,7 +73,7 @@ class RedLine extends React.Component<Props, State> {
     this.getDOMNode().parentNode && this.getDOMNode().parentNode.removeChild(this.getDOMNode());
   }
 
-  public measure(event : Event) {
+  public measure(event: Event) {
     const container = document.body;
 
     if (this.currentMeasuringToElement) this.reset();
@@ -279,4 +279,4 @@ class RedLine extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.RedLine', RedLine);
 
-export { Props, State, RedLine };
+export {Props, State, RedLine};

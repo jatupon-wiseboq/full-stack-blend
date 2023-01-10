@@ -1,28 +1,28 @@
-import { HTMLHelper } from './HTMLHelper';
+import {HTMLHelper} from './HTMLHelper';
 
-let denyForHandle : any = {};
+let denyForHandle: any = {};
 var EventHelper = {
-  cancel: (event : HTMLEvent) => {
+  cancel: (event: HTMLEvent) => {
     event.preventDefault();
     event.stopPropagation();
 
     return false;
   },
 
-  getCurrentElement: (event : HTMLEvent) => {
+  getCurrentElement: (event: HTMLEvent) => {
     return event.currentTarget;
   },
-  getOriginalElement: (event : HTMLEvent) => {
+  getOriginalElement: (event: HTMLEvent) => {
     return event.srcElement || event.originalTarget || event.target;
   },
-  getCurrentWindow: (event : HTMLEvent) => {
+  getCurrentWindow: (event: HTMLEvent) => {
     return HTMLHelper.getCurrentWindow(EventHelper.getCurrentElement(event));
   },
-  getMousePosition: (event : HTMLEvent) => {
+  getMousePosition: (event: HTMLEvent) => {
     return [event.clientX, event.clientY];
   },
 
-  checkIfDenyForHandle: (event : HTMLEvent) => {
+  checkIfDenyForHandle: (event: HTMLEvent) => {
     let originalElement = EventHelper.getOriginalElement(event);
     if (HTMLHelper.getAttribute(originalElement, 'internal-fsb-event-always-propagate') == event.type) return false;
 
@@ -38,7 +38,7 @@ var EventHelper = {
     if (EventHelper.getCurrentElement(event) == originalElement) return false;
     else return HTMLHelper.getAttribute(originalElement, 'internal-fsb-event-no-propagate') == '1';
   },
-  setDenyForHandle: (name : string, value : boolean, delay : null) => {
+  setDenyForHandle: (name: string, value: boolean, delay: null) => {
     if (delay == null) {
       denyForHandle[name] = value;
     } else {
@@ -47,10 +47,10 @@ var EventHelper = {
       }, delay);
     }
   },
-  setDenyForEarlyHandle: (element : HTMLElement) => {
+  setDenyForEarlyHandle: (element: HTMLElement) => {
     HTMLHelper.setAttribute(element, 'internal-fsb-event-no-propagate', '1');
   },
-  setAllowForEarlyHandle: (element : HTMLElement) => {
+  setAllowForEarlyHandle: (element: HTMLElement) => {
     HTMLHelper.removeAttribute(element, 'internal-fsb-event-no-propagate');
   },
 
@@ -72,4 +72,4 @@ var EventHelper = {
   }
 };
 
-export { EventHelper };
+export {EventHelper};

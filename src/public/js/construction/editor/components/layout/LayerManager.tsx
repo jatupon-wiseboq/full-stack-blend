@@ -1,20 +1,20 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode, InsertDirection } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  height : any;
-  filter : string;
+  height: any;
+  filter: string;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -29,15 +29,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class LayerManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     if (this.recursiveAssignAuthoringStatuses(this.state.extensionValues[this.props.watchingExtensionNames[0]])) {
@@ -45,7 +45,7 @@ class LayerManager extends Base<Props, State> {
     }
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
     if (node.selected) {
       this.recursiveUnselectAllOfNodes(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
       node.selected = true;
@@ -57,14 +57,14 @@ class LayerManager extends Base<Props, State> {
     }
   }
 
-  private recursiveUnselectAllOfNodes(nodes : [ITreeNode]) {
+  private recursiveUnselectAllOfNodes(nodes: [ITreeNode]) {
     for (let node of nodes) {
       node.selected = false;
       this.recursiveUnselectAllOfNodes(node.nodes);
     }
   }
 
-  private recursiveAssignAuthoringStatuses(nodes : [ITreeNode]) : boolean {
+  private recursiveAssignAuthoringStatuses(nodes: [ITreeNode]): boolean {
     let found = false;
 
     for (let node of nodes) {
@@ -73,7 +73,7 @@ class LayerManager extends Base<Props, State> {
       if (node.tag && node.tag.guid) {
         const status = this.state.extensionValues[this.props.watchingExtensionNames[1]][node.tag.guid];
 
-        let changeInto : string;
+        let changeInto: string;
         if (status) {
           changeInto = status;
         } else {
@@ -101,7 +101,7 @@ class LayerManager extends Base<Props, State> {
     return found;
   }
 
-  private onStartDragging(node : ITreeNode) {
+  private onStartDragging(node: ITreeNode) {
     let container = ReactDOM.findDOMNode(this.refs.container);
 
     this.state.height = HTMLHelper.getSize(container)[1] + 'px';
@@ -113,12 +113,12 @@ class LayerManager extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  private valueOnUpdate(value : string) {
+  private valueOnUpdate(value: string) {
     this.state.filter = value.toLowerCase();
     this.forceUpdate();
   }
 
-  private onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection) {
+  private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     let value = null;
 
     switch (direction) {
@@ -155,8 +155,8 @@ class LayerManager extends Base<Props, State> {
 
   render() {
     return (
-      <div ref="container" className="layer-manager-container" style={{ height: this.state.height }}>
-        <div style={{ padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000 }}>
+      <div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
+        <div style={{padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000}}>
           <FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..' value={this.state.filter}></FullStackBlend.Controls.Textbox>
         </div>
         <FullStackBlend.Controls.Tree enableDragging={['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} filter={this.state.filter} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
@@ -167,4 +167,4 @@ class LayerManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.LayerManager', LayerManager);
 
-export { Props, State, LayerManager };
+export {Props, State, LayerManager};

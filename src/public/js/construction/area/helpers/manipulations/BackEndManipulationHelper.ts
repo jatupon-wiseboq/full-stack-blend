@@ -1,19 +1,19 @@
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { RandomHelper } from '../../../helpers/RandomHelper';
-import { Accessories, EditorHelper } from '../EditorHelper';
-import { WorkspaceHelper } from '../WorkspaceHelper';
-import { SchemaHelper } from '../SchemaHelper';
-import { LayoutHelper } from '../LayoutHelper';
-import { StylesheetHelper } from '../StylesheetHelper';
-import { CapabilityHelper } from '../CapabilityHelper';
-import { ManipulationHelper } from '../ManipulationHelper';
-import { FrontEndDOMHelper } from '../FrontEndDOMHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Accessories, EditorHelper} from '../EditorHelper';
+import {WorkspaceHelper} from '../WorkspaceHelper';
+import {SchemaHelper} from '../SchemaHelper';
+import {LayoutHelper} from '../LayoutHelper';
+import {StylesheetHelper} from '../StylesheetHelper';
+import {CapabilityHelper} from '../CapabilityHelper';
+import {ManipulationHelper} from '../ManipulationHelper';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
 
-let composedUntitledNameCount : any = {};
-let composedUntitledNameDictionary : any = {};
+let composedUntitledNameCount: any = {};
+let composedUntitledNameDictionary: any = {};
 
 var BackEndManipulationHelper = {
-  handleInsert: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
     let element = null;
 
@@ -37,9 +37,9 @@ var BackEndManipulationHelper = {
 
     accessory = content;
 
-    let style : string;
-    let parent : any;
-    let isComponentInsertion : boolean = false;
+    let style: string;
+    let parent: any;
+    let isComponentInsertion: boolean = false;
 
     if (!BackEndManipulationHelper.validateCursorPosition(content.klass)) return [accessory, false, link];
 
@@ -231,7 +231,7 @@ var BackEndManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  validateCursorPosition: (klass : string) => {
+  validateCursorPosition: (klass: string) => {
     switch (klass) {
       case 'RelationalDatabase':
         if (!Accessories.cursor || !HTMLHelper.hasClass(Accessories.cursor.getDOMNode().parentNode, 'internal-fsb-begin-layout')) {
@@ -345,4 +345,4 @@ var BackEndManipulationHelper = {
   }
 }
 
-export { BackEndManipulationHelper }
+export {BackEndManipulationHelper}

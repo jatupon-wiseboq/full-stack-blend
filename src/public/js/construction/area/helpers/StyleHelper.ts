@@ -1,4 +1,4 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
 
 let defaultElement = document.createElement('div');
 let cachedElementComputedStyleNodesElement = null;
@@ -9,7 +9,7 @@ var StyleHelper = {
     cachedElementComputedStyleNodesElement = null;
     cachedElementComputedStyleNodesResults = null;
   },
-  getElementComputedStyleNodes: function(element : HTMLElement) {
+  getElementComputedStyleNodes: function(element: HTMLElement) {
     if (cachedElementComputedStyleNodesElement == element && cachedElementComputedStyleNodesResults)
       return cachedElementComputedStyleNodesResults;
     let nodes = [];
@@ -62,7 +62,7 @@ var StyleHelper = {
     cachedElementComputedStyleNodesResults = nodes;
     return cachedElementComputedStyleNodesResults;
   },
-  getComputedStyle(element : HTMLElement) {
+  getComputedStyle(element: HTMLElement) {
     var computedStyle;
 
     if (typeof element.currentStyle != 'undefined') {
@@ -76,4 +76,4 @@ var StyleHelper = {
   }
 };
 
-export { StyleHelper };
+export {StyleHelper};

@@ -1,13 +1,13 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { EventHelper } from '../../helpers/EventHelper';
-import { CursorHelper } from './CursorHelper';
-import { KeyStatuses, ManipulationHelper } from './ManipulationHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
-import { InternalProjectSettings } from './WorkspaceHelper';
-import { SINGLE_DOM_CONTAINER_ELEMENTS } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {CursorHelper} from './CursorHelper';
+import {KeyStatuses, ManipulationHelper} from './ManipulationHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
 var CapabilityHelper = {
-  installCapabilityOfBeingSelected: (_container : HTMLElement) => {
+  installCapabilityOfBeingSelected: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       container.addEventListener('click', (event) => {
         if (EventHelper.checkIfDenyForHandle(event)) return;
@@ -41,13 +41,13 @@ var CapabilityHelper = {
       EventHelper.setDenyForEarlyHandle(container);
     });
   },
-  installCapabilityOfBeingMoveInCursor: (_container : HTMLElement) => {
+  installCapabilityOfBeingMoveInCursor: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let allowCursorElements = [...HTMLHelper.getElementsByClassName('internal-fsb-allow-cursor', container)];
       if (HTMLHelper.hasClass(container, 'internal-fsb-allow-cursor')) {
         allowCursorElements.push(container);
       }
-      allowCursorElements.forEach((allowCursorElement : HTMLElement) => {
+      allowCursorElements.forEach((allowCursorElement: HTMLElement) => {
         let listenEventFromElement = (!HTMLHelper.hasClass(allowCursorElement, 'internal-fsb-begin-layout') &&
           HTMLHelper.hasClass(allowCursorElement.parentNode, 'container-fluid')) ?
           allowCursorElement.parentNode : allowCursorElement;
@@ -174,12 +174,12 @@ var CapabilityHelper = {
       });
     });
   },
-  installCapabilityOfBeingPasted: (_container : HTMLElement) => {
+  installCapabilityOfBeingPasted: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       container.addEventListener('paste', EventHelper.pasteEventInTextPlain, false);
     });
   },
-  installCapabilityOfBeingDragged: (_container : HTMLElement) => {
+  installCapabilityOfBeingDragged: (_container: HTMLElement) => {
     let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-dragging-handle', _container)];
     if (HTMLHelper.hasClass(_container, 'internal-fsb-dragging-handle')) {
       elements.push(_container);
@@ -193,16 +193,16 @@ var CapabilityHelper = {
       }
     });
   },
-  installCapabilityOfBeingDropped: (_container : HTMLElement) => {
+  installCapabilityOfBeingDropped: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
-      container.addEventListener('drop', (event : Event) => {
+      container.addEventListener('drop', (event: Event) => {
         alert("While dropping content isn't supported, please use ctrl+x, ctrl+c, and ctrl+v instead.");
 
         return EventHelper.cancel(event);
       }, false);
     });
   },
-  installCapabilityOfBeingClickWithoutRedirection: (_container : HTMLElement) => {
+  installCapabilityOfBeingClickWithoutRedirection: (_container: HTMLElement) => {
     let elements = [...HTMLHelper.getElementsByTagName('a', _container)];
     if (_container.tagName == 'A') {
       elements.push(_container);
@@ -214,7 +214,7 @@ var CapabilityHelper = {
       }, true);
     });
   },
-  installCapabilitiesForInternalElements: (_container : HTMLElement) => {
+  installCapabilitiesForInternalElements: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let elements = [...HTMLHelper.getElementsByClassName('internal-fsb-element', container)];
       elements.forEach((element) => {
@@ -236,24 +236,24 @@ var CapabilityHelper = {
     CapabilityHelper.installCapabilityOfBeingDragged(_container);
     CapabilityHelper.installCapabilityOfBeingClickWithoutRedirection(_container);
   },
-  installCapabilityOfForwardingStyle: (_container : HTMLElement) => {
+  installCapabilityOfForwardingStyle: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
       let style = HTMLHelper.getAttribute(container, 'style');
       style = HTMLHelper.setInlineStyle(style, '-fsb-for-children', 'true');
       HTMLHelper.setAttribute(container, 'style', style);
     });
   },
-  installCapabilityOfBeingMeasure: (_container : HTMLElement) => {
+  installCapabilityOfBeingMeasure: (_container: HTMLElement) => {
     if (['business'].indexOf(InternalProjectSettings.workspaceMode) != -1) return;
     if (['site', 'components', 'popups'].indexOf(InternalProjectSettings.currentMode) == -1) return;
 
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {
-      container.addEventListener('mouseout', (event : Event) => {
+      container.addEventListener('mouseout', (event: Event) => {
         Accessories.redLine.measure(null);
 
         return EventHelper.cancel(event);
       }, false);
-      container.addEventListener('mouseover', (event : Event) => {
+      container.addEventListener('mouseover', (event: Event) => {
         Accessories.redLine.measure(event);
 
         return EventHelper.cancel(event);
@@ -262,4 +262,4 @@ var CapabilityHelper = {
   }
 };
 
-export { CapabilityHelper };
+export {CapabilityHelper};

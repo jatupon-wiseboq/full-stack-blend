@@ -1,21 +1,21 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let Console : any;
-declare let window : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let Console: any;
+declare let window: any;
 
 interface Props extends IProps {
-  window : any
+  window: any
 }
 
 interface State extends IState {
-  value : any,
-  containerId : string
+  value: any,
+  containerId: string
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -28,9 +28,9 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class DebuggingConsole extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
-  private repl : any = null;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
+  private repl: any = null;
 
   constructor(props) {
     super(props);
@@ -40,7 +40,7 @@ class DebuggingConsole extends Base<Props, State> {
   }
 
   componentDidMount() {
-    const repl = new Console(document.getElementById(this.state.containerId), { mode: "javascript", theme: "eclipse" });
+    const repl = new Console(document.getElementById(this.state.containerId), {mode: "javascript", theme: "eclipse"});
 
     repl.simpleFormatter = ((msg, ...args) => {
       let output = [msg && msg.toString() || ''];
@@ -93,17 +93,17 @@ class DebuggingConsole extends Base<Props, State> {
         repl.resetInput();
       }, 20);
     } else {
-      repl.evaluate = (code : any) => {
+      repl.evaluate = (code: any) => {
         var out = {};
         out.completionValue = 'executed';
         return out;
       };
 
-      const messageFn = ((event : any) => {
+      const messageFn = ((event: any) => {
         let data = null;
         try {
           data = (typeof event.data === 'string') ? JSON.parse(event.data) : event.data;
-        } catch { /*void*/ }
+        } catch { /*void*/}
 
         if (data == null || !data.type) return;
         switch (data.type) {
@@ -119,7 +119,7 @@ class DebuggingConsole extends Base<Props, State> {
         }
 
         repl.on('entry', (event) => {
-          const stringifyIfNeed = this.props.window.messageFnArray ? (data : any) => data : JSON.stringify;
+          const stringifyIfNeed = this.props.window.messageFnArray ? (data: any) => data : JSON.stringify;
           this.props.window.postMessage(stringifyIfNeed({
             type: 'execute',
             statement: event.input
@@ -136,7 +136,7 @@ class DebuggingConsole extends Base<Props, State> {
     this.repl.resetOutput();
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
@@ -158,4 +158,4 @@ class DebuggingConsole extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.DebuggingConsole', DebuggingConsole);
 
-export { Props, State, DebuggingConsole };
+export {Props, State, DebuggingConsole};

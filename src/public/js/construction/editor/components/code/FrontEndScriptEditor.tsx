@@ -1,20 +1,20 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { FrontEndReactHelper, DEFAULTS } from '../../../helpers/FrontEndReactHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CAMEL_OF_EVENTS_DICTIONARY } from '../../../Constants';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {FrontEndReactHelper, DEFAULTS} from '../../../helpers/FrontEndReactHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
-declare let ace : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
+declare let ace: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  value : string
+  value: string
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -44,7 +44,7 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class FrontEndScriptEditor extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -59,9 +59,9 @@ class FrontEndScriptEditor extends Base<Props, State> {
     ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
   }
 
-  functionNameMapping : any = {}
+  functionNameMapping: any = {}
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
     if (properties.tag == 'user-action') return;
 
@@ -227,8 +227,8 @@ class FrontEndScriptEditor extends Base<Props, State> {
   render() {
     return (
       <div>
-        <div style={{ display: (this.state.value == '') ? 'none' : 'block' }}>
-          <ReactAce.default style={{ position: 'absolute', width: '100%', height: '100%' }}
+        <div style={{display: (this.state.value == '') ? 'none' : 'block'}}>
+          <ReactAce.default style={{position: 'absolute', width: '100%', height: '100%'}}
             name="frontEndEditor"
             mode="typescript"
             theme="tomorrow"
@@ -246,8 +246,8 @@ class FrontEndScriptEditor extends Base<Props, State> {
             }}
           />
         </div>
-        <div className="text-center" style={{ display: (this.state.value == '') ? 'block' : 'none' }}>
-          <i className="fa fa-puzzle-piece" style={{ fontSize: '50px', color: '#f0f0f0', paddingTop: '85px' }} />
+        <div className="text-center" style={{display: (this.state.value == '') ? 'block' : 'none'}}>
+          <i className="fa fa-puzzle-piece" style={{fontSize: '50px', color: '#f0f0f0', paddingTop: '85px'}} />
         </div>
       </div>
     )
@@ -256,4 +256,4 @@ class FrontEndScriptEditor extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.FrontEndScriptEditor', FrontEndScriptEditor);
 
-export { Props, State, FrontEndScriptEditor };
+export {Props, State, FrontEndScriptEditor};

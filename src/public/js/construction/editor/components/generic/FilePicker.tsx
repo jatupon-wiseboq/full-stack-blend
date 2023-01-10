@@ -1,25 +1,25 @@
-import { EventHelper } from '../../../helpers/EventHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/FileBrowser';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  inline : boolean,
-  manual : boolean
+  inline: boolean,
+  manual: boolean
 }
 
 interface State extends IState {
-  value : any
+  value: any
 }
 
-let imageURLCache : any = {};
+let imageURLCache: any = {};
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
@@ -33,17 +33,17 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class FilePicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  protected recentGuid : string = null;
+  protected recentGuid: string = null;
 
-  public update(properties : any) {
+  public update(properties: any) {
     super.update(properties);
 
     if (this.recentGuid != properties.elementGuid) {
@@ -58,7 +58,7 @@ class FilePicker extends Base<Props, State> {
     }
   }
 
-  protected fileOnUpdate(value : any) {
+  protected fileOnUpdate(value: any) {
     let composedValue = this.composeValue(value);
     this.setState({
       value: composedValue
@@ -85,7 +85,7 @@ class FilePicker extends Base<Props, State> {
     }
   }
 
-  protected composeValue(value : any) {
+  protected composeValue(value: any) {
     if (this.props.watchingStyleNames[0]) {
       return 'url(' + value + ')';
     }
@@ -129,4 +129,4 @@ class FilePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.FilePicker', FilePicker);
 
-export { Props, State, FilePicker };
+export {Props, State, FilePicker};

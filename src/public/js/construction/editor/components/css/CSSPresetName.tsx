@@ -1,10 +1,10 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
@@ -18,16 +18,16 @@ Object.assign(ExtendedDefaultProps, {
   watchingExtensionNames: ['stylesheetDefinitionRevision']
 });
 
-let stylesheetDefinitionKeys : any = [];
+let stylesheetDefinitionKeys: any = [];
 
 class CSSPresetName extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     stylesheetDefinitionKeys = (properties.extensions.stylesheetDefinitionKeys || []).map(info => info.name);
@@ -36,7 +36,7 @@ class CSSPresetName extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     value = value.replace(/ /g, '_');
 
     if (!value && this.state.value && !confirm('Remove inheriting from the preset "' + this.state.value + '"?')) {
@@ -82,4 +82,4 @@ class CSSPresetName extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.CSSPresetName', CSSPresetName);
 
-export { Props, State, CSSPresetName };
+export {Props, State, CSSPresetName};

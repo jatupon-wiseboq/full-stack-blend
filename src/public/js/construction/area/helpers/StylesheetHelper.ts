@@ -1,5 +1,5 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
@@ -18,7 +18,7 @@ var StylesheetHelper = {
 
     return stylesheetDefinitions;
   },
-  initializeStylesheetData: (data : any) => {
+  initializeStylesheetData: (data: any) => {
     stylesheetDefinitions = data || {};
     stylesheetDefinitionRevision = 0;
     cachedPrioritizedKeys = null;
@@ -26,7 +26,7 @@ var StylesheetHelper = {
 
     StylesheetHelper.renderStylesheetElement();
   },
-  setStyle: function(element : HTMLElement, style : string) {
+  setStyle: function(element: HTMLElement, style: string) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
 
@@ -36,35 +36,35 @@ var StylesheetHelper = {
       HTMLHelper.setAttribute(element, 'style', style);
     }
   },
-  getStyle: function(element : HTMLElement) {
+  getStyle: function(element: HTMLElement) {
     let reusablePresetName = HTMLHelper.getAttribute(element, 'internal-fsb-reusable-preset-name') || null;
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     let style = (reusablePresetName) ? StylesheetHelper.getStylesheetDefinition(presetId) : HTMLHelper.getAttribute(element, 'style');
 
     return style;
   },
-  setStyleAttribute: function(element : HTMLElement, styleName : string, styleValue : string) {
+  setStyleAttribute: function(element: HTMLElement, styleName: string, styleValue: string) {
     let style = StylesheetHelper.getStyle(element);
     style = HTMLHelper.setInlineStyle(style, styleName, styleValue);
 
     StylesheetHelper.setStyle(element, style);
   },
-  getStyleAttribute: function(element : HTMLElement, styleName : string) {
+  getStyleAttribute: function(element: HTMLElement, styleName: string) {
     let style = StylesheetHelper.getStyle(element);
 
     return HTMLHelper.getInlineStyle(style, styleName);
   },
-  getStylesheetDefinition: function(presetId : string) {
+  getStylesheetDefinition: function(presetId: string) {
     return stylesheetDefinitions[presetId] || null;
   },
-  removeStylesheetDefinition: function(presetId : string) {
+  removeStylesheetDefinition: function(presetId: string) {
     delete stylesheetDefinitions[presetId];
 
     stylesheetDefinitionRevision++;
 
     StylesheetHelper.renderStylesheetElement();
   },
-  setStylesheetDefinition: function(presetId : string, presetName : string, content : string) {
+  setStylesheetDefinition: function(presetId: string, presetName: string, content: string) {
     stylesheetDefinitions[presetId] = content;
 
     stylesheetDefinitionRevision++;
@@ -116,7 +116,7 @@ var StylesheetHelper = {
 
     element.innerText = StylesheetHelper.renderStylesheet();
   },
-  renderStylesheet: function(production : boolean = false) {
+  renderStylesheet: function(production: boolean = false) {
     let lines = [];
     let prioritizedKeys = StylesheetHelper.getStylesheetDefinitionKeys();
     let inversedReferenceHash = {};
@@ -200,4 +200,4 @@ var StylesheetHelper = {
   }
 };
 
-export { StylesheetHelper };
+export {StylesheetHelper};

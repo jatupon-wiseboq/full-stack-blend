@@ -1,11 +1,11 @@
-import { TextHelper } from './TextHelper';
-import { RandomHelper } from './RandomHelper';
-import { HTMLHelper } from './HTMLHelper';
-import { INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS } from '../Constants';
+import {TextHelper} from './TextHelper';
+import {RandomHelper} from './RandomHelper';
+import {HTMLHelper} from './HTMLHelper';
+import {INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CAMEL_OF_EVENTS_DICTIONARY, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS} from '../Constants';
 
 const KEYSTRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
-function utf8_encode(source : string) {
+function utf8_encode(source: string) {
   source = source.replace(/\r\n/g, "\n");
   var utftext = "";
 
@@ -30,10 +30,10 @@ function utf8_encode(source : string) {
 }
 
 var CodeHelper = {
-  clone: (obj : any) => {
+  clone: (obj: any) => {
     return JSON.parse(JSON.stringify(obj));
   },
-  convertToBase64: (source : string) => {
+  convertToBase64: (source: string) => {
     var output = "";
     var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
     var i = 0;
@@ -63,13 +63,13 @@ var CodeHelper = {
 
     return output;
   },
-  getCustomClasses: (value : string) => {
+  getCustomClasses: (value: string) => {
     return (value || '').replace(INTERNAL_CLASSES_GLOBAL_REGEX, '').replace(NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, ' ').trimStart();
   },
-  getInternalClasses: (value : string) => {
+  getInternalClasses: (value: string) => {
     return (value || '').match(INTERNAL_CLASSES_GLOBAL_REGEX).join(' ');
   },
-  convertDictionaryIntoPairs: (dictionary : { [Identifier : string] : any }) => {
+  convertDictionaryIntoPairs: (dictionary: {[Identifier: string]: any}) => {
     let pairs = [];
 
     for (let key in dictionary) {
@@ -83,35 +83,35 @@ var CodeHelper = {
 
     return pairs;
   },
-  equals: (x : any, y : any) => {
+  equals: (x: any, y: any) => {
     'use strict';
 
-    if (x === null || x === undefined || y === null || y === undefined) { return x === y; }
+    if (x === null || x === undefined || y === null || y === undefined) {return x === y;}
     // after this just checking type of one would be enough
-    if (x.constructor !== y.constructor) { return false; }
+    if (x.constructor !== y.constructor) {return false;}
     // if they are functions, they should exactly refer to same one (because of closures)
-    if (x instanceof Function) { return x === y; }
+    if (x instanceof Function) {return x === y;}
     // if they are regexps, they should exactly refer to same one (it is hard to better equality check on current ES)
-    if (x instanceof RegExp) { return x === y; }
-    if (x === y || x.valueOf() === y.valueOf()) { return true; }
-    if (Array.isArray(x) && x.length !== y.length) { return false; }
+    if (x instanceof RegExp) {return x === y;}
+    if (x === y || x.valueOf() === y.valueOf()) {return true;}
+    if (Array.isArray(x) && x.length !== y.length) {return false;}
 
     // if they are dates, they must had equal valueOf
-    if (x instanceof Date) { return false; }
+    if (x instanceof Date) {return false;}
 
     // if they are strictly equal, they both need to be object at least
-    if (!(x instanceof Object)) { return false; }
-    if (!(y instanceof Object)) { return false; }
+    if (!(x instanceof Object)) {return false;}
+    if (!(y instanceof Object)) {return false;}
 
     // recursive object equality check
     var p = Object.keys(x);
-    return Object.keys(y).every(function(i) { return p.indexOf(i) !== -1; }) &&
-      p.every(function(i) { return CodeHelper.equals(x[i], y[i]); });
+    return Object.keys(y).every(function(i) {return p.indexOf(i) !== -1;}) &&
+      p.every(function(i) {return CodeHelper.equals(x[i], y[i]);});
   },
-  sortHashtable: (object : any) => {
+  sortHashtable: (object: any) => {
     return CodeHelper.recursiveSortHashtable(object);
   },
-  recursiveSortHashtable: (object : any) => {
+  recursiveSortHashtable: (object: any) => {
     if (Array.isArray(object)) {
       if (object[0] && !!object[0].id) {
         object.sort((a, b) => {
@@ -142,8 +142,8 @@ var CodeHelper = {
       return object;
     }
   },
-  deleteEmptyKeys: (object : any) => {
-    let result : boolean;
+  deleteEmptyKeys: (object: any) => {
+    let result: boolean;
     do {
       result = false;
       const keys = Object.keys(object);
@@ -152,7 +152,7 @@ var CodeHelper = {
       }
     } while (result);
   },
-  recursiveDeleteEmptyKeys: (object : any, previousKey : string) : boolean => {
+  recursiveDeleteEmptyKeys: (object: any, previousKey: string): boolean => {
     if ((typeof object[previousKey] !== 'object') || object[previousKey] === null || object[previousKey] === undefined) return false;
 
     const keys = Object.keys(object[previousKey]);
@@ -167,7 +167,7 @@ var CodeHelper = {
       return result;
     }
   },
-  replaceCamelIntoDashCase: (camelCase : string) : string => {
+  replaceCamelIntoDashCase: (camelCase: string): string => {
     if (camelCase.indexOf('internal-fsb-') != -1) return camelCase;
     if (camelCase.indexOf('data-') == 0) return camelCase;
     if (CAMEL_OF_EVENTS_DICTIONARY[camelCase.toLowerCase()]) return camelCase;
@@ -175,7 +175,7 @@ var CodeHelper = {
 
     return TextHelper.trim(camelCase.replace(/[A-Z]/g, token => `-${token.toLowerCase()}`), '-');
   },
-  replaceDashIntoCamelCase: (dashCase : string) : string => {
+  replaceDashIntoCamelCase: (dashCase: string): string => {
     if (dashCase.indexOf('internal-fsb-') != -1) return dashCase;
     if (dashCase.indexOf('data-') == 0) return dashCase;
     if (CAMEL_OF_EVENTS_DICTIONARY[dashCase.toLowerCase()]) return dashCase;
@@ -183,7 +183,7 @@ var CodeHelper = {
 
     return TextHelper.trim(dashCase, '-').replace(/\-[a-z]/g, token => token.substring(1).toUpperCase());
   },
-  preparePastingContent: (html : string, cut : boolean = false) : string => {
+  preparePastingContent: (html: string, cut: boolean = false): string => {
     let contentHolder = document.createElement('div');
     contentHolder.innerHTML = html;
 
@@ -191,7 +191,7 @@ var CodeHelper = {
 
     return contentHolder.innerHTML;
   },
-  recursivePreparePastingContent: (current : any, cut : boolean = false, isContainingInComponent : boolean = false) => {
+  recursivePreparePastingContent: (current: any, cut: boolean = false, isContainingInComponent: boolean = false) => {
     if (!cut && HTMLHelper.hasAttribute(current, 'internal-fsb-reusable-preset-name')) {
       const guid = HTMLHelper.getAttribute(current, 'internal-fsb-guid');
       const classes = (current.className || '').split(' ');
@@ -236,9 +236,9 @@ var CodeHelper = {
       CodeHelper.recursivePreparePastingContent(element, cut, isContainingInComponent || !!HTMLHelper.getAttribute(current, 'internal-fsb-inheriting'));
     }
   },
-  label: (data : string) : string => {
-    let current : string = null;
-    let category : number = 0;
+  label: (data: string): string => {
+    let current: string = null;
+    let category: number = 0;
     const lines = data.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
@@ -265,7 +265,7 @@ var CodeHelper = {
 
     return lines.join('\n');
   },
-  unlabel: (data : string) : string => {
+  unlabel: (data: string): string => {
     const lines = data.split('\n');
 
     for (let i = 0; i < lines.length; i++) {
@@ -279,4 +279,4 @@ var CodeHelper = {
   }
 };
 
-export { CodeHelper };
+export {CodeHelper};

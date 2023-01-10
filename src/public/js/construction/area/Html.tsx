@@ -1,13 +1,13 @@
-import { HTMLHelper } from '../helpers/HTMLHelper';
-import { EventHelper } from '../helpers/EventHelper';
-import { WorkspaceHelper } from './helpers/WorkspaceHelper';
-import { CursorHelper } from './helpers/CursorHelper';
-import { CapabilityHelper } from './helpers/CapabilityHelper';
-import { EditorHelper } from './helpers/EditorHelper';
-import { AnimationHelper } from './helpers/AnimationHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {WorkspaceHelper} from './helpers/WorkspaceHelper';
+import {CursorHelper} from './helpers/CursorHelper';
+import {CapabilityHelper} from './helpers/CapabilityHelper';
+import {EditorHelper} from './helpers/EditorHelper';
+import {AnimationHelper} from './helpers/AnimationHelper';
 
 (() => {
-  let isLoaded : boolean = false;
+  let isLoaded: boolean = false;
 
   const checkTextElementIfBlank = () => {
     const elements = HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement');
@@ -39,7 +39,7 @@ import { AnimationHelper } from './helpers/AnimationHelper';
     isLoaded = true;
   });
 
-  window.addEventListener('contextmenu', (event : any) => {
+  window.addEventListener('contextmenu', (event: any) => {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
 
     try {
@@ -66,7 +66,7 @@ import { AnimationHelper } from './helpers/AnimationHelper';
   window.addEventListener("message", messageFn, true);
   window.messageFnArray = window.messageFnArray || [];
   window.messageFnArray.push(messageFn);
-  window.postMessage = (data : any) => {
+  window.postMessage = (data: any) => {
     if (typeof data === 'string') data = JSON.parse(data);
     for (const messageFn of window.messageFnArray) {
       messageFn({
@@ -116,7 +116,7 @@ import { AnimationHelper } from './helpers/AnimationHelper';
       return EventHelper.cancel(event);
     }
   }, false);
-  window.addEventListener("keyup", (event : any) => {
+  window.addEventListener("keyup", (event: any) => {
     EditorHelper.perform('keyup', event.keyCode);
 
     return EventHelper.cancel(event);
@@ -142,7 +142,7 @@ import { AnimationHelper } from './helpers/AnimationHelper';
     checkTextElementIfBlank();
     HTMLHelper.removeClass(document.body, 'internal-fsb-focusing-text-element');
   }, true);
-  let previousWindowSize = { width: null, height: null };
+  let previousWindowSize = {width: null, height: null};
   window.addEventListener('resize', (event) => {
     if (!isLoaded) return;
 

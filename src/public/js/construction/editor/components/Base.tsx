@@ -1,42 +1,42 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let controls : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let controls: any;
 
-let recentElementClassName : string = null;
-let recentElementStyle : string = null;
-let recentElementAttributes : any = null;
-let recentElementExtensions : any = null;
-let classNameStatuses : any = {};
-let styleValues : any = {};
-let attributeValues : any = {};
-let extensionValues : any = {};
-let keysMapping : any = {};
+let recentElementClassName: string = null;
+let recentElementStyle: string = null;
+let recentElementAttributes: any = null;
+let recentElementExtensions: any = null;
+let classNameStatuses: any = {};
+let styleValues: any = {};
+let attributeValues: any = {};
+let extensionValues: any = {};
+let keysMapping: any = {};
 
 interface IProps {
-  watchingClassNames : [any];
-  watchingStyleNames : string[];
-  watchingAttributeNames : string[];
-  watchingExtentionNames : string[];
+  watchingClassNames: [any];
+  watchingStyleNames: string[];
+  watchingAttributeNames: string[];
+  watchingExtentionNames: string[];
 }
 
 interface IState {
-  classNameStatuses : any;
-  styleValues : any;
-  attributeValues : any;
-  extensionValues : any;
+  classNameStatuses: any;
+  styleValues: any;
+  attributeValues: any;
+  extensionValues: any;
 }
 
-let DefaultState : any = {
+let DefaultState: any = {
   classNameStatuses: {},
   styleValues: {},
   attributeValues: {},
   extensionValues: {}
 };
-let DefaultProps : any = {
+let DefaultProps: any = {
   watchingClassNames: [],
   watchingStyleNames: [],
   watchingAttributeNames: [],
@@ -44,9 +44,9 @@ let DefaultProps : any = {
 };
 
 class Base extends React.Component {
-  protected state : IState = {};
-  protected static defaultProps : IProps = DefaultProps;
-  private mounted : boolean = false;
+  protected state: IState = {};
+  protected static defaultProps: IProps = DefaultProps;
+  private mounted: boolean = false;
 
   constructor(props) {
     super(props);
@@ -54,19 +54,19 @@ class Base extends React.Component {
 
     controls.push(this);
 
-    this.props.watchingClassNames.forEach((nameOrRegularExpression : any) => {
+    this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
       keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
       classNameStatuses[nameOrRegularExpression] = null;
     });
-    this.props.watchingStyleNames.forEach((nameOrRegularExpression : string) => {
+    this.props.watchingStyleNames.forEach((nameOrRegularExpression: string) => {
       keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
       styleValues[nameOrRegularExpression] = null;
     });
-    this.props.watchingAttributeNames.forEach((nameOrRegularExpression : string) => {
+    this.props.watchingAttributeNames.forEach((nameOrRegularExpression: string) => {
       keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
       attributeValues[nameOrRegularExpression] = null;
     });
-    this.props.watchingExtensionNames.forEach((nameOrRegularExpression : string) => {
+    this.props.watchingExtensionNames.forEach((nameOrRegularExpression: string) => {
       keysMapping[nameOrRegularExpression] = nameOrRegularExpression;
       extensionValues[nameOrRegularExpression] = null;
     });
@@ -80,7 +80,7 @@ class Base extends React.Component {
     this.mounted = false;
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     let changed = false;
 
     if (recentElementClassName != (properties.attributes && properties.attributes['class'] || '')) {
@@ -197,25 +197,25 @@ class Base extends React.Component {
       }
     }
 
-    this.props.watchingClassNames.forEach((nameOrRegularExpression : any) => {
+    this.props.watchingClassNames.forEach((nameOrRegularExpression: any) => {
       if (!CodeHelper.equals(this.state.classNameStatuses[nameOrRegularExpression], classNameStatuses[nameOrRegularExpression])) {
         this.state.classNameStatuses[nameOrRegularExpression] = classNameStatuses[nameOrRegularExpression];
         changed = true;
       }
     });
-    this.props.watchingStyleNames.forEach((name : string) => {
+    this.props.watchingStyleNames.forEach((name: string) => {
       if (!CodeHelper.equals(this.state.styleValues[name], styleValues[name])) {
         this.state.styleValues[name] = styleValues[name];
         changed = true;
       }
     });
-    this.props.watchingAttributeNames.forEach((name : string) => {
+    this.props.watchingAttributeNames.forEach((name: string) => {
       if (!CodeHelper.equals(this.state.attributeValues[name], attributeValues[name])) {
         this.state.attributeValues[name] = attributeValues[name];
         changed = true;
       }
     });
-    this.props.watchingExtensionNames.forEach((name : string) => {
+    this.props.watchingExtensionNames.forEach((name: string) => {
       if (!CodeHelper.equals(this.state.extensionValues[name], extensionValues[name])) {
         this.state.extensionValues[name] = extensionValues[name];
         changed = true;
@@ -229,9 +229,9 @@ class Base extends React.Component {
     return changed;
   }
 
-  protected render() { }
+  protected render() {}
 }
 
 DeclarationHelper.declare('Components.Base', Base);
 
-export { IProps, IState, DefaultState, DefaultProps, Base };
+export {IProps, IState, DefaultState, DefaultProps, Base};

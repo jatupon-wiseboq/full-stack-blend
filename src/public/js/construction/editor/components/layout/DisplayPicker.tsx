@@ -1,11 +1,11 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
@@ -22,19 +22,19 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class DisplayPicker extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     this.recentElementClassName = properties.attributes && properties.attributes['class'] || '';
 
     if (!super.update(properties)) return;
   }
 
-  protected checkboxItemOnClick(index : number) {
+  protected checkboxItemOnClick(index: number) {
     let name0 = this.props.watchingClassNames[index * 2];
     let name1 = this.props.watchingClassNames[index * 2 + 1];
     let current = !!this.state.classNameStatuses[name0];
@@ -96,4 +96,4 @@ class DisplayPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.DisplayPicker', DisplayPicker);
 
-export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker };
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker};

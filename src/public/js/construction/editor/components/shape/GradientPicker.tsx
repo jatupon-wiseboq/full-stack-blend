@@ -1,33 +1,33 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { Point, MathHelper } from '../../../helpers/MathHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../../helpers/MathHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Tree';
 import '../../controls/Textbox';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  onSelectionChange(color : String);
-  onValueChange(color : String);
-  value : String;
+  onSelectionChange(color: String);
+  onValueChange(color: String);
+  value: String;
 }
 
 interface State extends IState {
-  pickers : [{ position : Number, color : String }],
-  draggingIndex : number,
-  degree : number
+  pickers: [{position: Number, color: String}],
+  draggingIndex: number,
+  degree: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
   pickers: [
-    { position: 0, color: 'rgba(0, 0, 0, 1.0)' },
-    { position: 100, color: 'rgba(0, 0, 0, 1.0)' }
+    {position: 0, color: 'rgba(0, 0, 0, 1.0)'},
+    {position: 100, color: 'rgba(0, 0, 0, 1.0)'}
   ],
   draggingIndex: -1,
   degree: 90
@@ -38,22 +38,22 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class GradientPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
-  private documentOnMouseMoveDelegate : any;
-  private documentOnMouseUpDelegate : any;
-  private documentOnKeyDownDelegate : any;
+  private documentOnMouseMoveDelegate: any;
+  private documentOnMouseUpDelegate: any;
+  private documentOnKeyDownDelegate: any;
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
-  private originalElementPos : Point = {
+  private originalElementPos: Point = {
     x: 0,
     y: 0
   };
-  private containerWidth : number = 0;
+  private containerWidth: number = 0;
 
   constructor(props) {
     super(props);
@@ -70,7 +70,7 @@ class GradientPicker extends Base<Props, State> {
     document.body.removeEventListener('keydown', this.documentOnKeyDownDelegate, false);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     let recentGUID = this.state.attributeValues[this.props.watchingAttributeNames[0]];
 
     if (!super.update(properties)) return;
@@ -107,7 +107,7 @@ class GradientPicker extends Base<Props, State> {
     }
   }
 
-  protected gradientPickerOnClick(event : HTMLEvent) {
+  protected gradientPickerOnClick(event: HTMLEvent) {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let container = ReactDOM.findDOMNode(this.refs.container);
@@ -125,7 +125,7 @@ class GradientPicker extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  private pickerOnMouseDown(event : HTMLEvent) {
+  private pickerOnMouseDown(event: HTMLEvent) {
     document.body.addEventListener('mousemove', this.documentOnMouseMoveDelegate, false);
     document.body.addEventListener('mouseup', this.documentOnMouseUpDelegate, false);
     document.body.addEventListener('mouseleave', this.documentOnMouseUpDelegate, false);
@@ -151,7 +151,7 @@ class GradientPicker extends Base<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private documentOnMouseMove(event : HTMLEvent) {
+  private documentOnMouseMove(event: HTMLEvent) {
     let mousePosition = EventHelper.getMousePosition(event);
 
     let percent = (this.originalElementPos.x + mousePosition[0] - this.originalMousePos.x + 5.0) / this.containerWidth;
@@ -165,7 +165,7 @@ class GradientPicker extends Base<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private documentOnMouseUp(event : HTMLEvent) {
+  private documentOnMouseUp(event: HTMLEvent) {
     EventHelper.setDenyForHandle('click', true);
 
     document.body.removeEventListener('mousemove', this.documentOnMouseMoveDelegate, false);
@@ -176,7 +176,7 @@ class GradientPicker extends Base<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private documentOnKeyDown(event : HTMLEvent) {
+  private documentOnKeyDown(event: HTMLEvent) {
     if (this.state.draggingIndex == -1) return;
     if (this.state.pickers.length <= 2) return;
 
@@ -187,14 +187,14 @@ class GradientPicker extends Base<Props, State> {
     }
   }
 
-  public setCurrentPickerColor(color : string) {
+  public setCurrentPickerColor(color: string) {
     if (this.state.draggingIndex == -1) return;
 
     this.state.pickers[this.state.draggingIndex].color = color;
     this.forceUpdate();
   }
 
-  public generateCSSGradientBackgroundValue(radial : boolean = false, rotate : boolean = false) {
+  public generateCSSGradientBackgroundValue(radial: boolean = false, rotate: boolean = false) {
     let pickers = CodeHelper.clone(this.state.pickers);
     pickers = pickers.sort((a, b) => {
       return (a.position > b.position) ? 1 : -1;
@@ -202,7 +202,7 @@ class GradientPicker extends Base<Props, State> {
     return `${radial ? 'radial' : 'linear'}-gradient(${radial ? '' : `${(rotate) ? this.state.degree : 90}deg, `}${pickers.map(picker => picker.color + ' ' + picker.position + '%').join(', ')})`;
   }
 
-  protected rotationPickerOnUpdate(value : string) {
+  protected rotationPickerOnUpdate(value: string) {
     this.state.degree = (value == '') ? 90 : parseFloat(value);
     this.forceUpdate();
     if (this.props.onValueChange) this.props.onValueChange();
@@ -235,4 +235,4 @@ class GradientPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.GradientPicker', GradientPicker);
 
-export { Props, State, GradientPicker };
+export {Props, State, GradientPicker};

@@ -1,24 +1,24 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { InsertDirection, ITreeNode } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {InsertDirection, ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Textbox';
 import '../generic/ListManager';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  nodes : [ITreeNode];
-  isAdding : boolean;
-  name : string;
-  value : string;
-  current : ITreeNode;
+  nodes: [ITreeNode];
+  isAdding: boolean;
+  name: string;
+  value: string;
+  current: ITreeNode;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -35,15 +35,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class TranslationManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     this.state.nodes = [{
@@ -60,7 +60,7 @@ class TranslationManager extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
     node.tag.selected = node.selected;
 
     this.performUpdate();
@@ -68,7 +68,7 @@ class TranslationManager extends Base<Props, State> {
     document.body.click();
   }
 
-  private onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection) {
+  private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     let index = this.state.nodes.indexOf(element);
     this.state.nodes.splice(index, 1);
     let refIndex = this.state.nodes.indexOf(reference);
@@ -91,7 +91,7 @@ class TranslationManager extends Base<Props, State> {
     document.body.click();
   }
 
-  private onInsertOptionVisibleChanged(value : boolean) {
+  private onInsertOptionVisibleChanged(value: boolean) {
     this.setState({
       isAdding: value,
       current: null
@@ -105,7 +105,7 @@ class TranslationManager extends Base<Props, State> {
     }
   }
 
-  private onUpdateOptionVisibleChanged(value : boolean, node : ITreeNode) {
+  private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
     if (value) {
       this.setState({
         name: node.tag.name,
@@ -115,11 +115,11 @@ class TranslationManager extends Base<Props, State> {
     }
   }
 
-  protected nameOnUpdate(value : any) {
+  protected nameOnUpdate(value: any) {
     this.state.name = value;
   }
 
-  protected valueOnUpdate(value : any) {
+  protected valueOnUpdate(value: any) {
     this.state.value = value;
   }
 
@@ -169,7 +169,7 @@ class TranslationManager extends Base<Props, State> {
   render() {
     return (
       <FullStackBlend.Components.ListManager nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-        <div className="section-container" style={{ width: '225px' }}>
+        <div className="section-container" style={{width: '225px'}}>
           <div className="section-title">{(this.state.isAdding) ? "New Option" : "Update an Option"}</div>
           <div className="section-subtitle">Name</div>
           <div className="section-body">
@@ -179,11 +179,11 @@ class TranslationManager extends Base<Props, State> {
           <div className="section-body">
             <FullStackBlend.Controls.Textbox ref="value" value={this.state.value} preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
           </div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? '' : 'none' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Create</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
           </div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? 'none' : 'inline-block' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Update</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
           </div>
         </div>
       </FullStackBlend.Components.ListManager>
@@ -193,4 +193,4 @@ class TranslationManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.TranslationManager', TranslationManager);
 
-export { TranslationManager };
+export {TranslationManager};

@@ -58,7 +58,7 @@ var CSS3DRenderer = function() {
   var matrix = new Matrix4();
 
   var cache = {
-    camera: { fov: 0, style: '' },
+    camera: {fov: 0, style: ''},
     objects: new WeakMap()
   };
 
@@ -211,7 +211,7 @@ var CSS3DRenderer = function() {
         element.style.WebkitTransform = style;
         element.style.transform = style;
 
-        var objectData = { style: style };
+        var objectData = {style: style};
 
         if (isIE) {
 
@@ -356,4 +356,4 @@ var CSS3DRenderer = function() {
 
 };
 
-export { CSS3DObject, CSS3DSprite, CSS3DRenderer };
+export {CSS3DObject, CSS3DSprite, CSS3DRenderer};

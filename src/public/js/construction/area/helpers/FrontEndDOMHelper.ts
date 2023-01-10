@@ -1,13 +1,13 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { TextHelper } from '../../helpers/TextHelper';
-import { StylesheetHelper } from './StylesheetHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
-import { WorkspaceHelper } from './WorkspaceHelper';
-import { SchemaHelper } from './SchemaHelper';
-import { LocalizationHelper } from './LocalizationHelper';
-import { FrontEndReactHelper, DEFAULTS } from '../../helpers/FrontEndReactHelper';
-import { CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {TextHelper} from '../../helpers/TextHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {WorkspaceHelper} from './WorkspaceHelper';
+import {SchemaHelper} from './SchemaHelper';
+import {LocalizationHelper} from './LocalizationHelper';
+import {FrontEndReactHelper, DEFAULTS} from '../../helpers/FrontEndReactHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY, REQUIRE_FULL_CLOSING_TAGS, CONTAIN_TEXT_CONTENT_TAGS, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES_IN_CAMEL, ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST, DOT_NOTATION_CONSUMABLE_TAG_LIST, DOT_NOTATION_CONSUMABLE_CLASS_LIST, NONE_NATIVE_SUPPORT_OF_CAMEL_OF_EVENTS, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, ALL_DOCUMENT_SUPPORT_OF_CAMEL_OF_EVENTS, DOT_NOTATION_CONSUMABLE_TAG_LIST_FALLBACK, DOT_NOTATION_CONSUMABLE_CLASS_LIST_FALLBACK} from '../../Constants';
 
 let cachedGenerateCodeForReactRenderMethodElement = null;
 let cachedGenerateCodeForReactRenderMethodResults = null;
@@ -19,7 +19,7 @@ var FrontEndDOMHelper = {
     cachedGenerateCodeForReactRenderMethodElement = null;
     cachedGenerateCodeForReactRenderMethodResults = null;
   },
-  generateFrontEndCode: function(body : HTMLElement = document.body, container : HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
+  generateFrontEndCode: function(body: HTMLElement = document.body, container: HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) {
     // Document Level
     // 
     let generatedRenderMethodRootResult = FrontEndDOMHelper.generateCodeForReactRenderMethod(body, container);
@@ -33,8 +33,8 @@ var FrontEndDOMHelper = {
     // Generate Scripts
     // SEO: Optimize Score of Google PageSpeed Insights.
     // 
-    let executions : string[] = [];
-    let lines : string[] = [];
+    let executions: string[] = [];
+    let lines: string[] = [];
 
     FrontEndDOMHelper.recursiveGenerateCodeForPage(body, container, '    ', executions, lines);
 
@@ -84,7 +84,7 @@ ${rootScript}`;
 
     return [combinedHTMLTags, combinedMinimalFeatureScripts, combinedExpandingFeatureScripts, combinedFontTags, combinedInlineBodyStyle];
   },
-  recursiveGenerateCodeForPage: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true) {
+  recursiveGenerateCodeForPage: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean = true) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
 
     if (element && element.tagName) {
@@ -109,12 +109,12 @@ ${rootScript}`;
       }
     }
   },
-  generateCodeForReactRenderMethod: function(body : HTMLElement, element : HTMLElement) {
+  generateCodeForReactRenderMethod: function(body: HTMLElement, element: HTMLElement) {
     if (cachedGenerateCodeForReactRenderMethodElement == element && cachedGenerateCodeForReactRenderMethodResults)
       return cachedGenerateCodeForReactRenderMethodResults;
 
-    let executions : string[] = [];
-    let lines : string[] = [];
+    let executions: string[] = [];
+    let lines: string[] = [];
 
     if (EditorHelper.hasParentReactComponent(element)) {
       executions.push(`    TestHelper.identify();`);
@@ -133,7 +133,7 @@ ${rootScript}`;
 
     return cachedGenerateCodeForReactRenderMethodResults;
   },
-  recursiveGenerateCodeForReactRenderMethod: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true, cumulatedDotNotation : string = "", dotNotationChar : string = 'i', forwardAttributes : string[] = null, context : any = {}) {
+  recursiveGenerateCodeForReactRenderMethod: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean = true, cumulatedDotNotation: string = "", dotNotationChar: string = 'i', forwardAttributes: string[] = null, context: any = {}) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
 
@@ -326,7 +326,7 @@ ${rootScript}`;
               for (let key in hashMap) {
                 if (hashMap.hasOwnProperty(key)) {
                   if (styles == null) styles = [];
-                  let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+                  let camelKey = key.replace(/\-([a-z])/g, (matched) => {return matched[1].toUpperCase();});
                   if (!camelKey) continue;
                   if (camelKey.indexOf('FsbCell') == 0) continue;
                   if (camelKey.indexOf('FsbForChildren') == 0 && hashMap[key] == 'true') {
@@ -496,7 +496,7 @@ ${rootScript}`;
         for (let key in bindingStyles) {
           if (bindingStyles.hasOwnProperty(key)) {
             if (styles == null) styles = [];
-            let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+            let camelKey = key.replace(/\-([a-z])/g, (matched) => {return matched[1].toUpperCase();});
             styles.push(camelKey + ': ' + bindingStyles[key]);
           }
         }
@@ -680,7 +680,7 @@ ${rootScript}`;
       }
     }
   },
-  recursiveGenerateCodeForFallbackRendering: function(body : HTMLElement, element : HTMLElement, indent : string, executions : string[], lines : string[], isFirstElement : boolean = true, cumulatedDotNotation : string = "", dotNotationChar : string = 'i', forwardAttributes : string[] = null) {
+  recursiveGenerateCodeForFallbackRendering: function(body: HTMLElement, element: HTMLElement, indent: string, executions: string[], lines: string[], isFirstElement: boolean = true, cumulatedDotNotation: string = "", dotNotationChar: string = 'i', forwardAttributes: string[] = null) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
     if (HTMLHelper.hasClass(element, 'internal-fsb-plug')) return;
 
@@ -961,7 +961,7 @@ ${rootScript}`;
         for (let key in bindingStyles) {
           if (bindingStyles.hasOwnProperty(key)) {
             if (styles == null) styles = [];
-            let camelKey = key.replace(/\-([a-z])/g, (matched) => { return matched[1].toUpperCase(); });
+            let camelKey = key.replace(/\-([a-z])/g, (matched) => {return matched[1].toUpperCase();});
             styles.push(camelKey + ': ' + bindingStyles[key]);
           }
         }
@@ -1117,14 +1117,14 @@ ${rootScript}`;
       }
     }
   },
-  generateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement) {
-    let executions : string[] = [];
-    let lines : string[] = [];
+  generateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement) {
+    let executions: string[] = [];
+    let lines: string[] = [];
     FrontEndDOMHelper.recursiveGenerateCodeForMergingSection(body, element, executions, lines, true, EditorHelper.hasParentReactComponent(element));
 
     return [executions.join('\n'), lines.join('\n')];
   },
-  recursiveGenerateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement, executions : string[], lines : string[], isFirstElement : boolean = true, hasParentReactComponent : boolean = true) {
+  recursiveGenerateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement, executions: string[], lines: string[], isFirstElement: boolean = true, hasParentReactComponent: boolean = true) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
 
     if (element && element.tagName) {
@@ -1155,7 +1155,7 @@ ${rootScript}`;
       }
     }
   },
-  getDataTableSchemaFromKey: (key : string, current : any, data : any) : any => {
+  getDataTableSchemaFromKey: (key: string, current: any, data: any): any => {
     const relation = (current && current.relations || {})[key];
     const table = (data.tables || {})[key];
 
@@ -1167,14 +1167,14 @@ ${rootScript}`;
       return null;
     }
   },
-  isNotationLeafNode: (notation : string) : boolean => {
+  isNotationLeafNode: (notation: string): boolean => {
     const data = {
       tables: WorkspaceHelper.getDataFlows()
     }
 
     const splited = notation.replace(/\[[^\[\]]*\]/g, '').split(".");
-    let shifted : string = splited.shift();
-    let current : any = null;
+    let shifted: string = splited.shift();
+    let current: any = null;
 
     do {
       current = FrontEndDOMHelper.getDataTableSchemaFromKey(shifted, current, data);
@@ -1183,7 +1183,7 @@ ${rootScript}`;
 
     return (current == null);
   },
-  generateImageDataURLWithRatio: (width : number, height : number) : string => {
+  generateImageDataURLWithRatio: (width: number, height: number): string => {
     const canvas = document.createElement("canvas");
     canvas.width = width;
     canvas.height = height;
@@ -1191,4 +1191,4 @@ ${rootScript}`;
   }
 };
 
-export { FrontEndDOMHelper };
+export {FrontEndDOMHelper};

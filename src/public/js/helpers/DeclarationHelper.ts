@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-declare let window : any;
+declare let window: any;
 
-const Project : any = {};
-const settings : { [Identifier : string] : any } = {};
+const Project: any = {};
+const settings: {[Identifier: string]: any} = {};
 
 Project.Settings = settings;
 
@@ -18,7 +18,7 @@ if (window.settings) {
 }
 
 const DeclarationHelper = {
-  declareNamespace: (path : string) => {
+  declareNamespace: (path: string) => {
     const splited = path.split(".");
     let current = Project;
 
@@ -32,7 +32,7 @@ const DeclarationHelper = {
     return current;
   },
 
-  "declare": (level : string, path : string, klass : any) => {
+  "declare": (level: string, path: string, klass: any) => {
     const splited = path.split(".");
     const name = splited.pop();
     const namespacePath = splited.join(".");
@@ -43,7 +43,7 @@ const DeclarationHelper = {
     return namespace[name];
   },
 
-  "get": (path : string) => {
+  "get": (path: string) => {
     const splited = path.split(".");
     splited.shift();
     let current = Project;
@@ -59,7 +59,7 @@ const DeclarationHelper = {
   }
 };
 
-export { Project, DeclarationHelper };
+export {Project, DeclarationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

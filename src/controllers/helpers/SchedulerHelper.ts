@@ -1,8 +1,8 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { Base as Scheduler } from '../schedulers/Base';
-import { scheduler } from '../../server';
+import {Base as Scheduler} from '../schedulers/Base';
+import {scheduler} from '../../server';
 import schedule from 'node-schedule';
 
 enum DAYS {
@@ -16,10 +16,10 @@ enum DAYS {
 }
 
 const SchedulerHelper = {
-  register: <T extends Scheduler>(scheduler : new () => T) => {
+  register: <T extends Scheduler>(scheduler: new () => T) => {
     new scheduler();
   },
-  scheduling: (days : number, minutes : number, delegate : () => Promise<void>) : void => {
+  scheduling: (days: number, minutes: number, delegate: () => Promise<void>): void => {
     const _days = [];
     if ((days & DAYS.SUNDAY) != 0) _days.push(0);
     if ((days & DAYS.MONDAY) != 0) _days.push(1);
@@ -63,7 +63,7 @@ const SchedulerHelper = {
   }
 };
 
-export { SchedulerHelper };
+export {SchedulerHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

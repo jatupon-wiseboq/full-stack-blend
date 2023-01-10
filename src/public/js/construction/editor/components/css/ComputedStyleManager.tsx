@@ -1,11 +1,11 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode, InsertDirection } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
@@ -23,8 +23,8 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class ComputedStyleManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -42,4 +42,4 @@ class ComputedStyleManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.ComputedStyleManager', ComputedStyleManager);
 
-export { Props, State, ComputedStyleManager };
+export {Props, State, ComputedStyleManager};

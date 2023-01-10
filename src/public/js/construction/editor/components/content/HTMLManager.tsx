@@ -1,29 +1,29 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { RandomHelper } from '../../../helpers/RandomHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Textbox';
 import '../generic/ListManager';
-import { FORWARED_ATTRIBUTES_FOR_CHILDREN, SEO_FREQUENCY_OPTIONS, SEO_PRIORITY_OPTIONS } from '../../../Constants';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN, SEO_FREQUENCY_OPTIONS, SEO_PRIORITY_OPTIONS} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  path : boolean;
-  sortFieldName : string;
+  path: boolean;
+  sortFieldName: string;
 }
 
 interface State extends IState {
-  nodes : [ITreeNode];
-  isAdding : boolean;
-  id : string;
-  name : string;
-  path : string;
+  nodes: [ITreeNode];
+  isAdding: boolean;
+  id: string;
+  name: string;
+  path: string;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -42,31 +42,31 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class HTMLManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     this.refresh();
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
   }
 
-  private onStartDragging(node : ITreeNode) {
+  private onStartDragging(node: ITreeNode) {
     let container = ReactDOM.findDOMNode(this.refs.listManager);
     let deleteElement = HTMLHelper.getElementByClassName('delete', container);
 
     deleteElement.style.top = (container.firstElementChild.scrollTop + 3) + 'px';
   }
 
-  private onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection) {
+  private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     if (reference.id == 'delete') {
       if (element.tag.id == 'index') {
         alert('You cannot delete home page.');
@@ -91,7 +91,7 @@ class HTMLManager extends Base<Props, State> {
     document.body.click();
   }
 
-  private onInsertOptionVisibleChanged(value : boolean) {
+  private onInsertOptionVisibleChanged(value: boolean) {
     this.setState({
       isAdding: value
     });
@@ -111,7 +111,7 @@ class HTMLManager extends Base<Props, State> {
     }
   }
 
-  private onUpdateOptionVisibleChanged(value : boolean, node : ITreeNode) {
+  private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
     this.setState({
       isAdding: false
     });
@@ -138,37 +138,37 @@ class HTMLManager extends Base<Props, State> {
     }
   }
 
-  protected nameOnUpdate(value : any) {
+  protected nameOnUpdate(value: any) {
     this.state.name = value;
   }
 
-  protected descriptionOnUpdate(value : any) {
+  protected descriptionOnUpdate(value: any) {
     this.state.description = value;
   }
 
-  protected keywordsOnUpdate(value : any) {
+  protected keywordsOnUpdate(value: any) {
     this.state.keywords = value;
   }
 
-  protected imageOnUpdate(value : any) {
+  protected imageOnUpdate(value: any) {
     this.state.image = value;
   }
 
-  protected pathOnUpdate(value : any) {
+  protected pathOnUpdate(value: any) {
     this.state.path = value;
   }
 
-  protected sitemapOnUpdate(value : any) {
+  protected sitemapOnUpdate(value: any) {
     this.state.sitemap = value;
     this.forceUpdate();
   }
 
-  protected frequencyOnUpdate(identitty : any, value : any) {
+  protected frequencyOnUpdate(identitty: any, value: any) {
     this.state.frequency = value;
     this.forceUpdate();
   }
 
-  protected priorityOnUpdate(identitty : any, value : any) {
+  protected priorityOnUpdate(identitty: any, value: any) {
     this.state.priority = value;
     this.forceUpdate();
   }
@@ -303,7 +303,7 @@ class HTMLManager extends Base<Props, State> {
     return 'Item';
   }
 
-  protected getDisplay(item : any) {
+  protected getDisplay(item: any) {
     return `<div className="name">${item.name}</div>`;
   }
 
@@ -311,15 +311,15 @@ class HTMLManager extends Base<Props, State> {
     const currentMode = this.props && this.props.watchingExtensionNames && this.props.watchingExtensionNames[0];
     return (
       <FullStackBlend.Components.ListManager ref="listManager" customClassName="non-insertable html-manager" customDraggerClassName="draging-html-item" nodes={this.state.nodes} onStartDragging={this.onStartDragging.bind(this)} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-        <div className="section-container" style={{ width: '225px' }}>
+        <div className="section-container" style={{width: '225px'}}>
           <div className="section-title">{(this.state.isAdding) ? `New ${this.getCategoryName()}` : `Update ${this.getCategoryName()}`}</div>
           <div className="section-subtitle">Title</div>
           <div className="section-body">
             <FullStackBlend.Controls.Textbox ref="name" value={this.state.name} preRegExp='.*' postRegExp='.*' onUpdate={this.nameOnUpdate.bind(this)} maxLength={50}></FullStackBlend.Controls.Textbox>
           </div>
-          <div className="section-subtitle" style={{ display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block' }}>Path</div>
+          <div className="section-subtitle" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>Path</div>
           <div internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
-            <div className="section-body" style={{ display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block' }}>
+            <div className="section-body" style={{display: (this.state.id == 'index' || this.props.path == false) ? 'none' : 'block'}}>
               <FullStackBlend.Controls.Textbox ref="value" value={this.state.path} placeholder="/path/name/:a/:b" preRegExp="(/|/([:a-zA-Z]|[:a-zA-Z][a-zA-Z0-9_]+|[:a-zA-Z][a-zA-Z0-9_]+/)+)?" postRegExp="[/:a-zA-Z0-9_]*" onUpdate={this.pathOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
             </div>
           </div>
@@ -339,8 +339,8 @@ class HTMLManager extends Base<Props, State> {
               </div>
               <div className="section-subtitle">Sitemap Option</div>
               <div className="section-body" internal-fsb-not-for="workspaceMode:designer, workspaceMode:business">
-                <FullStackBlend.Components.RadioButtonPicker value={{ sitemap: this.state.sitemap }} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "enable for this page"]]]} />
-                <div style={{ opacity: this.state.sitemap ? '' : '0.15', pointerEvents: this.state.sitemap ? '' : 'none', height: '64px' }}>
+                <FullStackBlend.Components.RadioButtonPicker value={{sitemap: this.state.sitemap}} onValueChange={this.sitemapOnUpdate.bind(this)} options={[[['sitemap'], 'true', ["fa-power-off", "enable for this page"]]]} />
+                <div style={{opacity: this.state.sitemap ? '' : '0.15', pointerEvents: this.state.sitemap ? '' : 'none', height: '64px'}}>
                   <FullStackBlend.Controls.DropDownList options={SEO_FREQUENCY_OPTIONS} onUpdate={this.frequencyOnUpdate.bind(this)} inline={true}>
                     <span>frequency: {this.state.frequency}</span>
                   </FullStackBlend.Controls.DropDownList>
@@ -351,11 +351,11 @@ class HTMLManager extends Base<Props, State> {
               </div>
             </div>
           )}
-          <div className="section-body" style={{ display: (this.state.isAdding) ? '' : 'none' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Create</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
           </div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? 'none' : 'inline-block' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Update</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
           </div>
         </div>
       </FullStackBlend.Components.ListManager>
@@ -365,4 +365,4 @@ class HTMLManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.HTMLManager', HTMLManager);
 
-export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, HTMLManager };
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, HTMLManager};

@@ -1,26 +1,26 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Textbox';
 import '../generic/ListManager';
-import { FORWARED_ATTRIBUTES_FOR_CHILDREN, CAMEL_OF_EVENTS_DICTIONARY } from '../../../Constants';
+import {FORWARED_ATTRIBUTES_FOR_CHILDREN, CAMEL_OF_EVENTS_DICTIONARY} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  nodes : [ITreeNode];
-  isAdding : boolean;
-  name : string;
-  value : string;
-  nameInputFailedValidationMessage : string;
-  disabled : boolean;
+  nodes: [ITreeNode];
+  isAdding: boolean;
+  name: string;
+  value: string;
+  nameInputFailedValidationMessage: string;
+  disabled: boolean;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -40,15 +40,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class AttributeManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     this.state.nodes = [{
@@ -63,7 +63,7 @@ class AttributeManager extends Base<Props, State> {
     }];
 
     let disabled = this.state.extensionValues[this.props.watchingExtensionNames[0]];
-    this.setState({ disabled: disabled });
+    this.setState({disabled: disabled});
 
     let hash = this.state.attributeValues[this.props.watchingAttributeNames[0]];
     for (let name in hash) {
@@ -73,7 +73,7 @@ class AttributeManager extends Base<Props, State> {
 
         let value = hash[name];
         this.state.nodes.push({
-          id: JSON.stringify({ name: name, value: value }),
+          id: JSON.stringify({name: name, value: value}),
           name: CodeHelper.replaceDashIntoCamelCase(name) + '=' + ((value[0] == '{') ? value : '"' + value.replace('"', '\\"') + '"'),
           selectable: true,
           dropable: false,
@@ -89,11 +89,11 @@ class AttributeManager extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
 
   }
 
-  private onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection) {
+  private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     if (reference.id == 'delete') {
       let info = JSON.parse(element.id);
 
@@ -110,7 +110,7 @@ class AttributeManager extends Base<Props, State> {
     document.body.click();
   }
 
-  private onInsertOptionVisibleChanged(value : boolean) {
+  private onInsertOptionVisibleChanged(value: boolean) {
     this.setState({
       isAdding: value,
       nameInputFailedValidationMessage: null
@@ -124,7 +124,7 @@ class AttributeManager extends Base<Props, State> {
     }
   }
 
-  private onUpdateOptionVisibleChanged(value : boolean, node : ITreeNode) {
+  private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
     this.setState({
       isAdding: false,
       nameInputFailedValidationMessage: null
@@ -140,11 +140,11 @@ class AttributeManager extends Base<Props, State> {
     }
   }
 
-  protected nameOnUpdate(value : any) {
+  protected nameOnUpdate(value: any) {
     this.state.name = value;
   }
 
-  protected valueOnUpdate(value : any) {
+  protected valueOnUpdate(value: any) {
     this.state.value = value;
   }
 
@@ -196,21 +196,21 @@ class AttributeManager extends Base<Props, State> {
   render() {
     return (
       <FullStackBlend.Components.ListManager customClassName={"non-selectable non-insertable" + (this.state.disabled ? " disabled" : "")} nodes={this.state.nodes} onUpdate={this.onUpdate.bind(this)} onDragged={this.onDragged.bind(this)} onInsertOptionVisibleChanged={this.onInsertOptionVisibleChanged.bind(this)} onUpdateOptionVisibleChanged={this.onUpdateOptionVisibleChanged.bind(this)}>
-        <div className="section-container" style={{ width: '225px' }}>
+        <div className="section-container" style={{width: '225px'}}>
           <div className="section-title">{(this.state.isAdding) ? "New Attribute" : "Update an Attribute"}</div>
-          <div className="section-subtitle" style={{ display: (this.state.isAdding) ? '' : 'none' }}>Name</div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? '' : 'none' }}>
+          <div className="section-subtitle" style={{display: (this.state.isAdding) ? '' : 'none'}}>Name</div>
+          <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
             <FullStackBlend.Controls.Textbox failedValidationMessage={this.state.nameInputFailedValidationMessage} ref="name" value={this.state.name} placeholder="key" preRegExp='([a-zA-Z\-]|[a-zA-Z\-][a-zA-Z0-9\-]*)?' postRegExp='[a-zA-Z0-9\-]*' onUpdate={this.nameOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
           </div>
           <div className="section-subtitle">Value</div>
           <div className="section-body">
             <FullStackBlend.Controls.Textbox ref="value" value={this.state.value} placeholder="{'abc'}" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
           </div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? '' : 'none' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Create</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? '' : 'none'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.addOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Create</button>
           </div>
-          <div className="section-body" style={{ display: (this.state.isAdding) ? 'none' : 'inline-block' }}>
-            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{ padding: '3px 20px', borderRadius: '4px' }}>Update</button>
+          <div className="section-body" style={{display: (this.state.isAdding) ? 'none' : 'inline-block'}}>
+            <button className="btn btn-sm btn-primary" onClick={this.updateOnClick.bind(this)} style={{padding: '3px 20px', borderRadius: '4px'}}>Update</button>
           </div>
         </div>
       </FullStackBlend.Components.ListManager>
@@ -220,4 +220,4 @@ class AttributeManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.AttributeManager', AttributeManager);
 
-export { AttributeManager };
+export {AttributeManager};

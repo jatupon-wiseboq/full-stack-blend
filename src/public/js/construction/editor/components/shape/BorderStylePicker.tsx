@@ -1,25 +1,25 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/ColorPicker';
 import '../../controls/DropDownList';
 import '../../controls/DropDownControl';
-import { BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE, BORDER_STYLES_IN_REPRESENTING } from '../../../Constants';
+import {BORDER_STYLES_IN_DESCRIPTION, BORDER_STYLES_IN_VALUE, BORDER_STYLES_IN_REPRESENTING} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  borderStyleIndex : number;
-  visible : boolean;
+  borderStyleIndex: number;
+  visible: boolean;
 }
 
-let colorPicker : any = null;
+let colorPicker: any = null;
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
@@ -28,14 +28,14 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class BorderStylePicker extends Base<Props, State> {
-  protected state : State = {};
+  protected state: State = {};
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let borderStyleIndex = BORDER_STYLES_IN_VALUE.indexOf(this.state.styleValues[this.props.watchingStyleNames[0]]);
@@ -54,7 +54,7 @@ class BorderStylePicker extends Base<Props, State> {
     }
   }
 
-  protected dropdownOnUpdate(identity : any, value : any, index : any) {
+  protected dropdownOnUpdate(identity: any, value: any, index: any) {
     this.setState({
       borderStyleIndex: index
     });
@@ -66,13 +66,13 @@ class BorderStylePicker extends Base<Props, State> {
     });
   }
 
-  protected onVisibleChanged(visible : boolean, tag : any) {
+  protected onVisibleChanged(visible: boolean, tag: any) {
     if (visible) this.refs.swatchPicker.deselect();
 
-    this.setState({ visible: visible });
+    this.setState({visible: visible});
   }
 
-  protected colorPickerOnUpdate(rgba : string) {
+  protected colorPickerOnUpdate(rgba: string) {
     rgba = rgba || 'rgba(0, 0, 0, 1.0)';
     this.refs.swatchPicker.setCurrentSwatchColor(rgba);
 
@@ -100,7 +100,7 @@ class BorderStylePicker extends Base<Props, State> {
     this.refs.borderStyleDropdownList.hide();
   }
 
-  protected onColorPicked(color : string) {
+  protected onColorPicked(color: string) {
     this.setState({
       value: color
     });
@@ -126,7 +126,7 @@ class BorderStylePicker extends Base<Props, State> {
                 <div className="section-subtitle">Border Style</div>
                 <div className="section-body">
                   <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                    <div dangerouslySetInnerHTML={{ __html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex] }} style={{ display: 'inline-block', width: '100px', verticalAlign: 'top' }} />
+                    <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
                   </FullStackBlend.Controls.DropDownList>
                 </div>
                 <div className="section-subtitle">Swatches</div>
@@ -151,7 +151,7 @@ class BorderStylePicker extends Base<Props, State> {
               <div className="section-subtitle">Border Style</div>
               <div className="section-body">
                 <FullStackBlend.Controls.DropDownList ref="borderStyleDropdownList" customClassName="btn-secondary" options={BORDER_STYLES_IN_DESCRIPTION} autohide={false} onUpdate={this.dropdownOnUpdate.bind(this)}>
-                  <div dangerouslySetInnerHTML={{ __html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex] }} style={{ display: 'inline-block', width: '100px', verticalAlign: 'top' }} />
+                  <div dangerouslySetInnerHTML={{__html: BORDER_STYLES_IN_DESCRIPTION[this.state.borderStyleIndex]}} style={{display: 'inline-block', width: '100px', verticalAlign: 'top'}} />
                 </FullStackBlend.Controls.DropDownList>
               </div>
               <div className="section-subtitle">Swatches</div>
@@ -172,4 +172,4 @@ class BorderStylePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.BorderStylePicker', BorderStylePicker);
 
-export { Props, State, BorderStylePicker };
+export {Props, State, BorderStylePicker};

@@ -3,10 +3,10 @@
 
 import url from "url";
 import redis from "redis";
-import { Pool } from "node-postgres";
-import { MongoClient } from "mongodb";
+import {Pool} from "node-postgres";
+import {MongoClient} from "mongodb";
 import sidekiq from "sidekiq";
-import { Sequelize, Transaction } from "sequelize";
+import {Sequelize, Transaction} from "sequelize";
 import dotenv from "dotenv";
 
 let VolatileMemoryClient = null;
@@ -31,7 +31,7 @@ if (process.env.VOLATILE_MEMORY_KEY) {
 
   VolatileMemoryClient = {
     default: _default,
-    get: (key : any) : Promise<any> => {
+    get: (key: any): Promise<any> => {
       return new Promise(async (resolve, reject) => {
         _default.get(key, (error, reply) => {
           if (error) reject(error);
@@ -39,7 +39,7 @@ if (process.env.VOLATILE_MEMORY_KEY) {
         });
       });
     },
-    set: (key : any, value : any) : Promise<any> => {
+    set: (key: any, value: any): Promise<any> => {
       return new Promise(async (resolve, reject) => {
         _default.set(key, value, (error, reply) => {
           if (error) reject(error);
@@ -47,7 +47,7 @@ if (process.env.VOLATILE_MEMORY_KEY) {
         });
       });
     },
-    del: (key : any) : Promise<any> => {
+    del: (key: any): Promise<any> => {
       return new Promise(async (resolve, reject) => {
         _default.del(key, (error, reply) => {
           if (error) reject(error);
@@ -74,13 +74,13 @@ if (process.env.DOCUMENT_DATABASE_KEY) {
 
   DocumentDatabaseClient._connect = DocumentDatabaseClient.connect;
   DocumentDatabaseClient._connection = null;
-  DocumentDatabaseClient.connect = async (share : boolean = true) => {
+  DocumentDatabaseClient.connect = async (share: boolean = true) => {
     if (share) {
       if (DocumentDatabaseClient._connection == null || !DocumentDatabaseClient._connection.isConnected()) {
         DocumentDatabaseClient._connection = await DocumentDatabaseClient._connect();
 
         DocumentDatabaseClient._connection._close = DocumentDatabaseClient._connection.close;
-        DocumentDatabaseClient._connection.close = () => { };
+        DocumentDatabaseClient._connection.close = () => {};
       }
       return DocumentDatabaseClient._connection;
     } else {
@@ -149,10 +149,10 @@ const CreateTransaction = async (options) => {
         if (documentDatabaseConnection) await documentDatabaseConnection.close();
       }
     },
-    get relationalDatabaseTransaction() : any { return relationalDatabaseTransaction; },
-    get documentDatabaseConnection() : any { return documentDatabaseConnection; },
-    get documentDatabaseSession() : any { return documentDatabaseSession; },
-    setup: (_relationalDatabaseTransaction : any, _documentDatabaseSession : any) => {
+    get relationalDatabaseTransaction(): any {return relationalDatabaseTransaction;},
+    get documentDatabaseConnection(): any {return documentDatabaseConnection;},
+    get documentDatabaseSession(): any {return documentDatabaseSession;},
+    setup: (_relationalDatabaseTransaction: any, _documentDatabaseSession: any) => {
       relationalDatabaseTransaction = _relationalDatabaseTransaction;
       documentDatabaseSession = _documentDatabaseSession;
     }
@@ -171,7 +171,7 @@ let terminate = () => {
 process.on('SIGINT', terminate);
 process.on('SIGTERM', terminate);
 
-export { VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient, CreateTransaction };
+export {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerVolatileMemoryClient, PrioritizedWorkerClient, CreateTransaction};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

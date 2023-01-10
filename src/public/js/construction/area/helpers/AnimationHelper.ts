@@ -1,19 +1,19 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { InternalProjectSettings } from './WorkspaceHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
-import { TimelineHelper } from './TimelineHelper';
-import { StylesheetHelper } from './StylesheetHelper';
-import { StatusHelper } from './StatusHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {TimelineHelper} from './TimelineHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {StatusHelper} from './StatusHelper';
 import * as ClientAnimationHelper from '../../../helpers/AnimationHelper';
-import { CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES, ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING } from '../../Constants';
+import {CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, EASING_COEFFICIENT, ANIMATABLE_CSS_PROPERTIES, ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING} from '../../Constants';
 
 let stylesheetDefinitions = {};
 let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
 
-declare let window : any;
+declare let window: any;
 window.AnimationHelper = ClientAnimationHelper.AnimationHelper;
 
 const ANIMATABLE_CSS_PROPERTIES_DICTIONARY = {};
@@ -47,7 +47,7 @@ var AnimationHelper = {
 
     return stylesheetDefinitions;
   },
-  initializeStylesheetData: (data : any) => {
+  initializeStylesheetData: (data: any) => {
     stylesheetDefinitions = data || {};
     stylesheetDefinitionRevision = 0;
     cachedPrioritizedKeys = null;
@@ -55,13 +55,13 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setStyle: function(element : HTMLElement, style : string) {
+  setStyle: function(element: HTMLElement, style: string) {
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     AnimationHelper.setStylesheetDefinition(presetId, null, style);
   },
-  getStyle: function(element : HTMLElement) {
+  getStyle: function(element: HTMLElement) {
     let presetId = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
@@ -69,7 +69,7 @@ var AnimationHelper = {
 
     return style;
   },
-  hasStylesheetDefinition: function(presetId : string, groupId : string) {
+  hasStylesheetDefinition: function(presetId: string, groupId: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!stylesheetDefinitions[groupId]) return false;
@@ -77,7 +77,7 @@ var AnimationHelper = {
 
     return Object.keys(stylesheetDefinitions[groupId][presetId]).length != 0;
   },
-  getStylesheetDefinition: function(presetId : string) {
+  getStylesheetDefinition: function(presetId: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return null;
@@ -88,7 +88,7 @@ var AnimationHelper = {
 
     return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId][InternalProjectSettings.editingKeyframeID] || null;
   },
-  removeStylesheetDefinition: function(presetId : string) {
+  removeStylesheetDefinition: function(presetId: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return;
@@ -103,10 +103,10 @@ var AnimationHelper = {
     AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate(HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', presetId.split(':')[0]));
   },
-  getPreset: function(animationID : string) {
+  getPreset: function(animationID: string) {
     return stylesheetDefinitions[animationID];
   },
-  addPreset: function(animationID : string, data : any) {
+  addPreset: function(animationID: string, data: any) {
     stylesheetDefinitions[animationID] = data;
 
     AnimationHelper.setCurrentKeyframe(null);
@@ -116,7 +116,7 @@ var AnimationHelper = {
     AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate();
   },
-  removePreset: function(animationID : string) {
+  removePreset: function(animationID: string) {
     if (!confirm('Are you sure you want to delete this animation?')) return;
 
     delete stylesheetDefinitions[animationID];
@@ -128,7 +128,7 @@ var AnimationHelper = {
     AnimationHelper.renderStylesheetAndExtensionElement();
     StatusHelper.invalidate();
   },
-  setStylesheetDefinition: function(presetId : string, groupName : string, content : string) {
+  setStylesheetDefinition: function(presetId: string, groupName: string, content: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return;
@@ -147,7 +147,7 @@ var AnimationHelper = {
 
     console.log(JSON.stringify(stylesheetDefinitions));
   },
-  setAnimationGroup: function(editingAnimationID : string) {
+  setAnimationGroup: function(editingAnimationID: string) {
     InternalProjectSettings.editingAnimationID = editingAnimationID;
 
     for (let animationId in stylesheetDefinitions) {
@@ -178,19 +178,19 @@ var AnimationHelper = {
     TimelineHelper.invalidate();
     EditorHelper.updateEditorProperties();
   },
-  setAnimationSelector: function(selector : string) {
+  setAnimationSelector: function(selector: string) {
     InternalProjectSettings.editingSelector = selector;
 
     TimelineHelper.invalidate();
     EditorHelper.updateEditorProperties();
   },
-  setCurrentKeyframe: function(editingKeyframeID : string) {
+  setCurrentKeyframe: function(editingKeyframeID: string) {
     InternalProjectSettings.editingKeyframeID = editingKeyframeID;
 
     TimelineHelper.invalidate();
     EditorHelper.updateEditorProperties();
   },
-  setAnimationGroupName: function(groupName : string) {
+  setAnimationGroupName: function(groupName: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitionRevision++;
@@ -201,13 +201,13 @@ var AnimationHelper = {
     TimelineHelper.invalidate();
     EditorHelper.updateEditorProperties();
   },
-  setAnimationGroupNote: function(groupNote : string) {
+  setAnimationGroupNote: function(groupNote: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID].groupNote = groupNote;
   },
-  setAnimationGroupState: function(groupState : string) {
+  setAnimationGroupState: function(groupState: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitionRevision++;
@@ -217,7 +217,7 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setAnimationGroupTestState: function(groupTestState : string) {
+  setAnimationGroupTestState: function(groupTestState: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitionRevision++;
@@ -227,7 +227,7 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setAnimationGroupMode: function(groupMode : string) {
+  setAnimationGroupMode: function(groupMode: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitionRevision++;
@@ -237,7 +237,7 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setAnimationSynchronizeMode: function(synchronizeMode : string) {
+  setAnimationSynchronizeMode: function(synchronizeMode: string) {
     if (!InternalProjectSettings.editingAnimationID) return;
 
     stylesheetDefinitionRevision++;
@@ -247,7 +247,7 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setAnimationRepeatMode: function(presetId : string, repeatMode : string) {
+  setAnimationRepeatMode: function(presetId: string, repeatMode: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return;
@@ -260,7 +260,7 @@ var AnimationHelper = {
 
     AnimationHelper.renderStylesheetAndExtensionElement();
   },
-  setAnimationRepeatTime: function(presetId : string, repeatTime : string) {
+  setAnimationRepeatTime: function(presetId: string, repeatTime: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return;
@@ -318,7 +318,7 @@ var AnimationHelper = {
     stylesheetDefinitions[InternalProjectSettings.editingAnimationID] = stylesheetDefinitions[InternalProjectSettings.editingAnimationID] || {};
     return stylesheetDefinitions[InternalProjectSettings.editingAnimationID].synchronizeMode || null;
   },
-  getAnimationRepeatMode: function(presetId : string) {
+  getAnimationRepeatMode: function(presetId: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return null;
@@ -328,7 +328,7 @@ var AnimationHelper = {
 
     return stylesheetDefinitions[InternalProjectSettings.editingAnimationID][presetId].repeatMode || null;
   },
-  getAnimationRepeatTime: function(presetId : string) {
+  getAnimationRepeatTime: function(presetId: string) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!InternalProjectSettings.editingAnimationID) return null;
@@ -371,7 +371,7 @@ var AnimationHelper = {
   getStylesheetDefinitionRevision: function() {
     return stylesheetDefinitionRevision;
   },
-  getKeyframes: function(presetId : string, animationID : string = InternalProjectSettings.editingAnimationID) {
+  getKeyframes: function(presetId: string, animationID: string = InternalProjectSettings.editingAnimationID) {
     presetId = AnimationHelper.extendPresetIdWithSelectorIfNeed(presetId);
 
     if (!animationID) return [];
@@ -379,7 +379,7 @@ var AnimationHelper = {
     stylesheetDefinitions[animationID] = stylesheetDefinitions[animationID] || {};
     stylesheetDefinitions[animationID][presetId] = stylesheetDefinitions[animationID][presetId] || {};
 
-    return Object.keys(stylesheetDefinitions[animationID][presetId]).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1).map((keyframeID : string) => {
+    return Object.keys(stylesheetDefinitions[animationID][presetId]).filter(keyframeID => ['repeatMode', 'repeatTime'].indexOf(keyframeID) == -1).map((keyframeID: string) => {
       let hashMap = HTMLHelper.getHashMapFromInlineStyle(stylesheetDefinitions[animationID][presetId][keyframeID]);
 
       return {
@@ -389,7 +389,7 @@ var AnimationHelper = {
       };
     });
   },
-  hasKeyframes: function(presetId : string) {
+  hasKeyframes: function(presetId: string) {
     for (const key in stylesheetDefinitions) {
       if (stylesheetDefinitions.hasOwnProperty(key)) {
         let definitions, keyframes;
@@ -413,7 +413,7 @@ var AnimationHelper = {
     }
     return false;
   },
-  isDisplaying: function(animationID : string = InternalProjectSettings.editingAnimationID) {
+  isDisplaying: function(animationID: string = InternalProjectSettings.editingAnimationID) {
     if (!animationID) return false;
 
     stylesheetDefinitions[animationID] = stylesheetDefinitions[animationID] || {};
@@ -427,7 +427,7 @@ var AnimationHelper = {
         return (stylesheetDefinitions[animationID].groupState != 'off');
     }
   },
-  extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector : string) {
+  extendPresetIdWithSelectorIfNeed: function(presetIdOrSelector: string) {
     if (!Accessories.resizer || Accessories.resizer.getDOMNode().parentNode == null) return presetIdOrSelector;
 
     if (presetIdOrSelector && [':active', ':focus', ':hover', ':visited'].indexOf(presetIdOrSelector) != -1) {
@@ -472,7 +472,7 @@ var AnimationHelper = {
 
     document.body.appendChild(script);
   },
-  renderStylesheetAndExtension: function(production : boolean = false, startOver : boolean = true) : [string, string] {
+  renderStylesheetAndExtension: function(production: boolean = false, startOver: boolean = true): [string, string] {
     let animationGroups = [];
     let activeAnimationGroup = [];
     let inactiveAnimationGroup = [];
@@ -815,4 +815,4 @@ var AnimationHelper = {
   }
 };
 
-export { AnimationHelper };
+export {AnimationHelper};

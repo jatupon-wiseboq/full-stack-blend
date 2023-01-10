@@ -1,26 +1,26 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { Request } from 'express';
-import { SourceType, ActionType, Input } from './DatabaseHelper';
-import { DataTableSchema, DataSchema, SchemaHelper, FieldType } from './SchemaHelper';
-import { ValidationHelper } from './ValidationHelper';
-import { ProjectConfigurationHelper } from './ProjectConfigurationHelper';
-import { CodeHelper } from "./CodeHelper";
-import { XMLHttpRequest } from 'xmlhttprequest-ts';
-import { strict as assert } from 'assert';
+import {Request} from 'express';
+import {SourceType, ActionType, Input} from './DatabaseHelper';
+import {DataTableSchema, DataSchema, SchemaHelper, FieldType} from './SchemaHelper';
+import {ValidationHelper} from './ValidationHelper';
+import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
+import {CodeHelper} from "./CodeHelper";
+import {XMLHttpRequest} from 'xmlhttprequest-ts';
+import {strict as assert} from 'assert';
 
 interface RequestParamInfo {
-  target : SourceType;
-  group : boolean;
-  name : string;
+  target: SourceType;
+  group: boolean;
+  name: string;
 }
 
-const requestParamInfoDict : any = {};
-const requestSubmitInfoDict : any = {};
+const requestParamInfoDict: any = {};
+const requestSubmitInfoDict: any = {};
 
 const RequestHelper = {
-  request: async (method : string, url : string, body : string, responseType : string = null, retryCount = 10) : Promise<any> => {
+  request: async (method: string, url: string, body: string, responseType: string = null, retryCount = 10): Promise<any> => {
     CodeHelper.assertOfPresent(method, 'method');
     CodeHelper.assertOfPresent(url, 'url');
 
@@ -79,43 +79,43 @@ const RequestHelper = {
       process();
     });
   },
-  get: (url : string, responseType : string = null) : Promise<any> => {
+  get: (url: string, responseType: string = null): Promise<any> => {
     const method = 'GET';
     const bodyString = null;
 
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  post: (url : string, body : any, responseType : string = null) : Promise<any> => {
+  post: (url: string, body: any, responseType: string = null): Promise<any> => {
     const method = 'POST';
     const bodyString = JSON.stringify(body);
 
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  put: (url : string, body : any, responseType : string = null) : Promise<any> => {
+  put: (url: string, body: any, responseType: string = null): Promise<any> => {
     const method = 'PUT';
     const bodyString = JSON.stringify(body);
 
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  delete: (url : string, body : any, responseType : string = null) : Promise<any> => {
+  delete: (url: string, body: any, responseType: string = null): Promise<any> => {
     const method = 'DELETE';
     const bodyString = JSON.stringify(body);
 
     return RequestHelper.request(method, url, bodyString, responseType);
   },
-  registerInput: (guid : string, target : string, group : string, name : string) : void => {
+  registerInput: (guid: string, target: string, group: string, name: string): void => {
     CodeHelper.assertOfPresent(guid, 'guid');
 
     if (!target && !group && !name) return;
 
-    CodeHelper.assertOfPresent(target, 'target', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(group, 'group', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(name, 'name', undefined, { guid: guid });
+    CodeHelper.assertOfPresent(target, 'target', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(group, 'group', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(name, 'name', undefined, {guid: guid});
     CodeHelper.assertOfNotationFormat(guid, 'guid');
     CodeHelper.assertOfNotationFormat(group, 'group');
     CodeHelper.assertOfNotationFormat(name, 'name');
 
-    let _target : SourceType;
+    let _target: SourceType;
     switch (target) {
       case 'relational':
         _target = SourceType.Relational;
@@ -148,21 +148,21 @@ const RequestHelper = {
 
     requestParamInfoDict[guid] = info;
   },
-  registerSubmit: (pageId : string, guid : string, action : string, fields : string[], options : any) : void => {
-    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(guid, 'guid', undefined, { guid: guid });
+  registerSubmit: (pageId: string, guid: string, action: string, fields: string[], options: any): void => {
+    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
 
     if (!action) return;
 
-    CodeHelper.assertOfPresent(action, 'action', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(fields, 'fields', undefined, { guid: guid });
+    CodeHelper.assertOfPresent(action, 'action', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(fields, 'fields', undefined, {guid: guid});
 
-    CodeHelper.recursiveEvaluate(fields, (obj : any) => {
+    CodeHelper.recursiveEvaluate(fields, (obj: any) => {
       CodeHelper.assertOfKeyName(obj, 'fields');
     });
 
-    CodeHelper.recursiveEvaluate(options, (obj : any) => {
-      CodeHelper.assertOfSimpleType(obj, 'options', undefined, { guid: guid });
+    CodeHelper.recursiveEvaluate(options, (obj: any) => {
+      CodeHelper.assertOfSimpleType(obj, 'options', undefined, {guid: guid});
     });
 
     CodeHelper.assertOfKeyName(pageId, 'pageId');
@@ -181,15 +181,15 @@ const RequestHelper = {
 
     requestSubmitInfoDict[pageId + guid] = info;
   },
-  getAction: (pageId : string, request : Request) : ActionType => {
+  getAction: (pageId: string, request: Request): ActionType => {
     CodeHelper.assertOfPresent(pageId, 'pageId');
     CodeHelper.assertOfPresent(request, 'request');
     CodeHelper.assertOfKeyName(pageId, 'pageId');
 
-    const json : any = request.body;
+    const json: any = request.body;
 
     CodeHelper.assertOfPresent(json, 'json');
-    CodeHelper.recursiveEvaluate(json, (obj : any) => {
+    CodeHelper.recursiveEvaluate(json, (obj: any) => {
       CodeHelper.assertOfSimpleType(obj, 'json', undefined);
     });
 
@@ -221,15 +221,15 @@ const RequestHelper = {
         return null;
     }
   },
-  getFields: (pageId : string, request : Request) : any => {
+  getFields: (pageId: string, request: Request): any => {
     CodeHelper.assertOfPresent(pageId, 'pageId');
     CodeHelper.assertOfPresent(request, 'request');
     CodeHelper.assertOfKeyName(pageId, 'pageId');
 
-    const json : any = request.body;
+    const json: any = request.body;
 
     CodeHelper.assertOfPresent(json, 'json');
-    CodeHelper.recursiveEvaluate(json, (obj : any) => {
+    CodeHelper.recursiveEvaluate(json, (obj: any) => {
       CodeHelper.assertOfSimpleType(obj, 'json', undefined);
     });
 
@@ -240,15 +240,15 @@ const RequestHelper = {
 
     return requestSubmitInfoDict[pageId + json.guid].fields;
   },
-  getOptions: (pageId : string, request : Request) : any => {
+  getOptions: (pageId: string, request: Request): any => {
     CodeHelper.assertOfPresent(pageId, 'pageId');
     CodeHelper.assertOfPresent(request, 'request');
     CodeHelper.assertOfKeyName(pageId, 'pageId');
 
-    const json : any = request.body;
+    const json: any = request.body;
 
     CodeHelper.assertOfPresent(json, 'json');
-    CodeHelper.recursiveEvaluate(json, (obj : any) => {
+    CodeHelper.recursiveEvaluate(json, (obj: any) => {
       CodeHelper.assertOfSimpleType(obj, 'json', undefined);
     });
 
@@ -259,7 +259,7 @@ const RequestHelper = {
 
     return requestSubmitInfoDict[pageId + json.guid].options;
   },
-  getParamInfos: (guid : string) : any => {
+  getParamInfos: (guid: string): any => {
     CodeHelper.assertOfPresent(guid, 'guid');
     CodeHelper.assertOfNotationFormat(guid, 'guid');
 
@@ -271,7 +271,7 @@ const RequestHelper = {
 
     return info;
   },
-  getSchema: (pageId : string, request : Request, schemata : DataSchema = ProjectConfigurationHelper.getDataSchema()) : DataTableSchema => {
+  getSchema: (pageId: string, request: Request, schemata: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
     CodeHelper.assertOfPresent(pageId, 'pageId');
     CodeHelper.assertOfPresent(request, 'request');
     CodeHelper.assertOfKeyName(pageId, 'pageId');
@@ -284,18 +284,18 @@ const RequestHelper = {
 
     return SchemaHelper.getDataTableSchemaFromNotation(info.group.split('.')[0], schemata);
   },
-  getInput: (pageId : string, request : Request, guid : string) : Input => {
-    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(guid, 'guid', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(request, 'request', undefined, { guid: guid });
+  getInput: (pageId: string, request: Request, guid: string): Input => {
+    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
     CodeHelper.assertOfKeyName(pageId, 'pageId');
     CodeHelper.assertOfNotationFormat(guid, 'guid');
 
-    const json : any = request.body;
+    const json: any = request.body;
 
     CodeHelper.assertOfPresent(json, 'json');
-    CodeHelper.recursiveEvaluate(json, (obj : any) => {
-      CodeHelper.assertOfSimpleType(obj, 'json', undefined, { guid: guid });
+    CodeHelper.recursiveEvaluate(json, (obj: any) => {
+      CodeHelper.assertOfSimpleType(obj, 'json', undefined, {guid: guid});
     });
 
     if (typeof json.guid === 'undefined') return null;
@@ -313,7 +313,7 @@ const RequestHelper = {
     const group = splited.pop();
     const premise = splited.join('.') || null;
 
-    const input : Input = {
+    const input: Input = {
       target: paramInfo.target,
       group: group.replace(/[@!]/g, ''),
       name: paramInfo.name.replace(/[@!]/g, ''),
@@ -332,18 +332,18 @@ const RequestHelper = {
 
     return input;
   },
-  getInputs: (pageId : string, request : Request, guid : string) : Input[] => {
-    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(guid, 'guid', undefined, { guid: guid });
-    CodeHelper.assertOfPresent(request, 'request', undefined, { guid: guid });
+  getInputs: (pageId: string, request: Request, guid: string): Input[] => {
+    CodeHelper.assertOfPresent(pageId, 'pageId', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(guid, 'guid', undefined, {guid: guid});
+    CodeHelper.assertOfPresent(request, 'request', undefined, {guid: guid});
     CodeHelper.assertOfKeyName(pageId, 'pageId');
     CodeHelper.assertOfNotationFormat(guid, 'guid');
 
-    const json : any = request.body;
+    const json: any = request.body;
 
     CodeHelper.assertOfPresent(json, 'json');
-    CodeHelper.recursiveEvaluate(json, (obj : any) => {
-      CodeHelper.assertOfSimpleType(obj, 'json', undefined, { guid: guid });
+    CodeHelper.recursiveEvaluate(json, (obj: any) => {
+      CodeHelper.assertOfSimpleType(obj, 'json', undefined, {guid: guid});
     });
 
     if (typeof json.guid === 'undefined') [];
@@ -371,9 +371,9 @@ const RequestHelper = {
 
     return inputs;
   },
-  createInputs: (values : { [Identifier : string] : any }, schemata : DataSchema = ProjectConfigurationHelper.getDataSchema()) : Input[] => {
+  createInputs: (values: {[Identifier: string]: any}, schemata: DataSchema = ProjectConfigurationHelper.getDataSchema()): Input[] => {
     CodeHelper.assertOfPresent(values, 'values');
-    CodeHelper.recursiveEvaluate(values, (obj : any) => {
+    CodeHelper.recursiveEvaluate(values, (obj: any) => {
       CodeHelper.assertOfSimpleType(obj, 'values', undefined);
     });
 
@@ -433,7 +433,7 @@ const RequestHelper = {
             }
           }
 
-          const input : Input = {
+          const input: Input = {
             target: target,
             group: group,
             name: name,
@@ -450,7 +450,7 @@ const RequestHelper = {
         } else if (Array.isArray(value)) {
           let index = 0;
           for (const _value of value) {
-            const input : Input = {
+            const input: Input = {
               target: target,
               group: group,
               name: name,
@@ -466,7 +466,7 @@ const RequestHelper = {
             results.push(input);
           }
         } else {
-          const input : Input = {
+          const input: Input = {
             target: target,
             group: group,
             name: name,
@@ -486,7 +486,7 @@ const RequestHelper = {
 
     return results;
   },
-  sortInputs: (inputs : Input[]) => {
+  sortInputs: (inputs: Input[]) => {
     CodeHelper.assertOfPresent(inputs, 'inputs');
 
     for (const input of inputs) {
@@ -531,7 +531,7 @@ const RequestHelper = {
 
     const registers = [];
     const multiple = [];
-    let latest : string = null;
+    let latest: string = null;
     let length = 0;
 
     for (let i = 0; i < inputs.length; i++) {
@@ -583,7 +583,7 @@ const RequestHelper = {
   }
 };
 
-export { RequestHelper };
+export {RequestHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

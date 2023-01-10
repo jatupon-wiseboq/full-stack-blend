@@ -1,15 +1,15 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { Point, MathHelper } from '../../helpers/MathHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { EditorHelper } from '../helpers/EditorHelper';
-import { StylesheetHelper } from '../helpers/StylesheetHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../helpers/MathHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {EditorHelper} from '../helpers/EditorHelper';
+import {StylesheetHelper} from '../helpers/StylesheetHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
-  onUpdate(selectedCells : [HTMLTableCellElement]);
+  onUpdate(selectedCells: [HTMLTableCellElement]);
 }
 
 interface State {
@@ -23,14 +23,14 @@ const Edge = Object.freeze({
 });
 
 class CellFormater extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
-  private tableElement : HTMLTableElement = null;
-  private allCellElements : [HTMLTableCellElement] = [];
-  private domElement : HTMLElement = null;
+  private tableElement: HTMLTableElement = null;
+  private allCellElements: [HTMLTableCellElement] = [];
+  private domElement: HTMLElement = null;
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
@@ -45,11 +45,11 @@ class CellFormater extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
-  public setTableElement(element : HTMLTableElement) {
+  public setTableElement(element: HTMLTableElement) {
     if (this.tableElement == element) return;
 
     if (this.tableElement != null) {
@@ -202,7 +202,7 @@ class CellFormater extends React.Component<Props, State> {
 
     return [size, style, color].join(' ');
   }
-  private getBorderDefinition(x : number, y : number, edge : Edge) {
+  private getBorderDefinition(x: number, y: number, edge: Edge) {
     return StylesheetHelper.getStyleAttribute(this.tableElement, '-fsb-cell-' + x + '-' + y + '-' + edge.description);
   }
 
@@ -232,7 +232,7 @@ class CellFormater extends React.Component<Props, State> {
   private mouseMove(event) {
     let mousePosition = EventHelper.getMousePosition(event);
 
-    this.updateSelection({ x: mousePosition[0], y: mousePosition[1] });
+    this.updateSelection({x: mousePosition[0], y: mousePosition[1]});
   }
   private mouseUp(event) {
     this.uninstallEventHandlers();
@@ -246,7 +246,7 @@ class CellFormater extends React.Component<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private updateSelection(mousePosition : Point) {
+  private updateSelection(mousePosition: Point) {
     this.clearSelection();
 
     let mouseRegion = MathHelper.createRegion(this.originalMousePos, mousePosition);
@@ -285,4 +285,4 @@ class CellFormater extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.CellFormater', CellFormater);
 
-export { Props, State, CellFormater };
+export {Props, State, CellFormater};

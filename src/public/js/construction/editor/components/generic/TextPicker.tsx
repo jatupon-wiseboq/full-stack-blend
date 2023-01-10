@@ -1,26 +1,26 @@
-import { EventHelper } from '../../../helpers/EventHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  inline : boolean,
-  button : boolean,
-  manual : boolean,
-  multiline : boolean,
-  disabled : boolean,
-  placeholder : string
+  inline: boolean,
+  button: boolean,
+  manual: boolean,
+  multiline: boolean,
+  disabled: boolean,
+  placeholder: string
 }
 
 interface State extends IState {
-  value : any
+  value: any
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -39,15 +39,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class TextPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let original = '';
@@ -67,7 +67,7 @@ class TextPicker extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     this.state.value = value;
     if (this.props.watchingStyleNames[0] && !this.props.manual) {
       perform('update', {
@@ -98,7 +98,7 @@ class TextPicker extends Base<Props, State> {
     }
   }
 
-  private composeValue(value : any) {
+  private composeValue(value: any) {
     if (this.props.watchingStyleNames[0]) {
       if (this.props.watchingStyleNames[1]) {
         return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], "'" + value + "'", this.state.styleValues[this.props.watchingStyleNames[1]], "''");
@@ -161,4 +161,4 @@ class TextPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.TextPicker', TextPicker);
 
-export { Props, State, TextPicker };
+export {Props, State, TextPicker};

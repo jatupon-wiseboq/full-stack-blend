@@ -92,8 +92,8 @@ if (Object.assign === undefined) {
 }
 
 var REVISION = '115';
-var MOUSE = { LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2 };
-var TOUCH = { ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3 };
+var MOUSE = {LEFT: 0, MIDDLE: 1, RIGHT: 2, ROTATE: 0, DOLLY: 1, PAN: 2};
+var TOUCH = {ROTATE: 0, PAN: 1, DOLLY_PAN: 2, DOLLY_ROTATE: 3};
 var CullFaceNone = 0;
 var CullFaceBack = 1;
 var CullFaceFront = 2;
@@ -294,7 +294,7 @@ var StreamCopyUsage = 35042;
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-function EventDispatcher() { }
+function EventDispatcher() {}
 
 Object.assign(EventDispatcher.prototype, {
 
@@ -1490,7 +1490,7 @@ var textureId = 0;
 
 function Texture(image, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding) {
 
-  Object.defineProperty(this, 'id', { value: textureId++ });
+  Object.defineProperty(this, 'id', {value: textureId++});
 
   this.uuid = MathUtils.generateUUID();
 
@@ -1701,7 +1701,7 @@ Texture.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   },
 
@@ -2535,7 +2535,7 @@ WebGLRenderTarget.prototype = Object.assign(Object.create(EventDispatcher.protot
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   }
 
@@ -3211,7 +3211,7 @@ Object.assign(Quaternion.prototype, {
 
   },
 
-  _onChangeCallback: function() { }
+  _onChangeCallback: function() {}
 
 });
 
@@ -5152,7 +5152,7 @@ Object.assign(Euler.prototype, {
 
   },
 
-  _onChangeCallback: function() { }
+  _onChangeCallback: function() {}
 
 });
 
@@ -5227,8 +5227,8 @@ var _xAxis = new Vector3(1, 0, 0);
 var _yAxis = new Vector3(0, 1, 0);
 var _zAxis = new Vector3(0, 0, 1);
 
-var _addedEvent = { type: 'added' };
-var _removedEvent = { type: 'removed' };
+var _addedEvent = {type: 'added'};
+var _removedEvent = {type: 'removed'};
 
 /**
  * @author mrdoob / http://mrdoob.com/
@@ -5240,7 +5240,7 @@ var _removedEvent = { type: 'removed' };
 
 function Object3D() {
 
-  Object.defineProperty(this, 'id', { value: _object3DId++ });
+  Object.defineProperty(this, 'id', {value: _object3DId++});
 
   this.uuid = MathUtils.generateUUID();
 
@@ -5329,8 +5329,8 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   isObject3D: true,
 
-  onBeforeRender: function() { },
-  onAfterRender: function() { },
+  onBeforeRender: function() {},
+  onAfterRender: function() {},
 
   applyMatrix4: function(matrix) {
 
@@ -5708,7 +5708,7 @@ Object3D.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   },
 
-  raycast: function() { },
+  raycast: function() {},
 
   traverse: function(callback) {
 
@@ -6084,7 +6084,7 @@ function Scene() {
 
   if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
 
-    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', { detail: this })); // eslint-disable-line no-undef
+    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
 
   }
 
@@ -6127,7 +6127,7 @@ Scene.prototype = Object.assign(Object.create(Object3D.prototype), {
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   }
 
@@ -7960,8 +7960,8 @@ var _colorKeywords = {
   'violet': 0xEE82EE, 'wheat': 0xF5DEB3, 'white': 0xFFFFFF, 'whitesmoke': 0xF5F5F5, 'yellow': 0xFFFF00, 'yellowgreen': 0x9ACD32
 };
 
-var _hslA = { h: 0, s: 0, l: 0 };
-var _hslB = { h: 0, s: 0, l: 0 };
+var _hslA = {h: 0, s: 0, l: 0};
+var _hslB = {h: 0, s: 0, l: 0};
 
 function Color(r, g, b) {
 
@@ -8334,7 +8334,7 @@ Object.assign(Color.prototype, {
     if (target === undefined) {
 
       console.warn('THREE.Color: .getHSL() target is now required');
-      target = { h: 0, s: 0, l: 0 };
+      target = {h: 0, s: 0, l: 0};
 
     }
 
@@ -8588,7 +8588,7 @@ var materialId = 0;
 
 function Material() {
 
-  Object.defineProperty(this, 'id', { value: materialId++ });
+  Object.defineProperty(this, 'id', {value: materialId++});
 
   this.uuid = MathUtils.generateUUID();
 
@@ -8660,7 +8660,7 @@ Material.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   isMaterial: true,
 
-  onBeforeCompile: function() { },
+  onBeforeCompile: function() {},
 
   setValues: function(values) {
 
@@ -9003,7 +9003,7 @@ Material.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   }
 
@@ -9153,7 +9153,7 @@ function BufferAttribute(array, itemSize, normalized) {
   this.normalized = normalized === true;
 
   this.usage = StaticDrawUsage;
-  this.updateRange = { offset: 0, count: - 1 };
+  this.updateRange = {offset: 0, count: - 1};
 
   this.version = 0;
 
@@ -9173,7 +9173,7 @@ Object.assign(BufferAttribute.prototype, {
 
   isBufferAttribute: true,
 
-  onUploadCallback: function() { },
+  onUploadCallback: function() {},
 
   setUsage: function(value) {
 
@@ -9930,7 +9930,7 @@ var _vector$4 = new Vector3();
 
 function BufferGeometry() {
 
-  Object.defineProperty(this, 'id', { value: _bufferGeometryId += 2 });
+  Object.defineProperty(this, 'id', {value: _bufferGeometryId += 2});
 
   this.uuid = MathUtils.generateUUID();
 
@@ -9948,7 +9948,7 @@ function BufferGeometry() {
   this.boundingBox = null;
   this.boundingSphere = null;
 
-  this.drawRange = { start: 0, count: Infinity };
+  this.drawRange = {start: 0, count: Infinity};
 
   this.userData = {};
 
@@ -10913,7 +10913,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
     }
 
-    data.data = { attributes: {} };
+    data.data = {attributes: {}};
 
     var index = this.index;
 
@@ -11136,7 +11136,7 @@ BufferGeometry.prototype = Object.assign(Object.create(EventDispatcher.prototype
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   }
 
@@ -11609,7 +11609,7 @@ var _offset$1 = new Vector3();
 
 function Geometry() {
 
-  Object.defineProperty(this, 'id', { value: _geometryId += 2 });
+  Object.defineProperty(this, 'id', {value: _geometryId += 2});
 
   this.uuid = MathUtils.generateUUID();
 
@@ -12155,7 +12155,7 @@ Geometry.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
         for (f = 0, fl = this.faces.length; f < fl; f++) {
 
           faceNormal = new Vector3();
-          vertexNormals = { a: new Vector3(), b: new Vector3(), c: new Vector3() };
+          vertexNormals = {a: new Vector3(), b: new Vector3(), c: new Vector3()};
 
           dstNormalsFace.push(faceNormal);
           dstNormalsVertex.push(vertexNormals);
@@ -12978,7 +12978,7 @@ Geometry.prototype = Object.assign(Object.create(EventDispatcher.prototype), {
 
   dispose: function() {
 
-    this.dispatchEvent({ type: 'dispose' });
+    this.dispatchEvent({type: 'dispose'});
 
   }
 
@@ -13245,7 +13245,7 @@ function mergeUniforms(uniforms) {
 
 // Legacy
 
-var UniformsUtils = { clone: cloneUniforms, merge: mergeUniforms };
+var UniformsUtils = {clone: cloneUniforms, merge: mergeUniforms};
 
 var default_vertex = "void main() {\n\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n}";
 
@@ -13815,7 +13815,7 @@ function CubeCamera(near, far, cubeResolution, options) {
   cameraNZ.lookAt(new Vector3(0, 0, - 1));
   this.add(cameraNZ);
 
-  options = options || { format: RGBFormat, magFilter: LinearFilter, minFilter: LinearFilter };
+  options = options || {format: RGBFormat, magFilter: LinearFilter, minFilter: LinearFilter};
 
   this.renderTarget = new WebGLCubeRenderTarget(cubeResolution, options);
   this.renderTarget.texture.name = "CubeCamera";
@@ -13913,7 +13913,7 @@ WebGLCubeRenderTarget.prototype.fromEquirectangularTexture = function(renderer, 
   var shader = {
 
     uniforms: {
-      tEquirect: { value: null },
+      tEquirect: {value: null},
     },
 
     vertexShader: [
@@ -14003,7 +14003,7 @@ function DataTexture(data, width, height, format, type, mapping, wrapS, wrapT, m
 
   Texture.call(this, null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
 
-  this.image = { data: data || null, width: width || 1, height: height || 1 };
+  this.image = {data: data || null, width: width || 1, height: height || 1};
 
   this.magFilter = magFilter !== undefined ? magFilter : NearestFilter;
   this.minFilter = minFilter !== undefined ? minFilter : NearestFilter;
@@ -14200,107 +14200,107 @@ var UniformsLib = {
 
   common: {
 
-    diffuse: { value: new Color(0xeeeeee) },
-    opacity: { value: 1.0 },
+    diffuse: {value: new Color(0xeeeeee)},
+    opacity: {value: 1.0},
 
-    map: { value: null },
-    uvTransform: { value: new Matrix3() },
-    uv2Transform: { value: new Matrix3() },
+    map: {value: null},
+    uvTransform: {value: new Matrix3()},
+    uv2Transform: {value: new Matrix3()},
 
-    alphaMap: { value: null },
+    alphaMap: {value: null},
 
   },
 
   specularmap: {
 
-    specularMap: { value: null },
+    specularMap: {value: null},
 
   },
 
   envmap: {
 
-    envMap: { value: null },
-    flipEnvMap: { value: - 1 },
-    reflectivity: { value: 1.0 },
-    refractionRatio: { value: 0.98 },
-    maxMipLevel: { value: 0 }
+    envMap: {value: null},
+    flipEnvMap: {value: - 1},
+    reflectivity: {value: 1.0},
+    refractionRatio: {value: 0.98},
+    maxMipLevel: {value: 0}
 
   },
 
   aomap: {
 
-    aoMap: { value: null },
-    aoMapIntensity: { value: 1 }
+    aoMap: {value: null},
+    aoMapIntensity: {value: 1}
 
   },
 
   lightmap: {
 
-    lightMap: { value: null },
-    lightMapIntensity: { value: 1 }
+    lightMap: {value: null},
+    lightMapIntensity: {value: 1}
 
   },
 
   emissivemap: {
 
-    emissiveMap: { value: null }
+    emissiveMap: {value: null}
 
   },
 
   bumpmap: {
 
-    bumpMap: { value: null },
-    bumpScale: { value: 1 }
+    bumpMap: {value: null},
+    bumpScale: {value: 1}
 
   },
 
   normalmap: {
 
-    normalMap: { value: null },
-    normalScale: { value: new Vector2(1, 1) }
+    normalMap: {value: null},
+    normalScale: {value: new Vector2(1, 1)}
 
   },
 
   displacementmap: {
 
-    displacementMap: { value: null },
-    displacementScale: { value: 1 },
-    displacementBias: { value: 0 }
+    displacementMap: {value: null},
+    displacementScale: {value: 1},
+    displacementBias: {value: 0}
 
   },
 
   roughnessmap: {
 
-    roughnessMap: { value: null }
+    roughnessMap: {value: null}
 
   },
 
   metalnessmap: {
 
-    metalnessMap: { value: null }
+    metalnessMap: {value: null}
 
   },
 
   gradientmap: {
 
-    gradientMap: { value: null }
+    gradientMap: {value: null}
 
   },
 
   fog: {
 
-    fogDensity: { value: 0.00025 },
-    fogNear: { value: 1 },
-    fogFar: { value: 2000 },
-    fogColor: { value: new Color(0xffffff) }
+    fogDensity: {value: 0.00025},
+    fogNear: {value: 1},
+    fogFar: {value: 2000},
+    fogColor: {value: new Color(0xffffff)}
 
   },
 
   lights: {
 
-    ambientLightColor: { value: [] },
+    ambientLightColor: {value: []},
 
-    lightProbe: { value: [] },
+    lightProbe: {value: []},
 
     directionalLights: {
       value: [], properties: {
@@ -14317,8 +14317,8 @@ var UniformsLib = {
       }
     },
 
-    directionalShadowMap: { value: [] },
-    directionalShadowMatrix: { value: [] },
+    directionalShadowMap: {value: []},
+    directionalShadowMatrix: {value: []},
 
     spotLights: {
       value: [], properties: {
@@ -14340,8 +14340,8 @@ var UniformsLib = {
       }
     },
 
-    spotShadowMap: { value: [] },
-    spotShadowMatrix: { value: [] },
+    spotShadowMap: {value: []},
+    spotShadowMatrix: {value: []},
 
     pointLights: {
       value: [], properties: {
@@ -14362,8 +14362,8 @@ var UniformsLib = {
       }
     },
 
-    pointShadowMap: { value: [] },
-    pointShadowMatrix: { value: [] },
+    pointShadowMap: {value: []},
+    pointShadowMatrix: {value: []},
 
     hemisphereLights: {
       value: [], properties: {
@@ -14387,25 +14387,25 @@ var UniformsLib = {
 
   points: {
 
-    diffuse: { value: new Color(0xeeeeee) },
-    opacity: { value: 1.0 },
-    size: { value: 1.0 },
-    scale: { value: 1.0 },
-    map: { value: null },
-    alphaMap: { value: null },
-    uvTransform: { value: new Matrix3() }
+    diffuse: {value: new Color(0xeeeeee)},
+    opacity: {value: 1.0},
+    size: {value: 1.0},
+    scale: {value: 1.0},
+    map: {value: null},
+    alphaMap: {value: null},
+    uvTransform: {value: new Matrix3()}
 
   },
 
   sprite: {
 
-    diffuse: { value: new Color(0xeeeeee) },
-    opacity: { value: 1.0 },
-    center: { value: new Vector2(0.5, 0.5) },
-    rotation: { value: 0.0 },
-    map: { value: null },
-    alphaMap: { value: null },
-    uvTransform: { value: new Matrix3() }
+    diffuse: {value: new Color(0xeeeeee)},
+    opacity: {value: 1.0},
+    center: {value: new Vector2(0.5, 0.5)},
+    rotation: {value: 0.0},
+    map: {value: null},
+    alphaMap: {value: null},
+    uvTransform: {value: new Matrix3()}
 
   }
 
@@ -15163,7 +15163,7 @@ var ShaderLib = {
       UniformsLib.fog,
       UniformsLib.lights,
       {
-        emissive: { value: new Color(0x000000) }
+        emissive: {value: new Color(0x000000)}
       }
     ]),
 
@@ -15187,9 +15187,9 @@ var ShaderLib = {
       UniformsLib.fog,
       UniformsLib.lights,
       {
-        emissive: { value: new Color(0x000000) },
-        specular: { value: new Color(0x111111) },
-        shininess: { value: 30 }
+        emissive: {value: new Color(0x000000)},
+        specular: {value: new Color(0x111111)},
+        shininess: {value: 30}
       }
     ]),
 
@@ -15214,10 +15214,10 @@ var ShaderLib = {
       UniformsLib.fog,
       UniformsLib.lights,
       {
-        emissive: { value: new Color(0x000000) },
-        roughness: { value: 0.5 },
-        metalness: { value: 0.5 },
-        envMapIntensity: { value: 1 } // temporary
+        emissive: {value: new Color(0x000000)},
+        roughness: {value: 0.5},
+        metalness: {value: 0.5},
+        envMapIntensity: {value: 1} // temporary
       }
     ]),
 
@@ -15241,9 +15241,9 @@ var ShaderLib = {
       UniformsLib.fog,
       UniformsLib.lights,
       {
-        emissive: { value: new Color(0x000000) },
-        specular: { value: new Color(0x111111) },
-        shininess: { value: 30 }
+        emissive: {value: new Color(0x000000)},
+        specular: {value: new Color(0x111111)},
+        shininess: {value: 30}
       }
     ]),
 
@@ -15261,7 +15261,7 @@ var ShaderLib = {
       UniformsLib.displacementmap,
       UniformsLib.fog,
       {
-        matcap: { value: null }
+        matcap: {value: null}
       }
     ]),
 
@@ -15288,9 +15288,9 @@ var ShaderLib = {
       UniformsLib.common,
       UniformsLib.fog,
       {
-        scale: { value: 1 },
-        dashSize: { value: 1 },
-        totalSize: { value: 2 }
+        scale: {value: 1},
+        dashSize: {value: 1},
+        totalSize: {value: 2}
       }
     ]),
 
@@ -15319,7 +15319,7 @@ var ShaderLib = {
       UniformsLib.normalmap,
       UniformsLib.displacementmap,
       {
-        opacity: { value: 1.0 }
+        opacity: {value: 1.0}
       }
     ]),
 
@@ -15343,8 +15343,8 @@ var ShaderLib = {
   background: {
 
     uniforms: {
-      uvTransform: { value: new Matrix3() },
-      t2D: { value: null },
+      uvTransform: {value: new Matrix3()},
+      t2D: {value: null},
     },
 
     vertexShader: ShaderChunk.background_vert,
@@ -15360,7 +15360,7 @@ var ShaderLib = {
     uniforms: mergeUniforms([
       UniformsLib.envmap,
       {
-        opacity: { value: 1.0 }
+        opacity: {value: 1.0}
       }
     ]),
 
@@ -15372,7 +15372,7 @@ var ShaderLib = {
   equirect: {
 
     uniforms: {
-      tEquirect: { value: null },
+      tEquirect: {value: null},
     },
 
     vertexShader: ShaderChunk.equirect_vert,
@@ -15386,9 +15386,9 @@ var ShaderLib = {
       UniformsLib.common,
       UniformsLib.displacementmap,
       {
-        referencePosition: { value: new Vector3() },
-        nearDistance: { value: 1 },
-        farDistance: { value: 1000 }
+        referencePosition: {value: new Vector3()},
+        nearDistance: {value: 1},
+        farDistance: {value: 1000}
       }
     ]),
 
@@ -15403,8 +15403,8 @@ var ShaderLib = {
       UniformsLib.lights,
       UniformsLib.fog,
       {
-        color: { value: new Color(0x00000) },
-        opacity: { value: 1.0 }
+        color: {value: new Color(0x00000)},
+        opacity: {value: 1.0}
       },
     ]),
 
@@ -15420,14 +15420,14 @@ ShaderLib.physical = {
   uniforms: mergeUniforms([
     ShaderLib.standard.uniforms,
     {
-      clearcoat: { value: 0 },
-      clearcoatMap: { value: null },
-      clearcoatRoughness: { value: 0 },
-      clearcoatRoughnessMap: { value: null },
-      clearcoatNormalScale: { value: new Vector2(1, 1) },
-      clearcoatNormalMap: { value: null },
-      sheen: { value: new Color(0x000000) },
-      transparency: { value: 0 },
+      clearcoat: {value: 0},
+      clearcoatMap: {value: null},
+      clearcoatRoughness: {value: 0},
+      clearcoatRoughnessMap: {value: null},
+      clearcoatNormalScale: {value: new Vector2(1, 1)},
+      clearcoatNormalMap: {value: null},
+      sheen: {value: new Color(0x000000)},
+      transparency: {value: 0},
     }
   ]),
 
@@ -15849,7 +15849,7 @@ function WebGLClipping() {
     plane = new Plane(),
     viewNormalMatrix = new Matrix3(),
 
-    uniform = { value: null, needsUpdate: false };
+    uniform = {value: null, needsUpdate: false};
 
   this.uniform = uniform;
   this.numPlanes = 0;
@@ -16633,7 +16633,7 @@ function DataTexture2DArray(data, width, height, depth) {
 
   Texture.call(this, null);
 
-  this.image = { data: data || null, width: width || 1, height: height || 1, depth: depth || 1 };
+  this.image = {data: data || null, width: width || 1, height: height || 1, depth: depth || 1};
 
   this.magFilter = NearestFilter;
   this.minFilter = NearestFilter;
@@ -16667,7 +16667,7 @@ function DataTexture3D(data, width, height, depth) {
 
   Texture.call(this, null);
 
-  this.image = { data: data || null, width: width || 1, height: height || 1, depth: depth || 1 };
+  this.image = {data: data || null, width: width || 1, height: height || 1, depth: depth || 1};
 
   this.magFilter = NearestFilter;
   this.minFilter = NearestFilter;
@@ -18948,7 +18948,7 @@ function WebGLRenderList() {
   var opaque = [];
   var transparent = [];
 
-  var defaultProgram = { id: - 1 };
+  var defaultProgram = {id: - 1};
 
   function init() {
 
@@ -19856,7 +19856,7 @@ function WebGLShadowMap(_renderer, _objects, maxTextureSize) {
 
     _materialCache = {};
 
-  var shadowSide = { 0: BackSide, 1: FrontSide, 2: DoubleSide };
+  var shadowSide = {0: BackSide, 1: FrontSide, 2: DoubleSide};
 
   var shadowMaterialVertical = new ShaderMaterial({
 
@@ -19866,9 +19866,9 @@ function WebGLShadowMap(_renderer, _objects, maxTextureSize) {
     },
 
     uniforms: {
-      shadow_pass: { value: null },
-      resolution: { value: new Vector2() },
-      radius: { value: 4.0 }
+      shadow_pass: {value: null},
+      resolution: {value: new Vector2()},
+      radius: {value: 4.0}
     },
 
     vertexShader: vsm_vert,
@@ -19965,7 +19965,7 @@ function WebGLShadowMap(_renderer, _objects, maxTextureSize) {
 
       if (shadow.map === null && !shadow.isPointLightShadow && this.type === VSMShadowMap) {
 
-        var pars = { minFilter: LinearFilter, magFilter: LinearFilter, format: RGBAFormat };
+        var pars = {minFilter: LinearFilter, magFilter: LinearFilter, format: RGBAFormat};
 
         shadow.map = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
         shadow.map.texture.name = light.name + ".shadowMap";
@@ -19978,7 +19978,7 @@ function WebGLShadowMap(_renderer, _objects, maxTextureSize) {
 
       if (shadow.map === null) {
 
-        var pars = { minFilter: NearestFilter, magFilter: NearestFilter, format: RGBAFormat };
+        var pars = {minFilter: NearestFilter, magFilter: NearestFilter, format: RGBAFormat};
 
         shadow.map = new WebGLRenderTarget(_shadowMapSize.x, _shadowMapSize.y, pars);
         shadow.map.texture.name = light.name + ".shadowMap";
@@ -21119,7 +21119,7 @@ function WebGLState(gl, extensions, capabilities) {
 
     if (boundTexture === undefined) {
 
-      boundTexture = { type: undefined, texture: undefined };
+      boundTexture = {type: undefined, texture: undefined};
       currentBoundTextures[currentTextureSlot] = boundTexture;
 
     }
@@ -22772,7 +22772,7 @@ function WebGLUtils(gl, extensions, capabilities) {
 
   }
 
-  return { convert: convert };
+  return {convert: convert};
 
 }
 
@@ -22915,13 +22915,13 @@ function WebXRManager(renderer, gl) {
 
       if (controller.targetRay) {
 
-        controller.targetRay.dispatchEvent({ type: event.type });
+        controller.targetRay.dispatchEvent({type: event.type});
 
       }
 
       if (controller.grip) {
 
-        controller.grip.dispatchEvent({ type: event.type });
+        controller.grip.dispatchEvent({type: event.type});
 
       }
 
@@ -22935,14 +22935,14 @@ function WebXRManager(renderer, gl) {
 
       if (controller.targetRay) {
 
-        controller.targetRay.dispatchEvent({ type: 'disconnected', data: inputSource });
+        controller.targetRay.dispatchEvent({type: 'disconnected', data: inputSource});
         controller.targetRay.visible = false;
 
       }
 
       if (controller.grip) {
 
-        controller.grip.dispatchEvent({ type: 'disconnected', data: inputSource });
+        controller.grip.dispatchEvent({type: 'disconnected', data: inputSource});
         controller.grip.visible = false;
 
       }
@@ -22959,7 +22959,7 @@ function WebXRManager(renderer, gl) {
 
     scope.isPresenting = false;
 
-    scope.dispatchEvent({ type: 'sessionend' });
+    scope.dispatchEvent({type: 'sessionend'});
 
   }
 
@@ -22972,7 +22972,7 @@ function WebXRManager(renderer, gl) {
 
     scope.isPresenting = true;
 
-    scope.dispatchEvent({ type: 'sessionstart' });
+    scope.dispatchEvent({type: 'sessionstart'});
 
   }
 
@@ -23034,7 +23034,7 @@ function WebXRManager(renderer, gl) {
       // eslint-disable-next-line no-undef
       var baseLayer = new XRWebGLLayer(session, gl, layerInit);
 
-      session.updateRenderState({ baseLayer: baseLayer });
+      session.updateRenderState({baseLayer: baseLayer});
 
       session.requestReferenceSpace(referenceSpaceType).then(onRequestReferenceSpace);
 
@@ -23069,13 +23069,13 @@ function WebXRManager(renderer, gl) {
 
         if (controller.targetRay) {
 
-          controller.targetRay.dispatchEvent({ type: 'disconnected', data: inputSource });
+          controller.targetRay.dispatchEvent({type: 'disconnected', data: inputSource});
 
         }
 
         if (controller.grip) {
 
-          controller.grip.dispatchEvent({ type: 'disconnected', data: inputSource });
+          controller.grip.dispatchEvent({type: 'disconnected', data: inputSource});
 
         }
 
@@ -23096,13 +23096,13 @@ function WebXRManager(renderer, gl) {
 
         if (controller.targetRay) {
 
-          controller.targetRay.dispatchEvent({ type: 'connected', data: inputSource });
+          controller.targetRay.dispatchEvent({type: 'connected', data: inputSource});
 
         }
 
         if (controller.grip) {
 
-          controller.grip.dispatchEvent({ type: 'connected', data: inputSource });
+          controller.grip.dispatchEvent({type: 'connected', data: inputSource});
 
         }
 
@@ -23343,7 +23343,7 @@ function WebXRManager(renderer, gl) {
 
   };
 
-  this.dispose = function() { };
+  this.dispose = function() {};
 
 }
 
@@ -23537,7 +23537,7 @@ function WebGLRenderer(parameters) {
 
       _gl.getShaderPrecisionFormat = function() {
 
-        return { 'rangeMin': 1, 'rangeMax': 1, 'precision': 1 };
+        return {'rangeMin': 1, 'rangeMax': 1, 'precision': 1};
 
       };
 
@@ -26110,7 +26110,7 @@ function WebGLRenderer(parameters) {
 
   if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
 
-    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', { detail: this })); // eslint-disable-line no-undef
+    __THREE_DEVTOOLS__.dispatchEvent(new CustomEvent('observe', {detail: this})); // eslint-disable-line no-undef
 
   }
 
@@ -26202,7 +26202,7 @@ function InterleavedBuffer(array, stride) {
   this.count = array !== undefined ? array.length / stride : 0;
 
   this.usage = StaticDrawUsage;
-  this.updateRange = { offset: 0, count: - 1 };
+  this.updateRange = {offset: 0, count: - 1};
 
   this.version = 0;
 
@@ -26222,7 +26222,7 @@ Object.assign(InterleavedBuffer.prototype, {
 
   isInterleavedBuffer: true,
 
-  onUploadCallback: function() { },
+  onUploadCallback: function() {},
 
   setUsage: function(value) {
 
@@ -26749,7 +26749,7 @@ LOD.prototype = Object.assign(Object.create(Object3D.prototype), {
 
     }
 
-    levels.splice(l, 0, { distance: distance, object: object });
+    levels.splice(l, 0, {distance: distance, object: object});
 
     this.add(object);
 
@@ -27946,7 +27946,7 @@ function CompressedTexture(mipmaps, width, height, format, type, mapping, wrapS,
 
   Texture.call(this, null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy, encoding);
 
-  this.image = { width: width, height: height };
+  this.image = {width: width, height: height};
   this.mipmaps = mipmaps;
 
   // no flipping for cube textures
@@ -28002,7 +28002,7 @@ function DepthTexture(width, height, type, mapping, wrapS, wrapT, magFilter, min
 
   Texture.call(this, null, mapping, wrapS, wrapT, magFilter, minFilter, format, type, anisotropy);
 
-  this.image = { width: width, height: height };
+  this.image = {width: width, height: height};
 
   this.magFilter = magFilter !== undefined ? magFilter : NearestFilter;
   this.minFilter = minFilter !== undefined ? minFilter : NearestFilter;
@@ -28061,7 +28061,7 @@ function WireframeGeometry(geometry) {
 
         if (edges[key] === undefined) {
 
-          edges[key] = { index1: edge[0], index2: edge[1] };
+          edges[key] = {index1: edge[0], index2: edge[1]};
 
         }
 
@@ -28101,7 +28101,7 @@ function WireframeGeometry(geometry) {
 
       if (groups.length === 0) {
 
-        groups = [{ start: 0, count: indices.count, materialIndex: 0 }];
+        groups = [{start: 0, count: indices.count, materialIndex: 0}];
 
       }
 
@@ -28127,7 +28127,7 @@ function WireframeGeometry(geometry) {
 
             if (edges[key] === undefined) {
 
-              edges[key] = { index1: edge[0], index2: edge[1] };
+              edges[key] = {index1: edge[0], index2: edge[1]};
 
             }
 
@@ -31987,7 +31987,7 @@ function EdgesGeometry(geometry, thresholdAngle) {
 
       if (edges[key] === undefined) {
 
-        edges[key] = { index1: edge[0], index2: edge[1], face1: i, face2: undefined };
+        edges[key] = {index1: edge[0], index2: edge[1], face1: i, face2: undefined};
 
       } else {
 
@@ -32656,7 +32656,7 @@ function MeshStandardMaterial(parameters) {
 
   Material.call(this);
 
-  this.defines = { 'STANDARD': '' };
+  this.defines = {'STANDARD': ''};
 
   this.type = 'MeshStandardMaterial';
 
@@ -32722,7 +32722,7 @@ MeshStandardMaterial.prototype.copy = function(source) {
 
   Material.prototype.copy.call(this, source);
 
-  this.defines = { 'STANDARD': '' };
+  this.defines = {'STANDARD': ''};
 
   this.color.copy(source.color);
   this.roughness = source.roughness;
@@ -33080,7 +33080,7 @@ function MeshToonMaterial(parameters) {
 
   Material.call(this);
 
-  this.defines = { 'TOON': '' };
+  this.defines = {'TOON': ''};
 
   this.type = 'MeshToonMaterial';
 
@@ -33430,7 +33430,7 @@ function MeshMatcapMaterial(parameters) {
 
   Material.call(this);
 
-  this.defines = { 'MATCAP': '' };
+  this.defines = {'MATCAP': ''};
 
   this.type = 'MeshMatcapMaterial';
 
@@ -33470,7 +33470,7 @@ MeshMatcapMaterial.prototype.copy = function(source) {
 
   Material.prototype.copy.call(this, source);
 
-  this.defines = { 'MATCAP': '' };
+  this.defines = {'MATCAP': ''};
 
   this.color.copy(source.color);
 
@@ -35628,9 +35628,9 @@ function Loader(manager) {
 
 Object.assign(Loader.prototype, {
 
-  load: function( /* url, onLoad, onProgress, onError */) { },
+  load: function( /* url, onLoad, onProgress, onError */) {},
 
-  parse: function( /* data */) { },
+  parse: function( /* data */) {},
 
   setCrossOrigin: function(crossOrigin) {
 
@@ -35750,7 +35750,7 @@ FileLoader.prototype = Object.assign(Object.create(Loader.prototype), {
 
             if (responseType === 'blob') {
 
-              response = new Blob([view.buffer], { type: mimeType });
+              response = new Blob([view.buffer], {type: mimeType});
 
             } else {
 
@@ -36098,7 +36098,7 @@ CompressedTextureLoader.prototype = Object.assign(Object.create(Loader.prototype
 
           for (var f = 0; f < faces; f++) {
 
-            images[f] = { mipmaps: [] };
+            images[f] = {mipmaps: []};
 
             for (var i = 0; i < texDatas.mipmapCount; i++) {
 
@@ -40965,7 +40965,7 @@ Object.assign(ShapePath.prototype, {
 
         if ((!holesFirst) && (newShapes[mainIdx])) mainIdx++;
 
-        newShapes[mainIdx] = { s: new Shape(), p: tmpPoints };
+        newShapes[mainIdx] = {s: new Shape(), p: tmpPoints};
         newShapes[mainIdx].s.curves = tmpPath.curves;
 
         if (holesFirst) mainIdx++;
@@ -40975,7 +40975,7 @@ Object.assign(ShapePath.prototype, {
 
       } else {
 
-        newShapeHoles[mainIdx].push({ h: tmpPath, p: tmpPoints[0] });
+        newShapeHoles[mainIdx].push({h: tmpPath, p: tmpPoints[0]});
 
         //console.log('ccw', i);
 
@@ -41011,7 +41011,7 @@ Object.assign(ShapePath.prototype, {
 
             if (isPointInsidePolygon(ho.p, newShapes[s2Idx].p)) {
 
-              if (sIdx !== s2Idx) toChange.push({ froms: sIdx, tos: s2Idx, hole: hIdx });
+              if (sIdx !== s2Idx) toChange.push({froms: sIdx, tos: s2Idx, hole: hIdx});
               if (hole_unassigned) {
 
                 hole_unassigned = false;
@@ -41213,7 +41213,7 @@ function createPath(char, scale, offsetX, offsetY, data) {
 
   }
 
-  return { offsetX: glyph.ha * scale, path: path };
+  return {offsetX: glyph.ha * scale, path: path};
 
 }
 
@@ -43045,8 +43045,8 @@ Object.assign(PropertyBinding, {
 Object.assign(PropertyBinding.prototype, { // prototype, continued
 
   // these are used to "bind" a nonexistent property
-  _getValue_unavailable: function() { },
-  _setValue_unavailable: function() { },
+  _getValue_unavailable: function() {},
+  _setValue_unavailable: function() {},
 
   BindingType: {
     Direct: 0,
@@ -45390,9 +45390,9 @@ function Raycaster(origin, direction, near, far) {
 
   this.params = {
     Mesh: {},
-    Line: { threshold: 1 },
+    Line: {threshold: 1},
     LOD: {},
-    Points: { threshold: 1 },
+    Points: {threshold: 1},
     Sprite: {}
   };
 
@@ -46037,7 +46037,7 @@ function ImmediateRenderObject(material) {
   Object3D.call(this);
 
   this.material = material;
-  this.render = function( /* renderCallback */) { };
+  this.render = function( /* renderCallback */) {};
 
 }
 
@@ -46090,7 +46090,7 @@ function SpotLightHelper(light, color) {
 
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
 
-  var material = new LineBasicMaterial({ fog: false, toneMapped: false });
+  var material = new LineBasicMaterial({fog: false, toneMapped: false});
 
   this.cone = new LineSegments(geometry, material);
   this.add(this.cone);
@@ -46196,7 +46196,7 @@ function SkeletonHelper(object) {
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
-  var material = new LineBasicMaterial({ vertexColors: true, depthTest: false, depthWrite: false, toneMapped: false, transparent: true });
+  var material = new LineBasicMaterial({vertexColors: true, depthTest: false, depthWrite: false, toneMapped: false, transparent: true});
 
   LineSegments.call(this, geometry, material);
 
@@ -46261,7 +46261,7 @@ function PointLightHelper(light, sphereSize, color) {
   this.color = color;
 
   var geometry = new SphereBufferGeometry(sphereSize, 4, 2);
-  var material = new MeshBasicMaterial({ wireframe: true, fog: false, toneMapped: false });
+  var material = new MeshBasicMaterial({wireframe: true, fog: false, toneMapped: false});
 
   Mesh.call(this, geometry, material);
 
@@ -46359,7 +46359,7 @@ function HemisphereLightHelper(light, size, color) {
   var geometry = new OctahedronBufferGeometry(size);
   geometry.rotateY(Math.PI * 0.5);
 
-  this.material = new MeshBasicMaterial({ wireframe: true, fog: false, toneMapped: false });
+  this.material = new MeshBasicMaterial({wireframe: true, fog: false, toneMapped: false});
   if (this.color === undefined) this.material.vertexColors = true;
 
   var position = geometry.getAttribute('position');
@@ -46449,7 +46449,7 @@ function GridHelper(size, divisions, color1, color2) {
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
-  var material = new LineBasicMaterial({ vertexColors: true, toneMapped: false });
+  var material = new LineBasicMaterial({vertexColors: true, toneMapped: false});
 
   LineSegments.call(this, geometry, material);
 
@@ -46556,7 +46556,7 @@ function PolarGridHelper(radius, radials, circles, divisions, color1, color2) {
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
-  var material = new LineBasicMaterial({ vertexColors: true, toneMapped: false });
+  var material = new LineBasicMaterial({vertexColors: true, toneMapped: false});
 
   LineSegments.call(this, geometry, material);
 
@@ -46598,7 +46598,7 @@ function DirectionalLightHelper(light, size, color) {
     - size, size, 0
   ], 3));
 
-  var material = new LineBasicMaterial({ fog: false, toneMapped: false });
+  var material = new LineBasicMaterial({fog: false, toneMapped: false});
 
   this.lightPlane = new Line(geometry, material);
   this.add(this.lightPlane);
@@ -46666,7 +46666,7 @@ var _camera = new Camera();
 function CameraHelper(camera) {
 
   var geometry = new BufferGeometry();
-  var material = new LineBasicMaterial({ color: 0xffffff, vertexColors: true, toneMapped: false });
+  var material = new LineBasicMaterial({color: 0xffffff, vertexColors: true, toneMapped: false});
 
   var vertices = [];
   var colors = [];
@@ -46863,7 +46863,7 @@ function BoxHelper(object, color) {
   geometry.setIndex(new BufferAttribute(indices, 1));
   geometry.setAttribute('position', new BufferAttribute(positions, 3));
 
-  LineSegments.call(this, geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+  LineSegments.call(this, geometry, new LineBasicMaterial({color: color, toneMapped: false}));
 
   this.matrixAutoUpdate = false;
 
@@ -46975,7 +46975,7 @@ function Box3Helper(box, color) {
 
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
 
-  LineSegments.call(this, geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+  LineSegments.call(this, geometry, new LineBasicMaterial({color: color, toneMapped: false}));
 
   this.geometry.computeBoundingSphere();
 
@@ -47020,7 +47020,7 @@ function PlaneHelper(plane, size, hex) {
   geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
   geometry.computeBoundingSphere();
 
-  Line.call(this, geometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+  Line.call(this, geometry, new LineBasicMaterial({color: color, toneMapped: false}));
 
   //
 
@@ -47030,7 +47030,7 @@ function PlaneHelper(plane, size, hex) {
   geometry2.setAttribute('position', new Float32BufferAttribute(positions2, 3));
   geometry2.computeBoundingSphere();
 
-  this.add(new Mesh(geometry2, new MeshBasicMaterial({ color: color, opacity: 0.2, transparent: true, depthWrite: false, toneMapped: false })));
+  this.add(new Mesh(geometry2, new MeshBasicMaterial({color: color, opacity: 0.2, transparent: true, depthWrite: false, toneMapped: false})));
 
 }
 
@@ -47097,11 +47097,11 @@ function ArrowHelper(dir, origin, length, color, headLength, headWidth) {
 
   this.position.copy(origin);
 
-  this.line = new Line(_lineGeometry, new LineBasicMaterial({ color: color, toneMapped: false }));
+  this.line = new Line(_lineGeometry, new LineBasicMaterial({color: color, toneMapped: false}));
   this.line.matrixAutoUpdate = false;
   this.add(this.line);
 
-  this.cone = new Mesh(_coneGeometry, new MeshBasicMaterial({ color: color, toneMapped: false }));
+  this.cone = new Mesh(_coneGeometry, new MeshBasicMaterial({color: color, toneMapped: false}));
   this.cone.matrixAutoUpdate = false;
   this.add(this.cone);
 
@@ -47200,7 +47200,7 @@ function AxesHelper(size) {
   geometry.setAttribute('position', new Float32BufferAttribute(vertices, 3));
   geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
 
-  var material = new LineBasicMaterial({ vertexColors: true, toneMapped: false });
+  var material = new LineBasicMaterial({vertexColors: true, toneMapped: false});
 
   LineSegments.call(this, geometry, material);
 
@@ -47250,7 +47250,7 @@ var _blurMaterial = _getBlurShader(MAX_SAMPLES);
 var _equirectShader = null;
 var _cubemapShader = null;
 
-var { _lodPlanes, _sizeLods, _sigmas } = _createPlanes();
+var {_lodPlanes, _sizeLods, _sigmas} = _createPlanes();
 var _pingPongRenderTarget = null;
 var _renderer = null;
 
@@ -47461,7 +47461,7 @@ function _createPlanes() {
     }
 
   }
-  return { _lodPlanes, _sizeLods, _sigmas };
+  return {_lodPlanes, _sizeLods, _sigmas};
 
 }
 
@@ -47760,18 +47760,18 @@ function _getBlurShader(maxSamples) {
   var poleAxis = new Vector3(0, 1, 0);
   var shaderMaterial = new RawShaderMaterial({
 
-    defines: { 'n': maxSamples },
+    defines: {'n': maxSamples},
 
     uniforms: {
-      'envMap': { value: null },
-      'samples': { value: 1 },
-      'weights': { value: weights },
-      'latitudinal': { value: false },
-      'dTheta': { value: 0 },
-      'mipInt': { value: 0 },
-      'poleAxis': { value: poleAxis },
-      'inputEncoding': { value: ENCODINGS[LinearEncoding] },
-      'outputEncoding': { value: ENCODINGS[LinearEncoding] }
+      'envMap': {value: null},
+      'samples': {value: 1},
+      'weights': {value: weights},
+      'latitudinal': {value: false},
+      'dTheta': {value: 0},
+      'mipInt': {value: 0},
+      'poleAxis': {value: poleAxis},
+      'inputEncoding': {value: ENCODINGS[LinearEncoding]},
+      'outputEncoding': {value: ENCODINGS[LinearEncoding]}
     },
 
     vertexShader: _getCommonVertexShader(),
@@ -47838,10 +47838,10 @@ function _getEquirectShader() {
   var shaderMaterial = new RawShaderMaterial({
 
     uniforms: {
-      'envMap': { value: null },
-      'texelSize': { value: texelSize },
-      'inputEncoding': { value: ENCODINGS[LinearEncoding] },
-      'outputEncoding': { value: ENCODINGS[LinearEncoding] }
+      'envMap': {value: null},
+      'texelSize': {value: texelSize},
+      'inputEncoding': {value: ENCODINGS[LinearEncoding]},
+      'outputEncoding': {value: ENCODINGS[LinearEncoding]}
     },
 
     vertexShader: _getCommonVertexShader(),
@@ -47897,9 +47897,9 @@ function _getCubemapShader() {
   var shaderMaterial = new RawShaderMaterial({
 
     uniforms: {
-      'envMap': { value: null },
-      'inputEncoding': { value: ENCODINGS[LinearEncoding] },
-      'outputEncoding': { value: ENCODINGS[LinearEncoding] }
+      'envMap': {value: null},
+      'inputEncoding': {value: ENCODINGS[LinearEncoding]},
+      'outputEncoding': {value: ENCODINGS[LinearEncoding]}
     },
 
     vertexShader: _getCommonVertexShader(),
@@ -48331,7 +48331,7 @@ function BoundingBoxHelper(object, color) {
 function EdgesHelper(object, hex) {
 
   console.warn('THREE.EdgesHelper has been removed. Use THREE.EdgesGeometry instead.');
-  return new LineSegments(new EdgesGeometry(object.geometry), new LineBasicMaterial({ color: hex !== undefined ? hex : 0xffffff }));
+  return new LineSegments(new EdgesGeometry(object.geometry), new LineBasicMaterial({color: hex !== undefined ? hex : 0xffffff}));
 
 }
 
@@ -48350,7 +48350,7 @@ SkeletonHelper.prototype.update = function() {
 function WireframeHelper(object, hex) {
 
   console.warn('THREE.WireframeHelper has been removed. Use THREE.WireframeGeometry instead.');
-  return new LineSegments(new WireframeGeometry(object.geometry), new LineBasicMaterial({ color: hex !== undefined ? hex : 0xffffff }));
+  return new LineSegments(new WireframeGeometry(object.geometry), new LineBasicMaterial({color: hex !== undefined ? hex : 0xffffff}));
 
 }
 
@@ -50107,4 +50107,4 @@ if (typeof __THREE_DEVTOOLS__ !== 'undefined') {
 
 }
 
-export { ACESFilmicToneMapping, AddEquation, AddOperation, AdditiveBlending, AlphaFormat, AlwaysDepth, AlwaysStencilFunc, AmbientLight, AmbientLightProbe, AnimationClip, AnimationLoader, AnimationMixer, AnimationObjectGroup, AnimationUtils, ArcCurve, ArrayCamera, ArrowHelper, Audio, AudioAnalyser, AudioContext, AudioListener, AudioLoader, AxesHelper, AxisHelper, BackSide, BasicDepthPacking, BasicShadowMap, BinaryTextureLoader, Bone, BooleanKeyframeTrack, BoundingBoxHelper, Box2, Box3, Box3Helper, BoxBufferGeometry, BoxGeometry, BoxHelper, BufferAttribute, BufferGeometry, BufferGeometryLoader, ByteType, Cache, Camera, CameraHelper, CanvasRenderer, CanvasTexture, CatmullRomCurve3, CineonToneMapping, CircleBufferGeometry, CircleGeometry, ClampToEdgeWrapping, Clock, ClosedSplineCurve3, Color, ColorKeyframeTrack, CompressedTexture, CompressedTextureLoader, ConeBufferGeometry, ConeGeometry, CubeCamera, BoxGeometry as CubeGeometry, CubeReflectionMapping, CubeRefractionMapping, CubeTexture, CubeTextureLoader, CubeUVReflectionMapping, CubeUVRefractionMapping, CubicBezierCurve, CubicBezierCurve3, CubicInterpolant, CullFaceBack, CullFaceFront, CullFaceFrontBack, CullFaceNone, Curve, CurvePath, CustomBlending, CylinderBufferGeometry, CylinderGeometry, Cylindrical, DataTexture, DataTexture2DArray, DataTexture3D, DataTextureLoader, DecrementStencilOp, DecrementWrapStencilOp, DefaultLoadingManager, DepthFormat, DepthStencilFormat, DepthTexture, DirectionalLight, DirectionalLightHelper, DirectionalLightShadow, DiscreteInterpolant, DodecahedronBufferGeometry, DodecahedronGeometry, DoubleSide, DstAlphaFactor, DstColorFactor, DynamicBufferAttribute, DynamicCopyUsage, DynamicDrawUsage, DynamicReadUsage, EdgesGeometry, EdgesHelper, EllipseCurve, EqualDepth, EqualStencilFunc, EquirectangularReflectionMapping, EquirectangularRefractionMapping, Euler, EventDispatcher, ExtrudeBufferGeometry, ExtrudeGeometry, Face3, Face4, FaceColors, FileLoader, FlatShading, Float32Attribute, Float32BufferAttribute, Float64Attribute, Float64BufferAttribute, FloatType, Fog, FogExp2, Font, FontLoader, FrontFaceDirectionCCW, FrontFaceDirectionCW, FrontSide, Frustum, GammaEncoding, Geometry, GeometryUtils, GreaterDepth, GreaterEqualDepth, GreaterEqualStencilFunc, GreaterStencilFunc, GridHelper, Group, HalfFloatType, HemisphereLight, HemisphereLightHelper, HemisphereLightProbe, IcosahedronBufferGeometry, IcosahedronGeometry, ImageBitmapLoader, ImageLoader, ImageUtils, ImmediateRenderObject, IncrementStencilOp, IncrementWrapStencilOp, InstancedBufferAttribute, InstancedBufferGeometry, InstancedInterleavedBuffer, InstancedMesh, Int16Attribute, Int16BufferAttribute, Int32Attribute, Int32BufferAttribute, Int8Attribute, Int8BufferAttribute, IntType, InterleavedBuffer, InterleavedBufferAttribute, Interpolant, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, InvertStencilOp, JSONLoader, KeepStencilOp, KeyframeTrack, LOD, LatheBufferGeometry, LatheGeometry, Layers, LensFlare, LessDepth, LessEqualDepth, LessEqualStencilFunc, LessStencilFunc, Light, LightProbe, LightShadow, Line, Line3, LineBasicMaterial, LineCurve, LineCurve3, LineDashedMaterial, LineLoop, LinePieces, LineSegments, LineStrip, LinearEncoding, LinearFilter, LinearInterpolant, LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearToneMapping, Loader, LoaderUtils, LoadingManager, LogLuvEncoding, LoopOnce, LoopPingPong, LoopRepeat, LuminanceAlphaFormat, LuminanceFormat, MOUSE, Material, MaterialLoader, MathUtils as Math, MathUtils, Matrix3, Matrix4, MaxEquation, Mesh, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshFaceMaterial, MeshLambertMaterial, MeshMatcapMaterial, MeshNormalMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshToonMaterial, MinEquation, MirroredRepeatWrapping, MixOperation, MultiMaterial, MultiplyBlending, MultiplyOperation, NearestFilter, NearestMipMapLinearFilter, NearestMipMapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NeverDepth, NeverStencilFunc, NoBlending, NoColors, NoToneMapping, NormalBlending, NotEqualDepth, NotEqualStencilFunc, NumberKeyframeTrack, Object3D, ObjectLoader, ObjectSpaceNormalMap, OctahedronBufferGeometry, OctahedronGeometry, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, OrthographicCamera, PCFShadowMap, PCFSoftShadowMap, PMREMGenerator, ParametricBufferGeometry, ParametricGeometry, Particle, ParticleBasicMaterial, ParticleSystem, ParticleSystemMaterial, Path, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PlaneHelper, PointCloud, PointCloudMaterial, PointLight, PointLightHelper, Points, PointsMaterial, PolarGridHelper, PolyhedronBufferGeometry, PolyhedronGeometry, PositionalAudio, PropertyBinding, PropertyMixer, QuadraticBezierCurve, QuadraticBezierCurve3, Quaternion, QuaternionKeyframeTrack, QuaternionLinearInterpolant, REVISION, RGBADepthPacking, RGBAFormat, RGBAIntegerFormat, RGBA_ASTC_10x10_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_BPTC_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGBDEncoding, RGBEEncoding, RGBEFormat, RGBFormat, RGBIntegerFormat, RGBM16Encoding, RGBM7Encoding, RGB_ETC1_Format, RGB_ETC2_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGB_S3TC_DXT1_Format, RGFormat, RGIntegerFormat, RawShaderMaterial, Ray, Raycaster, RectAreaLight, RedFormat, RedIntegerFormat, ReinhardToneMapping, RepeatWrapping, ReplaceStencilOp, ReverseSubtractEquation, RingBufferGeometry, RingGeometry, SRGB8_ALPHA8_ASTC_10x10_Format, SRGB8_ALPHA8_ASTC_10x5_Format, SRGB8_ALPHA8_ASTC_10x6_Format, SRGB8_ALPHA8_ASTC_10x8_Format, SRGB8_ALPHA8_ASTC_12x10_Format, SRGB8_ALPHA8_ASTC_12x12_Format, SRGB8_ALPHA8_ASTC_4x4_Format, SRGB8_ALPHA8_ASTC_5x4_Format, SRGB8_ALPHA8_ASTC_5x5_Format, SRGB8_ALPHA8_ASTC_6x5_Format, SRGB8_ALPHA8_ASTC_6x6_Format, SRGB8_ALPHA8_ASTC_8x5_Format, SRGB8_ALPHA8_ASTC_8x6_Format, SRGB8_ALPHA8_ASTC_8x8_Format, Scene, SceneUtils, ShaderChunk, ShaderLib, ShaderMaterial, ShadowMaterial, Shape, ShapeBufferGeometry, ShapeGeometry, ShapePath, ShapeUtils, ShortType, Skeleton, SkeletonHelper, SkinnedMesh, SmoothShading, Sphere, SphereBufferGeometry, SphereGeometry, Spherical, SphericalHarmonics3, SphericalReflectionMapping, Spline, SplineCurve, SplineCurve3, SpotLight, SpotLightHelper, SpotLightShadow, Sprite, SpriteMaterial, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, StaticCopyUsage, StaticDrawUsage, StaticReadUsage, StereoCamera, StreamCopyUsage, StreamDrawUsage, StreamReadUsage, StringKeyframeTrack, SubtractEquation, SubtractiveBlending, TOUCH, TangentSpaceNormalMap, TetrahedronBufferGeometry, TetrahedronGeometry, TextBufferGeometry, TextGeometry, Texture, TextureLoader, TorusBufferGeometry, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, Triangle, TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode, TubeBufferGeometry, TubeGeometry, UVMapping, Uint16Attribute, Uint16BufferAttribute, Uint32Attribute, Uint32BufferAttribute, Uint8Attribute, Uint8BufferAttribute, Uint8ClampedAttribute, Uint8ClampedBufferAttribute, Uncharted2ToneMapping, Uniform, UniformsLib, UniformsUtils, UnsignedByteType, UnsignedInt248Type, UnsignedIntType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShort565Type, UnsignedShortType, VSMShadowMap, Vector2, Vector3, Vector4, VectorKeyframeTrack, Vertex, VertexColors, VideoTexture, WebGLCubeRenderTarget, WebGLMultisampleRenderTarget, WebGLRenderTarget, WebGLRenderTargetCube, WebGLRenderer, WebGLUtils, WireframeGeometry, WireframeHelper, WrapAroundEnding, XHRLoader, ZeroCurvatureEnding, ZeroFactor, ZeroSlopeEnding, ZeroStencilOp, sRGBEncoding };
+export {ACESFilmicToneMapping, AddEquation, AddOperation, AdditiveBlending, AlphaFormat, AlwaysDepth, AlwaysStencilFunc, AmbientLight, AmbientLightProbe, AnimationClip, AnimationLoader, AnimationMixer, AnimationObjectGroup, AnimationUtils, ArcCurve, ArrayCamera, ArrowHelper, Audio, AudioAnalyser, AudioContext, AudioListener, AudioLoader, AxesHelper, AxisHelper, BackSide, BasicDepthPacking, BasicShadowMap, BinaryTextureLoader, Bone, BooleanKeyframeTrack, BoundingBoxHelper, Box2, Box3, Box3Helper, BoxBufferGeometry, BoxGeometry, BoxHelper, BufferAttribute, BufferGeometry, BufferGeometryLoader, ByteType, Cache, Camera, CameraHelper, CanvasRenderer, CanvasTexture, CatmullRomCurve3, CineonToneMapping, CircleBufferGeometry, CircleGeometry, ClampToEdgeWrapping, Clock, ClosedSplineCurve3, Color, ColorKeyframeTrack, CompressedTexture, CompressedTextureLoader, ConeBufferGeometry, ConeGeometry, CubeCamera, BoxGeometry as CubeGeometry, CubeReflectionMapping, CubeRefractionMapping, CubeTexture, CubeTextureLoader, CubeUVReflectionMapping, CubeUVRefractionMapping, CubicBezierCurve, CubicBezierCurve3, CubicInterpolant, CullFaceBack, CullFaceFront, CullFaceFrontBack, CullFaceNone, Curve, CurvePath, CustomBlending, CylinderBufferGeometry, CylinderGeometry, Cylindrical, DataTexture, DataTexture2DArray, DataTexture3D, DataTextureLoader, DecrementStencilOp, DecrementWrapStencilOp, DefaultLoadingManager, DepthFormat, DepthStencilFormat, DepthTexture, DirectionalLight, DirectionalLightHelper, DirectionalLightShadow, DiscreteInterpolant, DodecahedronBufferGeometry, DodecahedronGeometry, DoubleSide, DstAlphaFactor, DstColorFactor, DynamicBufferAttribute, DynamicCopyUsage, DynamicDrawUsage, DynamicReadUsage, EdgesGeometry, EdgesHelper, EllipseCurve, EqualDepth, EqualStencilFunc, EquirectangularReflectionMapping, EquirectangularRefractionMapping, Euler, EventDispatcher, ExtrudeBufferGeometry, ExtrudeGeometry, Face3, Face4, FaceColors, FileLoader, FlatShading, Float32Attribute, Float32BufferAttribute, Float64Attribute, Float64BufferAttribute, FloatType, Fog, FogExp2, Font, FontLoader, FrontFaceDirectionCCW, FrontFaceDirectionCW, FrontSide, Frustum, GammaEncoding, Geometry, GeometryUtils, GreaterDepth, GreaterEqualDepth, GreaterEqualStencilFunc, GreaterStencilFunc, GridHelper, Group, HalfFloatType, HemisphereLight, HemisphereLightHelper, HemisphereLightProbe, IcosahedronBufferGeometry, IcosahedronGeometry, ImageBitmapLoader, ImageLoader, ImageUtils, ImmediateRenderObject, IncrementStencilOp, IncrementWrapStencilOp, InstancedBufferAttribute, InstancedBufferGeometry, InstancedInterleavedBuffer, InstancedMesh, Int16Attribute, Int16BufferAttribute, Int32Attribute, Int32BufferAttribute, Int8Attribute, Int8BufferAttribute, IntType, InterleavedBuffer, InterleavedBufferAttribute, Interpolant, InterpolateDiscrete, InterpolateLinear, InterpolateSmooth, InvertStencilOp, JSONLoader, KeepStencilOp, KeyframeTrack, LOD, LatheBufferGeometry, LatheGeometry, Layers, LensFlare, LessDepth, LessEqualDepth, LessEqualStencilFunc, LessStencilFunc, Light, LightProbe, LightShadow, Line, Line3, LineBasicMaterial, LineCurve, LineCurve3, LineDashedMaterial, LineLoop, LinePieces, LineSegments, LineStrip, LinearEncoding, LinearFilter, LinearInterpolant, LinearMipMapLinearFilter, LinearMipMapNearestFilter, LinearMipmapLinearFilter, LinearMipmapNearestFilter, LinearToneMapping, Loader, LoaderUtils, LoadingManager, LogLuvEncoding, LoopOnce, LoopPingPong, LoopRepeat, LuminanceAlphaFormat, LuminanceFormat, MOUSE, Material, MaterialLoader, MathUtils as Math, MathUtils, Matrix3, Matrix4, MaxEquation, Mesh, MeshBasicMaterial, MeshDepthMaterial, MeshDistanceMaterial, MeshFaceMaterial, MeshLambertMaterial, MeshMatcapMaterial, MeshNormalMaterial, MeshPhongMaterial, MeshPhysicalMaterial, MeshStandardMaterial, MeshToonMaterial, MinEquation, MirroredRepeatWrapping, MixOperation, MultiMaterial, MultiplyBlending, MultiplyOperation, NearestFilter, NearestMipMapLinearFilter, NearestMipMapNearestFilter, NearestMipmapLinearFilter, NearestMipmapNearestFilter, NeverDepth, NeverStencilFunc, NoBlending, NoColors, NoToneMapping, NormalBlending, NotEqualDepth, NotEqualStencilFunc, NumberKeyframeTrack, Object3D, ObjectLoader, ObjectSpaceNormalMap, OctahedronBufferGeometry, OctahedronGeometry, OneFactor, OneMinusDstAlphaFactor, OneMinusDstColorFactor, OneMinusSrcAlphaFactor, OneMinusSrcColorFactor, OrthographicCamera, PCFShadowMap, PCFSoftShadowMap, PMREMGenerator, ParametricBufferGeometry, ParametricGeometry, Particle, ParticleBasicMaterial, ParticleSystem, ParticleSystemMaterial, Path, PerspectiveCamera, Plane, PlaneBufferGeometry, PlaneGeometry, PlaneHelper, PointCloud, PointCloudMaterial, PointLight, PointLightHelper, Points, PointsMaterial, PolarGridHelper, PolyhedronBufferGeometry, PolyhedronGeometry, PositionalAudio, PropertyBinding, PropertyMixer, QuadraticBezierCurve, QuadraticBezierCurve3, Quaternion, QuaternionKeyframeTrack, QuaternionLinearInterpolant, REVISION, RGBADepthPacking, RGBAFormat, RGBAIntegerFormat, RGBA_ASTC_10x10_Format, RGBA_ASTC_10x5_Format, RGBA_ASTC_10x6_Format, RGBA_ASTC_10x8_Format, RGBA_ASTC_12x10_Format, RGBA_ASTC_12x12_Format, RGBA_ASTC_4x4_Format, RGBA_ASTC_5x4_Format, RGBA_ASTC_5x5_Format, RGBA_ASTC_6x5_Format, RGBA_ASTC_6x6_Format, RGBA_ASTC_8x5_Format, RGBA_ASTC_8x6_Format, RGBA_ASTC_8x8_Format, RGBA_BPTC_Format, RGBA_ETC2_EAC_Format, RGBA_PVRTC_2BPPV1_Format, RGBA_PVRTC_4BPPV1_Format, RGBA_S3TC_DXT1_Format, RGBA_S3TC_DXT3_Format, RGBA_S3TC_DXT5_Format, RGBDEncoding, RGBEEncoding, RGBEFormat, RGBFormat, RGBIntegerFormat, RGBM16Encoding, RGBM7Encoding, RGB_ETC1_Format, RGB_ETC2_Format, RGB_PVRTC_2BPPV1_Format, RGB_PVRTC_4BPPV1_Format, RGB_S3TC_DXT1_Format, RGFormat, RGIntegerFormat, RawShaderMaterial, Ray, Raycaster, RectAreaLight, RedFormat, RedIntegerFormat, ReinhardToneMapping, RepeatWrapping, ReplaceStencilOp, ReverseSubtractEquation, RingBufferGeometry, RingGeometry, SRGB8_ALPHA8_ASTC_10x10_Format, SRGB8_ALPHA8_ASTC_10x5_Format, SRGB8_ALPHA8_ASTC_10x6_Format, SRGB8_ALPHA8_ASTC_10x8_Format, SRGB8_ALPHA8_ASTC_12x10_Format, SRGB8_ALPHA8_ASTC_12x12_Format, SRGB8_ALPHA8_ASTC_4x4_Format, SRGB8_ALPHA8_ASTC_5x4_Format, SRGB8_ALPHA8_ASTC_5x5_Format, SRGB8_ALPHA8_ASTC_6x5_Format, SRGB8_ALPHA8_ASTC_6x6_Format, SRGB8_ALPHA8_ASTC_8x5_Format, SRGB8_ALPHA8_ASTC_8x6_Format, SRGB8_ALPHA8_ASTC_8x8_Format, Scene, SceneUtils, ShaderChunk, ShaderLib, ShaderMaterial, ShadowMaterial, Shape, ShapeBufferGeometry, ShapeGeometry, ShapePath, ShapeUtils, ShortType, Skeleton, SkeletonHelper, SkinnedMesh, SmoothShading, Sphere, SphereBufferGeometry, SphereGeometry, Spherical, SphericalHarmonics3, SphericalReflectionMapping, Spline, SplineCurve, SplineCurve3, SpotLight, SpotLightHelper, SpotLightShadow, Sprite, SpriteMaterial, SrcAlphaFactor, SrcAlphaSaturateFactor, SrcColorFactor, StaticCopyUsage, StaticDrawUsage, StaticReadUsage, StereoCamera, StreamCopyUsage, StreamDrawUsage, StreamReadUsage, StringKeyframeTrack, SubtractEquation, SubtractiveBlending, TOUCH, TangentSpaceNormalMap, TetrahedronBufferGeometry, TetrahedronGeometry, TextBufferGeometry, TextGeometry, Texture, TextureLoader, TorusBufferGeometry, TorusGeometry, TorusKnotBufferGeometry, TorusKnotGeometry, Triangle, TriangleFanDrawMode, TriangleStripDrawMode, TrianglesDrawMode, TubeBufferGeometry, TubeGeometry, UVMapping, Uint16Attribute, Uint16BufferAttribute, Uint32Attribute, Uint32BufferAttribute, Uint8Attribute, Uint8BufferAttribute, Uint8ClampedAttribute, Uint8ClampedBufferAttribute, Uncharted2ToneMapping, Uniform, UniformsLib, UniformsUtils, UnsignedByteType, UnsignedInt248Type, UnsignedIntType, UnsignedShort4444Type, UnsignedShort5551Type, UnsignedShort565Type, UnsignedShortType, VSMShadowMap, Vector2, Vector3, Vector4, VectorKeyframeTrack, Vertex, VertexColors, VideoTexture, WebGLCubeRenderTarget, WebGLMultisampleRenderTarget, WebGLRenderTarget, WebGLRenderTargetCube, WebGLRenderer, WebGLUtils, WireframeGeometry, WireframeHelper, WrapAroundEnding, XHRLoader, ZeroCurvatureEnding, ZeroFactor, ZeroSlopeEnding, ZeroStencilOp, sRGBEncoding};

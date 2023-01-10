@@ -1,24 +1,24 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import './SwatchPicker';
 import './GradientPicker';
 import '../../controls/ColorPicker';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  visible : boolean;
+  visible: boolean;
 }
 
-let colorPicker : any = null;
+let colorPicker: any = null;
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
 Object.assign(ExtendedDefaultState, {
@@ -32,32 +32,32 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class BackgroundStylePicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     let recentBackgroundType = this.state.styleValues[this.props.watchingStyleNames[1]];
     let recentGUID = this.state.attributeValues[this.props.watchingAttributeNames[0]];
 
     if (!super.update(properties)) return;
   }
 
-  protected onVisibleChanged(visible : boolean, tag : any) {
+  protected onVisibleChanged(visible: boolean, tag: any) {
     if (visible) this.refs.swatchPicker.deselect();
     if (!visible) this.refs.gradientPicker.deselect();
 
     EventHelper.setDenyForHandle('keydown', visible);
     EventHelper.setDenyForHandle('keyup', visible);
 
-    this.setState({ visible: visible });
+    this.setState({visible: visible});
   }
 
-  protected colorPickerOnUpdate(color : string) {
+  protected colorPickerOnUpdate(color: string) {
     color = color || 'rgba(0, 0, 0, 1.0)';
     this.refs.swatchPicker.setCurrentSwatchColor(color);
     if (this.state.styleValues[this.props.watchingStyleNames[1]] !== null) {
@@ -72,13 +72,13 @@ class BackgroundStylePicker extends Base<Props, State> {
     this.refs.dropdownControl.hide();
   }
 
-  protected buttonOnClick(mode : string) {
+  protected buttonOnClick(mode: string) {
     this.setState({
       mode: mode
     });
   }
 
-  protected onColorPicked(color : string) {
+  protected onColorPicked(color: string) {
     this.setState({
       value: color
     });
@@ -101,7 +101,7 @@ class BackgroundStylePicker extends Base<Props, State> {
     });
   }
 
-  protected gradientOnSelectionChange(color : string) {
+  protected gradientOnSelectionChange(color: string) {
     this.refs.swatchPicker.deselect();
     this.refs.colorPicker.setCurrentColor(color);
     if (this.state.styleValues[this.props.watchingStyleNames[1]] !== null) {
@@ -157,7 +157,7 @@ class BackgroundStylePicker extends Base<Props, State> {
     }
   }
 
-  protected onTypeValueChange(value : any) {
+  protected onTypeValueChange(value: any) {
     this.state.styleValues[this.props.watchingStyleNames[1]] = value;
     this.forceUpdate();
     this.performUpdate();
@@ -178,16 +178,16 @@ class BackgroundStylePicker extends Base<Props, State> {
             <div className="section-body">
               <FullStackBlend.Components.RadioButtonPicker onValueChange={this.onTypeValueChange.bind(this)} watchingStyleNames={['-fsb-background-type']} watchingExtensionNames={['editorCurrentMode']}></FullStackBlend.Components.RadioButtonPicker>
             </div>
-            <div className="section-subtitle" style={{ display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none' }}>Gradient</div>
-            <div className="section-body" style={{ display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none' }}>
+            <div className="section-subtitle" style={{display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none'}}>Gradient</div>
+            <div className="section-body" style={{display: (!!backgroundType && backgroundType !== 'coding') ? 'block' : 'none'}}>
               <FullStackBlend.Components.GradientPicker ref="gradientPicker" onSelectionChange={this.gradientOnSelectionChange.bind(this)} onValueChange={this.gradientOnValueChange.bind(this)} watchingStyleNames={['background', '-fsb-background-type']} watchingAttributeNames={['internal-fsb-guid']}></FullStackBlend.Components.GradientPicker>
             </div>
-            <div className="section-subtitle" style={{ display: (backgroundType !== 'coding') ? 'block' : 'none' }}>Swatches</div>
-            <div className="section-body" style={{ display: (backgroundType !== 'coding') ? 'block' : 'none' }}>
+            <div className="section-subtitle" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>Swatches</div>
+            <div className="section-body" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>
               <FullStackBlend.Components.SwatchPicker ref="swatchPicker" onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
             </div>
-            <div className="section-subtitle" style={{ display: (backgroundType !== 'coding') ? 'block' : 'none' }}>Color</div>
-            <div className="section-body" style={{ display: (backgroundType !== 'coding') ? 'block' : 'none' }}>
+            <div className="section-subtitle" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>Color</div>
+            <div className="section-body" style={{display: (backgroundType !== 'coding') ? 'block' : 'none'}}>
               <FullStackBlend.Controls.ColorPicker ref="colorPicker" value={this.state.styleValues[this.props.watchingStyleNames[0]]} visible={this.state.visible} onUpdate={this.colorPickerOnUpdate.bind(this)} onUnset={this.colorPickerOnUnset.bind(this)} onRequestHiding={this.colorPickerOnRequestHiding.bind(this)}></FullStackBlend.Controls.ColorPicker>
             </div>
           </div>
@@ -199,4 +199,4 @@ class BackgroundStylePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.BackgroundStylePicker', BackgroundStylePicker);
 
-export { Props, State, BackgroundStylePicker };
+export {Props, State, BackgroundStylePicker};

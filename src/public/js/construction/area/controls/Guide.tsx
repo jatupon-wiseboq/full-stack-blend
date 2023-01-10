@@ -1,24 +1,24 @@
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { StyleHelper } from '../helpers/StyleHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {StyleHelper} from '../helpers/StyleHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
 }
 
 interface State {
-  paddingLeft : number,
-  paddingRight : number
+  paddingLeft: number,
+  paddingRight: number
 }
 
 class Guide extends React.Component<Props, State> {
-  state : State = { paddingLeft: 0, paddingRight: 0 };
-  static defaultProps : Props = {
+  state: State = {paddingLeft: 0, paddingRight: 0};
+  static defaultProps: Props = {
   }
 
-  private domElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
 
   constructor() {
     super();
@@ -27,7 +27,7 @@ class Guide extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
@@ -87,4 +87,4 @@ class Guide extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.Guide', Guide);
 
-export { Props, State, Guide };
+export {Props, State, Guide};

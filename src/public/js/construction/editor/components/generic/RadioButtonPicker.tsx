@@ -1,8 +1,8 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { FontHelper } from '../../../helpers/FontHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { GENERIC_RADIO_OPTION_PRESETS, GENERIC_RADIO_OPTION_PRESETS_MAPPING } from '../../../Constants';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {FontHelper} from '../../../helpers/FontHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {GENERIC_RADIO_OPTION_PRESETS, GENERIC_RADIO_OPTION_PRESETS_MAPPING} from '../../../Constants';
 
 const options = GENERIC_RADIO_OPTION_PRESETS;
 const map = GENERIC_RADIO_OPTION_PRESETS_MAPPING;
@@ -13,16 +13,16 @@ const Mode = Object.freeze({
   CUSTOM: Symbol("custom")
 });
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  customClassName : string;
-  options : any;
-  onValueChange(value : any);
-  required : boolean;
-  todoOverriding : boolean;
+  customClassName: string;
+  options: any;
+  onValueChange(value: any);
+  required: boolean;
+  todoOverriding: boolean;
 }
 
 interface State extends IState {
@@ -40,17 +40,17 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class RadioButtonPicker extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
-  protected buttonOnClick(value : any, mode : Mode) {
+  protected buttonOnClick(value: any, mode: Mode) {
     let currentState = this.getState(value, mode);
     let nameOrArrayOfRegularExpression = value[0];
     let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
@@ -61,7 +61,7 @@ class RadioButtonPicker extends Base<Props, State> {
       let list = [];
 
       for (let regularExpression of nameOrArrayOfRegularExpression) {
-        let results : any = null;
+        let results: any = null;
 
         switch (mode) {
           case Mode.STYLE:
@@ -198,7 +198,7 @@ class RadioButtonPicker extends Base<Props, State> {
     if (this.props.onValueChange) this.props.onValueChange((currentState) ? null : target);
   }
 
-  private getState(value : any, mode : Mode) : boolean {
+  private getState(value: any, mode: Mode): boolean {
     let nameOrArrayOfRegularExpression = value[0];
     let target = (typeof value[1] == 'function') ? value[1].call(this) : value[1];
 
@@ -350,4 +350,4 @@ class RadioButtonPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.RadioButtonPicker', RadioButtonPicker);
 
-export { Props, State, ExtendedDefaultProps, ExtendedDefaultState, RadioButtonPicker };
+export {Props, State, ExtendedDefaultProps, ExtendedDefaultState, RadioButtonPicker};

@@ -1,38 +1,38 @@
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { FontHelper } from '../../helpers/FontHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { TextHelper } from '../../helpers/TextHelper';
-import { BackEndScriptHelper } from '../../helpers/BackEndScriptHelper';
-import { RandomHelper } from '../../helpers/RandomHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
-import { CapabilityHelper } from './CapabilityHelper';
-import { StylesheetHelper } from './StylesheetHelper';
-import { AnimationHelper } from './AnimationHelper';
-import { CursorHelper } from './CursorHelper';
-import { FrontEndDOMHelper } from './FrontEndDOMHelper';
-import { BackEndDOMHelper } from './BackEndDOMHelper';
-import { SchemaHelper } from './SchemaHelper';
-import { LayoutHelper } from './LayoutHelper';
-import { TimelineHelper } from './TimelineHelper';
-import { StatusHelper } from './StatusHelper';
-import { MalformationRepairHelper } from './MalformationRepairHelper';
-import { LocalizationHelper } from './LocalizationHelper';
-import { ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS, CAMEL_OF_EVENTS_DICTIONARY } from '../../Constants';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {FontHelper} from '../../helpers/FontHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {TextHelper} from '../../helpers/TextHelper';
+import {BackEndScriptHelper} from '../../helpers/BackEndScriptHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {CapabilityHelper} from './CapabilityHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {CursorHelper} from './CursorHelper';
+import {FrontEndDOMHelper} from './FrontEndDOMHelper';
+import {BackEndDOMHelper} from './BackEndDOMHelper';
+import {SchemaHelper} from './SchemaHelper';
+import {LayoutHelper} from './LayoutHelper';
+import {TimelineHelper} from './TimelineHelper';
+import {StatusHelper} from './StatusHelper';
+import {MalformationRepairHelper} from './MalformationRepairHelper';
+import {LocalizationHelper} from './LocalizationHelper';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, INHERITING_COMPONENT_RESERVED_ATTRIBUTE_NAMES, INHERITING_COMPONENT_RESERVED_STYLE_NAMES, BACKEND_DATA_EXTENSIONS, CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 
 declare let js_beautify;
 declare let css_beautify;
 declare let html_beautify;
 
-const merging_beautify = (beautified_content : string) => {
+const merging_beautify = (beautified_content: string) => {
   if (!beautified_content) return beautified_content;
 
   return beautified_content.replace(/\n[ \t]+</g, '\n<').replace(/></g, '>\n<').replace(/ ([a-zA-Z0-9\_\-]+=")/g, '\n    $1');
 };
 
-let cacheOfGeneratedFrontEndCodeForAllPages : any = {};
-let cacheOfGeneratedBackEndCodeForAllPages : any = {};
+let cacheOfGeneratedFrontEndCodeForAllPages: any = {};
+let cacheOfGeneratedBackEndCodeForAllPages: any = {};
 
-const DefaultProjectSettings : { [Identifier : string] : any } = {
+const DefaultProjectSettings: {[Identifier: string]: any} = {
   currentMode: 'site',
   externalLibraries: 'react@16',
   colorSwatches: new Array(28),
@@ -42,7 +42,7 @@ const DefaultProjectSettings : { [Identifier : string] : any } = {
   editingAnimationID: null,
   editingKeyframeID: null,
   editingSelector: null,
-  pages: [{ id: 'index', name: 'Home', path: '/', state: 'create' }],
+  pages: [{id: 'index', name: 'Home', path: '/', state: 'create'}],
   components: [],
   popups: []
 };
@@ -71,7 +71,7 @@ const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class
 const DEFAULT_PAGE_EXTENSIONS = {};
 
 var WorkspaceHelper = {
-  generateWorkspaceData: (removeSHADict : boolean = false) => {
+  generateWorkspaceData: (removeSHADict: boolean = false) => {
     WorkspaceHelper.saveWorkspaceData(true, true);
 
     let clonedInternalProjectSettings = CodeHelper.clone(InternalProjectSettings);
@@ -132,7 +132,7 @@ var WorkspaceHelper = {
       }
     );
   },
-  initializeWorkspaceData: (data : any) => {
+  initializeWorkspaceData: (data: any) => {
     InternalProjectSettings = data && data.globalSettings || DefaultProjectSettings;
     InternalSites = data && data.sites || {};
     InternalComponents = data && data.components || {};
@@ -214,7 +214,7 @@ var WorkspaceHelper = {
     WorkspaceHelper.loadWorkspaceData();
     EditorHelper.updateEditorProperties();
   },
-  setMode: (mode : string) => {
+  setMode: (mode: string) => {
     if (InternalProjectSettings.currentMode == mode) return;
 
     WorkspaceHelper.saveWorkspaceData(false);
@@ -250,7 +250,7 @@ var WorkspaceHelper = {
 
     return usingFonts;
   },
-  loadWorkspaceData: (updateUI : boolean = false) => {
+  loadWorkspaceData: (updateUI: boolean = false) => {
     if (InternalProjectSettings.currentMode == 'site') {
       if (InternalProjectSettings.editingPageID == null) return;
 
@@ -323,7 +323,7 @@ var WorkspaceHelper = {
 
     HTMLHelper.setAttribute(document.body, 'explore', InternalProjectSettings.currentMode);
   },
-  loadPageData: (mode : string, editingID : string, _window : any = window) => {
+  loadPageData: (mode: string, editingID: string, _window: any = window) => {
     HTMLHelper.sortAttributes(_window.document);
 
     if (mode == 'site') {
@@ -387,7 +387,7 @@ var WorkspaceHelper = {
 
     return true;
   },
-  saveWorkspaceData: (reinit : boolean = true, force : boolean = false) => {
+  saveWorkspaceData: (reinit: boolean = true, force: boolean = false) => {
     HTMLHelper.sortAttributes();
 
     HTMLHelper.removeAttribute(document.body, 'explore');
@@ -540,7 +540,7 @@ var WorkspaceHelper = {
 
     HTMLHelper.setAttribute(document.body, 'explore', InternalProjectSettings.currentMode);
   },
-  replaceBodyOuterHTML: (window : any, html : string) => {
+  replaceBodyOuterHTML: (window: any, html: string) => {
     const document = window.document;
 
     while (document.body.attributes.length > 0) document.body.removeAttribute(document.body.attributes[0].name);
@@ -556,11 +556,11 @@ var WorkspaceHelper = {
     while (document.body.children.length != 0) document.body.removeChild(document.body.firstChild);
     while (container.firstChild.children.length != 0) document.body.appendChild(container.firstChild.firstChild);
   },
-  removeComponentData: (id : string) => {
+  removeComponentData: (id: string) => {
     delete InternalComponents[id];
     InternalProjectSettings.components = InternalProjectSettings.components.filter(component => component.id != id);
   },
-  addOrReplaceComponentData: (id : string, name : string, namespace : string, klass : string, html : string) => {
+  addOrReplaceComponentData: (id: string, name: string, namespace: string, klass: string, html: string) => {
     // Rely on saveWorkspaceData() when editing the root component right from the Explore Component mode.
     if (InternalProjectSettings.currentMode == 'components' && InternalProjectSettings.editingComponentID == id) return;
 
@@ -581,7 +581,7 @@ var WorkspaceHelper = {
 
     WorkspaceHelper.updateInheritingComponents();
   },
-  cleanupComponentHTMLData: (html : string) => {
+  cleanupComponentHTMLData: (html: string) => {
     let holder = document.createElement('div');
     holder.innerHTML = html;
 
@@ -621,7 +621,7 @@ var WorkspaceHelper = {
 
     return holder.innerHTML;
   },
-  cleanupPageHTMLData: (html : string, preview : boolean = false) => {
+  cleanupPageHTMLData: (html: string, preview: boolean = false) => {
     let holder = document.createElement('iframe');
     document.body.appendChild(holder);
 
@@ -688,23 +688,23 @@ var WorkspaceHelper = {
     if (element) element.className = 'internal-fsb-accessory';
   },
   getAllReferencingKlasses: () => {
-    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', document.body)].map((element : any) => {
+    let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', document.body)].map((element: any) => {
       return HTMLHelper.getAttribute(element, 'internal-fsb-inheriting');
     });
     let inPageComponents = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-react-mode', 'Site', document.body)]
-      .filter((element : any) => {
+      .filter((element: any) => {
         return HTMLHelper.getAttribute(element, 'internal-fsb-inheriting') == null;
       })
-      .map((element : any) => {
+      .map((element: any) => {
         return HTMLHelper.getAttribute(element, 'internal-fsb-guid');
       });
-    let popups = [...HTMLHelper.getElementsByAttribute('internal-fsb-popup-init-class', document.body)].map((element : any) => {
+    let popups = [...HTMLHelper.getElementsByAttribute('internal-fsb-popup-init-class', document.body)].map((element: any) => {
       return WorkspaceHelper.getPopupKeyFromPath(HTMLHelper.getAttribute(element, 'internal-fsb-popup-init-class'));
     });
 
     return Array.from(new Set([...components, ...inPageComponents, ...popups]));
   },
-  recursiveCleanupComponentPreviewDOM: (element : HTMLElement, first : boolean = false) => {
+  recursiveCleanupComponentPreviewDOM: (element: HTMLElement, first: boolean = false) => {
     if (!first) {
       if (HTMLHelper.hasClass(element, 'internal-fsb-element')) {
         HTMLHelper.addClass(element, 'internal-fsb-inheriting-element');
@@ -731,7 +731,7 @@ var WorkspaceHelper = {
       WorkspaceHelper.recursiveCleanupComponentPreviewDOM(_element);
     }
   },
-  updateInPageComponents: (container : HTMLElement = document.body) => {
+  updateInPageComponents: (container: HTMLElement = document.body) => {
     for (let _component of InternalProjectSettings.components) {
       let component = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', _component.id, container);
       if (component && (InternalProjectSettings.currentMode != 'components' || component != document.body.firstElementChild.firstElementChild.firstElementChild)) {
@@ -747,7 +747,7 @@ var WorkspaceHelper = {
       }
     }
   },
-  updateInheritingComponents: (container : HTMLElement = document.body) => {
+  updateInheritingComponents: (container: HTMLElement = document.body) => {
     let components = [...HTMLHelper.getElementsByAttribute('internal-fsb-inheriting', container)];
     let selectedElement = EditorHelper.getSelectingElement();
 
@@ -812,7 +812,7 @@ var WorkspaceHelper = {
       if (isSelecting) EditorHelper.select(component);
     }
   },
-  getComponentData: (id : string) => {
+  getComponentData: (id: string) => {
     let existingComponentInfo = InternalProjectSettings.components.filter(component => component.id == id)[0];
     if (!existingComponentInfo) return null;
 
@@ -824,7 +824,7 @@ var WorkspaceHelper = {
 
     return InternalComponents[id];
   },
-  getPopupData: (id : string) => {
+  getPopupData: (id: string) => {
     let existingPopupInfo = InternalProjectSettings.popups.filter(popup => popup.id == id)[0];
     if (!existingPopupInfo) return null;
 
@@ -836,7 +836,7 @@ var WorkspaceHelper = {
 
     return InternalPopups[id];
   },
-  getPopupKeyFromPath: (path : string) : string => {
+  getPopupKeyFromPath: (path: string): string => {
     for (let key in InternalPopups) {
       if (InternalPopups.hasOwnProperty(key)) {
         if (`${InternalPopups[key]['namespace']}.${InternalPopups[key]['klass']}` == path) {
@@ -847,7 +847,7 @@ var WorkspaceHelper = {
 
     return null;
   },
-  getPageData: (id : String) => {
+  getPageData: (id: String) => {
     let existingPageInfo = InternalProjectSettings.pages.filter(page => page.id == id)[0];
     if (!existingPageInfo) return null;
 
@@ -976,7 +976,7 @@ var WorkspaceHelper = {
 
     return temp;
   },
-  disposeTempIframe: (temp : any) => {
+  disposeTempIframe: (temp: any) => {
     const _document = temp.contentDocument || temp.contentWindow.document;
 
     _document.open();
@@ -985,7 +985,7 @@ var WorkspaceHelper = {
 
     document.body.removeChild(temp);
   },
-  generateFrontEndCodeForID: (mode : string = InternalProjectSettings.currentMode, id : string = WorkspaceHelper.getCurrentGenerateFrontEndKey(), hasInfo : boolean = false) => {
+  generateFrontEndCodeForID: (mode: string = InternalProjectSettings.currentMode, id: string = WorkspaceHelper.getCurrentGenerateFrontEndKey(), hasInfo: boolean = false) => {
     const temp = WorkspaceHelper.createTempIframe();
     const _document = temp.contentDocument || temp.contentWindow.document;
     const _window = _document.defaultView;
@@ -1015,7 +1015,7 @@ var WorkspaceHelper = {
     if (hasInfo) return [content, html];
     else return [content];
   },
-  generateFrontEndCodeForPage: (mode : string = 'site', container : any = document.body, update : boolean = true) => {
+  generateFrontEndCodeForPage: (mode: string = 'site', container: any = document.body, update: boolean = true) => {
     let results = null;
 
     if (mode == 'site') {
@@ -1122,7 +1122,7 @@ var WorkspaceHelper = {
       }
     }
   },
-  generateBackEndCodeForID: (id : string = InternalProjectSettings.editingPageID) => {
+  generateBackEndCodeForID: (id: string = InternalProjectSettings.editingPageID) => {
     const temp = WorkspaceHelper.createTempIframe();
     const _document = temp.contentDocument || temp.contentWindow.document;
     const _window = _document.defaultView;
@@ -1134,7 +1134,7 @@ var WorkspaceHelper = {
 
     return results;
   },
-  generateBackEndCodeForPage: (mode : string = 'site', key : string = InternalProjectSettings.editingPageID, container : any = document.body) => {
+  generateBackEndCodeForPage: (mode: string = 'site', key: string = InternalProjectSettings.editingPageID, container: any = document.body) => {
     let results;
     if (mode == 'site') {
       WorkspaceHelper.plugComponentInputs(container);
@@ -1148,7 +1148,7 @@ var WorkspaceHelper = {
 
     return results;
   },
-  getCurrentGenerateFrontEndCodeKey: (mode : string = InternalProjectSettings.currentMode, key : string = null) => {
+  getCurrentGenerateFrontEndCodeKey: (mode: string = InternalProjectSettings.currentMode, key: string = null) => {
     switch (mode) {
       case 'site':
         return key || InternalProjectSettings.editingPageID;
@@ -1264,7 +1264,7 @@ var WorkspaceHelper = {
 
     return results;
   },
-  clearFullStackCodeForAllPages: (data : any) => {
+  clearFullStackCodeForAllPages: (data: any) => {
     cacheOfGeneratedFrontEndCodeForAllPages = {};
     cacheOfGeneratedBackEndCodeForAllPages = {};
 
@@ -1304,7 +1304,7 @@ var WorkspaceHelper = {
 
     return combinedExpandingFeatureScripts || '';
   },
-  plugComponentInputs: (root : HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) => {
+  plugComponentInputs: (root: HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) => {
     let popups = [...HTMLHelper.getElementsByAttribute('internal-fsb-popup-init-class', root)];
     popups.forEach(popup => {
       const popupClass = HTMLHelper.getAttribute(popup, 'internal-fsb-popup-init-class');
@@ -1322,10 +1322,10 @@ var WorkspaceHelper = {
       }
     });
   },
-  unplugComponentInputs: (root : HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) => {
+  unplugComponentInputs: (root: HTMLElement = HTMLHelper.getElementByAttributeNameAndValue("internal-fsb-guid", "0")) => {
     let plugs = [...HTMLHelper.getElementsByClassName('internal-fsb-plug', root)];
     plugs.forEach(plug => plug.parentNode.removeChild(plug));
   }
 }
 
-export { InternalProjectSettings, WorkspaceHelper };
+export {InternalProjectSettings, WorkspaceHelper};

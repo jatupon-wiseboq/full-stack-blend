@@ -1,8 +1,8 @@
-import { EventHelper } from '../../../helpers/EventHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 import '../../controls/DropDownList';
 import '../../controls/DropDownControl';
@@ -10,20 +10,20 @@ import '../code/SettingPicker';
 import '../code/PropertyPicker';
 import '../code/StatePicker';
 import '../code/CustomCodePicker';
-import { SIZES_IN_DESCRIPTION, SIZES_IN_UNIT } from '../../../Constants';
+import {SIZES_IN_DESCRIPTION, SIZES_IN_UNIT} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  inline : boolean,
-  manual : boolean
+  inline: boolean,
+  manual: boolean
 }
 
 interface State extends IState {
-  index : number,
-  value : any
+  index: number,
+  value: any
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -46,8 +46,8 @@ let iconDict = {
 }
 
 class SizePicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -67,7 +67,7 @@ class SizePicker extends Base<Props, State> {
     }
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let original = this.state.styleValues[this.props.watchingStyleNames[0]];
@@ -90,7 +90,7 @@ class SizePicker extends Base<Props, State> {
     });
   }
 
-  protected dropdownOnUpdate(identity : any, value : any, index : any) {
+  protected dropdownOnUpdate(identity: any, value: any, index: any) {
     this.setState({
       index: index
     });
@@ -105,7 +105,7 @@ class SizePicker extends Base<Props, State> {
     }
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     this.state.value = value;
     if (this.props.watchingStyleNames[0] && !this.props.manual) {
       perform('update', {
@@ -118,7 +118,7 @@ class SizePicker extends Base<Props, State> {
     }
   }
 
-  private composeValue(value : any, index : number) {
+  private composeValue(value: any, index: number) {
     let composedValue = (value != null) ? (value.toString() + SIZES_IN_UNIT[index]).trim() : null;
 
     return TextHelper.composeIntoMultipleValue(this.props.watchingStyleNames[0], composedValue, this.state.styleValues[this.props.watchingStyleNames[1]], '0px');
@@ -212,4 +212,4 @@ class SizePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.SizePicker', SizePicker);
 
-export { Props, State, SizePicker };
+export {Props, State, SizePicker};

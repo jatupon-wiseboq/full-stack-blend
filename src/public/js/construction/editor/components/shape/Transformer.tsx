@@ -1,32 +1,32 @@
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { TransformControls, TransformControlsGizmo, TransformControlsPlane } from '../../lib/TransformControls';
-import { WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion } from '../../lib/three.module';
-import { CSS3DObject, CSS3DSprite, CSS3DRenderer } from '../../lib/CSS3DRenderer';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {TransformControls, TransformControlsGizmo, TransformControlsPlane} from '../../lib/TransformControls';
+import {WebGLRenderer, PerspectiveCamera, Scene, DirectionalLight, BoxBufferGeometry, PlaneGeometry, MeshBasicMaterial, Mesh, LineBasicMaterial, DoubleSide, WireframeGeometry, LineSegments, Matrix4, Vector3, Quaternion} from '../../lib/three.module';
+import {CSS3DObject, CSS3DSprite, CSS3DRenderer} from '../../lib/CSS3DRenderer';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
-declare let THREE : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
+declare let THREE: any;
 
-const ZERO : number = 0.00001;
+const ZERO: number = 0.00001;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  mode : string,
-  translateX : number,
-  translateY : number,
-  translateZ : number,
-  rotateX : number,
-  rotateY : number,
-  rotateZ : number,
-  scaleX : number,
-  scaleY : number,
-  scaleZ : number
+  mode: string,
+  translateX: number,
+  translateY: number,
+  translateZ: number,
+  rotateX: number,
+  rotateY: number,
+  rotateZ: number,
+  scaleX: number,
+  scaleY: number,
+  scaleZ: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -41,33 +41,33 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class Transformer extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
-  private webGLCamera : any;
-  private webGLScene : any;
-  private webGLRenderer : any;
-  private webGLControl : any;
-  private webGLMesh : any;
+  private webGLCamera: any;
+  private webGLScene: any;
+  private webGLRenderer: any;
+  private webGLControl: any;
+  private webGLMesh: any;
 
-  private css3DCamera : any;
-  private css3DScene : any;
-  private css3DRenderer : any;
-  private css3DElement : any;
+  private css3DCamera: any;
+  private css3DScene: any;
+  private css3DRenderer: any;
+  private css3DElement: any;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  protected currentTransform : string = null;
+  protected currentTransform: string = null;
 
   componentDidMount() {
     this.init();
     this.render3D();
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     let previousMode = this.state.styleValues['-fsb-mode'];
     super.update(properties);
 
@@ -109,12 +109,12 @@ class Transformer extends Base<Props, State> {
 
     window.setTimeout(this.render3D.bind(this), 1000);
   }
-  initWebGLRenderer(width : number, height : number) {
+  initWebGLRenderer(width: number, height: number) {
     // WebGL Renderer
     //
     let container = ReactDOM.findDOMNode(this.refs.container);
 
-    this.webGLRenderer = new WebGLRenderer({ alpha: true });
+    this.webGLRenderer = new WebGLRenderer({alpha: true});
     this.webGLRenderer.setPixelRatio(window.devicePixelRatio);
     this.webGLRenderer.setSize(236, 210);
     this.webGLRenderer.setClearColor(0x000000, 0);
@@ -139,14 +139,14 @@ class Transformer extends Base<Props, State> {
     this.webGLScene.add(this.webGLMesh);
 
     let plane = new PlaneGeometry(50, 50, 8);
-    let material = new MeshBasicMaterial({ color: 0xf5f5f5, side: DoubleSide });
+    let material = new MeshBasicMaterial({color: 0xf5f5f5, side: DoubleSide});
     let mesh = new Mesh(plane, material);
     mesh.position.z = 50 / 2;
     this.webGLMesh.add(mesh);
 
     this.reset();
   }
-  initCSS3DRenderer(width : number, height : number) {
+  initCSS3DRenderer(width: number, height: number) {
     // CSS3D Renderer
     //
     this.css3DRenderer = new CSS3DRenderer();
@@ -294,7 +294,7 @@ class Transformer extends Base<Props, State> {
     this.webGLRenderer.render(this.webGLScene, this.webGLCamera);
   }
 
-  textboxOnUpdateTranslateX(value : string) {
+  textboxOnUpdateTranslateX(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -303,7 +303,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateTranslateY(value : string) {
+  textboxOnUpdateTranslateY(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -312,7 +312,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateTranslateZ(value : string) {
+  textboxOnUpdateTranslateZ(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -321,7 +321,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateRotateX(value : string) {
+  textboxOnUpdateRotateX(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
     if (number == 0) number = ZERO;
@@ -331,7 +331,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateRotateY(value : string) {
+  textboxOnUpdateRotateY(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
     if (number == 0) number = ZERO;
@@ -341,7 +341,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateRotateZ(value : string) {
+  textboxOnUpdateRotateZ(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
     if (number == 0) number = ZERO;
@@ -351,7 +351,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateScaleX(value : string) {
+  textboxOnUpdateScaleX(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -360,7 +360,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateScaleY(value : string) {
+  textboxOnUpdateScaleY(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -369,7 +369,7 @@ class Transformer extends Base<Props, State> {
     this.render3D();
   }
 
-  textboxOnUpdateScaleZ(value : string) {
+  textboxOnUpdateScaleZ(value: string) {
     let number = parseFloat(value);
     if (isNaN(number)) number = 0;
 
@@ -475,4 +475,4 @@ class Transformer extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.Transformer', Transformer);
 
-export { Props, State, Transformer };
+export {Props, State, Transformer};

@@ -1,8 +1,8 @@
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker } from './DisplayPicker.js'
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, DisplayPicker} from './DisplayPicker.js'
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
@@ -10,9 +10,9 @@ Object.assign(_ExtendedDefaultProps, {
 });
 
 class PreservePicker extends DisplayPicker {
-  protected static defaultProps : Props = _ExtendedDefaultProps;
+  protected static defaultProps: Props = _ExtendedDefaultProps;
 }
 
 DeclarationHelper.declare('Components.PreservePicker', PreservePicker);
 
-export { Props, State, PreservePicker };
+export {Props, State, PreservePicker};

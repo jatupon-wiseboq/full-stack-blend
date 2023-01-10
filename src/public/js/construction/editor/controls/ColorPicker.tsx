@@ -1,12 +1,12 @@
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let jQuery : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let jQuery: any;
 
 let hooks = [];
 let picker = document.createElement('div');
-let recentRgb = { r: 0, g: 0, b: 0 };
+let recentRgb = {r: 0, g: 0, b: 0};
 let recentOpacity = 1.0;
 jQuery(jQuery(picker).colpick({
   flat: true,
@@ -22,7 +22,7 @@ jQuery(jQuery(picker).colpick({
       hook(recentRgb, recentOpacity, false);
     }
   }
-}).children()[0]).css({ height: '180px' });
+}).children()[0]).css({height: '180px'});
 
 let opacityControl = jQuery(picker).find('.colpick_hex_field').clone();
 jQuery(picker).find('.colpick_hex_field').before(opacityControl);
@@ -54,27 +54,27 @@ opacityControl.find('input').bind('keyup', (event) => {
   }
 });
 
-function setOpacityValue(value : number) {
+function setOpacityValue(value: number) {
   recentOpacity = value;
   opacityControl.find('input').val(recentOpacity.toString());
 }
 
 interface IProps {
-  onUpdate(value : any);
+  onUpdate(value: any);
   onUnset();
-  visible : boolean;
-  value : string;
+  visible: boolean;
+  value: string;
 }
 
 interface IState {
 }
 
 class ColorPicker extends React.Component<IProps, IState> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
     value: 'rgba(0, 0, 0, 1.0)'
   };
 
-  private onSubmitDelegate : any = null;
+  private onSubmitDelegate: any = null;
 
   constructor() {
     super();
@@ -132,18 +132,18 @@ class ColorPicker extends React.Component<IProps, IState> {
     }
   }
 
-  private convertRgbaToHash(value : string) {
+  private convertRgbaToHash(value: string) {
     value = value || 'rgba(255, 255, 255, 1.0)';
     let match = value.match(/^rgba\(([0-9]+), ([0-9]+), ([0-9]+), ([0-9\.]+)\)$/);
-    if (match == null) return { r: 0, g: 0, b: 0, a: 1.0 };
-    else return { r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]), a: parseFloat(match[4]) };
+    if (match == null) return {r: 0, g: 0, b: 0, a: 1.0};
+    else return {r: parseInt(match[1]), g: parseInt(match[2]), b: parseInt(match[3]), a: parseFloat(match[4])};
   }
 
-  private convertHashToRgba(rgba : any) {
+  private convertHashToRgba(rgba: any) {
     return 'rgba(' + rgba.r + ', ' + rgba.g + ', ' + rgba.b + ', ' + rgba.a + ')';
   }
 
-  public setCurrentColor(color : string) {
+  public setCurrentColor(color: string) {
     let rgba = this.convertRgbaToHash(color);
     setOpacityValue(rgba.a);
     jQuery(picker).colpickSetColor(rgba, true);
@@ -160,4 +160,4 @@ class ColorPicker extends React.Component<IProps, IState> {
 
 DeclarationHelper.declare('Controls.ColorPicker', ColorPicker);
 
-export { IProps, IState, ColorPicker };
+export {IProps, IState, ColorPicker};

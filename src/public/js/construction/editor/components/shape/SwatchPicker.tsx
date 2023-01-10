@@ -1,19 +1,19 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  onColorPicked(color : String);
+  onColorPicked(color: String);
 }
 
 interface State extends IState {
-  index : number
+  index: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -27,19 +27,19 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class SwatchPicker extends Base<Props, State> {
-  static state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  static state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
-  protected swatchOnClick(index : number) {
+  protected swatchOnClick(index: number) {
     this.state.index = index;
     this.forceUpdate();
 
@@ -50,7 +50,7 @@ class SwatchPicker extends Base<Props, State> {
     }
   }
 
-  public setCurrentSwatchColor(color : string) {
+  public setCurrentSwatchColor(color: string) {
     if (!this.state.extensionValues[this.props.watchingExtensionNames[0]]) return;
     if (this.state.index == -1) return;
 
@@ -84,4 +84,4 @@ class SwatchPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.SwatchPicker', SwatchPicker);
 
-export { Props, State, SwatchPicker };
+export {Props, State, SwatchPicker};

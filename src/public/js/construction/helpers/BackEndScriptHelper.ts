@@ -1,4 +1,4 @@
-import { CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL } from '../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL} from '../Constants';
 
 enum TemplateCode {
   Controller,
@@ -749,7 +749,7 @@ const FILE_BEGIN = `// Auto[File]--->`;
 const FILE_END = `// <---Auto[File]`;
 
 var BackEndScriptHelper = {
-  generateScriptCode: (info : any, boilerplate : string = FULL_CONTROLLER_BOILERPLATE, defaults : any = CONTROLLER_DEFAULTS, templateCode : TemplateCode = TemplateCode.Controller) => {
+  generateScriptCode: (info: any, boilerplate: string = FULL_CONTROLLER_BOILERPLATE, defaults: any = CONTROLLER_DEFAULTS, templateCode: TemplateCode = TemplateCode.Controller) => {
     let code = boilerplate;
     const beforeExecutions = [];
     const afterExecutions = [];
@@ -820,8 +820,8 @@ ${CLASS_END_BEGIN}`);
         }
 
         if (templateCode != TemplateCode.Controller) {
-          let type : string;
-          let destination : string;
+          let type: string;
+          let destination: string;
 
           switch (name) {
             case 'onfsbsourceinsert':
@@ -914,7 +914,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 
     return [code, functionNameMapping];
   },
-  generateMergingCode: (info : any, executions : string[], removeAutoGeneratingWarning : boolean = false, templateCode : TemplateCode = TemplateCode.Controller) => {
+  generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean = false, templateCode: TemplateCode = TemplateCode.Controller) => {
     let code = '';
     let functionNameMapping = {};
 
@@ -1032,7 +1032,7 @@ ${SUB_MERGE_END_BEGIN}`);
 
     return [code, functionNameMapping];
   },
-  extractCode: (code : string) => {
+  extractCode: (code: string) => {
     if (!code) return {};
 
     let resultDictionary = {};
@@ -1048,15 +1048,15 @@ ${SUB_MERGE_END_BEGIN}`);
 
     return resultDictionary;
   },
-  generateConnectorCode: (info : any) => {
+  generateConnectorCode: (info: any) => {
     return BackEndScriptHelper.generateScriptCode(info, FULL_CONNECTOR_BOILERPLATE, CONNECTOR_DEFAULTS, TemplateCode.Connector);
   },
-  generateWorkerCode: (info : any) => {
+  generateWorkerCode: (info: any) => {
     return BackEndScriptHelper.generateScriptCode(info, FULL_WORKER_BOILERPLATE, WORKER_DEFAULTS, TemplateCode.Worker);
   },
-  generateSchedulerCode: (info : any) => {
+  generateSchedulerCode: (info: any) => {
     return BackEndScriptHelper.generateScriptCode(info, FULL_SCHEDULER_BOILERPLATE, SCHEDULER_DEFAULTS, TemplateCode.Scheduler);
   }
 }
 
-export { BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode };
+export {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode};

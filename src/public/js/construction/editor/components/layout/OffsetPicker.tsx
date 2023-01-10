@@ -1,9 +1,9 @@
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker } from './GridPicker.js'
-import { RESPONSIVE_OFFSET_REGEX } from '../../../Constants';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker} from './GridPicker.js'
+import {RESPONSIVE_OFFSET_REGEX} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
@@ -14,9 +14,9 @@ Object.assign(_ExtendedDefaultProps, {
 });
 
 class OffsetPicker extends GridPicker {
-  protected static defaultProps : Props = _ExtendedDefaultProps;
+  protected static defaultProps: Props = _ExtendedDefaultProps;
 }
 
 DeclarationHelper.declare('Components.OffsetPicker', OffsetPicker);
 
-export { Props, State, OffsetPicker };
+export {Props, State, OffsetPicker};

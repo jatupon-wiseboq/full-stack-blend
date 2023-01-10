@@ -1,6 +1,6 @@
 import winston from "winston";
 
-const options : winston.LoggerOptions = {
+const options: winston.LoggerOptions = {
   transports: [
     new winston.transports.Console({
       level: process.env.NODE_ENV === "production" ? "error" : "debug"

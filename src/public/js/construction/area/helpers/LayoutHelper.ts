@@ -1,5 +1,5 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 let cachedElementTreeNodesIncludeInheriting = null;
@@ -9,11 +9,11 @@ var LayoutHelper = {
     cachedElementTreeNodes = null;
     cachedElementTreeNodesIncludeInheriting = null;
   },
-  calculateColumnSize: function(width : number) {
+  calculateColumnSize: function(width: number) {
     let selectingElement = EditorHelper.getSelectingElement();
     if (selectingElement) {
       let measure = document.createElement('div');
-      let i : number;
+      let i: number;
 
       selectingElement.parentNode.insertBefore(measure, selectingElement.parentNode.firstElementChild);
 
@@ -29,7 +29,7 @@ var LayoutHelper = {
       return null;
     }
   },
-  getElementTreeNodes: function(includeInheriting : boolean = false, nodes : array = [], container : any = document.body) {
+  getElementTreeNodes: function(includeInheriting: boolean = false, nodes: array = [], container: any = document.body) {
     if (container == document.body && !includeInheriting && cachedElementTreeNodes) return cachedElementTreeNodes;
     if (container == document.body && includeInheriting && cachedElementTreeNodesIncludeInheriting) return cachedElementTreeNodesIncludeInheriting;
     if (!container.childNodes) return nodes;
@@ -75,7 +75,7 @@ var LayoutHelper = {
     if (container == document.body && includeInheriting) cachedElementTreeNodesIncludeInheriting = nodes;
     return nodes;
   },
-  getElementOptions: function(element : HTMLElement) {
+  getElementOptions: function(element: HTMLElement) {
     if (HTMLHelper.getAttribute(element, 'internal-fsb-class') == 'Select') {
       let children = HTMLHelper.getElementsByTagName('option', element.firstElementChild);
       return [...children].map((child) => {
@@ -90,7 +90,7 @@ var LayoutHelper = {
       return null;
     }
   },
-  isNestedComponent: function(container : HTMLElement, componentID : string) {
+  isNestedComponent: function(container: HTMLElement, componentID: string) {
     if (!componentID) return false;
 
     let elements = HTMLHelper.findAllParentsInClassName('internal-fsb-element', container);
@@ -104,7 +104,7 @@ var LayoutHelper = {
 
     return false;
   },
-  isContainedInInheritedComponent: function(_element : HTMLElement) {
+  isContainedInInheritedComponent: function(_element: HTMLElement) {
     if (!_element) return false;
 
     let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', _element)];
@@ -119,4 +119,4 @@ var LayoutHelper = {
   }
 };
 
-export { LayoutHelper };
+export {LayoutHelper};

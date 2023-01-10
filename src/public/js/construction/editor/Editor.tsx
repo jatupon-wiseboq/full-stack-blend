@@ -1,8 +1,8 @@
-import { FullStackBlend } from '../helpers/DeclarationHelper';
-import { EventHelper } from '../helpers/EventHelper';
-import { HTMLHelper } from '../helpers/HTMLHelper';
-import { RequestHelper } from '../helpers/RequestHelper';
-import { WORKSPACE_TOGGLING_ATTRIBUTES, WORKSPACE_TOGGLING_STYLES, WORKSPACE_TOGGLING_EXTENSIONS } from '../Constants';
+import {FullStackBlend} from '../helpers/DeclarationHelper';
+import {EventHelper} from '../helpers/EventHelper';
+import {HTMLHelper} from '../helpers/HTMLHelper';
+import {RequestHelper} from '../helpers/RequestHelper';
+import {WORKSPACE_TOGGLING_ATTRIBUTES, WORKSPACE_TOGGLING_STYLES, WORKSPACE_TOGGLING_EXTENSIONS} from '../Constants';
 
 import './components/layout/GridPicker';
 import './components/layout/OffsetPicker';
@@ -62,32 +62,32 @@ import './components/animation/Keyframe';
 
 //import GitHub from 'github-api';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 let Accessories = {
   preview: null
 };
 
-let recentExtraPanelSelector : string = null;
+let recentExtraPanelSelector: string = null;
 let cachedUpdateEditorProperties = {};
 
 (function() {
-  window.perform = (name : string, content : any) => {
+  window.perform = (name: string, content: any) => {
     if (['undo', 'redo'].indexOf(name) != -1) {
       document.body.click();
     }
 
     const element = document.getElementById('area') as HTMLFrameElement;
     const contentWindow = element.contentWindow;
-    const stringifyIfNeed = contentWindow.messageFnArray ? (data : any) => data : JSON.stringify;
+    const stringifyIfNeed = contentWindow.messageFnArray ? (data: any) => data : JSON.stringify;
     contentWindow.postMessage(stringifyIfNeed({
       name: name,
       content: content
     }), '*');
   };
 
-  window.toggle = (name : string, iconSelector : string) => {
+  window.toggle = (name: string, iconSelector: string) => {
     let icon = HTMLHelper.getElementBySelector(iconSelector);
     if (HTMLHelper.hasClass(icon, 'fa-toggle-on')) {
       HTMLHelper.removeClass(icon, 'fa-toggle-on');
@@ -111,7 +111,7 @@ let cachedUpdateEditorProperties = {};
     synchronize('click');
   };
 
-  window.swap = (selector : string, toolsetSelector : string = null, extraPanelSelector : string = null, replacingIconSelector : string = null, iconClass : string = null, skipExtraPanel : boolean = false) => {
+  window.swap = (selector: string, toolsetSelector: string = null, extraPanelSelector: string = null, replacingIconSelector: string = null, iconClass: string = null, skipExtraPanel: boolean = false) => {
     const button = EventHelper.getCurrentElement(event);
     if (button.tagName != 'A') button = button.parentNode;
 
@@ -209,7 +209,7 @@ let cachedUpdateEditorProperties = {};
 
   window.controls = [];
 
-  var synchronize = (name : string, content : any) => {
+  var synchronize = (name: string, content: any) => {
     switch (name) {
       case 'select':
         break;
@@ -313,7 +313,7 @@ let cachedUpdateEditorProperties = {};
     });
   };
 
-  window.addEventListener("keydown", (event : any) => {
+  window.addEventListener("keydown", (event: any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
@@ -334,7 +334,7 @@ let cachedUpdateEditorProperties = {};
       return EventHelper.cancel(event);
     }
   });
-  window.addEventListener("keyup", (event : any) => {
+  window.addEventListener("keyup", (event: any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
@@ -346,7 +346,7 @@ let cachedUpdateEditorProperties = {};
       return EventHelper.cancel(event);
     }
   });
-  window.addEventListener("cut", (event : any) => {
+  window.addEventListener("cut", (event: any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
@@ -359,7 +359,7 @@ let cachedUpdateEditorProperties = {};
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("cut", event);
     }
   });
-  window.addEventListener("copy", (event : any) => {
+  window.addEventListener("copy", (event: any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
@@ -372,7 +372,7 @@ let cachedUpdateEditorProperties = {};
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("copy", event);
     }
   });
-  window.addEventListener("paste", (event : any) => {
+  window.addEventListener("paste", (event: any) => {
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
@@ -385,7 +385,7 @@ let cachedUpdateEditorProperties = {};
       contentWindow && contentWindow.performClipboardAction && contentWindow.performClipboardAction("paste", event);
     }
   });
-  window.addEventListener("scroll", (event : any) => {
+  window.addEventListener("scroll", (event: any) => {
     window.scrollTo(0, 0);
   });
 
@@ -402,7 +402,7 @@ let cachedUpdateEditorProperties = {};
   window.addEventListener("message", messageFn);
   window.messageFnArray = window.messageFnArray || [];
   window.messageFnArray.push(messageFn);
-  window.postMessage = (data : any) => {
+  window.postMessage = (data: any) => {
     if (typeof data === 'string') data = JSON.parse(data);
     for (const messageFn of window.messageFnArray) {
       messageFn({
@@ -411,7 +411,7 @@ let cachedUpdateEditorProperties = {};
     }
   };
 
-  window.addEventListener("beforeunload", (event : any) => {
+  window.addEventListener("beforeunload", (event: any) => {
     if (!window.overrideBeforeUnload) {
       event.preventDefault();
       event.returnValue = 'Your changes may be lost. Are you sure you want to exit the editor?';
@@ -420,7 +420,7 @@ let cachedUpdateEditorProperties = {};
     }
   });
 
-  window.addEventListener('contextmenu', (event : any) => {
+  window.addEventListener('contextmenu', (event: any) => {
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) return;
 
     if (!top._contextMenuNotice) {
@@ -460,11 +460,11 @@ let cachedUpdateEditorProperties = {};
   let currentRevision = null;
   let timerIncrementalUpdate = null;
 
-  window.preview = ((incremental : boolean = false) => {
+  window.preview = ((incremental: boolean = false) => {
     if (incremental) {
       window.clearTimeout(timerIncrementalUpdate);
       timerIncrementalUpdate = window.setTimeout(() => {
-        Accessories.endpointManager.current.save(() => { }, true);
+        Accessories.endpointManager.current.save(() => {}, true);
       }, 2500);
     } else {
       latestRevision += 1;

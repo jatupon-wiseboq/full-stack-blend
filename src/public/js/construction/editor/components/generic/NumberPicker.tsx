@@ -1,29 +1,29 @@
-import { EventHelper } from '../../../helpers/EventHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  inline : boolean;
-  button : boolean;
-  manual : boolean;
-  float : boolean;
-  onUpdate(value : any);
-  placeholder : string;
-  preRegExp : string;
-  postRegExp : string;
-  value : string;
+  inline: boolean;
+  button: boolean;
+  manual: boolean;
+  float: boolean;
+  onUpdate(value: any);
+  placeholder: string;
+  preRegExp: string;
+  postRegExp: string;
+  value: string;
 }
 
 interface State extends IState {
-  value : any
+  value: any
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -41,8 +41,8 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class NumberPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -58,7 +58,7 @@ class NumberPicker extends Base<Props, State> {
     }
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let original = null;
@@ -83,7 +83,7 @@ class NumberPicker extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     this.state.value = value;
     if (this.props.watchingStyleNames[0] && !this.props.manual) {
       perform('update', {
@@ -116,7 +116,7 @@ class NumberPicker extends Base<Props, State> {
     }
   }
 
-  private composeValue(value : any) {
+  private composeValue(value: any) {
     switch (typeof value) {
       case 'string':
         if (!value) return null;
@@ -192,4 +192,4 @@ class NumberPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.NumberPicker', NumberPicker);
 
-export { Props, State, NumberPicker };
+export {Props, State, NumberPicker};

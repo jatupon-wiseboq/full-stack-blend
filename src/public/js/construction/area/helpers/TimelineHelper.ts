@@ -1,8 +1,8 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { RandomHelper } from '../../helpers/RandomHelper';
-import { AnimationHelper } from './AnimationHelper';
-import { InternalProjectSettings } from './WorkspaceHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 
@@ -10,7 +10,7 @@ var TimelineHelper = {
   invalidate: function() {
     cachedElementTreeNodes = null;
   },
-  getElementTreeNodes: function(nodes : array = [], container : any = document.body) {
+  getElementTreeNodes: function(nodes: array = [], container: any = document.body) {
     if (cachedElementTreeNodes) return cachedElementTreeNodes;
 
     let infos = AnimationHelper.getStylesheetDefinitionKeys();
@@ -45,7 +45,7 @@ var TimelineHelper = {
     cachedElementTreeNodes = nodes;
     return cachedElementTreeNodes;
   },
-  recursiveGetElementTreeNodes: function(nodes : array = [], container : any = document.body, key : string = null) {
+  recursiveGetElementTreeNodes: function(nodes: array = [], container: any = document.body, key: string = null) {
     if (HTMLHelper.hasAttribute(container, 'internal-fsb-inheriting')) return nodes;
 
     for (let element of container.childNodes) {
@@ -117,4 +117,4 @@ var TimelineHelper = {
   }
 };
 
-export { TimelineHelper };
+export {TimelineHelper};

@@ -1,16 +1,16 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { StorageHelper } from '../../../helpers/StorageHelper';
-import { RequestHelper } from '../../../helpers/RequestHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { LIBRARIES, DEBUG_GITHUB_UPLOADER } from '../../../Constants';
-import { LocalizationHelper } from '../../../LocalizationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {StorageHelper} from '../../../helpers/StorageHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
+import {LocalizationHelper} from '../../../LocalizationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let ts : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let ts: any;
 
 let recentCommitMessage = StorageHelper.getCookie('recentCommitMessage');
 
@@ -31,8 +31,8 @@ Object.assign(ExtendedDefaultState, {
 
 // TODO: Inherit Components.ProjectManager instead (EndpointManager.)
 class ProjectManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -42,11 +42,11 @@ class ProjectManager extends Base<Props, State> {
   componentDidMount() {
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
-  replaceShortcuts(textContent : any) {
+  replaceShortcuts(textContent: any) {
     textContent = textContent.replace(/(\@)(\{[^{}]*(\{[^{}]*(\{[^{}]*(\{[^{}]*[^{}]+[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\})([\t\r\n ]*,[\t\r\n ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, a, b, c, table) => {
       try {
         const createInputs = `RequestHelper.createInputs(${content})`;
@@ -62,11 +62,11 @@ class ProjectManager extends Base<Props, State> {
 
     return textContent;
   }
-  getRepresentativeName(key : string) {
+  getRepresentativeName(key: string) {
     if (key == 'index') return key;
     else return `_${key}`;
   }
-  getFeatureDirectoryPrefix(key : string) {
+  getFeatureDirectoryPrefix(key: string) {
     let pages = this.state.extensionValues['pages'];
     let editingPageID = key;
     pages = pages.filter(page => page.id == editingPageID);
@@ -76,7 +76,7 @@ class ProjectManager extends Base<Props, State> {
 
     return (path) ? path + '/' : '';
   }
-  getRootDirectory(key : string) {
+  getRootDirectory(key: string) {
     return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
   }
   extractErrorMessage(error) {
@@ -149,7 +149,7 @@ class ProjectManager extends Base<Props, State> {
       const current = hashCode(content).toString();
 
       if (previousSHA && previousSHA.split('#')[1] === current) {
-        cb(false, { sha: previousSHA }, null);
+        cb(false, {sha: previousSHA}, null);
       } else {
         let utf8Bytes = encodeURIComponent(content).replace(/%([0-9A-F]{2})/g, function(match, p1) {
           return String.fromCharCode('0x' + p1);
@@ -185,7 +185,7 @@ class ProjectManager extends Base<Props, State> {
 
     return repo;
   }
-  public load(callback : any = null) {
+  public load(callback: any = null) {
     window.GITHUB_FEATURE_BRANCH = window.location.hash.replace('#', '') || window.GITHUB_FEATURE_BRANCH;
     if (window.GITHUB_FEATURE_BRANCH) window.location.hash = '#' + window.GITHUB_FEATURE_BRANCH;
 
@@ -249,7 +249,7 @@ class ProjectManager extends Base<Props, State> {
               if (typeof result === 'string') {
                 result = JSON.parse(CodeHelper.unlabel(result));
               }
-            } catch (ex) { /* void */ }
+            } catch (ex) { /* void */}
 
             if (typeof result !== 'object') {
               alert(`The project data is malformed. Please reverse any changes you have done manually using git rebase tool.`);
@@ -259,7 +259,7 @@ class ProjectManager extends Base<Props, State> {
             continueFn(result);
           });
         } else {
-          continueFn({ version: 1.0 });
+          continueFn({version: 1.0});
         }
       });
     });
@@ -330,7 +330,7 @@ class ProjectManager extends Base<Props, State> {
 
           let externalStylesheets = [];
           let externalScripts = [];
-          let selectedLibraries : string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+          let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
           for (let library of LIBRARIES) {
             if (selectedLibraries.indexOf(library.id) != -1) {
               if (library.production.stylesheets) {
@@ -351,7 +351,7 @@ class ProjectManager extends Base<Props, State> {
           let customFooterExternalStylesheets = [];
           let customFooterExternalScripts = [];
 
-          let externalLibraries : string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+          let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
           for (let externalLibrary of externalLibraries) {
             if (!externalLibrary) continue;
 
@@ -398,7 +398,7 @@ class ProjectManager extends Base<Props, State> {
 
               let compiledCombinedMinimalFeatureScripts = '';
               if (combinedMinimalFeatureScripts) {
-                compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, { compilerOptions: { module: ts.ModuleKind.COMMONJS } }).outputText;
+                compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
                 compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
               }
 
@@ -569,7 +569,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
           }
 
           let persistingContent = document.createElement('div');
-          let persistingGUIDs = { index: true };
+          let persistingGUIDs = {index: true};
           for (let page of nextProjectData.globalSettings.pages.filter(page => page.state != 'delete')) {
             persistingGUIDs[page.id] = true;
             let element = document.createElement('div');
@@ -634,10 +634,10 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
           nextProjectData.globalSettings.components = nextProjectData.globalSettings.components.filter(component => component.state != 'delete');
           nextProjectData.globalSettings.popups = nextProjectData.globalSettings.popups.filter(popup => popup.state != 'delete');
 
-          this.createRouteBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.routeBlobSHA, (routeBlobSHA : string) => {
-            this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, sitemapInfoDict, (controllerBlobSHA : string) => {
-              this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict : any) => {
-                this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict : any) => {
+          this.createRouteBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.routeBlobSHA, (routeBlobSHA: string) => {
+            this.createControllerBlob(repo, nextProjectData.globalSettings.pages, Object.keys(connectorControllerInfoDict), Object.keys(workerControllerInfoDict), Object.keys(schedulerControllerInfoDict), nextProjectData.controllerBlobSHA, sitemapInfoDict, (controllerBlobSHA: string) => {
+              this.createViewBlob(repo, combinedHTMLPageDict, nextProjectData.globalSettings.pages, nextProjectData.viewBlobSHADict, (viewBlobSHADict: any) => {
+                this.createBackEndControllerBlob(repo, arrayOfControllerScripts, nextProjectData.backEndControllerBlobSHADict, (backEndControllerBlobSHADict: any) => {
                   const process = (headerBlobError, headerBlobResult, footerBlobError, footerBlobResult) => {
                     if (headerBlobError) {
                       HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
@@ -654,7 +654,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                     const headerBlobSHA = headerBlobResult && headerBlobResult.sha || nextProjectData.headerBlobSHA;
                     const footerBlobSHA = footerBlobResult && footerBlobResult.sha || nextProjectData.footerBlobSHA;
 
-                    this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict : any) => {
+                    this.createFrontEndComponentsBlob(repo, arrayOfCombinedExpandingFeatureScripts, nextProjectData.frontEndComponentsBlobSHADict, (frontEndComponentsBlobSHADict: any) => {
 
                       nextProjectData.routeBlobSHA = routeBlobSHA;
                       nextProjectData.controllerBlobSHA = controllerBlobSHA;
@@ -686,13 +686,13 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
                         }
                       }
 
-                      this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, nextProjectData.siteBundleBlobSHA, (siteBundleBlobSHA : string) => {
+                      this.createSiteBundleBlob(repo, nextProjectData.globalSettings.pages, nextProjectData.frontEndComponentsBlobSHADict, nextProjectData.siteBundleBlobSHA, (siteBundleBlobSHA: string) => {
 
                         nextProjectData.siteBundleBlobSHA = siteBundleBlobSHA;
 
                         let previousPersistingFiles = nextProjectData.currentPersistingFiles || [];
                         let nextPersistingFiles = [];
-                        let workers = Object.keys(workerControllerInfoDict).map((key) => { return key.split(':')[0]; });
+                        let workers = Object.keys(workerControllerInfoDict).map((key) => {return key.split(':')[0];});
 
                         for (let key in nextProjectData.backEndControllerBlobSHADict) {
                           if (nextProjectData.backEndControllerBlobSHADict.hasOwnProperty(key)) {
@@ -924,7 +924,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
               if (typeof result === 'string') {
                 result = JSON.parse(CodeHelper.unlabel(result));
               }
-            } catch (ex) { /* void */ }
+            } catch (ex) { /* void */}
 
             if (typeof result !== 'object') {
               HTMLHelper.removeClass(HTMLHelper.getElementByClassName('save-button'), 'in-progress');
@@ -936,7 +936,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
             continueFn(result);
           });
         } else {
-          continueFn({ version: 1.0 });
+          continueFn({version: 1.0});
         }
       });
     });
@@ -979,7 +979,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
       }
     });
   }
-  private afterMerge(repo : any) {
+  private afterMerge(repo: any) {
     if (!confirm(`Your changes have been merged for other colleagues. Do you want to merge their changes and reload the project?`)) {
       HTMLHelper.removeClass(HTMLHelper.getElementByClassName('merge-button'), 'in-progress');
     } else {
@@ -1053,7 +1053,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
       });
     });
   }
-  createRouteBlob(repo : any, routes : string[], previousSHA : string, cb : any) {
+  createRouteBlob(repo: any, routes: string[], previousSHA: string, cb: any) {
     repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -1083,7 +1083,7 @@ export default route;
       cb(nextRouteDataSHA);
     });
   }
-  createControllerBlob(repo : any, routes : string[], connectors : string[], workers : string[], schedulers : string[], previousSHA : string, sitemapInfoDict : any = {}, cb : any) {
+  createControllerBlob(repo: any, routes: string[], connectors: string[], workers: string[], schedulers: string[], previousSHA: string, sitemapInfoDict: any = {}, cb: any) {
     repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -1123,11 +1123,11 @@ ${Object.keys(sitemapInfoDict).sort().map(key => `SitemapHelper.register('${key}
       cb(nextControllerDataSHA);
     });
   }
-  createViewBlob(repo : any, inputDict : any, pages : any, previousSHADict : any, cb : any) {
+  createViewBlob(repo: any, inputDict: any, pages: any, previousSHADict: any, cb: any) {
     let keys = Object.keys(inputDict);
     let nextViewDataSHADict = {};
 
-    let process = (index : number) => {
+    let process = (index: number) => {
       let page = pages.filter(page => page.id == keys[index]);
 
       repo.createBlob(`//- Auto[Generating:V1]--->
@@ -1156,9 +1156,9 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
     if (keys.length > 0) process(0);
     else cb(nextViewDataSHADict);
   }
-  createFrontEndComponentsBlob(repo : any, arrayOfContent : string[], previousSHADict : any, cb : any) {
+  createFrontEndComponentsBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
     let nextFrontEndComponentsDataSHADict = {};
-    let mainprocess = (mainIndex : number) => {
+    let mainprocess = (mainIndex: number) => {
       let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
       if (results.length < 2) {
         if (mainIndex + 1 < arrayOfContent.length) {
@@ -1167,7 +1167,7 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           cb(nextFrontEndComponentsDataSHADict);
         }
       } else {
-        let subprocess = (subIndex : number) => {
+        let subprocess = (subIndex: number) => {
           let tokens = results[subIndex].split("\n// <---Auto[File]");
 
           repo.createBlob(`// Auto[Generating:V1]--->
@@ -1201,9 +1201,9 @@ ${tokens[1]}
     if (arrayOfContent.length != 0) mainprocess(0);
     else cb(nextFrontEndComponentsDataSHADict);
   }
-  createBackEndControllerBlob(repo : any, arrayOfContent : string[], previousSHADict : any, cb : any) {
+  createBackEndControllerBlob(repo: any, arrayOfContent: string[], previousSHADict: any, cb: any) {
     let nextBackEndControllersDataSHADict = {};
-    let mainprocess = (mainIndex : number) => {
+    let mainprocess = (mainIndex: number) => {
       let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
       if (results.length < 2) {
         if (mainIndex + 1 < arrayOfContent.length) {
@@ -1212,7 +1212,7 @@ ${tokens[1]}
           cb(nextBackEndControllersDataSHADict);
         }
       } else {
-        let subprocess = (subIndex : number) => {
+        let subprocess = (subIndex: number) => {
           let tokens = results[subIndex].split("\n// <---Auto[File]");
 
           repo.createBlob(`// Auto[Generating:V1]--->
@@ -1246,7 +1246,7 @@ ${this.replaceShortcuts(tokens[1])}
     if (arrayOfContent.length != 0) mainprocess(0);
     else cb(nextBackEndControllersDataSHADict);
   }
-  createSiteBundleBlob(repo : any, routes : string[], frontEndComponentsBlobSHADict : any, previousSHA : string, cb : any) {
+  createSiteBundleBlob(repo: any, routes: string[], frontEndComponentsBlobSHADict: any, previousSHA: string, cb: any) {
     repo.createBlob(`// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -1293,10 +1293,10 @@ window.internalFsbOpen = (initClass: string, data: any) => {
       cb(nextSiteBundleDataSHA);
     });
   }
-  deleteFiles(repo : any, files : any, cb : any) {
+  deleteFiles(repo: any, files: any, cb: any) {
     if (files.length == 0) cb();
     else {
-      let process = (index : number) => {
+      let process = (index: number) => {
         let file = files[index];
 
         repo.deleteFile(file, (error, result, request) => {
@@ -1310,7 +1310,7 @@ window.internalFsbOpen = (initClass: string, data: any) => {
       process(0);
     }
   }
-  generateWorkspaceData(removeSHADict : boolean = false) {
+  generateWorkspaceData(removeSHADict: boolean = false) {
     return {};
   }
   initializeWorkspaceData(data) {
@@ -1324,4 +1324,4 @@ window.internalFsbOpen = (initClass: string, data: any) => {
 
 DeclarationHelper.declare('Components.ProjectManager', ProjectManager);
 
-export { Props, State, ProjectManager };
+export {Props, State, ProjectManager};

@@ -1,22 +1,22 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode, InsertDirection } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
 import '../../controls/Tree';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  onUpdate(node : ITreeNode);
-  onStartDragging(node : ITreeNode);
-  onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection);
-  onInsertOptionVisibleChanged(value : boolean);
-  onUpdateOptionVisibleChanged(value : boolean, tag : any);
-  nodes : [ITreeNode];
-  customDraggerClassName : string;
+  onUpdate(node: ITreeNode);
+  onStartDragging(node: ITreeNode);
+  onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
+  onInsertOptionVisibleChanged(value: boolean);
+  onUpdateOptionVisibleChanged(value: boolean, tag: any);
+  nodes: [ITreeNode];
+  customDraggerClassName: string;
 }
 
 interface State extends IState {
@@ -34,25 +34,25 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class ListManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
     if (this.props.onUpdate) {
       this.props.onUpdate(node);
     }
   }
 
-  private onStartDragging(node : ITreeNode) {
+  private onStartDragging(node: ITreeNode) {
     if (['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1) return;
 
     if (this.props.onStartDragging != null) {
@@ -60,19 +60,19 @@ class ListManager extends Base<Props, State> {
     }
   }
 
-  private onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection) {
+  private onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection) {
     if (this.props.onDragged) {
       this.props.onDragged(element, reference, direction);
     }
   }
 
-  private onInsertOptionVisibleChanged(value : boolean) {
+  private onInsertOptionVisibleChanged(value: boolean) {
     if (this.props.onInsertOptionVisibleChanged) {
       this.props.onInsertOptionVisibleChanged(value);
     }
   }
 
-  private onUpdateOptionVisibleChanged(value : boolean, node : ITreeNode) {
+  private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
     if (this.props.onUpdateOptionVisibleChanged) {
       this.props.onUpdateOptionVisibleChanged(value, node);
     }
@@ -98,4 +98,4 @@ class ListManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.ListManager', ListManager);
 
-export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, ListManager };
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, ListManager};

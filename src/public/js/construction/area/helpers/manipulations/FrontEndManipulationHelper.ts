@@ -1,21 +1,21 @@
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { RandomHelper } from '../../../helpers/RandomHelper';
-import { Accessories, EditorHelper } from '../EditorHelper';
-import { WorkspaceHelper } from '../WorkspaceHelper';
-import { LayoutHelper } from '../LayoutHelper';
-import { TimelineHelper } from '../TimelineHelper';
-import { StylesheetHelper } from '../StylesheetHelper';
-import { CapabilityHelper } from '../CapabilityHelper';
-import { ManipulationHelper } from '../ManipulationHelper';
-import { FrontEndDOMHelper } from '../FrontEndDOMHelper';
-import { StatusHelper } from '../StatusHelper';
-import { FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS } from '../../../Constants';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Accessories, EditorHelper} from '../EditorHelper';
+import {WorkspaceHelper} from '../WorkspaceHelper';
+import {LayoutHelper} from '../LayoutHelper';
+import {TimelineHelper} from '../TimelineHelper';
+import {StylesheetHelper} from '../StylesheetHelper';
+import {CapabilityHelper} from '../CapabilityHelper';
+import {ManipulationHelper} from '../ManipulationHelper';
+import {FrontEndDOMHelper} from '../FrontEndDOMHelper';
+import {StatusHelper} from '../StatusHelper';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../../Constants';
 
-let composedUntitledNameCount : any = {};
-let composedUntitledNameDictionary : any = {};
+let composedUntitledNameCount: any = {};
+let composedUntitledNameDictionary: any = {};
 
 var FrontEndManipulationHelper = {
-  handleInsert: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleInsert: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
     let element = null;
 
@@ -39,8 +39,8 @@ var FrontEndManipulationHelper = {
 
     accessory = content;
 
-    let style : string;
-    let isComponentInsertion : boolean = false;
+    let style: string;
+    let isComponentInsertion: boolean = false;
 
     switch (content.klass) {
       case 'FlowLayout':
@@ -302,4 +302,4 @@ var FrontEndManipulationHelper = {
   }
 }
 
-export { FrontEndManipulationHelper }
+export {FrontEndManipulationHelper}

@@ -1,19 +1,19 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { LayoutHelper } from './LayoutHelper';
-import { TimelineHelper } from './TimelineHelper';
-import { CursorHelper } from './CursorHelper';
-import { ManipulationHelper } from './ManipulationHelper';
-import { StylesheetHelper } from './StylesheetHelper';
-import { AnimationHelper } from './AnimationHelper';
-import { StyleHelper } from './StyleHelper';
-import { StatusHelper } from './StatusHelper';
-import { SchemaHelper } from './SchemaHelper';
-import { FrontEndDOMHelper } from './FrontEndDOMHelper';
-import { BackEndDOMHelper } from './BackEndDOMHelper';
-import { CapabilityHelper } from './CapabilityHelper';
-import { InternalProjectSettings, WorkspaceHelper } from './WorkspaceHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {LayoutHelper} from './LayoutHelper';
+import {TimelineHelper} from './TimelineHelper';
+import {CursorHelper} from './CursorHelper';
+import {ManipulationHelper} from './ManipulationHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {StyleHelper} from './StyleHelper';
+import {StatusHelper} from './StatusHelper';
+import {SchemaHelper} from './SchemaHelper';
+import {FrontEndDOMHelper} from './FrontEndDOMHelper';
+import {BackEndDOMHelper} from './BackEndDOMHelper';
+import {CapabilityHelper} from './CapabilityHelper';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 import '../controls/Cursor';
 import '../controls/Resizer';
 import '../controls/CellFormater';
@@ -22,10 +22,10 @@ import '../controls/LayoutInfo';
 import '../controls/Dragger';
 import '../controls/Overlay';
 import '../controls/RedLine';
-import { LIBRARIES, INPUT_ELEMENT_TAGS } from '../../Constants';
+import {LIBRARIES, INPUT_ELEMENT_TAGS} from '../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 let Accessories = {
   cursor: null,
@@ -37,7 +37,7 @@ let Accessories = {
   overlay: null
 };
 
-let editorCurrentMode : string = 'design';
+let editorCurrentMode: string = 'design';
 let cachedUpdateEditorProperties = {};
 let updateEditorPropertiesTimer = null;
 let elementAuthoringStatuses = {};
@@ -49,7 +49,7 @@ var EditorHelper = {
     Accessories.cursor.setDOMNode(cursorContainer.firstElementChild);
     cursorContainer.removeChild(Accessories.cursor.getDOMNode());
 
-    function resizerOnPreview(original : { x : number, y : number, w : number, h : number }, diff : { dx : number, dy : number, dw : number, dh : number }) {
+    function resizerOnPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
@@ -68,7 +68,7 @@ var EditorHelper = {
         }
       }
     }
-    function resizerOnUpdate(original : { x : number, y : number, w : number, h : number }, diff : { dx : number, dy : number, dw : number, dh : number }) {
+    function resizerOnUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number}) {
       let selectingElement = EditorHelper.getSelectingElement();
       if (selectingElement) {
         if (HTMLHelper.hasClass(selectingElement.parentNode, 'internal-fsb-strict-layout')) {
@@ -133,7 +133,7 @@ var EditorHelper = {
   detach: () => {
     Accessories.cellFormater.setTableElement(null);
   },
-  init: (restoreAccessoryStates : boolean, updateEditorUI : boolean) => {
+  init: (restoreAccessoryStates: boolean, updateEditorUI: boolean) => {
     CapabilityHelper.installCapabilitiesForInternalElements(document.body);
 
     if (updateEditorUI) EditorHelper.updateEditorProperties();
@@ -182,10 +182,10 @@ var EditorHelper = {
     }
   },
 
-  perform: (name : string, content : any) => {
+  perform: (name: string, content: any) => {
     ManipulationHelper.perform(name, content);
   },
-  synchronize: (name : string, content : any) => {
+  synchronize: (name: string, content: any) => {
     if (name == 'updateEditorProperties') {
       window.clearTimeout(updateEditorPropertiesTimer);
       updateEditorPropertiesTimer = window.setTimeout(() => {
@@ -210,7 +210,7 @@ var EditorHelper = {
           }
         }
 
-        const stringifyIfNeed = window.top.messageFnArray ? (data : any) => data : JSON.stringify;
+        const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
         window.top.postMessage(stringifyIfNeed({
           target: 'editor',
           name: name,
@@ -218,7 +218,7 @@ var EditorHelper = {
         }), '*');
       }, 200);
     } else {
-      const stringifyIfNeed = window.top.messageFnArray ? (data : any) => data : JSON.stringify;
+      const stringifyIfNeed = window.top.messageFnArray ? (data: any) => data : JSON.stringify;
       window.top.postMessage(stringifyIfNeed({
         target: 'editor',
         name: name,
@@ -226,13 +226,13 @@ var EditorHelper = {
       }), '*');
     }
   },
-  update: (tag : string = null) => {
+  update: (tag: string = null) => {
     var event = document.createEvent("Event");
     event.initEvent("update", false, true);
     window.dispatchEvent(event);
     EditorHelper.updateEditorProperties(tag);
   },
-  updateEditorProperties: (tag : string = null) => {
+  updateEditorProperties: (tag: string = null) => {
     let element = EditorHelper.getSelectingElement();
 
     let current = element;
@@ -354,7 +354,7 @@ var EditorHelper = {
   updateExternalLibraries: () => {
     let externalStylesheets = [];
     let externalScripts = [];
-    let selectedLibraries : string[] = (InternalProjectSettings.externalLibraries || '').split(' ');
+    let selectedLibraries: string[] = (InternalProjectSettings.externalLibraries || '').split(' ');
     for (let library of LIBRARIES) {
       if (selectedLibraries.indexOf(library.id) != -1) {
         if (library.development.stylesheets) {
@@ -379,7 +379,7 @@ var EditorHelper = {
 
     let elements = [...HTMLHelper.getElementsByAttributeNameAndValue('internal-stylesheet-element', 'custom')];
 
-    let externalLibraries : string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
+    let externalLibraries: string[] = (InternalProjectSettings.customExternalLibraries || '').split(' ');
     for (let externalLibrary of externalLibraries) {
       if (!externalLibrary) continue;
 
@@ -405,7 +405,7 @@ var EditorHelper = {
     }
   },
 
-  select: (element : HTMLElement) => {
+  select: (element: HTMLElement) => {
     InternalProjectSettings.currentActiveLayerToolAvailable = !!element;
     InternalProjectSettings.currentActiveLayerHidden = false;
     InternalProjectSettings.currentActiveLayerRemovable = !!element;
@@ -492,7 +492,7 @@ var EditorHelper = {
       EditorHelper.select(allElements[0]);
     }
   },
-  getSelectingElement: (_window : any = window, _document : any = window.document) => {
+  getSelectingElement: (_window: any = window, _document: any = window.document) => {
     if (Accessories.resizer == null) return null;
 
     let current = Accessories.resizer.getDOMNode();
@@ -506,7 +506,7 @@ var EditorHelper = {
       return HTMLHelper.getElementByClassName('internal-fsb-selecting', _document);
     }
   },
-  move: (target : HTMLElement, destination : HTMLElement, direction : string) => {
+  move: (target: HTMLElement, destination: HTMLElement, direction: string) => {
     switch (direction) {
       case 'insertBefore':
         destination.parentNode.insertBefore(target, destination);
@@ -527,10 +527,10 @@ var EditorHelper = {
   getEditorCurrentMode: () => {
     return editorCurrentMode;
   },
-  setEditorCurrentMode: (mode : string) => {
+  setEditorCurrentMode: (mode: string) => {
     editorCurrentMode = mode;
   },
-  hasParentReactComponent: (element : HTMLElement) => {
+  hasParentReactComponent: (element: HTMLElement) => {
     if (element == document) return false;
 
     const _document = element.ownerDocument;
@@ -538,9 +538,9 @@ var EditorHelper = {
 
     return HTMLHelper.findAllParentValuesInAttributeName("internal-fsb-react-mode", element, _window.document.body, true).length != 0;
   },
-  getIsFirstElement: (element : HTMLElement) => {
+  getIsFirstElement: (element: HTMLElement) => {
     return element && HTMLHelper.hasClass(element.parentNode, 'internal-fsb-begin-layout') || false;
   }
 };
 
-export { Accessories, EditorHelper };
+export {Accessories, EditorHelper};

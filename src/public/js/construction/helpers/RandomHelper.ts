@@ -1,5 +1,5 @@
 var RandomHelper = {
-  generateGUID: (groupCount : number = 1) => {
+  generateGUID: (groupCount: number = 1) => {
     var result = [];
     for (var i = 0; i < groupCount; i++) {
       var token = "";
@@ -10,7 +10,7 @@ var RandomHelper = {
     }
     return result.join("-");
   },
-  generateHash: (str : string, seed : number = 0) => {
+  generateHash: (str: string, seed: number = 0) => {
     // Credit: https://stackoverflow.com/questions/7616461/generate-a-hash-from-string-in-javascript
     //
     let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
@@ -25,4 +25,4 @@ var RandomHelper = {
   }
 };
 
-export { RandomHelper };
+export {RandomHelper};

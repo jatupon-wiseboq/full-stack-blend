@@ -1,9 +1,9 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { FORWARD_STYLE_TO_CHILDREN_CLASS_LIST } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
 
 var MalformationRepairHelper = {
-  repair: (container : HTMLElement = document) => {
+  repair: (container: HTMLElement = document) => {
     MalformationRepairHelper.recursiveRepair([document.body]);
 
     if (!HTMLHelper.hasClass(document.body.firstElementChild, 'internal-fsb-begin')) {
@@ -32,7 +32,7 @@ var MalformationRepairHelper = {
       container.appendChild(child);
     }
   },
-  recursiveRepair: (elements : any) => {
+  recursiveRepair: (elements: any) => {
     for (let j = 0; j < elements.length; j++) {
       if (HTMLHelper.isForChildren(elements[j]) && (!elements[j].firstElementChild || !elements[j].firstElementChild.tagName)) {
         elements[j].parentNode.removeChild(elements[j]);
@@ -105,4 +105,4 @@ var MalformationRepairHelper = {
   }
 };
 
-export { MalformationRepairHelper };
+export {MalformationRepairHelper};

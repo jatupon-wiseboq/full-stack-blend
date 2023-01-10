@@ -1,10 +1,10 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { BackEndScriptHelper, TemplateCode } from '../../helpers/BackEndScriptHelper';
-import { InternalProjectSettings } from './WorkspaceHelper';
-import { FORM_CONTROL_CLASS_LIST } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {BackEndScriptHelper, TemplateCode} from '../../helpers/BackEndScriptHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {FORM_CONTROL_CLASS_LIST} from '../../Constants';
 
 var BackEndDOMHelper = {
-  generateBackEndCode: function(body : HTMLElement, key : string) {
+  generateBackEndCode: function(body: HTMLElement, key: string) {
     let info = {};
     Object.assign(info, InternalProjectSettings);
 
@@ -22,9 +22,9 @@ var BackEndDOMHelper = {
 
     return BackEndScriptHelper.generateScriptCode(info);
   },
-  generateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement, key : string) {
-    let executions : string[] = [];
-    let lines : string[] = [];
+  generateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement, key: string) {
+    let executions: string[] = [];
+    let lines: string[] = [];
     BackEndDOMHelper.recursiveGenerateCodeForMergingSection(body, element, key, executions, lines);
 
     executions = executions.filter((v, i, a) => a.indexOf(v) === i);
@@ -32,7 +32,7 @@ var BackEndDOMHelper = {
 
     return [executions.join('\n'), lines.join('\n')];
   },
-  recursiveGenerateCodeForMergingSection: function(body : HTMLElement, element : HTMLElement, key : string, executions : string[], lines : string[]) {
+  recursiveGenerateCodeForMergingSection: function(body: HTMLElement, element: HTMLElement, key: string, executions: string[], lines: string[]) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
 
     if (element && element.tagName) {
@@ -69,9 +69,9 @@ var BackEndDOMHelper = {
       }
     }
   },
-  generateCodeForMergingSectionInData: function(element : HTMLElement) {
-    let executions : string[] = [];
-    let lines : string[] = [];
+  generateCodeForMergingSectionInData: function(element: HTMLElement) {
+    let executions: string[] = [];
+    let lines: string[] = [];
     BackEndDOMHelper.recursiveGenerateCodeForMergingSectionInData(element,
       (element.getAttribute('data-title-name') != 'Untitled') ? element.getAttribute('data-title-name') || element.getAttribute('internal-fsb-guid') : element.getAttribute('internal-fsb-guid'),
       executions, lines);
@@ -81,7 +81,7 @@ var BackEndDOMHelper = {
 
     return [executions.join('\n'), lines.join('\n')];
   },
-  recursiveGenerateCodeForMergingSectionInData: function(element : HTMLElement, key : string, executions : string[], lines : string[]) {
+  recursiveGenerateCodeForMergingSectionInData: function(element: HTMLElement, key: string, executions: string[], lines: string[]) {
     if (HTMLHelper.hasClass(element, 'internal-fsb-accessory')) return;
 
     if (element && element.tagName) {
@@ -103,4 +103,4 @@ var BackEndDOMHelper = {
   }
 }
 
-export { BackEndDOMHelper };
+export {BackEndDOMHelper};

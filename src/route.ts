@@ -3,7 +3,7 @@
 
 import * as homeController from './controllers/Home';
 
-const route = (app : any) => {
+const route = (app: any) => {
   app.get("/", homeController.index);
   app.post("/", homeController.index);
   app.put("/", homeController.index);

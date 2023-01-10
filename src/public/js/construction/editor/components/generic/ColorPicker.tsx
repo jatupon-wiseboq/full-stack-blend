@@ -1,24 +1,24 @@
-import { EventHelper } from '../../../helpers/EventHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/ColorPicker';
 import '../../controls/DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  inline : boolean,
-  manual : boolean,
-  hexMode : boolean
+  inline: boolean,
+  manual: boolean,
+  hexMode: boolean
 }
 
 interface State extends IState {
-  value : any,
-  visible : boolean
+  value: any,
+  visible: boolean
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -35,15 +35,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class ColorPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let original = this.state.styleValues[this.props.watchingStyleNames[0]];
@@ -54,7 +54,7 @@ class ColorPicker extends Base<Props, State> {
     if (this.state.visible) this.refs.dropdownControl.updateHeight();
   }
 
-  protected colorPickerOnUpdate(rgba : any) {
+  protected colorPickerOnUpdate(rgba: any) {
     rgba = rgba || 'rgba(0, 0, 0, 1.0)';
 
     this.state.value = rgba;
@@ -89,7 +89,7 @@ class ColorPicker extends Base<Props, State> {
     }
   }
 
-  protected onVisibleChanged(visible : boolean, tag : any) {
+  protected onVisibleChanged(visible: boolean, tag: any) {
     if (visible) this.refs.swatchPicker.deselect();
 
     this.setState({
@@ -108,7 +108,7 @@ class ColorPicker extends Base<Props, State> {
   public hide() {
   }
 
-  protected onColorPicked(color : string) {
+  protected onColorPicked(color: string) {
     this.setState({
       value: color
     });
@@ -160,7 +160,7 @@ class ColorPicker extends Base<Props, State> {
     if (this.props.inline) {
       return (
         <div className="input-group inline" internal-fsb-event-no-propagate="click">
-          <div className="btn btn-secondary btn-sm" internal-fsb-event-no-propagate="click" style={{ flex: 'auto' }}>
+          <div className="btn btn-secondary btn-sm" internal-fsb-event-no-propagate="click" style={{flex: 'auto'}}>
             <FullStackBlend.Controls.DropDownControl ref="dropdownControl" representing={this.state.value} autohide={false} onVisibleChanged={this.onVisibleChanged.bind(this)}>
               <div className="section-container">
                 <div className="section-subtitle">Swatches</div>
@@ -194,15 +194,15 @@ class ColorPicker extends Base<Props, State> {
                         <div className="section-subtitle">Swatches</div>
                         <div className="section-body">
                           <div role="group" className="btn-group btn-group-sm radio-button mr-1 mb-1">
-                            <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'btn-primary' : 'btn-light')} style={{ fontSize: '12px' }} onClick={this.colorPickerOnUnset.bind(this)}>Solid</div>
-                            <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{ fontSize: '12px' }} onClick={this.onColorPicked.bind(this, 'coding')}>Coding</div>
+                            <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.colorPickerOnUnset.bind(this)}>Solid</div>
+                            <div className={"btn shadow-none text-center " + ((this.state.styleValues[this.props.watchingStyleNames[0]] === 'coding') ? 'btn-primary' : 'btn-light')} style={{fontSize: '12px'}} onClick={this.onColorPicked.bind(this, 'coding')}>Coding</div>
                           </div>
                         </div>
                       </div>
                     );
                   }
                 })()}
-                <div style={{ display: (this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'block' : 'none' }}>
+                <div style={{display: (this.state.styleValues[this.props.watchingStyleNames[0]] !== 'coding') ? 'block' : 'none'}}>
                   <div className="section-subtitle">Swatches</div>
                   <div className="section-body">
                     <FullStackBlend.Components.SwatchPicker ref="swatchPicker" watchingStyleNames={['-fsb-background-type']} onColorPicked={this.onColorPicked.bind(this)}></FullStackBlend.Components.SwatchPicker>
@@ -223,4 +223,4 @@ class ColorPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.ColorPicker', ColorPicker);
 
-export { Props, State, ColorPicker };
+export {Props, State, ColorPicker};

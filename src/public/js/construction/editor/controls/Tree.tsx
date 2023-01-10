@@ -1,42 +1,42 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { ITreeNode, TreeNode, InsertDirection } from './TreeNode';
-import { Point, MathHelper } from '../../helpers/MathHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {ITreeNode, TreeNode, InsertDirection} from './TreeNode';
+import {Point, MathHelper} from '../../helpers/MathHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface IProps {
-  nodes : [ITreeNode];
-  onUpdate(node : ITreeNode);
-  onClick(node : ITreeNode);
-  onStartDragging(node : ITreeNode);
+  nodes: [ITreeNode];
+  onUpdate(node: ITreeNode);
+  onClick(node: ITreeNode);
+  onStartDragging(node: ITreeNode);
   onEndDragging();
-  onDragged(element : ITreeNode, reference : ITreeNode, direction : InsertDirection);
-  onUpdateOptionVisibleChanged(value : boolean, tag : any);
-  onNodeVisibleToggled(node : ITreeNode);
-  onNodeRemoved(node : ITreeNode);
-  enableDragging : boolean;
-  draggableAfterSelected : boolean;
-  customDraggerClassName : string;
-  editingControl : any;
-  extendingControl : any;
-  visibility : boolean;
-  removability : boolean;
-  filter : string;
+  onDragged(element: ITreeNode, reference: ITreeNode, direction: InsertDirection);
+  onUpdateOptionVisibleChanged(value: boolean, tag: any);
+  onNodeVisibleToggled(node: ITreeNode);
+  onNodeRemoved(node: ITreeNode);
+  enableDragging: boolean;
+  draggableAfterSelected: boolean;
+  customDraggerClassName: string;
+  editingControl: any;
+  extendingControl: any;
+  visibility: boolean;
+  removability: boolean;
+  filter: string;
 }
 
 interface IState {
-  currentDraggingNode : ITreeNode,
-  currentInsertingReferenceNode : ITreeNode,
-  currentInsertingDirection : InsertDirection,
-  revision : number,
-  isDragging : boolean
+  currentDraggingNode: ITreeNode,
+  currentInsertingReferenceNode: ITreeNode,
+  currentInsertingDirection: InsertDirection,
+  revision: number,
+  isDragging: boolean
 }
 
 class Tree extends React.Component<IProps, IState> {
-  state : IState = { currentDraggingNode: null, currentInsertingReferenceNode: null, currentInsertingDirection: InsertDirection.NONE, revision: 0, isDragging: false, draggableAfterSelected: true }
-  protected static defaultProps : IProps = {
+  state: IState = {currentDraggingNode: null, currentInsertingReferenceNode: null, currentInsertingDirection: InsertDirection.NONE, revision: 0, isDragging: false, draggableAfterSelected: true}
+  protected static defaultProps: IProps = {
     nodes: [],
     onUpdate: null,
     enableDragging: false,
@@ -47,13 +47,13 @@ class Tree extends React.Component<IProps, IState> {
     super(props);
   }
 
-  protected onUpdate(node : ITreeNode) {
+  protected onUpdate(node: ITreeNode) {
     if (this.props.onUpdate != null) {
       this.props.onUpdate(node);
     }
   }
 
-  private onStartDragging(node : ITreeNode) {
+  private onStartDragging(node: ITreeNode) {
     this.state.currentDraggingNode = node;
     this.setDragging(true, [node]);
 
@@ -68,7 +68,7 @@ class Tree extends React.Component<IProps, IState> {
     document.body.click();
   }
 
-  private onDragging(point : Point) {
+  private onDragging(point: Point) {
     let changed = this.resetInsertDirection(this.props.nodes);
 
     if (this.state.currentInsertingReferenceNode) {
@@ -90,7 +90,7 @@ class Tree extends React.Component<IProps, IState> {
       if (node.dragging) continue;
 
       let position = HTMLHelper.getPosition(element);
-      position = { x: position[0], y: position[1] };
+      position = {x: position[0], y: position[1]};
       let size = HTMLHelper.getSize(element);
 
       let topRegion = MathHelper.createRegion(MathHelper.createPoint(0, 0, position), MathHelper.createPoint(size[0], size[1] / 3.0, position));
@@ -152,7 +152,7 @@ class Tree extends React.Component<IProps, IState> {
     });
   }
 
-  private resetInsertDirection(nodes : [ITreeNode]) {
+  private resetInsertDirection(nodes: [ITreeNode]) {
     let changed = false;
 
     for (let node of nodes) {
@@ -166,14 +166,14 @@ class Tree extends React.Component<IProps, IState> {
 
     return changed;
   }
-  private setDragging(value : boolean, nodes : [ITreeNode] = this.props.nodes) {
+  private setDragging(value: boolean, nodes: [ITreeNode] = this.props.nodes) {
     for (let node of nodes) {
       node.dragging = value;
 
       this.setDragging(value, node.nodes);
     }
   }
-  private getNode(id : string, nodes : [ITreeNode] = this.props.nodes) {
+  private getNode(id: string, nodes: [ITreeNode] = this.props.nodes) {
     for (let node of nodes) {
       if (node.id == id) {
         return node;
@@ -186,7 +186,7 @@ class Tree extends React.Component<IProps, IState> {
     return null;
   }
 
-  private onUpdateOptionVisibleChanged(value : boolean, node : ITreeNode) {
+  private onUpdateOptionVisibleChanged(value: boolean, node: ITreeNode) {
     if (this.props.onUpdateOptionVisibleChanged) {
       this.props.onUpdateOptionVisibleChanged(value, node);
     }
@@ -208,7 +208,7 @@ class Tree extends React.Component<IProps, IState> {
             } else {
               return (
                 <div className="text-center">
-                  <i className="fa fa-plus-square-o" style={{ fontSize: '50px', color: '#f0f0f0', paddingTop: '85px' }} />
+                  <i className="fa fa-plus-square-o" style={{fontSize: '50px', color: '#f0f0f0', paddingTop: '85px'}} />
                 </div>
               );
             }
@@ -221,4 +221,4 @@ class Tree extends React.Component<IProps, IState> {
 
 DeclarationHelper.declare('Controls.Tree', Tree);
 
-export { IProps, IState, Tree };
+export {IProps, IState, Tree};

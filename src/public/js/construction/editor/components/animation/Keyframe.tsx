@@ -1,23 +1,23 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { Point, MathHelper } from '../../../helpers/MathHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode, InsertDirection } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {Point, MathHelper} from '../../../helpers/MathHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
 import '../../controls/Tree';
-import { SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS } from '../../../Constants';
+import {SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  keyframe : string;
-  time : number;
-  tag : any;
-  selected : boolean;
-  transition : boolean;
+  keyframe: string;
+  time: number;
+  tag: any;
+  selected: boolean;
+  transition: boolean;
 }
 
 interface State extends IState {
@@ -32,10 +32,10 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class Keyframe extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
-  private mouseUpDelegate : any = null;
-  private mouseMoveDelegate : any = null;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
+  private mouseUpDelegate: any = null;
+  private mouseMoveDelegate: any = null;
 
   constructor(props) {
     super(props);
@@ -45,19 +45,19 @@ class Keyframe extends Base<Props, State> {
     this.mouseMoveDelegate = this.mouseMove.bind(this);
   }
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
-  private originalElementPos : Point = {
+  private originalElementPos: Point = {
     x: 0,
     y: 0
   };
-  private originalElement : HTMLElement = null;
+  private originalElement: HTMLElement = null;
 
-  private isMouseMoveReachedThreshold : boolean = false;
+  private isMouseMoveReachedThreshold: boolean = false;
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
@@ -118,7 +118,7 @@ class Keyframe extends Base<Props, State> {
     let currentWindow = originalElement.ownerDocument.defaultView || originalElement.ownerDocument.parentWindow;
 
     let mousePosition = HTMLHelper.getOriginalPosition(EventHelper.getMousePosition(event), currentWindow);
-    let mousePositionInPoint = { x: mousePosition[0], y: mousePosition[1] };
+    let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
 
     if (!this.isMouseMoveReachedThreshold &&
       Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
@@ -167,7 +167,7 @@ class Keyframe extends Base<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private moveDraggingContent(mousePosition : Point) {
+  private moveDraggingContent(mousePosition: Point) {
     let diffX = mousePosition.x - this.originalMousePos.x;
     let diffY = mousePosition.y - this.originalMousePos.y;
 
@@ -177,11 +177,11 @@ class Keyframe extends Base<Props, State> {
   render() {
     return (
       <div ref="container" className={"keyframe-container" + (this.props.selected ? ' selected' : '') + (this.props.transition ? ' with-transition' : '')}
-        style={{ left: (this.props.time * SECOND_SPAN_SIZE) + 'px' }} onClick={this.mouseClick.bind(this)} onMouseDown={this.mouseDown.bind(this)}></div>
+        style={{left: (this.props.time * SECOND_SPAN_SIZE) + 'px'}} onClick={this.mouseClick.bind(this)} onMouseDown={this.mouseDown.bind(this)}></div>
     );
   }
 }
 
 DeclarationHelper.declare('Components.Keyframe', Keyframe);
 
-export { Props, State, Keyframe };
+export {Props, State, Keyframe};

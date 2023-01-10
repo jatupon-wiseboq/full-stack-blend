@@ -1,11 +1,11 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { Point, MathHelper } from '../../helpers/MathHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { Accessories, EditorHelper } from '../helpers/EditorHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../helpers/MathHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {Accessories, EditorHelper} from '../helpers/EditorHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
 }
@@ -14,10 +14,10 @@ interface State {
 }
 
 class Dragger extends React.Component<IProps, IState> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
-  private domElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
 
   constructor(props) {
     super(props);
@@ -33,30 +33,30 @@ class Dragger extends React.Component<IProps, IState> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
-  public bind(element : HTMLElement) {
+  public bind(element: HTMLElement) {
     element.addEventListener('mousedown', this.mouseDown, false);
   }
-  public unbind(element : HTMLElement) {
+  public unbind(element: HTMLElement) {
     element.removeEventListener('mousedown', this.mouseDown, false);
   }
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
-  private originalElementPos : Point = {
+  private originalElementPos: Point = {
     x: 0,
     y: 0
   };
-  private originalElement : HTMLElement = null;
+  private originalElement: HTMLElement = null;
 
-  private isMouseMoveReachedThreshold : boolean = false;
-  private draggingElement : HTMLElement = null;
-  private mousePosition : any = null;
+  private isMouseMoveReachedThreshold: boolean = false;
+  private draggingElement: HTMLElement = null;
+  private mousePosition: any = null;
 
   protected onChange(node) {
     if (!node.selectable) return;
@@ -105,7 +105,7 @@ class Dragger extends React.Component<IProps, IState> {
   }
   private mouseMove(event) {
     let mousePosition = EventHelper.getMousePosition(event);
-    let mousePositionInPoint = { x: mousePosition[0], y: mousePosition[1] };
+    let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
 
     if (!this.isMouseMoveReachedThreshold &&
       Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
@@ -151,7 +151,7 @@ class Dragger extends React.Component<IProps, IState> {
     return EventHelper.cancel(event);
   }
 
-  private moveDraggingContent(mousePosition : Point) {
+  private moveDraggingContent(mousePosition: Point) {
     this.mousePosition = mousePosition;
 
     let diffX = mousePosition.x - this.originalMousePos.x;
@@ -174,4 +174,4 @@ class Dragger extends React.Component<IProps, IState> {
 
 DeclarationHelper.declare('Controls.Dragger', Dragger);
 
-export { Props, State, Dragger };
+export {Props, State, Dragger};

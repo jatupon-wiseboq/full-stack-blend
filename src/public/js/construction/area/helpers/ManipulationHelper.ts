@@ -1,35 +1,35 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CodeHelper } from '../../helpers/CodeHelper';
-import { RandomHelper } from '../../helpers/RandomHelper';
-import { EventHelper } from '../../helpers/EventHelper';
-import { TextHelper } from '../../helpers/TextHelper';
-import { FontHelper } from '../../helpers/FontHelper';
-import { Accessories, EditorHelper } from './EditorHelper';
-import { InternalProjectSettings, WorkspaceHelper } from './WorkspaceHelper';
-import { CursorHelper } from './CursorHelper';
-import { LayoutHelper } from './LayoutHelper';
-import { TimelineHelper } from './TimelineHelper';
-import { SchemaHelper } from './SchemaHelper';
-import { StyleHelper } from './StyleHelper';
-import { StatusHelper } from './StatusHelper';
-import { StylesheetHelper } from './StylesheetHelper';
-import { AnimationHelper } from './AnimationHelper';
-import { CapabilityHelper } from './CapabilityHelper';
-import { FrontEndDOMHelper } from './FrontEndDOMHelper';
-import { FrontEndManipulationHelper } from './manipulations/FrontEndManipulationHelper';
-import { BackEndManipulationHelper } from './manipulations/BackEndManipulationHelper';
-import { ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER, SINGLE_DOM_CONTAINER_ELEMENTS } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CodeHelper} from '../../helpers/CodeHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {TextHelper} from '../../helpers/TextHelper';
+import {FontHelper} from '../../helpers/FontHelper';
+import {Accessories, EditorHelper} from './EditorHelper';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper';
+import {CursorHelper} from './CursorHelper';
+import {LayoutHelper} from './LayoutHelper';
+import {TimelineHelper} from './TimelineHelper';
+import {SchemaHelper} from './SchemaHelper';
+import {StyleHelper} from './StyleHelper';
+import {StatusHelper} from './StatusHelper';
+import {StylesheetHelper} from './StylesheetHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {CapabilityHelper} from './CapabilityHelper';
+import {FrontEndDOMHelper} from './FrontEndDOMHelper';
+import {FrontEndManipulationHelper} from './manipulations/FrontEndManipulationHelper';
+import {BackEndManipulationHelper} from './manipulations/BackEndManipulationHelper';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
-let performed : any = [];
-let performedIndex : number = -1;
-let previousInfo : any = {};
-let isShiftKeyActive : boolean = false;
-let isCtrlKeyActive : boolean = false;
-let isCommandKeyActive : boolean = false;
+let performed: any = [];
+let performedIndex: number = -1;
+let previousInfo: any = {};
+let isShiftKeyActive: boolean = false;
+let isCtrlKeyActive: boolean = false;
+let isCommandKeyActive: boolean = false;
 let invalidateTimer = null;
 let newComposedGUIDs = [];
 
-function removeAllPresetReferences(presetId : string, link : string) {
+function removeAllPresetReferences(presetId: string, link: string) {
   // TODO: should iterate in all documents.
   // 
   let selectingElement = EditorHelper.getSelectingElement();
@@ -69,7 +69,7 @@ function removeAllPresetReferences(presetId : string, link : string) {
 
 ((window, document) => {
   if (window.clipboardData) return;
-  window.performClipboardAction = (type : string, event : ClipboardEvent) => {
+  window.performClipboardAction = (type: string, event: ClipboardEvent) => {
     if (HTMLHelper.hasClass(document.body, 'internal-fsb-focusing-text-element')) {
       return;
     } else {
@@ -118,7 +118,7 @@ function removeAllPresetReferences(presetId : string, link : string) {
               editorMode: InternalProjectSettings.currentMode
             }));
           } else {
-            const stringifyIfNeed = window.messageFnArray ? (data : any) => data : JSON.stringify;
+            const stringifyIfNeed = window.messageFnArray ? (data: any) => data : JSON.stringify;
             window.postMessage(JSON.stringify({
               name: 'insert',
               content: {
@@ -134,22 +134,22 @@ function removeAllPresetReferences(presetId : string, link : string) {
     }
   };
 
-  document.addEventListener('cut', (event : ClipboardEvent) => {
+  document.addEventListener('cut', (event: ClipboardEvent) => {
     window.performClipboardAction && window.performClipboardAction('cut', event);
   });
-  document.addEventListener('copy', (event : ClipboardEvent) => {
+  document.addEventListener('copy', (event: ClipboardEvent) => {
     window.performClipboardAction && window.performClipboardAction('copy', event);
   });
-  document.addEventListener('paste', (event : ClipboardEvent) => {
+  document.addEventListener('paste', (event: ClipboardEvent) => {
     window.performClipboardAction && window.performClipboardAction('paste', event);
   });
 })(window, window.document);
 
 var ManipulationHelper = {
-  perform: (name : string, content : any, remember : boolean = true, skipAfterPromise : boolean = false, link : any = false) => {
+  perform: (name: string, content: any, remember: boolean = true, skipAfterPromise: boolean = false, link: any = false) => {
     let accessory = null;
     let resolve = null;
-    let promise = new Promise((_resolve) => { resolve = _resolve; });
+    let promise = new Promise((_resolve) => {resolve = _resolve;});
     let replace = (content && (typeof content === 'object') && content.replace) || false;
     let tag = (content && (typeof content === 'object') && content.tag) || null;
     let recentSelectingElement = null;
@@ -469,7 +469,7 @@ var ManipulationHelper = {
       window.parent.preview(true);
     }
   },
-  updateComponentData: (node : any) => {
+  updateComponentData: (node: any) => {
     if (node) {
       let elements = [...HTMLHelper.findAllParentsInClassName('internal-fsb-element', node), node];
 
@@ -504,7 +504,7 @@ var ManipulationHelper = {
     }, interval);
   },
 
-  handleUpdate: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleUpdate: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
     let selectingElement = EditorHelper.getSelectingElement() || document.body;
     let preview = true;
@@ -1078,7 +1078,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link, preview];
   },
-  handleUpdateElementSize: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleUpdateElementSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     if (EditorHelper.getEditorCurrentMode() == 'animation') return;
 
     let accessory = null;
@@ -1120,7 +1120,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleUpdateResponsiveSize: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleUpdateResponsiveSize: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     let selectingElement = EditorHelper.getSelectingElement();
@@ -1200,7 +1200,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleKeyDown: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleKeyDown: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     EditorHelper.synchronize("click", null);
@@ -1355,7 +1355,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleKeyUp: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleKeyUp: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     switch (content) {
@@ -1373,7 +1373,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleSelectElement: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleSelectElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     let selectingElement = EditorHelper.getSelectingElement();
@@ -1405,7 +1405,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleDeleteElement: (name : string, content : any, remember : boolean, promise : Promise, link : any, cut : boolean = false, silence : boolean = false) => {
+  handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any, cut: boolean = false, silence: boolean = false) => {
     let accessory = null;
     let shouldContinue = true;
     let element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content);
@@ -1469,7 +1469,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleModifyTable: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleModifyTable: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     if (typeof content === 'string') {
@@ -1499,7 +1499,7 @@ var ManipulationHelper = {
             let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
             let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
             inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
-            ManipulationHelper.perform('update', { styles: [{ name: 'style', value: inlineStyle }] }, true, false, link);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
 
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
 
@@ -1535,7 +1535,7 @@ var ManipulationHelper = {
             let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
             let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
             inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
-            ManipulationHelper.perform('update', { styles: [{ name: 'style', value: inlineStyle }] }, true, false, link);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
 
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
 
@@ -1573,7 +1573,7 @@ var ManipulationHelper = {
             let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
             let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
             inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
-            ManipulationHelper.perform('update', { styles: [{ name: 'style', value: inlineStyle }] }, true, false, link);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
 
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
 
@@ -1608,7 +1608,7 @@ var ManipulationHelper = {
             let inlineStyle = StylesheetHelper.getStyle(selectingElement) || '';
             let revision = parseInt(HTMLHelper.getInlineStyle(inlineStyle, '-fsb-revision') || '0');
             inlineStyle = HTMLHelper.setInlineStyle(inlineStyle, '-fsb-revision', ++revision);
-            ManipulationHelper.perform('update', { styles: [{ name: 'style', value: inlineStyle }] }, true, false, link);
+            ManipulationHelper.perform('update', {styles: [{name: 'style', value: inlineStyle}]}, true, false, link);
 
             ManipulationHelper.perform('move[cursor]', CursorHelper.findWalkPathForElement(td), true, false, link);
 
@@ -1779,7 +1779,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link, content.action];
   },
-  handleMoveElement: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleMoveElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     let target = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content.target);
@@ -1886,7 +1886,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleMoveCursor: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleMoveCursor: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     if (Accessories.cursor && Accessories.cursor.getDOMNode().parentNode != null && CursorHelper.findWalkPathForCursor().join(',') == content.join(',')) {
@@ -1899,7 +1899,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleToggleDesignMode: (name : string, content : any, remember : boolean, promise : Promise, link : any) => {
+  handleToggleDesignMode: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     let accessory = null;
 
     switch (content) {
@@ -1917,7 +1917,7 @@ var ManipulationHelper = {
 
     return [accessory, remember, link];
   },
-  handleUndo: (name : string, content : any, remember : boolean, promise : Promise) => {
+  handleUndo: (name: string, content: any, remember: boolean, promise: Promise) => {
     let accessory = null;
     let link = false;
 
@@ -1984,7 +1984,7 @@ var ManipulationHelper = {
 
     return [accessory, remember];
   },
-  handleRedo: (name : string, content : any, remember : boolean, promise : Promise) => {
+  handleRedo: (name: string, content: any, remember: boolean, promise: Promise) => {
     let accessory = null;
     let link = false;
 
@@ -2012,7 +2012,7 @@ var ManipulationHelper = {
 
     return [accessory, remember];
   },
-  handleToggleEditorPanel: (name : string, content : any, remember : boolean, promise : Promise) => {
+  handleToggleEditorPanel: (name: string, content: any, remember: boolean, promise: Promise) => {
     let accessory = null;
     let link = false;
 
@@ -2047,7 +2047,7 @@ var ManipulationHelper = {
 
     return [accessory, content, remember];
   },
-  handleRemovePreset: (name : string, content : any, remember : boolean, promise : Promise) => {
+  handleRemovePreset: (name: string, content: any, remember: boolean, promise: Promise) => {
     let accessory = {
       key: content,
       data: AnimationHelper.getPreset(content)
@@ -2060,9 +2060,9 @@ var ManipulationHelper = {
 };
 
 const KeyStatuses = {
-  get isShiftKeyActive() : boolean { return isShiftKeyActive; },
-  get isCtrlKeyActive() : boolean { return isCtrlKeyActive; },
-  get isCommandKeyActive() : boolean { return isCommandKeyActive; }
+  get isShiftKeyActive(): boolean {return isShiftKeyActive;},
+  get isCtrlKeyActive(): boolean {return isCtrlKeyActive;},
+  get isCommandKeyActive(): boolean {return isCommandKeyActive;}
 };
 
-export { KeyStatuses, ManipulationHelper };
+export {KeyStatuses, ManipulationHelper};

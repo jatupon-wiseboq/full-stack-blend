@@ -1,9 +1,9 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { InternalProjectSettings } from './WorkspaceHelper';
-import { LOCALIZATION_LIST_DELIMITER, LOCALIZATION_ITEM_DELIMITER, LOCALIZATION_HASH_DELIMITER } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
+import {LOCALIZATION_LIST_DELIMITER, LOCALIZATION_ITEM_DELIMITER, LOCALIZATION_HASH_DELIMITER} from '../../Constants';
 
 var LocalizationHelper = {
-  collectFromTexts: function(container : HTMLElement = document.body) {
+  collectFromTexts: function(container: HTMLElement = document.body) {
     const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement', container));
     let found = false;
     const deleting = {};
@@ -29,7 +29,7 @@ var LocalizationHelper = {
       if (deleting[text]) LocalizationHelper.remove(text);
     }
   },
-  collectFromShortcuts: function(atEndInfo : string[]) {
+  collectFromShortcuts: function(atEndInfo: string[]) {
     if (!atEndInfo) return;
 
     for (const sourceCode of atEndInfo) {
@@ -42,7 +42,7 @@ var LocalizationHelper = {
       }
     }
   },
-  disperse: function(container : HTMLElement = document.body) : boolean {
+  disperse: function(container: HTMLElement = document.body): boolean {
     const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement', container));
     let found = false;
 
@@ -60,23 +60,23 @@ var LocalizationHelper = {
       element.setAttribute('internal-fsb-translation', translation.split(LOCALIZATION_ITEM_DELIMITER)[1]);
     }
   },
-  add: function(text : string, translation : string, guid : string = '') {
+  add: function(text: string, translation: string, guid: string = '') {
     text = LocalizationHelper.cleanKeyForComposing(text);
     LocalizationHelper.remove(text, guid);
 
     const item = LocalizationHelper.composeItemKeyValueToken(text, translation, guid);
 
-    let values : string[] = InternalProjectSettings.customLocalizedStrings && InternalProjectSettings.customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
+    let values: string[] = InternalProjectSettings.customLocalizedStrings && InternalProjectSettings.customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
     values.push(item);
     values = values.filter(value => !!value);
 
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
   },
-  remove: function(text : string, guid : string) {
+  remove: function(text: string, guid: string) {
     text = LocalizationHelper.cleanKeyForComposing(text);
     const customLocalizedStrings = InternalProjectSettings.customLocalizedStrings;
 
-    let values : string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
+    let values: string[] = customLocalizedStrings && customLocalizedStrings.split(LOCALIZATION_LIST_DELIMITER) || [];
 
     if (text) {
       values = values.filter(value => !value.startsWith(text + LOCALIZATION_HASH_DELIMITER));
@@ -89,20 +89,20 @@ var LocalizationHelper = {
 
     InternalProjectSettings.customLocalizedStrings = values.join(LOCALIZATION_LIST_DELIMITER);
   },
-  has: function(text : string) {
+  has: function(text: string) {
     text = LocalizationHelper.cleanKeyForComposing(text);
     const customLocalizedStrings = [LOCALIZATION_LIST_DELIMITER, InternalProjectSettings.customLocalizedStrings || ''].join('');
     return customLocalizedStrings.indexOf(LOCALIZATION_LIST_DELIMITER + text + LOCALIZATION_HASH_DELIMITER) != -1;
   },
-  composeItemKeyValueToken: function(text : string, translation : string, guid : string = '') {
+  composeItemKeyValueToken: function(text: string, translation: string, guid: string = '') {
     text = LocalizationHelper.cleanKeyForComposing(text);
     if (guid == null) guid = '';
 
     return text + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + translation;
   },
-  cleanKeyForComposing: function(text : string) {
+  cleanKeyForComposing: function(text: string) {
     return text.replace(/\n+/g, ' ');
   }
 };
 
-export { LocalizationHelper };
+export {LocalizationHelper};

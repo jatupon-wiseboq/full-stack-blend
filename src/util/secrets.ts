@@ -14,7 +14,7 @@ const envPath = path.resolve(__dirname, "../../.env");
 if ((develop || test) && fs.existsSync(envPath)) {
 
   logger.debug("Using .env file to supply config environment variables");
-  dotenv.config({ path: envPath });
+  dotenv.config({path: envPath});
 
 } else {
 
@@ -22,7 +22,7 @@ if ((develop || test) && fs.existsSync(envPath)) {
 
 }
 
-export const { SESSION_SECRET } = process.env;
+export const {SESSION_SECRET} = process.env;
 export const MONGODB_URI = prod ? process.env.MONGODB_URI : process.env.MONGODB_URI_LOCAL;
 
 if (!SESSION_SECRET) {

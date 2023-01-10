@@ -1,13 +1,13 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode, InsertDirection } from '../../controls/TreeNode';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode, InsertDirection} from '../../controls/TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
@@ -25,15 +25,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class PropertyManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  private onClick(node : ITreeNode) {
+  private onClick(node: ITreeNode) {
     perform('update', {
       extensions: [{
         name: this.props.watchingExtensionNames[0],
@@ -71,4 +71,4 @@ class PropertyManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.PropertyManager', PropertyManager);
 
-export { Props, State, PropertyManager };
+export {Props, State, PropertyManager};

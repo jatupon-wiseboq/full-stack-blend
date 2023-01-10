@@ -3,9 +3,9 @@
 
 import fs from "fs";
 import path from "path";
-import { DataSchema, SchemaHelper } from "./SchemaHelper";
-import { DatabaseHelper } from "./DatabaseHelper";
-import { CodeHelper } from "./CodeHelper";
+import {DataSchema, SchemaHelper} from "./SchemaHelper";
+import {DatabaseHelper} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
 
 let file, data;
 let cachedSchema = null;
@@ -20,7 +20,7 @@ enum SourceType {
   Collection
 }
 
-const settings : { [Identifier : string] : any } = {};
+const settings: {[Identifier: string]: any} = {};
 const Project = {
   Settings: settings
 };
@@ -48,7 +48,7 @@ const ProjectConfigurationHelper = {
       Project.Settings = {};
     }
   },
-  convertToSchema: (tables : any) => {
+  convertToSchema: (tables: any) => {
     for (const tableKey in tables) {
       if (tables.hasOwnProperty(tableKey)) {
         tables[tableKey].source = ProjectConfigurationHelper.getSourceType(tables[tableKey].source);
@@ -69,17 +69,17 @@ const ProjectConfigurationHelper = {
 
     return tables;
   },
-  getDataSchema: () : DataSchema => {
+  getDataSchema: (): DataSchema => {
     if (!cachedSchema) cachedSchema = ProjectConfigurationHelper.convertToSchema(data.flows && data.flows.schema || {});
 
     return {
       tables: cachedSchema
     };
   },
-  getDotNotationPossibilities: (page : string) : any => {
+  getDotNotationPossibilities: (page: string): any => {
     return data.sites && data.sites[page] && data.sites[page].notations || [];
   },
-  getSourceType: (value : string) : SourceType => {
+  getSourceType: (value: string): SourceType => {
     switch (value) {
       case 'relational':
         return SourceType.Relational;
@@ -95,17 +95,17 @@ const ProjectConfigurationHelper = {
         throw new Error(`There was an error preparing data for manipulation (invalid type of available data source, '${value}').`);
     }
   },
-  getLanguageData: () : any => {
+  getLanguageData: (): any => {
     return data.globalSettings && data.globalSettings.customLocalizedStrings || null;
   },
-  getSecondaryLanguage: () : any => {
+  getSecondaryLanguage: (): any => {
     return data.globalSettings && data.globalSettings.defaultLocalizedLanguage && data.globalSettings.defaultLocalizedLanguage.toLowerCase() || null;
   }
 };
 
 ProjectConfigurationHelper.reload();
 
-export { ProjectConfigurationHelper, SourceType, Project };
+export {ProjectConfigurationHelper, SourceType, Project};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

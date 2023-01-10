@@ -1,20 +1,20 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { RandomHelper } from '../../helpers/RandomHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { DEBUG_GITHUB_UPLOADER } from '../../Constants';
+import {EventHelper} from '../../helpers/EventHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {DEBUG_GITHUB_UPLOADER} from '../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  onUpdate(value : any);
+  onUpdate(value: any);
 }
 
 interface State extends IState {
 }
 
 class FileBrowser extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
   constructor() {
@@ -33,7 +33,7 @@ class FileBrowser extends React.Component<Props, State> {
     let $this = this;
     let reader = new FileReader();
     reader.onload = (function(event) {
-      let blob = new Blob([new Uint8Array(event.target.result)], { type: file.type });
+      let blob = new Blob([new Uint8Array(event.target.result)], {type: file.type});
 
       var reader = new FileReader();
       reader.readAsDataURL(blob);
@@ -146,4 +146,4 @@ class FileBrowser extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.FileBrowser', FileBrowser);
 
-export { Props, State, FileBrowser };
+export {Props, State, FileBrowser};

@@ -1,25 +1,25 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { BACKEND_CONNECTION_GROUPS, BACKEND_CONNECTION_ENTITIES } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {BACKEND_CONNECTION_GROUPS, BACKEND_CONNECTION_ENTITIES} from '../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
 }
 
 interface State {
-  enabled : boolean;
-  lines : any;
-  circles : any;
+  enabled: boolean;
+  lines: any;
+  circles: any;
 }
 
 class Overlay extends React.Component<Props, State> {
-  state : State = { enabled: false, lines: [], circles: [] };
-  static defaultProps : Props = {
+  state: State = {enabled: false, lines: [], circles: []};
+  static defaultProps: Props = {
   }
 
-  private domElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
 
   constructor() {
     super();
@@ -28,10 +28,10 @@ class Overlay extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
-  public setEnable(enabled : boolean) {
+  public setEnable(enabled: boolean) {
     this.setState({
       enabled: enabled
     });
@@ -81,7 +81,7 @@ class Overlay extends React.Component<Props, State> {
         [connectorCenter[0], connectorCenter[1] - connectorSize[1] / 2],
         [connectorCenter[0] + connectorSize[0] / 2, connectorCenter[1]],
         [connectorCenter[0], connectorCenter[1] + connectorSize[1] / 2]];
-        let findClosetPointOfTheConnector = (x : number, y : number) => {
+        let findClosetPointOfTheConnector = (x: number, y: number) => {
           let minimum = Number.MAX_SAFE_INTEGER;
           let foundIndex = -1;
 
@@ -159,7 +159,7 @@ class Overlay extends React.Component<Props, State> {
       circles: circles
     });
   }
-  private getColumnOfRelation(groupName : string, entityName : string) {
+  private getColumnOfRelation(groupName: string, entityName: string) {
     if (!groupName || !entityName) return null;
 
     const groups = BACKEND_CONNECTION_GROUPS;
@@ -198,4 +198,4 @@ class Overlay extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.Overlay', Overlay);
 
-export { Props, State, Overlay };
+export {Props, State, Overlay};

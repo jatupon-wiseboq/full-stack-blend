@@ -1,15 +1,15 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HierarchicalDataTable, HierarchicalDataRow, SourceType } from "./DatabaseHelper";
-import { CodeHelper } from "./CodeHelper";
-import { strict as assert } from 'assert';
+import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
+import {strict as assert} from 'assert';
 
 const DataFormationHelper = {
-  convertFromJSONToHierarchicalDataTable: (data : any, group : string = "Collection") : HierarchicalDataTable => {
+  convertFromJSONToHierarchicalDataTable: (data: any, group: string = "Collection"): HierarchicalDataTable => {
     CodeHelper.assertOfPresent(data, 'data');
     CodeHelper.assertOfKeyName(group, 'group');
-    CodeHelper.recursiveEvaluate(data, (obj : any) => {
+    CodeHelper.recursiveEvaluate(data, (obj: any) => {
       CodeHelper.assertOfSimpleType(obj, 'data');
     });
 
@@ -23,7 +23,7 @@ const DataFormationHelper = {
 
     return table;
   },
-  recursiveExtractNodesIntoDataRow: (data : any) : HierarchicalDataRow => {
+  recursiveExtractNodesIntoDataRow: (data: any): HierarchicalDataRow => {
     CodeHelper.assertOfNotUndefined(data, 'data');
 
     const row = {
@@ -80,12 +80,12 @@ const DataFormationHelper = {
 
     return row;
   },
-  convertFromHierarchicalDataTableToJSON: (data : HierarchicalDataTable) : any => {
+  convertFromHierarchicalDataTableToJSON: (data: HierarchicalDataTable): any => {
     CodeHelper.assertOfPresent(data, 'data');
 
     return DataFormationHelper.recursiveExtractNodesIntoDictionary(data.rows[0]);
   },
-  recursiveExtractNodesIntoDictionary: (row : HierarchicalDataRow) : any => {
+  recursiveExtractNodesIntoDictionary: (row: HierarchicalDataRow): any => {
     CodeHelper.assertOfPresent(row, 'row');
 
     if (row.columns.hasOwnProperty('_')) {
@@ -138,7 +138,7 @@ const DataFormationHelper = {
   },
 };
 
-export { DataFormationHelper };
+export {DataFormationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

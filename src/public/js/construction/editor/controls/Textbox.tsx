@@ -1,38 +1,38 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  preRegEx : String;
-  postRegEx : String;
-  onUpdate(value : any);
-  spellCheck : boolean;
-  failedValidationMessage : String;
-  multiline : Boolean;
-  disabled : Boolean;
-  placeholder : String;
-  maxLength : Number;
-  rows : Number;
-  borderRadiusOnLeft : Boolean;
-  resizable : Boolean;
+  preRegEx: String;
+  postRegEx: String;
+  onUpdate(value: any);
+  spellCheck: boolean;
+  failedValidationMessage: String;
+  multiline: Boolean;
+  disabled: Boolean;
+  placeholder: String;
+  maxLength: Number;
+  rows: Number;
+  borderRadiusOnLeft: Boolean;
+  resizable: Boolean;
 }
 
 interface State extends IState {
 }
 
 class Textbox extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
     spellCheck: true,
     placeholder: ""
   }
 
-  private previousValue : String = "";
-  private previousPreRegExp : String = "";
-  private preRegExp : RegExp = null;
-  private previousPostRegExp : String = "";
-  private postRegExp : RegExp = null;
+  private previousValue: String = "";
+  private previousPreRegExp: String = "";
+  private preRegExp: RegExp = null;
+  private previousPostRegExp: String = "";
+  private postRegExp: RegExp = null;
 
   constructor() {
     super();
@@ -145,4 +145,4 @@ class Textbox extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.Textbox', Textbox);
 
-export { Props, State, Textbox };
+export {Props, State, Textbox};

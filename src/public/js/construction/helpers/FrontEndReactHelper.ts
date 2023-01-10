@@ -1,4 +1,4 @@
-import { CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST } from '../Constants';
+import {CAMEL_OF_EVENTS_DICTIONARY, CUSTOM_EVENT_TYPE_OF_CAMEL_OF_EVENTS, USER_CODE_REGEX_GLOBAL, USER_CODE_REGEX_GROUP, SYSTEM_CODE_REGEX_BEGIN_GLOBAL, SYSTEM_CODE_REGEX_END_GLOBAL, FORWARD_PROPS_AND_EVENTS_TO_CHILDREN_CLASS_LIST} from '../Constants';
 
 const DEFAULTS = {
   Import: `
@@ -222,7 +222,7 @@ const FILE_END = `// <---Auto[File]`;
 // construction area and editor.
 // 
 var FrontEndReactHelper = {
-  generateReactCode: (info : any, previewReactClassName : string = null) => {
+  generateReactCode: (info: any, previewReactClassName: string = null) => {
     let klass = previewReactClassName || info['internal-fsb-react-class'] || info['internal-fsb-class'] + '_' + info['internal-fsb-guid'];
     let namespace = info['internal-fsb-react-namespace'] || 'Project.Controls';
     let fullnamespace = namespace + '.' + klass;
@@ -321,7 +321,7 @@ ${FILE_END}${code.split(FILE_END)[1]}`;
 
     return [code, functionNameMapping];
   },
-  generateMergingCode: (info : any, executions : string[], removeAutoGeneratingWarning : boolean = false) => {
+  generateMergingCode: (info: any, executions: string[], removeAutoGeneratingWarning: boolean = false) => {
     let code = '';
     let functionNameMapping = {};
 
@@ -409,7 +409,7 @@ ${MERGE_END_BEGIN}`);
 
     return [code, functionNameMapping];
   },
-  extractCode: (code : string) => {
+  extractCode: (code: string) => {
     if (!code) return {};
 
     let resultDictionary = {};
@@ -427,4 +427,4 @@ ${MERGE_END_BEGIN}`);
   }
 };
 
-export { FrontEndReactHelper, DEFAULTS };
+export {FrontEndReactHelper, DEFAULTS};

@@ -1,19 +1,19 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { RequestHelper } from '../../../helpers/RequestHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { LIBRARIES, DEBUG_SITE_PREVIEW } from '../../../Constants';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  loading : boolean;
-  location : string;
+  loading: boolean;
+  location: string;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -28,26 +28,26 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class SitePreview extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
   public open() {
     this.refs.console && this.refs.console.reset();
-    this.setState({ loading: true, location: 'about:blank' });
+    this.setState({loading: true, location: 'about:blank'});
     HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
   }
 
-  public start(display : boolean = true) {
-    this.setState({ loading: true });
+  public start(display: boolean = true) {
+    this.setState({loading: true});
     HTMLHelper.addClass(document.body, 'internal-fsb-preview-on');
 
     let preview = ReactDOM.findDOMNode(this.refs.preview);
@@ -73,19 +73,19 @@ class SitePreview extends Base<Props, State> {
         document.domain = 'stackblend.org';
       }
 
-      this.setState({ location: `${endpoint}${PATH}` });
+      this.setState({location: `${endpoint}${PATH}`});
     }).bind(this));
   }
 
   public load() {
     if (this.state.location == 'about:blank' || this.state.location == null) return;
-    this.setState({ loading: false });
+    this.setState({loading: false});
   }
 
   private close(error) {
     if (error && error.message) console.error(error.message);
 
-    this.setState({ loading: false, location: 'about:blank' });
+    this.setState({loading: false, location: 'about:blank'});
     HTMLHelper.removeClass(document.body, 'internal-fsb-preview-on');
   }
 
@@ -128,4 +128,4 @@ class SitePreview extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.SitePreview', SitePreview);
 
-export { Props, State, SitePreview };
+export {Props, State, SitePreview};

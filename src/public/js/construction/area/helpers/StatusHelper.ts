@@ -1,14 +1,14 @@
-import { StylesheetHelper } from './StylesheetHelper';
-import { AnimationHelper } from './AnimationHelper';
-import { EditorHelper } from './EditorHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { CAMEL_OF_EVENTS_DICTIONARY } from '../../Constants';
+import {StylesheetHelper} from './StylesheetHelper';
+import {AnimationHelper} from './AnimationHelper';
+import {EditorHelper} from './EditorHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 
 let cachedElementAuthoringStatuses = null;
 let cachedElementAuthoringRevision = 0;
 
 var StatusHelper = {
-  invalidate: function(element : HTMLElement) {
+  invalidate: function(element: HTMLElement) {
     cachedElementAuthoringStatuses = null;
     cachedElementAuthoringRevision++;
   },
@@ -34,7 +34,7 @@ var StatusHelper = {
     cachedElementAuthoringStatuses = statuses;
     return cachedElementAuthoringStatuses;
   },
-  getElementAuthoringStatus: (element : HTMLElement) => {
+  getElementAuthoringStatus: (element: HTMLElement) => {
     const statuses = [''];
 
     const style = StylesheetHelper.getStyle(element);
@@ -100,7 +100,7 @@ var StatusHelper = {
   getElementAuthoringRevision: function() {
     return cachedElementAuthoringRevision;
   },
-  hasElementAndDescendantsCodeAuthoringStatus: (element : HTMLElement | string, status : string = 'has-coding') : boolean => {
+  hasElementAndDescendantsCodeAuthoringStatus: (element: HTMLElement | string, status: string = 'has-coding'): boolean => {
     if (typeof element === 'string') element = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', element);
     if (!element) return false;
 
@@ -117,12 +117,12 @@ var StatusHelper = {
       }
     }
   },
-  hasElementAndDescendantsDesignLockAuthoringStatus: (element : HTMLElement | string) : boolean => {
+  hasElementAndDescendantsDesignLockAuthoringStatus: (element: HTMLElement | string): boolean => {
     return StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(element, 'has-design-locking');
   },
-  hasElementAndDescendantsCodeLockAuthoringStatus: (element : HTMLElement | string) : boolean => {
+  hasElementAndDescendantsCodeLockAuthoringStatus: (element: HTMLElement | string): boolean => {
     return StatusHelper.hasElementAndDescendantsCodeAuthoringStatus(element, 'has-code-locking');
   },
 };
 
-export { StatusHelper };
+export {StatusHelper};

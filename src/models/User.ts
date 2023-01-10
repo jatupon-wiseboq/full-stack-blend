@@ -3,44 +3,44 @@ import crypto from "crypto";
 import mongoose from "mongoose";
 
 export type UserDocument = mongoose.Document & {
-  email : string;
-  password : string;
-  passwordResetToken : string;
-  passwordResetExpires : Date;
+  email: string;
+  password: string;
+  passwordResetToken: string;
+  passwordResetExpires: Date;
 
-  facebook : string;
-  github : string;
-  tokens : AuthToken[];
+  facebook: string;
+  github: string;
+  tokens: AuthToken[];
 
-  alias : string;
-  project : string;
-  feature : string;
-  develop : string;
-  staging : string;
-  endpoint : string;
-  progressivelyUpdate : boolean;
+  alias: string;
+  project: string;
+  feature: string;
+  develop: string;
+  staging: string;
+  endpoint: string;
+  progressivelyUpdate: boolean;
 
-  profile : {
-    name : string;
-    gender : string;
-    location : string;
-    website : string;
-    picture : string;
+  profile: {
+    name: string;
+    gender: string;
+    location: string;
+    website: string;
+    picture: string;
   };
 
-  comparePassword : comparePasswordFunction;
-  gravatar : (size : number) => string;
+  comparePassword: comparePasswordFunction;
+  gravatar: (size: number) => string;
 };
 
-type comparePasswordFunction = (candidatePassword : string, cb : (err : any, isMatch : any) => void) => void;
+type comparePasswordFunction = (candidatePassword: string, cb: (err: any, isMatch: any) => void) => void;
 
 export interface AuthToken {
-  accessToken : string;
-  kind : string;
+  accessToken: string;
+  kind: string;
 }
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
+  email: {type: String, unique: true},
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema({
     website: String,
     picture: String
   }
-}, { timestamps: true });
+}, {timestamps: true});
 
 /**
  * Password hash middleware.
@@ -81,7 +81,7 @@ userSchema.pre("save", function save(next) {
     if (err) {
       return next(err);
     }
-    bcrypt.hash(user.password, salt, undefined, (err : mongoose.Error, hash) => {
+    bcrypt.hash(user.password, salt, undefined, (err: mongoose.Error, hash) => {
       if (err) {
         return next(err);
       }
@@ -92,8 +92,8 @@ userSchema.pre("save", function save(next) {
   });
 });
 
-const comparePassword : comparePasswordFunction = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, (err : mongoose.Error, isMatch : boolean) => {
+const comparePassword: comparePasswordFunction = function(candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, (err: mongoose.Error, isMatch: boolean) => {
     cb(err, isMatch);
   });
 };
@@ -103,7 +103,7 @@ userSchema.methods.comparePassword = comparePassword;
 /**
  * Helper method for getting user's gravatar.
  */
-userSchema.methods.gravatar = function(size : number = 200) {
+userSchema.methods.gravatar = function(size: number = 200) {
   if (!this.email) {
     return `https://gravatar.com/avatar/?s=${size}&d=retro`;
   }

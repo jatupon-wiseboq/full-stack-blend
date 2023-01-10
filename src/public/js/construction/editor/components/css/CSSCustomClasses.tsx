@@ -1,11 +1,11 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
@@ -18,18 +18,18 @@ Object.assign(ExtendedDefaultProps, {
   watchingAttributeNames: ['class']
 });
 
-let stylesheetDefinitionKeys : any = [];
+let stylesheetDefinitionKeys: any = [];
 
 
 
 class CSSCustomClasses extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     this.state.value = CodeHelper.getCustomClasses(this.state.attributeValues[this.props.watchingAttributeNames[0]]);
@@ -37,7 +37,7 @@ class CSSCustomClasses extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     let filteredValue = CodeHelper.getCustomClasses(value);
 
     if (this.state.value != filteredValue) {
@@ -64,4 +64,4 @@ class CSSCustomClasses extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.CSSCustomClasses', CSSCustomClasses);
 
-export { Props, State, CSSCustomClasses };
+export {Props, State, CSSCustomClasses};

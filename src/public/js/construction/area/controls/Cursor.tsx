@@ -1,7 +1,7 @@
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
 }
@@ -10,10 +10,10 @@ interface State {
 }
 
 class Cursor extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
-  private domElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
 
   constructor() {
     super();
@@ -22,7 +22,7 @@ class Cursor extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
@@ -38,4 +38,4 @@ class Cursor extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.Cursor', Cursor);
 
-export { Props, State, Cursor };
+export {Props, State, Cursor};

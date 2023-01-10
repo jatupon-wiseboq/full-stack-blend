@@ -1,21 +1,21 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { Request, Response } from "express";
-import { HierarchicalDataTable, HierarchicalDataRow, ActionType, Input } from "../helpers/DatabaseHelper";
-import { ValidationHelper } from "../helpers/ValidationHelper";
-import { RenderHelper } from "../helpers/RenderHelper";
-import { DataTableSchema, SchemaHelper } from "../helpers/SchemaHelper";
-import { ProjectConfigurationHelper } from "../helpers/ProjectConfigurationHelper";
+import {Request, Response} from "express";
+import {HierarchicalDataTable, HierarchicalDataRow, ActionType, Input} from "../helpers/DatabaseHelper";
+import {ValidationHelper} from "../helpers/ValidationHelper";
+import {RenderHelper} from "../helpers/RenderHelper";
+import {DataTableSchema, SchemaHelper} from "../helpers/SchemaHelper";
+import {ProjectConfigurationHelper} from "../helpers/ProjectConfigurationHelper";
 import geoip from "geoip-lite";
 
 class Base {
-  protected request : Request;
-  protected response : Response;
-  protected template : string;
-  protected pageId : string;
+  protected request: Request;
+  protected response: Response;
+  protected template: string;
+  protected pageId: string;
 
-  constructor(request : Request, response : Response, template : string) {
+  constructor(request: Request, response: Response, template: string) {
     this.request = request;
     this.response = response;
     this.template = template;
@@ -24,7 +24,7 @@ class Base {
     if (this.request.query.lang) {
       this.response.locals.lang = this.request.query.lang;
     } else {
-      let ip : string = (this.request.headers && this.request.headers['x-forwarded-for'] && this.request.headers['x-forwarded-for'].toString()) || (this.request.connection && this.request.connection.remoteAddress && this.request.connection.remoteAddress.toString());
+      let ip: string = (this.request.headers && this.request.headers['x-forwarded-for'] && this.request.headers['x-forwarded-for'].toString()) || (this.request.connection && this.request.connection.remoteAddress && this.request.connection.remoteAddress.toString());
       ip = ip.split(',')[0];
       if (ip && ip.startsWith('::ffff:')) ip = ip.substr(7);
 
@@ -33,7 +33,7 @@ class Base {
     }
   }
 
-  protected perform(action : ActionType, schema : DataTableSchema, data : Input[]) {
+  protected perform(action: ActionType, schema: DataTableSchema, data: Input[]) {
     SchemaHelper.verifyNotations(ProjectConfigurationHelper.getDotNotationPossibilities(this.pageId), ProjectConfigurationHelper.getDataSchema());
 
     this.call(action, schema, data).catch((error) => {
@@ -41,7 +41,7 @@ class Base {
     });
   }
 
-  private async call(action : ActionType, schema : DataTableSchema, data : Input[]) {
+  private async call(action: ActionType, schema: DataTableSchema, data: Input[]) {
     if (action != ActionType.Retrieve) {
       this.validate(data);
     }
@@ -92,66 +92,66 @@ class Base {
     }
   }
 
-  protected validate(data : Input[]) : void {
+  protected validate(data: Input[]): void {
     ValidationHelper.validate(data);
   }
 
-  protected async accessories(data : Input[]) : Promise<any> {
+  protected async accessories(data: Input[]): Promise<any> {
     return new Promise((resolve) => {
       resolve({});
     });
   }
 
-  protected async get(data : Input[]) : Promise<{ [Identifier : string] : HierarchicalDataTable }> {
+  protected async get(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise((resolve) => {
       resolve({});
     });
   }
 
-  protected async post(data : Input[]) : Promise<{ [Identifier : string] : HierarchicalDataTable }> {
+  protected async post(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise((resolve) => {
       resolve({});
     });
   }
 
-  protected async put(data : Input[]) : Promise<{ [Identifier : string] : HierarchicalDataTable }> {
+  protected async put(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise((resolve) => {
       resolve({});
     });
   }
 
-  protected async delete(data : Input[]) : Promise<{ [Identifier : string] : HierarchicalDataTable }> {
+  protected async delete(data: Input[]): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     return new Promise((resolve) => {
       resolve({});
     });
   }
 
-  protected async insert(data : Input[], schema : DataTableSchema) : Promise<HierarchicalDataRow[]> {
+  protected async insert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     throw new Error("Not Implemented Error");
   }
 
-  protected async update(data : Input[], schema : DataTableSchema) : Promise<HierarchicalDataRow[]> {
+  protected async update(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     throw new Error("Not Implemented Error");
   }
 
-  protected async upsert(data : Input[], schema : DataTableSchema) : Promise<HierarchicalDataRow[]> {
+  protected async upsert(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     throw new Error("Not Implemented Error");
   }
 
-  protected async retrieve(data : Input[], schema : DataTableSchema) : Promise<{ [Identifier : string] : HierarchicalDataTable }> {
+  protected async retrieve(data: Input[], schema: DataTableSchema): Promise<{[Identifier: string]: HierarchicalDataTable}> {
     throw new Error("Not Implemented Error");
   }
 
-  protected async remove(data : Input[], schema : DataTableSchema) : Promise<HierarchicalDataRow[]> {
+  protected async remove(data: Input[], schema: DataTableSchema): Promise<HierarchicalDataRow[]> {
     throw new Error("Not Implemented Error");
   }
 
-  protected async navigate(data : Input[], schema : DataTableSchema) : Promise<string> {
+  protected async navigate(data: Input[], schema: DataTableSchema): Promise<string> {
     throw new Error("Not Implemented Error");
   }
 }
 
-export { Base };
+export {Base};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

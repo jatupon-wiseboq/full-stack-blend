@@ -5,8 +5,8 @@ import passportGitHub from "passport-github";
 import _ from "lodash";
 import dotenv from "dotenv";
 
-import { User, UserDocument } from "../models/User";
-import { Request, Response, NextFunction } from "express";
+import {User, UserDocument} from "../models/User";
+import {Request, Response, NextFunction} from "express";
 
 const LocalStrategy = passportLocal.Strategy;
 const FacebookStrategy = passportFacebook.Strategy;
@@ -31,16 +31,16 @@ passport.deserializeUser((id, done) => {
 /**
  * Sign in using Email and Password.
  */
-passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
-  User.findOne({ email: email.toLowerCase() }, (err, user : any) => {
+passport.use(new LocalStrategy({usernameField: "email"}, (email, password, done) => {
+  User.findOne({email: email.toLowerCase()}, (err, user: any) => {
     if (err) {
       return done(err);
     }
     if (!user) {
-      return done(undefined, false, { message: `Email ${email} not found.` });
+      return done(undefined, false, {message: `Email ${email} not found.`});
     }
 
-    user.comparePassword(password, (err : Error, isMatch : boolean) => {
+    user.comparePassword(password, (err: Error, isMatch: boolean) => {
       if (err) {
         return done(err);
       }
@@ -48,7 +48,7 @@ passport.use(new LocalStrategy({ usernameField: "email" }, (email, password, don
         return done(undefined, user);
       }
 
-      return done(undefined, false, { message: "Invalid email or password." });
+      return done(undefined, false, {message: "Invalid email or password."});
     });
   });
 }));
@@ -81,33 +81,33 @@ passport.use(new FacebookStrategy({
     "locale",
     "timezone"],
   passReqToCallback: true
-}, (req : any, accessToken, refreshToken, profile, done) => {
+}, (req: any, accessToken, refreshToken, profile, done) => {
   if (req.user) {
-    User.findOne({ facebook: profile.id }, (err, existingUser) => {
+    User.findOne({facebook: profile.id}, (err, existingUser) => {
       if (err) {
         return done(err);
       }
       if (existingUser) {
         done(new Error("There is already a Facebook account that belongs to you. Sign in with that account or delete it, then link it with your current account."));
       } else {
-        User.findById(req.user.id, (err, user : any) => {
+        User.findById(req.user.id, (err, user: any) => {
           if (err) {
             return done(err);
           }
 
           user.facebook = profile.id;
-          user.tokens.push({ kind: "facebook", accessToken });
+          user.tokens.push({kind: "facebook", accessToken});
           user.profile.name = user.profile.name || `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = user.profile.gender || profile._json.gender;
           user.profile.picture = user.profile.picture || `https://graph.facebook.com/${profile.id}/picture?type=large`;
-          user.save((err : Error) => {
+          user.save((err: Error) => {
             done(new Error("Facebook account has been linked."), user);
           });
         });
       }
     });
   } else {
-    User.findOne({ facebook: profile.id }, (err, existingUser) => {
+    User.findOne({facebook: profile.id}, (err, existingUser) => {
       if (err) {
         return done(err);
       }
@@ -115,23 +115,23 @@ passport.use(new FacebookStrategy({
         return done(undefined, existingUser);
       }
 
-      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+      User.findOne({email: profile._json.email}, (err, existingEmailUser) => {
         if (err) {
           return done(err);
         }
         if (existingEmailUser) {
           done(new Error("There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings."));
         } else {
-          const user : any = new User();
+          const user: any = new User();
 
           user.email = profile._json.email;
           user.facebook = profile.id;
-          user.tokens.push({ kind: "facebook", accessToken });
+          user.tokens.push({kind: "facebook", accessToken});
           user.profile.name = `${profile.name.givenName} ${profile.name.familyName}`;
           user.profile.gender = profile._json.gender;
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = profile._json.location ? profile._json.location.name : "";
-          user.save((err : Error) => {
+          user.save((err: Error) => {
             done(err, user);
           });
         }
@@ -148,34 +148,34 @@ passport.use(new GitHubStrategy({
   clientSecret: process.env.GITHUB_SECRET,
   callbackURL: "/auth/github/callback",
   passReqToCallback: true
-}, (req : any, accessToken, refreshToken, profile, done) => {
+}, (req: any, accessToken, refreshToken, profile, done) => {
   if (req.user) {
-    User.findOne({ github: profile.id }, (err, existingUser) => {
+    User.findOne({github: profile.id}, (err, existingUser) => {
       if (err) {
         return done(err);
       }
       if (existingUser) {
         existingUser.github = profile.id;
         existingUser.tokens = existingUser.tokens.filter(token => token.kind != "github");
-        existingUser.tokens.push({ kind: "github", accessToken });
-        existingUser.save((err : Error) => {
+        existingUser.tokens.push({kind: "github", accessToken});
+        existingUser.save((err: Error) => {
           done(new Error("GitHub account has been linked."), existingUser);
         });
       } else {
-        User.findById(req.user.id, (err, user : any) => {
+        User.findById(req.user.id, (err, user: any) => {
           if (err) {
             return done(err);
           }
           user.github = profile.id;
-          user.tokens.push({ kind: "github", accessToken });
-          user.save((err : Error) => {
+          user.tokens.push({kind: "github", accessToken});
+          user.save((err: Error) => {
             done(new Error("GitHub account has been linked."), user);
           });
         });
       }
     });
   } else {
-    User.findOne({ github: profile.id }, (err, existingUser) => {
+    User.findOne({github: profile.id}, (err, existingUser) => {
       if (err) {
         return done(err);
       }
@@ -183,19 +183,19 @@ passport.use(new GitHubStrategy({
         return done(undefined, existingUser);
       }
 
-      User.findOne({ email: profile._json.email }, (err, existingEmailUser) => {
+      User.findOne({email: profile._json.email}, (err, existingEmailUser) => {
         if (err) {
           return done(err);
         }
         if (existingEmailUser) {
           done(new Error("There is already an account using this email address. Sign in to that account and link it with GitHub manually from Account Settings."));
         } else {
-          const user : any = new User();
+          const user: any = new User();
 
           user.email = profile._json.email;
           user.github = profile.id;
-          user.tokens.push({ kind: "github", accessToken });
-          user.save((err : Error) => {
+          user.tokens.push({kind: "github", accessToken});
+          user.save((err: Error) => {
             done(err, user);
           });
         }
@@ -207,7 +207,7 @@ passport.use(new GitHubStrategy({
 /**
  * Login Required middleware.
  */
-export const isAuthenticated = (req : Request, res : Response, next : NextFunction) => {
+export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -217,11 +217,11 @@ export const isAuthenticated = (req : Request, res : Response, next : NextFuncti
 /**
  * Authorization Required middleware.
  */
-export const isAuthorized = (req : Request, res : Response, next : NextFunction) => {
+export const isAuthorized = (req: Request, res: Response, next: NextFunction) => {
   const provider = req.path.split("/").slice(-1)[0];
   const user = req.user as UserDocument;
 
-  if (_.find(user.tokens, { kind: provider })) {
+  if (_.find(user.tokens, {kind: provider})) {
     next();
   } else {
     res.redirect(`/auth/${provider}`);

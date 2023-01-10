@@ -1,43 +1,43 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { EditorHelper } from '../helpers/EditorHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {EditorHelper} from '../helpers/EditorHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props {
-  onUpdate(original : { x : number, y : number, w : number, h : number }, diff : { dx : number, dy : number, dw : number, dh : number });
-  onPreview(original : { x : number, y : number, w : number, h : number }, diff : { dx : number, dy : number, dw : number, dh : number });
+  onUpdate(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number});
+  onPreview(original: {x: number, y: number, w: number, h: number}, diff: {dx: number, dy: number, dw: number, dh: number});
 }
 
 interface State {
 }
 
 class Resizer extends React.Component<Props, State> {
-  static defaultProps : Props = {
+  static defaultProps: Props = {
   }
 
-  private draggingArea : HTMLElement = null;
-  private originalRect : any = {
+  private draggingArea: HTMLElement = null;
+  private originalRect: any = {
     x: 0,
     y: 0,
     w: 0,
     h: 0
   };
-  private originalMousePos : any = {
+  private originalMousePos: any = {
     x: 0,
     y: 0,
     dx: 0,
     dy: 0
   };
-  private originalResizerDirection : any = {
+  private originalResizerDirection: any = {
     top: false,
     right: false,
     bottom: false,
     left: false
   };
-  private domElement : HTMLElement = null;
+  private domElement: HTMLElement = null;
 
   constructor() {
     super();
@@ -50,7 +50,7 @@ class Resizer extends React.Component<Props, State> {
   public getDOMNode() {
     return this.domElement;
   }
-  public setDOMNode(element : HTMLElement) {
+  public setDOMNode(element: HTMLElement) {
     this.domElement = element;
   }
 
@@ -97,7 +97,7 @@ class Resizer extends React.Component<Props, State> {
     this.installEventHandlers();
 
     this.draggingArea.style.display = 'block';
-    this.updateDraggingAreaPositionAndSize(this.originalRect, { x: 0, y: 0, dx: 0, dy: 0 });
+    this.updateDraggingAreaPositionAndSize(this.originalRect, {x: 0, y: 0, dx: 0, dy: 0});
 
     EventHelper.setDenyForHandle('click', true);
     return EventHelper.cancel(event);
@@ -128,7 +128,7 @@ class Resizer extends React.Component<Props, State> {
     EventHelper.setDenyForHandle('click', false, 100);
   }
 
-  private updateDraggingAreaPositionAndSize(originalRect : { x : number, y : number, w : number, h : number }, originalMousePos : { x : number, y : number, dx : number, dy : number }) {
+  private updateDraggingAreaPositionAndSize(originalRect: {x: number, y: number, w: number, h: number}, originalMousePos: {x: number, y: number, dx: number, dy: number}) {
     let diff = this.calculateDiff(originalRect, originalMousePos);
 
     if (this.props.onPreview) {
@@ -140,7 +140,7 @@ class Resizer extends React.Component<Props, State> {
     this.draggingArea.style.width = (originalRect.w + diff.dw) + 'px';
     this.draggingArea.style.height = (originalRect.h + diff.dh) + 'px';
   }
-  private calculateDiff(originalRect : { x : number, y : number, w : number, h : number }, originalMousePos : { x : number, y : number, dx : number, dy : number }) {
+  private calculateDiff(originalRect: {x: number, y: number, w: number, h: number}, originalMousePos: {x: number, y: number, dx: number, dy: number}) {
     let dx = 0;
     let dy = 0;
     let dw = 0;
@@ -188,4 +188,4 @@ class Resizer extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.Resizer', Resizer);
 
-export { Props, State, Resizer };
+export {Props, State, Resizer};

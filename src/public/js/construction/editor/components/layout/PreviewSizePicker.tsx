@@ -1,10 +1,10 @@
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { SCREEN_SIZE } from '../../../Constants';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {SCREEN_SIZE} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
@@ -20,13 +20,13 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class PreviewSizePicker extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let areaContainer = document.getElementById('area-container');
@@ -38,7 +38,7 @@ class PreviewSizePicker extends Base<Props, State> {
     areaContainer.style.width = (width == null) ? '100%' : (width + content[1]) + 'px';
   }
 
-  choose(size : number, direction : number) {
+  choose(size: number, direction: number) {
     if (this.state.extensionValues['preview'] && this.state.extensionValues['preview'][0] == size && this.state.extensionValues['preview'][1] == direction) {
       perform('update', {
         extensions: [{
@@ -81,4 +81,4 @@ class PreviewSizePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.PreviewSizePicker', PreviewSizePicker);
 
-export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, PreviewSizePicker };
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, PreviewSizePicker};

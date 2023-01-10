@@ -1,5 +1,5 @@
-import { HTMLHelper } from './HTMLHelper';
-import { FONTS } from '../Fonts';
+import {HTMLHelper} from './HTMLHelper';
+import {FONTS} from '../Fonts';
 
 let setupFont = {};
 let allFontsCache = null;
@@ -9,7 +9,7 @@ var FontHelper = {
   generateFontData: () => {
     return setupFont;
   },
-  initializeFontData: (data : any, _window : any = window) => {
+  initializeFontData: (data: any, _window: any = window) => {
     if (data == null) return;
 
     setupFont = {};
@@ -39,7 +39,7 @@ var FontHelper = {
     allFontsCache = list;
     return list;
   },
-  getFontInfo: function(name : string) {
+  getFontInfo: function(name: string) {
     if (!name) return null;
     if (fontInfoCache[name] !== undefined) return fontInfoCache[name];
 
@@ -52,7 +52,7 @@ var FontHelper = {
 
     return null;
   },
-  getAllItalics: function(info : any) {
+  getAllItalics: function(info: any) {
     if (info == null) return [];
 
     let variants = [];
@@ -66,7 +66,7 @@ var FontHelper = {
 
     return variants;
   },
-  getAllNormals: function(info : any) {
+  getAllNormals: function(info: any) {
     if (info == null) return [];
 
     let variants = [];
@@ -80,7 +80,7 @@ var FontHelper = {
 
     return variants;
   },
-  load: function(name : string, _window : any = window) {
+  load: function(name: string, _window: any = window) {
     if (!name || setupFont[name]) return;
 
     let info = FontHelper.getFontInfo(name);
@@ -136,4 +136,4 @@ var FontHelper = {
   }
 };
 
-export { FontHelper };
+export {FontHelper};

@@ -1,19 +1,19 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from './../TreeNode';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from './../TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  nodes : [ITreeNode]
+  nodes: [ITreeNode]
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -28,15 +28,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class WizardInputManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let nodes = CodeHelper.clone(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
@@ -52,7 +52,7 @@ class WizardInputManager extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  private recursiveWalkExtractingNodes(nodes : [ITreeNode], output : [ITreeNode] = []) {
+  private recursiveWalkExtractingNodes(nodes: [ITreeNode], output: [ITreeNode] = []) {
     for (let node of nodes) {
       if (['Textbox', 'Select', 'Radio', 'Checkbox', 'File', 'Hidden'].indexOf(node.tag.class) != -1) {
         output.push(node);
@@ -62,7 +62,7 @@ class WizardInputManager extends Base<Props, State> {
     return output;
   }
 
-  protected onUpdate(node : ITreeNode) {
+  protected onUpdate(node: ITreeNode) {
     let guids = (this.state.attributeValues[this.props.watchingAttributeNames[0]] || '').split(' ');
 
     if (node.selected) {
@@ -98,4 +98,4 @@ class WizardInputManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.WizardInputManager', WizardInputManager);
 
-export { Props, State, WizardInputManager };
+export {Props, State, WizardInputManager};

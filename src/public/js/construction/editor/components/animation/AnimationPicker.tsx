@@ -1,19 +1,19 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from '../../controls/TreeNode';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  nodes : [ITreeNode]
+  nodes: [ITreeNode]
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -27,18 +27,18 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class AnimationPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
-    let nodes : [ITreeNode] = [];
+    let nodes: [ITreeNode] = [];
     let dict = JSON.parse(this.state.attributeValues[this.props.watchingAttributeNames[0]] || '{}');
     let items = dict[this.props.keyName] || [];
 
@@ -62,7 +62,7 @@ class AnimationPicker extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected onUpdate(node : ITreeNode) {
+  protected onUpdate(node: ITreeNode) {
     let items = [];
     for (let node of this.state.nodes) {
       if (node.selected) {
@@ -91,4 +91,4 @@ class AnimationPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.AnimationPicker', AnimationPicker);
 
-export { Props, State, AnimationPicker };
+export {Props, State, AnimationPicker};

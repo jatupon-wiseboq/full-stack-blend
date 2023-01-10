@@ -1,8 +1,8 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { FontHelper } from '../../../helpers/FontHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {FontHelper} from '../../../helpers/FontHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/DropDownList';
 import '../shape/SizePicker';
 import '../generic/NumberPicker';
@@ -162,20 +162,20 @@ let iconDict = {
   "CODE": "fa fa-code"
 }
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
-  customClassName : string,
-  searchBox : boolean,
-  useMaximumHeight : boolean,
-  width : number
+  customClassName: string,
+  searchBox: boolean,
+  useMaximumHeight: boolean,
+  width: number
 }
 
 interface State extends IState {
-  controls : any,
-  index : number
+  controls: any,
+  index: number
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -194,15 +194,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class DropDownPicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     if (this.props.watchingStyleNames.length != 0) {
@@ -218,7 +218,7 @@ class DropDownPicker extends Base<Props, State> {
     }
   }
 
-  protected dropdownOnUpdate(identity : any, value : any, index : any) {
+  protected dropdownOnUpdate(identity: any, value: any, index: any) {
     this.setState({
       index: index,
       value: value
@@ -385,4 +385,4 @@ class DropDownPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.DropDownPicker', DropDownPicker);
 
-export { Props, State, DropDownPicker };
+export {Props, State, DropDownPicker};

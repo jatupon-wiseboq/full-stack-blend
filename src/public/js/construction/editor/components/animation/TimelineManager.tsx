@@ -1,25 +1,25 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { RandomHelper } from '../../../helpers/RandomHelper';
-import { Point, MathHelper } from '../../../helpers/MathHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from '../../controls/TreeNode';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {RandomHelper} from '../../../helpers/RandomHelper';
+import {Point, MathHelper} from '../../../helpers/MathHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from '../../controls/TreeNode';
 import '../../controls/Tree';
 import './KeyframeManager.js'
-import { SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS } from '../../../Constants';
+import {SECOND_SPAN_SIZE, MAXIMUM_OF_SECONDS} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  scrollingBegin : number;
+  scrollingBegin: number;
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -35,10 +35,10 @@ Object.assign(ExtendedDefaultProps, {
 let groupCount = 0;
 
 class TimelineManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
-  private mouseUpDelegate : any = null;
-  private mouseMoveDelegate : any = null;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
+  private mouseUpDelegate: any = null;
+  private mouseMoveDelegate: any = null;
 
   constructor(props) {
     super(props);
@@ -48,19 +48,19 @@ class TimelineManager extends Base<Props, State> {
     this.mouseMoveDelegate = this.mouseMove.bind(this);
   }
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
-  private originalElementPos : Point = {
+  private originalElementPos: Point = {
     x: 0,
     y: 0
   };
-  private originalElement : HTMLElement = null;
+  private originalElement: HTMLElement = null;
 
-  private isMouseMoveReachedThreshold : boolean = false;
+  private isMouseMoveReachedThreshold: boolean = false;
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     this.updateKeyframeStyles();
@@ -79,7 +79,7 @@ class TimelineManager extends Base<Props, State> {
     document.getElementById('area').contentWindow.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
   }
 
-  private onUpdate(node : ITreeNode) {
+  private onUpdate(node: ITreeNode) {
     if (node.selected) {
       this.recursiveUnselectAllOfNodes(this.state.extensionValues[this.props.watchingExtensionNames[0]]);
       node.selected = true;
@@ -114,7 +114,7 @@ class TimelineManager extends Base<Props, State> {
     }
   }
 
-  private recursiveUnselectAllOfNodes(nodes : [ITreeNode]) {
+  private recursiveUnselectAllOfNodes(nodes: [ITreeNode]) {
     for (let node of nodes) {
       node.selected = false;
       this.recursiveUnselectAllOfNodes(node.nodes);
@@ -165,7 +165,7 @@ class TimelineManager extends Base<Props, State> {
     let currentWindow = originalElement.ownerDocument.defaultView || originalElement.ownerDocument.parentWindow;
 
     let mousePosition = HTMLHelper.getOriginalPosition(EventHelper.getMousePosition(event), currentWindow);
-    let mousePositionInPoint = { x: mousePosition[0], y: mousePosition[1] };
+    let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
 
     if (!this.isMouseMoveReachedThreshold &&
       Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
@@ -200,7 +200,7 @@ class TimelineManager extends Base<Props, State> {
     return EventHelper.cancel(event);
   }
 
-  private moveDraggingContent(mousePosition : Point) {
+  private moveDraggingContent(mousePosition: Point) {
     let diffX = mousePosition.x - this.originalMousePos.x;
     let diffY = mousePosition.y - this.originalMousePos.y;
 
@@ -214,7 +214,7 @@ class TimelineManager extends Base<Props, State> {
 
     this.updateKeyframeStyles(percent / 100.0);
   }
-  private updateKeyframeStyles(percent : number = this.state.scrollingBegin) {
+  private updateKeyframeStyles(percent: number = this.state.scrollingBegin) {
     let offsetLeft = -percent * SECOND_SPAN_SIZE * MAXIMUM_OF_SECONDS;
     let timeline = ReactDOM.findDOMNode(this.refs.timeline);
 
@@ -232,7 +232,7 @@ class TimelineManager extends Base<Props, State> {
       }
     }
   }
-  private onNodeVisibleToggled(node : ITreeNode) {
+  private onNodeVisibleToggled(node: ITreeNode) {
     perform('update', {
       extensions: [{
         name: 'editingAnimationID',
@@ -243,7 +243,7 @@ class TimelineManager extends Base<Props, State> {
       }]
     });
   }
-  private onNodeRemoved(node : ITreeNode) {
+  private onNodeRemoved(node: ITreeNode) {
     let link = Math.random().toString();
 
     perform('update', {
@@ -268,17 +268,17 @@ class TimelineManager extends Base<Props, State> {
         </div>
         <div className="timeline-outer-container">
           <div className="timeline-inner-container">
-            <div className="timeline" ref="timeline" style={{ left: (-this.state.scrollingBegin * SECOND_SPAN_SIZE * MAXIMUM_OF_SECONDS) + 'px' }}>
+            <div className="timeline" ref="timeline" style={{left: (-this.state.scrollingBegin * SECOND_SPAN_SIZE * MAXIMUM_OF_SECONDS) + 'px'}}>
               {Array.from(Array(MAXIMUM_OF_SECONDS).keys()).map((value, index) => {
                 if (index % 2 == 0) {
                   return (
-                    <div className="bar" key={"bar-" + index} style={{ left: (index * SECOND_SPAN_SIZE) + 'px' }}></div>
+                    <div className="bar" key={"bar-" + index} style={{left: (index * SECOND_SPAN_SIZE) + 'px'}}></div>
                   )
                 }
               })}
               {Array.from(Array(MAXIMUM_OF_SECONDS).keys()).map((value, index) => {
                 return (
-                  <div className="time" key={"time-" + index} style={{ left: (index * SECOND_SPAN_SIZE) + 'px' }}>
+                  <div className="time" key={"time-" + index} style={{left: (index * SECOND_SPAN_SIZE) + 'px'}}>
                     <div className="text">{index + 's'}</div>
                   </div>
                 )
@@ -293,4 +293,4 @@ class TimelineManager extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.TimelineManager', TimelineManager);
 
-export { Props, State, TimelineManager };
+export {Props, State, TimelineManager};

@@ -13,7 +13,7 @@ import fs from "fs";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
-import { SitemapHelper } from './controllers/helpers/SitemapHelper';
+import {SitemapHelper} from './controllers/helpers/SitemapHelper';
 
 // API keys and Passport configuration
 import passport from "passport";
@@ -43,7 +43,7 @@ mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true
-}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */ }).
+}).then(() => { /** Ready to use. The `mongoose.connect()` promise resolves to undefined. */}).
   catch((err) => {
 
     console.log(`MongoDB connection error. Please make sure MongoDB is running. ${err}`);
@@ -69,7 +69,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
         useUnifiedTopology: true
       }
     }) || null,
-    cookie: { secure: true }
+    cookie: {secure: true}
   }));
 } else {
   app.use(session({
@@ -90,8 +90,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -144,18 +144,18 @@ app.get("/auth/facebook", passport.authenticate("facebook", {
   scope: ["email",
     "public_profile"]
 }));
-app.get("/auth/facebook/callback", passport.authenticate("facebook", { failureRedirect: "/account/authenticate" }), (req, res) => {
+app.get("/auth/facebook/callback", passport.authenticate("facebook", {failureRedirect: "/account/authenticate"}), (req, res) => {
   res.redirect("/account/settings");
 });
-app.get("/auth/github", passport.authenticate("github", { scope: ["repo"] }));
-app.get("/auth/github/callback", passport.authenticate("github", { failureRedirect: "/account/authenticate" }), (req, res) => {
+app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
+app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/account/authenticate"}), (req, res) => {
   res.redirect("/account/settings");
 });
 
 // Cache configuration
 // 
 app.use(
-  express.static(path.join(__dirname, "public"), { maxAge: 0 })
+  express.static(path.join(__dirname, "public"), {maxAge: 0})
 );
 
 // Error handler
@@ -170,9 +170,9 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     uaString: req.get('User-Agent'),
     minify: true,
     features: {
-      'es5': { flags: ['gated'] },
-      'es6': { flags: ['gated'] },
-      'es7': { flags: ['gated'] }
+      'es5': {flags: ['gated']},
+      'es6': {flags: ['gated']},
+      'es7': {flags: ['gated']}
     }
   }).then(function(bundle) {
     res.set('Content-Type', 'text/javascript');

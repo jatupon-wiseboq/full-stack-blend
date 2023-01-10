@@ -1,11 +1,11 @@
-import { EventHelper } from '../../helpers/EventHelper';
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { Point, MathHelper } from '../../helpers/MathHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
-import { DropDownControl } from './DropDownControl';
+import {EventHelper} from '../../helpers/EventHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {Point, MathHelper} from '../../helpers/MathHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
+import {DropDownControl} from './DropDownControl';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 const InsertDirection = Object.freeze({
   TOP: Symbol("top"),
@@ -15,48 +15,48 @@ const InsertDirection = Object.freeze({
 });
 
 interface ITreeNode {
-  id : string,
-  name : string,
-  deselectable : boolean,
-  selectable : boolean,
-  dropable : boolean,
-  dragging : boolean,
-  disabled : boolean,
-  selected : boolean,
-  insert : InsertDirection,
-  customClassName : string,
-  nodes : [ITreeNode],
-  tag : any
+  id: string,
+  name: string,
+  deselectable: boolean,
+  selectable: boolean,
+  dropable: boolean,
+  dragging: boolean,
+  disabled: boolean,
+  selected: boolean,
+  insert: InsertDirection,
+  customClassName: string,
+  nodes: [ITreeNode],
+  tag: any
 }
 
 interface IProps {
-  deep : number;
-  nodes : [ITreeNode];
-  onUpdate(node : ITreeNode);
-  onClick(node : ITreeNode);
-  enableDragging : boolean;
-  onStartDragging(node : ITreeNode);
-  onDragging(point : Point);
+  deep: number;
+  nodes: [ITreeNode];
+  onUpdate(node: ITreeNode);
+  onClick(node: ITreeNode);
+  enableDragging: boolean;
+  onStartDragging(node: ITreeNode);
+  onDragging(point: Point);
   onEndDragging();
-  onUpdateOptionVisibleChanged(value : boolean, tag : any);
-  onNodeVisibleToggled(node : ITreeNode);
-  onNodeRemoved(node : ITreeNode);
-  draggableAfterSelected : boolean;
-  customDraggerClassName : string;
-  editingControl : any;
-  extendingControl : any;
-  visibility : boolean;
-  removability : boolean;
-  filter : string;
+  onUpdateOptionVisibleChanged(value: boolean, tag: any);
+  onNodeVisibleToggled(node: ITreeNode);
+  onNodeRemoved(node: ITreeNode);
+  draggableAfterSelected: boolean;
+  customDraggerClassName: string;
+  editingControl: any;
+  extendingControl: any;
+  visibility: boolean;
+  removability: boolean;
+  filter: string;
 }
 
 interface IState {
 }
 
 class TreeNode extends React.Component<IProps, IState> {
-  private mouseUpDelegate : any = null;
-  private mouseMoveDelegate : any = null;
-  private rootContainer : any = null;
+  private mouseUpDelegate: any = null;
+  private mouseMoveDelegate: any = null;
+  private rootContainer: any = null;
 
   constructor(props) {
     super(props);
@@ -65,18 +65,18 @@ class TreeNode extends React.Component<IProps, IState> {
     this.mouseMoveDelegate = this.mouseMove.bind(this);
   }
 
-  private originalMousePos : Point = {
+  private originalMousePos: Point = {
     x: 0,
     y: 0
   };
-  private originalElementPos : Point = {
+  private originalElementPos: Point = {
     x: 0,
     y: 0
   };
-  private originalElement : HTMLElement = null;
+  private originalElement: HTMLElement = null;
 
-  private isMouseMoveReachedThreshold : boolean = false;
-  private draggingElement : HTMLElement = null;
+  private isMouseMoveReachedThreshold: boolean = false;
+  private draggingElement: HTMLElement = null;
 
   protected onChange(node) {
     if (!node.selectable) return;
@@ -103,7 +103,7 @@ class TreeNode extends React.Component<IProps, IState> {
     window.top.document.body.removeEventListener('mouseup', this.mouseUpDelegate, false);
     window.top.document.body.removeEventListener('mousemove', this.mouseMoveDelegate, false);
   }
-  private createDraggingElement(title : string, width : number) {
+  private createDraggingElement(title: string, width: number) {
     if (this.draggingElement == null) {
       this.draggingElement = document.createElement('div');
       this.draggingElement.className = 'layer-manager-container dragger' + ((this.props.customDraggerClassName) ? ' ' + this.props.customDraggerClassName : '');
@@ -160,7 +160,7 @@ class TreeNode extends React.Component<IProps, IState> {
   }
   private mouseMove(event) {
     let mousePosition = EventHelper.getMousePosition(event);
-    let mousePositionInPoint = { x: mousePosition[0], y: mousePosition[1] };
+    let mousePositionInPoint = {x: mousePosition[0], y: mousePosition[1]};
 
     if (!this.isMouseMoveReachedThreshold &&
       Math.abs(mousePositionInPoint.x - this.originalMousePos.x) < 5 &&
@@ -209,7 +209,7 @@ class TreeNode extends React.Component<IProps, IState> {
     return EventHelper.cancel(event);
   }
 
-  private moveDraggingContent(mousePosition : Point) {
+  private moveDraggingContent(mousePosition: Point) {
     const container = HTMLHelper.findTheParentInClassName('tree-container', this.rootContainer);
     let scrollTop = container.scrollTop;
 
@@ -219,7 +219,7 @@ class TreeNode extends React.Component<IProps, IState> {
     this.draggingElement.style.left = (this.originalElementPos.x + diffX) + 'px';
     this.draggingElement.style.top = (this.originalElementPos.y + diffY) + 'px';
   }
-  private getNode(id : string, nodes : [ITreeNode] = this.props.nodes) {
+  private getNode(id: string, nodes: [ITreeNode] = this.props.nodes) {
     for (let node of nodes) {
       if (node.id == id) {
         return node;
@@ -232,22 +232,22 @@ class TreeNode extends React.Component<IProps, IState> {
     return null;
   }
 
-  private onVisibleChanged(value : boolean, tag : any) {
+  private onVisibleChanged(value: boolean, tag: any) {
     if (this.props.onUpdateOptionVisibleChanged) {
       this.props.onUpdateOptionVisibleChanged(value, tag);
     }
   }
-  private onNodeVisibleToggled(node : ITreeNode) {
+  private onNodeVisibleToggled(node: ITreeNode) {
     if (this.props.onNodeVisibleToggled) {
       this.props.onNodeVisibleToggled(node);
     }
   }
-  private onNodeRemoved(node : ITreeNode) {
+  private onNodeRemoved(node: ITreeNode) {
     if (this.props.onNodeRemoved) {
       this.props.onNodeRemoved(node);
     }
   }
-  private recursiveCheckForContaining(node : ITreeNode) : boolean {
+  private recursiveCheckForContaining(node: ITreeNode): boolean {
     if (node.selected) return true;
     else {
       for (let child of node.nodes) {
@@ -269,13 +269,13 @@ class TreeNode extends React.Component<IProps, IState> {
                 {(() => {
                   if (node.id !== 'selector' && this.props.visibility === true)
                     return (
-                      <i className={(node.tag.display) ? "fa fa-eye" : "fa fa-eye-slash"} style={{ position: "absolute", left: "215px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer" }} onClick={this.onNodeVisibleToggled.bind(this, node)} />
+                      <i className={(node.tag.display) ? "fa fa-eye" : "fa fa-eye-slash"} style={{position: "absolute", left: "215px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeVisibleToggled.bind(this, node)} />
                     );
                 })()}
                 {(() => {
                   if (node.id !== 'selector' && this.props.removability === true)
                     return (
-                      <i className="fa fa-remove" style={{ position: "absolute", left: "234px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer" }} onClick={this.onNodeRemoved.bind(this, node)} />
+                      <i className="fa fa-remove" style={{position: "absolute", left: "234px", top: "6px", color: "rgba(0, 0, 0, 0.35)", cursor: "pointer"}} onClick={this.onNodeRemoved.bind(this, node)} />
                     );
                 })()}
                 {(() => {
@@ -301,12 +301,12 @@ class TreeNode extends React.Component<IProps, IState> {
                   <div className="form-check">
                     <label className="form-check-label noselect">
                       <input type="checkbox" className="form-check-input" disabled={node.disabled} checked={node.selected} onChange={this.onChange.bind(this, node)} />
-                      <div className={"treenode-title"} dangerouslySetInnerHTML={{ __html: node.name }}></div>
+                      <div className={"treenode-title"} dangerouslySetInnerHTML={{__html: node.name}}></div>
                     </label>
                   </div>
                 </div>
               </div>
-              <div style={{ display: (node.insert == InsertDirection.BOTTOM || node.dragging) ? 'none' : 'inherit' }}>
+              <div style={{display: (node.insert == InsertDirection.BOTTOM || node.dragging) ? 'none' : 'inherit'}}>
                 <FullStackBlend.Controls.TreeNode deep={this.props.deep + 1} nodes={node.nodes} onUpdate={this.props.onUpdate} enableDragging={this.props.enableDragging} onStartDragging={this.props.onStartDragging} onDragging={this.props.onDragging} onEndDragging={this.props.onEndDragging} editingControl={this.props.editingControl} extendingControl={this.props.extendingControl} filter={this.props.filter}>
                   {this.props.children}
                 </FullStackBlend.Controls.TreeNode>
@@ -321,4 +321,4 @@ class TreeNode extends React.Component<IProps, IState> {
 
 DeclarationHelper.declare('Controls.TreeNode', TreeNode);
 
-export { IProps, IState, ITreeNode, TreeNode, InsertDirection };
+export {IProps, IState, ITreeNode, TreeNode, InsertDirection};

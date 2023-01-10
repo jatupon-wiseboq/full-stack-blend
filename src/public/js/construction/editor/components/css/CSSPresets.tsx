@@ -1,19 +1,19 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { ITreeNode } from './../TreeNode';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {ITreeNode} from './../TreeNode';
 import '../../controls/Tree';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  nodes : [ITreeNode]
+  nodes: [ITreeNode]
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -29,18 +29,18 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class CSSPresets extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
-    let nodes : [ITreeNode] = [];
+    let nodes: [ITreeNode] = [];
 
     if (properties.extensions && properties.extensions.stylesheetDefinitionKeys) {
       let allInheritanceHash = {};
@@ -109,7 +109,7 @@ class CSSPresets extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected onUpdate(node : ITreeNode) {
+  protected onUpdate(node: ITreeNode) {
     let presets = [];
     for (let node of this.state.nodes) {
       if (node.selected) {
@@ -142,4 +142,4 @@ class CSSPresets extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.CSSPresets', CSSPresets);
 
-export { Props, State, CSSPresets };
+export {Props, State, CSSPresets};

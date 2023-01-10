@@ -1,7 +1,7 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { RandomHelper } from '../../helpers/RandomHelper';
-import { InternalProjectSettings, WorkspaceHelper } from './WorkspaceHelper';
-import { BACKEND_CONNECTION_GROUPS, BACKEND_CONNECTION_ENTITIES } from '../../Constants';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {RandomHelper} from '../../helpers/RandomHelper';
+import {InternalProjectSettings, WorkspaceHelper} from './WorkspaceHelper';
+import {BACKEND_CONNECTION_GROUPS, BACKEND_CONNECTION_ENTITIES} from '../../Constants';
 
 let cachedElementTreeNodes = null;
 
@@ -9,7 +9,7 @@ var SchemaHelper = {
   invalidate: function() {
     cachedElementTreeNodes = null;
   },
-  generateDataSchema: () : any => {
+  generateDataSchema: (): any => {
     let tables = {};
 
     const groups = BACKEND_CONNECTION_GROUPS;
@@ -155,7 +155,7 @@ var SchemaHelper = {
 
     return tables;
   },
-  generatePermission: (element : HTMLElement, prefix : string) : any => {
+  generatePermission: (element: HTMLElement, prefix: string): any => {
     let mode = HTMLHelper.getAttribute(element, prefix + '-mode');
     if (mode == null) return null;
 
@@ -170,7 +170,7 @@ var SchemaHelper = {
       sessionMatchingConstantValue: HTMLHelper.getAttribute(element, prefix + '-session-matching-constant-value')
     }
   },
-  recursiveAccumulateDotNotations: (notations : string[] = [], current : HTMLElement = document.body, accumulatedNotation : string = null, isContainingInReactClass : boolean = false) : any => {
+  recursiveAccumulateDotNotations: (notations: string[] = [], current: HTMLElement = document.body, accumulatedNotation: string = null, isContainingInReactClass: boolean = false): any => {
     if (HTMLHelper.hasAttribute(current, 'internal-fsb-react-mode')) {
       isContainingInReactClass = true;
     }
@@ -202,7 +202,7 @@ var SchemaHelper = {
 
     return notations;
   },
-  recursiveAccumulateFields: (schemata : any = {}, current : HTMLElement = document.body) : any => {
+  recursiveAccumulateFields: (schemata: any = {}, current: HTMLElement = document.body): any => {
     const sourceType = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-type');
     const sourceName = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-name') || '';
     const sourceColumn = HTMLHelper.getAttribute(current, 'internal-fsb-data-source-column') || '';
@@ -230,7 +230,7 @@ var SchemaHelper = {
 
     return schemata;
   },
-  generatePseudoSchemata: (page : any) => {
+  generatePseudoSchemata: (page: any) => {
     const schemata = {};
 
     for (const key in page.automaticSchemata) {
@@ -338,9 +338,9 @@ var SchemaHelper = {
 
     return schemata;
   },
-  declareNamespace: (tree : any, path : string) => {
+  declareNamespace: (tree: any, path: string) => {
     let splited = path.split('.');
-    let current : any = tree;
+    let current: any = tree;
 
     splited.forEach((name) => {
       if (current[name] === undefined) {
@@ -351,7 +351,7 @@ var SchemaHelper = {
 
     return current;
   },
-  generateTreeOfDotNotations: () : any => {
+  generateTreeOfDotNotations: (): any => {
     let notations = SchemaHelper.recursiveAccumulateDotNotations();
     let tree = {};
 
@@ -361,7 +361,7 @@ var SchemaHelper = {
 
     return tree;
   },
-  generateAutomaticSchemata: () : any => {
+  generateAutomaticSchemata: (): any => {
     let schemata = SchemaHelper.recursiveAccumulateFields();
     schemata['version'] = '1.1';
 
@@ -491,4 +491,4 @@ var SchemaHelper = {
   }
 };
 
-export { SchemaHelper };
+export {SchemaHelper};

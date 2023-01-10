@@ -1,20 +1,20 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { EventHelper } from '../../../helpers/EventHelper';
-import { RequestHelper } from '../../../helpers/RequestHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { LIBRARIES, DEBUG_SITE_PREVIEW } from '../../../Constants';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {EventHelper} from '../../../helpers/EventHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_SITE_PREVIEW} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  loading : boolean;
-  location : string;
+  loading: boolean;
+  location: string;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -28,17 +28,17 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class SVGEditor extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
-  protected static container : any = null;
-  protected static external : any = null;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
+  protected static container: any = null;
+  protected static external: any = null;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
@@ -48,18 +48,18 @@ class SVGEditor extends Base<Props, State> {
   }
 
   public open() {
-    this.setState({ loading: true, location: 'about:blank' });
+    this.setState({loading: true, location: 'about:blank'});
     HTMLHelper.addClass(document.body, 'internal-fsb-external-on');
   }
 
-  public start(display : boolean = true) {
-    this.setState({ loading: true });
+  public start(display: boolean = true) {
+    this.setState({loading: true});
     HTMLHelper.addClass(document.body, 'internal-fsb-external-on');
 
     const svgText = this.state.attributeValues[this.props.watchingAttributeNames[0]] || `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="currentColor" class="bi bi-box-fill" viewBox="0 0 256 256"></svg>`;
     const svgTextAsBase64 = Base64.encode(svgText);
 
-    this.setState({ location: `/editor/svg-editor.html?source=${encodeURIComponent('data:image/svg+xml;base64,' + svgTextAsBase64)}` });
+    this.setState({location: `/editor/svg-editor.html?source=${encodeURIComponent('data:image/svg+xml;base64,' + svgTextAsBase64)}`});
     this.forceUpdate();
 
     this.container = ReactDOM.findDOMNode(this.refs.container);
@@ -71,7 +71,7 @@ class SVGEditor extends Base<Props, State> {
 
   public load() {
     if (this.state.location == 'about:blank' || this.state.location == null) return;
-    this.setState({ loading: false });
+    this.setState({loading: false});
 
     if (this.external) {
       const externalWindow = this.external.contentWindow || this.external.contentDocument.document || this.external.contentDocument;
@@ -100,7 +100,7 @@ class SVGEditor extends Base<Props, State> {
   private close(error) {
     if (error && error.message) console.error(error.message);
 
-    this.setState({ loading: false, location: 'about:blank' });
+    this.setState({loading: false, location: 'about:blank'});
     HTMLHelper.removeClass(document.body, 'internal-fsb-external-on');
 
     if (this.container) {
@@ -143,4 +143,4 @@ class SVGEditor extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.SVGEditor', SVGEditor);
 
-export { Props, State, SVGEditor };
+export {Props, State, SVGEditor};

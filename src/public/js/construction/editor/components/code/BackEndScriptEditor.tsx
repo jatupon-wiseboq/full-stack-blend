@@ -1,21 +1,21 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode } from '../../../helpers/BackEndScriptHelper';
-import { CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST } from '../../../Constants';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {BackEndScriptHelper, CONTROLLER_DEFAULTS, CONNECTOR_DEFAULTS, WORKER_DEFAULTS, SCHEDULER_DEFAULTS, TemplateCode} from '../../../helpers/BackEndScriptHelper';
+import {CAMEL_OF_EVENTS_DICTIONARY, FORM_CONTROL_CLASS_LIST} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
-declare let ace : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
+declare let ace: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  value : string,
-  defaults : any
+  value: string,
+  defaults: any
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -74,7 +74,7 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class BackEndScriptEditor extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
@@ -89,9 +89,9 @@ class BackEndScriptEditor extends Base<Props, State> {
     ace.config.set('basePath', 'https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.6/');
   }
 
-  functionNameMapping : any = {}
+  functionNameMapping: any = {}
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
     if (properties.tag == 'user-action') return;
 
@@ -352,8 +352,8 @@ class BackEndScriptEditor extends Base<Props, State> {
   render() {
     return (
       <div>
-        <div style={{ display: (this.state.value == '') ? 'none' : 'block' }}>
-          <ReactAce.default style={{ position: 'absolute', width: '100%', height: '100%' }}
+        <div style={{display: (this.state.value == '') ? 'none' : 'block'}}>
+          <ReactAce.default style={{position: 'absolute', width: '100%', height: '100%'}}
             name="backEndEditor"
             mode="typescript"
             theme="tomorrow"
@@ -371,8 +371,8 @@ class BackEndScriptEditor extends Base<Props, State> {
             }}
           />
         </div>
-        <div className="text-center" style={{ display: (this.state.value == '') ? 'block' : 'none' }}>
-          <i className="fa fa-object-group" style={{ fontSize: '50px', color: '#f0f0f0', paddingTop: '85px' }} />
+        <div className="text-center" style={{display: (this.state.value == '') ? 'block' : 'none'}}>
+          <i className="fa fa-object-group" style={{fontSize: '50px', color: '#f0f0f0', paddingTop: '85px'}} />
         </div>
       </div>
     )
@@ -381,4 +381,4 @@ class BackEndScriptEditor extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.BackEndScriptEditor', BackEndScriptEditor);
 
-export { Props, State, BackEndScriptEditor };
+export {Props, State, BackEndScriptEditor};

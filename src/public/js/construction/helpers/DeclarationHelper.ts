@@ -1,9 +1,9 @@
 var FullStackBlend = {};
 
 var DeclarationHelper = {
-  declareNamespace: (path : string) => {
+  declareNamespace: (path: string) => {
     let splited = path.split('.');
-    let current : any = FullStackBlend;
+    let current: any = FullStackBlend;
 
     splited.forEach((name) => {
       if (current[name] === undefined) {
@@ -15,7 +15,7 @@ var DeclarationHelper = {
     return current;
   },
 
-  'declare': (path : string, klass : any) => {
+  'declare': (path: string, klass: any) => {
     let splited = path.split('.');
     let name = splited.pop();
     let namespacePath = splited.join('.');
@@ -27,4 +27,4 @@ var DeclarationHelper = {
   }
 };
 
-export { FullStackBlend, DeclarationHelper };
+export {FullStackBlend, DeclarationHelper};

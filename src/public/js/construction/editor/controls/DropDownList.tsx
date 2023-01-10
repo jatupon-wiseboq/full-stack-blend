@@ -1,34 +1,34 @@
-import { HTMLHelper } from '../../helpers/HTMLHelper';
-import { EventHelper } from '../../helpers/EventHelper';
-import { FullStackBlend, DeclarationHelper } from '../../helpers/DeclarationHelper';
+import {HTMLHelper} from '../../helpers/HTMLHelper';
+import {EventHelper} from '../../helpers/EventHelper';
+import {FullStackBlend, DeclarationHelper} from '../../helpers/DeclarationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  options : [any];
-  controls : any;
-  identity : any;
-  onUpdate(identity : any, value : any, index : any);
-  onVisibleChanged(visible : boolean, tag : any);
-  autohide : boolean;
-  inline : boolean;
-  customClassName : string;
-  searchBox : boolean;
-  useMaximumHeight : boolean;
-  width : number;
-  optionPadding : number;
-  tag : any;
-  isSupportAnimatable : boolean;
+  options: [any];
+  controls: any;
+  identity: any;
+  onUpdate(identity: any, value: any, index: any);
+  onVisibleChanged(visible: boolean, tag: any);
+  autohide: boolean;
+  inline: boolean;
+  customClassName: string;
+  searchBox: boolean;
+  useMaximumHeight: boolean;
+  width: number;
+  optionPadding: number;
+  tag: any;
+  isSupportAnimatable: boolean;
 }
 
 interface State extends IState {
-  filter : string;
+  filter: string;
 }
 
 class DropDownList extends React.Component<Props, State> {
-  state : IState = { filter: '' }
-  static defaultProps : Props = {
+  state: IState = {filter: ''}
+  static defaultProps: Props = {
     options: [],
     controls: [],
     autohide: true,
@@ -40,9 +40,9 @@ class DropDownList extends React.Component<Props, State> {
     inline: false
   }
 
-  private documentOnClickDelegate : Function = null;
-  private recentDropDownMaxHeight : number = 0;
-  private maximumWidth : number = 0;
+  private documentOnClickDelegate: Function = null;
+  private recentDropDownMaxHeight: number = 0;
+  private maximumWidth: number = 0;
 
   constructor(props) {
     super(props);
@@ -209,4 +209,4 @@ class DropDownList extends React.Component<Props, State> {
 
 DeclarationHelper.declare('Controls.DropDownList', DropDownList);
 
-export { Props, State, DropDownList };
+export {Props, State, DropDownList};

@@ -1,20 +1,20 @@
-import { TextHelper } from '../../../helpers/TextHelper';
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/DropDownList';
-import { RESPONSIVE_SIZE_REGEX } from '../../../Constants';
+import {RESPONSIVE_SIZE_REGEX} from '../../../Constants';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 const INHERITING_OPTION = '<i class="fa fa-angle-left"></i>';
 
 interface Props extends IProps {
-  options : number[];
-  defaultOption : number;
-  prefix : string;
+  options: number[];
+  defaultOption: number;
+  prefix: string;
 }
 
 interface State extends IState {
@@ -32,24 +32,24 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class GridPicker extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
-  private recentElement : HTMLElement = null;
-  private recentDropdown : HTMLElement = null;
-  private documentOnClickDelegate : Function = null;
-  private recentElementClassName : string = '';
+  private recentElement: HTMLElement = null;
+  private recentDropdown: HTMLElement = null;
+  private documentOnClickDelegate: Function = null;
+  private recentElementClassName: string = '';
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     this.recentElementClassName = properties.attributes && properties.attributes['class'] || '';
 
     super.update(properties);
   }
 
-  protected dropdownOnUpdate(identity : any, value : any, index : any) {
+  protected dropdownOnUpdate(identity: any, value: any, index: any) {
     let elementClassName = this.recentElementClassName;
 
     elementClassName = elementClassName.replace(this.props.watchingClassNames[identity], '');
@@ -83,7 +83,7 @@ class GridPicker extends Base<Props, State> {
     ReactDOM.findDOMNode(this.refs["selectedValue" + identity]).innerHTML = value.toString();
   }
 
-  private getSelectedValue(index : number) {
+  private getSelectedValue(index: number) {
     let status = this.state.classNameStatuses[this.props.watchingClassNames[index]];
     if (status) {
       return status[1].toString();
@@ -118,4 +118,4 @@ class GridPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.GridPicker', GridPicker);
 
-export { Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker };
+export {Props, State, ExtendedDefaultState, ExtendedDefaultProps, GridPicker};

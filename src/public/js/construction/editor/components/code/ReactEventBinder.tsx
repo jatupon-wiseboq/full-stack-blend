@@ -1,5 +1,5 @@
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/DropDownControl';
 import '../generic/RadioButtonPicker';
 import '../generic/TextPicker';
@@ -88,16 +88,16 @@ const options = {
   "onfsbwaiting": CONSTANTS.MEDIA_EVENT_HANDLING_OPTIONS
 }
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
-  mode : string;
+  mode: string;
 }
 
 interface State extends IState {
-  enabled : boolean;
-  visible : boolean;
+  enabled: boolean;
+  visible: boolean;
 }
 
 let ExtendedDefaultProps = Object.assign({}, DefaultProps);
@@ -112,16 +112,16 @@ Object.assign(ExtendedDefaultState, {
 });
 
 class ReactEventBinder extends Base<Props, State> {
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
-    let option : any = this.state.attributeValues[this.props.watchingAttributeNames[0]];
+    let option: any = this.state.attributeValues[this.props.watchingAttributeNames[0]];
     option = option && JSON.parse(option) || {};
 
     this.setState({
@@ -139,19 +139,19 @@ class ReactEventBinder extends Base<Props, State> {
     return (value.event == true);
   }
 
-  private dropDownOnVisibleChanged(visible : boolean, tag : any) {
+  private dropDownOnVisibleChanged(visible: boolean, tag: any) {
     this.state.visible = visible;
   }
 
   render() {
     return (
       <div className="btn-group btn-group-sm">
-        <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{ fontSize: '12px', color: (this.getState()) ? "#ffffff" : "" }}>
+        <a className={"btn text-center p-0 mr-1 mb-1" + ((this.getState()) ? " btn-primary" : " btn-light")} style={{fontSize: '12px', color: (this.getState()) ? "#ffffff" : ""}}>
           {(() => {
             if (this.props.mode == 'coding') {
               return (
                 <FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
-                  <div className="section-container" style={{ width: '225px' }}>
+                  <div className="section-container" style={{width: '225px'}}>
                     <div className="section-title">Customize Binding</div>
                     <div className="section-subtitle">Binding</div>
                     <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]} /></div>
@@ -166,11 +166,11 @@ class ReactEventBinder extends Base<Props, State> {
             } else {
               return (
                 <FullStackBlend.Controls.DropDownControl ref="dropdown" representing={'<div class="px-2 py-1">' + this.props.watchingAttributeNames[0].replace(/onfsb(document)?/, '') + "</div>"} offsetX={-8} offsetY={7} onVisibleChanged={this.dropDownOnVisibleChanged.bind(this)}>
-                  <div className="section-container" style={{ width: '225px' }}>
+                  <div className="section-container" style={{width: '225px'}}>
                     <div className="section-title">Customize Binding</div>
                     <div className="section-subtitle">Binding</div>
                     <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"event": true}', ["fa-power-off", "enable"]]]} /></div>
-                    <div className="animation-picker-container" style={{ display: this.state.enabled ? 'block' : 'none' }}>
+                    <div className="animation-picker-container" style={{display: this.state.enabled ? 'block' : 'none'}}>
                       <div className="section-subtitle">Add Tracks</div>
                       <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'add-animation-tracks'} /></div>
                       <div className="section-subtitle">Auto Remove Tracks When Finish</div>
@@ -179,7 +179,7 @@ class ReactEventBinder extends Base<Props, State> {
                       <div className="section-body"><FullStackBlend.Components.AnimationPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} keyName={'remove-animation-tracks'} /></div>
                       <div className="section-subtitle">Perform at Element</div>
                       <div className="section-body"><FullStackBlend.Components.RadioButtonPicker watchingAttributeNames={[this.props.watchingAttributeNames[0]]} options={[[this.props.watchingAttributeNames[0], '{"animation-at-element": true}', ["fa-power-off", "enable"]]]} /></div>
-                      <div style={{ display: `${this.state.attributeValues[this.props.watchingAttributeNames[0]]}`.indexOf('animation-at-element') == -1 && 'none' }}>
+                      <div style={{display: `${this.state.attributeValues[this.props.watchingAttributeNames[0]]}`.indexOf('animation-at-element') == -1 && 'none'}}>
                         <div className="section-subtitle">Custom Targeting Element</div>
                         <div className="section-body"><FullStackBlend.Components.TextPicker watchingAttributeNames={[this.props.watchingAttributeNames[0].replace('onfsb', 'internal-fsb-targeting-')]} inline={true} placeholder='GUID' /></div>
                       </div>
@@ -202,4 +202,4 @@ class ReactEventBinder extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.ReactEventBinder', ReactEventBinder);
 
-export { ExtendedDefaultProps, ExtendedDefaultState, ReactEventBinder };
+export {ExtendedDefaultProps, ExtendedDefaultState, ReactEventBinder};

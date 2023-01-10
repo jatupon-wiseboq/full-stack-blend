@@ -1,19 +1,19 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction } from './ConnectionHelper';
-import { CodeHelper } from './CodeHelper';
-import { NotificationHelper } from './NotificationHelper';
-import { DataFormationHelper } from './DataFormationHelper';
-import { RequestHelper } from './RequestHelper';
-import { ValidationInfo } from './ValidationHelper';
-import { PermissionHelper } from './PermissionHelper';
-import { ActionHelper } from './ActionHelper';
-import { WorkerHelper } from './WorkerHelper';
-import { ProjectConfigurationHelper, SourceType } from './ProjectConfigurationHelper';
-import { FieldType, DataTableSchema } from './SchemaHelper';
-import { DataTypes, Op } from 'sequelize';
-import { ObjectID } from 'mongodb';
+import {VolatileMemoryClient, RelationalDatabaseClient, RelationalDatabaseORMClient, DocumentDatabaseClient, PrioritizedWorkerClient, CreateTransaction} from './ConnectionHelper';
+import {CodeHelper} from './CodeHelper';
+import {NotificationHelper} from './NotificationHelper';
+import {DataFormationHelper} from './DataFormationHelper';
+import {RequestHelper} from './RequestHelper';
+import {ValidationInfo} from './ValidationHelper';
+import {PermissionHelper} from './PermissionHelper';
+import {ActionHelper} from './ActionHelper';
+import {WorkerHelper} from './WorkerHelper';
+import {ProjectConfigurationHelper, SourceType} from './ProjectConfigurationHelper';
+import {FieldType, DataTableSchema} from './SchemaHelper';
+import {DataTypes, Op} from 'sequelize';
+import {ObjectID} from 'mongodb';
 
 const DEFAULT_DOCUMENT_DATABASE_NAME = process.env.MONGODB_DEFAULT_DATABASE_NAME;
 
@@ -38,45 +38,45 @@ enum OperationType {
   Exclude
 }
 interface HierarchicalDataTable {
-  source : SourceType;
-  group : string;
-  rows : HierarchicalDataRow[];
-  notification ?: string;
-  associate ?: boolean;
-  notify ?: string[];
-  forwarded ?: boolean;
+  source: SourceType;
+  group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
+  associate?: boolean;
+  notify?: string[];
+  forwarded?: boolean;
 }
 interface HierarchicalDataRow {
-  keys : { [Identifier : string] : any };
-  columns : { [Identifier : string] : any };
-  relations : { [Identifier : string] : HierarchicalDataTable };
-  division ?: number[];
-  timestamp ?: number;
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  division?: number[];
+  timestamp?: number;
 }
 interface HierarchicalDataFilter {
-  name : string;
-  operation : OperationType;
-  value : any;
+  name: string;
+  operation: OperationType;
+  value: any;
 }
 
 interface Input {
-  target : SourceType;
-  group : string;
-  name : string;
-  value : any;
-  guid : string;
-  premise : string;
-  validation : ValidationInfo;
-  division ?: number[];
-  associate ?: boolean;
-  notify ?: boolean;
+  target: SourceType;
+  group: string;
+  name: string;
+  value: any;
+  guid: string;
+  premise: string;
+  validation: ValidationInfo;
+  division?: number[];
+  associate?: boolean;
+  notify?: boolean;
 }
 
 interface BooleanObject {
-  value : boolean;
+  value: boolean;
 }
 
-const fixType = (type : FieldType, value : any) : any => {
+const fixType = (type: FieldType, value: any): any => {
   if (value === undefined) return value;
   if (value === null) return value;
 
@@ -106,7 +106,7 @@ const fixType = (type : FieldType, value : any) : any => {
 
   return value;
 };
-const isObjectID = (value : string) : boolean => {
+const isObjectID = (value: string): boolean => {
   if (value && value.length != 24) return false;
   if (value && value.indexOf('.') != -1) return false;
 
@@ -114,7 +114,7 @@ const isObjectID = (value : string) : boolean => {
 };
 
 const DatabaseHelper = {
-  distinct: (data : Input[]) => {
+  distinct: (data: Input[]) => {
     const remove = [];
     const hash = {};
 
@@ -131,7 +131,7 @@ const DatabaseHelper = {
       data.splice(data.indexOf(item), 1);
     }
   },
-  satisfy: (data : Input[], action : ActionType, schema : DataTableSchema, premise : string = null, division : number[] = [], associate : boolean = false) : boolean => {
+  satisfy: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string = null, division: number[] = [], associate: boolean = false): boolean => {
     if (data.length == 0) return false;
 
     data = CodeHelper.clone(data);
@@ -252,9 +252,9 @@ const DatabaseHelper = {
       return true;
     }
   },
-  getRows: (data : Input[], action : ActionType, schema : DataTableSchema, premise : string = null, division : number[], matches : Input[], associate : boolean = false) : HierarchicalDataRow[] => {
-    const results : HierarchicalDataRow[] = [];
-    const map : any = {};
+  getRows: (data: Input[], action: ActionType, schema: DataTableSchema, premise: string = null, division: number[], matches: Input[], associate: boolean = false): HierarchicalDataRow[] => {
+    const results: HierarchicalDataRow[] = [];
+    const map: any = {};
     let found = false;
 
     for (const input of data) {
@@ -265,7 +265,7 @@ const DatabaseHelper = {
       found = true;
 
       const key = input.division.join(',');
-      let row : HierarchicalDataRow;
+      let row: HierarchicalDataRow;
       if (!map[key]) {
         row = {
           keys: {},
@@ -537,14 +537,14 @@ const DatabaseHelper = {
 
     return results;
   },
-  prepareData: (data : Input[], action : ActionType, baseSchema : DataTableSchema, crossRelationUpsert = false) : { [Identifier : string] : HierarchicalDataTable } => {
+  prepareData: (data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert = false): {[Identifier: string]: HierarchicalDataTable} => {
     data = CodeHelper.clone(data);
 
     RequestHelper.sortInputs(data);
 
     const original = [...new Set(data.map(item => (item.premise ? item.premise + '.' : '') + item.group + '.' + item.name + '[' + item.division.join(',') + ']'))].join(', ');
 
-    const results : { [Identifier : string] : HierarchicalDataTable } = {};
+    const results: {[Identifier: string]: HierarchicalDataTable} = {};
     let length = 0;
     let count = 0;
 
@@ -557,7 +557,7 @@ const DatabaseHelper = {
 
     return results;
   },
-  recursivePrepareData: (results : { [Identifier : string] : HierarchicalDataTable }, data : Input[], action : ActionType, baseSchema : DataTableSchema, crossRelationUpsert = false, division : number[], premise : string = null, associate : boolean = false) => {
+  recursivePrepareData: (results: {[Identifier: string]: HierarchicalDataTable}, data: Input[], action: ActionType, baseSchema: DataTableSchema, crossRelationUpsert = false, division: number[], premise: string = null, associate: boolean = false) => {
     const tables = [];
 
     DatabaseHelper.distinct(data);
@@ -566,7 +566,7 @@ const DatabaseHelper = {
       for (const key in ProjectConfigurationHelper.getDataSchema().tables) {
         if (ProjectConfigurationHelper.getDataSchema().tables.hasOwnProperty(key)) {
           const _associate = associate || data.some(input => input.group == key && input.associate === true);
-          const _notify = data.filter(input => input.group == key && input.notify === true).map((input) => { return input.name; });
+          const _notify = data.filter(input => input.group == key && input.notify === true).map((input) => {return input.name;});
 
           if (DatabaseHelper.satisfy(data, action, ProjectConfigurationHelper.getDataSchema().tables[key], premise, division, _associate)) {
             baseSchema = ProjectConfigurationHelper.getDataSchema().tables[key];
@@ -589,7 +589,7 @@ const DatabaseHelper = {
       }
     } else {
       const _associate = associate || data.some(input => input.group == baseSchema.group && input.associate === true);
-      const _notify = data.filter(input => input.group == baseSchema.group && input.notify === true).map((input) => { return input.name; });
+      const _notify = data.filter(input => input.group == baseSchema.group && input.notify === true).map((input) => {return input.name;});
 
       if (DatabaseHelper.satisfy(data, action, baseSchema, premise, division, _associate)) {
         const matches = [];
@@ -675,8 +675,8 @@ const DatabaseHelper = {
             DatabaseHelper.recursivePrepareData(row.relations, data, (crossRelationUpsert) ? ActionType.Upsert : action, ProjectConfigurationHelper.getDataSchema().tables[key], crossRelationUpsert, row.division, nextPremise, _associate);
           }
 
-          const _tables = Object.keys(row.relations).map((key : string) => { return row.relations[key]; });
-          _tables.sort((a : HierarchicalDataTable, b : HierarchicalDataTable) => {
+          const _tables = Object.keys(row.relations).map((key: string) => {return row.relations[key];});
+          _tables.sort((a: HierarchicalDataTable, b: HierarchicalDataTable) => {
             if (a.associate !== b.associate) return (a.associate === true) ? 1 : -1;
             else return 0;
           });
@@ -689,10 +689,10 @@ const DatabaseHelper = {
       }
     }
   },
-  ormMap: (schema : DataTableSchema) : any => {
+  ormMap: (schema: DataTableSchema): any => {
     if (!RelationalDatabaseORMClient.models[schema.group]) {
       const columns = {};
-      const options = { tableName: schema.group };
+      const options = {tableName: schema.group};
 
       for (const key in schema.columns) {
         if (schema.columns.hasOwnProperty(key)) {
@@ -776,18 +776,18 @@ const DatabaseHelper = {
 
     return RelationalDatabaseORMClient.models[schema.group];
   },
-  formatKeysAndColumns: (row : HierarchicalDataRow, schema : DataTableSchema, skipAutoNumber = false) : [{ [Identifier : string] : any }, { [Identifier : string] : any }, { [Identifier : string] : any }, { [Identifier : string] : any }] => {
-    const queryKeys : { [Identifier : string] : any } = {};
-    const queryColumns : { [Identifier : string] : any } = {};
-    const dataKeys : { [Identifier : string] : any } = {};
-    const dataColumns : { [Identifier : string] : any } = {};
+  formatKeysAndColumns: (row: HierarchicalDataRow, schema: DataTableSchema, skipAutoNumber = false): [{[Identifier: string]: any}, {[Identifier: string]: any}, {[Identifier: string]: any}, {[Identifier: string]: any}] => {
+    const queryKeys: {[Identifier: string]: any} = {};
+    const queryColumns: {[Identifier: string]: any} = {};
+    const dataKeys: {[Identifier: string]: any} = {};
+    const dataColumns: {[Identifier: string]: any} = {};
 
     for (const key in schema.columns) {
       if (schema.columns.hasOwnProperty(key) && row.columns[key] != undefined) {
         if (skipAutoNumber == true && schema.columns[key].fieldType == FieldType.AutoNumber) continue;
         if (skipAutoNumber == true && schema.source == SourceType.Document && key == 'id') continue;
         if (schema.source == SourceType.Document) {
-          queryColumns[(key == 'id') ? '_id' : key] = { $eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key] };
+          queryColumns[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key]};
           dataColumns[(key == 'id') ? '_id' : key] = isObjectID(`${row.columns[key]}`) && new ObjectID(row.columns[key]) || row.columns[key];
         } else {
           const value = (typeof row.columns[key] === 'object' && row.columns[key] != null && row.columns[key].constructor.name === 'ObjectID') ? row.columns[key].toString() : row.columns[key];
@@ -801,7 +801,7 @@ const DatabaseHelper = {
         if (skipAutoNumber == true && schema.keys[key].fieldType == FieldType.AutoNumber) continue;
         if (skipAutoNumber == true && schema.source == SourceType.Document && key == 'id') continue;
         if (schema.source == SourceType.Document) {
-          queryKeys[(key == 'id') ? '_id' : key] = { $eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key] };
+          queryKeys[(key == 'id') ? '_id' : key] = {$eq: isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key]};
           dataKeys[(key == 'id') ? '_id' : key] = isObjectID(`${row.keys[key]}`) && new ObjectID(row.keys[key]) || row.keys[key];
         } else {
           const value = (typeof row.keys[key] === 'object' && row.keys[key] != null && row.keys[key].constructor.name === 'ObjectID') ? row.keys[key].toString() : row.keys[key];
@@ -813,11 +813,11 @@ const DatabaseHelper = {
 
     return [queryKeys, queryColumns, dataKeys, dataColumns];
   },
-  forwardRecordSet: async (schema : DataTableSchema, results : HierarchicalDataRow[], transaction : any) => {
+  forwardRecordSet: async (schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any) => {
     await DatabaseHelper.recurrentForwardRecordSet(schema, results, undefined, undefined, transaction);
     await DatabaseHelper.recursiveForwardRecordSet(schema, results, undefined, undefined, transaction);
   },
-  recursiveForwardRecordSet: async (forwardingSchema : DataTableSchema, forwardingResults : HierarchicalDataRow[] = [], nextForwardedSchema : DataTableSchema = null, nextForwardedResults : HierarchicalDataRow[] = [], transaction : any = null, isRoot : boolean = true, walked : string[] = []) => {
+  recursiveForwardRecordSet: async (forwardingSchema: DataTableSchema, forwardingResults: HierarchicalDataRow[] = [], nextForwardedSchema: DataTableSchema = null, nextForwardedResults: HierarchicalDataRow[] = [], transaction: any = null, isRoot: boolean = true, walked: string[] = []) => {
     if (!forwardingSchema.forward) return;
     if (forwardingSchema.source != SourceType.Document) return;
     if (forwardingResults.length == 0) return;
@@ -831,7 +831,7 @@ const DatabaseHelper = {
       if (!nextSchema) throw new Error(`Developer specified a non-existing of forwarding tables for '${forwardingSchema.group}'.`);
       if (!forwardingSchema.relations[nextSchema.group]) throw new Error(`Developer specified a non-related of forwarding tables for '${forwardingSchema.group}'.`);
 
-      const nextTable : HierarchicalDataTable = {
+      const nextTable: HierarchicalDataTable = {
         source: nextSchema.source,
         group: nextSchema.group,
         rows: []
@@ -846,7 +846,7 @@ const DatabaseHelper = {
       }
 
       for (const [index, result] of forwardingResults.entries()) {
-        const nextQuery = { keys: {}, columns: {}, relations: {} };
+        const nextQuery = {keys: {}, columns: {}, relations: {}};
         if (isRoot) result.relations = {};
 
         if (forwardingSchema.columns.hasOwnProperty(relation.sourceEntity)) {
@@ -886,7 +886,7 @@ const DatabaseHelper = {
           }, nextSchema, nextDataset, undefined, undefined, undefined, transaction);
         }
 
-        const embeddingQuery = { keys: {}, columns: {}, relations: {} };
+        const embeddingQuery = {keys: {}, columns: {}, relations: {}};
 
         if (forwardingSchema.columns.hasOwnProperty(relation.sourceEntity)) {
           embeddingQuery.columns[relation.sourceEntity] = result.columns[relation.sourceEntity];
@@ -906,14 +906,14 @@ const DatabaseHelper = {
         };
 
         const records = await new Promise<any[]>(async (resolve, reject) => {
-          let queryKeys : { [Identifier : string] : any } = {};
-          let queryColumns : { [Identifier : string] : any } = {};
-          let dataKeys : { [Identifier : string] : any } = {};
-          let dataColumns : { [Identifier : string] : any } = {};
+          let queryKeys: {[Identifier: string]: any} = {};
+          let queryColumns: {[Identifier: string]: any} = {};
+          let dataKeys: {[Identifier: string]: any} = {};
+          let dataColumns: {[Identifier: string]: any} = {};
 
           [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(embeddingQuery, forwardingSchema, true);
 
-          await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys), { session: transaction.documentDatabaseSession }).toArray((error : any, results : any) => {
+          await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(forwardingSchema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
             if (error) {
               reject(error);
             } else {
@@ -947,7 +947,7 @@ const DatabaseHelper = {
           embeddingDataset[forwardingSchema.group].rows.push(row);
         }
 
-        const embeddingResults : HierarchicalDataRow[] = embeddingDataset[forwardingSchema.group].rows;
+        const embeddingResults: HierarchicalDataRow[] = embeddingDataset[forwardingSchema.group].rows;
 
         if (forwardingSchema.forward.option == 'single') {
           embeddingResults.splice(0, 1);
@@ -986,14 +986,14 @@ const DatabaseHelper = {
           }
 
           if (Object.keys(nextResult.keys).length != 0) {
-            let queryKeys : { [Identifier : string] : any } = {};
-            let queryColumns : { [Identifier : string] : any } = {};
-            let dataKeys : { [Identifier : string] : any } = {};
-            let dataColumns : { [Identifier : string] : any } = {};
+            let queryKeys: {[Identifier: string]: any} = {};
+            let queryColumns: {[Identifier: string]: any} = {};
+            let dataKeys: {[Identifier: string]: any} = {};
+            let dataColumns: {[Identifier: string]: any} = {};
 
             [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(nextResult, nextSchema, true);
 
-            await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, { $set: properties }, { session: transaction.documentDatabaseSession });
+            await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(nextSchema.group).updateOne(queryKeys, {$set: properties}, {session: transaction.documentDatabaseSession});
             nextResult.columns = Object.assign(nextResult.columns, properties);
           }
         }
@@ -1004,7 +1004,7 @@ const DatabaseHelper = {
       }
     }
   },
-  recurrentForwardRecordSet: async (forwardedSchema : DataTableSchema, forwardedResults : HierarchicalDataRow[], previousForwardedSchema : DataTableSchema = null, previousForwardedResults : HierarchicalDataRow[] = [], transaction : any = null, walked : string[] = []) => {
+  recurrentForwardRecordSet: async (forwardedSchema: DataTableSchema, forwardedResults: HierarchicalDataRow[], previousForwardedSchema: DataTableSchema = null, previousForwardedResults: HierarchicalDataRow[] = [], transaction: any = null, walked: string[] = []) => {
     if (forwardedResults.length == 0) return;
 
     for (const key in forwardedSchema.relations) {
@@ -1031,7 +1031,7 @@ const DatabaseHelper = {
         };
 
         for (const result of forwardedResults) {
-          const forwardingQuery = { keys: {}, columns: {}, relations: {} };
+          const forwardingQuery = {keys: {}, columns: {}, relations: {}};
 
           if (forwardedSchema.columns.hasOwnProperty(relation.sourceEntity)) {
             if (forwardingSchema.columns.hasOwnProperty(relation.targetEntity)) {
@@ -1067,13 +1067,13 @@ const DatabaseHelper = {
       }
     }
   },
-  insert: async (data : Input[], baseSchema : DataTableSchema, crossRelationUpsert = false, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = [], transaction : any = null) : Promise<HierarchicalDataRow[]> => {
+  insert: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert = false, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = [], transaction: any = null): Promise<HierarchicalDataRow[]> => {
     return new Promise(async (resolve, reject) => {
       try {
         const list = DatabaseHelper.prepareData(data, ActionType.Insert, baseSchema, crossRelationUpsert);
         const results = [];
 
-        if (!transaction) transaction = await CreateTransaction({ share: !PermissionHelper.hasPermissionDefining(ActionType.Insert, list) });
+        if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Insert, list)});
 
         for (const key in list) {
           if (list.hasOwnProperty(key)) {
@@ -1096,7 +1096,7 @@ const DatabaseHelper = {
       }
     });
   },
-  performRecursiveInsert: async (input : HierarchicalDataTable, schema : DataTableSchema, results : HierarchicalDataRow[], transaction : any, crossRelationUpsert = false, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = []) : Promise<void> => {
+  performRecursiveInsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert = false, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = []): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         switch (input.source) {
@@ -1114,18 +1114,18 @@ const DatabaseHelper = {
             if (input.source == SourceType.Relational && input.rows.length > 1) {
               const records = [];
               for (const row of input.rows) {
-                let queryKeys : { [Identifier : string] : any } = {};
-                let queryColumns : { [Identifier : string] : any } = {};
-                let dataKeys : { [Identifier : string] : any } = {};
-                let dataColumns : { [Identifier : string] : any } = {};
+                let queryKeys: {[Identifier: string]: any} = {};
+                let queryColumns: {[Identifier: string]: any} = {};
+                let dataKeys: {[Identifier: string]: any} = {};
+                let dataColumns: {[Identifier: string]: any} = {};
 
                 [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
                 dataColumns['updatedAt'] = recent;
 
                 records.push(Object.assign({}, dataColumns, dataKeys));
               }
-              await map.bulkCreate(records, { transaction: transaction.relationalDatabaseTransaction });
-              bulkResults = await map.findAll({ where: { updatedAt: recent }, transaction: transaction.relationalDatabaseTransaction });
+              await map.bulkCreate(records, {transaction: transaction.relationalDatabaseTransaction});
+              bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 
               if (input.rows.length != bulkResults.length) throw new Error('Cannot matching all of results to inputs while performing bulk insertion.');
             }
@@ -1133,10 +1133,10 @@ const DatabaseHelper = {
             const persistingDictForVolatileMemory = {};
 
             for (const row of input.rows) {
-              let queryKeys : { [Identifier : string] : any } = {};
-              let queryColumns : { [Identifier : string] : any } = {};
-              let dataKeys : { [Identifier : string] : any } = {};
-              let dataColumns : { [Identifier : string] : any } = {};
+              let queryKeys: {[Identifier: string]: any} = {};
+              let queryColumns: {[Identifier: string]: any} = {};
+              let dataKeys: {[Identifier: string]: any} = {};
+              let dataColumns: {[Identifier: string]: any} = {};
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 
@@ -1148,10 +1148,10 @@ const DatabaseHelper = {
                 if (input.rows.length > 1) {
                   records[0] = bulkResults[input.rows.indexOf(row)];
                 } else {
-                  records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), { transaction: transaction.relationalDatabaseTransaction });
+                  records[0] = await map.create(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction});
                 }
               } else if (input.source == SourceType.Document) {
-                records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys), { session: transaction.documentDatabaseSession }))['ops'][0];
+                records[0] = (await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).insertOne(Object.assign({}, dataColumns, dataKeys), {session: transaction.documentDatabaseSession}))['ops'][0];
               } else if (input.source == SourceType.VolatileMemory) {
                 const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
                 records[0] = Object.assign({}, dataColumns, dataKeys);
@@ -1174,7 +1174,7 @@ const DatabaseHelper = {
 
                 if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Insert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to insert any row in ${schema.group}.`);
 
-                const result : any = {
+                const result: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -1296,13 +1296,13 @@ const DatabaseHelper = {
       }
     });
   },
-  upsert: async (data : Input[], baseSchema : DataTableSchema, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = [], transaction : any = null) : Promise<HierarchicalDataRow[]> => {
+  upsert: async (data: Input[], baseSchema: DataTableSchema, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = [], transaction: any = null): Promise<HierarchicalDataRow[]> => {
     return new Promise(async (resolve, reject) => {
       try {
         const list = DatabaseHelper.prepareData(data, ActionType.Upsert, baseSchema, true);
         const results = [];
 
-        if (!transaction) transaction = await CreateTransaction({ share: !PermissionHelper.hasPermissionDefining(ActionType.Upsert, list) });
+        if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Upsert, list)});
 
         for (const key in list) {
           if (list.hasOwnProperty(key)) {
@@ -1325,7 +1325,7 @@ const DatabaseHelper = {
       }
     });
   },
-  performRecursiveUpsert: async (input : HierarchicalDataTable, schema : DataTableSchema, results : HierarchicalDataRow[], transaction : any, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = []) : Promise<void> => {
+  performRecursiveUpsert: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = []): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         switch (input.source) {
@@ -1344,18 +1344,18 @@ const DatabaseHelper = {
             if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
               const records = [];
               for (const row of input.rows) {
-                let queryKeys : { [Identifier : string] : any } = {};
-                let queryColumns : { [Identifier : string] : any } = {};
-                let dataKeys : { [Identifier : string] : any } = {};
-                let dataColumns : { [Identifier : string] : any } = {};
+                let queryKeys: {[Identifier: string]: any} = {};
+                let queryColumns: {[Identifier: string]: any} = {};
+                let dataKeys: {[Identifier: string]: any} = {};
+                let dataColumns: {[Identifier: string]: any} = {};
 
                 [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
                 dataColumns['updatedAt'] = recent;
 
                 records.push(Object.assign({}, dataColumns, dataKeys));
               }
-              await map.bulkCreate(records, { updateOnDuplicate: [...Object.keys(schema.columns).filter(key => !schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction });
-              bulkResults = await map.findAll({ where: { updatedAt: recent }, transaction: transaction.relationalDatabaseTransaction });
+              await map.bulkCreate(records, {updateOnDuplicate: [...Object.keys(schema.columns).filter(key => !schema.columns[key].unique), 'updatedAt'], transaction: transaction.relationalDatabaseTransaction});
+              bulkResults = await map.findAll({where: {updatedAt: recent}, transaction: transaction.relationalDatabaseTransaction});
 
               input.rows = input.rows.splice(0, bulkResults.length); // Please make sure these won't be used except loop counting.
             }
@@ -1363,10 +1363,10 @@ const DatabaseHelper = {
             const persistingDictForVolatileMemory = {};
 
             for (const row of input.rows) {
-              let queryKeys : { [Identifier : string] : any } = {};
-              let queryColumns : { [Identifier : string] : any } = {};
-              let dataKeys : { [Identifier : string] : any } = {};
-              let dataColumns : { [Identifier : string] : any } = {};
+              let queryKeys: {[Identifier: string]: any} = {};
+              let queryColumns: {[Identifier: string]: any} = {};
+              let dataKeys: {[Identifier: string]: any} = {};
+              let dataColumns: {[Identifier: string]: any} = {};
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 
@@ -1378,11 +1378,11 @@ const DatabaseHelper = {
                 if (input.rows.length > 1 && allowBulkProcess) {
                   records[0] = bulkResults[input.rows.indexOf(row)];
                 } else {
-                  records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), { transaction: transaction.relationalDatabaseTransaction }))[0];
+                  records[0] = (await map.upsert(Object.assign({}, dataColumns, dataKeys), {transaction: transaction.relationalDatabaseTransaction}))[0];
                 }
               } else if (input.source == SourceType.Document) {
-                await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, { $set: Object.assign({}, dataColumns, dataKeys) }, { upsert: true, session: transaction.documentDatabaseSession });
-                records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, { session: transaction.documentDatabaseSession });
+                await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: Object.assign({}, dataColumns, dataKeys)}, {upsert: true, session: transaction.documentDatabaseSession});
+                records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
               } else if (input.source == SourceType.VolatileMemory) {
                 const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
                 records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1406,7 +1406,7 @@ const DatabaseHelper = {
 
                 if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Upsert, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to upsert any row in ${schema.group}.`);
 
-                const result : any = {
+                const result: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -1526,13 +1526,13 @@ const DatabaseHelper = {
       }
     });
   },
-  update: async (data : Input[], baseSchema : DataTableSchema, crossRelationUpsert = false, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = [], transaction : any = null) : Promise<HierarchicalDataRow[]> => {
+  update: async (data: Input[], baseSchema: DataTableSchema, crossRelationUpsert = false, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = [], transaction: any = null): Promise<HierarchicalDataRow[]> => {
     return new Promise(async (resolve, reject) => {
       try {
         const list = DatabaseHelper.prepareData(data, ActionType.Update, baseSchema, crossRelationUpsert);
         const results = [];
 
-        if (!transaction) transaction = await CreateTransaction({ share: !PermissionHelper.hasPermissionDefining(ActionType.Update, list) });
+        if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Update, list)});
 
         for (const key in list) {
           if (list.hasOwnProperty(key)) {
@@ -1555,7 +1555,7 @@ const DatabaseHelper = {
       }
     });
   },
-  performRecursiveUpdate: async (input : HierarchicalDataTable, schema : DataTableSchema, results : HierarchicalDataRow[], transaction : any, crossRelationUpsert = false, session : any = null, leavePermission : boolean = false, innerCircleTags : string[] = []) : Promise<void> => {
+  performRecursiveUpdate: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, crossRelationUpsert = false, session: any = null, leavePermission: boolean = false, innerCircleTags: string[] = []): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         switch (input.source) {
@@ -1571,10 +1571,10 @@ const DatabaseHelper = {
             const persistingDictForVolatileMemory = {};
 
             for (const row of input.rows) {
-              let queryKeys : { [Identifier : string] : any } = {};
-              let queryColumns : { [Identifier : string] : any } = {};
-              let dataKeys : { [Identifier : string] : any } = {};
-              let dataColumns : { [Identifier : string] : any } = {};
+              let queryKeys: {[Identifier: string]: any} = {};
+              let queryColumns: {[Identifier: string]: any} = {};
+              let dataKeys: {[Identifier: string]: any} = {};
+              let dataColumns: {[Identifier: string]: any} = {};
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 
@@ -1583,13 +1583,13 @@ const DatabaseHelper = {
               let records = [];
 
               if (input.source == SourceType.Relational) {
-                await map.update(dataColumns, { where: queryKeys, transaction: transaction.relationalDatabaseTransaction });
-                records[0] = await map.findOne({ where: queryKeys, transaction: transaction.relationalDatabaseTransaction });
+                await map.update(dataColumns, {where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
+                records[0] = await map.findOne({where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
               } else if (input.source == SourceType.Document) {
                 if (Object.keys(dataColumns).length != 0) {
-                  await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, { $set: dataColumns }, { session: transaction.documentDatabaseSession });
+                  await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).updateOne(queryKeys, {$set: dataColumns}, {session: transaction.documentDatabaseSession});
                 }
-                records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, { session: transaction.documentDatabaseSession });
+                records[0] = await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).findOne(queryKeys, {session: transaction.documentDatabaseSession});
               } else if (input.source == SourceType.VolatileMemory) {
                 const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
                 records[0] = JSON.parse(await VolatileMemoryClient.get(_key) || '{}');
@@ -1618,7 +1618,7 @@ const DatabaseHelper = {
 
                 if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Update, schema, requestModifyingKeys, Object.assign({}, dataColumns, dataKeys), session, transaction)) throw new Error(`You have no permission to update any row in ${schema.group}.`);
 
-                const result : any = {
+                const result: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -1739,9 +1739,9 @@ const DatabaseHelper = {
       }
     });
   },
-  retrieve: async (data : Input[], baseSchema : DataTableSchema, session : any = null, notifyUpdates = false, leavePermission : boolean = false, innerCircleTags : string[] = [], transaction : any = null) : Promise<{ [Identifier : string] : HierarchicalDataTable }> => {
+  retrieve: async (data: Input[], baseSchema: DataTableSchema, session: any = null, notifyUpdates = false, leavePermission: boolean = false, innerCircleTags: string[] = [], transaction: any = null): Promise<{[Identifier: string]: HierarchicalDataTable}> => {
     return new Promise(async (resolve, reject) => {
-      const connectionInfos : { [Identifier : string] : any } = {};
+      const connectionInfos: {[Identifier: string]: any} = {};
       if (transaction) connectionInfos['documentDatabaseConnection'] = transaction.documentDatabaseConnection;
       try {
         if (data != null) {
@@ -1770,7 +1770,7 @@ const DatabaseHelper = {
               records = await map.findAll();
 
               for (const record of records) {
-                const row : any = {
+                const row: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -1820,7 +1820,7 @@ const DatabaseHelper = {
 
               if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
               records = await new Promise(async (resolve, reject) => {
-                await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find().toArray((error : any, results : any) => {
+                await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(baseSchema.group).find().toArray((error: any, results: any) => {
                   if (error) {
                     reject(error);
                   } else {
@@ -1830,7 +1830,7 @@ const DatabaseHelper = {
               });
 
               for (const record of records) {
-                const row : any = {
+                const row: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -1904,7 +1904,7 @@ const DatabaseHelper = {
       }
     });
   },
-  performRecursiveRetrieve: async (input : HierarchicalDataTable, schema : DataTableSchema, results : { [Identifier : string] : HierarchicalDataTable }, session : any = null, notifyUpdates = false, leavePermission : boolean = false, connectionInfos : { [Identifier : string] : any } = {}, innerCircleTags : string[] = []) : Promise<void> => {
+  performRecursiveRetrieve: async (input: HierarchicalDataTable, schema: DataTableSchema, results: {[Identifier: string]: HierarchicalDataTable}, session: any = null, notifyUpdates = false, leavePermission: boolean = false, connectionInfos: {[Identifier: string]: any} = {}, innerCircleTags: string[] = []): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         switch (input.source) {
@@ -1920,10 +1920,10 @@ const DatabaseHelper = {
             for (const row of input.rows) {
               let rows = [];
 
-              let queryKeys : { [Identifier : string] : any } = {};
-              let queryColumns : { [Identifier : string] : any } = {};
-              let dataKeys : { [Identifier : string] : any } = {};
-              let dataColumns : { [Identifier : string] : any } = {};
+              let queryKeys: {[Identifier: string]: any} = {};
+              let queryColumns: {[Identifier: string]: any} = {};
+              let dataKeys: {[Identifier: string]: any} = {};
+              let dataColumns: {[Identifier: string]: any} = {};
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 
@@ -1932,11 +1932,11 @@ const DatabaseHelper = {
               if (!results.relations || !results.relations[schema.group] || results.relations[schema.group].forwarded !== true) {
                 let records;
                 if (input.source == SourceType.Relational) {
-                  records = await map.findAll({ where: Object.assign({}, queryColumns, queryKeys), transaction: connectionInfos.relationalDatabaseTransaction }) || [];
+                  records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys), transaction: connectionInfos.relationalDatabaseTransaction}) || [];
                 } else if (input.source == SourceType.Document) {
                   if (!connectionInfos['documentDatabaseConnection']) connectionInfos['documentDatabaseConnection'] = await DocumentDatabaseClient.connect();
                   records = await new Promise(async (resolve, reject) => {
-                    await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), { session: connectionInfos['documentDatabaseSession'] }).toArray((error : any, results : any) => {
+                    await connectionInfos['documentDatabaseConnection'].db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), {session: connectionInfos['documentDatabaseSession']}).toArray((error: any, results: any) => {
                       if (error) {
                         reject(error);
                       } else {
@@ -1966,7 +1966,7 @@ const DatabaseHelper = {
 
                   if (!leavePermission && !await PermissionHelper.allowActionOnTable(ActionType.Retrieve, schema, [], Object.assign({}, dataColumns, dataKeys), session, connectionInfos)) throw new Error(`You have no permission to retrieve any row in ${schema.group}.`);
 
-                  const row : any = {
+                  const row: any = {
                     keys: {},
                     columns: {},
                     relations: {}
@@ -2101,13 +2101,13 @@ const DatabaseHelper = {
       }
     });
   },
-  delete: async (data : Input[], baseSchema : DataTableSchema, session : any = null, leavePermission : boolean = false, transaction : any = null) : Promise<HierarchicalDataRow[]> => {
+  delete: async (data: Input[], baseSchema: DataTableSchema, session: any = null, leavePermission: boolean = false, transaction: any = null): Promise<HierarchicalDataRow[]> => {
     return new Promise(async (resolve, reject) => {
       try {
         const list = DatabaseHelper.prepareData(data, ActionType.Delete, baseSchema);
         const results = [];
 
-        if (!transaction) transaction = await CreateTransaction({ share: !PermissionHelper.hasPermissionDefining(ActionType.Delete, list) });
+        if (!transaction) transaction = await CreateTransaction({share: !PermissionHelper.hasPermissionDefining(ActionType.Delete, list)});
 
         for (const key in list) {
           if (list.hasOwnProperty(key)) {
@@ -2130,7 +2130,7 @@ const DatabaseHelper = {
       }
     });
   },
-  performRecursiveDelete: async (input : HierarchicalDataTable, schema : DataTableSchema, results : HierarchicalDataRow[], transaction : any, session : any = null, leavePermission : boolean = false) : Promise<void> => {
+  performRecursiveDelete: async (input: HierarchicalDataTable, schema: DataTableSchema, results: HierarchicalDataRow[], transaction: any, session: any = null, leavePermission: boolean = false): Promise<void> => {
     return new Promise(async (resolve, reject) => {
       try {
         switch (input.source) {
@@ -2150,10 +2150,10 @@ const DatabaseHelper = {
             if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
               const records = [];
               for (const row of input.rows) {
-                let queryKeys : { [Identifier : string] : any } = {};
-                let queryColumns : { [Identifier : string] : any } = {};
-                let dataKeys : { [Identifier : string] : any } = {};
-                let dataColumns : { [Identifier : string] : any } = {};
+                let queryKeys: {[Identifier: string]: any} = {};
+                let queryColumns: {[Identifier: string]: any} = {};
+                let dataKeys: {[Identifier: string]: any} = {};
+                let dataColumns: {[Identifier: string]: any} = {};
 
                 [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema, true);
 
@@ -2163,8 +2163,8 @@ const DatabaseHelper = {
 
                 records.push(Object.assign({}, queryColumns, queryKeys));
               }
-              bulkResults = await map.findAll({ where: { [Op.or]: records }, transaction: transaction.relationalDatabaseTransaction });
-              await map.destroy({ where: { [Op.or]: records }, force: true, transaction: transaction.relationalDatabaseTransaction });
+              bulkResults = await map.findAll({where: {[Op.or]: records}, transaction: transaction.relationalDatabaseTransaction});
+              await map.destroy({where: {[Op.or]: records}, force: true, transaction: transaction.relationalDatabaseTransaction});
 
               runBulkProcess = true;
             }
@@ -2172,10 +2172,10 @@ const DatabaseHelper = {
             const persistingDictForVolatileMemory = {};
 
             for (const row of input.rows) {
-              let queryKeys : { [Identifier : string] : any } = {};
-              let queryColumns : { [Identifier : string] : any } = {};
-              let dataKeys : { [Identifier : string] : any } = {};
-              let dataColumns : { [Identifier : string] : any } = {};
+              let queryKeys: {[Identifier: string]: any} = {};
+              let queryColumns: {[Identifier: string]: any} = {};
+              let dataKeys: {[Identifier: string]: any} = {};
+              let dataColumns: {[Identifier: string]: any} = {};
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 
@@ -2188,12 +2188,12 @@ const DatabaseHelper = {
                 if (input.rows.length > 1 && allowBulkProcess) {
                   records = bulkResults;
                 } else {
-                  records = await map.findAll({ where: Object.assign({}, queryColumns, queryKeys), transaction: transaction.relationalDatabaseTransaction }) || [];
-                  await map.destroy({ where: Object.assign({}, queryColumns, queryKeys), force: true, transaction: transaction.relationalDatabaseTransaction });
+                  records = await map.findAll({where: Object.assign({}, queryColumns, queryKeys), transaction: transaction.relationalDatabaseTransaction}) || [];
+                  await map.destroy({where: Object.assign({}, queryColumns, queryKeys), force: true, transaction: transaction.relationalDatabaseTransaction});
                 }
               } else if (input.source == SourceType.Document) {
                 records = await new Promise(async (resolve, reject) => {
-                  await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), { session: transaction.documentDatabaseSession }).toArray((error : any, results : any) => {
+                  await transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).find(Object.assign({}, queryColumns, queryKeys), {session: transaction.documentDatabaseSession}).toArray((error: any, results: any) => {
                     if (error) {
                       reject(error);
                     } else {
@@ -2204,8 +2204,8 @@ const DatabaseHelper = {
 
                 for (const record of records) {
                   transaction.documentDatabaseConnection.db(DEFAULT_DOCUMENT_DATABASE_NAME).collection(schema.group).deleteOne({
-                    '_id': { $eq: new ObjectID(record['_id']) }
-                  }, { session: transaction.documentDatabaseSession });
+                    '_id': {$eq: new ObjectID(record['_id'])}
+                  }, {session: transaction.documentDatabaseSession});
                 }
               } else if (input.source == SourceType.VolatileMemory) {
                 const _key = schema.group + ':' + JSON.stringify(CodeHelper.sortHashtable(dataKeys));
@@ -2228,7 +2228,7 @@ const DatabaseHelper = {
                   }
                 }
 
-                const row : any = {
+                const row: any = {
                   keys: {},
                   columns: {},
                   relations: {}
@@ -2345,7 +2345,7 @@ const DatabaseHelper = {
   }
 };
 
-export { SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper, fixType };
+export {SourceType, ActionType, HierarchicalDataTable, HierarchicalDataRow, Input, DatabaseHelper, fixType};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

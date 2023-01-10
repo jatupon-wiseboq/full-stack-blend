@@ -1,9 +1,9 @@
-import { IProps, IState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {IProps, IState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import './SizePicker';
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 interface Props extends IProps {
 }
@@ -59,4 +59,4 @@ class DimensionPicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.DimensionPicker', DimensionPicker);
 
-export { Props, State, DimensionPicker };
+export {Props, State, DimensionPicker};

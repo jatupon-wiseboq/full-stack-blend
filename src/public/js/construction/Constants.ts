@@ -1,4 +1,4 @@
-import { FontHelper } from './helpers/FontHelper';
+import {FontHelper} from './helpers/FontHelper';
 
 export const RESPONSIVE_SIZE_REGEX = [/col\-([0-9]+)/, /col\-sm\-([0-9]+)/, /col\-md\-([0-9]+)/, /col\-lg\-([0-9]+)/, /col\-xl\-([0-9]+)/];
 export const RESPONSIVE_OFFSET_REGEX = [/offset\-([0-9]+)/, /offset\-sm\-([0-9]+)/, /offset\-md\-([0-9]+)/, /offset\-lg\-([0-9]+)/, /offset\-xl\-([0-9]+)/];
@@ -81,7 +81,7 @@ export const CELL_BORDER_OPTIONS = [null, "{SIZE}", "1px", "2px", "3px", "4px", 
 export const BACKGROUND_COLOR_OPTIONS = [null, "{COLOR}"];
 export const SEO_FREQUENCY_OPTIONS = [null, "always", "hourly", "daily", "weekly", "monthly", "yearly", "never"];
 export const SEO_PRIORITY_OPTIONS = [null, "{FLOAT}", 1.0, 0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0];
-let table_cell_applying_style_function = function() { return this.state.extensionValues['-fsb-cell-style']; };
+let table_cell_applying_style_function = function() {return this.state.extensionValues['-fsb-cell-style'];};
 let table_cell_top = /^-fsb-cell-([0-9]+)-([0-9]+)-top/;
 let table_cell_right = /^-fsb-cell-([0-9]+)-([0-9]+)-right/;
 let table_cell_bottom = /^-fsb-cell-([0-9]+)-([0-9]+)-bottom/;

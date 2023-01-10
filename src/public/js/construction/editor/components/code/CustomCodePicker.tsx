@@ -1,17 +1,17 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { IProps, IState, DefaultState, DefaultProps, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {IProps, IState, DefaultState, DefaultProps, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
 import '../../controls/Textbox';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let perform : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let perform: any;
 
 interface Props extends IProps {
 }
 
 interface State extends IState {
-  value : any
+  value: any
 }
 
 let ExtendedDefaultState = Object.assign({}, DefaultState);
@@ -24,15 +24,15 @@ Object.assign(ExtendedDefaultProps, {
 });
 
 class CustomCodePicker extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
   constructor(props) {
     super(props);
     Object.assign(this.state, CodeHelper.clone(ExtendedDefaultState));
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
 
     let original = null;
@@ -49,7 +49,7 @@ class CustomCodePicker extends Base<Props, State> {
     this.forceUpdate();
   }
 
-  protected textboxOnUpdate(value : any) {
+  protected textboxOnUpdate(value: any) {
     this.state.value = value;
     if (this.props.watchingAttributeNames[0]) {
       perform('update', {
@@ -83,4 +83,4 @@ class CustomCodePicker extends Base<Props, State> {
 
 DeclarationHelper.declare('Components.CustomCodePicker', CustomCodePicker);
 
-export { Props, State, CustomCodePicker };
+export {Props, State, CustomCodePicker};

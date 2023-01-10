@@ -1,8 +1,8 @@
 var TextHelper = {
-  removeExtraWhitespaces: (text : string) => {
+  removeExtraWhitespaces: (text: string) => {
     return text.replace(/[ ]+/g, ' ').trim();
   },
-  composeIntoMultipleValue: (definition : string, value : string, destination : string, defaultValue : string) => {
+  composeIntoMultipleValue: (definition: string, value: string, destination: string, defaultValue: string) => {
     if (!value) return value;
 
     let splited = definition.split('[');
@@ -19,14 +19,14 @@ var TextHelper = {
       return value;
     }
   },
-  defaultMultipleValue: (count : number, value : string) => {
+  defaultMultipleValue: (count: number, value: string) => {
     let tokens = new Array(count);
     for (let i = 0; i < tokens.length; i++) {
       tokens[i] = value;
     }
     return tokens.join(' ');
   },
-  mergeClassNameWithPrefixedClasses: function(original : string, prefix : string, targets : string[]) : string {
+  mergeClassNameWithPrefixedClasses: function(original: string, prefix: string, targets: string[]): string {
     let klasses = original && original.split(' ') || [];
     klasses = klasses.filter(klass => klass.indexOf(prefix) != 0);
 
@@ -37,7 +37,7 @@ var TextHelper = {
 
     return klasses.join(' ').trim();
   },
-  removeMultipleBlankLines: function(code : string) : string {
+  removeMultipleBlankLines: function(code: string): string {
     const MULTIPLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/g;
     const MULTIPLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)(\n[ \t]*)+(\n)/;
 
@@ -45,7 +45,7 @@ var TextHelper = {
       return `${blankLines.match(MULTIPLE_BLANK_LINES_REGEX_LOCAL)[1]}\n`;
     });
   },
-  removeBlankLines: function(code : string) : string {
+  removeBlankLines: function(code: string): string {
     const SINGLE_BLANK_LINES_REGEX_GLOBAL = /(\n[ \t]*)+(\n)/g;
     const SINGLE_BLANK_LINES_REGEX_LOCAL = /(\n[ \t]*)+(\n)/;
 
@@ -53,7 +53,7 @@ var TextHelper = {
       return `\n`;
     });
   },
-  trim: function(str, ch) : string {
+  trim: function(str, ch): string {
     let start = 0, end = str.length;
 
     while (start < end && str[start] === ch) ++start;
@@ -63,4 +63,4 @@ var TextHelper = {
   }
 };
 
-export { TextHelper };
+export {TextHelper};

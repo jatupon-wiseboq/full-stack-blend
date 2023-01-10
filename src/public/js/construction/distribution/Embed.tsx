@@ -1,4 +1,4 @@
-import { DataManipulationHelper } from '../../helpers/DataManipulationHelper';
+import {DataManipulationHelper} from '../../helpers/DataManipulationHelper';
 
 (() => {
   // Auto Height Layout
@@ -19,7 +19,7 @@ import { DataManipulationHelper } from '../../helpers/DataManipulationHelper';
     });
   }
 
-  let previousWindowSize = { width: null, height: null };
+  let previousWindowSize = {width: null, height: null};
   window.addEventListener('resize', (event) => {
     if (previousWindowSize.width != window.innerWidth || previousWindowSize.height != window.innerHeight) {
       previousWindowSize.width = window.innerWidth;

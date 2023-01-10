@@ -1,8 +1,8 @@
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { Props, State, ExtendedDefaultState, ExtendedDefaultProps, HTMLManager } from './HTMLManager.js'
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {Props, State, ExtendedDefaultState, ExtendedDefaultProps, HTMLManager} from './HTMLManager.js'
 
-declare let React : any;
-declare let ReactDOM : any;
+declare let React: any;
+declare let ReactDOM: any;
 
 let _ExtendedDefaultProps = Object.assign({}, ExtendedDefaultProps);
 Object.assign(_ExtendedDefaultProps, {
@@ -11,17 +11,17 @@ Object.assign(_ExtendedDefaultProps, {
 });
 
 class PopupManager extends HTMLManager {
-  protected static defaultProps : Props = _ExtendedDefaultProps;
+  protected static defaultProps: Props = _ExtendedDefaultProps;
 
   protected getCategoryName() {
     return 'Popup';
   }
 
-  protected getDisplay(item : any) {
+  protected getDisplay(item: any) {
     return `<div className="name">${item.name}</div>`;
   }
 }
 
 DeclarationHelper.declare('Components.PopupManager', PopupManager);
 
-export { PopupManager };
+export {PopupManager};

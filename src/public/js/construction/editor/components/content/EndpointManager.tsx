@@ -1,15 +1,15 @@
-import { CodeHelper } from '../../../helpers/CodeHelper';
-import { HTMLHelper } from '../../../helpers/HTMLHelper';
-import { TextHelper } from '../../../helpers/TextHelper';
-import { RequestHelper } from '../../../helpers/RequestHelper';
-import { IProps, IState, DefaultProps, DefaultState, Base } from '../Base';
-import { FullStackBlend, DeclarationHelper } from '../../../helpers/DeclarationHelper';
-import { LIBRARIES, DEBUG_GITHUB_UPLOADER } from '../../../Constants';
-import { LocalizationHelper } from '../../../LocalizationHelper';
+import {CodeHelper} from '../../../helpers/CodeHelper';
+import {HTMLHelper} from '../../../helpers/HTMLHelper';
+import {TextHelper} from '../../../helpers/TextHelper';
+import {RequestHelper} from '../../../helpers/RequestHelper';
+import {IProps, IState, DefaultProps, DefaultState, Base} from '../Base';
+import {FullStackBlend, DeclarationHelper} from '../../../helpers/DeclarationHelper';
+import {LIBRARIES, DEBUG_GITHUB_UPLOADER} from '../../../Constants';
+import {LocalizationHelper} from '../../../LocalizationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let ts : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let ts: any;
 
 interface Props extends IProps {
 }
@@ -28,14 +28,14 @@ Object.assign(ExtendedDefaultState, {
 
 // TODO: Inherit Components.ProjectManager instead.
 class EndpointManager extends Base<Props, State> {
-  protected state : State = {};
-  protected static defaultProps : Props = ExtendedDefaultProps;
+  protected state: State = {};
+  protected static defaultProps: Props = ExtendedDefaultProps;
 
-  private incrementalUpdatingFrontEndCodeInfoDict : any = {};
-  private incrementalUpdatingBackEndControllerInfoDict : any = {};
-  private incrementalUpdatingConnectorControllerInfoDict : any = {};
-  private incrementalUpdatingWorkerControllerInfoDict : any = {};
-  private incrementalUpdatingSchedulerControllerInfoDict : any = {};
+  private incrementalUpdatingFrontEndCodeInfoDict: any = {};
+  private incrementalUpdatingBackEndControllerInfoDict: any = {};
+  private incrementalUpdatingConnectorControllerInfoDict: any = {};
+  private incrementalUpdatingWorkerControllerInfoDict: any = {};
+  private incrementalUpdatingSchedulerControllerInfoDict: any = {};
 
   constructor(props) {
     super(props);
@@ -45,11 +45,11 @@ class EndpointManager extends Base<Props, State> {
   componentDidMount() {
   }
 
-  public update(properties : any) {
+  public update(properties: any) {
     if (!super.update(properties)) return;
   }
 
-  replaceShortcuts(textContent : any) {
+  replaceShortcuts(textContent: any) {
     textContent = textContent.replace(/(\@)(\{[^{}]*(\{[^{}]*(\{[^{}]*(\{[^{}]*[^{}]+[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\}|[^{}]+)*[^{}]*\})([\t\r\n ]*,[\t\r\n ]*['"][A-Za-z0-9_]+['"])?/g, (match, hash, content, a, b, c, table) => {
       try {
         const createInputs = `RequestHelper.createInputs(${content})`;
@@ -65,11 +65,11 @@ class EndpointManager extends Base<Props, State> {
 
     return textContent;
   }
-  getRepresentativeName(key : string) {
+  getRepresentativeName(key: string) {
     if (key == 'index') return key;
     else return `_${key}`;
   }
-  getFeatureDirectoryPrefix(key : string) {
+  getFeatureDirectoryPrefix(key: string) {
     let pages = this.state.extensionValues['pages'];
     let editingPageID = key;
     pages = pages.filter(page => page.id == editingPageID);
@@ -79,12 +79,12 @@ class EndpointManager extends Base<Props, State> {
 
     return (path) ? path + '/' : '';
   }
-  getRootDirectory(key : string) {
+  getRootDirectory(key: string) {
     return this.getFeatureDirectoryPrefix(key).replace(/[^\/]+\//g, '../');
   }
 
-  files : any = [];
-  private create(path : string, content : string) {
+  files: any = [];
+  private create(path: string, content: string) {
     if (content === false) {
       return new Promise((resolve) => {
         resolve();
@@ -99,7 +99,7 @@ class EndpointManager extends Base<Props, State> {
       });
     }
   }
-  private commit(incremental : boolean = false) {
+  private commit(incremental: boolean = false) {
     let _files = this.files;
     this.files = [];
 
@@ -113,7 +113,7 @@ class EndpointManager extends Base<Props, State> {
     })
   }
 
-  public save(cb : any, incremental : boolean = false) {
+  public save(cb: any, incremental: boolean = false) {
     if (!window.ENDPOINT) return cb();
 
     const $this = this;
@@ -202,7 +202,7 @@ class EndpointManager extends Base<Props, State> {
 
     let externalStylesheets = [];
     let externalScripts = [];
-    let selectedLibraries : string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
+    let selectedLibraries: string[] = (this.state.extensionValues[this.props.watchingExtensionNames[0]] || '').split(' ');
     for (let library of LIBRARIES) {
       if (selectedLibraries.indexOf(library.id) != -1) {
         if (library.production.stylesheets) {
@@ -223,7 +223,7 @@ class EndpointManager extends Base<Props, State> {
     let customFooterExternalStylesheets = [];
     let customFooterExternalScripts = [];
 
-    let externalLibraries : string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
+    let externalLibraries: string[] = (this.state.extensionValues['customExternalLibraries'] || '').split(' ');
     for (let externalLibrary of externalLibraries) {
       if (!externalLibrary) continue;
 
@@ -270,7 +270,7 @@ class EndpointManager extends Base<Props, State> {
 
         let compiledCombinedMinimalFeatureScripts = '';
         if (combinedMinimalFeatureScripts) {
-          compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, { compilerOptions: { module: ts.ModuleKind.COMMONJS } }).outputText;
+          compiledCombinedMinimalFeatureScripts = ts.transpileModule(combinedMinimalFeatureScripts, {compilerOptions: {module: ts.ModuleKind.COMMONJS}}).outputText;
           compiledCombinedMinimalFeatureScripts = compiledCombinedMinimalFeatureScripts.split('\n').join('\n      ');
         }
 
@@ -442,7 +442,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
     this.createRoute(nextProjectData.globalSettings.pages, () => {
       this.createController(nextProjectData.globalSettings.pages, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict), Object.keys(_schedulerControllerInfoDict), sitemapInfoDict, () => {
         this.createView(combinedHTMLPageDict, nextProjectData.globalSettings.pages, () => {
-          this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => { return key.split(':')[0]; }), Object.keys(_schedulerControllerInfoDict), () => {
+          this.createBackEndController(arrayOfControllerScripts, Object.keys(_connectorControllerInfoDict), Object.keys(_workerControllerInfoDict).map((key) => {return key.split(':')[0];}), Object.keys(_schedulerControllerInfoDict), () => {
             this.createFrontEndComponents(arrayOfCombinedExpandingFeatureScripts, (frontEndComponentsBlobSHADict) => {
               this.create('../../views/home/_header.pug', combinedHeaderScripts).then(() => {
                 this.create('../../views/home/_footer.pug', combinedFooterScripts).then(() => {
@@ -479,7 +479,7 @@ script(type="text/javascript" src="/js/Site.bundle.js?version=${(new Date()).get
       });
     });
   }
-  createRoute(routes : string[], cb : any) {
+  createRoute(routes: string[], cb: any) {
     this.create('../route.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -498,7 +498,7 @@ export default route;
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
   }
-  createController(routes : string[], connectors : string[], workers : string[], schedulers : string[], sitemapInfoDict : any = {}, cb : any) {
+  createController(routes: string[], connectors: string[], workers: string[], schedulers: string[], sitemapInfoDict: any = {}, cb: any) {
     this.create('./Home.ts', `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -527,11 +527,11 @@ ${Object.keys(sitemapInfoDict).sort().map(key => `SitemapHelper.register('${key}
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.`).then(cb);
   }
-  createView(inputDict : any, pages : any, cb : any) {
+  createView(inputDict: any, pages: any, cb: any) {
     let keys = Object.keys(inputDict);
     let nextViewDataSHADict = {};
 
-    let process = ((index : number) => {
+    let process = ((index: number) => {
       let page = pages.filter(page => page.id == keys[index]);
 
       this.create(`../../views/home/${this.getFeatureDirectoryPrefix(page[0].id)}${this.getRepresentativeName(page[0].id)}.pug`, `//- Auto[Generating:V1]--->
@@ -551,9 +551,9 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
     if (keys.length > 0) process(0);
     else cb(nextViewDataSHADict);
   }
-  createFrontEndComponents(arrayOfContent : string[], cb : any) {
+  createFrontEndComponents(arrayOfContent: string[], cb: any) {
     let nextFrontEndComponentsDataSHADict = {};
-    let mainprocess = ((mainIndex : number) => {
+    let mainprocess = ((mainIndex: number) => {
       let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
       if (results.length < 2) {
         if (mainIndex + 1 < arrayOfContent.length) {
@@ -562,7 +562,7 @@ ${inputDict[keys[index]].split('#{title}').join(page && page[0] && page[0].name 
           cb(nextFrontEndComponentsDataSHADict);
         }
       } else {
-        let subprocess = ((subIndex : number) => {
+        let subprocess = ((subIndex: number) => {
           let tokens = results[subIndex].split("\n// <---Auto[File]");
 
           this.create(`../public/js/components/${tokens[0]}.tsx`, `// Auto[Generating:V1]--->
@@ -589,9 +589,9 @@ ${tokens[1]}
     if (arrayOfContent.length != 0) mainprocess(0);
     else cb(nextFrontEndComponentsDataSHADict);
   }
-  createBackEndController(arrayOfContent : string[], connectors : string[], workers : string[], schedulers : string[], cb : any) {
+  createBackEndController(arrayOfContent: string[], connectors: string[], workers: string[], schedulers: string[], cb: any) {
     let nextBackEndControllersDataSHAInfos = [];
-    let mainprocess = ((mainIndex : number) => {
+    let mainprocess = ((mainIndex: number) => {
       let results = arrayOfContent[mainIndex].split("// Auto[File]--->\n");
       if (results.length < 2) {
         if (mainIndex + 1 < arrayOfContent.length) {
@@ -600,7 +600,7 @@ ${tokens[1]}
           cb();
         }
       } else {
-        let subprocess = ((subIndex : number) => {
+        let subprocess = ((subIndex: number) => {
           let tokens = results[subIndex].split("\n// <---Auto[File]");
           let path = './components/';
 
@@ -630,7 +630,7 @@ ${this.replaceShortcuts(tokens[1])}
     if (arrayOfContent.length != 0) mainprocess(0);
     else cb();
   }
-  createSiteBundle(routes : string[], frontEndComponentsBlobSHADict : any, cb : any) {
+  createSiteBundle(routes: string[], frontEndComponentsBlobSHADict: any, cb: any) {
     this.create(`../public/js/Site.tsx`, `// Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
 
@@ -679,4 +679,4 @@ window.internalFsbOpen = (initClass: string, data: any) => {
 
 DeclarationHelper.declare('Components.EndpointManager', EndpointManager);
 
-export { Props, State, EndpointManager };
+export {Props, State, EndpointManager};
