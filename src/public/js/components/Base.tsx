@@ -1,38 +1,38 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { CodeHelper } from '../helpers/CodeHelper';
-import { NotificationHelper } from '../helpers/NotificationHelper';
-import { Project, DeclarationHelper } from '../helpers/DeclarationHelper';
-import { HierarchicalDataTable, HierarchicalDataRow, SourceType } from '../helpers/DataManipulationHelper';
+import {CodeHelper} from '../helpers/CodeHelper';
+import {NotificationHelper} from '../helpers/NotificationHelper';
+import {Project, DeclarationHelper} from '../helpers/DeclarationHelper';
+import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from '../helpers/DataManipulationHelper';
 
-declare let React : any;
-declare let ReactDOM : any;
-declare let DataManipulationHelper : any;
+declare let React: any;
+declare let ReactDOM: any;
+declare let DataManipulationHelper: any;
 
 interface IBaseProps {
-  row : HierarchicalDataRow;
-  data : { [Identifier : string] : HierarchicalDataTable };
+  row: HierarchicalDataRow;
+  data: {[Identifier: string]: HierarchicalDataTable};
 }
 
 interface IBaseState {
-  data : { [Identifier : string] : HierarchicalDataTable };
+  data: {[Identifier: string]: HierarchicalDataTable};
 }
 
-let DefaultBaseProps : any = {
+let DefaultBaseProps: any = {
   row: null,
   data: null
 };
-let DefaultBaseState : any = {
+let DefaultBaseState: any = {
   data: null
 };
 
-const controls : any = [];
-const update = (data : any) => {
+const controls: any = [];
+const update = (data: any) => {
   for (let control of controls) {
     try {
       control.update(data);
-    } catch { /* void */ }
+    } catch { /* void */}
   }
 };
 
@@ -50,7 +50,7 @@ class Base extends React.Component {
     }).bind(this));
   }
 
-  public update(data : any, manipulateInto : string) {
+  public update(data: any, manipulateInto: string) {
     if (!manipulateInto) {
       const previous = this.state.data || this.props.data || {};
       const next = Object.assign({}, previous, data || {})
@@ -73,7 +73,7 @@ class Base extends React.Component {
     }
   }
 
-  protected getDataFromNotation(notation : string, inArray : boolean = false, always : boolean = false) : any {
+  protected getDataFromNotation(notation: string, inArray: boolean = false, always: boolean = false): any {
     let result;
 
     if (!notation) {
@@ -96,8 +96,8 @@ class Base extends React.Component {
     return result;
   }
 
-  public manipulate(guid : string, notation : string, results : any) {
-    let { action, options } = DataManipulationHelper.getInfo(guid);
+  public manipulate(guid: string, notation: string, results: any) {
+    let {action, options} = DataManipulationHelper.getInfo(guid);
     let data = null;
 
     if (options.manipulateInto) notation = (typeof options.manipulateInto === 'function') ? options.manipulateInto.apply(this) : options.manipulateInto;
@@ -248,7 +248,7 @@ class Base extends React.Component {
         break;
       case 'popup':
         let container = document.createElement('div');
-        ReactDOM.render(React.createElement(DeclarationHelper.get(options.initClass), { data: results }, null), container);
+        ReactDOM.render(React.createElement(DeclarationHelper.get(options.initClass), {data: results}, null), container);
         document.getElementsByClassName('internal-fsb-begin')[0].appendChild(container.firstElementChild);
         break;
       case 'navigate':
@@ -259,7 +259,7 @@ class Base extends React.Component {
     this.forceUpdate();
   }
 
-  protected render() { }
+  protected render() {}
 }
 
 DeclarationHelper.declare('Site', 'Components.Base', Base);
@@ -286,14 +286,14 @@ class Button extends React.Component {
     }
   }
 
-  protected render() : any {
+  protected render(): any {
     return (
       <button ref="button" {...this.props}></button>
     )
   }
 }
 
-export { IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base };
+export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

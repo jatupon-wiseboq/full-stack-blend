@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { SourceType } from "./DatabaseHelper";
-import { Permission } from "./PermissionHelper";
-import { CodeHelper } from "./CodeHelper";
-import { ProjectConfigurationHelper } from "./ProjectConfigurationHelper";
+import {SourceType} from "./DatabaseHelper";
+import {Permission} from "./PermissionHelper";
+import {CodeHelper} from "./CodeHelper";
+import {ProjectConfigurationHelper} from "./ProjectConfigurationHelper";
 
 enum FieldType {
   AutoNumber,
@@ -15,48 +15,48 @@ enum FieldType {
 }
 
 interface ForwardOptions {
-  option : string;
-  mode : string;
-  recursive : boolean;
-  forwardingTable : string;
-  forwardingPrefix : string;
+  option: string;
+  mode: string;
+  recursive: boolean;
+  forwardingTable: string;
+  forwardingPrefix: string;
 }
 interface DataSchema {
-  tables : { [Identifier : string] : DataTableSchema };
+  tables: {[Identifier: string]: DataTableSchema};
 }
 interface DataTableSchema {
-  source : SourceType;
-  group : string;
-  guid : string;
-  keys : { [Identifier : string] : DataColumnSchema };
-  columns : { [Identifier : string] : DataColumnSchema };
-  relations : { [Identifier : string] : DataRelationSchema };
-  modifyingPermission : Permission;
-  retrievingPermission : Permission;
-  forward ?: ForwardOptions;
+  source: SourceType;
+  group: string;
+  guid: string;
+  keys: {[Identifier: string]: DataColumnSchema};
+  columns: {[Identifier: string]: DataColumnSchema};
+  relations: {[Identifier: string]: DataRelationSchema};
+  modifyingPermission: Permission;
+  retrievingPermission: Permission;
+  forward?: ForwardOptions;
 }
 interface DataColumnSchema {
-  name : string;
-  guid : string;
-  fieldType : FieldType;
-  required : boolean;
-  unique : boolean;
-  verb : string;
-  url : string;
-  modifyingPermission : Permission;
-  retrievingPermission : Permission;
+  name: string;
+  guid: string;
+  fieldType: FieldType;
+  required: boolean;
+  unique: boolean;
+  verb: string;
+  url: string;
+  modifyingPermission: Permission;
+  retrievingPermission: Permission;
 }
 interface DataRelationSchema {
-  name : string;
-  guid : string;
-  sourceGroup : string;
-  sourceEntity : string;
-  targetGroup : string;
-  targetEntity : string;
+  name: string;
+  guid: string;
+  sourceGroup: string;
+  sourceEntity: string;
+  targetGroup: string;
+  targetEntity: string;
 }
 
 const SchemaHelper = {
-  verifyDataSchema: (data : DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
+  verifyDataSchema: (data: DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
     for (const tableKey in data.tables) {
       if (data.tables.hasOwnProperty(tableKey)) {
         const table = data.tables[tableKey];
@@ -114,7 +114,7 @@ const SchemaHelper = {
       }
     }
   },
-  verifyPermission: (permission : Permission, data : DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
+  verifyPermission: (permission: Permission, data: DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
     CodeHelper.assertOfNotUndefined(permission, 'permission');
 
     if (permission == null) return true;
@@ -148,21 +148,21 @@ const SchemaHelper = {
 
     return true;
   },
-  verifyNotations: (tree : any, data : DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
+  verifyNotations: (tree: any, data: DataSchema = ProjectConfigurationHelper.getDataSchema()) => {
     // TODO: re-enable in the future for notating on page.
     // 
     return true;
 
     CodeHelper.assertOfPresent(tree, 'tree');
-    CodeHelper.recursiveEvaluate(tree, (obj : any) => {
+    CodeHelper.recursiveEvaluate(tree, (obj: any) => {
       if (typeof obj !== 'object') CodeHelper.assertOfString(obj, 'children');
     });
 
     const notations = SchemaHelper.findAllPossibleNotations(tree || {});
     for (const notation of notations) {
       const splited = notation.split(".");
-      let shifted : string = splited.shift();
-      let current : DataTableSchema | DataColumnSchema = null;
+      let shifted: string = splited.shift();
+      let current: DataTableSchema | DataColumnSchema = null;
 
       do {
         current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, splited.length == 0);
@@ -172,7 +172,7 @@ const SchemaHelper = {
       if (current == null) throw new Error(`There was an error verifying dot notation (disconnected: ${notation}).`);
     }
   },
-  getFieldType: (value : string) : FieldType => {
+  getFieldType: (value: string): FieldType => {
     CodeHelper.assertOfString(value, 'value');
 
     switch (value) {
@@ -190,7 +190,7 @@ const SchemaHelper = {
         throw new Error('Wrong type of field.');
     }
   },
-  getSchemaFromKey: (key : string, current : DataTableSchema, data : DataSchema = ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema : boolean = false) : DataTableSchema | DataColumnSchema => {
+  getSchemaFromKey: (key: string, current: DataTableSchema, data: DataSchema = ProjectConfigurationHelper.getDataSchema(), searchForDataTableSchema: boolean = false): DataTableSchema | DataColumnSchema => {
     CodeHelper.assertOfPresent(key, 'key');
     if (key.split('.').length != 1) throw new Error('You have specified a notation, not a key.');
 
@@ -218,15 +218,15 @@ const SchemaHelper = {
       }
     }
   },
-  getDataTableSchemaFromNotation: (notation : string, data : DataSchema = ProjectConfigurationHelper.getDataSchema()) : DataTableSchema => {
+  getDataTableSchemaFromNotation: (notation: string, data: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema => {
     CodeHelper.assertOfPresent(notation, 'notation');
     CodeHelper.assertOfNotationFormat(notation, 'notation');
 
     if (!notation) return null;
 
     const splited = notation.split(".");
-    let shifted : string = splited.shift();
-    let current : DataTableSchema | DataColumnSchema = null;
+    let shifted: string = splited.shift();
+    let current: DataTableSchema | DataColumnSchema = null;
 
     do {
       current = SchemaHelper.getSchemaFromKey(shifted, current as DataTableSchema, data, current !== null && splited.length == 0);
@@ -238,7 +238,7 @@ const SchemaHelper = {
 
     return current;
   },
-  findAllPossibleNotations: (tree : any, accumulatedNotation : string = null, notations : string[] = []) : string[] => {
+  findAllPossibleNotations: (tree: any, accumulatedNotation: string = null, notations: string[] = []): string[] => {
     // TODO: re-enable in the future for notating on page.
     // 
     return [];
@@ -261,7 +261,7 @@ const SchemaHelper = {
 
     return notations;
   },
-  findShortestPathOfRelations: (from : DataTableSchema, to : DataTableSchema, data : DataSchema = ProjectConfigurationHelper.getDataSchema()) : DataTableSchema[] => {
+  findShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, data: DataSchema = ProjectConfigurationHelper.getDataSchema()): DataTableSchema[] => {
     CodeHelper.assertOfPresent(from, 'from');
     CodeHelper.assertOfPresent(to, 'to');
 
@@ -271,7 +271,7 @@ const SchemaHelper = {
 
     return results;
   },
-  recursiveFindShortestPathOfRelations: (from : DataTableSchema, to : DataTableSchema, results : DataTableSchema[], walked : any = {}, data : DataSchema = ProjectConfigurationHelper.getDataSchema()) : boolean => {
+  recursiveFindShortestPathOfRelations: (from: DataTableSchema, to: DataTableSchema, results: DataTableSchema[], walked: any = {}, data: DataSchema = ProjectConfigurationHelper.getDataSchema()): boolean => {
     CodeHelper.assertOfPresent(from, 'from');
     CodeHelper.assertOfPresent(to, 'to');
     CodeHelper.assertOfPresent(results, 'results');
@@ -317,7 +317,7 @@ const SchemaHelper = {
   }
 };
 
-export { DataSchema, DataTableSchema, DataColumnSchema, DataRelationSchema, FieldType, SchemaHelper };
+export {DataSchema, DataTableSchema, DataColumnSchema, DataRelationSchema, FieldType, SchemaHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

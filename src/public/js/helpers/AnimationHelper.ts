@@ -1,19 +1,19 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HTMLHelper } from './HTMLHelper';
+import {HTMLHelper} from './HTMLHelper';
 
 const extensions = {};
 const extensionRenderingLoopDictionary = {};
 
 let resetCount = 0;
 
-declare let window : any;
+declare let window: any;
 
 const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset && window.AnimationHelper || {
   // Document Object Model (DOM) Queries
   // 
-  add: (animations : any, container : any = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
+  add: (animations: any, container: any = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
       if (container.tagName != 'DIV') container = container.parentNode;
 
@@ -145,7 +145,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
   },
-  remove: (animations : any, container : any = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
+  remove: (animations: any, container: any = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0')) => {
     if (container) {
       if (container.tagName != 'DIV') container = container.parentNode;
 
@@ -177,7 +177,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       HTMLHelper.setAttribute(container, 'internal-fsb-animation', currentAnimations.join(' '));
     }
   },
-  addPrestartStyles: (animationId : string, guid : string, selectors : any, properties : any) => {
+  addPrestartStyles: (animationId: string, guid: string, selectors: any, properties: any) => {
     const prestartId = `prestart-${animationId}`;
     const existing = document.getElementById(prestartId);
 
@@ -213,13 +213,13 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
       document.head.insertBefore(element, firstStyleElement);
     }
   },
-  removePrestartStyles: (animationId : string) => {
+  removePrestartStyles: (animationId: string) => {
     const prestartId = `prestart-${animationId}`;
     const element = document.getElementById(prestartId);
 
     element && element.parentNode && element.parentNode.removeChild(element);
   },
-  getPrestartStyle: (guid : string, selector : string, property : string) : string => {
+  getPrestartStyle: (guid: string, selector: string, property: string): string => {
     const elements = Array.from(document.querySelectorAll(`[internal-fsb-guid="${guid}"]${selector}, [internal-fsb-guid="${guid}"] ${selector}`));
 
     if (elements.length != 0) {
@@ -229,7 +229,7 @@ const AnimationHelper = window.AnimationHelper && window.AnimationHelper.reset &
 
     return null;
   },
-  register: (animationId : string, extensionInfo : any) => {
+  register: (animationId: string, extensionInfo: any) => {
     extensions[animationId] = extensionInfo;
   },
   reset: () => {
@@ -255,7 +255,7 @@ if (window.__animationHelperDelayedAddings !== undefined) {
 
 window.AnimationHelper = AnimationHelper;
 
-export { AnimationHelper };
+export {AnimationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

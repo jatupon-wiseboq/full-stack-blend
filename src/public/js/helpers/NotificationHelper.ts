@@ -1,18 +1,18 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HierarchicalDataTable } from './DataManipulationHelper';
-import { RequestHelper } from './RequestHelper';
+import {HierarchicalDataTable} from './DataManipulationHelper';
+import {RequestHelper} from './RequestHelper';
 
 const sockets = {};
 const notificationInfos = {};
 const bindedFunctions = {};
 const instanceId = (((1 + Math.random()) * 0x100000) | 0).toString(16).substring(1);
 
-declare let window : any;
+declare let window: any;
 
 const NotificationHelper = {
-  registerTableUpdates: (tables : { [Identifier : string] : HierarchicalDataTable }) => {
+  registerTableUpdates: (tables: {[Identifier: string]: HierarchicalDataTable}) => {
     for (const tableName in tables) {
       if (tables.hasOwnProperty(tableName)) {
         const table = tables[tableName];
@@ -27,7 +27,7 @@ const NotificationHelper = {
       }
     }
   },
-  unregisterTableUpdates: (tables : { [Identifier : string] : HierarchicalDataTable }) => {
+  unregisterTableUpdates: (tables: {[Identifier: string]: HierarchicalDataTable}) => {
     for (const tableName in tables) {
       if (tables.hasOwnProperty(tableName)) {
         const table = tables[tableName];
@@ -42,7 +42,7 @@ const NotificationHelper = {
       }
     }
   },
-  listenTableUpdates: (socketUrl : string, table : HierarchicalDataTable, identity : string) => {
+  listenTableUpdates: (socketUrl: string, table: HierarchicalDataTable, identity: string) => {
     if (!window.io) return;
 
     const notificationURI = `${socketUrl}\#${identity}`;
@@ -51,11 +51,11 @@ const NotificationHelper = {
     if (!sockets[socketUrl]) {
       sockets[socketUrl] = window.io(socketUrl);
 
-      sockets[socketUrl].on('reconnect', async (message : any) => {
+      sockets[socketUrl].on('reconnect', async (message: any) => {
         // Server will send back a refresh command if it has restarted.
         // 
       });
-      sockets[socketUrl].on('command', (command : string) => {
+      sockets[socketUrl].on('command', (command: string) => {
         switch (command) {
           case 'refresh':
             window.location.reload();
@@ -70,7 +70,7 @@ const NotificationHelper = {
 
     const socket = sockets[socketUrl];
 
-    socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message : any) => {
+    socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
       if (message.id == identity) {
         for (let result of message.results) {
           let found = null;
@@ -107,7 +107,7 @@ const NotificationHelper = {
         timestamp: message.timestamp
       });
     });
-    socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message : any) => {
+    socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
       if (message.id == identity) {
         for (let result of message.results) {
           let collection = table.rows.filter((row) => {
@@ -133,7 +133,7 @@ const NotificationHelper = {
         });
       }
     });
-    socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message : any) => {
+    socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
       if (message.id == identity) {
         for (let result of message.results) {
           let found = null;
@@ -178,7 +178,7 @@ const NotificationHelper = {
         });
       }
     });
-    socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message : any) => {
+    socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message: any) => {
       if (message.id == identity) {
         for (let result of message.results) {
           let found = null;
@@ -226,7 +226,7 @@ const NotificationHelper = {
       }
     });
   },
-  unlistenTableUpdates: (socketUrl : string, table : HierarchicalDataTable, identity : string) => {
+  unlistenTableUpdates: (socketUrl: string, table: HierarchicalDataTable, identity: string) => {
     if (!window.io) return;
 
     const notificationURI = `${socketUrl}\#${identity}`;
@@ -258,7 +258,7 @@ const NotificationHelper = {
   }
 };
 
-export { NotificationHelper };
+export {NotificationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

@@ -1,12 +1,12 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { RequestHelper } from './RequestHelper';
-import { NotificationHelper } from './NotificationHelper';
-import { HTMLHelper } from './HTMLHelper';
-import { EventHelper } from './EventHelper';
+import {RequestHelper} from './RequestHelper';
+import {NotificationHelper} from './NotificationHelper';
+import {HTMLHelper} from './HTMLHelper';
+import {EventHelper} from './EventHelper';
 
-declare let window : any;
+declare let window: any;
 
 enum SourceType {
   Relational,
@@ -18,35 +18,35 @@ enum SourceType {
   Collection
 }
 interface HierarchicalDataTable {
-  source : SourceType;
-  group : string;
-  rows : HierarchicalDataRow[];
-  notification ?: string;
+  source: SourceType;
+  group: string;
+  rows: HierarchicalDataRow[];
+  notification?: string;
 }
 interface HierarchicalDataRow {
-  keys : { [Identifier : string] : any };
-  columns : { [Identifier : string] : any };
-  relations : { [Identifier : string] : HierarchicalDataTable };
-  timestamp ?: number;
+  keys: {[Identifier: string]: any};
+  columns: {[Identifier: string]: any};
+  relations: {[Identifier: string]: HierarchicalDataTable};
+  timestamp?: number;
 }
 
-const fieldManipulatorsInfoDict : any = {};
-const actionManipulatorsInfoDict : any = {};
-const optionsManipulatorsInfoDict : any = {};
+const fieldManipulatorsInfoDict: any = {};
+const actionManipulatorsInfoDict: any = {};
+const optionsManipulatorsInfoDict: any = {};
 const isDevelopmentMachine = ['localhost:3000', 'develop.stackblend.com', 'staging.stackblend.com', 'www.stackblend.com'].indexOf(location.host) != -1;
-const registeredEndpoint : string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
-const currentPath : string = (isDevelopmentMachine) ? window.PATH || null : null;
+const registeredEndpoint: string = (isDevelopmentMachine) ? window.ENDPOINT || null : null;
+const currentPath: string = (isDevelopmentMachine) ? window.PATH || null : null;
 
-const removeAndRestoreDisabledAttributeForInvoking = (button : any, callback : any) => {
+const removeAndRestoreDisabledAttributeForInvoking = (button: any, callback: any) => {
   const disabled = HTMLHelper.getAttribute(button, 'disabled');
   const setAttribute = button.setAttribute;
   const getAttribute = button.getAttribute;
   const removeAttribute = button.removeAttribute;
 
   let detectedChange = false;
-  button.setAttribute = (name, value) => { if (name && name.toLowerCase() == 'disabled') { detectedChange = true; setAttribute.call(button, name, value); } };
-  button.getAttribute = (name) => { if (name && name.toLowerCase() == 'disabled') { return disabled; } else { return getAttribute.call(button, name); } };
-  button.removeAttribute = (name) => { if (name && name.toLowerCase() == 'disabled') { detectedChange = true; removeAttribute.call(button, name); } };
+  button.setAttribute = (name, value) => {if (name && name.toLowerCase() == 'disabled') {detectedChange = true; setAttribute.call(button, name, value);} };
+  button.getAttribute = (name) => {if (name && name.toLowerCase() == 'disabled') {return disabled;} else {return getAttribute.call(button, name);} };
+  button.removeAttribute = (name) => {if (name && name.toLowerCase() == 'disabled') {detectedChange = true; removeAttribute.call(button, name);} };
 
   callback();
 
@@ -58,21 +58,21 @@ const removeAndRestoreDisabledAttributeForInvoking = (button : any, callback : a
 };
 
 const DataManipulationHelper = {
-  register: (guid : string, action : string, fields : string[], options : any) => {
+  register: (guid: string, action: string, fields: string[], options: any) => {
     if (!fieldManipulatorsInfoDict[guid]) {
       fieldManipulatorsInfoDict[guid] = fields;
       actionManipulatorsInfoDict[guid] = action;
       optionsManipulatorsInfoDict[guid] = options;
     }
   },
-  getInfo: (guid : string) : any => {
+  getInfo: (guid: string): any => {
     return {
       fields: fieldManipulatorsInfoDict[guid],
       action: actionManipulatorsInfoDict[guid],
       options: optionsManipulatorsInfoDict[guid]
     };
   },
-  request: (guid : string, notation : string, event : Event, callback : any) => {
+  request: (guid: string, notation: string, event: Event, callback: any) => {
     if (fieldManipulatorsInfoDict[guid]) {
       const params = {};
       const fields = fieldManipulatorsInfoDict[guid];
@@ -265,7 +265,7 @@ const DataManipulationHelper = {
         });
     }
   },
-  getDataFromKey: (key : string, current : any, index : number = -1) : any => {
+  getDataFromKey: (key: string, current: any, index: number = -1): any => {
     if (Array.isArray(current)) {
       current = current[0] || {};
     }
@@ -290,7 +290,7 @@ const DataManipulationHelper = {
       }
     }
   },
-  getDataFromNotation: (notation : string, data : any = window.data, inArray : boolean = false) : any => {
+  getDataFromNotation: (notation: string, data: any = window.data, inArray: boolean = false): any => {
     if (!notation) {
       console.error("The notation is null, undefined or empty.");
       alert("There is an error occured, please try again.");
@@ -337,7 +337,7 @@ const DataManipulationHelper = {
   }
 };
 
-export { HierarchicalDataTable, HierarchicalDataRow, SourceType, DataManipulationHelper };
+export {HierarchicalDataTable, HierarchicalDataRow, SourceType, DataManipulationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

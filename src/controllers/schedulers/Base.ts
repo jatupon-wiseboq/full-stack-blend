@@ -1,8 +1,8 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { ActionType } from "../helpers/DatabaseHelper";
-import { DataTableSchema } from "../helpers/SchemaHelper";
+import {ActionType} from "../helpers/DatabaseHelper";
+import {DataTableSchema} from "../helpers/SchemaHelper";
 
 class Base {
   constructor() {
@@ -19,7 +19,7 @@ class Base {
   }
 }
 
-export { Base };
+export {Base};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

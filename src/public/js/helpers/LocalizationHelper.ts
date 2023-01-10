@@ -3,14 +3,14 @@
 
 let cachedDictionary = null;
 
-declare let window : any;
+declare let window: any;
 
 const LOCALIZATION_LIST_DELIMITER = '~;;;~';
 const LOCALIZATION_ITEM_DELIMITER = '~:::~';
 const LOCALIZATION_HASH_DELIMITER = '~###~';
 
 const LocalizationHelper = {
-  getLanguageSpecification: () : any => {
+  getLanguageSpecification: (): any => {
     const data = window.localizedData;
 
     if (cachedDictionary) return cachedDictionary;
@@ -46,7 +46,7 @@ const LocalizationHelper = {
 
 const loc = LocalizationHelper.localize;
 
-export { loc };
+export {loc};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

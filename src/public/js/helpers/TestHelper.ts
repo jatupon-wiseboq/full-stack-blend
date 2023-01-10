@@ -1,18 +1,18 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HTMLHelper } from './HTMLHelper';
-import { RequestHelper } from './RequestHelper';
+import {HTMLHelper} from './HTMLHelper';
+import {RequestHelper} from './RequestHelper';
 
 let timerId = null;
 let allocatedIds = {};
 
-declare let window : any;
+declare let window: any;
 
 if (window.installedTestingConsole === undefined) window.installedTestingConsole = false;
 
 const TestHelper = {
-  identify: (delay : number = 1000) => {
+  identify: (delay: number = 1000) => {
     TestHelper.installConsoleDebugger();
 
     window.clearTimeout(timerId);
@@ -34,7 +34,7 @@ const TestHelper = {
       TestHelper.recursiveSortAttributes(assigned);
     }, delay);
   },
-  recursiveAssignId: (element : any, assigned : any[], guid : string = '_') => {
+  recursiveAssignId: (element: any, assigned: any[], guid: string = '_') => {
     if (!element.tagName) return;
 
     let currentId = HTMLHelper.getAttribute(element, 'id') || '';
@@ -105,7 +105,7 @@ const TestHelper = {
       }
     }
   },
-  recursiveSortAttributes: (elements : any) => {
+  recursiveSortAttributes: (elements: any) => {
     for (let j = 0; j < elements.length; j++) {
       if (!elements[j].setAttribute || !elements[j].removeAttribute) continue;
 
@@ -124,7 +124,7 @@ const TestHelper = {
         elements[j].removeAttribute(attributes[i].name);
       }
 
-      attributes = attributes.sort((a : any, b : any) => {
+      attributes = attributes.sort((a: any, b: any) => {
         if (a.name == 'id') return -1;
         if (b.name == 'id') return 1;
 
@@ -138,7 +138,7 @@ const TestHelper = {
       elements[j].children && TestHelper.recursiveSortAttributes(elements[j].children);
     }
   },
-  checkIfSeleniumExists: () : boolean => {
+  checkIfSeleniumExists: (): boolean => {
     if (HTMLHelper.getElementById('selenium-ide-indicator')) return true;
 
     const children = Array.from(document.head.children);
@@ -185,11 +185,11 @@ const TestHelper = {
       }), '*');
     });
 
-    window.addEventListener("message", ((event : any) => {
+    window.addEventListener("message", ((event: any) => {
       let data = null;
       try {
         data = JSON.parse(event.data);
-      } catch { /*void*/ }
+      } catch { /*void*/}
 
       switch (data.type) {
         case 'execute':
@@ -253,7 +253,7 @@ const TestHelper = {
   }
 }
 
-export { TestHelper };
+export {TestHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

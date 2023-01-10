@@ -1,14 +1,14 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HierarchicalDataRow, ActionType } from "../helpers/DatabaseHelper";
-import { DataTableSchema } from "../helpers/SchemaHelper";
-import { Base as Connector } from '../connectors/Base';
+import {HierarchicalDataRow, ActionType} from "../helpers/DatabaseHelper";
+import {DataTableSchema} from "../helpers/SchemaHelper";
+import {Base as Connector} from '../connectors/Base';
 
 const sitemapDictionary = {};
 
 const SitemapHelper = {
-  register: (path : string, frequency : string = 'weekly', priority : number = 0.5) => {
+  register: (path: string, frequency: string = 'weekly', priority: number = 0.5) => {
     sitemapDictionary[path] = {
       frequency: frequency,
       priority: priority
@@ -28,7 +28,7 @@ const SitemapHelper = {
   }
 };
 
-export { SitemapHelper };
+export {SitemapHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

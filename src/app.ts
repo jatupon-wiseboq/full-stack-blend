@@ -10,7 +10,7 @@ import cors from "cors";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
-import { SitemapHelper } from './controllers/helpers/SitemapHelper';
+import {SitemapHelper} from './controllers/helpers/SitemapHelper';
 
 const MongoStore = mongo(session);
 
@@ -44,7 +44,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
         useUnifiedTopology: true
       }
     }) || null,
-    cookie: { secure: true }
+    cookie: {secure: true}
   }));
 } else {
   app.use(session({
@@ -65,8 +65,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json({ limit: "50mb" }));
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({limit: "50mb"}));
+app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   // app.use(lusca.xframe("SAMEORIGIN"));
@@ -87,7 +87,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 // Cache configuration
 // 
 app.use(
-  express.static(path.join(__dirname, "public"), { maxAge: 0 })
+  express.static(path.join(__dirname, "public"), {maxAge: 0})
 );
 
 // Error handler
@@ -102,9 +102,9 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     uaString: req.get('User-Agent'),
     minify: true,
     features: {
-      'es5': { flags: ['gated'] },
-      'es6': { flags: ['gated'] },
-      'es7': { flags: ['gated'] }
+      'es5': {flags: ['gated']},
+      'es6': {flags: ['gated']},
+      'es7': {flags: ['gated']}
     }
   }).then(function(bundle) {
     res.set('Content-Type', 'text/javascript');

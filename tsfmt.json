@@ -13,12 +13,12 @@
   "insertSpaceAfterFunctionKeywordForAnonymousFunctions": false,
   "insertSpaceAfterOpeningAndBeforeClosingNonemptyParenthesis": false,
   "insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": false,
-  "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+  "insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": false,
   "insertSpaceAfterOpeningAndBeforeClosingTemplateStringBraces": false,
   "insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": false,
   "insertSpaceAfterTypeAssertion": false,
   "insertSpaceBeforeFunctionParenthesis": false,
-  "insertSpaceBeforeTypeAnnotation": true,
+  "insertSpaceBeforeTypeAnnotation": false,
   "placeOpenBraceOnNewLineForFunctions": false,
   "placeOpenBraceOnNewLineForControlBlocks": false
 }

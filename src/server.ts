@@ -1,10 +1,10 @@
 import * as SocketIO from "socket.io";
 import fs from "fs";
 import dotenv from "dotenv";
-import { createClient } from "ioredis";
+import {createClient} from "ioredis";
 import * as child from "child_process";
-import { base64id } from "base64id";
-import { NotificationHelper } from './controllers/helpers/NotificationHelper';
+import {base64id} from "base64id";
+import {NotificationHelper} from './controllers/helpers/NotificationHelper';
 
 import app from "./app";
 
@@ -47,11 +47,11 @@ NotificationHelper.listenUpdatesUsingMultipleNodesOfSocketIO();
 
 // Resque
 //
-const { Worker, Scheduler, Queue, Plugins } = require("node-resque");
+const {Worker, Scheduler, Queue, Plugins} = require("node-resque");
 
-let queue : any = null;
-let scheduler : any = null;
-let finalize : () => void = null;
+let queue: any = null;
+let scheduler: any = null;
+let finalize: () => void = null;
 const complete = {};
 
 if (process.env.PRIORITIZED_WORKER_KEY) {
@@ -64,10 +64,10 @@ if (process.env.PRIORITIZED_WORKER_KEY) {
     perform: {
       plugins: [Plugins.JobLock],
       pluginOptions: {
-        JobLock: { reEnqueue: true },
+        JobLock: {reEnqueue: true},
       },
-      perform: async (table : any) => {
-        const { WorkerHelper } = require("./controllers/helpers/WorkerHelper");
+      perform: async (table: any) => {
+        const {WorkerHelper} = require("./controllers/helpers/WorkerHelper");
         await WorkerHelper.perform(table);
       }
     }
@@ -193,4 +193,4 @@ finalize = () => {
 };
 complete['worker'] && complete['scheduler'] && complete['queue'] && finalize && finalize();
 
-export { server, queue, scheduler };
+export {server, queue, scheduler};

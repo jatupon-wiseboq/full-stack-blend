@@ -1,20 +1,20 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { Input } from "./DatabaseHelper";
+import {Input} from "./DatabaseHelper";
 
 interface ValidationInfo {
-  name : string;
-  required : boolean;
-  customMessage : string;
-  format ?: string;
-  regex ?: string;
+  name: string;
+  required: boolean;
+  customMessage: string;
+  format?: string;
+  regex?: string;
 }
 
-const validationDict : any = {};
+const validationDict: any = {};
 
 const ValidationHelper = {
-  registerInput: (guid : string, name : string, required : boolean, customMessage : string, format : string = null, regex : string = null) => {
+  registerInput: (guid: string, name: string, required: boolean, customMessage: string, format: string = null, regex: string = null) => {
     if (!guid || !name) throw new Error("There was an error trying to register validation info (guid or name is empty).");
 
     validationDict[guid] = {
@@ -25,10 +25,10 @@ const ValidationHelper = {
       regex: regex
     };
   },
-  attachInfo: (input : Input) => {
+  attachInfo: (input: Input) => {
     input.validation = validationDict[input.guid.split("[")[0]];
   },
-  validate: (data : Input[]) => {
+  validate: (data: Input[]) => {
     if (!data) return;
     for (const item of data) {
       if (item.validation.required &&
@@ -92,7 +92,7 @@ const ValidationHelper = {
   }
 };
 
-export { ValidationInfo, ValidationHelper };
+export {ValidationInfo, ValidationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

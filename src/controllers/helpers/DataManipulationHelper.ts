@@ -1,19 +1,19 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import { HierarchicalDataTable, HierarchicalDataRow } from "./DatabaseHelper";
-import { CodeHelper } from "./CodeHelper";
-import { strict as assert } from 'assert';
+import {HierarchicalDataTable, HierarchicalDataRow} from "./DatabaseHelper";
+import {CodeHelper} from "./CodeHelper";
+import {strict as assert} from 'assert';
 
-let dataset : { [Identifier : string] : HierarchicalDataTable } = null;
+let dataset: {[Identifier: string]: HierarchicalDataTable} = null;
 
 const DataManipulationHelper = {
-  setData: (data : { [Identifier : string] : HierarchicalDataTable }) => {
+  setData: (data: {[Identifier: string]: HierarchicalDataTable}) => {
     CodeHelper.assertOfPresent(data, 'data');
 
     dataset = data;
   },
-  getDataFromKey: (key : string, current : any, index : number = -1) : any => {
+  getDataFromKey: (key: string, current: any, index: number = -1): any => {
     CodeHelper.assertOfPresent(key, 'key');
     CodeHelper.assertOfKeyName(key, 'key');
     CodeHelper.assertOfPresent(current, 'current');
@@ -43,7 +43,7 @@ const DataManipulationHelper = {
       }
     }
   },
-  getDataFromNotation: (notation : string, data : { [Identifier : string] : HierarchicalDataTable } = dataset, inArray : boolean = false) : any => {
+  getDataFromNotation: (notation: string, data: {[Identifier: string]: HierarchicalDataTable} = dataset, inArray: boolean = false): any => {
     CodeHelper.assertOfPresent(notation, 'notation');
     CodeHelper.assertOfNotationFormat(notation, 'notation');
 
@@ -81,7 +81,7 @@ const DataManipulationHelper = {
   }
 };
 
-export { DataManipulationHelper };
+export {DataManipulationHelper};
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

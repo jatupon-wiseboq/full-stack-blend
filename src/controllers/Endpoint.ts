@@ -5,17 +5,17 @@ import fs from "fs";
 import * as shell from "shelljs";
 import path from "path";
 import * as child from "child_process";
-import { Request, Response } from "express";
+import {Request, Response} from "express";
 
 let recentError = [];
 export const clearRecentError = () => {
   recentError = [];
 };
-export const addRecentError = (error : any) => {
+export const addRecentError = (error: any) => {
   recentError.push("[back-end]: " + (error && error.message || error.toString()));
 };
 
-let convertUnixIntoWindowPathIfNeed = (path : any) => {
+let convertUnixIntoWindowPathIfNeed = (path: any) => {
   if (__dirname.indexOf('\\') != -1) {
     path = path.replace(/\//g, '\\');
   }
@@ -27,9 +27,9 @@ let convertUnixIntoWindowPathIfNeed = (path : any) => {
  * POST /endpoint/update/content
  * Update the content of specific file in the repository.
  */
-export const updateContent = (request : Request, response : Response) => {
+export const updateContent = (request: Request, response: Response) => {
   try {
-    const json : any = request.body;
+    const json: any = request.body;
     if (json == null) {
       throw new Error("There was an error trying to obtain requesting parameters (JSON object is null).");
     }
@@ -57,10 +57,10 @@ export const updateContent = (request : Request, response : Response) => {
       for (const file of json.files) {
         const fullPath = path.resolve(dirname, convertUnixIntoWindowPathIfNeed(file.path));
 
-        fs.writeFileSync(fullPath, file.content, { encoding: "utf8", flag: "w" });
+        fs.writeFileSync(fullPath, file.content, {encoding: "utf8", flag: "w"});
       }
 
-      const { ProjectConfigurationHelper } = require('./helpers/ProjectConfigurationHelper');
+      const {ProjectConfigurationHelper} = require('./helpers/ProjectConfigurationHelper');
       ProjectConfigurationHelper.reload();
     }, 1000);
   } catch (error) {
@@ -71,12 +71,12 @@ export const updateContent = (request : Request, response : Response) => {
     });
   }
 };
-export const resetContent = async (request : Request, response : Response) => {
+export const resetContent = async (request: Request, response: Response) => {
   try {
     const dirname = __dirname.replace(convertUnixIntoWindowPathIfNeed("/dist/"), convertUnixIntoWindowPathIfNeed("/src/"));
     const rootPath = path.resolve(dirname, convertUnixIntoWindowPathIfNeed("../../"));
 
-    const { stdout, stderr } = await child.exec(convertUnixIntoWindowPathIfNeed(`git restore -s@ -SW -- ${rootPath}/src/controllers/components ; git restore -s@ -SW -- ${rootPath}/src/public/js/components ; git restore -s@ -SW -- ${rootPath}/views/home ; git restore -s@ -SW -- ${rootPath}/project.stackblend ; git clean -f -d`));
+    const {stdout, stderr} = await child.exec(convertUnixIntoWindowPathIfNeed(`git restore -s@ -SW -- ${rootPath}/src/controllers/components ; git restore -s@ -SW -- ${rootPath}/src/public/js/components ; git restore -s@ -SW -- ${rootPath}/views/home ; git restore -s@ -SW -- ${rootPath}/project.stackblend ; git clean -f -d`));
     if (stderr && stderr["_hadError"]) throw stderr;
 
     response.json({
@@ -93,9 +93,9 @@ export const resetContent = async (request : Request, response : Response) => {
     });
   }
 };
-export const pullContent = async (request : Request, response : Response) => {
+export const pullContent = async (request: Request, response: Response) => {
   try {
-    const { stdout, stderr } = await child.exec("npm run reset && git pull");
+    const {stdout, stderr} = await child.exec("npm run reset && git pull");
     if (stderr && stderr["_hadError"]) throw stderr;
 
     response.json({
@@ -105,7 +105,7 @@ export const pullContent = async (request : Request, response : Response) => {
     });
     response.end();
 
-    const { ProjectConfigurationHelper } = require('./helpers/ProjectConfigurationHelper');
+    const {ProjectConfigurationHelper} = require('./helpers/ProjectConfigurationHelper');
     ProjectConfigurationHelper.reload();
   } catch (error) {
     response.json({
@@ -115,7 +115,7 @@ export const pullContent = async (request : Request, response : Response) => {
     });
   }
 };
-export const getRecentError = (request : Request, response : Response) => {
+export const getRecentError = (request: Request, response: Response) => {
   if (recentError.length == 0) {
     response.json({
       success: true,
