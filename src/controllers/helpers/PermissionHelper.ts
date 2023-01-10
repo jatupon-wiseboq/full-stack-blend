@@ -1,9 +1,9 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {DatabaseHelper, ActionType, SourceType, HierarchicalDataTable} from './DatabaseHelper';
+import {DatabaseHelper, ActionType, SourceType, HierarchicalDataTable, fixType} from './DatabaseHelper';
 import {RequestHelper} from './RequestHelper';
-import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper} from './SchemaHelper';
+import {DataTableSchema, DataColumnSchema, DataSchema, SchemaHelper, FieldType} from './SchemaHelper';
 import {ProjectConfigurationHelper} from './ProjectConfigurationHelper';
 import {RelationalDatabaseClient} from './ConnectionHelper';
 import {Md5} from 'md5-typescript';
@@ -182,9 +182,12 @@ const PermissionHelper = {
                 const from = shortestPath[0];
                 for (const key in referencings) {
                   if (referencings.hasOwnProperty(key)) {
-                    if ((from.keys.hasOwnProperty(key) || from.columns.hasOwnProperty(key)) && !!referencings[key]) {
+                    if ((from.keys.hasOwnProperty(key) || from.columns.hasOwnProperty(key)) && referencings[key] != null && referencings[key] !== undefined) {
                       WHERE_CLAUSE.push(`${from.group}.${key} = ?`);
-                      VALUES.push(referencings[key]);
+                      
+                      const field = from.keys[key] && from.keys[key].fieldType && from.columns[key] && from.columns[key].fieldType;
+                      
+                      VALUES.push(fixType(field, referencings[key]));
                     }
                   }
                 }
