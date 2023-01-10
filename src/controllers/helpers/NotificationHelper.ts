@@ -1,10 +1,10 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {CodeHelper} from "./CodeHelper";
-import {DataTableSchema, SchemaHelper} from "./SchemaHelper";
-import {ActionType, HierarchicalDataRow} from "./DatabaseHelper";
-import {Md5} from "md5-typescript";
+import { CodeHelper } from "./CodeHelper";
+import { DataTableSchema, SchemaHelper } from "./SchemaHelper";
+import { ActionType, HierarchicalDataRow } from "./DatabaseHelper";
+import { Md5 } from "md5-typescript";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { RedisAdapter } from "@socket.io/redis-adapter";
@@ -13,11 +13,11 @@ import { createClient } from "ioredis";
 const ACTIONS = [ActionType.Insert, ActionType.Update, ActionType.Upsert, ActionType.Delete];
 
 const notificationInfos = {};
-const innerCircleLookupTable: {[Identifier: string]: string[]} = {};
-const sessionLookupTable: {[Identifier: string]: any[]} = {};
-const disconnectingSockets: {[Identifier: string]: any[]} = {};
-const disposingInstances: {[Identifier: string]: any[]} = {};
-const confirmingMessages: {[Identifier: string]: {[Identifier: string]: any}} = {};
+const innerCircleLookupTable : { [Identifier : string] : string[] } = {};
+const sessionLookupTable : { [Identifier : string] : any[] } = {};
+const disconnectingSockets : { [Identifier : string] : any[] } = {};
+const disposingInstances : { [Identifier : string] : any[] } = {};
+const confirmingMessages : { [Identifier : string] : { [Identifier : string] : any } } = {};
 
 let disconnectingTimer = null;
 
@@ -29,34 +29,34 @@ let socket = null;
 let adapter = null;
 
 const NotificationHelper = {
-  setup: (_socket: any) => {
+  setup: (_socket : any) => {
     socket = _socket;
     socket && socket.sockets.on("connection", (socket) => {
-      const req: any = {headers: socket.handshake.headers};
+      const req : any = { headers: socket.handshake.headers };
       const parser = cookieParser(process.env.SESSION_SECRET);
-      
-      parser(req, {}, () => {});
-      
+
+      parser(req, {}, () => { });
+
       const instanceId = socket.handshake.query.instanceId;
       const sessionId = req.signedCookies["connect.sid"];
       const uniqueId = sessionId + instanceId;
       if (!sessionId) return;
-      
-      const setSocket = (sockets: any[]): boolean => {
-        let hasState: boolean = false;
-        
+
+      const setSocket = (sockets : any[]) : boolean => {
+        let hasState : boolean = false;
+
         for (const group in notificationInfos) {
           if (notificationInfos.hasOwnProperty(group)) {
             const notificationInfo = notificationInfos[group];
-            
+
             for (const md5OfServerTableUpdatingIdentity in notificationInfo) {
               if (notificationInfo.hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
                 const combinations = notificationInfo[md5OfServerTableUpdatingIdentity].combinations;
-                
+
                 for (const md5OfClientTableUpdatingIdentity in combinations) {
                   if (combinations.hasOwnProperty(md5OfClientTableUpdatingIdentity)) {
                     const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
-                    
+
                     if (combinationInfo.hasOwnProperty(sessionId)) {
                       if (sockets != null) {
                         if (combinationInfo[sessionId] === false) {
@@ -95,9 +95,9 @@ const NotificationHelper = {
                               }
                             }
                           }
-                          
+
                           hasState = true;
-                          combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
+                          combinationInfo[sessionId] = sockets && { sockets: [...Array.from(sockets)] } || null;
                         }
                       } else {
                         combinationInfo[sessionId] = null;
@@ -109,15 +109,15 @@ const NotificationHelper = {
             }
           }
         }
-        
+
         return hasState;
       };
-      
+
       delete disconnectingSockets[socket.id];
       delete disposingInstances[uniqueId];
-      
+
       confirmingMessages[uniqueId] = confirmingMessages[uniqueId] || {};
-      
+
       socket.on("disconnect", (reason) => {
         disconnectingSockets[socket.id] = [socket, 15];
         disposingInstances[uniqueId] = [uniqueId, 3600];
@@ -125,34 +125,34 @@ const NotificationHelper = {
       socket.on("reconnect", (reason) => {
         delete disconnectingSockets[socket.id];
         delete disposingInstances[uniqueId];
-        
+
         if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
           sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
           sessionLookupTable[sessionId].push(socket);
         }
         setSocket(sessionLookupTable[sessionId]);
       });
-      
+
       disconnectingTimer = disconnectingTimer || setInterval(() => {
         for (const socketId in disconnectingSockets) {
           if (disconnectingSockets.hasOwnProperty(socketId)) {
             disconnectingSockets[socketId][1]--;
-            
+
             if (disconnectingSockets[socketId][1] <= 0) {
               const socket = disconnectingSockets[socketId][0];
-              const req: any = {headers: socket.handshake.headers};
+              const req : any = { headers: socket.handshake.headers };
               const parser = cookieParser(process.env.SESSION_SECRET);
-              
-              parser(req, {}, () => {});
-              
+
+              parser(req, {}, () => { });
+
               const sessionId = req.signedCookies["connect.sid"];
               if (sessionId) {
                 const index = sessionLookupTable[sessionId] && sessionLookupTable[sessionId].indexOf(socket) || -1;
-                
+
                 if (index != -1) {
                   sessionLookupTable[sessionId].splice(index, 1);
                 }
-                
+
                 if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
                   sessionLookupTable[sessionId] = null;
                   setSocket(null);
@@ -160,7 +160,7 @@ const NotificationHelper = {
                   setSocket(sessionLookupTable[sessionId]);
                 }
               }
-              
+
               delete disconnectingSockets[socket.id];
             }
           }
@@ -168,7 +168,7 @@ const NotificationHelper = {
         for (const uniqueId in disposingInstances) {
           if (disposingInstances.hasOwnProperty(uniqueId)) {
             disposingInstances[uniqueId][1]--;
-            
+
             if (disposingInstances[uniqueId][1] <= 0) {
               delete confirmingMessages[uniqueId];
               delete disposingInstances[uniqueId];
@@ -176,14 +176,14 @@ const NotificationHelper = {
           }
         }
       }, 1000);
-      
+
       if (!socket.unconfirmEmit) {
         socket.unconfirmEmit = socket.emit;
         socket.emitCount = 0;
-        socket.emit = (name: string, data: any) => {
+        socket.emit = (name : string, data : any) => {
           if (typeof data === 'object') {
             data.timestamp = `${(new Date()).getTime()}.${socket.emitCount++}`;
-            
+
             if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > 100) {
               delete confirmingMessages[uniqueId];
               socket.unconfirmEmit("command", "refresh");
@@ -195,12 +195,12 @@ const NotificationHelper = {
             socket.unconfirmEmit(name, data);
           }
         };
-        
-        socket.on("acknowledge", (message: any) => {
+
+        socket.on("acknowledge", (message : any) => {
           if (!confirmingMessages.hasOwnProperty(uniqueId)) return;
           delete confirmingMessages[uniqueId][message.timestamp];
         });
-        
+
         if (!confirmingMessages.hasOwnProperty(uniqueId)) {
           socket.unconfirmEmit("command", "refresh");
         } else {
@@ -213,7 +213,7 @@ const NotificationHelper = {
           }
         }
       }
-      
+
       if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
         sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
         sessionLookupTable[sessionId].push(socket);
@@ -225,7 +225,7 @@ const NotificationHelper = {
       }
     });
   },
-  associateInnerCircles: (session: any, innerCircleTags: string[]) => {
+  associateInnerCircles: (session : any, innerCircleTags : string[]) => {
     for (const innerCircleTag of innerCircleTags) {
       innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
       if (innerCircleLookupTable[innerCircleTag].indexOf(session.id) == -1) {
@@ -233,78 +233,78 @@ const NotificationHelper = {
       }
     }
   },
-  disassociateInnerCircles: (session: any, innerCircleTags: string[]) => {
+  disassociateInnerCircles: (session : any, innerCircleTags : string[]) => {
     for (const innerCircleTag of innerCircleTags) {
       innerCircleLookupTable[innerCircleTag] = innerCircleLookupTable[innerCircleTag] || [];
-      
+
       const index = innerCircleLookupTable[innerCircleTag].indexOf(session.id);
       if (index != -1) {
         innerCircleLookupTable[innerCircleTag].splice(index, 1);
       }
     }
   },
-  getTableUpdatingIdentity: (schema: DataTableSchema, query: any, session: any, innerCircleTags: string[]=[]): string => {
+  getTableUpdatingIdentity: (schema : DataTableSchema, query : any, session : any, innerCircleTags : string[] = []) : string => {
     if (!session) return null;
-    
+
     notificationInfos[schema.group] = notificationInfos[schema.group] || {};
-    
+
     const sortedCombinationKeys = [];
     const sortedCustomQueryValues = [];
-    
+
     for (const key in query) {
       if (query.hasOwnProperty(key)) {
         sortedCombinationKeys.push(key);
         sortedCustomQueryValues.push(key + ":" + query[key]);
       }
     }
-    
+
     sortedCombinationKeys.sort();
     sortedCustomQueryValues.sort();
-    
+
     const serverTableUpdatingIdentity = sortedCombinationKeys.join("+");
     const md5OfServerTableUpdatingIdentity = Md5.init(serverTableUpdatingIdentity);
-    
+
     notificationInfos[schema.group][md5OfServerTableUpdatingIdentity] = notificationInfos[schema.group][md5OfServerTableUpdatingIdentity] || {
       keys: sortedCombinationKeys,
       combinations: {}
     };
-    
+
     const clientTableUpdatingIdentity = [schema.group, ...sortedCustomQueryValues].join();
     const md5OfClientTableUpdatingIdentity = Md5.init(clientTableUpdatingIdentity);
-    
+
     const combinations = notificationInfos[schema.group][md5OfServerTableUpdatingIdentity]["combinations"];
-    
+
     combinations[md5OfClientTableUpdatingIdentity] = combinations[md5OfClientTableUpdatingIdentity] || {};
-    
+
     const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
-    
+
     if (!combinationInfo.hasOwnProperty(session.id)) {
-      combinationInfo[session.id] = sessionLookupTable[session.id] && {sockets: [...Array.from(sessionLookupTable[session.id])]} || null;
+      combinationInfo[session.id] = sessionLookupTable[session.id] && { sockets: [...Array.from(sessionLookupTable[session.id])] } || null;
     }
-    
+
     for (const innerCircleTag of innerCircleTags) {
       const members = innerCircleLookupTable[innerCircleTag] || [];
-      
+
       for (const sessionId of members) {
-        combinationInfo[sessionId] = sessionLookupTable[sessionId] && {sockets: [...Array.from(sessionLookupTable[sessionId])]} || null;
+        combinationInfo[sessionId] = sessionLookupTable[sessionId] && { sockets: [...Array.from(sessionLookupTable[sessionId])] } || null;
       }
     }
-    
+
     return md5OfClientTableUpdatingIdentity;
   },
-  getUniqueListOfIdentities: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]): {[Identifier: string]: {sessions: string[]; listeners: any; results: HierarchicalDataRow[]}} => {
+  getUniqueListOfIdentities: (action : ActionType, schema : DataTableSchema, results : HierarchicalDataRow[]) : { [Identifier : string] : { sessions : string[]; listeners : any; results : HierarchicalDataRow[] } } => {
     const notificationInfo = notificationInfos[schema.group] || {};
     const identities = {};
-    
+
     for (const md5OfServerTableUpdatingIdentity in notificationInfo) {
       if (notificationInfo.hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
         const keys = notificationInfo[md5OfServerTableUpdatingIdentity].keys;
         const combinations = notificationInfo[md5OfServerTableUpdatingIdentity].combinations;
-        
+
         for (const result of results) {
           const clonedResult = CodeHelper.clone(result);
           const sortedCustomQueryValues = [];
-          
+
           for (const key of keys) {
             if (schema.keys[key]) {
               sortedCustomQueryValues.push(key + ":" + clonedResult.keys[key]);
@@ -313,9 +313,9 @@ const NotificationHelper = {
               sortedCustomQueryValues.push(key + ":" + clonedResult.columns[key]);
             }
           }
-          
+
           sortedCustomQueryValues.sort();
-          
+
           for (const key in schema.keys) {
             if (schema.keys.hasOwnProperty(key)) {
               if (schema.keys[key] && schema.keys[key].retrievingPermission) {
@@ -330,20 +330,20 @@ const NotificationHelper = {
               }
             }
           }
-          
+
           const clientTableUpdatingIdentity = [schema.group, ...sortedCustomQueryValues].join();
           const md5OfClientTableUpdatingIdentity = Md5.init(clientTableUpdatingIdentity);
-          
+
           if (combinations[md5OfClientTableUpdatingIdentity]) {
             identities[md5OfClientTableUpdatingIdentity] = identities[md5OfClientTableUpdatingIdentity] || {
               sessions: [],
               listeners: [],
               results: []
             };
-            
+
             const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
             const identitiesInfo = identities[md5OfClientTableUpdatingIdentity];
-            
+
             for (const sessionId in combinationInfo) {
               if (combinationInfo.hasOwnProperty(sessionId)) {
                 if (combinationInfo[sessionId] === false) {
@@ -375,46 +375,46 @@ const NotificationHelper = {
         }
       }
     }
-    
+
     return identities;
   },
-  recursiveTagDerivableSubsequenceNotification: (baseSchema: DataTableSchema, results: any, sessionId: string) => {
+  recursiveTagDerivableSubsequenceNotification: (baseSchema : DataTableSchema, results : any, sessionId : string) => {
     for (const result of results) {
       for (const group in result.relations) {
         if (result.relations.hasOwnProperty(group)) {
           const nextSchema = SchemaHelper.getDataTableSchemaFromNotation(group);
           const md5OfClientTableUpdatingIdentity = result.relations[group].notification;
-          
+
           if (!md5OfClientTableUpdatingIdentity) continue;
           if (notificationInfos[group]) {
             for (const md5OfServerTableUpdatingIdentity in notificationInfos[group]) {
               if (notificationInfos[group].hasOwnProperty(md5OfServerTableUpdatingIdentity)) {
                 const combinations = notificationInfos[group][md5OfServerTableUpdatingIdentity];
-                
+
                 if (combinations[md5OfClientTableUpdatingIdentity]) {
                   const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
-                  
+
                   if (!combinationInfo.hasOwnProperty(sessionId)) {
-                    combinationInfo[sessionId] = sessionLookupTable[sessionId] && {sockets: [...Array.from(sessionLookupTable[sessionId])]} || null;
+                    combinationInfo[sessionId] = sessionLookupTable[sessionId] && { sockets: [...Array.from(sessionLookupTable[sessionId])] } || null;
                   }
                 }
               }
             }
           }
-          
+
           NotificationHelper.recursiveTagDerivableSubsequenceNotification(nextSchema, result.relations[group].rows, sessionId);
         }
       }
     }
   },
-  notifyUpdates: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]) => {
+  notifyUpdates: (action : ActionType, schema : DataTableSchema, results : HierarchicalDataRow[]) => {
     // Use the official multiple nodes of Socket.IO for notifying updates.
     // 
     // Socket.IO Official Reference: https://socket.io/docs/v3/using-multiple-nodes/
     // Heroku Session Affinity Reference: https://devcenter.heroku.com/articles/session-affinity
     // 
     NotificationHelper.notifyUpdatesUsingMultipleNodesOfSocketIO(action, schema, results);
-    
+
     if (adapter != null) {
       adapter.serverSideEmit([JSON.stringify({
         action: ACTIONS.indexOf(action),
@@ -423,16 +423,16 @@ const NotificationHelper = {
       })]);
     }
   },
-  notifyUpdatesUsingMultipleNodesOfSocketIO: (action: ActionType, schema: DataTableSchema, results: HierarchicalDataRow[]) => {
+  notifyUpdatesUsingMultipleNodesOfSocketIO: (action : ActionType, schema : DataTableSchema, results : HierarchicalDataRow[]) => {
     // Use the official multiple nodes of Socket.IO for notifying updates.
     // 
     // Socket.IO Official Reference: https://socket.io/docs/v3/using-multiple-nodes/
     // Heroku Session Affinity Reference: https://devcenter.heroku.com/articles/session-affinity
     // 
     if (socket == null) return;
-    
+
     const identities = NotificationHelper.getUniqueListOfIdentities(action, schema, results);
-    
+
     for (const identity in identities) {
       if (identities.hasOwnProperty(identity)) {
         for (const sessionId of identities[identity].sessions) {
@@ -440,7 +440,7 @@ const NotificationHelper = {
         }
       }
     }
-    
+
     switch (action) {
       case ActionType.Insert:
         for (const identity in identities) {
@@ -502,14 +502,14 @@ const NotificationHelper = {
       const redisConnectionURL = process.env[process.env.VOLATILE_MEMORY_KEY];
       const pubClient = createClient(redisConnectionURL);
       const subClient = pubClient.duplicate();
-      
+
       pubClient.on("error", (err) => {
         console.log(err.message);
       });
       subClient.on("error", (err) => {
         console.log(err.message);
       });
-      
+
       adapter = new RedisAdapter({
         name: 'node',
         sockets: {
@@ -522,18 +522,18 @@ const NotificationHelper = {
             encode: (value) => { return value; }
           }
         },
-        _onServerSideEmit: (_message: any) => {
+        _onServerSideEmit: (_message : any) => {
           try {
             const message = JSON.parse(_message);
-            
+
             if (message.action === undefined || message.schema === undefined || message.results === undefined) return;
-            
+
             const action = ACTIONS[message.action];
             const schema = SchemaHelper.getDataTableSchemaFromNotation(message.schema);
             const results = message.results;
-            
+
             NotificationHelper.notifyUpdatesUsingMultipleNodesOfSocketIO(action, schema, results);
-          } catch(error) {
+          } catch (error) {
             console.log(error);
           }
         }
@@ -542,7 +542,7 @@ const NotificationHelper = {
   }
 };
 
-export {NotificationHelper};
+export { NotificationHelper };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.

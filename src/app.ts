@@ -10,7 +10,7 @@ import cors from "cors";
 import errorHandler from "errorhandler";
 import dotenv from "dotenv";
 import polyfill from "polyfill-library";
-import {SitemapHelper} from './controllers/helpers/SitemapHelper';
+import { SitemapHelper } from './controllers/helpers/SitemapHelper';
 
 const MongoStore = mongo(session);
 
@@ -38,11 +38,11 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
-        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
-        autoReconnect: true,
-        mongoOptions: {
-          useUnifiedTopology: true
-        }
+      url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+      autoReconnect: true,
+      mongoOptions: {
+        useUnifiedTopology: true
+      }
     }) || null,
     cookie: { secure: true }
   }));
@@ -52,11 +52,11 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
     saveUninitialized: true,
     secret: process.env.SESSION_SECRET,
     store: process.env.DOCUMENT_DATABASE_KEY && new MongoStore({
-        url: process.env[process.env.DOCUMENT_DATABASE_KEY],
-        autoReconnect: true,
-        mongoOptions: {
-          useUnifiedTopology: true
-        }
+      url: process.env[process.env.DOCUMENT_DATABASE_KEY],
+      autoReconnect: true,
+      mongoOptions: {
+        useUnifiedTopology: true
+      }
     }) || null,
     cookie: {}
   }));
@@ -65,8 +65,8 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "pug");
 app.use(compression());
-app.use(bodyParser.json({limit: "50mb"}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true}));
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1) {
   // app.use(lusca.xframe("SAMEORIGIN"));
@@ -87,7 +87,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
 // Cache configuration
 // 
 app.use(
-    express.static(path.join(__dirname, "public"), { maxAge: 0 })
+  express.static(path.join(__dirname, "public"), { maxAge: 0 })
 );
 
 // Error handler
@@ -128,7 +128,7 @@ if (["development", "staging", "production"].indexOf(process.env.NODE_ENV) == -1
   app.post("/endpoint/reset/content", endpoint.resetContent);
   app.post("/endpoint/pull/content", endpoint.pullContent);
   app.get("/endpoint/recent/error", endpoint.getRecentError);
-  
+
   app.use((err, req, res, next) => {
     endpoint.addRecentError(err);
     next();

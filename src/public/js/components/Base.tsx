@@ -1,34 +1,34 @@
 // Auto[Generating:V1]--->
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
 
-import {CodeHelper} from '../helpers/CodeHelper';
-import {NotificationHelper} from '../helpers/NotificationHelper';
-import {Project, DeclarationHelper} from '../helpers/DeclarationHelper';
-import {HierarchicalDataTable, HierarchicalDataRow, SourceType} from '../helpers/DataManipulationHelper';
+import { CodeHelper } from '../helpers/CodeHelper';
+import { NotificationHelper } from '../helpers/NotificationHelper';
+import { Project, DeclarationHelper } from '../helpers/DeclarationHelper';
+import { HierarchicalDataTable, HierarchicalDataRow, SourceType } from '../helpers/DataManipulationHelper';
 
-declare let React: any;
-declare let ReactDOM: any;
-declare let DataManipulationHelper: any;
+declare let React : any;
+declare let ReactDOM : any;
+declare let DataManipulationHelper : any;
 
 interface IBaseProps {
-  row: HierarchicalDataRow;
-  data: {[Identifier: string]: HierarchicalDataTable};
+  row : HierarchicalDataRow;
+  data : { [Identifier : string] : HierarchicalDataTable };
 }
 
 interface IBaseState {
-  data: {[Identifier: string]: HierarchicalDataTable};
+  data : { [Identifier : string] : HierarchicalDataTable };
 }
 
-let DefaultBaseProps: any = {
+let DefaultBaseProps : any = {
   row: null,
   data: null
 };
-let DefaultBaseState: any = {
+let DefaultBaseState : any = {
   data: null
 };
 
-const controls: any = [];
-const update = (data: any) => {
+const controls : any = [];
+const update = (data : any) => {
   for (let control of controls) {
     try {
       control.update(data);
@@ -40,24 +40,24 @@ class Base extends React.Component {
   constructor(props) {
     super(props);
     controls.push(this);
-    
+
     if (props.data) {
       NotificationHelper.registerTableUpdates(props.data);
     }
-    
+
     window.addEventListener('tableUpdated', (() => {
       this.forceUpdate();
     }).bind(this));
   }
-  
-  public update(data: any, manipulateInto: string) {
+
+  public update(data : any, manipulateInto : string) {
     if (!manipulateInto) {
       const previous = this.state.data || this.props.data || {};
       const next = Object.assign({}, previous, data || {})
-      
+
       NotificationHelper.unregisterTableUpdates(previous);
       NotificationHelper.registerTableUpdates(next);
-      
+
       this.setState({
         data: next
       });
@@ -65,17 +65,17 @@ class Base extends React.Component {
       const premise = this.getDataFromNotation(manipulateInto);
       const previous = premise.relations || {};
       const next = Object.assign({}, previous, data || {})
-      
+
       NotificationHelper.unregisterTableUpdates(previous);
       NotificationHelper.registerTableUpdates(next);
-      
+
       premise.relations = next;
     }
   }
-  
-  protected getDataFromNotation(notation: string, inArray: boolean=false, always: boolean=false): any {
+
+  protected getDataFromNotation(notation : string, inArray : boolean = false, always : boolean = false) : any {
     let result;
-    
+
     if (!notation) {
       console.error("There was an error processing hierarchical data on client side (notation isn't a string).");
       result = [];
@@ -90,26 +90,26 @@ class Base extends React.Component {
         result = [''];
       }
     }
-    
+
     if (always && inArray && result.length == 0) result.push('');
-    
+
     return result;
   }
-  
-  public manipulate(guid: string, notation: string, results: any) {
-    let {action, options} = DataManipulationHelper.getInfo(guid);
+
+  public manipulate(guid : string, notation : string, results : any) {
+    let { action, options } = DataManipulationHelper.getInfo(guid);
     let data = null;
-    
+
     if (options.manipulateInto) notation = (typeof options.manipulateInto === 'function') ? options.manipulateInto.apply(this) : options.manipulateInto;
-    
+
     switch (action) {
       case 'insert':
         data = notation && this.getDataFromNotation(notation) || null;
         if (data == null) return;
-        
+
         for (let result of results) {
           let found = null;
-          
+
           for (let row of data) {
             found = row;
             for (let key in result.keys) {
@@ -122,12 +122,12 @@ class Base extends React.Component {
             }
             if (found) break;
           }
-          
+
           if (!found) {
             data.push(result);
           }
         }
-        
+
         NotificationHelper.registerTableUpdates({
           collection: {
             source: SourceType.Collection,
@@ -139,10 +139,10 @@ class Base extends React.Component {
       case 'update':
         data = notation && this.getDataFromNotation(notation) || null;
         if (data == null) return;
-        
+
         for (let result of results) {
           let found = null;
-            
+
           for (let row of data) {
             found = row;
             for (let key in result.keys) {
@@ -155,7 +155,7 @@ class Base extends React.Component {
             }
             if (found) break;
           }
-            
+
           if (found) {
             for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
@@ -169,7 +169,7 @@ class Base extends React.Component {
             }
           }
         }
-        
+
         NotificationHelper.registerTableUpdates({
           collection: {
             source: SourceType.Collection,
@@ -181,10 +181,10 @@ class Base extends React.Component {
       case 'upsert':
         data = notation && this.getDataFromNotation(notation) || null;
         if (data == null) return;
-        
+
         for (let result of results) {
           let found = null;
-          
+
           for (let row of data) {
             found = row;
             for (let key in result.keys) {
@@ -197,7 +197,7 @@ class Base extends React.Component {
             }
             if (found) break;
           }
-          
+
           if (found) {
             for (let key in result.keys) {
               if (result.keys.hasOwnProperty(key)) {
@@ -213,7 +213,7 @@ class Base extends React.Component {
             data.push(result);
           }
         }
-        
+
         NotificationHelper.registerTableUpdates({
           collection: {
             source: SourceType.Collection,
@@ -225,7 +225,7 @@ class Base extends React.Component {
       case 'delete':
         data = notation && this.getDataFromNotation(notation) || null;
         if (data == null) return;
-        
+
         for (let result of results) {
           let collection = data.filter((row) => {
             for (let key in row.keys) {
@@ -238,7 +238,7 @@ class Base extends React.Component {
           for (let item of collection) {
             let index = data.indexOf(item);
             data.splice(index, 1);
-            
+
             NotificationHelper.unregisterTableUpdates(item.relations);
           }
         }
@@ -248,17 +248,17 @@ class Base extends React.Component {
         break;
       case 'popup':
         let container = document.createElement('div');
-        ReactDOM.render(React.createElement(DeclarationHelper.get(options.initClass), {data: results}, null), container);
+        ReactDOM.render(React.createElement(DeclarationHelper.get(options.initClass), { data: results }, null), container);
         document.getElementsByClassName('internal-fsb-begin')[0].appendChild(container.firstElementChild);
         break;
       case 'navigate':
         /* handled */
         break;
     }
-    
+
     this.forceUpdate();
   }
-  
+
   protected render() { }
 }
 
@@ -268,10 +268,10 @@ class Button extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   componentDidMount() {
     let button = ReactDOM.findDOMNode(this.refs.button);
-    
+
     if (this.props.onSubmitting) {
       button.addEventListener('submitting', this.props.onSubmitting, false);
     }
@@ -285,15 +285,15 @@ class Button extends React.Component {
       button.addEventListener('success', this.props.onSuccess, false);
     }
   }
-  
-  protected render(): any {
+
+  protected render() : any {
     return (
       <button ref="button" {...this.props}></button>
     )
   }
 }
 
-export {IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base};
+export { IBaseProps, IBaseState, DefaultBaseProps, DefaultBaseState, Button, Base };
 
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECUASE YOUR CHANGES MAY BE LOST.
