@@ -1,8 +1,9 @@
 {
   "name": "boilerplate",
-  "version": "0.1.0",
+  "version": "1.21.0",
+  "license": "MIT",
   "engines": {
-    "node": "12.14.x"
+    "node": "14.17.x"
   },
   "description": "A starting point for Node.js express apps with TypeScript",
   "repository": {
@@ -10,7 +11,6 @@
     "url": "https://github.com/Microsoft/TypeScript-Node-Starter"
   },
   "author": "Bowden Kelly",
-  "license": "MIT",
   "scripts": {
     "start": "npm run serve",
     "build": "npm run copy-static-assets && npm run lint && npm run build-ts && npm run build-bundle",
