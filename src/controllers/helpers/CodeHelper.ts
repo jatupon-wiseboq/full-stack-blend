@@ -125,11 +125,11 @@ const CodeHelper = {
 
       return object;
     } else if ((typeof object === 'object') && object != null) {
-      let keys = Object.keys(object);
+      const keys = Object.keys(object);
       keys.sort();
 
-      let result = {};
-      for (let key of keys) {
+      const result = {};
+      for (const key of keys) {
         result[key] = CodeHelper.recursiveSortHashtable(object[key]);
       }
       return result;
@@ -139,7 +139,7 @@ const CodeHelper = {
   },
   label: (data: string): string => {
     let current: string = null;
-    let category: number = 0;
+    let category = 0;
     const lines = data.split('\n');
 
     for (let i = 0; i < lines.length; i++) {

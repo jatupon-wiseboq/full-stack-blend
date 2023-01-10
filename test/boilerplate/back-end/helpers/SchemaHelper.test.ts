@@ -9,7 +9,7 @@ const unlabel = fs.readFileSync(path.resolve(__dirname, '../files/unlabel.stackb
 describe('Verification', () => {
   describe('Table', () => {
     test('base', () => {
-      let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+      const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
     
       expect(() => { SchemaHelper.verifyDataSchema(data1); }).not.toThrow();
     });
@@ -129,7 +129,7 @@ describe('Verification', () => {
       expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
     });
     test('mismatch of table name', () => {
-      let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+      const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
       
       data1.tables['Log'].group = '123';
       expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
@@ -137,7 +137,7 @@ describe('Verification', () => {
   });
   describe('Relation', () => {
     test('base', () => {
-      let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+      const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
     
       expect(() => { SchemaHelper.verifyDataSchema(data1); }).not.toThrow();
     });
@@ -254,8 +254,8 @@ describe('Verification', () => {
       expect(() => { SchemaHelper.verifyDataSchema(data1); }).toThrow();
     });
     test('unavailable of relation', () => {
-      let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
-      let table = data1.tables['Log'].relations['User'];
+      const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+      const table = data1.tables['Log'].relations['User'];
       delete data1.tables['Log'].relations['User'];
       
       data1.tables['Log'].relations['abc'] = table;
@@ -263,7 +263,7 @@ describe('Verification', () => {
     });
   });
   describe('Permission', () => {
-    let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+    const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
     
     describe('Relation', () => {
       test('base', () => {
@@ -343,7 +343,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
       });
       test('missing a source group name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -365,7 +365,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('missing a source entity name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -387,7 +387,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('wrong of source group name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -403,7 +403,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('wrong of source entity name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -419,7 +419,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('source group unavailable', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -435,7 +435,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('source entity unavailable', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -451,7 +451,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('missing a session name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -473,7 +473,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('wrong of session name', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -489,7 +489,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('missing a constant value', () => {
-        let permission = {
+        const permission = {
           mode: 'relation',
           relationModeSourceGroup: 'User',
           relationModeSourceEntity: 'uid',
@@ -513,7 +513,7 @@ describe('Verification', () => {
     });
     describe('Session', () => {
       test('base', () => {
-        let permission = {
+        const permission = {
           mode: 'session',
           relationModeSourceGroup: null,
           relationModeSourceEntity: null,
@@ -541,7 +541,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).not.toThrow();
       });
       test('missing a session name', () => {
-        let permission = {
+        const permission = {
           mode: 'session',
           relationModeSourceGroup: null,
           relationModeSourceEntity: null,
@@ -563,7 +563,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('wrong of session name', () => {
-        let permission = {
+        const permission = {
           mode: 'session',
           relationModeSourceGroup: null,
           relationModeSourceEntity: null,
@@ -579,7 +579,7 @@ describe('Verification', () => {
         expect(() => { SchemaHelper.verifyPermission(permission, data1); }).toThrow();
       });
       test('missing a constant value', () => {
-        let permission = {
+        const permission = {
           mode: 'session',
           relationModeSourceGroup: null,
           relationModeSourceEntity: null,
@@ -605,7 +605,7 @@ describe('Verification', () => {
 });
 
 describe('Retrieving Information', () => {
-  let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+  const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
   
   test('Field Type', () => {
     expect(SchemaHelper.getFieldType('auto')).toEqual(FieldType.AutoNumber);
@@ -726,7 +726,7 @@ describe('Retrieving Information', () => {
 });
 
 describe('Searching Information', () => {
-  let data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
+  const data1 = {tables: ProjectConfigurationHelper.convertToSchema(JSON.parse(unlabel).flows.schema)};
   
   test('Recursive', () => {
     expect(() => { SchemaHelper.findShortestPathOfRelations(data1.tables['Business'], data1.tables['User'], data1); }).not.toThrow();

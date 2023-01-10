@@ -215,7 +215,7 @@ describe('PermissionHelper', () => {
           
           // Relational
           // 
-          let control1 = createRows(21, SourceType.Relational, 2, 5, 6);
+          const control1 = createRows(21, SourceType.Relational, 2, 5, 6);
           establishPermissionChecking(false);
           const transaction = await establishTransaction(true);
           
@@ -252,7 +252,7 @@ describe('PermissionHelper', () => {
           expect(results['relational2'].rows[3].columns['dat12']).not.toBeDefined();
           expect(results['relational2'].rows[4].columns['dat12']).not.toBeDefined();
           
-          let data1 = createRows(21, SourceType.Relational, 0, 5, 6);
+          const data1 = createRows(21, SourceType.Relational, 0, 5, 6);
           data1['relational0'].rows[1].columns['int06'] = 789;
           data1['relational0'].rows[2].columns['int06'] = 789;
           
@@ -299,7 +299,7 @@ describe('PermissionHelper', () => {
           
           // Document --> Relational
           // 
-          let control1 = createRows(22, SourceType.Document, 2, 5, 6);
+          const control1 = createRows(22, SourceType.Document, 2, 5, 6);
           establishPermissionChecking(false);
           const transaction = await establishTransaction(true);
           
@@ -360,7 +360,7 @@ describe('PermissionHelper', () => {
           expect(results['Document2'].rows[2].columns['dat12']).not.toBeDefined();
           expect(results['Document2'].rows[4].columns['dat12']).not.toBeDefined();
           
-          let data1 = createRows(22, SourceType.Relational, 0, 5, 6);
+          const data1 = createRows(22, SourceType.Relational, 0, 5, 6);
           data1['relational0'].rows[1].columns['int06'] = '234';
           data1['relational0'].rows[2].columns['int06'] = '234';
           
@@ -402,7 +402,7 @@ describe('PermissionHelper', () => {
           
           // VolatileMemory --> Document --> Relational
           // 
-          let control2 = createRows(24, SourceType.VolatileMemory, 2, 1, 1);
+          const control2 = createRows(24, SourceType.VolatileMemory, 2, 1, 1);
           establishPermissionChecking(false);
           await crud_base(
             24,
@@ -442,7 +442,7 @@ describe('PermissionHelper', () => {
           
           expect(results['VolatileMemory2'].rows[0].columns['dat12']).not.toBeDefined(); // with session (no in-between)
           
-          let data2 = createRows(24, SourceType.Document, 1, 1, 1);
+          const data2 = createRows(24, SourceType.Document, 1, 1, 1);
           
           await crud_base(
             24,
@@ -464,7 +464,7 @@ describe('PermissionHelper', () => {
           
           expect(results['VolatileMemory2'].rows[0].columns['dat12']).not.toBeDefined(); // with session (have some in-between)
           
-          let data3 = createRows(24, SourceType.Relational, 0, 1, 1);
+          const data3 = createRows(24, SourceType.Relational, 0, 1, 1);
           data3['relational0'].rows[0].columns['str04'] = '567';
           
           await crud_base(
@@ -496,7 +496,7 @@ describe('PermissionHelper', () => {
           
           // Relational
           // 
-          let control1 = createRows(23, SourceType.Relational, 2, 3, 7);
+          const control1 = createRows(23, SourceType.Relational, 2, 3, 7);
           establishPermissionChecking(false);
           const transaction = await establishTransaction(true);
           
@@ -511,7 +511,7 @@ describe('PermissionHelper', () => {
             createRows(23, SourceType.Relational, 3, 3, 7)
           );
           establishPermissionChecking(true);
-          let data1 = createRows(23, SourceType.Relational, 0, 3, 7);
+          const data1 = createRows(23, SourceType.Relational, 0, 3, 7);
           data1['relational0'].rows[2].columns['int06'] = 789;
           await crud_base(
             23,
@@ -570,7 +570,7 @@ describe('PermissionHelper', () => {
             createRows(25, SourceType.Relational, 2, 5, 6)
           );
           establishPermissionChecking(true);
-          let control1 = createRows(25, SourceType.Relational, 2, 5, 7);
+          const control1 = createRows(25, SourceType.Relational, 2, 5, 7);
           await transaction.commit();
           
           transaction = await establishTransaction(true); // will reset changes
@@ -605,7 +605,7 @@ describe('PermissionHelper', () => {
             control1
           );
           
-          let data1 = createRows(25, SourceType.Relational, 0, 5, 7); // with relation and all right value
+          const data1 = createRows(25, SourceType.Relational, 0, 5, 7); // with relation and all right value
           data1['relational0'].rows[0].columns['int06'] = 456;
           data1['relational0'].rows[1].columns['int06'] = 456;
           data1['relational0'].rows[2].columns['int06'] = 456;
@@ -663,7 +663,7 @@ describe('PermissionHelper', () => {
             createRows(26, SourceType.Relational, 3, 5, 6)
           );
           establishPermissionChecking(true);
-          let control1 = createRows(26, SourceType.Relational, 3, 5, 7);
+          const control1 = createRows(26, SourceType.Relational, 3, 5, 7);
           
           expect(async () => {
             await crud_base(
@@ -681,7 +681,7 @@ describe('PermissionHelper', () => {
             );
           }).rejects.toThrow();
           
-          let data1 = createRows(26, SourceType.Relational, 0, 5, 7); // with relation and all right value
+          const data1 = createRows(26, SourceType.Relational, 0, 5, 7); // with relation and all right value
           data1['relational0'].rows[0].columns['int06'] = 456;
           data1['relational0'].rows[1].columns['int06'] = 456;
           data1['relational0'].rows[2].columns['int06'] = 456;
@@ -746,7 +746,7 @@ describe('PermissionHelper', () => {
         
         const control0 = createRows(28, SourceType.Document, 4, 3, 1);
         
-        let transaction = await establishTransaction(true); // will reset changes
+        const transaction = await establishTransaction(true); // will reset changes
         await crud_base( // none of data will pass
           28,
           CRUD.Retrieve,
@@ -1009,7 +1009,7 @@ describe('PermissionHelper', () => {
         
         // Relational
         // 
-        let control1 = createRows(29, SourceType.Relational, 2, 1, 1);
+        const control1 = createRows(29, SourceType.Relational, 2, 1, 1);
         establishPermissionChecking(false);
         const transaction = await establishTransaction(true);
         
@@ -1036,7 +1036,7 @@ describe('PermissionHelper', () => {
         
         expect(results['relational2'].rows[0].columns['dat12']).not.toBeDefined(); // control for with relation
         
-        let data1 = createRows(29, SourceType.Relational, 0, 1, 1);
+        const data1 = createRows(29, SourceType.Relational, 0, 1, 1);
         data1['relational0'].rows[0].columns['int06'] = 789;
         
         await crud_base(

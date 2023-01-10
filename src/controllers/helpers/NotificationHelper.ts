@@ -43,7 +43,7 @@ const NotificationHelper = {
       if (!sessionId) return;
 
       const setSocket = (sockets: any[]): boolean => {
-        let hasState: boolean = false;
+        let hasState = false;
 
         for (const group in notificationInfos) {
           if (notificationInfos.hasOwnProperty(group)) {

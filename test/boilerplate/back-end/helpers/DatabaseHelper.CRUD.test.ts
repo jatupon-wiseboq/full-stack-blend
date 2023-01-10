@@ -11,7 +11,7 @@ describe('DatabaseHelper', () => {
             test(tableMap[type], async () => {
               await flushPromises();
               
-              let control0 = createRows(1, type, 0, 1, 1, undefined, true);
+              const control0 = createRows(1, type, 0, 1, 1, undefined, true);
               
               // Create --> Retrieve
               await crud(
@@ -336,7 +336,7 @@ describe('DatabaseHelper', () => {
               await flushPromises();
               await establishTransaction(true);
               
-              let control0 = createRows(1, type, 0, 1, 1, undefined, true);
+              const control0 = createRows(1, type, 0, 1, 1, undefined, true);
               
               // Create --> Retrieve
               await crud(

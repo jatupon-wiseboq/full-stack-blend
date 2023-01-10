@@ -1142,7 +1142,7 @@ const DatabaseHelper = {
 
               const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 
-              let records = [];
+              const records = [];
 
               if (input.source == SourceType.Relational) {
                 if (input.rows.length > 1) {
@@ -1339,7 +1339,7 @@ const DatabaseHelper = {
             const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 
             let bulkResults = [];
-            let allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
+            const allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
             const recent = new Date();
             if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
               const records = [];
@@ -1372,7 +1372,7 @@ const DatabaseHelper = {
 
               const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 
-              let records = [];
+              const records = [];
 
               if (input.source == SourceType.Relational) {
                 if (input.rows.length > 1 && allowBulkProcess) {
@@ -1580,7 +1580,7 @@ const DatabaseHelper = {
 
               const requestModifyingKeys = [...Object.keys(dataColumns), ...Object.keys(dataKeys)];
 
-              let records = [];
+              const records = [];
 
               if (input.source == SourceType.Relational) {
                 await map.update(dataColumns, {where: queryKeys, transaction: transaction.relationalDatabaseTransaction});
@@ -1918,7 +1918,7 @@ const DatabaseHelper = {
             const map = (input.source == SourceType.Relational) ? DatabaseHelper.ormMap(schema) : null;
 
             for (const row of input.rows) {
-              let rows = [];
+              const rows = [];
 
               let queryKeys: {[Identifier: string]: any} = {};
               let queryColumns: {[Identifier: string]: any} = {};
@@ -1927,7 +1927,7 @@ const DatabaseHelper = {
 
               [queryKeys, queryColumns, dataKeys, dataColumns] = DatabaseHelper.formatKeysAndColumns(row, schema);
 
-              let notificationURI = NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags); // Early generate due to modification of dataKeys and dataColumns.
+              const notificationURI = NotificationHelper.getTableUpdatingIdentity(schema, Object.assign({}, dataColumns, dataKeys), session, innerCircleTags); // Early generate due to modification of dataKeys and dataColumns.
 
               if (!results.relations || !results.relations[schema.group] || results.relations[schema.group].forwarded !== true) {
                 let records;
@@ -2145,7 +2145,7 @@ const DatabaseHelper = {
 
             let bulkResults = [];
             let runBulkProcess = false;
-            let allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
+            const allowBulkProcess = input.rows.every((row) => Object.keys(row.relations).length == 0);
             const recent = new Date();
             if (input.source == SourceType.Relational && input.rows.length > 1 && allowBulkProcess) {
               const records = [];

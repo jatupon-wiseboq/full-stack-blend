@@ -159,7 +159,7 @@ const CreateTransaction = async (options) => {
   };
 };
 
-let terminate = () => {
+const terminate = () => {
   if (VolatileMemoryClient) VolatileMemoryClient.quit();
   if (RelationalDatabaseClient) RelationalDatabaseClient.end();
   if (RelationalDatabaseORMClient) RelationalDatabaseORMClient.close();

@@ -29,7 +29,7 @@ const SchedulerHelper = {
     if ((days & DAYS.FRIDAY) != 0) _days.push(5);
     if ((days & DAYS.SATURDAY) != 0) _days.push(6);
 
-    let _minutes = minutes % 60;
+    const _minutes = minutes % 60;
     const _hours = Math.floor(minutes / 60);
 
     const rule = new schedule.RecurrenceRule();
