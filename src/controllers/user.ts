@@ -15,10 +15,9 @@ import "babel-polyfill";
  * Log out.
  */
 export const logout = (req: Request, res: Response) => {
-
-    req.logout();
-    res.redirect("/");
-
+  req.logout(() => {
+    res.redirect("/account/authenticate");
+  });
 };
 
 /**
@@ -27,22 +26,16 @@ export const logout = (req: Request, res: Response) => {
  */
 
 export const getDeleteAccount = (req: Request, res: Response, next: NextFunction) => {
-
-    const user = req.user as UserDocument;
-
-    User.remove({_id: user.id}, (err) => {
-
-        if (err) {
-
-            return next(err);
-
-        }
-        req.logout();
-        req.flash("info", {msg: "Your account has been deleted."});
-        res.redirect("/");
-
+  const user = req.user as UserDocument;
+  
+  User.remove({_id: user.id}, (err) => {
+    if (err) {
+      return next(err);
+    }
+    req.logout(() => {
+      res.redirect("/");
     });
-
+  });
 };
 
 /**
@@ -50,31 +43,21 @@ export const getDeleteAccount = (req: Request, res: Response, next: NextFunction
  * Unlink OAuth provider.
  */
 export const getOauthUnlink = (req: Request, res: Response, next: NextFunction) => {
-
-    const {provider} = req.params;
-    const user = req.user as UserDocument;
-
-    User.findById(user.id, (err, user: any) => {
-
-        if (err) {
-
-            return next(err);
-
-        }
-        user[provider] = undefined;
-        user.tokens = user.tokens.filter((token: AuthToken) => token.kind !== provider);
-        user.save((err: WriteError) => {
-
-            if (err) {
-
-                return next(err);
-
-            }
-            req.flash("info", {msg: `${provider} account has been unlinked.`});
-            res.redirect("/account/settings");
-
-        });
-
+  const {provider} = req.params;
+  const user = req.user as UserDocument;
+  
+  User.findById(user.id, (err, user: any) => {
+    if (err) {
+      return next(err);
+    }
+    
+    user[provider] = undefined;
+    user.tokens = user.tokens.filter((token: AuthToken) => token.kind !== provider);
+    user.save((err: WriteError) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/account/settings");
     });
-
+  });
 };
