@@ -49,8 +49,8 @@ let loc = $loc;
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-    source: SourceType;
-    group: string;
+	source: SourceType;
+	group: string;
   rows: HierarchicalDataRow[];
 }
 interface HierarchicalDataRow {
@@ -68,7 +68,7 @@ interface IAutoBaseState extends IBaseState {
 // Declare or extend interfaces here:
 //
 interface IProps extends IAutoBaseProps {
-
+  
 }
 interface IState extends IAutoBaseState {
   currentTab: number;
@@ -76,7 +76,7 @@ interface IState extends IAutoBaseState {
 }
 
 let DefaultProps = Object.assign({}, DefaultBaseProps, {
-
+  
 });
 let DefaultState = Object.assign({}, DefaultBaseState, {
   currentTab: 0,
@@ -87,48 +87,48 @@ let DefaultState = Object.assign({}, DefaultBaseState, {
 class FlowLayout_4d816ba8 extends Base {
   state: IState = null;
   protected static defaultProps: IProps = DefaultProps;
-
+  
   constructor(props) {
     super(props);
     this.state = CodeHelper.clone(DefaultState);
-
+    
     this.initialize();
   }
-
+  
   register() {
     TestHelper.identify();
-    function ready(a) {"loading" != document.readyState ? a(new Event('ready')) : document.addEventListener ? document.addEventListener("DOMContentLoaded", a) : (document.onreadystatechange = function(e) {"complete" == document.readyState && a(e)})};
-
-    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66", "22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => {return null;}});
-    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66", "22d343bd", "d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => {return null;}});
+    function ready(a){"loading"!=document.readyState?a(new Event('ready')):document.addEventListener?document.addEventListener("DOMContentLoaded",a):(document.onreadystatechange=function(e){"complete"==document.readyState&&a(e)})};
+        
+    DataManipulationHelper.register("954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
+    DataManipulationHelper.register("b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, submitCrossType: null, enabledRealTimeUpdate: false, manipulateInto: () => { return null; }});
   }
   // <---Auto[ClassBegin]
-
+  
   // Declare class variables and functions here:
   //
   protected initialize(): void {
   }
-
+  
   protected componentDidMount(): void {
-    this.register();
+  	this.register();
   }
-
+  
   protected componentWillUnmount(): void {
   }
-
+  
   // Providing data array base on dot notation:
   // 
-  protected getDataFromNotation(notation: string, inArray: boolean = false): any {
+  protected getDataFromNotation(notation: string, inArray: boolean=false): any {
     return super.getDataFromNotation(notation, inArray);
   }
-
+  
   // Auto[Merging]--->
   protected onButtonClick_d7d59dd2(event: Event) {
 
     // Handle the event of onButtonClick (Button 1) here:
     // 
     this.setState({currentTab: 0});
-
+    
   }
 
   protected onButtonClick_875ac000(event: Event) {
@@ -136,7 +136,7 @@ class FlowLayout_4d816ba8 extends Base {
     // Handle the event of onButtonClick (Button 4) here:
     // 
     this.setState({currentTab: 1});
-
+    
   }
 
   protected onButtonSubmitting_954a291a(event: CustomEvent) {
@@ -144,7 +144,7 @@ class FlowLayout_4d816ba8 extends Base {
     // Handle the event of onButtonSubmitting (Button 3) here:
     // 
     this.setState({submitting: true});
-
+    
   }
 
   protected onButtonFailed_954a291a(event: CustomEvent) {
@@ -152,7 +152,7 @@ class FlowLayout_4d816ba8 extends Base {
     // Handle the event of onButtonFailed (Button 3) here:
     // 
     this.setState({submitting: false});
-
+    
   }
 
   protected onButtonSubmitting_b2b66792(event: CustomEvent) {
@@ -160,7 +160,7 @@ class FlowLayout_4d816ba8 extends Base {
     // Handle the event of onButtonSubmitting (Button 1) here:
     // 
     this.setState({submitting: true});
-
+    
   }
 
   protected onButtonFailed_b2b66792(event: CustomEvent) {
@@ -168,14 +168,14 @@ class FlowLayout_4d816ba8 extends Base {
     // Handle the event of onButtonFailed (Button 1) here:
     // 
     this.setState({submitting: false});
-
+    
   }
   // <---Auto[Merging]
-
+  
   // Auto[ClassEnd]--->
   protected render(): any {
     TestHelper.identify();
-    return pug`
+    return pug `
       div(style=Object.assign({'FsbInheritedPresets': '245bc127'}, this.props.forward && this.props.forward.styles || {}), internal-fsb-class="FlowLayout", className="-fsb-preset-245bc127 internal-fsb-element internal-fsb-strict-layout " + (this.props.forward && this.props.forward.classes || ''), internal-fsb-guid="4d816ba8")
         .col-6.internal-fsb-element.offset-0(style={'MsFlexDirection': 'column', 'MsFlexWrap': 'nowrap', 'MsOverflowX': 'hidden', 'MsOverflowY': 'auto', 'WebkitFlexDirection': 'column', 'WebkitFlexWrap': 'nowrap', 'background': 'rgba(3, 115, 252, 1)', 'bottom': '-1px', 'display': 'flex', 'flexDirection': 'column', 'flexWrap': 'nowrap', 'left': '-1px', 'overflowX': 'hidden', 'overflowY': 'auto', 'paddingBottom': '15px', 'paddingTop': '15px', 'position': 'absolute', 'top': '-1px'}, internal-fsb-guid="257894ed")
           .internal-fsb-element(style={'color': 'rgba(255, 255, 255, 1)', 'display': 'block', 'fontSize': '24px', 'width': '100%'}, dangerouslySetInnerHTML={__html: loc('StackBlend Studio')}, internal-fsb-guid="08a05b72")
