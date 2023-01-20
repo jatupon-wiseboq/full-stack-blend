@@ -8,6 +8,7 @@ const sockets = {};
 const notificationInfos = {};
 const bindedFunctions = {};
 const instanceId = (((1 + Math.random()) * 0x100000) | 0).toString(16).substring(1);
+let tmAcknowledge: any = null;
 
 declare let window: any;
 
@@ -62,11 +63,11 @@ const NotificationHelper = {
             break;
         }
       });
-			window.document.addEventListener("visibilitychange", () => {
-			  if (document.visibilityState === 'visible' && !sockets[socketUrl].connected) {
-			    sockets[socketUrl].connect();
-			  }
-			});
+      window.document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === 'visible' && !sockets[socketUrl].connected) {
+          sockets[socketUrl].connect();
+        }
+      });
     }
 
     notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];
@@ -74,6 +75,14 @@ const NotificationHelper = {
     bindedFunctions[notificationURI] = {};
 
     const socket = sockets[socketUrl];
+    const acknowledge = (timestamp) => {
+      window.clearTimeout(tmAcknowledge);
+      tmAcknowledge = window.setTimeout(() => {
+        socket.emit("acknowledge", {
+          timestamp: timestamp
+        });
+      }, 500);
+    };
 
     socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
       if (message.id == identity) {
@@ -108,9 +117,8 @@ const NotificationHelper = {
         });
         NotificationHelper.notifyTableUpdates(message);
       }
-      socket.emit("acknowledge", {
-        timestamp: message.timestamp
-      });
+      
+      acknowledge(message.timestamp);
     });
     socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
       if (message.id == identity) {
@@ -133,9 +141,7 @@ const NotificationHelper = {
 
         NotificationHelper.notifyTableUpdates(message);
 
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        acknowledge(message.timestamp);
       }
     });
     socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
@@ -183,9 +189,7 @@ const NotificationHelper = {
           NotificationHelper.notifyTableUpdates(message);
         }
         
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        acknowledge(message.timestamp);
       }
     });
     socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message: any) => {
@@ -230,9 +234,7 @@ const NotificationHelper = {
         });
         NotificationHelper.notifyTableUpdates(message);
 
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        acknowledge(message.timestamp);
       }
     });
   },

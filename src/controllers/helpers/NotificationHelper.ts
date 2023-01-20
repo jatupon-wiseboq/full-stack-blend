@@ -198,7 +198,12 @@ const NotificationHelper = {
 
         socket.on("acknowledge", (message: any) => {
           if (!confirmingMessages.hasOwnProperty(uniqueId)) return;
-          delete confirmingMessages[uniqueId][message.timestamp];
+          
+          for (const key in confirmingMessages[uniqueId]) {
+          	if (key <= message.timestamp) {
+          		delete confirmingMessages[uniqueId][key];
+          	}
+          }
         });
 
         if (!confirmingMessages.hasOwnProperty(uniqueId)) {
