@@ -11,6 +11,14 @@
   * {
     font-size: 11px;
   }
+  
+  &.active {
+    .btn {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+  }
 }
 
 body[mode="animation"][selector="true"] .dropdown-picker {

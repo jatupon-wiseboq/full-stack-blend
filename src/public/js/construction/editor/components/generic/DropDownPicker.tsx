@@ -337,7 +337,7 @@ class DropDownPicker extends Base<Props, State> {
           if (this.props.watchingStyleNames.length != 0) {
             const isSupportAnimatable = (ANIMATABLE_CSS_PROPERTIES_DICTIONARY[this.props.watchingStyleNames[0].split('[')[0]] === true);
             return (
-              <div className={"btn-group btn-group-sm mr-1 mb-1 dropdown-picker" + (!isSupportAnimatable ? ' is-not-animatable' : '')} role="group" internal-fsb-not-for="editorCurrentMode:coding">
+              <div className={"btn-group btn-group-sm mr-1 mb-1 dropdown-picker" + (!isSupportAnimatable ? ' is-not-animatable' : '') + (!!this.state.styleValues[this.props.watchingStyleNames[0]] ? ' active' : '')} role="group" internal-fsb-not-for="editorCurrentMode:coding">
                 <FullStackBlend.Controls.DropDownList customClassName={this.props.customClassName} options={filteredOptions} identity={this.props.watchingStyleNames[0]} onUpdate={this.dropdownOnUpdate.bind(this)} controls={this.state.controls} searchBox={this.props.searchBox} useMaximumHeight={this.props.useMaximumHeight} width={this.props.width} isSupportAnimatable={isSupportAnimatable}>
                   <span>{(map[this.props.watchingStyleNames[0]] || this.props.watchingStyleNames[0]).replace(/(background|object|text|list|flex)\-/, '')}: </span>
                   {(() => {
