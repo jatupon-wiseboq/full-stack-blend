@@ -1423,13 +1423,11 @@ var ManipulationHelper = {
   handleEraseElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
     const selectingElement = EditorHelper.getSelectingElement() || document.body;
     const presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
-    const attributes = HTMLHelper.getAttributes(selectingElement, false);
-    
     const accessory = {
-      attributes: HTMLHelper.getAttributes(selectingElement, true, Object.assign(attributes, {
+      attributes: HTMLHelper.getAttributes(selectingElement, true, {
         style: HTMLHelper.getAttribute(selectingElement, 'style'),
         keyframe: AnimationHelper.getStylesheetDefinition(presetId)
-      })),
+      }),
       extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
       options: LayoutHelper.getElementOptions(selectingElement)
     };
@@ -2015,6 +2013,10 @@ var ManipulationHelper = {
         case 'removePreset':
           AnimationHelper.addPreset(accessory.key, accessory.data);
           done = true;
+          break;
+        case 'erase':
+          name = 'update';
+          content = accessory;
           break;
         default:
           content = accessory;
