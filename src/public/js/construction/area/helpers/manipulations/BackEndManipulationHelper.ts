@@ -180,7 +180,7 @@ var BackEndManipulationHelper = {
         break;
       case 'Pasteboard':
         element = document.createElement('div');
-        element.innerHTML = content.html;
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(content.html);
         element = element.firstElementChild;
 
         if (!BackEndManipulationHelper.validateCursorPosition(HTMLHelper.getAttribute(element, 'internal-fsb-class'))) return [accessory, false, link];

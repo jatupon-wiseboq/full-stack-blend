@@ -232,7 +232,7 @@ var FrontEndManipulationHelper = {
         break;
       case 'Pasteboard':
         element = document.createElement('div');
-        element.innerHTML = content.html;
+        element.innerHTML = WorkspaceHelper.cleanupComponentHTMLData(content.html);
         element = element.firstElementChild;
 
         content.guid = HTMLHelper.getAttribute(element, 'internal-fsb-guid');
