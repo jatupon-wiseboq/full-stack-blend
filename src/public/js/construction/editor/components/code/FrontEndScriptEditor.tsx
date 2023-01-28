@@ -96,6 +96,7 @@ class FrontEndScriptEditor extends Base<Props, State> {
         let editor = ace.edit("frontEndEditor");
         editor.setValue(code);
         editor.clearSelection();
+        editor.getSession().setUndoManager(new ace.UndoManager());
 
         this.forceUpdate();
       }

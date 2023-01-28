@@ -204,6 +204,7 @@ class BackEndScriptEditor extends Base<Props, State> {
       let editor = ace.edit("backEndEditor");
       editor.setValue(code);
       editor.clearSelection();
+      editor.getSession().setUndoManager(new ace.UndoManager());
 
       this.forceUpdate();
     }
