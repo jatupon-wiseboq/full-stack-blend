@@ -100,6 +100,31 @@ class LayerManager extends Base<Props, State> {
 
     return found;
   }
+  
+  private getLines() {
+    const nodes = this.state.extensionValues[this.props.watchingExtensionNames[0]];
+    if (!nodes) return [];
+    
+    const deep = this.recursiveGetDeepLevel(nodes);
+    const lines = [];
+    
+    for (let i=0; i<deep; i++) {
+      lines.push(i + 1);
+    }
+    
+    return lines;
+  }
+  
+  private recursiveGetDeepLevel(nodes: [ITreeNode], maximum: number = 0) {
+    let found = false;
+    
+    for (let node of nodes) {
+      found = found || (node.nodes.length != 0);
+      maximum = Math.max(maximum, this.recursiveGetDeepLevel(node.nodes));
+    }
+    
+    return maximum + (found ? 1 : 0);
+  }
 
   private onStartDragging(node: ITreeNode) {
     let container = ReactDOM.findDOMNode(this.refs.container);
@@ -156,6 +181,9 @@ class LayerManager extends Base<Props, State> {
   render() {
     return (
       <div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
+        {this.getLines().map((index) => {
+          return (<div key={'line-' + index} className={'line offset-' + index}></div>);
+        })}
         <div style={{padding: '5px 3px 5px 3px', position: 'sticky', top: '0px', backgroundColor: '#fff', zIndex: 1000}}>
           <FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..' value={this.state.filter}></FullStackBlend.Controls.Textbox>
         </div>
