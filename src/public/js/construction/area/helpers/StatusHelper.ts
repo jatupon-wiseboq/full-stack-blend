@@ -1,6 +1,7 @@
 import {StylesheetHelper} from './StylesheetHelper';
 import {AnimationHelper} from './AnimationHelper';
 import {EditorHelper} from './EditorHelper';
+import {InternalProjectSettings} from './WorkspaceHelper';
 import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 

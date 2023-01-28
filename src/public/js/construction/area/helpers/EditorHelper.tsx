@@ -245,6 +245,13 @@ var EditorHelper = {
       current = current.parentNode;
     }
     if (!found) element = null;
+    
+    const currentActiveLayerErasable = !!element &&
+      StatusHelper.getElementAuthoringStatus(element).indexOf({
+        'coding': 'has-coding',
+        'animation': 'has-animation',
+        'design': 'has-design'
+      }[EditorHelper.getEditorCurrentMode()]) != -1;
 
     if (element == null) {
       EditorHelper.synchronize('updateEditorProperties', {
@@ -257,6 +264,7 @@ var EditorHelper = {
           isInheritingComponent: false,
           isNotContainingInFlexbox: true,
           isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
+          currentActiveLayerErasable: currentActiveLayerErasable,
           elementTreeNodes: LayoutHelper.getElementTreeNodes(false),
           elementTreeNodesIncludeInheriting: LayoutHelper.getElementTreeNodes(true),
           elementAuthoringStatuses: StatusHelper.getElementAuthoringStatuses(),
@@ -317,6 +325,7 @@ var EditorHelper = {
         isInheritingComponent: HTMLHelper.hasAttribute(element, 'internal-fsb-inheriting'),
         isNotContainingInFlexbox: !isFlexContainer,
         isDesignWithCodingMode: editorCurrentMode == 'coding' && InternalProjectSettings.workspaceMode == 'designer',
+        currentActiveLayerErasable: currentActiveLayerErasable,
         hasParentReactComponent: EditorHelper.hasParentReactComponent(element),
         currentActiveLayout: Accessories.layoutInfo.currentActiveLayout(),
         stylesheetDefinitionKeys: StylesheetHelper.getStylesheetDefinitionKeys(),

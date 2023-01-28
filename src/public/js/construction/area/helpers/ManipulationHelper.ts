@@ -18,7 +18,7 @@ import {CapabilityHelper} from './CapabilityHelper';
 import {FrontEndDOMHelper} from './FrontEndDOMHelper';
 import {FrontEndManipulationHelper} from './manipulations/FrontEndManipulationHelper';
 import {BackEndManipulationHelper} from './manipulations/BackEndManipulationHelper';
-import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER, SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
+import {ALL_RESPONSIVE_SIZE_REGEX, ALL_RESPONSIVE_OFFSET_REGEX, RESPONSIVE_SIZE_REGEX, RESPONSIVE_OFFSET_REGEX, INTERNAL_CLASSES_GLOBAL_REGEX, NON_SINGLE_CONSECUTIVE_SPACE_GLOBAL_REGEX, CELL_STYLE_ATTRIBUTE_REGEX_GLOBAL, CELL_STYLE_ATTRIBUTE_REGEX_LOCAL, DEBUG_MANIPULATION_HELPER, SINGLE_DOM_CONTAINER_ELEMENTS, CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 
 let performed: any = [];
 let performedIndex: number = -1;
@@ -290,6 +290,21 @@ var ManipulationHelper = {
           remember = false;
         } else {
           [accessory, remember, link] = ManipulationHelper.handleMoveElement(name, content, remember, promise, link);
+        }
+
+        break;
+      case 'erase':
+        if (InternalProjectSettings.workspaceMode == 'designer' && StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+          alert('Designer cannot erase any element with design locking, please unlock it first.');
+          remember = false;
+        } else if (InternalProjectSettings.workspaceMode == 'coder' && StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content)) {
+          alert('Coder cannot erase any element with code locking, please unlock it first.');
+          remember = false;
+        } else if (StatusHelper.hasElementAndDescendantsCodeLockAuthoringStatus(content) || StatusHelper.hasElementAndDescendantsDesignLockAuthoringStatus(content)) {
+          alert('Please unlock the layer first.');
+          remember = false;
+        } else {
+          [accessory, remember, link] = ManipulationHelper.handleEraseElement(name, content, remember, promise, link);
         }
 
         break;
@@ -1403,6 +1418,44 @@ var ManipulationHelper = {
       ManipulationHelper.updateComponentData(selectingElement);
     }
 
+    return [accessory, remember, link];
+  },
+  handleEraseElement: (name: string, content: any, remember: boolean, promise: Promise, link: any) => {
+    const selectingElement = EditorHelper.getSelectingElement() || document.body;
+    const presetId = HTMLHelper.getAttribute(selectingElement, 'internal-fsb-guid');
+    const attributes = HTMLHelper.getAttributes(selectingElement, false);
+    
+    const accessory = {
+      attributes: HTMLHelper.getAttributes(selectingElement, true, Object.assign(attributes, {
+        style: HTMLHelper.getAttribute(selectingElement, 'style'),
+        keyframe: AnimationHelper.getStylesheetDefinition(presetId)
+      })),
+      extensions: CodeHelper.convertDictionaryIntoPairs(InternalProjectSettings),
+      options: LayoutHelper.getElementOptions(selectingElement)
+    };
+    
+    switch (EditorHelper.getEditorCurrentMode()) {
+      case 'coding':
+        for (const key of Object.keys(CAMEL_OF_EVENTS_DICTIONARY)) {
+          HTMLHelper.removeAttribute(selectingElement, key);
+        }
+        for (const attribute of Array.from(selectingElement.attributes)) {
+          if (attribute.name.indexOf('internal-fsb-react-') == 0) {
+            HTMLHelper.removeAttribute(selectingElement, attribute.name);
+          }
+        }
+        break;
+      case 'animation':
+        AnimationHelper.removeStylesheetDefinition(presetId);
+        break;
+      case 'design':
+        StylesheetHelper.removeStylesheetDefinition(presetId, null, '');
+        HTMLHelper.setAttribute(selectingElement, 'style', '');
+        break;
+    }
+    
+    StatusHelper.invalidate();
+    
     return [accessory, remember, link];
   },
   handleDeleteElement: (name: string, content: any, remember: boolean, promise: Promise, link: any, cut: boolean = false, silence: boolean = false) => {
