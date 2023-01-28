@@ -40,13 +40,18 @@ class SwatchPicker extends Base<Props, State> {
   }
 
   protected swatchOnClick(index: number) {
-    this.state.index = index;
-    this.forceUpdate();
+    if (this.state.index == index) {
+      this.state.index = -1;
+      this.forceUpdate();
+    } else {
+      this.state.index = index;
+      this.forceUpdate();
 
-    if (this.props.onColorPicked) {
-      let color = this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] || 'rgba(255, 255, 255, 1.0)';
-
-      this.props.onColorPicked(color);
+      if (this.props.onColorPicked) {
+        let color = this.state.extensionValues[this.props.watchingExtensionNames[0]][this.state.index] || 'rgba(255, 255, 255, 1.0)';
+  
+        this.props.onColorPicked(color);
+      }
     }
   }
 
