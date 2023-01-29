@@ -29,6 +29,8 @@ body[mode="animation"][selector="true"] .dropdown-picker {
 
 .dropdown-menu {
 	padding: 3.5px;
+	max-height: 75vh;
+	overflow-y: auto;
 	&.is-not-animatable {
 		.dropdown-item[value='coding'] {
   		text-decoration: underline #ff0000 2px;
