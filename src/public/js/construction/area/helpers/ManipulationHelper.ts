@@ -248,6 +248,14 @@ var ManipulationHelper = {
         preview = false;
         break;
       case 'insert':
+        if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+          const container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+          if (Accessories.cursor.getDOMNode().parentNode.parentNode == container && Array.from(container.firstElementChild.children).filter(child => HTMLHelper.hasAttribute(child, 'internal-fsb-guid')).length <= 1) {
+            remember = false;
+            break;
+          }
+        }
+        
         if (InternalProjectSettings.currentMode != 'data') {
           [accessory, remember, link] = FrontEndManipulationHelper.handleInsert(name, content, remember, promise, link);
         } else {
@@ -310,6 +318,14 @@ var ManipulationHelper = {
 
         break;
       case 'delete':
+        if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+          const container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+          if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content).parentNode.parentNode == container && Array.from(container.firstElementChild.children).filter(child => HTMLHelper.hasAttribute(child, 'internal-fsb-guid')).length <= 1) {
+            remember = false;
+            break;
+          }
+        }
+        
         if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
           alert('Business cannot delete any element, please ask the rest of team to perform it.');
           remember = false;
@@ -337,6 +353,14 @@ var ManipulationHelper = {
 
         break;
       case 'delete[silence]':
+        if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+          const container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+          if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content).parentNode.parentNode == container && Array.from(container.firstElementChild.children).filter(child => HTMLHelper.hasAttribute(child, 'internal-fsb-guid')).length <= 1) {
+            remember = false;
+            break;
+          }
+        }
+        
         if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
           alert('Business cannot delete any element, please ask the rest of team to perform it.');
           remember = false;
@@ -364,6 +388,14 @@ var ManipulationHelper = {
 
         break;
       case 'delete[cut]':
+        if (['components', 'popups'].indexOf(InternalProjectSettings.currentMode) != -1) {
+          const container = HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', '0');
+          if (HTMLHelper.getElementByAttributeNameAndValue('internal-fsb-guid', content).parentNode.parentNode == container && Array.from(container.firstElementChild.children).filter(child => HTMLHelper.hasAttribute(child, 'internal-fsb-guid')).length <= 1) {
+            remember = false;
+            break;
+          }
+        }
+        
         if (InternalProjectSettings.workspaceMode == 'business' && newComposedGUIDs.indexOf(content) == -1) {
           alert('Business cannot cut any element, please ask the rest of team to perform it.');
           remember = false;
