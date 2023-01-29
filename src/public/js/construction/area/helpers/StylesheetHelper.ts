@@ -6,6 +6,7 @@ let stylesheetDefinitionRevision = 0;
 let cachedPrioritizedKeys = null;
 let cachedPrioritizedKeysRevision = -1;
 
+/* DOM Hierarchical Operator */
 var StylesheetHelper = {
   generateStylesheetData: () => {
     for (let key in stylesheetDefinitions) {

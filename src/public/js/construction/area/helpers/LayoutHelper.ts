@@ -4,6 +4,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 let cachedElementTreeNodes = null;
 let cachedElementTreeNodesIncludeInheriting = null;
 
+/* DOM Hierarchical Operator */
 var LayoutHelper = {
   invalidate: function() {
     cachedElementTreeNodes = null;

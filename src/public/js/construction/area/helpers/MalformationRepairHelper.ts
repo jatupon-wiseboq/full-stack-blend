@@ -2,6 +2,7 @@ import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {CodeHelper} from '../../helpers/CodeHelper';
 import {FORWARD_STYLE_TO_CHILDREN_CLASS_LIST} from '../../Constants';
 
+/* DOM Hierarchical Operator */
 var MalformationRepairHelper = {
   repair: (container: HTMLElement = document) => {
     MalformationRepairHelper.recursiveRepair([document.body]);

@@ -5,6 +5,7 @@ import {InternalProjectSettings} from './WorkspaceHelper';
 import {Accessories, EditorHelper} from './EditorHelper';
 import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
+/* DOM Hierarchical Operator */
 var CursorHelper = {
   moveCursorToTheEndOfDocument: (remember: boolean = true) => {
     let element = HTMLHelper.getElementByClassName('internal-fsb-begin');

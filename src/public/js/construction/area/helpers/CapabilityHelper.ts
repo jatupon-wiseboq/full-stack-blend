@@ -6,6 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 import {InternalProjectSettings} from './WorkspaceHelper';
 import {SINGLE_DOM_CONTAINER_ELEMENTS} from '../../Constants';
 
+/* DOM Hierarchical Operator */
 var CapabilityHelper = {
   installCapabilityOfBeingSelected: (_container: HTMLElement) => {
     HTMLHelper.getElementsByAttribute('internal-fsb-guid', _container, true).forEach((container) => {

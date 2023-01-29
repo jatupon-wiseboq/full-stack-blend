@@ -25,6 +25,7 @@ for (const property of ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING) {
   ANIMATABLE_CSS_PROPERTIES_WITHOUT_OVERRIDING_DICTIONARY[property] = true;
 }
 
+/* DOM Hierarchical Operator */
 var AnimationHelper = {
   generateStylesheetData: () => {
     CodeHelper.deleteEmptyKeys(stylesheetDefinitions);

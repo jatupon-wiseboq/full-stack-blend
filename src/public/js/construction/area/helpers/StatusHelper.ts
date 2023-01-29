@@ -8,6 +8,7 @@ import {CAMEL_OF_EVENTS_DICTIONARY} from '../../Constants';
 let cachedElementAuthoringStatuses = null;
 let cachedElementAuthoringRevision = 0;
 
+/* DOM Hierarchical Operator */
 var StatusHelper = {
   invalidate: function(element: HTMLElement) {
     cachedElementAuthoringStatuses = null;

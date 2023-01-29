@@ -2,6 +2,7 @@ import {HTMLHelper} from '../../helpers/HTMLHelper';
 import {InternalProjectSettings} from './WorkspaceHelper';
 import {LOCALIZATION_LIST_DELIMITER, LOCALIZATION_ITEM_DELIMITER, LOCALIZATION_HASH_DELIMITER} from '../../Constants';
 
+/* DOM Hierarchical Operator */
 var LocalizationHelper = {
   collectFromTexts: function(container: HTMLElement = document.body) {
     const elements = Array.from(HTMLHelper.getElementsByAttributeNameAndValue('internal-fsb-class', 'TextElement', container));

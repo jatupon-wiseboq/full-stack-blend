@@ -3,6 +3,7 @@ import {BackEndScriptHelper, TemplateCode} from '../../helpers/BackEndScriptHelp
 import {InternalProjectSettings} from './WorkspaceHelper';
 import {FORM_CONTROL_CLASS_LIST} from '../../Constants';
 
+/* DOM Hierarchical Operator */
 var BackEndDOMHelper = {
   generateBackEndCode: function(body: HTMLElement, key: string) {
     let info = {};

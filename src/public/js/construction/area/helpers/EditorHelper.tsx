@@ -42,6 +42,8 @@ let cachedUpdateEditorProperties = {};
 let updateEditorPropertiesTimer = null;
 let elementAuthoringStatuses = {};
 
+/* DOM Hierarchical Operator */
+/* Partial Editor: User Interaction */
 var EditorHelper = {
   setup: () => {
     let cursorContainer = document.createElement('div');

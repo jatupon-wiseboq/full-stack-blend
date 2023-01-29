@@ -14,6 +14,7 @@ let cachedGenerateCodeForReactRenderMethodResults = null;
 
 // This code generator relies on elements in construction area.
 // 
+/* DOM Hierarchical Operator */
 var FrontEndDOMHelper = {
   invalidate: function() {
     cachedGenerateCodeForReactRenderMethodElement = null;

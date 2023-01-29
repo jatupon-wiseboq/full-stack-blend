@@ -145,6 +145,7 @@ function removeAllPresetReferences(presetId: string, link: string) {
   });
 })(window, window.document);
 
+/* DOM Hierarchical Operator */
 var ManipulationHelper = {
   perform: (name: string, content: any, remember: boolean = true, skipAfterPromise: boolean = false, link: any = false) => {
     let accessory = null;

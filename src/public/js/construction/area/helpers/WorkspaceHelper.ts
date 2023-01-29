@@ -70,6 +70,8 @@ const DEFAULT_COMPONENT_HTML = `<div class="col-4 internal-fsb-element internal-
 const DEFAULT_POPUP_HTML = `<div class="internal-fsb-element" internal-fsb-class="Popup" style="height: 100vh; left: 0px; position: fixed; top: 0px; width: 100vw" internal-fsb-event-no-propagate="1" internal-fsb-name="Screen" internal-fsb-react-mode="Site" style="padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="internal-fsb-allow-cursor internal-fsb-strict-layout row"><div class="col-8 internal-fsb-element internal-fsb-inverse offset-2" internal-fsb-name="Center" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" style="-ms-flex-direction: column; -webkit-flex-direction: column; -webkit-justify-content: center; flex-direction: column; height: 100vh; justify-content: center; padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"><div class="internal-fsb-element" internal-fsb-name="Dialog" internal-fsb-event-no-propagate="1" internal-fsb-class="FlowLayout" style="min-height: 400px; padding-left: 0px; padding-right: 0px"><div class="container-fluid" internal-fsb-event-no-propagate="1"><div class="row internal-fsb-strict-layout internal-fsb-allow-cursor"></div></div></div></div></div></div></div></div></div>`.split('\n');
 const DEFAULT_PAGE_EXTENSIONS = {};
 
+/* DOM Hierarchical Operator */
+/* Partial Editor: Loading and Saving */
 var WorkspaceHelper = {
   generateWorkspaceData: (removeSHADict: boolean = false) => {
     WorkspaceHelper.saveWorkspaceData(true, true);

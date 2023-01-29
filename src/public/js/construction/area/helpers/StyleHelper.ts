@@ -4,6 +4,7 @@ let defaultElement = document.createElement('div');
 let cachedElementComputedStyleNodesElement = null;
 let cachedElementComputedStyleNodesResults = null;
 
+/* DOM Hierarchical Operator */
 var StyleHelper = {
   invalidate: function() {
     cachedElementComputedStyleNodesElement = null;

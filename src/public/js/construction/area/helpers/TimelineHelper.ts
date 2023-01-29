@@ -6,6 +6,7 @@ import {Accessories, EditorHelper} from './EditorHelper';
 
 let cachedElementTreeNodes = null;
 
+/* DOM Hierarchical Operator */
 var TimelineHelper = {
   invalidate: function() {
     cachedElementTreeNodes = null;
