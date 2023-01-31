@@ -151,6 +151,9 @@ app.get("/auth/github", passport.authenticate("github", {scope: ["repo"]}));
 app.get("/auth/github/callback", passport.authenticate("github", {failureRedirect: "/account/authenticate"}), (req, res) => {
   res.redirect("/account/settings");
 });
+app.get('/svgedit-custom.css', function(req, res){
+  res.redirect('/css/construction/editor.css');
+})
 
 // Cache configuration
 // 

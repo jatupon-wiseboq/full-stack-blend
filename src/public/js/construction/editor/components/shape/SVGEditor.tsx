@@ -88,6 +88,7 @@ class SVGEditor extends Base<Props, State> {
             this.close();
           }).bind(this)
         });
+        externalWindow.svgEditor.setConfig({stylesheets: ['@default', '/svgedit-custom.css']});
         externalWindow.svgEditor.setIconSize('m');
         externalWindow.document.body.style.backgroundColor = 'rgba(255, 255, 255, 0.0)';
         externalWindow.focus();
