@@ -59,7 +59,7 @@ class SVGEditor extends Base<Props, State> {
     const svgText = this.state.attributeValues[this.props.watchingAttributeNames[0]] || `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="currentColor" class="bi bi-box-fill" viewBox="0 0 256 256"></svg>`;
     const svgTextAsBase64 = Base64.encode(svgText);
 
-    this.setState({location: `/editor/svg-editor.html?source=${encodeURIComponent('data:image/svg+xml;base64,' + svgTextAsBase64)}`});
+    this.setState({location: `/editor/svg-editor.html#source=${encodeURIComponent('data:image/svg+xml;base64,' + svgTextAsBase64)}`});
     this.forceUpdate();
 
     this.container = ReactDOM.findDOMNode(this.refs.container);
