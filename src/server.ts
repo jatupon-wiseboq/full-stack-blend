@@ -31,7 +31,10 @@ if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_
   };
 
   server = https.createServer(options, app).listen(443);
-  socket = SocketIO.listen(server);
+  socket = SocketIO.listen(server, {
+    pingTimeout: 20000,
+    pingInterval: 25000
+  });
 } else if (["worker"].indexOf(process.env.NODE_ENV) == -1) {
   child.execSync('kill-port ' + (process.env.PORT || 8000));
 
@@ -39,7 +42,10 @@ if (["development", "staging", "production", "worker"].indexOf(process.env.NODE_
 
   // [TODO] Replace and configure production SSL
   server = http.createServer(app).listen(process.env.PORT || 8000);
-  socket = SocketIO.listen(server);
+  socket = SocketIO.listen(server, {
+    pingTimeout: 20000,
+    pingInterval: 25000
+  });
 }
 
 NotificationHelper.setup(socket);
