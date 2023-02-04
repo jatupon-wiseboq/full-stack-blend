@@ -68,6 +68,11 @@ const NotificationHelper = {
           sockets[socketUrl].connect();
         }
       });
+      window.setInterval(() => {
+        if (!sockets[socketUrl].connected) {
+          sockets[socketUrl].connect();
+        }
+      }, 2000);
     }
 
     notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];
