@@ -45,8 +45,12 @@ class Base extends React.Component {
       NotificationHelper.registerTableUpdates(props.data);
     }
 
+    let tmUpdating = null;
     window.addEventListener('tableUpdated', (() => {
-      this.forceUpdate();
+      window.clearTimeout(tmUpdating);
+      tmUpdating = window.setTimeout((() => {
+        this.forceUpdate();
+      }).bind(this), 100);
     }).bind(this));
   }
 

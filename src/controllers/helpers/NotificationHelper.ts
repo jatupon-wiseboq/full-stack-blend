@@ -42,7 +42,7 @@ const NotificationHelper = {
       const uniqueId = sessionId + instanceId;
       if (!sessionId) return;
 
-      const setSocket = (sockets: any[]): boolean => {
+      const setSocket = (sockets: any[], _sessionId: string=sessionId): boolean => {
         let hasState = false;
 
         for (const group in notificationInfos) {
@@ -57,15 +57,15 @@ const NotificationHelper = {
                   if (combinations.hasOwnProperty(md5OfClientTableUpdatingIdentity)) {
                     const combinationInfo = combinations[md5OfClientTableUpdatingIdentity];
 
-                    if (combinationInfo.hasOwnProperty(sessionId)) {
+                    if (combinationInfo.hasOwnProperty(_sessionId)) {
                       if (sockets != null) {
-                        if (combinationInfo[sessionId] === false) {
+                        if (combinationInfo[_sessionId] === false) {
                           setSocket(null);
                           return false;
                         } else {
                           for (const socket of sockets) {
-                            if (Array.isArray(combinationInfo[sessionId])) {
-                              for (const item of combinationInfo[sessionId]) {
+                            if (Array.isArray(combinationInfo[_sessionId])) {
+                              for (const item of combinationInfo[_sessionId]) {
                                 switch (item.action) {
                                   case ActionType.Insert:
                                     socket.emit("insert_" + md5OfClientTableUpdatingIdentity, {
@@ -97,10 +97,10 @@ const NotificationHelper = {
                           }
 
                           hasState = true;
-                          combinationInfo[sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
+                          combinationInfo[_sessionId] = sockets && {sockets: [...Array.from(sockets)]} || null;
                         }
                       } else {
-                        combinationInfo[sessionId] = null;
+                        combinationInfo[_sessionId] = null;
                       }
                     }
                   }
@@ -126,11 +126,15 @@ const NotificationHelper = {
         delete disconnectingSockets[socket.id];
         delete disposingInstances[uniqueId];
 
-        if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].indexOf(socket) == -1) {
-          sessionLookupTable[sessionId] = sessionLookupTable[sessionId] || [];
-          sessionLookupTable[sessionId].push(socket);
+        if (!sessionLookupTable[sessionId]) {
+          socket.unconfirmEmit("command", "refresh");
+        } else {
+          if (sessionLookupTable[sessionId].indexOf(socket) == -1) {
+            sessionLookupTable[sessionId].push(socket);
+          }
+          
+          setSocket(sessionLookupTable[sessionId]);
         }
-        setSocket(sessionLookupTable[sessionId]);
       });
 
       disconnectingTimer = disconnectingTimer || setInterval(() => {
@@ -153,11 +157,9 @@ const NotificationHelper = {
                   sessionLookupTable[sessionId].splice(index, 1);
                 }
 
-                if (!sessionLookupTable[sessionId] || sessionLookupTable[sessionId].length == 0) {
+                if (sessionLookupTable[sessionId] && sessionLookupTable[sessionId].length == 0) {
                   sessionLookupTable[sessionId] = null;
-                  setSocket(null);
-                } else {
-                  setSocket(sessionLookupTable[sessionId]);
+                  setSocket(null, sessionId);
                 }
               }
 
@@ -184,7 +186,7 @@ const NotificationHelper = {
           if (typeof data === 'object') {
             data.timestamp = `${(new Date()).getTime()}.${socket.emitCount++}`;
 
-            if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > 100) {
+            if (!confirmingMessages.hasOwnProperty(uniqueId) || Object.keys(confirmingMessages[uniqueId]).length > (process.env.NOTIFICATION_BUFFER_LENGTH || 128)) {
               delete confirmingMessages[uniqueId];
               socket.unconfirmEmit("command", "refresh");
             } else {
@@ -198,7 +200,12 @@ const NotificationHelper = {
 
         socket.on("acknowledge", (message: any) => {
           if (!confirmingMessages.hasOwnProperty(uniqueId)) return;
-          delete confirmingMessages[uniqueId][message.timestamp];
+          
+          for (const key in confirmingMessages[uniqueId]) {
+          	if (key <= message.timestamp) {
+          		delete confirmingMessages[uniqueId][key];
+          	}
+          }
         });
 
         if (!confirmingMessages.hasOwnProperty(uniqueId)) {

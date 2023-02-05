@@ -8,6 +8,7 @@ const sockets = {};
 const notificationInfos = {};
 const bindedFunctions = {};
 const instanceId = (((1 + Math.random()) * 0x100000) | 0).toString(16).substring(1);
+let tmAcknowledge: any = null;
 
 declare let window: any;
 
@@ -62,6 +63,16 @@ const NotificationHelper = {
             break;
         }
       });
+      window.document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === 'visible' && !sockets[socketUrl].connected) {
+          sockets[socketUrl].connect();
+        }
+      });
+      window.setInterval(() => {
+        if (!sockets[socketUrl].connected) {
+          sockets[socketUrl].connect();
+        }
+      }, 2000);
     }
 
     notificationInfos[notificationURI] = notificationInfos[notificationURI] || [];
@@ -69,6 +80,14 @@ const NotificationHelper = {
     bindedFunctions[notificationURI] = {};
 
     const socket = sockets[socketUrl];
+    const acknowledge = (timestamp) => {
+      window.clearTimeout(tmAcknowledge);
+      tmAcknowledge = window.setTimeout(() => {
+        socket.emit("acknowledge", {
+          timestamp: timestamp
+        });
+      }, 500);
+    };
 
     socket.on('insert_' + identity, bindedFunctions[notificationURI]['insert'] = (message: any) => {
       if (message.id == identity) {
@@ -103,9 +122,8 @@ const NotificationHelper = {
         });
         NotificationHelper.notifyTableUpdates(message);
       }
-      socket.emit("acknowledge", {
-        timestamp: message.timestamp
-      });
+      
+      acknowledge(message.timestamp);
     });
     socket.on('delete_' + identity, bindedFunctions[notificationURI]['delete'] = (message: any) => {
       if (message.id == identity) {
@@ -128,13 +146,12 @@ const NotificationHelper = {
 
         NotificationHelper.notifyTableUpdates(message);
 
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        acknowledge(message.timestamp);
       }
     });
     socket.on('update_' + identity, bindedFunctions[notificationURI]['update'] = (message: any) => {
       if (message.id == identity) {
+        let flag = false;
         for (let result of message.results) {
           let found = null;
 
@@ -152,6 +169,8 @@ const NotificationHelper = {
           }
 
           if (found) {
+            flag = true;
+            
             if (found.timestamp && result.timestamp && found.timestamp >= result.timestamp) continue;
             found.timestamp = result.timestamp;
 
@@ -168,14 +187,14 @@ const NotificationHelper = {
           }
         }
 
-        NotificationHelper.registerTableUpdates({
-          collection: table
-        });
-        NotificationHelper.notifyTableUpdates(message);
-
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        if (flag) {
+          NotificationHelper.registerTableUpdates({
+            collection: table
+          });
+          NotificationHelper.notifyTableUpdates(message);
+        }
+        
+        acknowledge(message.timestamp);
       }
     });
     socket.on('upsert_' + identity, bindedFunctions[notificationURI]['upsert'] = (message: any) => {
@@ -220,9 +239,7 @@ const NotificationHelper = {
         });
         NotificationHelper.notifyTableUpdates(message);
 
-        socket.emit("acknowledge", {
-          timestamp: message.timestamp
-        });
+        acknowledge(message.timestamp);
       }
     });
   },

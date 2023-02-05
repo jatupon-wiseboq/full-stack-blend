@@ -185,7 +185,7 @@ const DatabaseHelper = {
       existingKeys[input.name] = true;
     }
 
-    if (action != ActionType.Retrieve && !associate && Object.keys(existingKeys).length != Object.keys(requiredKeys).length) {
+    if (action != ActionType.Retrieve && !associate && Object.keys(existingKeys).length < Object.keys(requiredKeys).length) {
       return false;
     } else {
       data = data.filter(item => (item.group != schema.group || item.premise != premise));
