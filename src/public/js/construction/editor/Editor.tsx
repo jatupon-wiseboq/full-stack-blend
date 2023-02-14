@@ -202,6 +202,12 @@ let cachedUpdateEditorProperties = {};
       window.repl.resetInput();
     }, 20);
 
+    cachedUpdateEditorProperties['extensions'] = cachedUpdateEditorProperties['extensions'] || {};
+    cachedUpdateEditorProperties['extensions']['isDesignWithCodingMode'] = cachedUpdateEditorProperties['extensions']['workspaceMode'] == 'designer' && selector == '#coding';
+
+    prepareUpdateOptionalVisibilities();
+    updateAllOptionalVisibilities();
+
     if (event) return EventHelper.cancel(event);
   };
 
@@ -235,31 +241,7 @@ let cachedUpdateEditorProperties = {};
 
         cachedUpdateEditorProperties = Object.assign({}, content);
         prepareUpdateOptionalVisibilities();
-
-        if (content && content['attributes']) {
-          for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
-            let value = content['attributes'][key];
-            if (value) updateOptionalVisibilities(key, value);
-          }
-          let style = content['attributes']['style'];
-          if (style) {
-            let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
-            for (let key of WORKSPACE_TOGGLING_STYLES) {
-              let value = hashMap[key];
-              if (value) updateOptionalVisibilities(key, value);
-            }
-          }
-        }
-        if (content && content['extensions']) {
-          document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
-          if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
-          if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
-
-          for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
-            let value = content['extensions'][key];
-            if (value) updateOptionalVisibilities(key, value);
-          }
-        }
+        updateAllOptionalVisibilities(cachedUpdateEditorProperties);
 
         window.controls.forEach((control) => {
           control.update(content);
@@ -293,6 +275,32 @@ let cachedUpdateEditorProperties = {};
     HTMLHelper.getElementsBySelector('[internal-fsb-not-for]').forEach((value, index) => {
       value.style.display = '';
     });
+  };
+  var updateAllOptionalVisibilities = (content: any=cachedUpdateEditorProperties) => {
+    if (content && content['attributes']) {
+      for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
+        let value = content['attributes'][key];
+        if (value) updateOptionalVisibilities(key, value);
+      }
+      let style = content['attributes']['style'];
+      if (style) {
+        let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
+        for (let key of WORKSPACE_TOGGLING_STYLES) {
+          let value = hashMap[key];
+          if (value) updateOptionalVisibilities(key, value);
+        }
+      }
+    }
+    if (content && content['extensions']) {
+      document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
+      if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
+      if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
+
+      for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
+        let value = content['extensions'][key];
+        if (value) updateOptionalVisibilities(key, value);
+      }
+    }
   };
   var updateOptionalVisibilities = (key, value) => {
     HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
