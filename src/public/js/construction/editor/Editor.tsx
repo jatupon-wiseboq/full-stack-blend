@@ -54,6 +54,7 @@ import './components/content/PopupManager';
 import './components/content/EndpointManager';
 import './components/content/SchemaManager';
 import './components/content/PropertyManager';
+import './components/content/ScreenRelaxation';
 
 import './components/animation/AnimationPicker';
 import './components/animation/TimelineManager';
@@ -520,6 +521,11 @@ let cachedUpdateEditorProperties = {};
     Accessories.endpointManager = React.createRef();
     ReactDOM.render(<FullStackBlend.Components.EndpointManager ref={Accessories.endpointManager} />, endpointManagerContainer);
     document.body.appendChild(endpointManagerContainer);
+    
+    let relaxationContainer = document.createElement('div');
+    Accessories.relaxation = React.createRef();
+    ReactDOM.render(<FullStackBlend.Components.ScreenRelaxation ref={Accessories.relaxation} />, relaxationContainer);
+    document.body.appendChild(relaxationContainer);
   });
   setup();
 })();

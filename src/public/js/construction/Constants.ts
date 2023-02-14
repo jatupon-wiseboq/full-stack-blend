@@ -577,6 +577,7 @@ export const GENERIC_RADIO_OPTION_PRESETS_MAPPING = {
   "data-worker-group-1": "data-worker-group",
   "data-worker-group-2": "data-worker-group"
 };
+export const SCREEN_RELAXATION_BEGIN = 5 * 60 * 1000;
 export const LOCALIZATION_LIST_DELIMITER = '~;;;~';
 export const LOCALIZATION_ITEM_DELIMITER = '~:::~';
 export const LOCALIZATION_HASH_DELIMITER = '~###~';
