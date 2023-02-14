@@ -121,7 +121,11 @@ let cachedUpdateEditorProperties = {};
     const isTogglingOff = isSwappingEditingMode && HTMLHelper.hasClass(button, 'active');
 
     HTMLHelper.getElementsBySelector('a.active', button.parentNode).forEach((value, index) => {
-      if (value.parentNode != button.parentNode) return;
+      if (value.parentNode != button.parentNode) {
+        prepareUpdateOptionalVisibilities();
+        updateAllOptionalVisibilities();
+        return;
+      }
       HTMLHelper.removeClass(value, 'active');
     });
 
@@ -145,7 +149,11 @@ let cachedUpdateEditorProperties = {};
 
     panel.forEach((value, index) => {
       HTMLHelper.getElementsBySelector('.panel', value.parentNode).forEach((p, index) => {
-        if (p.parentNode != value.parentNode) return;
+        if (p.parentNode != value.parentNode) {
+          prepareUpdateOptionalVisibilities();
+          updateAllOptionalVisibilities();
+          return;
+        }
         HTMLHelper.removeClass(p, 'active');
       });
       HTMLHelper.addClass(value, 'active');
@@ -153,7 +161,11 @@ let cachedUpdateEditorProperties = {};
 
     if (replacingIconSelector != null) {
       HTMLHelper.getElementsBySelector(replacingIconSelector).forEach((replacingIconElement) => {
-        if (!replacingIconElement.className || typeof replacingIconElement.className !== 'string') return;
+        if (!replacingIconElement.className || typeof replacingIconElement.className !== 'string') {
+          prepareUpdateOptionalVisibilities();
+          updateAllOptionalVisibilities();
+          return;
+        }
         replacingIconElement.className = replacingIconElement.className.replace(/fa\-[a-z\-]+/g, iconClass);
       });
     }
@@ -236,31 +248,7 @@ let cachedUpdateEditorProperties = {};
 
         cachedUpdateEditorProperties = Object.assign({}, content);
         prepareUpdateOptionalVisibilities();
-
-        if (content && content['attributes']) {
-          for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
-            let value = content['attributes'][key];
-            if (value) updateOptionalVisibilities(key, value);
-          }
-          let style = content['attributes']['style'];
-          if (style) {
-            let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
-            for (let key of WORKSPACE_TOGGLING_STYLES) {
-              let value = hashMap[key];
-              if (value) updateOptionalVisibilities(key, value);
-            }
-          }
-        }
-        if (content && content['extensions']) {
-          document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
-          if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
-          if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
-
-          for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
-            let value = content['extensions'][key];
-            if (value) updateOptionalVisibilities(key, value);
-          }
-        }
+        updateAllOptionalVisibilities(cachedUpdateEditorProperties);
 
         window.controls.forEach((control) => {
           control.update(content);
@@ -294,6 +282,32 @@ let cachedUpdateEditorProperties = {};
     HTMLHelper.getElementsBySelector('[internal-fsb-not-for]').forEach((value, index) => {
       value.style.display = '';
     });
+  };
+  var updateAllOptionalVisibilities = (content: any=cachedUpdateEditorProperties) => {
+    if (content && content['attributes']) {
+      for (let key of WORKSPACE_TOGGLING_ATTRIBUTES) {
+        let value = content['attributes'][key];
+        if (value) updateOptionalVisibilities(key, value);
+      }
+      let style = content['attributes']['style'];
+      if (style) {
+        let hashMap = HTMLHelper.getHashMapFromInlineStyle(style);
+        for (let key of WORKSPACE_TOGGLING_STYLES) {
+          let value = hashMap[key];
+          if (value) updateOptionalVisibilities(key, value);
+        }
+      }
+    }
+    if (content && content['extensions']) {
+      document.body.setAttribute('selector', (content['extensions']['editingAnimationID'] == 'selector') ? 'true' : 'false');
+      if (content['extensions']['editorCurrentMode']) document.body.setAttribute('mode', content['extensions']['editorCurrentMode']);
+      if (content['extensions']['editorCurrentExplore']) document.body.setAttribute('explore', content['extensions']['editorCurrentExplore']);
+
+      for (let key of WORKSPACE_TOGGLING_EXTENSIONS) {
+        let value = content['extensions'][key];
+        if (value) updateOptionalVisibilities(key, value);
+      }
+    }
   };
   var updateOptionalVisibilities = (key, value) => {
     HTMLHelper.getElementsBySelector('[internal-fsb-for="' + key + '"]').forEach((value, index) => {
