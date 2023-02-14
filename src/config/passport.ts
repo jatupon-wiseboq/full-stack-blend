@@ -159,7 +159,7 @@ passport.use(new GitHubStrategy({
         existingUser.tokens = existingUser.tokens.filter(token => token.kind != "github");
         existingUser.tokens.push({kind: "github", accessToken});
         existingUser.save((err: Error) => {
-          done(new Error("GitHub account has been linked."), existingUser);
+          done((!!err) ? new Error("GitHub account has been linked.") : null, existingUser);
         });
       } else {
         User.findById(req.user.id, (err, user: any) => {
@@ -169,7 +169,7 @@ passport.use(new GitHubStrategy({
           user.github = profile.id;
           user.tokens.push({kind: "github", accessToken});
           user.save((err: Error) => {
-            done(new Error("GitHub account has been linked."), user);
+            done((!!err) ? new Error("GitHub account has been linked.") : null, user);
           });
         });
       }
