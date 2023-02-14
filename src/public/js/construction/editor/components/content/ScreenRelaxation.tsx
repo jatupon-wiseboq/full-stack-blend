@@ -222,6 +222,9 @@ class ScreenRelaxation extends Base<Props, State> {
 		document.addEventListener('mousemove', () => {
 		  last = Date.now();
 		}, false);
+		document.addEventListener('keydown', () => {
+		  last = Date.now();
+		}, false);
   }
   
   public componentDidMount() {
