@@ -50,8 +50,8 @@ enum ActionType {
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-	source: SourceType;
-	group: string;
+  source: SourceType;
+  group: string;
   rows: HierarchicalDataRow[];
   notification?: string;
 }
@@ -86,13 +86,13 @@ interface ValidationInfo {
 // Auto[ClassBegin]--->
 class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
-  	super(request, response, template);
-  	try {
-	    let [action, schema, data] = this.initialize(request);
-	    this.perform(action, schema, data);
-   	} catch(error) {
-	  	RenderHelper.error(response, error);
-	  }
+    super(request, response, template);
+    try {
+      let [action, schema, data] = this.initialize(request);
+      this.perform(action, schema, data);
+     } catch(error) {
+      RenderHelper.error(response, error);
+    }
   }
   // <---Auto[ClassBegin]
   // Declare class variables and functions here:
@@ -333,16 +333,16 @@ class Controller extends Base {
  	
   // Auto[MergingBegin]--->  
   protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
-  	let data: Input[] = [];
-  	let input: Input = null;
-  	
-	  // <---Auto[MergingBegin]
-	  // Auto[Merging]--->
+    let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
+    let data: Input[] = [];
+    let input: Input = null;
+    
+    // <---Auto[MergingBegin]
+    // Auto[Merging]--->
     RequestHelper.registerSubmit("9e885d49", "954a291a", "navigate", ["1b650e66","22d343bd"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Login Button"});
     RequestHelper.registerSubmit("9e885d49", "b2b66792", "navigate", ["1b650e66","22d343bd","d3de6c93"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Signup Button"});
-		RequestHelper.registerInput('1b650e66', "document", "User", "email");
-		ValidationHelper.registerInput('1b650e66', "[user.email]", true, "Please enter your email", undefined, null);
+    RequestHelper.registerInput('1b650e66', "document", "User", "email");
+    ValidationHelper.registerInput('1b650e66', "[user.email]", true, "Please enter your email", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '1b650e66')) {
     
       // Override data parsing and manipulation of [user.email] here:
@@ -350,8 +350,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('22d343bd', "document", "User", "password");
-		ValidationHelper.registerInput('22d343bd', "[user.password]", true, "Please enter your password", undefined, null);
+    RequestHelper.registerInput('22d343bd', "document", "User", "password");
+    ValidationHelper.registerInput('22d343bd', "[user.password]", true, "Please enter your password", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '22d343bd')) {
     
       // Override data parsing and manipulation of [user.password] here:
@@ -359,8 +359,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('d3de6c93', "[user.confirmPassword]", true, "Please confirm your password", undefined, null);
+    RequestHelper.registerInput('d3de6c93', "document", "User", "confirmPassword");
+    ValidationHelper.registerInput('d3de6c93', "[user.confirmPassword]", true, "Please confirm your password", undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'd3de6c93')) {
     
       // Override data parsing and manipulation of [user.confirmPassword] here:
@@ -369,13 +369,13 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 
-	  // <---Auto[Merging]
-	  
-	  // Auto[MergingEnd]--->
-	  
-  	let action: ActionType = RequestHelper.getAction(this.pageId, request);
-	  return [action, schema, data];
-	}
+    // <---Auto[Merging]
+    
+    // Auto[MergingEnd]--->
+    
+    let action: ActionType = RequestHelper.getAction(this.pageId, request);
+    return [action, schema, data];
+  }
   // <---Auto[MergingEnd]
   
   // Auto[ClassEnd]--->

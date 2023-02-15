@@ -49,8 +49,8 @@ enum ActionType {
 
 // Auto[Interface]--->
 /*interface HierarchicalDataTable {
-	source: SourceType;
-	group: string;
+  source: SourceType;
+  group: string;
   rows: HierarchicalDataRow[];
   notification?: string;
 }
@@ -85,13 +85,13 @@ interface ValidationInfo {
 // Auto[ClassBegin]--->
 class Controller extends Base {
   constructor(request: Request, response: Response, template: string) {
-  	super(request, response, template);
-  	try {
-	    let [action, schema, data] = this.initialize(request);
-	    this.perform(action, schema, data);
-   	} catch(error) {
-	  	RenderHelper.error(response, error);
-	  }
+    super(request, response, template);
+    try {
+      let [action, schema, data] = this.initialize(request);
+      this.perform(action, schema, data);
+     } catch(error) {
+      RenderHelper.error(response, error);
+    }
   }
   // <---Auto[ClassBegin]
   // Declare class variables and functions here:
@@ -367,15 +367,15 @@ class Controller extends Base {
  	
   // Auto[MergingBegin]--->  
   protected initialize(request: Request): [ActionType, DataTableSchema, Input[]] {
-  	let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
-  	let data: Input[] = [];
-  	let input: Input = null;
-  	
-	  // <---Auto[MergingBegin]
-	  // Auto[Merging]--->
+    let schema: DataTableSchema = RequestHelper.getSchema(this.pageId, request);
+    let data: Input[] = [];
+    let input: Input = null;
+    
+    // <---Auto[MergingBegin]
+    // Auto[Merging]--->
     RequestHelper.registerSubmit("3cb10a6e", "ea9268d1", "update", ["0762b97d","098c6ea6","1da99335","25254217","27d35136","33832ba7","3478b9ac","49da134d","74d68ec6","d3e700b6","ece2d619"], {initClass: null, crossRelationUpsert: false, enabledRealTimeUpdate: false, name: "Submit Button"});
-		RequestHelper.registerInput('27d35136', "document", "User", "email");
-		ValidationHelper.registerInput('27d35136', "[user.email]", false, undefined, undefined, null);
+    RequestHelper.registerInput('27d35136', "document", "User", "email");
+    ValidationHelper.registerInput('27d35136', "[user.email]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '27d35136')) {
     
       // Override data parsing and manipulation of [user.email] here:
@@ -383,8 +383,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('ece2d619', "document", "User", "name");
-		ValidationHelper.registerInput('ece2d619', "[user.name]", false, undefined, undefined, null);
+    RequestHelper.registerInput('ece2d619', "document", "User", "name");
+    ValidationHelper.registerInput('ece2d619', "[user.name]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'ece2d619')) {
     
       // Override data parsing and manipulation of [user.name] here:
@@ -392,8 +392,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('d3e700b6', "document", "User", "alias");
-		ValidationHelper.registerInput('d3e700b6', "[user.alias]", false, undefined, undefined, null);
+    RequestHelper.registerInput('d3e700b6', "document", "User", "alias");
+    ValidationHelper.registerInput('d3e700b6', "[user.alias]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, 'd3e700b6')) {
     
       // Override data parsing and manipulation of [user.alias] here:
@@ -401,8 +401,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('0762b97d', "document", "User", "project");
-		ValidationHelper.registerInput('0762b97d', "[user.project]", false, undefined, undefined, null);
+    RequestHelper.registerInput('0762b97d', "document", "User", "project");
+    ValidationHelper.registerInput('0762b97d', "[user.project]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '0762b97d')) {
     
       // Override data parsing and manipulation of [user.project] here:
@@ -410,8 +410,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('098c6ea6', "document", "User", "feature");
-		ValidationHelper.registerInput('098c6ea6', "[user.feature]", false, undefined, undefined, null);
+    RequestHelper.registerInput('098c6ea6', "document", "User", "feature");
+    ValidationHelper.registerInput('098c6ea6', "[user.feature]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '098c6ea6')) {
     
       // Override data parsing and manipulation of [user.feature] here:
@@ -419,8 +419,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('25254217', "document", "User", "develop");
-		ValidationHelper.registerInput('25254217', "[user.develop]", false, undefined, undefined, null);
+    RequestHelper.registerInput('25254217', "document", "User", "develop");
+    ValidationHelper.registerInput('25254217', "[user.develop]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '25254217')) {
     
       // Override data parsing and manipulation of [user.develop] here:
@@ -428,8 +428,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('1da99335', "document", "User", "staging");
-		ValidationHelper.registerInput('1da99335', "[user.staging]", false, undefined, undefined, null);
+    RequestHelper.registerInput('1da99335', "document", "User", "staging");
+    ValidationHelper.registerInput('1da99335', "[user.staging]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '1da99335')) {
     
       // Override data parsing and manipulation of [user.staging] here:
@@ -437,8 +437,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('74d68ec6', "document", "User", "endpoint");
-		ValidationHelper.registerInput('74d68ec6', "[user.endpoint]", false, undefined, undefined, null);
+    RequestHelper.registerInput('74d68ec6', "document", "User", "endpoint");
+    ValidationHelper.registerInput('74d68ec6', "[user.endpoint]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '74d68ec6')) {
     
       // Override data parsing and manipulation of [user.endpoint] here:
@@ -446,8 +446,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('49da134d', "document", "User", "progressivelyUpdate");
-		ValidationHelper.registerInput('49da134d', "[user.progressivelyUpdate]", false, undefined, undefined, null);
+    RequestHelper.registerInput('49da134d', "document", "User", "progressivelyUpdate");
+    ValidationHelper.registerInput('49da134d', "[user.progressivelyUpdate]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '49da134d')) {
     
       // Override data parsing and manipulation of [user.progressivelyUpdate] here:
@@ -455,8 +455,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('3478b9ac', "document", "User", "password");
-		ValidationHelper.registerInput('3478b9ac', "[user.password]", false, undefined, undefined, null);
+    RequestHelper.registerInput('3478b9ac', "document", "User", "password");
+    ValidationHelper.registerInput('3478b9ac', "[user.password]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '3478b9ac')) {
     
       // Override data parsing and manipulation of [user.password] here:
@@ -464,8 +464,8 @@ class Controller extends Base {
       
       if (input != null) data.push(input);
     }
-		RequestHelper.registerInput('33832ba7', "document", "User", "confirmPassword");
-		ValidationHelper.registerInput('33832ba7', "[user.confirmPassword]", false, undefined, undefined, null);
+    RequestHelper.registerInput('33832ba7', "document", "User", "confirmPassword");
+    ValidationHelper.registerInput('33832ba7', "[user.confirmPassword]", false, undefined, undefined, null);
     for (let input of RequestHelper.getInputs(this.pageId, request, '33832ba7')) {
     
       // Override data parsing and manipulation of [user.confirmPassword] here:
@@ -474,13 +474,13 @@ class Controller extends Base {
       if (input != null) data.push(input);
     }
 
-	  // <---Auto[Merging]
-	  
-	  // Auto[MergingEnd]--->
-	  
-  	let action: ActionType = RequestHelper.getAction(this.pageId, request);
-	  return [action, schema, data];
-	}
+    // <---Auto[Merging]
+    
+    // Auto[MergingEnd]--->
+    
+    let action: ActionType = RequestHelper.getAction(this.pageId, request);
+    return [action, schema, data];
+  }
   // <---Auto[MergingEnd]
   
   // Auto[ClassEnd]--->

@@ -37,13 +37,16 @@ const LocalizationHelper = {
     if (!country || ProjectConfigurationHelper.getSecondaryLanguage() != country.toLowerCase()) {
       return text.replace(/\n\n/g, '<br/>').replace(/\n/g, '<br/>');
     } else {
-      text = text.replace(/\n+/g, ' ');
+      const key = LocalizationHelper.cleanKeyForComposing(text);
 
-      return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[text] || text).replace(/\n/g, '<br/>');
+      return LocalizationHelper.encode(LocalizationHelper.getLanguageSpecification()[key] || text.replace(/\n+/g, ' ')).replace(/\n/g, '<br/>');
     }
   },
   encode: (text) => {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&#34;").replace(/\'/g, "&#39;");
+  },
+  cleanKeyForComposing: function(text: string) {
+    return text.replace(/[\t\r\n]/g, ' ').replace(/\s+/g, ' ').trim();
   }
 };
 
