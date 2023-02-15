@@ -31,7 +31,7 @@ const LocalizationHelper = {
     const cookie = decodeURIComponent(document.cookie || '');
     const index = cookie.indexOf('lang=');
     const lang = (index == -1) ? null : cookie.substring(index + 5).split(';')[0];
-    const key = text.replace(/\n+/g, ' ');
+    const key = LocalizationHelper.cleanKeyForComposing(text);
 
     if (!lang || !LocalizationHelper.getLanguageSpecification()[key]) {
       return LocalizationHelper.encode(text).replace(/\n\n/g, '<br/>').replace(/\n/g, '<br/>');
@@ -41,6 +41,9 @@ const LocalizationHelper = {
   },
   encode: (text) => {
     return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&#34;").replace(/\'/g, "&#39;");
+  },
+  cleanKeyForComposing: function(text: string) {
+    return text.replace(/[\t\r\n]/g, ' ').replace(/\s+/g, ' ').trim();
   }
 };
 
