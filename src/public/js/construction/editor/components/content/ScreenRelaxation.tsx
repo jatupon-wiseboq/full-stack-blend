@@ -225,6 +225,27 @@ class ScreenRelaxation extends Base<Props, State> {
 		document.addEventListener('keydown', () => {
 		  last = Date.now();
 		}, false);
+		
+    window.setInterval(() => {
+      try {
+    		const iframe = document.getElementById('area') as HTMLFrameElement;
+    		if (!iframe) return;
+    		
+        const contentWindow = iframe.contentWindow;
+        if (!contentWindow || !contentWindow.document) return;
+        
+        if (contentWindow.document._init_screen_relaxation) return;
+        
+        contentWindow.document.addEventListener('mousemove', () => {
+    		  last = Date.now();
+    		}, false);
+    		contentWindow.document.addEventListener('keydown', () => {
+    		  last = Date.now();
+    		}, false);
+    		
+    		contentWindow.document._init_screen_relaxation = true;
+      } catch(error) { /* void */ }
+    }, 1000);
   }
   
   public componentDidMount() {
