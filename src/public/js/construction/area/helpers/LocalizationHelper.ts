@@ -102,7 +102,7 @@ var LocalizationHelper = {
     return text + LOCALIZATION_HASH_DELIMITER + guid + LOCALIZATION_ITEM_DELIMITER + translation;
   },
   cleanKeyForComposing: function(text: string) {
-    return text.replace(/\n+/g, ' ');
+    return text.replace(/[\t\r\n]/g, ' ').replace(/\s+/g, ' ').trim();
   }
 };
 
