@@ -325,7 +325,7 @@ let cachedUpdateEditorProperties = {};
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text') || element.getAttribute('always') == 'true') {
       if (element.className && element.className.indexOf('ace_') == 0) return;
       if (HTMLHelper.hasClass(document.body, 'internal-fsb-preview-on')) return;
       if (HTMLHelper.hasClass(document.body, 'internal-fsb-external-on')) return;
@@ -346,7 +346,7 @@ let cachedUpdateEditorProperties = {};
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text') || element.getAttribute('always') == 'true') {
       if (element.className && element.className.indexOf('ace_') == 0) return;
 
       perform('keyup', event.keyCode);
@@ -358,7 +358,7 @@ let cachedUpdateEditorProperties = {};
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text') || element.getAttribute('always') == 'true') {
       if (element.className && element.className.indexOf('ace_') == 0) return;
 
       const iframe = document.getElementById('area') as HTMLFrameElement;
@@ -371,7 +371,7 @@ let cachedUpdateEditorProperties = {};
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text') || element.getAttribute('always') == 'true') {
       if (element.className && element.className.indexOf('ace_') == 0) return;
 
       const iframe = document.getElementById('area') as HTMLFrameElement;
@@ -384,7 +384,7 @@ let cachedUpdateEditorProperties = {};
     if (EventHelper.checkIfDenyForHandle(event)) return;
 
     let element = EventHelper.getOriginalElement(event);
-    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text')) {
+    if (element.tagName != "TEXTAREA" && (element.tagName != "INPUT" || element.getAttribute('type') != 'text') || element.getAttribute('always') == 'true') {
       if (element.className && element.className.indexOf('ace_') == 0) return;
 
       const iframe = document.getElementById('area') as HTMLFrameElement;

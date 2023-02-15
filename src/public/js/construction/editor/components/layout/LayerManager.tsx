@@ -177,10 +177,17 @@ class LayerManager extends Base<Props, State> {
   private onLayerRemoved() {
     perform('delete', this.state.attributeValues['internal-fsb-guid']);
   }
+  private onHandleResponding() {
+    const element = ReactDOM.findDOMNode(this.refs.responder);
+    
+    element.value = " ";
+    element.setSelectionRange(0, 1);
+    element.focus();
+  }
 
   render() {
     return (
-      <div ref="container" className="layer-manager-container" style={{height: this.state.height}}>
+      <div ref="container" className="layer-manager-container" style={{height: this.state.height}} onClick={this.onHandleResponding.bind(this)}>
         {this.getLines().map((index) => {
           return (<div key={'line-' + index} className={'line offset-' + index}></div>);
         })}
@@ -188,6 +195,9 @@ class LayerManager extends Base<Props, State> {
           <FullStackBlend.Controls.Textbox ref="search" preRegExp='.*' postRegExp='.*' onUpdate={this.valueOnUpdate.bind(this)} placeholder='Search..' value={this.state.filter}></FullStackBlend.Controls.Textbox>
         </div>
         <FullStackBlend.Controls.Tree enableDragging={['business'].indexOf(this.state.extensionValues['workspaceMode']) == -1} nodes={this.state.extensionValues[this.props.watchingExtensionNames[0]]} filter={this.state.filter} onUpdate={this.onUpdate.bind(this)} onStartDragging={this.onStartDragging.bind(this)} onEndDragging={this.onEndDragging.bind(this)} onDragged={this.onDragged} />
+        <div style={{position: 'fixed', bottom: '-100px', opacity: 0}}>
+          <input type="text" ref="responder" always="true" />
+        </div>
       </div>
     );
   }
