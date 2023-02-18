@@ -1264,8 +1264,10 @@ let expandingPlaceholders = Array.from(document.querySelectorAll('[internal-fsb-
 for (let expandingPlaceholder of expandingPlaceholders) {
   let forward = JSON.parse((expandingPlaceholder.getAttribute('internal-fsb-init-forward') || '{}').replace(/'/g, '"'));
   ReactDOM.render(React.createElement(DeclarationHelper.get(expandingPlaceholder.getAttribute('internal-fsb-init-class')), {forward: forward, data: window.data || null}, null), expandingPlaceholder);
-  expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
-  expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+  if (expandingPlaceholder.firstElementChild) {
+    expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
+    expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
+  }  
 }
 
 window.internalFsbSubmit = (guid: string, notation: string, event, callback: any) => {
