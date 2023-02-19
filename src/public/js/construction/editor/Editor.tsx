@@ -138,7 +138,7 @@ let cachedUpdateEditorProperties = {};
         HTMLHelper.getElementById('codeEditor').style.display = '';
       }
 
-      HTMLHelper.addClass(button, 'active');
+      if (!HTMLHelper.hasClass(button, 'always-inactive')) HTMLHelper.addClass(button, 'active');
     }
 
     const panel = HTMLHelper.getElementsBySelector('.panel' + selector);
