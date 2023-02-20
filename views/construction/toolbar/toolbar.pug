@@ -37,7 +37,7 @@ nav.navbar.navbar-light.bg-light.toolbar.py-1.px-0(style='width: 100vw;')
           i.fa.fa-mobile.m-0(style='font-size: 14px;')
           .title
             | Mobile
-      a.btn.btn-sm.btn-light.always-inactive(onclick="swap('#properties', '.propertiesToolset', null, '#exploreIcon', 'fa-list-alt', true); perform('update', {extensions: [{name: 'editingProperties', value: 'strictness'}]});", role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Strategy</b></p><p>Use this to remind on how to work together.</p>", style='width: 50px;')
+      a.btn.btn-sm.btn-light.always-inactive(onclick="perform('update', {extensions: [{name: 'editingProperties', value: 'strictness'}]}); document.getElementById('propertiesButton').click();", role='button', data-toggle="tooltip", data-placement="bottom", data-html="true" title="<p><b>Strategy</b></p><p>Use this to remind on how to work together.</p>", style='width: 50px;')
         i.fa.fa-lightbulb-o.m-0
         .title
           | Strategy
