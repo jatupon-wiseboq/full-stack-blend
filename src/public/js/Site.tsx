@@ -20,7 +20,7 @@ for (let expandingPlaceholder of expandingPlaceholders) {
   if (expandingPlaceholder.firstElementChild) {
     expandingPlaceholder.parentNode.insertBefore(expandingPlaceholder.firstElementChild, expandingPlaceholder);
     expandingPlaceholder.parentNode.removeChild(expandingPlaceholder);
-  }
+  }  
 }
 
 window.internalFsbSubmit = (guid: string, notation: string, event, callback: any) => {
