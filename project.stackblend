@@ -1568,11 +1568,14 @@ d0e675b7    },
 4d816ba8        "</div>",
 4d816ba8        "</div>"
 4d816ba8      ],
+4d816ba8      "id": "4d816ba8",
 4d816ba8      "klass": "FlowLayout_4d816ba8",
-4d816ba8      "namespace": "Project.Controls"
+4d816ba8      "name": "Authenticator",
+4d816ba8      "namespace": "Project.Controls",
+4d816ba8      "state": "create"
 4d816ba8    }
   },
-  "controllerBlobSHA": "c34d787674a01ad53735a41f8009c668817b95e9#-373192131",
+  "controllerBlobSHA": "68dea8c2d1b125ae15d8049277d033c1cbd64301#497380826",
   "currentPersistingFiles": [
     "src/controllers/components/account/settings/_3cb10a6e.ts",
     "src/controllers/components/demo/guestbook/_7bc56453.ts",
@@ -5616,7 +5619,7 @@ d3deb54e          },
       }
     }
   },
-  "footerBlobSHA": "1b560948fcc9a3208b81d80356a41541d6587ea1#-1658618672",
+  "footerBlobSHA": "3ce4ea369d6e3894a5a93aa22edc3969b209c447#-1316704973",
   "frontEndComponentsBlobSHADict": {
     "Project.Controls.FlowLayout_4d816ba8": "f052887dcb59db588181354b7a59701d588b2a2d#1379120697",
     "Project.Controls.FlowLayout_52d0514b": "307ad2d3a2835aa11ac103d70b6f250aed690617#-105820285",
@@ -5700,30 +5703,39 @@ d3deb54e          },
         "state": "update"
       },
       {
-        "description": null,
+        "description": "Start using the studio to develop your web 2.0 applications.",
+        "frequency": "weekly",
         "id": "9e885d49",
-        "image": null,
-        "keywords": null,
+        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png",
+        "keywords": "stackblend login, stack blend login, fullstack login, full stack login, full-stack login, stackblend signup, stack blend signup, fullstack signup, full stack signup, full-stack signup, stackblend register, stack blend register, fullstack register, full stack register, full-stack register",
         "name": "StackBlend Studio - Authenticate",
         "path": "/account/authenticate",
+        "priority": "0.8",
+        "sitemap": "true",
         "state": "update"
       },
       {
-        "description": null,
+        "description": "See the workarounds of all current issues of the studio.",
+        "frequency": "weekly",
         "id": "b160aa0e",
-        "image": null,
-        "keywords": null,
+        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png",
+        "keywords": "stackblend bug, stack blend bug, stackblend fix, stack blend fix, stackblend workaround, stack blend workaround, stackblend solution, stack blend solution, stackblend stackoverflow, stack blend stackoverflow",
         "name": "StackBlend Studio - Workaround",
         "path": "/development/workarounds",
+        "priority": "0.8",
+        "sitemap": "true",
         "state": "update"
       },
       {
         "description": "StackBlend Studio is a full-stack editor for website development which comes with extensive options for HTML5, CSS3, and database manipulation without coding.",
+        "frequency": "weekly",
         "id": "index",
-        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png",
-        "keywords": "full-stack, full stack, fullstack, full-stack editor, full stack editor, fullstack editor, front-end, front end, frontend, front-end editor, front end editor, frontend editor, back-end, back end, backend, back-end editor, back end editor, backend editor",
+        "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/timeline.png",
+        "keywords": "full-stack, full stack, fullstack, full-stack editor, full stack editor, fullstack editor, full-stack engineering, full stack engineering, fullstack engineering, front-end, front end, frontend, front-end editor, front end editor, frontend editor, front-end engineering, front end engineering, frontend engineering, back-end, back end, backend, back-end editor, back end editor, backend editor, back-end engineering, back end engineering, backend engineering",
         "name": "StackBlend Studio - Full-Stack Editor",
         "path": "/",
+        "priority": "1",
+        "sitemap": "true",
         "state": "update"
       }
     ],
@@ -5736,7 +5748,7 @@ d3deb54e          },
     "workspaceStrictnessRevertMode": "P1",
     "workspaceStrictnessSentenceMode": "meaningful"
   },
-  "headerBlobSHA": "e96a5e6b872cc2f62a8f5506eaf8128cbd60b702#-241002064",
+  "headerBlobSHA": "c3bdfbd15d7aace9b415a879d179de62c5121447#134885003",
   "popups": {},
   "properties": {},
   "routeBlobSHA": "c360423e9a5d917b643da205193e5b4117e014e2#-478532818",
@@ -7131,7 +7143,7 @@ d3deb54e          },
 9e885d49        "</iframe>",
 9e885d49        "</body>"
 9e885d49      ],
-9e885d49      "description": null,
+9e885d49      "description": "Start using the studio to develop your web 2.0 applications.",
 9e885d49      "extensions": {
 9e885d49        "internal-fsb-data-code-body": [
 9e885d49          "",
@@ -7400,18 +7412,21 @@ d3deb54e          },
 9e885d49          ""
 9e885d49        ]
 9e885d49      },
+9e885d49      "frequency": "weekly",
 9e885d49      "head": {
 9e885d49        "fonts": {}
 9e885d49      },
 9e885d49      "id": "9e885d49",
-9e885d49      "image": null,
-9e885d49      "keywords": null,
+9e885d49      "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png",
+9e885d49      "keywords": "stackblend login, stack blend login, fullstack login, full stack login, full-stack login, stackblend signup, stack blend signup, fullstack signup, full stack signup, full-stack signup, stackblend register, stack blend register, fullstack register, full stack register, full-stack register",
 9e885d49      "name": "StackBlend Studio - Authenticate",
 9e885d49      "notations": {},
 9e885d49      "path": "/account/authenticate",
+9e885d49      "priority": "0.8",
 9e885d49      "references": [
 9e885d49        "4d816ba8"
 9e885d49      ],
+9e885d49      "sitemap": "true",
 9e885d49      "state": "update"
 9e885d49    },
 b160aa0e    "b160aa0e": {
@@ -7615,8 +7630,9 @@ b160aa0e        "</div>",
 b160aa0e        "</div>",
 b160aa0e        "</body>"
 b160aa0e      ],
-b160aa0e      "description": null,
+b160aa0e      "description": "See the workarounds of all current issues of the studio.",
 b160aa0e      "extensions": {},
+b160aa0e      "frequency": "weekly",
 b160aa0e      "head": {
 b160aa0e        "fonts": {
 b160aa0e          "Courier Prime": true,
@@ -7624,12 +7640,14 @@ b160aa0e          "Roboto": true
 b160aa0e        }
 b160aa0e      },
 b160aa0e      "id": "b160aa0e",
-b160aa0e      "image": null,
-b160aa0e      "keywords": null,
+b160aa0e      "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/design.png",
+b160aa0e      "keywords": "stackblend bug, stack blend bug, stackblend fix, stack blend fix, stackblend workaround, stack blend workaround, stackblend solution, stack blend solution, stackblend stackoverflow, stack blend stackoverflow",
 b160aa0e      "name": "StackBlend Studio - Workaround",
 b160aa0e      "notations": {},
 b160aa0e      "path": "/development/workarounds",
+b160aa0e      "priority": "0.8",
 b160aa0e      "references": [],
+b160aa0e      "sitemap": "true",
 b160aa0e      "state": "update"
 b160aa0e    },
 b351d3a2    "b351d3a2": {
@@ -7742,7 +7760,7 @@ b351d3a2    },
         "    style=\"font-family: Roboto\">",
         "<div",
         "    class=\"internal-fsb-begin\"",
-        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-extension-cb2c63a9 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
+        "    internal-fsb-animation=\"animation-extension-256ab155 animation-extension-641a0997 animation-extension-71ed425e animation-extension-783c1d40 animation-extension-ca6ca087 animation-group-08ac50cc animation-group-1007a040 animation-group-211b4247 animation-group-3ec1d254 animation-group-499cb518 animation-group-8c3caa53 animation-group-a58e28b5 animation-group-a6333507 animation-group-b7965b87 animation-group-d0e675b7 animation-group-e37e3b85\"",
         "    internal-fsb-guid=\"0\">",
         "<div",
         "    class=\"internal-fsb-allow-cursor internal-fsb-begin-layout internal-fsb-strict-layout\"",
@@ -8915,6 +8933,7 @@ b351d3a2    },
       ],
       "description": "StackBlend Studio is a full-stack editor for website development which comes with extensive options for HTML5, CSS3, and database manipulation without coding.",
       "extensions": {},
+      "frequency": "weekly",
       "head": {
         "fonts": {
           "Courier Prime": true,
@@ -8924,12 +8943,14 @@ b351d3a2    },
         }
       },
       "id": "index",
-      "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/model.png",
-      "keywords": "full-stack, full stack, fullstack, full-stack editor, full stack editor, fullstack editor, front-end, front end, frontend, front-end editor, front end editor, frontend editor, back-end, back end, backend, back-end editor, back end editor, backend editor",
+      "image": "https://stackblend-static-files.s3-us-west-1.amazonaws.com/timeline.png",
+      "keywords": "full-stack, full stack, fullstack, full-stack editor, full stack editor, fullstack editor, full-stack engineering, full stack engineering, fullstack engineering, front-end, front end, frontend, front-end editor, front end editor, frontend editor, front-end engineering, front end engineering, frontend engineering, back-end, back end, backend, back-end editor, back end editor, backend editor, back-end engineering, back end engineering, backend engineering",
       "name": "StackBlend Studio - Full-Stack Editor",
       "notations": {},
       "path": "/",
+      "priority": "1",
       "references": [],
+      "sitemap": "true",
       "state": "update"
     }
   },
@@ -8955,8 +8976,8 @@ b351d3a2    },
   "viewBlobSHADict": {
     "3cb10a6e": "81c9af33a6edc3f191e0cf2fe1d378ea354bc316#-971681757",
     "7bc56453": "8155ac24d8bea4e67daedc3fdad14b27bfca4ce7#1198326242",
-    "9e885d49": "a4aee59d1377da1e597b5e536a121f78e94cf321#-373877699",
-    "b160aa0e": "a61e2416c09ce1c62825d80cbac8b478ce56b01c#-749129789",
-    "index": "dba2dba75d3eed91f34100d9672bc5a5cab1b0ec#-195084693"
+    "9e885d49": "093f271c70fc5ec133c2ac88afc316318bc666a0#-1671672091",
+    "b160aa0e": "29611c20bb7e88e1cf2e43f38760b858694c607f#1747357571",
+    "index": "4724c8322a45e420d10c5967888c05ae677e057e#1217075658"
   }
 }

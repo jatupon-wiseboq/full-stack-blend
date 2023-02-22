@@ -31,5 +31,9 @@ export const _b160aa0e = (req: Request, res: Response) => {
   new Componentb160aa0e(req, res, "home/development/workarounds/_b160aa0e");
 }
 
+SitemapHelper.register('/', 'weekly', 1);
+SitemapHelper.register('/account/authenticate', 'weekly', 0.8);
+SitemapHelper.register('/development/workarounds', 'weekly', 0.8);
+
 // <--- Auto[Generating:V1]
 // PLEASE DO NOT MODIFY BECAUSE YOUR CHANGES MAY BE LOST.
