@@ -73,7 +73,7 @@
     "pug": "^2.0.4",
     "redis": "^3.0.2",
     "ruffle-mirror": "^2021.8.22",
-    "sequelize": "^6.18.0",
+    "sequelize": "^6.29.0",
     "sidekiq": "^1.1.1",
     "socket.io": "^2.3.0",
     "socket.io-redis": "^6.1.1",
