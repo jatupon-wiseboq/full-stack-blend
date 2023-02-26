@@ -11,6 +11,7 @@ declare let ReactDOM: any;
 declare let perform: any;
 
 interface Props extends IProps {
+  allowSpecialCharactersOfTitle: boolean;
 }
 
 interface State extends IState {
@@ -174,7 +175,7 @@ class CustomProjectSettingsManager extends Base<Props, State> {
           <div className="section-title">{(this.state.isAdding) ? "New Setting" : "Update a Setting"}</div>
           <div className="section-subtitle">Key</div>
           <div className="section-body">
-            <FullStackBlend.Controls.Textbox ref="key" value={this.state.key} placeholder="key" preRegExp='(([a-zA-Z_]?)|([a-zA-Z_][a-zA-Z0-9_]*))' postRegExp='[a-zA-Z_][a-zA-Z0-9_]*' onUpdate={this.keyOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
+            <FullStackBlend.Controls.Textbox ref="key" value={this.state.key} placeholder="key" preRegExp={this.props.allowSpecialCharactersOfTitle && '[^~`]*' || '(([a-zA-Z_]?)|([a-zA-Z_][a-zA-Z0-9_]*))'} postRegExp={this.props.allowSpecialCharactersOfTitle && '[^~`]*' || '[a-zA-Z_][a-zA-Z0-9_]*'} onUpdate={this.keyOnUpdate.bind(this)}></FullStackBlend.Controls.Textbox>
           </div>
           <div className="section-subtitle">Value</div>
           <div className="section-body">
