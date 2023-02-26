@@ -87,3 +87,58 @@
   	}
   }
 }
+
+.properties-strictness-business-constraints {
+  .list-manager-container {
+    .tree-container {
+      height: auto;
+      border: none;
+      padding: 25px 0;
+      
+      .treenode-outer-container:not(.delete) {
+        float: left;
+        width: 250px;
+        height: 75px;
+        line-height: 1.15em;
+        padding: 4px 12px;
+        margin: 5px;
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 5px;
+        
+        .treenode-container {
+          margin: 0;
+          
+          .fa-plus-square-o {
+            margin: 0;
+          }
+          .treenode-title {
+            height: 65px;
+          }
+          .fa-edit {
+            color: #fff;
+          }
+        }
+    		
+  			&::after {
+  			  display: block;
+  			  position: absolute;
+  			  left: 0;
+  			  right: 0;
+  			  bottom: 0;
+  			  height: 10px;
+  			}
+      }
+    }
+    
+    .add, .delete {
+      border-radius: 0.2rem;
+      width: 125px;
+      left: 50% !important;
+      margin-left: -67.5px;
+    }
+    .add {
+      border-top: 1px solid #ced4da;
+    }
+  }
+}

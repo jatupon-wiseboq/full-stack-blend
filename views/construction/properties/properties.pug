@@ -27,6 +27,9 @@
                 a.btn.btn-secondary.btn-sm.btn-light.text-secondary.active(onclick="swap('.properties-strictness-general', null, null, null, null, true)")
                   input(type='radio', name='options', checked=true)
                   | Evolvement
+                a.btn.btn-secondary.btn-sm.btn-light.text-secondary(onclick="swap('.properties-strictness-business-constraints', null, null, null, null, true)")
+                  input(type='radio', name='options', checked=true)
+                  | Business Constraints
         .workspace-vertical-container.full-relative-size
           .workspace-vertical-panel(internal-fsb-for="editingProperties:settings", style="border-top: none;")
             .workspace-panel-container.scrollable
@@ -44,3 +47,5 @@
             .workspace-panel-container.scrollable
               .panel.properties-strictness-general.active
                 include ./strictness/general
+              .panel.properties-strictness-business-constraints
+                include ./strictness/business-constraints
