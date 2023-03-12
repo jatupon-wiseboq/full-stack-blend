@@ -120,7 +120,7 @@ let cachedUpdateEditorProperties = {};
     const isSwappingEditingMode = ['#design', '#animation', '#coding'].indexOf(selector) != -1;
     const isTogglingOff = isSwappingEditingMode && HTMLHelper.hasClass(button, 'active');
 
-    HTMLHelper.getElementsBySelector('a.active', button.parentNode).forEach((value, index) => {
+    Array.from(HTMLHelper.getElementsBySelector('a.active', button.parentNode)).forEach((value, index) => {
       if (value.parentNode != button.parentNode) return;
       HTMLHelper.removeClass(value, 'active');
     });
