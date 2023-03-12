@@ -173,6 +173,7 @@ app.get('/js/libraries/polyfills/polyfill.io.js', (req, res) => {
     uaString: req.get('User-Agent'),
     minify: true,
     features: {
+      'Array.prototype.forEach': {flags: ['gated']},
       'es5': {flags: ['gated']},
       'es6': {flags: ['gated']},
       'es7': {flags: ['gated']}
